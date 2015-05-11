@@ -1,0 +1,12 @@
+
+{
+  "name": "game play",
+  "version": "0.0.0",
+  "appPath": "app",
+  "dependencies": {
+    "jquery": "~1.7.2", 
+    "underscore": "~1.5.2",
+    "modernizr": "~2.6.2",
+    "requirejs-jquery": "~0.25.0"
+  }
+}
