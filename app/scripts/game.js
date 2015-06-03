@@ -11,9 +11,16 @@ var Game = {
 
       // Simply start splashscreen
       //Crafty.scene('Splashscreen');
-      Crafty.enterScene('Terrain');
+      Crafty.enterScene('Space');
     });
   }
 };
 
-Game.start();
+$(document).on('click', 'button', function() {
+  Game.start();
+  if (screenfull.enabled) {
+    screenfull.request($('#cr-stage')[0]);
+  }
+});
+
+
