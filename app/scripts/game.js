@@ -11,6 +11,7 @@ var Game = {
 
       // Simply start splashscreen
       //Crafty.scene('Splashscreen');
+      Crafty.enterScene('Terrain');
     });
   }
 };

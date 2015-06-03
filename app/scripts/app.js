@@ -4,5 +4,3 @@ require('scripts/scenes/*');
 require('scripts/game');
 
 Crafty.debugBar.show();
-
-
