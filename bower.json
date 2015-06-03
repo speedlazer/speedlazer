@@ -7,6 +7,6 @@
     "underscore": "~1.5.2",
     "modernizr": "~2.6.2",
     "requirejs-jquery": "~0.25.0",
-    "crafty-gamepad": "svenjacobs/crafty-gamepad"
+    "crafty-gamepad": "matthijsgroen/crafty-gamepad"
   }
 }

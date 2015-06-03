@@ -41,7 +41,11 @@ Crafty.defineScene('Terrain', function() {
       this.shoot()
     };
   });
-
+  player.bind('GamepadKeyChange', function (e) {
+    if (e.button === 0 && e.pressed) {
+      this.shoot()
+    }
+  });
 
   player.shoot = function() {
     Crafty.e('Bullet').fireFrom(this.x, this.y)
