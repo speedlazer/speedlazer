@@ -7,7 +7,7 @@ var Game = {
 
       // Start crafty and set a background color so that we can see it's working
       Crafty.init(1024, 768);
-      Crafty.background('#FFFFFF');
+      Crafty.background('#111');
 
       // Simply start splashscreen
       //Crafty.scene('Splashscreen');
