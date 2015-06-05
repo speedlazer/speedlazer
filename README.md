@@ -1,3 +1,11 @@
+# Side scrolling shooter!
+
+Development repo of HTML5 game made with Crafty.js and making use of the
+HTML5 Gamepad API.
+
+To try it out: http://matthijsgroen.github.io/game-play/dist/index.html
+
+
 # Setup (from scratch)
 
 See: https://github.com/sgmeyer/generator-crafty
@@ -16,3 +24,4 @@ echo "bower_components" >> .gitignore
 npm install
 bower install
 ```
+
