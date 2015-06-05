@@ -2,64 +2,6 @@ Crafty.defineScene('Space', function() {
   // constructor
   Crafty.background('#111');
 
-  Crafty.c('Bullet', {
-    init: function() {
-      this.addComponent('2D, Canvas, Color')
-    },
-    fire: function(properties) {
-      x = properties.player.x + properties.player.w
-      y = properties.player.y + (properties.player.h / 2.0)
-
-      this.attr({ x: x, y: y, w: 5, h: 5, damage: properties.damage })
-        .color(properties.player.color())
-        .bind('EnterFrame', function() {
-            this.x = this.x + properties.speed;
-            if (this.x > 1200) {
-              this.destroy()
-            }
-        })
-        .bind('HitTarget', function(e) {
-          properties.player.trigger('BulletHit', {
-            bullet: this,
-            target: e.target
-          })
-        })
-        .bind('DestroyTarget', function(e) {
-          properties.player.trigger('BulletDestroy', {
-            bullet: this,
-            target: e.target
-          })
-        });
-    }
-  });
-
-  Crafty.c('Enemy', {
-    init: function() {
-      this.addComponent('2D, Canvas, Color, Collision')
-    },
-    enemy: function(attr) {
-      this.attr({ x: attr.x, y: attr.y, w: 50, h: 50, health: 300 })
-        .color('#00F')
-        .bind('EnterFrame', function() {
-            this.x = this.x - 2;
-            if (this.x < -100) {
-              this.destroy()
-              console.log('Uhoh')
-            }
-        })
-        .onHit('Bullet', function(e) {
-          var bullet = e[0].obj;
-          bullet.trigger('HitTarget', { target: this });
-          this.health -= bullet.damage;
-          if (this.health <= 0) {
-            bullet.trigger('DestroyTarget', { target: this });
-            this.destroy()
-          }
-          bullet.destroy();
-        });
-    }
-  });
-
   var player = Crafty.e('2D, Canvas, Color, Multiway, GamepadMultiway, Keyboard, Gamepad, Collision')
     .attr({ x: 140, y: 350, w: 30, h: 30, lives: 1, points: 0 })
     .color('#F00')
@@ -82,7 +24,7 @@ Crafty.defineScene('Space', function() {
       this.loseLife()
     })
     .bind("KeyDown", function(e) {
-      if (e.key == Crafty.keys.SPACE) { this.shoot() }
+      if (e.key == Crafty.keys.M) { this.shoot() }
     })
     .bind('GamepadKeyChange', function (e) {
       if (e.button === 0 && e.pressed) { this.shoot() }
@@ -95,7 +37,20 @@ Crafty.defineScene('Space', function() {
     });
 
   player.shoot = function() {
-    Crafty.e('Bullet').fire({ player: this, damage: 100, speed: 4 })
+    Crafty.e('Bullet')
+      .color(this.color())
+      .attr({
+        x: this.x + this.w,
+        y: this.y + (this.h / 2.0),
+        w: 5,
+        h: 5
+      })
+      .fire({
+        origin: this,
+        damage: 100,
+        speed: 4,
+        direction: 0
+      });
   }
   player.loseLife = function() {
     this.lives -= 1;
