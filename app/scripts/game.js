@@ -16,7 +16,7 @@ var Game = {
   }
 };
 
-$(document).on('click', 'button', function() {
+$(document).on('click', 'button', function () {
   Game.start();
   if (screenfull.enabled) {
     screenfull.request($('#cr-stage')[0]);

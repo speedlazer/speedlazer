@@ -17,5 +17,11 @@
     "strict": true,
     "trailing": true,
     "smarttabs": true,
-    "white": true
+    "white": true,
+    "globals": {
+        "$": false,
+        "Crafty": false,
+        "screenfull": false,
+        "document": false
+    }
 }
