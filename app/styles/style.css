@@ -2,3 +2,9 @@
 html, body {
     margin: 0 0;
 }
+
+aside {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

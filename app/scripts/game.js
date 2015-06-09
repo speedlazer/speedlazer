@@ -16,10 +16,12 @@ var Game = {
   }
 };
 
+Game.start();
+
 $(document).on('click', 'button', function () {
-  Game.start();
   if (screenfull.enabled) {
     screenfull.request($('#cr-stage')[0]);
+    $(this).blur();
   }
 });
 

@@ -4,120 +4,149 @@ Crafty.defineScene('Space', function () {
   // constructor
   Crafty.background('#111');
 
-  var player = Crafty.e('2D, Canvas, Color, Multiway, GamepadMultiway, Keyboard, Gamepad, Collision')
-    .attr({ x: 140, y: 350, w: 30, h: 30, lives: 1, points: 0 })
-    .color('#F00')
-    .multiway({ y: 3, x: 1 }, {
-      UP_ARROW: -90,
-      DOWN_ARROW: 90,
-      LEFT_ARROW: 180,
-      RIGHT_ARROW: 0
-    })
-    .gamepadMultiway({
-      speed: { y: 3, x: 1 },
-      gamepadIndex: 0
-    })
-    .bind('Moved', function (from) {
-      if (this.hit('Edge')) { // Contain player within playfield
-        this.attr({x: from.x, y: from.y});
-      }
-    })
-    .onHit('Enemy', function () {
-      this.loseLife();
-    })
-    .bind('KeyDown', function (e) {
-      if (e.key === Crafty.keys.M) { this.shoot(); }
-    })
-    .bind('GamepadKeyChange', function (e) {
-      if (e.button === 0 && e.pressed) { this.shoot(); }
-    })
-    .bind('BulletHit', function () {
-      this.addPoints(10);
-    })
-    .bind('BulletDestroy', function () {
-      this.addPoints(50);
+  var showPlayerHud = function (playerIndex) {
+    var x = 10 + (playerIndex * 350);
+    var player = players[playerIndex].player;
+
+    var score = Crafty.e('2D, Canvas, Text')
+      .attr({ x: x, y: 10, w: 150 }).text('Score: ' + player.points)
+      .textColor(player.color())
+      .textFont({
+        size: '20px',
+        weight: 'bold',
+        family: 'Courier new'
+      });
+    player.bind('UpdatePoints', function (e) {
+      score.text('Score: ' + e.points);
     });
 
-  player.shoot = function () {
-    Crafty.e('Bullet')
-      .color(this.color())
-      .attr({
-        x: this.x + this.w,
-        y: this.y + (this.h / 2.0),
-        w: 5,
-        h: 5
-      })
-      .fire({
-        origin: this,
-        damage: 100,
-        speed: 4,
-        direction: 0
+    var lives = Crafty.e('2D, Canvas, Text')
+      .attr({ x: x, y: 30, w: 150 }).text('Lives: ' + player.lives)
+      .textColor(player.color())
+      .textFont({
+        size: '20px',
+        weight: 'bold',
+        family: 'Courier new'
       });
-  };
-  player.loseLife = function () {
-    this.lives -= 1;
-    this.attr({ x: 140, y: 350 });
+    player.bind('UpdateLives', function (e) {
+      if (e.lives === 0) {
+        lives.text('Game Over');
+      } else {
+        lives.text('Lives: ' + e.lives);
+      }
+    });
 
-    this.trigger('UpdateLives', { lives: this.lives });
-    if (this.lives <= 0) {
-      Crafty.enterScene('GameOver', { score: this.points });
+    players[playerIndex].score = score;
+    players[playerIndex].lives = lives;
+  };
+
+
+
+  Crafty.e('Keyboard')
+    .bind('KeyDown', function (e) {
+      if (e.key === Crafty.keys.SPACE) {
+        spawnPlayer('keyboard', 1);
+        this.destroy();
+      }
+    });
+  Crafty.e('Gamepad')
+    .gamepad(0)
+    .bind('GamepadKeyChange', function (e) {
+      if (e.button === 0 && e.pressed) {
+        spawnPlayer('gamepad', 0);
+        this.destroy();
+      }
+    });
+  Crafty.e('Gamepad')
+    .gamepad(1)
+    .bind('GamepadKeyChange', function (e) {
+      if (e.button === 0 && e.pressed) {
+        spawnPlayer('gamepad', 1);
+        this.destroy();
+      }
+    });
+
+  var players = [];
+  var playerColors = ['#F00', '#0F0', '#F0F'];
+
+  var spawnPlayer = function (controlType, controlIndex) {
+    var player = Crafty.e('Player')
+      .attr({ x: 140, y: 320, playerIndex: players.length })
+      .color(playerColors[players.length]);
+
+    players.push({
+      controlType: controlType,
+      controlIndex: controlIndex,
+      player: player
+    });
+    showPlayerHud(players.length - 1);
+    Crafty.trigger('PlayerStart', player);
+
+    if (controlType === 'keyboard') {
+      if (controlIndex === 1) {
+        player.addComponent('Multiway, Keyboard')
+          .multiway({ y: 3, x: 1 }, {
+            UP_ARROW: -90,
+            DOWN_ARROW: 90,
+            LEFT_ARROW: 180,
+            RIGHT_ARROW: 0
+          })
+          .bind('KeyDown', function (e) {
+            if (e.key === Crafty.keys.SPACE) { this.shoot(); }
+          });
+      }
+    }
+    if (controlType === 'gamepad') {
+      player.addComponent('GamepadMultiway, Gamepad')
+        .gamepad(controlIndex)
+        .gamepadMultiway({
+          speed: { y: 3, x: 1 },
+          gamepadIndex: controlIndex
+        })
+        .bind('GamepadKeyChange', function (e) {
+          if (e.button === 0 && e.pressed) { this.shoot(); }
+        });
     }
   };
-  player.addPoints = function (amount) {
-    this.points += amount;
-    this.trigger('UpdatePoints', { points: this.points });
-  };
-
-  var score = Crafty.e('2D, Canvas, Text').attr({ x: 10, y: 10, w: 150 }).text('Score: ' + player.points)
-    .textColor(player.color())
-    .textFont({
-      size: '20px',
-      weight: 'bold',
-      family: 'Courier new'
-    });
-  player.bind('UpdatePoints', function (e) {
-    score.text('Score: ' + e.points);
-  });
-
-  Crafty.e('2D, Canvas, Text').attr({ x: 180, y: 10, w: 150 }).text('Lives: ' + player.lives)
-    .textColor(player.color())
-    .textFont({
-      size: '20px',
-      weight: 'bold',
-      family: 'Courier new'
-    });
-  player.bind('UpdateLives', function (e) {
-    score.text('Lives: ' + e.lives);
-  });
-
 
   // Create edges around playfield to 'capture' the player
   Crafty.e('2D, Canvas, Edge')
-    .attr({x: 10, y: 20, w: 900, h: 2});
+    .attr({x: 10, y: 50, w: 900, h: 2});
 
   Crafty.e('2D, Canvas, Edge')
     .attr({x: 10, y: 750, w: 900, h: 2});
 
   Crafty.e('2D, Canvas, Edge')
-    .attr({x: 10, y: 20, w: 2, h: 730 });
+    .attr({x: 10, y: 50, w: 2, h: 730 });
 
   Crafty.e('2D, Canvas, Edge')
-    .attr({x: 910, y: 20, w: 2, h: 730 });
+    .attr({x: 910, y: 50, w: 2, h: 730 });
 
 
-  var startTime = new Date().getTime();
   var gamespeed = 0.4; // pixels / milisecond
   var nextEnemySpawn = 5000;
+  var startTime = null;
+  Crafty.bind('PlayerStart', function () {
+    if (players.length === 1) {
+      startTime = (new Date()).getTime();
 
-  Crafty.bind('EnterFrame', function () {
-    var x = ((new Date()).getTime() - startTime) * gamespeed;
-    if (nextEnemySpawn < x) {
-      var y = Crafty.math.randomInt(40, 720);
+      Crafty.bind('EnterFrame', function () {
+        // TODO: Refactor this to be able to act on game pauses
 
-      Crafty.e('Enemy').enemy({ x: 1200, y: y });
-      nextEnemySpawn += Crafty.math.randomInt(100, 2000);
-      console.log('Time to spawn!');
+        var x = ((new Date()).getTime() - startTime) * gamespeed;
+        if (nextEnemySpawn < x) {
+          var y = Crafty.math.randomInt(40, 720);
+
+          Crafty.e('Enemy').enemy({ x: 1200, y: y });
+          nextEnemySpawn += Crafty.math.randomInt(100, 2000);
+          console.log('Time to spawn!');
+        }
+      });
     }
+  });
+
+  Crafty.bind('PlayerDied', function (player) {
+    Crafty.enterScene('GameOver', { score: 'later!' });
   });
 
 }, function () {
