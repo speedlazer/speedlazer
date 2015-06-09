@@ -145,7 +145,7 @@ Crafty.defineScene('Space', function () {
     }
   });
 
-  Crafty.bind('PlayerDied', function (player) {
+  Crafty.bind('PlayerDied', function () {
     Crafty.enterScene('GameOver', { score: 'later!' });
   });
 
