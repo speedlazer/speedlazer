@@ -1,38 +1,45 @@
 'use strict';
 
 Crafty.c('Player', {
+  lives: 1,
+  points: 0,
   init: function () {
-    this.addComponent('Dormant');
-    this.attr({ lives: 1, points: 0 });
-    this.bind('Fire', function () {
-      if (this.has('Dormant')) this.activate();
+    this.requires('Model'); // Not in this version of Crafty yet...
+    this.bind('Activated', function () {
+      Crafty.trigger('PlayerActivated');
+      this.spawnShip();
     });
-  },
-  activate: function () {
-    var index = Crafty('Player Active').length;
-    // maybe guard statement to only have
-    // a max amount of players active (e.g. 2)
-
-    this.removeComponent('Dormant');
-    this.addComponent('Active');
-    this.attr({ playerIndex: index });
-
-    var colors = ['#F00', '#0F0', '#F0F'];
-    this.addComponent('Color').color(colors[index]);
-    this.trigger('Activated', this);
-
-    this.spawnShip();
   },
   spawnShip: function () {
     this.ship = Crafty.e('PlayerControlledShip')
-      .attr({ x: 140, y: 320 })
-      .color(this.color());
-    this.assignControls(this.ship);
+      .attr({ x: 140, y: 320 });
+    if (this.has('Color')) this.ship.color(this.color());
+    if (this.has('ControlScheme')) this.assignControls(this.ship);
+
+    // TODO: Listen to events like bullet hit or ship hit etc.
+    // to destroy the ship or add points
   }
 });
 
 Crafty.c('KeyboardControls', {
   init: function() {
+    this.one('Fire', function () {
+      if (!this.has('Player')) {
+        var players = Crafty('Player');
+        for (var i = 0; i < players.length; i++) {
+          var player = Crafty(players[i]);
+          if (!player.has('ControlScheme')) {
+            player
+              .addComponent('ControlScheme')
+              .addComponent('KeyboardControls')
+              .controls(this.controlMap)
+            player.trigger('Activated')
+            this.destroy();
+            break;
+          }
+        }
+      }
+    });
   },
   controls: function (controlMap) {
     this.controlMap = controlMap;
@@ -59,9 +66,49 @@ Crafty.c('KeyboardControls', {
   }
 });
 
-Crafty.c('PlayerHud', {
-  hud: function (player) {
+Crafty.c('HUD', {
+  hud: function (x) {
+    var score = Crafty.e('2D, DOM, Text')
+      .attr({ x: x, y: 10, w: 150, h: 20})
+      .textFont({
+        size: '20px',
+        weight: 'bold',
+        family: 'Courier new'
+      });
+    if (this.has('Color')) score.textColor(this.color())
 
+    var lives = Crafty.e('2D, DOM, Text')
+      .attr({ x: x, y: 30, w: 250, h: 20 })
+      .textFont({
+        size: '20px',
+        weight: 'bold',
+        family: 'Courier new'
+      });
+    if (this.has('Color')) lives.textColor(this.color())
 
+    var updateText = function () {
+      if (this.has('ControlScheme')) {
+        score.text('Score: ' + this.points);
+      } else {
+        score.text(this._entityName);
+      }
+      if (this.has('ControlScheme')) {
+        if (this.lives === 0) {
+          lives.text('Game Over');
+        } else {
+          lives.text('Lives: ' + this.lives);
+        }
+      } else {
+        lives.text('Press fire to start!');
+      }
+    };
+
+    updateText.call(this);
+
+    this.bind('UpdateLives', updateText);
+    this.bind('UpdatePoints', updateText);
+    this.bind('Activated', updateText);
+
+    return this;
   }
 });

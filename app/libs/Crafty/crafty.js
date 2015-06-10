@@ -414,7 +414,7 @@ Crafty.c("2D", {
      * #.offsetBoundary
      * @comp 2D
      * Extends the MBR of the entity by a specified amount.
-     * 
+     *
      * @trigger BoundaryOffset - when the MBR offset changes
      * @sign public this .offsetBoundary(Number dx1, Number dy1, Number dx2, Number dy2)
      * @param dx1 - Extends the MBR to the left by this amount
@@ -488,9 +488,9 @@ Crafty.c("2D", {
         }
 
         // If a collision hitbox exists AND sits outside the entity, find a bounding box for both.
-        // `_cbr` contains information about a bounding circle of the hitbox. 
+        // `_cbr` contains information about a bounding circle of the hitbox.
         // The bounds of `_cbr` will be the union of the `_mbr` and the bounding box of that circle.
-        // This will not be a minimal region, but since it's only used for the broad phase pass it's good enough. 
+        // This will not be a minimal region, but since it's only used for the broad phase pass it's good enough.
         //
         // cbr is calculated by the `_checkBounds` method of the "Collision" component
         if (this._cbr) {
@@ -1011,7 +1011,7 @@ Crafty.c("2D", {
  * #Gravity
  * @category 2D
  * @trigger Moved - When entity has moved on y-axis a Moved event is triggered with an object specifying the old position {x: old_x, y: old_y}
- * 
+ *
  * Adds gravitational pull to the entity.
  */
 Crafty.c("Gravity", {
@@ -1759,7 +1759,7 @@ Crafty.extend({
          * @param clientX - clientX position in the browser screen
          * @param clientY - clientY position in the browser screen
          * @return Object `{x: ..., y: ...}` with Crafty coordinates.
-         * 
+         *
          * The parameters clientX and clientY are pixel coordinates within the visible
          * browser window. This function translates those to Crafty coordinates (i.e.,
          * the coordinates that you might apply to an entity), by taking into account
@@ -3017,7 +3017,7 @@ Crafty.c("Collision", {
         this.unbind("Resize", this._resizeMap);
         this.unbind("Resize", this._checkBounds);
 
-        
+
 
         if (!poly) {
             // If no polygon is specified, then a polygon is created that matches the bounds of the entity
@@ -3103,7 +3103,7 @@ Crafty.c("Collision", {
             };
             this.bind("Resize", this._checkBounds);
         }
-        
+
         // If the hitbox is within the entity, _cbr is null
         // Otherwise, set it, and immediately calculate the bounding box.
         if (minX >= 0 && minY >= 0 && maxX <= this._w && maxY <= this._h){
@@ -3114,11 +3114,11 @@ Crafty.c("Collision", {
             this._calculateMBR();
             return true;
         }
-        
+
     },
 
-    // The default behavior is to match the hitbox to the entity.  
-    // This function will change the hitbox when a "Resize" event triggers. 
+    // The default behavior is to match the hitbox to the entity.
+    // This function will change the hitbox when a "Resize" event triggers.
     _resizeMap: function (e) {
 
         var dx, dy, rot = this.rotation * DEG_TO_RAD,
@@ -3465,11 +3465,11 @@ Crafty.extend({
      * Notable properties of a MouseEvent e:
      * ~~~
      * //(x,y) coordinates of mouse event in web browser screen space
-     * e.clientX, e.clientY 
+     * e.clientX, e.clientY
      * //(x,y) coordinates of mouse event in world/viewport space
-     * e.realX, e.realY     
+     * e.realX, e.realY
      * // Normalized mouse button according to Crafty.mouseButtons
-     * e.mouseButton            
+     * e.mouseButton
      * ~~~
      * @see Crafty.touchDispatch
      */
@@ -4296,7 +4296,7 @@ Crafty.c("Fourway", {
  * @category Input
  * @trigger NewDirection - When direction changes a NewDirection event is triggered with an object detailing the new direction: {x: x_movement, y: y_movement}. This is consistent with Fourway and Multiway components.
  * @trigger Moved - When entity has moved on x-axis a Moved event is triggered with an object specifying the old position {x: old_x, y: old_y}
- * 
+ *
  * Move an entity left or right using the arrow keys or `D` and `A` and jump using up arrow or `W`.
  */
 Crafty.c("Twoway", {
@@ -5086,11 +5086,11 @@ Crafty.fn = Crafty.prototype = {
      * @comp Crafty Core
      * @sign public Array .get()
      * @returns An array of entities corresponding to the active selector
-     * 
+     *
      * @sign public Entity .get(Number index)
      * @returns an entity belonging to the current selection
      * @param index - The index of the entity to return.  If negative, counts back from the end of the array.
-     * 
+     *
      *
      * @example
      * Get an array containing every "2D" entity
@@ -5106,7 +5106,7 @@ Crafty.fn = Crafty.prototype = {
      * ~~~
      * var e = Crafty("2D").get(-1)
      * ~~~
-     * 
+     *
      */
     get: function(index) {
         var l = this.length;
@@ -6975,15 +6975,15 @@ Crafty.extend({
      * Setting this to true disables smoothing for images, which is the preferred
      * way for drawing pixel art. Defaults to false.
      *
-     * This feature is experimental and you should be careful with cross-browser compatibility. 
+     * This feature is experimental and you should be careful with cross-browser compatibility.
      * The best way to disable image smoothing is to use the Canvas render method and the Sprite component for drawing your entities.
      *
      * This method will have no effect for Canvas image smoothing if the canvas is not initialized yet.
      *
-     * Note that Firefox_26 currently has a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=696630) 
+     * Note that Firefox_26 currently has a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=696630)
      * which prevents disabling image smoothing for Canvas entities that use the Image component. Use the Sprite
      * component instead.
-     * Note that Webkit (Chrome & Safari) currently has a bug [link1](http://code.google.com/p/chromium/issues/detail?id=134040) 
+     * Note that Webkit (Chrome & Safari) currently has a bug [link1](http://code.google.com/p/chromium/issues/detail?id=134040)
      * [link2](http://code.google.com/p/chromium/issues/detail?id=106662) that prevents disabling image smoothing
      * for DOM entities.
      *
@@ -6992,7 +6992,7 @@ Crafty.extend({
      * ~~~
      * Crafty.canvas.init();
      * Crafty.pixelart(true);
-     * 
+     *
      * Crafty.sprite(imgWidth, imgHeight, "spriteMap.png", {sprite1:[0,0]});
      * Crafty.e("2D, Canvas, sprite1");
      * ~~~
@@ -7266,13 +7266,13 @@ Crafty.extend({
      * This method is a shortcut for adding a background
      * style to the stage element, i.e.
      * `Crafty.stage.elem.style.background = ...`
-     * 
+     *
      * For example, if you want the background to be white,
      * with an image in the center, you might use:
      * ~~~
      * Crafty.background('#FFFFFF url(landscape.png) no-repeat center center');
      * ~~~
-     *  
+     *
      */
     background: function (style) {
         Crafty.stage.elem.style.background = style;
@@ -9748,7 +9748,7 @@ Crafty.extend({
      *     Crafty.e("2D, DOM, Color")
      *           .attr(attributes)
      *           .color("red");
-     * 
+     *
      * });
      *
      * ~~~
@@ -9783,7 +9783,7 @@ Crafty.extend({
         Crafty.defineScene(name, intro, outro);
     },
 
-    /* 
+    /*
      * #Crafty.defineScene
      * @category Scenes, Stage
      *
@@ -9806,7 +9806,7 @@ Crafty.extend({
 
     },
 
-    /* 
+    /*
      * #Crafty.enterScene
      * @category Scenes, Stage
      * @trigger SceneChange - just before a new scene is initialized - { oldScene:String, newScene:String }
@@ -9815,7 +9815,7 @@ Crafty.extend({
      * @sign public void Crafty.enterScene(String name[, Data])
      * @param name - Name of the scene to run.
      * @param Data - The init function of the scene will be called with this data as its parameter.  Can be of any type other than a function.
-     * 
+     *
      * @see Crafty.defineScene
      * @see Crafty.scene
      */
@@ -10963,7 +10963,7 @@ Crafty.extend({
             this.__padding = [paddingX, paddingY];
             this.__padBorder = paddingAroundBorder;
             this.sprite(this.__coord[0], this.__coord[1], this.__coord[2], this.__coord[3]);
-            
+
             this.img = img;
             //draw now
             if (this.img.complete && this.img.width > 0) {
@@ -11162,7 +11162,7 @@ var Crafty = require('./core.js'),
  * @param key - the key you would like to save the data under.
  * @param value - the value you would like to save, can be an Object or an Array.
  *
- * Storage function is very simple and can be used to either get or set values. 
+ * Storage function is very simple and can be used to either get or set values.
  * You can store both booleans, strings, objects and arrays.
  *
  * Please note: You should not store data, while the game is playing, as it can cause the game to slow down. You should load data when you start the game, or when the user for an example click a "Save gameprocess" button.
@@ -11212,7 +11212,7 @@ Crafty.storage = function(key, value){
     }
 
     storage.setItem(key, _value);
-    
+
   }
 
 };
@@ -11598,12 +11598,12 @@ Crafty.extend({
      *
      * Viewport is essentially a 2D camera looking at the stage. Can be moved or zoomed, which
      * in turn will react just like a camera moving in that direction.
-     * 
+     *
      * Tip: At any given moment, the stuff that you can see is...
-     * 
+     *
      * `x` between `(-Crafty.viewport._x)` and `(-Crafty.viewport._x + (Crafty.viewport._width / Crafty.viewport._scale))`
-     * 
-     * `y` between `(-Crafty.viewport._y)` and `(-Crafty.viewport._y + (Crafty.viewport._height / Crafty.viewport._scale))` 
+     *
+     * `y` between `(-Crafty.viewport._y)` and `(-Crafty.viewport._y + (Crafty.viewport._height / Crafty.viewport._scale))`
      */
     viewport: {
         /**@
@@ -11650,7 +11650,7 @@ Crafty.extend({
          * This value is the current scale (zoom) of the viewport. When the value is bigger than 1, everything
          * looks bigger (zoomed in). When the value is less than 1, everything looks smaller (zoomed out). This
          * does not alter the size of the stage itself, just the magnification of what it shows.
-         * 
+         *
          * This is a read-only property: Do not set it directly. Instead, use `Crafty.viewport.scale(...)`
          * or `Crafty.viewport.zoom(...)`
          */
@@ -11714,7 +11714,7 @@ Crafty.extend({
             return this.rect_object;
         },
 
-        /**@ 
+        /**@
 
          * #Crafty.viewport.pan
          * @comp Crafty.viewport
@@ -11766,7 +11766,7 @@ Crafty.extend({
 
                 // bind to event, using uniqueBind prevents multiple copies from being bound
                 Crafty.uniqueBind("EnterFrame", enterFrame);
-                       
+
             };
         })(),
 
@@ -11853,7 +11853,7 @@ Crafty.extend({
          * Zooming is multiplicative. To reset the zoom amount, pass 0.
          */
         zoom: (function () {
-            
+
 
             function stopZoom(){
                 Crafty.unbind("EnterFrame", enterFrame);
@@ -11914,7 +11914,7 @@ Crafty.extend({
                 startingZoom = Crafty.viewport._scale;
                 finalAmount = amt;
                 finalZoom = startingZoom * finalAmount;
-                
+
 
                 startingX = Crafty.viewport.x;
                 startingY = Crafty.viewport.y;
@@ -11926,7 +11926,7 @@ Crafty.extend({
                 Crafty.uniqueBind("EnterFrame", enterFrame);
             };
 
-            
+
         })(),
         /**@
          * #Crafty.viewport.scale
@@ -11939,7 +11939,7 @@ Crafty.extend({
          * When `amt` is 10, that same entity would appear 200 pixels wide (i.e., zoomed in
          * by a factor of 10), and when `amt` is 0.1, that same entity would be 2 pixels wide
          * (i.e., zoomed out by a factor of `(1 / 0.1)`).
-         * 
+         *
          * If you pass an `amt` of 0, it is treated the same as passing 1, i.e. the scale is reset.
          *
          * This method sets the absolute scale, while `Crafty.viewport.zoom` sets the scale relative to the existing value.
@@ -12103,7 +12103,7 @@ Crafty.extend({
              * `Crafty.stage.inner` is a div inside the `#cr-stage` div that holds all DOM entities.
              * If you use canvas, a `canvas` element is created at the same level in the dom
              * as the the `Crafty.stage.inner` div. So the hierarchy in the DOM is
-             *  
+             *
              * ~~~
              * Crafty.stage.elem
              *  - Crafty.stage.inner (a div HTMLElement)
@@ -12214,7 +12214,7 @@ Crafty.extend({
                 Crafty.stage.y = offset.y;
             }
 
-            
+
         },
 
         // Create setters/getters for x, y, width, height
@@ -12344,14 +12344,14 @@ var Crafty = require('./core.js'),
     document = window.document;
 
 // test fragment shader -- everything is white!
-var FRAGMENT_SHADER_SRC = 
+var FRAGMENT_SHADER_SRC =
   "precision mediump float;"
 
   +"void main(void) {"
   +"gl_FragColor = vec4(0.0, 1.0, 1.0, 0.5);"
   +"}";
 
-var FRAGMENT_SHADER_SRC_2 = 
+var FRAGMENT_SHADER_SRC_2 =
   "precision mediump float;"
 
   +"void main(void) {"
@@ -12359,7 +12359,7 @@ var FRAGMENT_SHADER_SRC_2 =
   +"}";
 
 // test vertex shader
-var VERTEX_SHADER_SRC_OLD = 
+var VERTEX_SHADER_SRC_OLD =
   "attribute vec2 aVertexPosition;"
   + "uniform mat2 uGlobalScaleMatrix;"
   + "void main(void) {"
@@ -12417,7 +12417,7 @@ glHelpers = {
             if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
               throw("Could not initialise shaders");
             }
-            
+
             shaderProgram.viewport = gl.getUniformLocation(shaderProgram, "uViewport");
             return shaderProgram;
         },
@@ -12437,7 +12437,7 @@ glHelpers = {
 // fragment shader source for an image/etc
 /*
 varying highp vec2 vTextureCoord;
-      
+
 uniform sampler2D uSampler;
 uniform highp vec2 uTextureDimensions;
 uniform highp vec4 uSpriteCoords;
@@ -12447,7 +12447,7 @@ void main(void) {
   gl_FragColor = texture2D(uSampler, coord);
 }
 */
-var TEXTURE_FRAGMENT_SHADER_SRC = 
+var TEXTURE_FRAGMENT_SHADER_SRC =
   "varying highp vec2 vTextureCoord;\r\n      \r\nuniform sampler2D uSampler;\r\nuniform highp vec2 uTextureDimensions;\r\nuniform highp vec4 uSpriteCoords;\r\n\r\nvoid main(void) {\r\n  highp vec2 coord =  ( uSpriteCoords.zw * vTextureCoord + uSpriteCoords.xy) \/ uTextureDimensions;\r\n  gl_FragColor = texture2D(uSampler, coord);\r\n}";
 
 
@@ -12478,7 +12478,7 @@ void main() {
 */
 
 // Escape using a tool like [this one](http://www.freeformatter.com/javascript-escape.html).
-var VERTEX_SHADER_SRC = 
+var VERTEX_SHADER_SRC =
 "attribute vec2 a_position;\r\nuniform  vec4 uViewport;\r\nuniform  vec4 uEntityPos;\r\nuniform  vec4 uEntityExtra;\r\n\r\n\r\nvarying highp vec2 vTextureCoord;\r\n\r\nmat4 viewportScale = mat4(2.0 \/ uViewport.z, 0, 0, 0,    0, -2.0 \/ uViewport.w, 0,0,    0, 0,1,0,    -1,+1,0,1);\r\nvec4 viewportTranslation = vec4(uViewport.xy, 0, 0);\r\n\r\nvec2 entityScale = uEntityPos.zw;\r\nvec2 entityTranslation = uEntityPos.xy;\r\nvec2 entityOrigin = uEntityExtra.xy;\r\nmat2 entityRotationMatrix = mat2(cos(uEntityExtra.w), sin(uEntityExtra.w), -sin(uEntityExtra.w), cos(uEntityExtra.w));\r\n\r\nvoid main() {\r\n  vec2 pos = entityScale * a_position;\r\n  pos = entityRotationMatrix * (pos - entityOrigin) + entityOrigin + entityTranslation;\r\n  gl_Position = viewportScale * (viewportTranslation + vec4(pos, uEntityExtra.z, 1) );\r\n  vTextureCoord = a_position;\r\n}";
 
 
@@ -12510,7 +12510,7 @@ void main() {
 */
 
 
-var COLOR_VERTEX_SHADER = 
+var COLOR_VERTEX_SHADER =
   "attribute vec2 aPosition;\r\nattribute vec4 aExtras;\r\nattribute vec4 aColor;\r\n\r\nvarying lowp vec4 vColor;\r\n\r\nuniform  vec4 uViewport;\r\n\r\nmat4 viewportScale = mat4(2.0 \/ uViewport.z, 0, 0, 0,    0, -2.0 \/ uViewport.w, 0,0,    0, 0,1,0,    -1,+1,0,1);\r\nvec4 viewportTranslation = vec4(uViewport.xy, 0, 0);\r\n\r\nvec2 entityOrigin = aExtras.xy;\r\nmat2 entityRotationMatrix = mat2(cos(aExtras.w), sin(aExtras.w), -sin(aExtras.w), cos(aExtras.w));\r\n\r\nvoid main() {\r\n  vec2 pos = aPosition;\r\n  pos = entityRotationMatrix * (pos - entityOrigin) + entityOrigin ;\r\n  gl_Position = viewportScale * (viewportTranslation + vec4(pos, 1.0\/(1.0+exp(aExtras.z) ), 1) );\r\n  vColor = aColor;\r\n}";
 
 
@@ -12542,12 +12542,12 @@ void main() {
 
 */
 
-var SPRITE_VERTEX_SHADER = 
+var SPRITE_VERTEX_SHADER =
   "attribute vec2 aPosition;\r\nattribute vec4 aExtras;\r\nattribute vec2 aTextureCoord;\r\n\r\nvarying mediump vec2 vTextureCoord;\r\n\r\nuniform vec4 uViewport;\r\nuniform mediump vec2 uTextureDimensions;\r\n\r\nmat4 viewportScale = mat4(2.0 \/ uViewport.z, 0, 0, 0,    0, -2.0 \/ uViewport.w, 0,0,    0, 0,1,0,    -1,+1,0,1);\r\nvec4 viewportTranslation = vec4(uViewport.xy, 0, 0);\r\n\r\nvec2 entityOrigin = aExtras.xy;\r\nmat2 entityRotationMatrix = mat2(cos(aExtras.w), sin(aExtras.w), -sin(aExtras.w), cos(aExtras.w));\r\n\r\nvoid main() {\r\n  vec2 pos = aPosition;\r\n  pos = entityRotationMatrix * (pos - entityOrigin) + entityOrigin ;\r\n  gl_Position = viewportScale * (viewportTranslation + vec4(pos, 1.0\/(1.0+exp(aExtras.z) ), 1) );\r\n  vTextureCoord = aTextureCoord;\r\n}\r\n";
 
 /*
     varying mediump vec2 vTextureCoord;
-      
+
     uniform sampler2D uSampler;
     uniform mediump vec2 uTextureDimensions;
 
@@ -12558,7 +12558,7 @@ var SPRITE_VERTEX_SHADER =
 */
 
 
-var SPRITE_FRAGMENT_SHADER = 
+var SPRITE_FRAGMENT_SHADER =
   "    varying mediump vec2 vTextureCoord;\r\n      \r\n    uniform sampler2D uSampler;\r\n    uniform mediump vec2 uTextureDimensions;\r\n\r\n    void main(void) {\r\n      highp vec2 coord =   vTextureCoord \/ uTextureDimensions;\r\n      gl_FragColor = texture2D(uSampler, coord);\r\n    }";
 
 Crafty.c("TestSquare", {
@@ -12608,7 +12608,7 @@ Crafty.c("TestColor", {
     var gl = this.webgl.context;
     console.log('setting positions');
     var prog = this._shaderProgram;
-    
+
 
     prog._bufferArray = new Float32Array(4000);
     prog._kingBuffer = gl.createBuffer();
@@ -12639,7 +12639,7 @@ Crafty.c("TestColor", {
 
     prog.renderBatch = function(){
       gl.bindBuffer(gl.ARRAY_BUFFER, prog._kingBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, prog._bufferArray, gl.STATIC_DRAW); 
+      gl.bufferData(gl.ARRAY_BUFFER, prog._bufferArray, gl.STATIC_DRAW);
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, prog._indexBuffer);
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, prog.index, gl.STATIC_DRAW);
       gl.drawElements(gl.TRIANGLES, prog.pointer, gl.UNSIGNED_SHORT, 0);
@@ -12647,7 +12647,7 @@ Crafty.c("TestColor", {
 
   },
 
-  _fragmentShader: 
+  _fragmentShader:
     "precision mediump float;"
     + "varying lowp vec4 vColor;"
     + "void main(void) {"
@@ -12663,7 +12663,7 @@ Crafty.c("TestColor", {
     // Write the vertex data into the array
     this._writeToArray(prog._bufferArray);
     //console.log(prog._bufferArray);
-    
+
 
     // Register the vertex groups to be drawn
     // Two triangles; (0, 1, 2) and (1, 2, 3)
@@ -12681,13 +12681,13 @@ Crafty.c("TestColor", {
 
   _writeToArray: function(data){
       //intermediate: just CREATE the matrix right here
-      
+
       var width = 2 + 4 + 4;
       var offset = (width * 4) * this._glNum;
 
       // Write position; x, y, w, h
       glHelpers.writeVec2(data, offset, width,
-        this._x, this._y, 
+        this._x, this._y,
         this._x , this._y + this._h,
         this._x + this._w, this._y,
         this._x + this._w, this._y + this._h
@@ -12745,7 +12745,7 @@ Crafty.c("GLSprite", {
       }
 
 
-      
+
       this.bind("Draw", this._drawSprite);
 
   },
@@ -12764,7 +12764,7 @@ Crafty.c("GLSprite", {
     //console.log(this.__texture);
     //console.log("Image complete? " + img.complete)
     webgl.bindTexture(this._shaderProgram, prog.__texture);
-    
+
 
     prog._bufferArray = new Float32Array(4000);
     prog._kingBuffer = gl.createBuffer();
@@ -12795,7 +12795,7 @@ Crafty.c("GLSprite", {
 
     prog.renderBatch = function(){
       gl.bindBuffer(gl.ARRAY_BUFFER, prog._kingBuffer);
-      gl.bufferData(gl.ARRAY_BUFFER, prog._bufferArray, gl.STATIC_DRAW); 
+      gl.bufferData(gl.ARRAY_BUFFER, prog._bufferArray, gl.STATIC_DRAW);
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, prog._indexBuffer);
       gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, prog.index, gl.STATIC_DRAW);
       gl.drawElements(gl.TRIANGLES, prog.pointer, gl.UNSIGNED_SHORT, 0);
@@ -12832,14 +12832,14 @@ Crafty.c("GLSprite", {
 
   _writeToArray: function(data, co){
       //intermediate: just CREATE the matrix right here
-      
+
       var width = 2 + 4 + 2;
       var offset = (width * 4) * this._glNum;
 
       // Write position; x, y, w, h
 
       glHelpers.writeVec2(data, offset, width,
-        this._x, this._y, 
+        this._x, this._y,
         this._x , this._y + this._h,
         this._x + this._w, this._y,
         this._x + this._w, this._y + this._h
@@ -12852,7 +12852,7 @@ Crafty.c("GLSprite", {
         this._z,
         this._rotation
       );
-      
+
       // Write array coordinates
       glHelpers.writeVec2(data, offset + 6, width,
         co.x, co.y,
@@ -12881,7 +12881,7 @@ Crafty.c("WebGL", {
 
         //increment the amount of canvas objs
         webgl.entities++;
-        
+
         this._changed = true;
         webgl.add(this);
 
@@ -12959,13 +12959,13 @@ Crafty.c("WebGL", {
 
         // Handle flipX, flipY
         if (this._flipX || this._flipY) {
-           
+
         }
 
 
         //set alpha
         if (this._alpha < 1.0) {
-           
+
         }
 
         //Draw entity
@@ -12977,7 +12977,7 @@ Crafty.c("WebGL", {
         this.trigger("Draw", this.drawVars);
 
         //gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-        
+
         return this;
     },
 
@@ -12988,7 +12988,7 @@ Crafty.c("WebGL", {
         if (typeof wgl.programs[compName] === "undefined"){
           wgl.programs[compName] = glHelpers.makeProgram(gl, f_src, v_src);
         }
-          
+
         this._shaderProgram = wgl.programs[compName];
 
         // Shader program means ready
@@ -13039,7 +13039,7 @@ Crafty.extend({
         },
 
         makeProgram: function (fragment_src, vertex_src){
-            
+
             console.log("Making program");
             console.log(fragment_src);
             var gl = this.context;
@@ -13054,11 +13054,11 @@ Crafty.extend({
             if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
               throw("Could not initialise shaders");
             }
-            
+
             shaderProgram.viewport = gl.getUniformLocation(shaderProgram, "uViewport");
             return shaderProgram;
         },
-        
+
         textures: {},
         textureCount: 0,
         makeTexture: function(url, image){
@@ -13068,7 +13068,7 @@ Crafty.extend({
             if (typeof webgl.textures[url] !== 'undefined')
               return webgl.textures[url];
             var gl = webgl.context;
-            
+
             var texture = gl.createTexture();
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
@@ -13108,7 +13108,7 @@ Crafty.extend({
             gl.uniform1i(gl.getUniformLocation(program, "uSampler"), texture_obj.sampler);
             // Set the image dimensions
             gl.uniform2f(gl.getUniformLocation(program, "uTextureDimensions"), texture_obj.width, texture_obj.height);
-            
+
             program.texture_obj = texture_obj;
         },
 
@@ -13164,18 +13164,18 @@ Crafty.extend({
 
             gl.clearColor(0.0, 0.0, 0.0, 0.0);
             gl.enable(gl.DEPTH_TEST);
-            
+
             //gl.disable(gl.DEPTH_TEST);
             //gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
             //gl.enable(gl.BLEND);
-            
+
 
             //Bind rendering of canvas context (see drawing.js)
             var webgl = this;
             Crafty.uniqueBind("RenderScene", webgl.render);
 
             Crafty.uniqueBind("ViewportResize", webgl._resize)
-            
+
             Crafty.uniqueBind("InvalidateViewport", function(){webgl.dirtyViewport = true;})
             this.dirtyViewport = true;
 
@@ -13214,10 +13214,10 @@ Crafty.extend({
             gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-            //We don't set the perspective because the default is what we WANT -- no depth 
+            //We don't set the perspective because the default is what we WANT -- no depth
 
             //Set the viewport uniform variables
-            var shaderProgram;            
+            var shaderProgram;
             var programs = webgl.programs;
             if (webgl.dirtyViewport){
               for (var comp in programs){
@@ -13240,7 +13240,7 @@ Crafty.extend({
                       shaderProgram = current._shaderProgram;
                       shaderProgram.pointer = 0;
                       shaderProgram.switchTo();
-                    } 
+                    }
                     current.draw();
                     current._changed = false;
                 }
@@ -13251,7 +13251,7 @@ Crafty.extend({
               batchCount++;
             }
             console.log("Batches: " + batchCount)
-            
+
         }
 
     }
