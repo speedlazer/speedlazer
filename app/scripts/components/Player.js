@@ -2,50 +2,66 @@
 
 Crafty.c('Player', {
   init: function () {
-    this.addComponent('2D, Canvas, Color, Collision');
-    this.attr({ w: 30, h: 30, lives: 1, points: 0 })
-      .bind('Moved', function (from) {
-        if (this.hit('Edge')) { // Contain player within playfield
-          this.attr({x: from.x, y: from.y});
-        }
-      })
-      .onHit('Enemy', function () {
-        this.loseLife();
-      })
-      .bind('BulletHit', function () {
-        this.addPoints(10);
-      })
-      .bind('BulletDestroy', function () {
-        this.addPoints(50);
-      });
+    this.addComponent('Dormant');
+    this.attr({ lives: 1, points: 0 });
+    this.bind('Fire', function () {
+      if (this.has('Dormant')) this.activate();
+    });
   },
-  shoot: function () {
-    Crafty.e('Bullet')
-      .color(this.color())
-      .attr({
-        x: this.x + this.w,
-        y: this.y + (this.h / 2.0),
-        w: 5,
-        h: 5
-      })
-      .fire({
-        origin: this,
-        damage: 100,
-        speed: 4,
-        direction: 0
-      });
-  },
-  loseLife: function () {
-    this.lives -= 1;
-    this.attr({ x: 140, y: 350 });
+  activate: function () {
+    var index = Crafty('Player Active').length;
+    // maybe guard statement to only have
+    // a max amount of players active (e.g. 2)
 
-    this.trigger('UpdateLives', { lives: this.lives });
-    if (this.lives <= 0) {
-      Crafty.trigger('PlayerDied', this);
-    }
+    this.removeComponent('Dormant');
+    this.addComponent('Active');
+    this.attr({ playerIndex: index });
+
+    var colors = ['#F00', '#0F0', '#F0F'];
+    this.addComponent('Color').color(colors[index]);
+    this.trigger('Activated', this);
+
+    this.spawnShip();
   },
-  addPoints: function (amount) {
-    this.points += amount;
-    this.trigger('UpdatePoints', { points: this.points });
+  spawnShip: function () {
+    this.ship = Crafty.e('PlayerControlledShip')
+      .attr({ x: 140, y: 320 })
+      .color(this.color());
+    this.assignControls(this.ship);
+  }
+});
+
+Crafty.c('KeyboardControls', {
+  init: function() {
+  },
+  controls: function (controlMap) {
+    this.controlMap = controlMap;
+    this.bind('KeyDown', function (e) {
+      if (e.key === this.controlMap.fire) {
+        this.trigger('Fire', e);
+      }
+    });
+  },
+  assignControls: function (ship) {
+    var controlMap = this.controlMap;
+
+    var movementMap = {}
+    movementMap[controlMap.up] = -90;
+    movementMap[controlMap.down] = 90;
+    movementMap[controlMap.left] = 180;
+    movementMap[controlMap.right] = 0;
+
+    ship.addComponent('Multiway, Keyboard')
+      .multiway({ y: 3, x: 1 }, movementMap)
+      .bind('KeyDown', function (e) {
+        if (e.key === controlMap.fire) { this.shoot(); }
+      });
+  }
+});
+
+Crafty.c('PlayerHud', {
+  hud: function (player) {
+
+
   }
 });
