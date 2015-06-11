@@ -2,22 +2,6 @@
 
 Crafty.c('ControlScheme', {
   init: function () {
-    this.one('Fire', function () {
-      if (!this.has('Player')) {
-        var players = Crafty('Player');
-        for (var i = 0; i < players.length; i++) {
-          var player = Crafty(players[i]);
-          if (!player.has('ControlScheme')) {
-            player
-              .addComponent('ControlScheme');
-            this.setupControls(player);
-            player.trigger('Activated');
-            this.destroy();
-            break;
-          }
-        }
-      }
-    });
   }
 });
 
@@ -35,6 +19,7 @@ Crafty.c('KeyboardControls', {
         this.trigger('Fire', e);
       }
     });
+    return this;
   },
   assignControls: function (ship) {
     var controlMap = this.controlMap;

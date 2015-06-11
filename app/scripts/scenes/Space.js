@@ -14,26 +14,45 @@ Crafty.defineScene('Space', function () {
     .color('#00FF00')
     .hud(400);
 
+  var playerWithoutControls = function () {
+    var players = Crafty('Player');
+    for (var i = 0; i < players.length; i++) {
+      var player = Crafty(players[i]);
+      if (!player.has('ControlScheme')) {
+        return player;
+      }
+    }
+  }
+  var assignControls = function () {
+    var player = playerWithoutControls();
+    if (player === undefined) { return; }
 
+    player
+      .addComponent('ControlScheme');
+    this.setupControls(player);
+    player.trigger('Activated');
+    this.destroy();
+  }
 
-  Crafty.e('KeyboardControls, ControlScheme')
+  Crafty.e('KeyboardControls')
     .controls({
       fire: Crafty.keys.SPACE,
       up: Crafty.keys.UP_ARROW,
       down: Crafty.keys.DOWN_ARROW,
       left: Crafty.keys.LEFT_ARROW,
       right: Crafty.keys.RIGHT_ARROW
-    });
+    })
+    .one('Fire', assignControls);
 
-  Crafty.e('KeyboardControls, ControlScheme')
+  Crafty.e('KeyboardControls')
     .controls({
       fire: Crafty.keys.G,
       up: Crafty.keys.W,
       down: Crafty.keys.S,
       left: Crafty.keys.A,
       right: Crafty.keys.D
-    });
-
+    })
+    .one('Fire', assignControls);
 
   //Crafty.e('Gamepad')
     //.gamepad(0)
