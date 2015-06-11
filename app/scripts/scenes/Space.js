@@ -16,13 +16,22 @@ Crafty.defineScene('Space', function () {
 
 
 
-  Crafty.e('KeyboardControls')
+  Crafty.e('KeyboardControls, ControlScheme')
     .controls({
       fire: Crafty.keys.SPACE,
       up: Crafty.keys.UP_ARROW,
       down: Crafty.keys.DOWN_ARROW,
       left: Crafty.keys.LEFT_ARROW,
       right: Crafty.keys.RIGHT_ARROW
+    });
+
+  Crafty.e('KeyboardControls, ControlScheme')
+    .controls({
+      fire: Crafty.keys.G,
+      up: Crafty.keys.W,
+      down: Crafty.keys.S,
+      left: Crafty.keys.A,
+      right: Crafty.keys.D
     });
 
 
@@ -59,7 +68,8 @@ Crafty.defineScene('Space', function () {
 
 
   var gamespeed = 0.4; // pixels / milisecond
-  var nextEnemySpawn = 5000;
+  var nextEnemySpawn = 50;
+  //var nextEnemySpawn = 5000;
   var startTime = null;
   Crafty.one('PlayerActivated', function () {
     startTime = (new Date()).getTime();
@@ -78,9 +88,23 @@ Crafty.defineScene('Space', function () {
     });
   });
 
-  //Crafty.bind('PlayerDied', function () {
-    ////Crafty.enterScene('GameOver', { score: 'later!' });
-  //});
+  Crafty.bind('PlayerDied', function () {
+    var playersActive = false;
+    var players = [];
+    Crafty('Player').each(function () {
+      if (this.has('ControlScheme')) {
+        players.push({
+          name: this._entityName,
+          color: this.color(),
+          score: this.points
+        });
+        if (this.lives > 0) { playersActive = true; }
+      }
+    });
+    if (playersActive === false) {
+      Crafty.enterScene('GameOver', { results: players });
+    }
+  });
 
 }, function () {
   // destructor
