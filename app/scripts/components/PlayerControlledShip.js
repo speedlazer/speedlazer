@@ -10,20 +10,11 @@ Crafty.c('PlayerControlledShip', {
         }
       })
       .onHit('Enemy', function () {
-        this.loseLife();
-      })
-      .bind('BulletHit', function () {
-        this.addPoints(10);
-      })
-      .bind('BulletDestroy', function () {
-        this.addPoints(50);
+        this.trigger('Hit');
       });
   },
   shoot: function () {
-    if (this.lives <= 0) {
-      return;
-    }
-
+    var _this = this;
     Crafty.e('Bullet')
       .color(this.color())
       .attr({
@@ -37,23 +28,12 @@ Crafty.c('PlayerControlledShip', {
         damage: 100,
         speed: 4,
         direction: 0
+      })
+      .bind('HitTarget', function () {
+        _this.trigger('BulletHit');
+      })
+      .bind('DestroyTarget', function () {
+        _this.trigger('BulletDestroyedTarget');
       });
   },
-  loseLife: function () {
-    if (this.lives <= 0) return;
-    this.lives -= 1;
-    this.attr({ x: 140, y: 350 });
-
-    this.trigger('UpdateLives', { lives: this.lives });
-    if (this.lives <= 0) {
-      Crafty.trigger('PlayerDied', this);
-    }
-  },
-  addPoints: function (amount) {
-    if (this.lives <= 0) {
-      return;
-    }
-    this.points += amount;
-    this.trigger('UpdatePoints', { points: this.points });
-  }
 });

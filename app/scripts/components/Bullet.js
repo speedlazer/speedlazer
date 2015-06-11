@@ -14,18 +14,7 @@ Crafty.c('Bullet', {
         // Maybe send a bullet miss event
         this.destroy();
       }
-    })
-    .bind('HitTarget', function (e) {
-      properties.origin.trigger('BulletHit', {
-        bullet: this,
-        target: e.target
-      });
-    })
-    .bind('DestroyTarget', function (e) {
-      properties.origin.trigger('BulletDestroy', {
-        bullet: this,
-        target: e.target
-      });
     });
+    return this;
   }
 });
