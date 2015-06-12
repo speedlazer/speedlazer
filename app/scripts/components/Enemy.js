@@ -6,7 +6,7 @@ Crafty.c('Enemy', {
   },
   enemy: function (attr) {
     this.attr({ x: attr.x, y: attr.y, w: 50, h: 50, health: 300 })
-      .color('#00F')
+      .color('#0000FF')
       .bind('EnterFrame', function () {
         this.x = this.x - 2;
         if (this.x < -100) {
