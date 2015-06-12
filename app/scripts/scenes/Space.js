@@ -54,22 +54,19 @@ Crafty.defineScene('Space', function () {
     })
     .one('Fire', assignControls);
 
-  //Crafty.e('Gamepad')
-    //.gamepad(0)
-    //.bind('GamepadKeyChange', function (e) {
-      //if (e.button === 0 && e.pressed) {
-        //spawnPlayer('gamepad', 0);
-        //this.destroy();
-      //}
-    //});
-  //Crafty.e('Gamepad')
-    //.gamepad(1)
-    //.bind('GamepadKeyChange', function (e) {
-      //if (e.button === 0 && e.pressed) {
-        //spawnPlayer('gamepad', 1);
-        //this.destroy();
-      //}
-    //});
+  Crafty.e('GamepadControls')
+    .controls({
+      gamepadIndex: 0,
+      fire: 0
+    })
+    .one('Fire', assignControls);
+
+  Crafty.e('GamepadControls')
+    .controls({
+      gamepadIndex: 1,
+      fire: 0
+    })
+    .one('Fire', assignControls);
 
 
   // Create edges around playfield to 'capture' the player
