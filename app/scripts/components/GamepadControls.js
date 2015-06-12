@@ -18,9 +18,9 @@ Crafty.c('GamepadControls', {
     this.bind('GamepadKeyChange', function (e) {
       if (e.button === this.controlMap.fire && e.pressed) {
         this.trigger('Fire', e);
-       }
-     });
-     return this;
+      }
+    });
+    return this;
   },
   assignControls: function (ship) {
     var controlMap = this.controlMap;

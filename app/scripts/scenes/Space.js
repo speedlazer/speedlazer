@@ -22,7 +22,7 @@ Crafty.defineScene('Space', function () {
         return player;
       }
     }
-  }
+  };
   var assignControls = function () {
     var player = playerWithoutControls();
     if (player === undefined) { return; }
@@ -32,7 +32,7 @@ Crafty.defineScene('Space', function () {
     this.setupControls(player);
     player.trigger('Activated');
     this.destroy();
-  }
+  };
 
   Crafty.e('KeyboardControls')
     .controls({
