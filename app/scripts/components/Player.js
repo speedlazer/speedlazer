@@ -4,7 +4,6 @@ Crafty.c('Player', {
   lives: 2,
   points: 0,
   init: function () {
-    this.requires('Model'); // Not in this version of Crafty yet...
     this.bind('Activated', function () {
       Crafty.trigger('PlayerActivated');
       this.spawnShip();
