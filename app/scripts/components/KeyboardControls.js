@@ -1,25 +1,30 @@
 'use strict';
 
-Crafty.c('ControlScheme', {
-  init: function () {
-  }
-});
-
 Crafty.c('KeyboardControls', {
   init: function () {
+    this.bind('RemoveComponent', function (componentName) {
+      if (componentName === 'ControlScheme') {
+        this.removeComponent('KeyboardControls');
+      }
+    });
+  },
+  remove: function () {
+    this.unbind('KeyDown', this._keyHandling);
   },
   setupControls: function (player) {
     player.addComponent('KeyboardControls')
-      .controls(this.controlMap);
+      .controls(this.controlMap)
+      .addComponent('ControlScheme');
   },
   controls: function (controlMap) {
     this.controlMap = controlMap;
-    this.bind('KeyDown', function (e) {
-      if (e.key === this.controlMap.fire) {
-        this.trigger('Fire', e);
-      }
-    });
+    this.bind('KeyDown', this._keyHandling);
     return this;
+  },
+  _keyHandling: function (e) {
+    if (e.key === this.controlMap.fire) {
+      this.trigger('Fire', e);
+    }
   },
   assignControls: function (ship) {
     var controlMap = this.controlMap;
@@ -31,9 +36,9 @@ Crafty.c('KeyboardControls', {
     movementMap[controlMap.right] = 0;
 
     ship.addComponent('Multiway, Keyboard')
-      .multiway({ y: 3, x: 1 }, movementMap)
-      .bind('KeyDown', function (e) {
-        if (e.key === controlMap.fire) { this.shoot(); }
-      });
+    .multiway({ y: 3, x: 1 }, movementMap)
+    .bind('KeyDown', function (e) {
+      if (e.key === controlMap.fire) { this.shoot(); }
+    });
   }
 });
