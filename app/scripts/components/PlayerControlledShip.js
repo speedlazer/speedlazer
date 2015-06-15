@@ -2,16 +2,23 @@
 
 Crafty.c('PlayerControlledShip', {
   init: function () {
-    this.addComponent('2D, Canvas, Color, Collision');
-    this.attr({ w: 30, h: 30, lives: 1, points: 0 })
+    this.requires('2D, Canvas, Color, Collision, Delay');
+    this.attr({ w: 30, h: 30 })
       .bind('Moved', function (from) {
         if (this.hit('Edge')) { // Contain player within playfield
           this.attr({x: from.x, y: from.y});
         }
       })
-      .onHit('Enemy', function () {
+
+    this.delay(function () {
+      this.addComponent('Invincible').invincibleDuration(2000);
+      this.onHit('Enemy', function () {
+        if (this.has('Invincible')) {
+          return;
+        }
         this.trigger('Hit');
       });
+    }, 10, 0);
   },
   shoot: function () {
     var _this = this;
