@@ -2,7 +2,7 @@
 
 Crafty.c('Listener', {
   init: function () {
-    this.listeners = []
+    this.listeners = [];
   },
   remove: function () {
     for (var i; i < this.listeners.length; i++) {
@@ -10,14 +10,14 @@ Crafty.c('Listener', {
       listener.object.unbind(listener.event, listener.callback);
     }
   },
-  listenTo: function(object, event, callback, context) {
+  listenTo: function (object, event, callback, context) {
     if (context === undefined) {
       context = this;
     }
 
     var realCallback = function () {
       callback.apply(context, arguments);
-    }
+    };
 
     this.listeners.push({
       object: object,

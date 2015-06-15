@@ -2,6 +2,7 @@
 
 Crafty.c('KeyboardControls', {
   init: function () {
+    this.requires('Listener');
     this.bind('RemoveComponent', function (componentName) {
       if (componentName === 'ControlScheme') {
         this.removeComponent('KeyboardControls');
@@ -36,9 +37,9 @@ Crafty.c('KeyboardControls', {
     movementMap[controlMap.right] = 0;
 
     ship.addComponent('Multiway, Keyboard')
-    .multiway({ y: 3, x: 1 }, movementMap)
-    .bind('KeyDown', function (e) {
-      if (e.key === controlMap.fire) { this.shoot(); }
+      .multiway({ y: 3, x: 1 }, movementMap);
+    this.listenTo(ship, 'KeyDown', function (e) {
+      if (e.key === controlMap.fire) { ship.shoot(); }
     });
   }
 });

@@ -2,6 +2,7 @@
 
 Crafty.c('ShipSpawnable', {
   init: function () {
+    this.requires('Listener');
     this.bind('Activated', this.spawnShip);
   },
   remove: function () {
@@ -11,24 +12,22 @@ Crafty.c('ShipSpawnable', {
     if (!this.has('ControlScheme')) { return; }
     if (this.lives <= 0) { return; }
 
-    var _this = this;
     var ship = Crafty.e('PlayerControlledShip')
       .attr({ x: 140, y: 320 });
     if (this.has('Color')) { ship.color(this.color()); }
     if (this.has('ControlScheme')) { this.assignControls(ship); }
 
-    ship
-      .bind('BulletHit', function () {
-        _this.addPoints(10);
-      })
-      .bind('BulletDestroyedTarget', function () {
-        _this.addPoints(50);
-      })
-      .bind('Hit', function () {
-        this.destroy();
-        _this.loseLife();
-        _this.spawnShip();
-      });
+    this.listenTo(ship, 'BulletHit', function () {
+      this.addPoints(10);
+    });
+    this.listenTo(ship, 'BulletDestroyedTarget', function () {
+      this.addPoints(50);
+    });
+    this.listenTo(ship, 'Hit', function () {
+      ship.destroy();
+      this.loseLife();
+      this.spawnShip();
+    });
     return this;
   },
 });

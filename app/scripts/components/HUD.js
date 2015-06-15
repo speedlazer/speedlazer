@@ -2,9 +2,7 @@
 
 Crafty.c('HUD', {
   init: function () {
-    var _this = this;
     this.requires('2D, Listener');
-
   },
   hud: function (x, player) {
     this.player = player;

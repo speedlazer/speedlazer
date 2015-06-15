@@ -2,6 +2,7 @@
 
 Crafty.c('GamepadControls', {
   init: function () {
+    this.requires('Listener');
     this.bind('RemoveComponent', function (componentName) {
       if (componentName === 'ControlScheme') {
         this.removeComponent('GamepadControls');
@@ -40,10 +41,10 @@ Crafty.c('GamepadControls', {
       .gamepadMultiway({
         speed: { y: 3, x: 1 },
         gamepadIndex: controlMap.gamepadIndex
-      })
-      .bind('GamepadKeyChange', function (e) {
+      });
+    this.listenTo(ship, 'GamepadKeyChange', function (e) {
         if (e.button === controlMap.fire && e.pressed) {
-          this.shoot();
+          ship.shoot();
         }
       });
   }
