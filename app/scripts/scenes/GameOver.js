@@ -13,7 +13,7 @@ Crafty.defineScene('GameOver', function () {
     });
 
   Crafty('Player ControlScheme').each(function (index) {
-    Crafty.e('2D, DOM, Text').attr({ x: 240, y: 310 + (index * 50), w: 400 })
+    Crafty.e('2D, DOM, Text').attr({ x: 240, y: 310 + (index * 50), w: 700 })
       .text(this.name + ': ' + this.points)
       .textColor(this.color())
       .textFont({
