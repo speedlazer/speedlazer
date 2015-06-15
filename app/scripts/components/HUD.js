@@ -3,45 +3,8 @@
 Crafty.c('HUD', {
   init: function () {
     var _this = this;
-    this.requires('2D');
-    this._addControlScheme = function (cl) {
-      for (var i = 0; i < cl.length; i++) {
-        var n = cl[i];
-        if (n === 'ControlScheme') {
-          _this._updateHud();
-        }
-      }
-    };
-    this._removeControlScheme = function (n) {
-      if (n === 'ControlScheme') {
-        _this._updateHud();
-      }
-    };
-    this._updateHud = function () {
-      if (_this.player.has('ControlScheme')) {
-        _this.score.text('Score: ' + _this.player.points);
-      } else {
-        _this.score.text(_this.player.name);
-      }
-      if (_this.player.has('ControlScheme')) {
-        if (_this.player.lives === 0) {
-          _this.lives.text('Game Over');
-        } else {
-          _this.lives.text('Lives: ' + _this.player.lives);
-        }
-      } else {
-        _this.lives.text('Press fire to start!');
-      }
-    };
-  },
-  remove: function () {
-    if (this.player === undefined) {
-      return;
-    }
-    this.player.unbind('UpdateLives', this._updateHud);
-    this.player.unbind('UpdatePoints', this._updateHud);
-    this.player.unbind('NewComponent', this._addControlScheme);
-    this.player.unbind('RemoveComponent', this._removeControlScheme);
+    this.requires('2D, Listener');
+
   },
   hud: function (x, player) {
     this.player = player;
@@ -67,13 +30,40 @@ Crafty.c('HUD', {
       this.lives.textColor(player.color());
     }
 
-    this._updateHud();
+    this.updateHud();
 
-    this.player.bind('UpdateLives', this._updateHud);
-    this.player.bind('UpdatePoints', this._updateHud);
-    this.player.bind('NewComponent', this._addControlScheme);
-    this.player.bind('RemoveComponent', this._removeControlScheme);
+    this.listenTo(player, 'UpdateLives', this.updateHud);
+    this.listenTo(player, 'UpdatePoints', this.updateHud);
+    this.listenTo(player, 'NewComponent', function (cl) {
+      for (var i = 0; i < cl.length; i++) {
+        var n = cl[i];
+        if (n === 'ControlScheme') {
+          this.updateHud();
+        }
+      }
+    });
+    this.listenTo(player, 'RemoveComponent', function (n) {
+      if (n === 'ControlScheme') {
+        this.updateHud();
+      }
+    });
     return this;
+  },
+  updateHud: function () {
+    if (this.player.has('ControlScheme')) {
+      this.score.text('Score: ' + this.player.points);
+    } else {
+      this.score.text(this.player.name);
+    }
+    if (this.player.has('ControlScheme')) {
+      if (this.player.lives === 0) {
+        this.lives.text('Game Over');
+      } else {
+        this.lives.text('Lives: ' + this.player.lives);
+      }
+    } else {
+      this.lives.text('Press fire to start!');
+    }
   }
 
 });
