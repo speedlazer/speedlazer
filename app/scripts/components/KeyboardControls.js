@@ -31,10 +31,22 @@ Crafty.c('KeyboardControls', {
     var controlMap = this.controlMap;
 
     var movementMap = {};
-    movementMap[controlMap.up] = -90;
-    movementMap[controlMap.down] = 90;
-    movementMap[controlMap.left] = 180;
-    movementMap[controlMap.right] = 0;
+    var directions = {
+      up: -90,
+      down: 90,
+      left: 180,
+      right: 0
+    };
+    // Remap back to key names to prevent sliding effect
+    for (var i in directions) {
+      var value = directions[i];
+      var keyValue = controlMap[i];
+      for (var j in Crafty.keys) {
+        if (Crafty.keys[j] === keyValue) {
+          movementMap[j] = value;
+        }
+      }
+    }
 
     ship.addComponent('Multiway, Keyboard')
       .multiway({ y: 3, x: 1 }, movementMap);
