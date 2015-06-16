@@ -30,6 +30,14 @@ Crafty.c('HUD', {
 
     this.updateHud();
 
+    var score = this.score;
+    var lives = this.lives;
+
+    Crafty.bind('ViewportScroll', function () {
+      score.attr({ x: x - Crafty.viewport._x });
+      lives.attr({ x: x - Crafty.viewport._x });
+    });
+
     this.listenTo(player, 'UpdateLives', this.updateHud);
     this.listenTo(player, 'UpdatePoints', this.updateHud);
     this.listenTo(player, 'NewComponent', function (cl) {
