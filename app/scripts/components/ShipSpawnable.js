@@ -8,12 +8,16 @@ Crafty.c('ShipSpawnable', {
   remove: function () {
     this.unbind('Activated', this.spawnShip);
   },
+  spawnPosition: function (x, y) {
+    this.spawnPosition = { x: x, y: y };
+    return this;
+  },
   spawnShip: function () {
     if (!this.has('ControlScheme')) { return; }
     if (this.lives <= 0) { return; }
 
     var ship = Crafty.e('PlayerControlledShip')
-      .attr({ x: 140, y: 320 });
+      .attr(this.spawnPosition);
     if (this.has('Color')) { ship.color(this.color()); }
     if (this.has('ControlScheme')) { this.assignControls(ship); }
 
