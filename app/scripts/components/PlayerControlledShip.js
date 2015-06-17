@@ -8,7 +8,7 @@ Crafty.c('PlayerControlledShip', {
         if (this.hit('Edge')) { // Contain player within playfield
           this.attr({x: from.x, y: from.y});
         }
-      })
+      });
 
     this.delay(function () {
       this.addComponent('Invincible').invincibleDuration(2000);

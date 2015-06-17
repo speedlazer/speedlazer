@@ -11,13 +11,13 @@ Crafty.c('Invincible', {
   _blink: function () {
     if (this.blinkOn === undefined) {
       this.blinkOn = true;
-    };
+    }
     this.blinkOn = !this.blinkOn;
     if (this.blinkOn) {
       this.color(this.rawColor, 0.5);
     } else {
       this.color(this.rawColor, 100.0);
-    };
+    }
   },
   remove: function () {
     this.color(this.rawColor);
