@@ -20,7 +20,7 @@ Crafty.c('PlayerControlledShip', {
       });
     }, 10, 0);
   },
-  shoot: function () {
+  shootBullet: function () {
     var _this = this;
     Crafty.e('Bullet')
       .color(this.color())
@@ -43,4 +43,28 @@ Crafty.c('PlayerControlledShip', {
         _this.trigger('BulletDestroyedTarget');
       });
   },
+  shootRocket: function () {
+    var _this = this;
+    Crafty.e('Bullet')
+      .color(this.color())
+      .attr({
+        x: this.x + this.w,
+        y: this.y + (this.h / 2.0),
+        w: 10,
+        h: 10
+      })
+      .fire({
+        origin: this,
+        damage: 300,
+        speed: 4,
+        direction: 0
+      })
+      .bind('HitTarget', function () {
+        _this.trigger('BulletHit');
+      })
+      .bind('DestroyTarget', function () {
+        _this.trigger('BulletDestroyedTarget');
+      });
+  },
+
 });

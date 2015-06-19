@@ -51,7 +51,8 @@ Crafty.c('KeyboardControls', {
     ship.addComponent('Multiway, Keyboard')
       .multiway({ y: 3, x: 1 }, movementMap);
     this.listenTo(ship, 'KeyDown', function (e) {
-      if (e.key === controlMap.fire) { ship.shoot(); }
+      if (e.key === controlMap.fire) { ship.shootBullet(); }
+      if (e.key === controlMap.special) { ship.shootRocket(); }
     });
   }
 });
