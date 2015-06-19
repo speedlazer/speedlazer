@@ -44,7 +44,10 @@ Crafty.c('GamepadControls', {
       });
     this.listenTo(ship, 'GamepadKeyChange', function (e) {
         if (e.button === controlMap.fire && e.pressed) {
-          ship.shoot();
+          ship.shootBullet();
+        }
+        if (e.button === controlMap.special && e.pressed) {
+          ship.shootRocket();
         }
       });
   }
