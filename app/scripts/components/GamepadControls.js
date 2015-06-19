@@ -39,7 +39,7 @@ Crafty.c('GamepadControls', {
     ship.addComponent('GamepadMultiway, Gamepad')
       .gamepad(controlMap.gamepadIndex)
       .gamepadMultiway({
-        speed: { y: 3, x: 1 },
+        speed: { y: 3, x: 1.5 },
         gamepadIndex: controlMap.gamepadIndex
       });
     this.listenTo(ship, 'GamepadKeyChange', function (e) {

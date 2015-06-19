@@ -3,6 +3,8 @@
 Crafty.defineScene('GameOver', function () {
   // constructor
   Crafty.background('#111');
+  Crafty.viewport.x = 0;
+  Crafty.viewport.y = 0;
 
   Crafty.e('2D, DOM, Text').attr({ x: 200, y: 210, w: 450 }).text('Game Over')
     .textColor('#FF0000')

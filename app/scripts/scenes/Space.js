@@ -64,11 +64,49 @@ Crafty.defineScene('Space', function () {
     });
   });
 
-  Crafty.one('ShipSpawned', function () {
-    var ship = Crafty(Crafty('PlayerControlledShip')[0])
 
-    Crafty.viewport.follow(ship, 0, 0);
-  })
+  Crafty.c('ScrollWall', {
+    init: function () {
+      this.requires('2D, Canvas, Color, Edge, Collision');
+      this.attr({ x: 0, y: 50, w: 2, h: 710 });
+      this.color('#FFFF00');
+
+      this.bind('EnterFrame', function () {
+        var maxX = levelSize.w - Crafty.viewport.width;
+        if (maxX < this.x) {
+          Crafty.trigger('EndOfLevel');
+          console.log('EndOfLevel');
+          this.unbind('EnterFrame');
+          return;
+        }
+        var speed = 1;
+        Crafty('PlayerControlledShip').each(function () {
+          var margin = Crafty.viewport.width / 3.0;
+          if (this.x >  (- (Crafty.viewport.x - Crafty.viewport.width)) - margin) {
+            speed = 3;
+          }
+        });
+        this.x += speed;
+        Crafty.viewport.scroll('_x', -this.x);
+        Crafty.viewport._clamp();
+      });
+      this.onHit('PlayerControlledShip', function (e) {
+        for (var i = 0; i < e.length; i++) {
+          var p = e[i].obj;
+          p.attr({ x: p.x + 1 });
+        }
+      });
+    }
+
+
+  });
+
+  Crafty.one('PlayerActivated', function () {
+    // start moving the camera (maybe a 'ScrollWall' component?)
+    Crafty.e('ScrollWall')
+
+  });
+
   //Crafty.viewport.pan(1000, 0, 10000);
 
 

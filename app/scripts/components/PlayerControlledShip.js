@@ -19,6 +19,17 @@ Crafty.c('PlayerControlledShip', {
         this.trigger('Hit');
       });
     }, 10, 0);
+    this.bind('EnterFrame', function () {
+
+      this.x += 1;
+      if (this.hit('Edge')) {
+        this.x -= 1;
+      }
+
+      if (this.hit('Edge')) {
+        this.trigger('Hit');
+      }
+    });
   },
   shoot: function () {
     var _this = this;
