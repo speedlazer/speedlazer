@@ -32,6 +32,7 @@ Crafty.c('ShipSpawnable', {
       this.loseLife();
       this.spawnShip();
     });
+    Crafty.trigger('ShipSpawned')
     return this;
   },
 });

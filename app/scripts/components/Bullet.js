@@ -10,7 +10,9 @@ Crafty.c('Bullet', {
     })
     .bind('EnterFrame', function () {
       this.x = this.x + properties.speed;
-      if (this.x > 1200) { // TODO: Refactor to end of playfield
+
+      var maxX = (-Crafty.viewport._x + (Crafty.viewport._width / Crafty.viewport._scale));
+      if (this.x > maxX + 200) {
         // Maybe send a bullet miss event
         this.destroy();
       }

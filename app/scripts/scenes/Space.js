@@ -14,21 +14,39 @@ Crafty.defineScene('Space', function () {
   });
 
   // Create edges around playfield to 'capture' the player
-  Crafty.e('2D, Canvas, Edge, Color')
-    .color('#FFFF00')
-    .attr({x: 10, y: 50, w: 1900, h: 2});
 
-  Crafty.e('2D, Canvas, Edge, Color')
-    .color('#FFFF00')
-    .attr({x: 10, y: 750, w: 1900, h: 2});
+  var levelSize = {
+    h: 710,
+    w: 2500,
+    x: 10,
+    y: 50
+  }
 
+  // Top
   Crafty.e('2D, Canvas, Edge, Color')
     .color('#FFFF00')
-    .attr({x: 10, y: 50, w: 2, h: 700 });
+    .attr({x: levelSize.x, y: levelSize.y, w: levelSize.w, h: 2});
 
+  // Bottom
   Crafty.e('2D, Canvas, Edge, Color')
     .color('#FFFF00')
-    .attr({x: 1910, y: 50, w: 2, h: 700 });
+    .attr({x: levelSize.x, y: levelSize.y + levelSize.h, w: levelSize.w, h: 2});
+
+  // Left
+  Crafty.e('2D, Canvas, Edge, Color')
+    .color('#FFFF00')
+    .attr({x: levelSize.x, y: levelSize.y, w: 2, h: levelSize.h });
+
+  // Right
+  Crafty.e('2D, Canvas, Edge, Color')
+    .color('#FFFF00')
+    .attr({x: levelSize.x + levelSize.w, y: levelSize.y, w: 2, h: levelSize.h });
+
+  Crafty.viewport.bounds = {
+    min: { x: 0,    y: 0   },
+    max: { x: levelSize.w + levelSize.x, y: levelSize.y + levelSize.h }
+  };
+
 
   // some obstacles, to form a 'level'
   Crafty.e('2D, Canvas, Edge, Color')
@@ -39,8 +57,19 @@ Crafty.defineScene('Space', function () {
     .color('#404040')
     .attr({x: 1310, y: 550, w: 82, h: 30 });
 
-  console.log(Crafty.viewport);
-  Crafty.viewport.pan(1000, 0, 10000);
+  Crafty('Edge').each(function () {
+    this.addComponent('Collision').onHit('Bullet', function (e) {
+      var bullet = e[0].obj;
+      bullet.destroy();
+    });
+  });
+
+  Crafty.one('ShipSpawned', function () {
+    var ship = Crafty(Crafty('PlayerControlledShip')[0])
+
+    Crafty.viewport.follow(ship, 0, 0);
+  })
+  //Crafty.viewport.pan(1000, 0, 10000);
 
 
   //var gamespeed = 0.4; // pixels / milisecond
