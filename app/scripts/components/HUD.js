@@ -34,8 +34,14 @@ Crafty.c('HUD', {
     var lives = this.lives;
 
     Crafty.bind('ViewportScroll', function () {
-      score.attr({ x: x - Crafty.viewport._x });
-      lives.attr({ x: x - Crafty.viewport._x });
+      score.attr({
+        x: x - Crafty.viewport._x,
+        y: 10 - Crafty.viewport._y
+      });
+      lives.attr({
+        x: x - Crafty.viewport._x,
+        y: 30 - Crafty.viewport._y
+      });
     });
 
     this.listenTo(player, 'UpdateLives', this.updateHud);

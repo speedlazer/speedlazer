@@ -13,50 +13,90 @@ Crafty.defineScene('Space', function () {
     this.spawnShip();
   });
 
-  // Create edges around playfield to 'capture' the player
 
-  var levelSize = {
-    h: 710,
-    w: 2500,
-    x: 10,
+  // Orchestrate level generation:
+  var generationPosition = {
+    x: 0,
     y: 50
   }
 
-  // Top
-  Crafty.e('2D, Canvas, Edge, Color')
-    .color('#FFFF00')
-    .attr({x: levelSize.x, y: levelSize.y, w: levelSize.w, h: 2});
+  var levelBlocks = [];
 
-  // Bottom
-  Crafty.e('2D, Canvas, Edge, Color')
-    .color('#FFFF00')
-    .attr({x: levelSize.x, y: levelSize.y + levelSize.h, w: levelSize.w, h: 2});
 
-  // Left
-  Crafty.e('2D, Canvas, Edge, Color')
-    .color('#FFFF00')
-    .attr({x: levelSize.x, y: levelSize.y, w: 2, h: levelSize.h });
+  var generateBlock = function(pos) {
+    var variant = Math.floor(Math.random() * 3);
 
-  // Right
-  Crafty.e('2D, Canvas, Edge, Color')
-    .color('#FFFF00')
-    .attr({x: levelSize.x + levelSize.w, y: levelSize.y, w: 2, h: levelSize.h });
+    console.log(variant);
+    // Top
+    if (variant === 0) {
+      Crafty.e('2D, Canvas, Edge, Color')
+        .attr({ x: pos.x, y: pos.y, w: 1000, h: 2 });
 
-  Crafty.viewport.bounds = {
-    min: { x: 0,    y: 0   },
-    max: { x: levelSize.w + levelSize.x, y: levelSize.y + levelSize.h }
+      Crafty.e('2D, Canvas, Edge, Color')
+        .attr({x: pos.x, y: pos.y + 700, w: 1000, h: 2});
+
+      Crafty.e('2D, Canvas, Edge, Color')
+        .color('#505045')
+        .attr({x: pos.x + 400, y: pos.y + 150, w: 42, h: 70 });
+
+      Crafty.e('2D, Canvas, Edge, Color')
+        .color('#404040')
+        .attr({x: pos.x + 800, y: pos.y + 550, w: 82, h: 30 });
+
+      pos.x += 1000;
+    } else if (variant === 1) {
+      Crafty.e('2D, Canvas, Edge, Color')
+        .color('#404040')
+        .attr({ x: pos.x, y: pos.y, w: 350, h: 30 });
+
+      Crafty.e('2D, Canvas, Edge, Color')
+        .color('#404040')
+        .attr({ x: pos.x + 350, y: pos.y, w: 100, h: 140 });
+
+      Crafty.e('2D, Canvas, Edge, Color')
+        .color('#404040')
+        .attr({ x: pos.x + 450, y: pos.y, w: 550, h: 50 });
+
+      Crafty.e('2D, Canvas, Edge, Color')
+        .attr({x: pos.x, y: pos.y + 700, w: 1000, h: 2});
+
+      pos.x += 1000;
+    } else if (variant === 2) {
+      Crafty.e('2D, Canvas, Edge, Color')
+        .color('#404040')
+        .attr({ x: pos.x, y: pos.y, w: 350, h: 30 });
+
+      Crafty.e('2D, Canvas, Edge, Color')
+        .color('#404040')
+        .attr({ x: pos.x + 350, y: pos.y, w: 100, h: 140 });
+
+      Crafty.e('2D, Canvas, Edge, Color')
+        .color('#404040')
+        .attr({ x: pos.x + 450, y: pos.y, w: 550, h: 50 });
+
+
+      Crafty.e('2D, Canvas, Edge, Color')
+        .color('#404040')
+        .attr({ x: pos.x, y: pos.y + 670, w: 350, h: 30 });
+
+      Crafty.e('2D, Canvas, Edge, Color')
+        .color('#404040')
+        .attr({ x: pos.x + 350, y: pos.y + 560, w: 100, h: 140 });
+
+      Crafty.e('2D, Canvas, Edge, Color')
+        .color('#404040')
+        .attr({ x: pos.x + 450, y: pos.y + 650, w: 550, h: 50 });
+      pos.x += 1000;
+    }
   };
 
+  for (var i = 0; i < 10; i++) {
+    generateBlock(generationPosition);
+  }
 
-  // some obstacles, to form a 'level'
-  Crafty.e('2D, Canvas, Edge, Color')
-    .color('#404040')
-    .attr({x: 910, y: 150, w: 42, h: 70 });
 
-  Crafty.e('2D, Canvas, Edge, Color')
-    .color('#404040')
-    .attr({x: 1310, y: 550, w: 82, h: 30 });
 
+  // Let walls absorb bullets
   Crafty('Edge').each(function () {
     this.addComponent('Collision').onHit('Bullet', function (e) {
       var bullet = e[0].obj;
@@ -72,13 +112,14 @@ Crafty.defineScene('Space', function () {
       this.color('#FFFF00');
 
       this.bind('EnterFrame', function () {
-        var maxX = levelSize.w - Crafty.viewport.width;
-        if (maxX < this.x) {
-          Crafty.trigger('EndOfLevel');
-          console.log('EndOfLevel');
-          this.unbind('EnterFrame');
-          return;
-        }
+        //var maxX = levelSize.w - Crafty.viewport.width;
+        //if (maxX < this.x) {
+          //Crafty.trigger('EndOfLevel');
+          //console.log('EndOfLevel');
+          //this.unbind('EnterFrame');
+          //return;
+        //}
+
         var speed = 1;
         Crafty('PlayerControlledShip').each(function () {
           var margin = Crafty.viewport.width / 3.0;
@@ -97,13 +138,14 @@ Crafty.defineScene('Space', function () {
         }
       });
     }
-
-
   });
 
   Crafty.one('PlayerActivated', function () {
     // start moving the camera (maybe a 'ScrollWall' component?)
     Crafty.e('ScrollWall')
+
+    //var p = Crafty(Crafty('PlayerControlledShip')[0]);
+    //Crafty.viewport.follow(p);
 
   });
 
