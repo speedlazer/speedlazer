@@ -3,7 +3,7 @@
 Crafty.c('PlayerControlledShip', {
   init: function () {
     this.requires('2D, Canvas, Color, Collision, Delay');
-    this.attr({ w: 30, h: 30 })
+    this.attr({ w: 30, h: 30, forcedSpeed: { x: 0, y: 0 } })
       .bind('Moved', function (from) {
         if (this.hit('Edge')) { // Contain player within playfield
           this.attr({x: from.x, y: from.y});
@@ -21,9 +21,9 @@ Crafty.c('PlayerControlledShip', {
     }, 10, 0);
     this.bind('EnterFrame', function () {
 
-      this.x += 1;
+      this.x += this.forcedSpeed.x;
       if (this.hit('Edge')) {
-        this.x -= 1;
+        this.x -= this.forcedSpeed.x;
       }
 
       if (this.hit('Edge')) {
