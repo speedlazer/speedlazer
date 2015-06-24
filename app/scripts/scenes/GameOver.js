@@ -3,6 +3,8 @@
 Crafty.defineScene('GameOver', function () {
   // constructor
   Crafty.background('#111');
+  Crafty.viewport.x = 0;
+  Crafty.viewport.y = 0;
 
   Crafty.e('2D, DOM, Text').attr({ x: 200, y: 210, w: 450 }).text('Game Over')
     .textColor('#FF0000')
@@ -40,13 +42,19 @@ Crafty.defineScene('GameOver', function () {
           points: 0
         });
       this.one('Activated', function () {
-        Crafty.enterScene('Space');
+        Crafty.enterScene('Space', { stage: 1 });
       });
     });
-  }, 2000, 0);
 
+    this.delay(function () {
+      Crafty.enterScene('Intro');
+    }, 60000, 0);
+  }, 2000, 0);
 }, function () {
   // destructor
+  Crafty('Delay').each(function () {
+    this.destroy();
+  });
   Crafty('Player').each(function () {
     this.unbind('Activated');
   });

@@ -7,7 +7,7 @@ var Game = {
 
       // Start crafty and set a background color so that we can see it's working
       Crafty.init(1024, 768);
-      Crafty.background('#111');
+      Crafty.background('#000000');
 
       Crafty.e('Player, Color')
         .attr({ name: 'Player 1' })
@@ -18,6 +18,11 @@ var Game = {
         .attr({ name: 'Player 2' })
         .setName('Player 2')
         .color('#00FF00');
+
+      Crafty.e('Player, Color')
+        .attr({ name: 'Player 3' })
+        .setName('Player 3')
+        .color('#0000FF');
 
       Crafty.e('KeyboardControls, PlayerAssignable')
         .controls({
@@ -50,19 +55,14 @@ var Game = {
         });
 
       // Simply start splashscreen
-      //Crafty.scene('Splashscreen');
-      Crafty.enterScene('Space');
+      Crafty.enterScene('Intro');
+      //Crafty.enterScene('Space', { stage: 1 });
     });
   }
 };
 
-Game.start();
+// Export
+window.Game = Game;
 
-$(document).on('click', 'button', function () {
-  if (screenfull.enabled) {
-    screenfull.request($('#cr-stage')[0]);
-    $(this).blur();
-  }
-});
-
-
+require('scripts/lib/LevelGenerator');
+require('scripts/levelblocks/*');

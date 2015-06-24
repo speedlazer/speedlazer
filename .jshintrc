@@ -22,6 +22,7 @@
         "$": false,
         "Crafty": false,
         "screenfull": false,
-        "document": false
+        "document": false,
+        "window": false
     }
 }

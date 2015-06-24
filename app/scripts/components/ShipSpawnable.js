@@ -17,7 +17,10 @@ Crafty.c('ShipSpawnable', {
     if (this.lives <= 0) { return; }
 
     var ship = Crafty.e('PlayerControlledShip')
-      .attr(this.spawnPosition);
+      .attr({
+        x: this.spawnPosition.x - Crafty.viewport.x,
+        y: this.spawnPosition.y - Crafty.viewport.y
+      });
     if (this.has('Color')) { ship.color(this.color()); }
     if (this.has('ControlScheme')) { this.assignControls(ship); }
 
@@ -32,6 +35,7 @@ Crafty.c('ShipSpawnable', {
       this.loseLife();
       this.spawnShip();
     });
+    Crafty.trigger('ShipSpawned', ship);
     return this;
   },
 });
