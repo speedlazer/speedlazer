@@ -1,9 +1,10 @@
+'use strict';
 require('scripts/components/*');
 require('scripts/scenes/*');
 
 require('scripts/game');
 
-Game.start();
+window.Game.start();
 
 // Handle the fullscreen button
 $(document).on('click', 'button', function () {

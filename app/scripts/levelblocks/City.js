@@ -1,10 +1,15 @@
-this.Game.levelGenerator.defineBlock('cityStart', {
+'use strict';
+
+// Import
+var generator = window.Game.levelGenerator;
+
+generator.defineBlock('cityStart', {
   deltaX: 1000,
   deltaY: 0,
   next: ['topFloor', 'openSpace'],
   generate: function (data) {
     this.add(0, 0, Crafty.e('2D, Canvas, Edge, Color').attr({ w: 1000, h: 2 }));
-    this.add(0, 700, Crafty.e('2D, Canvas, Edge, Color') .attr({ w: 1000, h: 2}));
+    this.add(0, 700, Crafty.e('2D, Canvas, Edge, Color').attr({ w: 1000, h: 2}));
 
     var title = Crafty.e('2D, DOM, Text, Tween, Delay').attr({ w: 750, z: 1 }).text('Stage ' + data.stage);
     var x = 400;
@@ -24,33 +29,34 @@ this.Game.levelGenerator.defineBlock('cityStart', {
   }
 });
 
-this.Game.levelGenerator.defineBlock('levelEnd', {
+generator.defineBlock('levelEnd', {
   deltaX: 1500,
   deltaY: 0,
   next: [],
-  generate: function (data) {
+  generate: function () {
     this.add(0, 0, Crafty.e('2D, Canvas, Edge, Color').attr({ w: 1500, h: 2 }));
     this.add(0, 700, Crafty.e('2D, Canvas, Edge, Color').attr({ w: 1500, h: 2}));
-    this.add(0, 0, Crafty.e('2D, Canvas, Color, Collision')
-             .attr({ w: 10, h: 700 })
-             .onHit('ScrollWall', function () {
-               Crafty('ScrollWall').each(function () {
-                 this.off();
-               });
-               this.destroy();
-             })
-            );
-    this.add(1000, 0, Crafty.e('2D, Canvas, Color, Collision')
-             .attr({ w: 10, h: 700 })
-             .onHit('PlayerControlledShip', function () {
-               Crafty.trigger('EndOfLevel');
-               this.destroy();
-             })
-            );
+    var stopScrollWallTrigger = Crafty.e('2D, Canvas, Color, Collision')
+      .attr({ w: 10, h: 700 })
+      .onHit('ScrollWall', function () {
+        Crafty('ScrollWall').each(function () {
+          this.off();
+        });
+        this.destroy();
+      });
+    this.add(0, 0, stopScrollWallTrigger);
+
+    var endLevelTrigger = Crafty.e('2D, Canvas, Color, Collision')
+      .attr({ w: 10, h: 700 })
+      .onHit('PlayerControlledShip', function () {
+        Crafty.trigger('EndOfLevel');
+        this.destroy();
+      });
+    this.add(1000, 0, endLevelTrigger);
   }
 });
 
-this.Game.levelGenerator.defineBlock('openSpace', {
+generator.defineBlock('openSpace', {
   deltaX: 1000,
   deltaY: 0,
   next: ['topFloor', 'openSpace'],
@@ -65,7 +71,7 @@ this.Game.levelGenerator.defineBlock('openSpace', {
   }
 });
 
-this.Game.levelGenerator.defineBlock('topFloor', {
+generator.defineBlock('topFloor', {
   deltaX: 1000,
   deltaY: 0,
   next: ['tunnel', 'openSpace'],
@@ -75,22 +81,22 @@ this.Game.levelGenerator.defineBlock('topFloor', {
     this.add(450, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 550, h: 50 }));
     this.add(0, 700, Crafty.e('2D, Canvas, Edge, Color').attr({ w: 1000, h: 2}));
     var self = this;
+    var spawnEnemiesTrigger = Crafty.e('2D, Canvas, Color, Collision')
+      .attr({ w: 10, h: 700 })
+      .onHit('ScrollWall', function () {
+        self.add(650, 300, Crafty.e('Enemy').enemy());
+        self.add(1000 + (Math.random() * 50), 400 + (Math.random() * 150), Crafty.e('Enemy').enemy());
+        self.add(1200 + (Math.random() * 50), 100 + (Math.random() * 250), Crafty.e('Enemy').enemy());
+        self.add(1200 + (Math.random() * 250), 600 + (Math.random() * 100), Crafty.e('Enemy').enemy());
 
-    this.add(-700, 0, Crafty.e('2D, Canvas, Color, Collision')
-             .attr({ w: 10, h: 700 })
-             .onHit('ScrollWall', function () {
-               self.add(650, 300, Crafty.e('Enemy').enemy());
-               self.add(1000 + (Math.random() * 50), 400 + (Math.random() * 150), Crafty.e('Enemy').enemy());
-               self.add(1200 + (Math.random() * 50), 100 + (Math.random() * 250), Crafty.e('Enemy').enemy());
-               self.add(1200 + (Math.random() * 250), 600 + (Math.random() * 100), Crafty.e('Enemy').enemy());
+        this.destroy();
+      });
 
-               this.destroy();
-             })
-            );
+    this.add(-700, 0, spawnEnemiesTrigger);
   }
 });
 
-this.Game.levelGenerator.defineBlock('tunnel', {
+generator.defineBlock('tunnel', {
   deltaX: 1000,
   deltaY: 0,
   next: ['topFloor', 'tunnel', 'tunnelTwist'],
@@ -103,20 +109,20 @@ this.Game.levelGenerator.defineBlock('tunnel', {
     this.add(450, 650, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 550, h: 50 }));
 
     var self = this;
-    this.add(-700, 0, Crafty.e('2D, Canvas, Color, Collision')
-             .attr({ w: 10, h: 700 })
-             .onHit('ScrollWall', function () {
-               self.add(1000 + (Math.random() * 50), 400 + (Math.random() * 150), Crafty.e('Enemy').enemy());
-               self.add(1200 + (Math.random() * 50), 300 + (Math.random() * 250), Crafty.e('Enemy').enemy());
-               self.add(1200 + (Math.random() * 250), 200 + (Math.random() * 100), Crafty.e('Enemy').enemy());
+    var spawnEnemiesTrigger = Crafty.e('2D, Canvas, Color, Collision')
+      .attr({ w: 10, h: 700 })
+      .onHit('ScrollWall', function () {
+        self.add(1000 + (Math.random() * 50), 400 + (Math.random() * 150), Crafty.e('Enemy').enemy());
+        self.add(1200 + (Math.random() * 50), 300 + (Math.random() * 250), Crafty.e('Enemy').enemy());
+        self.add(1200 + (Math.random() * 250), 200 + (Math.random() * 100), Crafty.e('Enemy').enemy());
 
-               this.destroy();
-             })
-            );
+        this.destroy();
+      });
+    this.add(-700, 0, spawnEnemiesTrigger);
   }
 });
 
-this.Game.levelGenerator.defineBlock('tunnelTwist', {
+generator.defineBlock('tunnelTwist', {
   deltaX: 1000,
   deltaY: 0,
   next: ['tunnel', 'tunnelTwist'],

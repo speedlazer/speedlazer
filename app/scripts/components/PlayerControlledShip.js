@@ -8,7 +8,7 @@ Crafty.c('PlayerControlledShip', {
         if (this.hit('Edge')) { // Contain player within playfield
           this.attr({x: from.x, y: from.y});
         }
-      })
+      });
     this._forcedSpeed = { x: 0, y: 0 };
 
     this.delay(function () {
@@ -34,11 +34,11 @@ Crafty.c('PlayerControlledShip', {
   },
   forcedSpeed: function (speed) {
     if (speed.x !== undefined && speed.y !== undefined) {
-        this._forcedSpeed.x = speed.x;
-        this._forcedSpeed.y = speed.y;
+      this._forcedSpeed.x = speed.x;
+      this._forcedSpeed.y = speed.y;
     } else {
-        this._forcedSpeed.x = speed;
-        this._forcedSpeed.y = speed;
+      this._forcedSpeed.x = speed;
+      this._forcedSpeed.y = speed;
     }
     return this;
   },

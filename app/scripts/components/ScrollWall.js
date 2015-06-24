@@ -1,3 +1,5 @@
+'use strict';
+
 Crafty.c('ScrollWall', {
   init: function () {
     this.requires('2D, Canvas, Color, Edge, Collision');

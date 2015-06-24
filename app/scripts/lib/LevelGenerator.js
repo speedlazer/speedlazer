@@ -1,3 +1,4 @@
+'use strict';
 
 var levelGenerator = {
   buildingBlocks: {},
@@ -23,7 +24,7 @@ var levelGenerator = {
   },
 
   // level methods
-  _generateBlocks: function (start, amount, fitToEnd) {
+  _generateBlocks: function (start, amount) {
     var tileType = start;
     for (var i = 0; i < amount; i++) {
       this.addBlock(tileType);
@@ -31,7 +32,7 @@ var levelGenerator = {
       tileType = candidates[Math.floor(Math.random() * candidates.length)];
     }
   },
-  _addBlock: function(tileType, settings) {
+  _addBlock: function (tileType, settings) {
     this.blocks.push({
       index: this.blocks.length,
       tileType: tileType,
@@ -60,6 +61,13 @@ var levelGenerator = {
     if (end >= this.blocks.length) {
       end = this.blocks.length;
     }
+    this.generator._buildPieces.call(this, start, end);
+    if (start <= 0) {
+      return;
+    }
+    this.generator._cleanupPieces.call(this, start);
+  },
+  _buildPieces: function (start, end) {
     for (var i = start; i < end; i++) {
       var piece = this.blocks[i];
       piece.x = piece.x || this.generationPosition.x;
@@ -73,14 +81,13 @@ var levelGenerator = {
       this.generationPosition.x = piece.x + piece.deltaX;
       this.generationPosition.y = piece.y + piece.deltaY;
     }
-    if (start <= 0) {
-      return;
-    }
-    var cleanUpFrom = start - (2 * this.bufferLength);
+  },
+  _cleanupPieces: function (end) {
+    var cleanUpFrom = end - (2 * this.bufferLength);
     if (cleanUpFrom < 0) {
       cleanUpFrom = 0;
     }
-    for (var i = cleanUpFrom; i < start; i++) {
+    for (var i = cleanUpFrom; i < end; i++) {
       var piece = this.blocks[i];
       this.generator._cleanupFunction.call(piece);
     }
@@ -100,8 +107,8 @@ var levelGenerator = {
       this.createdElements[i].destroy();
     }
     this.createdElements = [];
-    for (var i = 0; i < this.createdBindings.length; i++) {
-      var binding = this.createdBindings[i];
+    for (var j = 0; j < this.createdBindings.length; j++) {
+      var binding = this.createdBindings[j];
       Crafty.unbind(binding.event, binding.callback);
     }
     this.createdBindings = [];
@@ -114,7 +121,7 @@ var levelGenerator = {
     var self = this;
     var realCallback = function () {
       callback.call(self, arguments);
-    }
+    };
     this.createdBindings.push({
       event: event,
       callback: realCallback
