@@ -28,9 +28,38 @@ var levelGenerator = {
     var tileType = start;
     for (var i = 0; i < amount; i++) {
       this.addBlock(tileType);
-      var candidates = this.generator.buildingBlocks[tileType].next;
-      tileType = candidates[Math.floor(Math.random() * candidates.length)];
+      tileType = this.generator._determineNextTileType.call(this, tileType);
     }
+  },
+  _determineNextTileType: function (tileType) {
+    var candidates = this.generator.buildingBlocks[tileType].next;
+
+    var maxAllowedRepitition = 2;
+    var blockCount = this.blocks.length;
+
+    if (blockCount >= maxAllowedRepitition) {
+      var repetitionCount = 0;
+
+      for (var i = blockCount - 1; i >= 0; i--) {
+        var block = this.blocks[i];
+        if (block.tileType === tileType) {
+          repetitionCount++;
+        } else {
+          break;
+        }
+      }
+
+      if (repetitionCount >= maxAllowedRepitition) {
+        var newCandidates = []; // Make sure repetition does not continue
+        for (var c = 0; c < candidates.length; c ++) {
+          if (candidates[c] !== tileType) {
+            newCandidates.push(candidates[c]);
+          }
+        }
+        candidates = newCandidates;
+      }
+    }
+    return candidates[Math.floor(Math.random() * candidates.length)];
   },
   _addBlock: function (tileType, settings) {
     this.blocks.push({
@@ -95,12 +124,12 @@ var levelGenerator = {
   _notifyEnterFunction: function () {
     var tileIndex = this.index;
     Crafty.e('2D, Canvas, Color, Collision')
-      .attr({ x: this.x, y: this.y, w: 10, h: 800 })
-      //.color('#FF00FF')
-      .onHit('ScrollWall', function () {
-        this.destroy();
-        Crafty.trigger('EnterBlock', tileIndex);
-      });
+    .attr({ x: this.x, y: this.y, w: 10, h: 800 })
+    //.color('#FF00FF')
+    .onHit('ScrollWall', function () {
+      this.destroy();
+      Crafty.trigger('EnterBlock', tileIndex);
+    });
   },
   _cleanupFunction: function () {
     for (var i = 0; i < this.createdElements.length; i++) {

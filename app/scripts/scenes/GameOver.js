@@ -45,10 +45,16 @@ Crafty.defineScene('GameOver', function () {
         Crafty.enterScene('Space', { stage: 1 });
       });
     });
-  }, 2000, 0);
 
+    this.delay(function () {
+      Crafty.enterScene('Intro');
+    }, 60000, 0);
+  }, 2000, 0);
 }, function () {
   // destructor
+  Crafty('Delay').each(function () {
+    this.destroy();
+  });
   Crafty('Player').each(function () {
     this.unbind('Activated');
   });
