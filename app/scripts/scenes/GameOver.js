@@ -42,7 +42,7 @@ Crafty.defineScene('GameOver', function () {
           points: 0
         });
       this.one('Activated', function () {
-        Crafty.enterScene('Space');
+        Crafty.enterScene('Space', { stage: 1 });
       });
     });
   }, 2000, 0);

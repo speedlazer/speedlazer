@@ -3,12 +3,13 @@
 Crafty.c('PlayerControlledShip', {
   init: function () {
     this.requires('2D, Canvas, Color, Collision, Delay');
-    this.attr({ w: 30, h: 30, forcedSpeed: { x: 0, y: 0 } })
+    this.attr({ w: 30, h: 30 })
       .bind('Moved', function (from) {
         if (this.hit('Edge')) { // Contain player within playfield
           this.attr({x: from.x, y: from.y});
         }
       })
+    this._forcedSpeed = { x: 0, y: 0 };
 
     this.delay(function () {
       this.addComponent('Invincible').invincibleDuration(2000);
@@ -21,15 +22,25 @@ Crafty.c('PlayerControlledShip', {
     }, 10, 0);
     this.bind('EnterFrame', function () {
 
-      this.x += this.forcedSpeed.x;
+      this.x += this._forcedSpeed.x;
       if (this.hit('Edge')) {
-        this.x -= this.forcedSpeed.x;
+        this.x -= this._forcedSpeed.x;
       }
 
       if (this.hit('Edge')) {
         this.trigger('Hit');
       }
     });
+  },
+  forcedSpeed: function (speed) {
+    if (speed.x !== undefined && speed.y !== undefined) {
+        this._forcedSpeed.x = speed.x;
+        this._forcedSpeed.y = speed.y;
+    } else {
+        this._forcedSpeed.x = speed;
+        this._forcedSpeed.y = speed;
+    }
+    return this;
   },
   shoot: function () {
     var _this = this;
@@ -44,7 +55,7 @@ Crafty.c('PlayerControlledShip', {
       .fire({
         origin: this,
         damage: 100,
-        speed: 4,
+        speed: this._forcedSpeed.x + 3,
         direction: 0
       })
       .bind('HitTarget', function () {

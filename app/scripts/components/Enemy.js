@@ -4,14 +4,14 @@ Crafty.c('Enemy', {
   init: function () {
     this.addComponent('2D, Canvas, Color, Collision');
   },
-  enemy: function (attr) {
-    this.attr({ x: attr.x, y: attr.y, w: 50, h: 50, health: 300 })
+  enemy: function () {
+    this.attr({ w: 50, h: 50, health: 300 })
       .color('#0000FF')
       .bind('EnterFrame', function () {
         this.x = this.x - 2;
-        if (this.x < -100) {
+        var minX = (-Crafty.viewport._x);
+        if (this.x < minX) {
           this.destroy();
-          console.log('Uhoh');
         }
       })
       .onHit('Bullet', function (e) {
@@ -24,6 +24,7 @@ Crafty.c('Enemy', {
         }
         bullet.destroy();
       });
+    return this;
   }
 });
 
