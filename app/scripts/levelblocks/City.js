@@ -4,12 +4,12 @@
 var generator = window.Game.levelGenerator;
 
 generator.defineBlock('cityStart', {
-  deltaX: 1000,
+  deltaX: 500,
   deltaY: 0,
   next: ['topFloor', 'openSpace'],
   generate: function (data) {
-    this.add(0, 0, Crafty.e('2D, Canvas, Edge, Color').attr({ w: 1000, h: 2 }));
-    this.add(0, 700, Crafty.e('2D, Canvas, Edge, Color').attr({ w: 1000, h: 2}));
+    this.add(0, 0, Crafty.e('2D, Canvas, Edge, Color').attr({ w: this.deltaX, h: 2 }));
+    this.add(0, 700, Crafty.e('2D, Canvas, Edge, Color').attr({ w: this.deltaX, h: 2}));
 
     var title = Crafty.e('2D, DOM, Text, Tween, Delay').attr({ w: 750, z: 1 }).text('Stage ' + data.stage);
     var x = 400;

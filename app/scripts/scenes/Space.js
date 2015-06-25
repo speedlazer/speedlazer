@@ -9,10 +9,10 @@ Crafty.defineScene('Space', function (data) {
   Crafty.viewport.x = 0;
   Crafty.viewport.y = 0;
 
-  var activePlayerSpeed = 2;
+  var activePlayerSpeed = 1;
 
   Crafty.one('ShipSpawned', function () {
-    Crafty.e('ScrollWall').scrollWall(2);
+    Crafty.e('ScrollWall').scrollWall(1);
   });
   Crafty.bind('ShipSpawned', function (ship) {
     ship.forcedSpeed(activePlayerSpeed);

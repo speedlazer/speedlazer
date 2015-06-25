@@ -8,7 +8,7 @@ Crafty.c('Enemy', {
     this.attr({ w: 50, h: 50, health: 300 })
       .color('#0000FF')
       .bind('EnterFrame', function () {
-        this.x = this.x - 2;
+        this.x = this.x - 1;
         var minX = (-Crafty.viewport._x);
         if (this.x < minX) {
           this.destroy();
