@@ -3,10 +3,11 @@
 var levelGenerator = {
   buildingBlocks: {},
 
-  createLevel: function () {
+  createLevel: function (data) {
     var level = {
       blocks: [],
-      bufferLength: 3,
+      data: data,
+      bufferLength: 1500,
       generator: this,
       generationPosition: { x: 0, y: 50 },
       generateBlocks: this._generateBlocks,
@@ -24,14 +25,17 @@ var levelGenerator = {
   },
 
   // level methods
-  _generateBlocks: function (start, amount) {
-    var tileType = start;
+  _generateBlocks: function (amount, settings) {
+    if (this.blocks.length == 0) return;
+    var settings = settings || {};
+    // Get the current tile type
+    var tileType = this.blocks[this.blocks.length -1].tileType;
     for (var i = 0; i < amount; i++) {
-      this.addBlock(tileType);
-      tileType = this.generator._determineNextTileType.call(this, tileType);
+      this.addBlock(tileType, settings);
+      tileType = this.generator._determineNextTileType.call(this, tileType, settings);
     }
   },
-  _determineNextTileType: function (tileType) {
+  _determineNextTileType: function (tileType, settings) {
     var candidates = this.generator.buildingBlocks[tileType].next;
 
     var maxAllowedRepitition = 2;
@@ -68,9 +72,10 @@ var levelGenerator = {
       deltaX: this.generator.buildingBlocks[tileType].deltaX,
       deltaY: this.generator.buildingBlocks[tileType].deltaY,
       generated: false,
-      settings: settings,
+      settings: settings || {},
       createdElements: [],
       createdBindings: [],
+      level: this,
       add: this.generator._addElementToBlock,
       bind: this.generator._addBindingToBlock
     });
@@ -86,18 +91,19 @@ var levelGenerator = {
     Crafty.unbind('EnterBlock');
   },
   _updateLevel: function (start) {
-    var end = start + this.bufferLength;
-    if (end >= this.blocks.length) {
-      end = this.blocks.length;
-    }
-    this.generator._buildPieces.call(this, start, end);
+    var startX = this.blocks[start].x;
+    var endX = startX + this.bufferLength;
+
+    this.generator._buildPieces.call(this, start, endX);
     if (start <= 0) {
       return;
     }
     this.generator._cleanupPieces.call(this, start);
   },
-  _buildPieces: function (start, end) {
-    for (var i = start; i < end; i++) {
+  _buildPieces: function (start, endX) {
+    var startX = this.blocks[start].x;
+
+    for (var i = start; i < this.blocks.length; i++) {
       var piece = this.blocks[i];
       piece.x = piece.x || this.generationPosition.x;
       piece.y = piece.y || this.generationPosition.y;
@@ -109,10 +115,13 @@ var levelGenerator = {
       }
       this.generationPosition.x = piece.x + piece.deltaX;
       this.generationPosition.y = piece.y + piece.deltaY;
+      if (this.generationPosition.x > endX) {
+        break;
+      }
     }
   },
   _cleanupPieces: function (end) {
-    var cleanUpFrom = end - (2 * this.bufferLength);
+    var cleanUpFrom = end - 6;
     if (cleanUpFrom < 0) {
       cleanUpFrom = 0;
     }

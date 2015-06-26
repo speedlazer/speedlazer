@@ -9,13 +9,12 @@ Crafty.defineScene('Space', function (data) {
   Crafty.viewport.x = 0;
   Crafty.viewport.y = 0;
 
-  var activePlayerSpeed = 1;
 
   Crafty.one('ShipSpawned', function () {
     Crafty.e('ScrollWall').scrollWall(1);
   });
   Crafty.bind('ShipSpawned', function (ship) {
-    ship.forcedSpeed(activePlayerSpeed);
+    ship.forcedSpeed(1)
   });
 
   Crafty('Player').each(function (index) {
@@ -27,10 +26,40 @@ Crafty.defineScene('Space', function (data) {
     this.spawnShip();
   });
 
-  var level = Game.levelGenerator.createLevel();
+  var level = Game.levelGenerator.createLevel({
+    stage: data.stage
+  });
 
-  level.addBlock('cityStart', { stage: data.stage });
-  level.generateBlocks('openSpace', 20);
+  level.addBlock('cityStart');
+  level.generateBlocks(1);
+  level.addBlock('dialog', {
+    dialog: [
+      {
+        has: ['Player 1'],
+        name: 'John',
+        lines: [
+          'Let\'s do some target practice!'
+        ]
+      },
+      {
+        has: ['Player 1', 'Player 2'],
+        name: 'Jim',
+        lines: [
+          'Yeah let\'s shoot stuff!'
+        ]
+      },
+      {
+        only: ['Player 2'],
+        name: 'Jim',
+        lines: [
+          'Woohoo target practice!'
+        ]
+      }
+    ]
+  });
+  level.addBlock('openSpace')
+  level.generateBlocks(3, { only: ['cleared'] });
+
   level.addBlock('levelEnd');
   level.start();
 
