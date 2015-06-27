@@ -26,10 +26,18 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     yeoman: yeomanConfig,
+    coffee: {
+      compile: {
+        files: {
+          '<%= yeoman.app %>/scripts/compiled/lib.js': '<%= yeoman.app %>/scripts/lib/*.js.coffee',
+          '<%= yeoman.app %>/scripts/compiled/levelblocks.js': '<%= yeoman.app %>/scripts/levelblocks/*.js.coffee'
+        }
+      }
+    },
     watch: {
-      emberTemplates: {
-        files: '<%= yeoman.app %>/templates/**/*.hbs',
-        tasks: ['emberTemplates']
+      coffeescript: {
+        files: '<%= yeoman.app %>/scripts/{,*/}*.js.coffee',
+        tasks: ['coffee']
       },
       neuter: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
@@ -247,6 +255,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'neuter:server',
+      'coffee',
       'connect:livereload',
       'open',
       'watch'
@@ -264,6 +273,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'useminPrepare',
     'concurrent:dist',
+    'coffee',
     'neuter:dist',
     'concat',
     'cssmin',

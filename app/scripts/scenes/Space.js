@@ -30,37 +30,38 @@ Crafty.defineScene('Space', function (data) {
     stage: data.stage
   });
 
-  level.addBlock('cityStart');
-  level.generateBlocks(1);
-  level.addBlock('dialog', {
-    dialog: [
-      {
-        has: ['Player 1'],
-        name: 'John',
-        lines: [
-          'Let\'s do some target practice!'
-        ]
-      },
-      {
-        has: ['Player 1', 'Player 2'],
-        name: 'Jim',
-        lines: [
-          'Yeah let\'s shoot stuff!'
-        ]
-      },
-      {
-        only: ['Player 2'],
-        name: 'Jim',
-        lines: [
-          'Woohoo target practice!'
-        ]
-      }
-    ]
-  });
-  level.addBlock('openSpace')
-  level.generateBlocks(3, { only: ['cleared'] });
+  level.addBlock('CityStart');
+  level.generateBlocks(10);
+  //level.addBlock('Dialog', {
+    //dialog: [
+      //{
+        //has: ['Player 1'],
+        //name: 'John',
+        //lines: [
+          //'Let\'s do some target practice!'
+        //]
+      //},
+      //{
+        //has: ['Player 1', 'Player 2'],
+        //name: 'Jim',
+        //lines: [
+          //'Yeah let\'s shoot stuff!'
+        //]
+      //},
+      //{
+        //only: ['Player 2'],
+        //name: 'Jim',
+        //lines: [
+          //'Woohoo target practice!'
+        //]
+      //}
+    //]
+  //});
+  //level.addBlock('OpenSpace')
+  //level.generateBlocks(3);
+  //level.generateBlocks(3, { only: ['cleared'] });
 
-  level.addBlock('levelEnd');
+  level.addBlock('LevelEnd');
   level.start();
 
   Crafty.bind('EndOfLevel', function () {

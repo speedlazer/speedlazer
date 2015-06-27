@@ -4,8 +4,15 @@ Crafty.c('ScrollWall', {
   init: function () {
     this.requires('2D, Canvas, Color, Edge, Collision');
     this.attr({ x: 0, y: 50, w: 2, h: 710, speed: { x: 0, y: 0 } });
-    //this.color('#FFFF00');
+    this.color('#FFFF00');
     this._speed = { x: 0, y: 0 };
+    this.wallEnd = Crafty.e('2D, Canvas, Color, ScrollFront')
+      .attr({ x: - (Crafty.viewport.x - Crafty.viewport.width) - 3, y: 40, h: 710, w: 2 })
+      .color('#FFFF00');
+
+    this.bind('Remove', function () {
+      this.wallEnd.destroy();
+    });
 
     this.bind('EnterFrame', function () {
       var speedX = this._speed.x;
@@ -16,6 +23,7 @@ Crafty.c('ScrollWall', {
         }
       });
       this.x += speedX;
+      this.wallEnd.x += speedX;
       Crafty.viewport.scroll('_x', -this.x);
       Crafty.viewport._clamp();
     });
