@@ -1,5 +1,5 @@
 (function() {
-  var CityStart, LevelEnd, OpenSpace, TopFloor, Tunnel, TunnelTwist, generator,
+  var CityStart, Dialog, LevelEnd, OpenSpace, TopFloor, Tunnel, TunnelTwist, generator,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -321,55 +321,73 @@
 
   })(this.Game.LevelBlock));
 
+  generator.defineBlock(Dialog = (function(superClass) {
+    extend(Dialog, superClass);
 
-  /*
-  
-  generator.defineBlock('dialog', {
-    deltaX: 0,
-    deltaY: 0,
-    next: [],
-    generate: function () {
-      var self = this;
-      var startDialogTrigger = Crafty.e('2D, Canvas, Color, Collision')
-        .attr({ w: 10, h: 700 })
-        .onHit('ScrollWall', function () {
-          for (var i = 0; i < self.settings.dialog.length; i++) {
-            var dialog = self.settings.dialog[i];
-  
-            var players = [];
-            Crafty('Player ControlScheme').each(function () {
-              players.push(this.name);
-            });
-            var canShow = true;
-  
-            if (dialog.has !== undefined) {
-              for (var p = 0; p < dialog.has.length; p++) {
-                if (players.indexOf(dialog.has[p]) === -1) {
-                  canShow = false;
-                }
-              }
-            }
-  
-            if (dialog.only !== undefined) {
-              for (var p = 0; p < players.length; p++) {
-                if (dialog.only.indexOf(players[p]) === -1) {
-                  canShow = false;
-                }
-              }
-            }
-  
-            if (canShow === false) { continue; }
-            console.log(dialog.name);
-            for (var l = 0; l < dialog.lines.length; l++) {
-              console.log(' ' + dialog.lines[l]);
+    function Dialog() {
+      return Dialog.__super__.constructor.apply(this, arguments);
+    }
+
+    Dialog.prototype.name = 'Dialog';
+
+    Dialog.prototype.delta = {
+      x: 0,
+      y: 0
+    };
+
+    Dialog.prototype.next = [];
+
+    Dialog.prototype.inScreen = function() {
+      var canShow, dialog, i, j, k, len, len1, len2, line, playerName, players, ref, ref1, results;
+      Dialog.__super__.inScreen.apply(this, arguments);
+      players = [];
+      Crafty('Player ControlScheme').each(function() {
+        if (this.lives > 0) {
+          return players.push(this.name);
+        }
+      });
+      ref = this.settings.dialog;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        dialog = ref[i];
+        canShow = true;
+        if (dialog.has != null) {
+          ref1 = dialog.has;
+          for (j = 0, len1 = ref1.length; j < len1; j++) {
+            playerName = ref1[j];
+            if (players.indexOf(playerName) === -1) {
+              canShow = false;
             }
           }
-  
-          this.destroy();
-        });
-      this.add(-30, 0, startDialogTrigger);
-    }
-  });
-   */
+        }
+        if (dialog.only != null) {
+          for (k = 0, len2 = players.length; k < len2; k++) {
+            playerName = players[k];
+            if (dialog.only.indexOf(playerName) === -1) {
+              canShow = false;
+            }
+          }
+        }
+        if (!canShow) {
+          continue;
+        }
+        console.log(dialog.name);
+        results.push((function() {
+          var l, len3, ref2, results1;
+          ref2 = dialog.lines;
+          results1 = [];
+          for (l = 0, len3 = ref2.length; l < len3; l++) {
+            line = ref2[l];
+            results1.push(console.log("  " + line));
+          }
+          return results1;
+        })());
+      }
+      return results;
+    };
+
+    return Dialog;
+
+  })(this.Game.LevelBlock));
 
 }).call(this);

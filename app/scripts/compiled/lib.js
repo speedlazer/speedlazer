@@ -65,8 +65,8 @@
         return function(index) {
           _this._update(index);
           if (index > 0) {
-            _this.blocks[index - 1].leave();
-            return _this.blocks[index].inScreen();
+            _this.blocks[index].inScreen();
+            return _this.blocks[index - 1].leave();
           }
         };
       })(this));
@@ -190,20 +190,15 @@
       });
     };
 
-    LevelBlock.prototype.enter = function() {
-      return console.log("start scrolling into " + this.name);
-    };
+    LevelBlock.prototype.generate = function() {};
 
-    LevelBlock.prototype.inScreen = function() {
-      return console.log(this.name + " now full in screen!");
-    };
+    LevelBlock.prototype.enter = function() {};
+
+    LevelBlock.prototype.inScreen = function() {};
 
     LevelBlock.prototype.leave = function() {
-      console.log(this.name + " just left the screen");
       return this.clean();
     };
-
-    LevelBlock.prototype.generate = function() {};
 
     LevelBlock.prototype.clean = function() {
       var b, e, j, k, len, len1, ref, ref1;

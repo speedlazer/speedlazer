@@ -133,54 +133,31 @@ generator.defineBlock class TunnelTwist extends @Game.LevelBlock
     @add(650, 260, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: 440 }))
     @add(750, 650, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 250, h: 50 }))
 
-###
+generator.defineBlock class Dialog extends @Game.LevelBlock
+  name: 'Dialog'
+  delta:
+    x: 0
+    y: 0
+  next: []
+  inScreen: ->
+    super
+    players = []
+    Crafty('Player ControlScheme').each ->
+      players.push(@name) if @lives > 0
 
-generator.defineBlock('dialog', {
-  deltaX: 0,
-  deltaY: 0,
-  next: [],
-  generate: function () {
-    var self = this;
-    var startDialogTrigger = Crafty.e('2D, Canvas, Color, Collision')
-      .attr({ w: 10, h: 700 })
-      .onHit('ScrollWall', function () {
-        for (var i = 0; i < self.settings.dialog.length; i++) {
-          var dialog = self.settings.dialog[i];
+    for dialog in @settings.dialog
+      canShow = yes
 
-          var players = [];
-          Crafty('Player ControlScheme').each(function () {
-            players.push(this.name);
-          });
-          var canShow = true;
+      if dialog.has?
+        for playerName in dialog.has
+          canShow = no if players.indexOf(playerName) is -1
 
-          if (dialog.has !== undefined) {
-            for (var p = 0; p < dialog.has.length; p++) {
-              if (players.indexOf(dialog.has[p]) === -1) {
-                canShow = false;
-              }
-            }
-          }
+      if dialog.only?
+        for playerName in players
+          canShow = no if dialog.only.indexOf(playerName) is -1
 
-          if (dialog.only !== undefined) {
-            for (var p = 0; p < players.length; p++) {
-              if (dialog.only.indexOf(players[p]) === -1) {
-                canShow = false;
-              }
-            }
-          }
+      continue unless canShow
 
-          if (canShow === false) { continue; }
-          console.log(dialog.name);
-          for (var l = 0; l < dialog.lines.length; l++) {
-            console.log(' ' + dialog.lines[l]);
-          }
-        }
-
-        this.destroy();
-      });
-    this.add(-30, 0, startDialogTrigger);
-  }
-});
-
-###
+      console.log dialog.name
+      console.log "  #{line}" for line in dialog.lines
 

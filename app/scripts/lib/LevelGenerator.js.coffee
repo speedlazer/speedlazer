@@ -1,3 +1,7 @@
+##
+# the LevelGenerator acts as a supplier
+# of pieces level.
+#
 class LevelGenerator
 
   constructor: ->
@@ -6,9 +10,14 @@ class LevelGenerator
   defineBlock: (klass) ->
     @buildingBlocks[klass::name] = klass
 
+  ##
+  # Create a new level
+  # @param {data} meta data that all pieces in the level can access
   createLevel: (data) ->
     new Level(this, data)
 
+##
+# An Level in the game
 class Level
 
   constructor: (@generator, @data) ->
@@ -37,8 +46,8 @@ class Level
     Crafty.bind 'LeaveBlock', (index) =>
       @_update index
       if index > 0
-        @blocks[index - 1].leave()
         @blocks[index].inScreen()
+        @blocks[index - 1].leave()
 
     Crafty.bind 'EnterBlock', (index) =>
       @blocks[index].enter()
@@ -111,17 +120,17 @@ class LevelBlock
         @destroy()
         Crafty.trigger('LeaveBlock', index)
 
+  generate: ->
+
   enter: ->
-    console.log "start scrolling into #{@name}"
+    #console.log "start scrolling into #{@name}"
 
   inScreen: ->
-    console.log "#{@name} now full in screen!"
+    #console.log "#{@name} now full in screen!"
 
   leave: ->
-    console.log "#{@name} just left the screen"
+    #console.log "#{@name} just left the screen"
     @clean()
-
-  generate: ->
 
   clean: ->
     #console.log "Cleaning #{@name}"
