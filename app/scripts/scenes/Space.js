@@ -14,7 +14,7 @@ Crafty.defineScene('Space', function (data) {
     Crafty.e('ScrollWall').scrollWall(1);
   });
   Crafty.bind('ShipSpawned', function (ship) {
-    ship.forcedSpeed(1)
+    ship.forcedSpeed(1);
   });
 
   Crafty('Player').each(function (index) {
@@ -57,7 +57,8 @@ Crafty.defineScene('Space', function (data) {
     ]
   });
   level.addBlock('OpenSpace');
-  level.generateBlocks(3); //, { only: ['cleared'] });
+  level.addBlock('TunnelTwist');
+  level.generateBlocks(10); //, { only: ['cleared'] });
 
   level.addBlock('LevelEnd');
   level.start();

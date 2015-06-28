@@ -1,3 +1,5 @@
 node_modules
 bower_components
+app/scripts/compiled/*.js
 .tmp
+dist

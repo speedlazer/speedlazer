@@ -75,7 +75,7 @@ generator.defineBlock class TopFloor extends @Game.LevelBlock
   delta:
     x: 1000
     y: 0
-  next: ['OpenSpace', 'Tunnel']
+  next: ['OpenSpace', 'Tunnel', 'TunnelTwist']
   supports: ['speed', 'cleared']
 
   generate: ->
@@ -98,7 +98,7 @@ generator.defineBlock class Tunnel extends @Game.LevelBlock
   delta:
     x: 1000
     y: 0
-  next: ['TopFloor', 'Tunnel']
+  next: ['TopFloor', 'Tunnel', 'TunnelTwist']
   supports: ['speed', 'cleared']
 
   generate: ->

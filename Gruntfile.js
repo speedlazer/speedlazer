@@ -118,6 +118,7 @@ module.exports = function (grunt) {
       all: [
         'Gruntfile.js',
         '<%= yeoman.app %>/scripts/{,*/}*.js',
+        '!<%= yeoman.app %>/scripts/compiled/*',
         '!<%= yeoman.app %>/scripts/vendor/*',
         'test/spec/{,*/}*.js'
       ]
@@ -284,6 +285,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
+    'coffee',
     'jshint',
     'test',
     'build'
