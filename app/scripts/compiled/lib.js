@@ -1,27 +1,12 @@
 (function() {
-  var Level, LevelBlock, LevelGenerator;
+  var Game;
 
-  LevelGenerator = (function() {
-    function LevelGenerator() {
-      this.buildingBlocks = {};
-    }
+  Game = this.Game;
 
-    LevelGenerator.prototype.defineBlock = function(klass) {
-      return this.buildingBlocks[klass.prototype.name] = klass;
-    };
-
-    LevelGenerator.prototype.createLevel = function(data) {
-      return new Level(this, data);
-    };
-
-    return LevelGenerator;
-
-  })();
-
-  Level = (function() {
-    function Level(generator, data1) {
+  Game.Level = (function() {
+    function Level(generator, data) {
       this.generator = generator;
-      this.data = data1;
+      this.data = data != null ? data : {};
       this.blocks = [];
       this.bufferLength = 2500;
       this.generationPosition = {
@@ -30,18 +15,18 @@
       };
     }
 
-    Level.prototype.addBlock = function(tileType, settings) {
+    Level.prototype.addBlock = function(blockType, settings) {
       var block, klass;
       if (settings == null) {
         settings = {};
       }
-      klass = this.generator.buildingBlocks[tileType];
+      klass = this.generator.buildingBlocks[blockType];
       block = new klass(this, settings);
       return this.blocks.push(block);
     };
 
     Level.prototype.generateBlocks = function(amount, settings) {
-      var j, lastBlock, num, ref, results, tileType;
+      var blockType, j, lastBlock, num, ref, results;
       if (settings == null) {
         settings = {};
       }
@@ -49,11 +34,11 @@
         return;
       }
       lastBlock = this.blocks[this.blocks.length - 1];
-      tileType = lastBlock.name;
+      blockType = lastBlock.name;
       results = [];
       for (num = j = 1, ref = amount; 1 <= ref ? j <= ref : j >= ref; num = 1 <= ref ? ++j : --j) {
-        tileType = this._determineNextTileType(tileType, settings);
-        results.push(this.addBlock(tileType, settings));
+        blockType = this._determineNextTileType(blockType, settings);
+        results.push(this.addBlock(blockType, settings));
       }
       return results;
     };
@@ -66,7 +51,8 @@
           _this._update(index);
           if (index > 0) {
             _this.blocks[index].inScreen();
-            return _this.blocks[index - 1].leave();
+            _this.blocks[index - 1].leave();
+            return _this.blocks[index - 1].clean();
           }
         };
       })(this));
@@ -115,9 +101,9 @@
       return results;
     };
 
-    Level.prototype._determineNextTileType = function(tileType, settings) {
+    Level.prototype._determineNextTileType = function(blockType, settings) {
       var block, blockCount, blockKlass, candidate, candidates, j, k, len, maxAllowedRepitition, newCandidates, ref, repetitionCount;
-      blockKlass = this.generator.buildingBlocks[tileType];
+      blockKlass = this.generator.buildingBlocks[blockType];
       candidates = blockKlass.prototype.next;
       maxAllowedRepitition = 2;
       blockCount = this.blocks.length;
@@ -126,7 +112,7 @@
         ref = this.blocks;
         for (j = ref.length - 1; j >= 0; j += -1) {
           block = ref[j];
-          if (block.tileType === tileType) {
+          if (block.blockType === blockType) {
             repetitionCount++;
           } else {
             break;
@@ -136,7 +122,7 @@
           newCandidates = [];
           for (k = 0, len = candidates.length; k < len; k++) {
             candidate = candidates[k];
-            if (candidate !== tileType) {
+            if (candidate !== blockType) {
               newCandidates.push(candidate);
             }
           }
@@ -150,10 +136,17 @@
 
   })();
 
-  LevelBlock = (function() {
-    function LevelBlock(level, settings1) {
+}).call(this);
+
+(function() {
+  var Game;
+
+  Game = this.Game;
+
+  Game.LevelBlock = (function() {
+    function LevelBlock(level, settings) {
       this.level = level;
-      this.settings = settings1;
+      this.settings = settings;
       this.createdElements = [];
       this.createdBindings = [];
     }
@@ -179,7 +172,7 @@
         y: this.y,
         w: 10,
         h: 800
-      }).color('#FF00FF').onHit('ScrollFront', function() {
+      }).onHit('ScrollFront', function() {
         if (!this.triggeredFront) {
           Crafty.trigger('EnterBlock', index);
           return this.triggeredFront = true;
@@ -196,21 +189,19 @@
 
     LevelBlock.prototype.inScreen = function() {};
 
-    LevelBlock.prototype.leave = function() {
-      return this.clean();
-    };
+    LevelBlock.prototype.leave = function() {};
 
     LevelBlock.prototype.clean = function() {
-      var b, e, j, k, len, len1, ref, ref1;
+      var b, e, i, j, len, len1, ref, ref1;
       ref = this.createdElements;
-      for (j = 0, len = ref.length; j < len; j++) {
-        e = ref[j];
+      for (i = 0, len = ref.length; i < len; i++) {
+        e = ref[i];
         e.destroy();
       }
       this.createdElements = [];
       ref1 = this.createdBindings;
-      for (k = 0, len1 = ref1.length; k < len1; k++) {
-        b = ref1[k];
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        b = ref1[j];
         Crafty.unbind(b.event, b.callback);
       }
       return this.createdBindings = [];
@@ -236,8 +227,30 @@
 
   })();
 
-  this.Game.levelGenerator = new LevelGenerator;
+}).call(this);
 
-  this.Game.LevelBlock = LevelBlock;
+(function() {
+  var Game;
+
+  Game = this.Game;
+
+  Game.LevelGenerator = (function() {
+    function LevelGenerator() {
+      this.buildingBlocks = {};
+    }
+
+    LevelGenerator.prototype.defineBlock = function(klass) {
+      return this.buildingBlocks[klass.prototype.name] = klass;
+    };
+
+    LevelGenerator.prototype.createLevel = function(data) {
+      return new Game.Level(this, data);
+    };
+
+    return LevelGenerator;
+
+  })();
+
+  Game.levelGenerator = new Game.LevelGenerator;
 
 }).call(this);

@@ -31,7 +31,6 @@ Crafty.defineScene('Space', function (data) {
   });
 
   level.addBlock('CityStart');
-  level.generateBlocks(1);
   level.addBlock('Dialog', {
     dialog: [
       {
@@ -58,7 +57,7 @@ Crafty.defineScene('Space', function (data) {
     ]
   });
   level.addBlock('OpenSpace');
-  level.generateBlocks(3, { only: ['cleared'] });
+  level.generateBlocks(3); //, { only: ['cleared'] });
 
   level.addBlock('LevelEnd');
   level.start();

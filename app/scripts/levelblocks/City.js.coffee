@@ -141,11 +141,24 @@ generator.defineBlock class Dialog extends @Game.LevelBlock
   next: []
   inScreen: ->
     super
+    @showDialog()
+
+  showDialog: (start = 0) ->
+    dialogIndex = @determineDialog(start)
+    if dialogIndex?
+      dialog = @settings.dialog[dialogIndex]
+
+      console.log dialog.name
+      console.log "  #{line}" for line in dialog.lines
+
+      @showDialog(start + 1)
+
+  determineDialog: (start = 0) ->
     players = []
     Crafty('Player ControlScheme').each ->
       players.push(@name) if @lives > 0
 
-    for dialog in @settings.dialog
+    for dialog, i in @settings.dialog when i >= start
       canShow = yes
 
       if dialog.has?
@@ -157,7 +170,6 @@ generator.defineBlock class Dialog extends @Game.LevelBlock
           canShow = no if dialog.only.indexOf(playerName) is -1
 
       continue unless canShow
-
-      console.log dialog.name
-      console.log "  #{line}" for line in dialog.lines
+      return i
+    null
 

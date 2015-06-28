@@ -338,8 +338,33 @@
     Dialog.prototype.next = [];
 
     Dialog.prototype.inScreen = function() {
-      var canShow, dialog, i, j, k, len, len1, len2, line, playerName, players, ref, ref1, results;
       Dialog.__super__.inScreen.apply(this, arguments);
+      return this.showDialog();
+    };
+
+    Dialog.prototype.showDialog = function(start) {
+      var dialog, dialogIndex, j, len, line, ref;
+      if (start == null) {
+        start = 0;
+      }
+      dialogIndex = this.determineDialog(start);
+      if (dialogIndex != null) {
+        dialog = this.settings.dialog[dialogIndex];
+        console.log(dialog.name);
+        ref = dialog.lines;
+        for (j = 0, len = ref.length; j < len; j++) {
+          line = ref[j];
+          console.log("  " + line);
+        }
+        return this.showDialog(start + 1);
+      }
+    };
+
+    Dialog.prototype.determineDialog = function(start) {
+      var canShow, dialog, i, j, k, l, len, len1, len2, playerName, players, ref, ref1;
+      if (start == null) {
+        start = 0;
+      }
       players = [];
       Crafty('Player ControlScheme').each(function() {
         if (this.lives > 0) {
@@ -347,22 +372,24 @@
         }
       });
       ref = this.settings.dialog;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
+      for (i = j = 0, len = ref.length; j < len; i = ++j) {
         dialog = ref[i];
+        if (!(i >= start)) {
+          continue;
+        }
         canShow = true;
         if (dialog.has != null) {
           ref1 = dialog.has;
-          for (j = 0, len1 = ref1.length; j < len1; j++) {
-            playerName = ref1[j];
+          for (k = 0, len1 = ref1.length; k < len1; k++) {
+            playerName = ref1[k];
             if (players.indexOf(playerName) === -1) {
               canShow = false;
             }
           }
         }
         if (dialog.only != null) {
-          for (k = 0, len2 = players.length; k < len2; k++) {
-            playerName = players[k];
+          for (l = 0, len2 = players.length; l < len2; l++) {
+            playerName = players[l];
             if (dialog.only.indexOf(playerName) === -1) {
               canShow = false;
             }
@@ -371,19 +398,9 @@
         if (!canShow) {
           continue;
         }
-        console.log(dialog.name);
-        results.push((function() {
-          var l, len3, ref2, results1;
-          ref2 = dialog.lines;
-          results1 = [];
-          for (l = 0, len3 = ref2.length; l < len3; l++) {
-            line = ref2[l];
-            results1.push(console.log("  " + line));
-          }
-          return results1;
-        })());
+        return i;
       }
-      return results;
+      return null;
     };
 
     return Dialog;
