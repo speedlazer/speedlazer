@@ -2,6 +2,7 @@
 require('scripts/components/*');
 require('scripts/compiled/components');
 require('scripts/scenes/*');
+require('scripts/compiled/scenes');
 
 require('scripts/game');
 

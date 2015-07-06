@@ -1,7 +1,7 @@
 
 Crafty.c 'HUD',
   init: ->
-    @requires('2D')
+    @requires '2D'
 
   positionHud: ({ x, y, z }) ->
     @attr

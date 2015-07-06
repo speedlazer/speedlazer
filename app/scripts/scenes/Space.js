@@ -57,7 +57,7 @@ Crafty.defineScene('Space', function (data) {
     ]
   });
   level.addBlock('OpenSpace');
-  level.addBlock('TunnelTwist');
+  level.addBlock('TopFloor');
   level.generateBlocks(10); //, { only: ['cleared'] });
 
   level.addBlock('LevelEnd');
