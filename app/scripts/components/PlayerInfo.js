@@ -1,13 +1,14 @@
 'use strict';
 
-Crafty.c('HUD', {
+Crafty.c('PlayerInfo', {
   init: function () {
     this.requires('2D, Listener');
   },
-  hud: function (x, player) {
+  playerInfo: function (x, player) {
     this.player = player;
-    this.score = Crafty.e('2D, DOM, Text')
-      .attr({ x: x, y: 10, w: 150, h: 20})
+    this.score = Crafty.e('2D, DOM, Text, HUD')
+      .attr({ w: 150, h: 20})
+      .positionHud({ x: x, y: 10, z: 2 })
       .textFont({
         size: '20px',
         weight: 'bold',
@@ -17,8 +18,9 @@ Crafty.c('HUD', {
       this.score.textColor(this.player.color());
     }
 
-    this.lives = Crafty.e('2D, DOM, Text')
-      .attr({ x: x, y: 30, w: 250, h: 20 })
+    this.lives = Crafty.e('2D, DOM, Text, HUD')
+      .attr({ w: 250, h: 20 })
+      .positionHud({ x: x, y: 30, z: 2 })
       .textFont({
         size: '20px',
         weight: 'bold',
@@ -28,40 +30,29 @@ Crafty.c('HUD', {
       this.lives.textColor(player.color());
     }
 
-    this.updateHud();
+    this.updatePlayerInfo();
 
     var score = this.score;
     var lives = this.lives;
 
-    Crafty.bind('ViewportScroll', function () {
-      score.attr({
-        x: x - Crafty.viewport._x,
-        y: 10 - Crafty.viewport._y
-      });
-      lives.attr({
-        x: x - Crafty.viewport._x,
-        y: 30 - Crafty.viewport._y
-      });
-    });
-
-    this.listenTo(player, 'UpdateLives', this.updateHud);
-    this.listenTo(player, 'UpdatePoints', this.updateHud);
+    this.listenTo(player, 'UpdateLives', this.updatePlayerInfo);
+    this.listenTo(player, 'UpdatePoints', this.updatePlayerInfo);
     this.listenTo(player, 'NewComponent', function (cl) {
       for (var i = 0; i < cl.length; i++) {
         var n = cl[i];
         if (n === 'ControlScheme') {
-          this.updateHud();
+          this.updatePlayerInfo();
         }
       }
     });
     this.listenTo(player, 'RemoveComponent', function (n) {
       if (n === 'ControlScheme') {
-        this.updateHud();
+        this.updatePlayerInfo();
       }
     });
     return this;
   },
-  updateHud: function () {
+  updatePlayerInfo: function () {
     if (this.player.has('ControlScheme')) {
       this.score.text('Score: ' + this.player.points);
     } else {

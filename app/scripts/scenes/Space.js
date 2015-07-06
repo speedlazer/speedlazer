@@ -20,7 +20,7 @@ Crafty.defineScene('Space', function (data) {
   Crafty('Player').each(function (index) {
     this.addComponent('ShipSpawnable')
       .spawnPosition(140, 300 + (index * 50));
-    Crafty.e('HUD').hud(30 + (index * 300), this);
+    Crafty.e('PlayerInfo').playerInfo(30 + (index * 300), this);
   });
   Crafty('Player ControlScheme').each(function () {
     this.spawnShip();
