@@ -10,26 +10,31 @@ generator.defineBlock class CityStart extends @Game.LevelBlock
   next: ['OpenSpace']
 
   generate: ->
-    #console.log "Building #{@name} at #{@x}, #{@y}"
     @add(0, 0, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: 2 )
     @add(0, 700, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: 2 )
 
   enter: ->
     super
-    title = Crafty.e('2D, DOM, Text, Tween, Delay').attr( w: 750, z: 1 ).text('Stage ' + @level.data.stage)
     x = 400
+    title = Crafty.e('2D, DOM, Text, Tween, Delay, HUD')
+      .attr( w: 750, z: 1 )
+      .text('Stage ' + @level.data.stage)
+      .positionHud(
+        x: x + @x,
+        y: 340,
+        z: 2
+      )
     @add(x, 340, title)
+
     title.textColor('#FF0000')
       .textFont({
         size: '30px',
         weight: 'bold',
         family: 'Courier new'
       }).delay( ->
-        @tween({ y: title.y + 500, alpha: 0 }, 3000)
+        @tween({ viewportY: title.viewportY + 500, alpha: 0 }, 3000)
       , 3000, 0)
 
-    @bind 'ViewportScroll', ->
-      title.attr({ x: x - Crafty.viewport._x })
 
 generator.defineBlock class LevelEnd extends @Game.LevelBlock
   name: 'LevelEnd'
@@ -51,6 +56,7 @@ generator.defineBlock class LevelEnd extends @Game.LevelBlock
         Crafty.trigger('EndOfLevel')
         @destroy()
     @add(1000, 0, endLevelTrigger)
+
 
 generator.defineBlock class OpenSpace extends @Game.LevelBlock
   name: 'OpenSpace'
@@ -144,14 +150,53 @@ generator.defineBlock class Dialog extends @Game.LevelBlock
     @showDialog()
 
   showDialog: (start = 0) ->
+    Crafty('Dialog').each -> @destroy()
     dialogIndex = @determineDialog(start)
     if dialogIndex?
       dialog = @settings.dialog[dialogIndex]
 
+
+      x = 40
+
+      Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
+        .attr( w: 750)
+        .text(dialog.name)
+        .positionHud(
+          x: x + @x
+          y: 700 - (dialog.lines.length * 20)
+          z: 2
+        )
+        .textColor('#909090')
+        .textFont({
+          size: '16px',
+          weight: 'bold',
+          family: 'Courier new'
+        })
+
+      for line, i in dialog.lines
+        Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
+          .attr( w: 750)
+          .text(line)
+          .positionHud(
+            x: x + @x
+            y: 700 + ((dialog.lines.length - i) * 20)
+            z: 2
+          )
+          .textColor('#909090')
+          .textFont({
+            size: '16px',
+            weight: 'bold',
+            family: 'Courier new'
+          })
+
+
       console.log dialog.name
       console.log "  #{line}" for line in dialog.lines
 
-      @showDialog(start + 1)
+      Crafty.e('Dialog, Delay').delay( =>
+          @showDialog(start + 1)
+        , 3000, 0)
+
 
   determineDialog: (start = 0) ->
     players = []
