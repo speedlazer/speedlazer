@@ -26,10 +26,20 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     yeoman: yeomanConfig,
+    coffee: {
+      compile: {
+        files: {
+          '<%= yeoman.app %>/scripts/compiled/lib.js': '<%= yeoman.app %>/scripts/lib/*.js.coffee',
+          '<%= yeoman.app %>/scripts/compiled/levelblocks.js': '<%= yeoman.app %>/scripts/levelblocks/*.js.coffee',
+          '<%= yeoman.app %>/scripts/compiled/components.js': '<%= yeoman.app %>/scripts/components/*.js.coffee',
+          '<%= yeoman.app %>/scripts/compiled/scenes.js': '<%= yeoman.app %>/scripts/scenes/*.js.coffee'
+        }
+      }
+    },
     watch: {
-      emberTemplates: {
-        files: '<%= yeoman.app %>/templates/**/*.hbs',
-        tasks: ['emberTemplates']
+      coffeescript: {
+        files: '<%= yeoman.app %>/scripts/{,*/}*.js.coffee',
+        tasks: ['coffee']
       },
       neuter: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
@@ -51,7 +61,7 @@ module.exports = function (grunt) {
       options: {
         port: 9000,
         // change this to '0.0.0.0' to access the server from outside
-        hostname: 'localhost'
+        hostname: '0.0.0.0'
       },
       livereload: {
         options: {
@@ -110,6 +120,7 @@ module.exports = function (grunt) {
       all: [
         'Gruntfile.js',
         '<%= yeoman.app %>/scripts/{,*/}*.js',
+        '!<%= yeoman.app %>/scripts/compiled/*',
         '!<%= yeoman.app %>/scripts/vendor/*',
         'test/spec/{,*/}*.js'
       ]
@@ -247,6 +258,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'neuter:server',
+      'coffee',
       'connect:livereload',
       'open',
       'watch'
@@ -264,6 +276,7 @@ module.exports = function (grunt) {
     'clean:dist',
     'useminPrepare',
     'concurrent:dist',
+    'coffee',
     'neuter:dist',
     'concat',
     'cssmin',
@@ -274,6 +287,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
+    'coffee',
     'jshint',
     'test',
     'build'

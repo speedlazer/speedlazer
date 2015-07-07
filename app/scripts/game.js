@@ -64,5 +64,5 @@ var Game = {
 // Export
 window.Game = Game;
 
-require('scripts/lib/LevelGenerator');
-require('scripts/levelblocks/*');
+require('scripts/compiled/lib');
+require('scripts/compiled/levelblocks');
