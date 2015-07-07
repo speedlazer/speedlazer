@@ -7,19 +7,6 @@ Crafty.defineScene 'Space', (data) ->
   Crafty.viewport.x = 0
   Crafty.viewport.y = 0
 
-
-  Crafty.one 'ShipSpawned', ->
-    Crafty.e('ScrollWall').scrollWall(1)
-
-  Crafty.bind 'ShipSpawned', (ship) ->
-    ship.forcedSpeed(1)
-
-  Crafty('Player').each (index) ->
-    @addComponent('ShipSpawnable').spawnPosition(140, 300 + (index * 50))
-    Crafty.e('PlayerInfo').playerInfo(30 + (index * 300), this)
-
-  Crafty('Player ControlScheme').each -> @spawnShip()
-
   level = Game.levelGenerator.createLevel(stage: data.stage)
   level.addBlock('CityStart')
   level.addBlock('Dialog', {
@@ -53,6 +40,19 @@ Crafty.defineScene 'Space', (data) ->
 
   level.addBlock('LevelEnd')
   level.start()
+
+  Crafty.one 'ShipSpawned', ->
+    Crafty.e('ScrollWall').scrollWall(1)
+
+  Crafty.bind 'ShipSpawned', (ship) ->
+    ship.forcedSpeed(1)
+
+  Crafty('Player').each (index) ->
+    @addComponent('ShipSpawnable').spawnPosition(140, 300 + (index * 50))
+    Crafty.e('PlayerInfo').playerInfo(30 + (index * 300), this)
+
+  Crafty('Player ControlScheme').each -> @spawnShip()
+
 
   Crafty.bind 'EndOfLevel', ->
     level.stop()

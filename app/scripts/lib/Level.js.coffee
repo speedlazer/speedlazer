@@ -79,6 +79,8 @@ class Game.Level
   ##
   # Start the level, and generation of blocks
   start: ->
+    Crafty.viewport.x = 0
+    Crafty.viewport.y = 0
     @_update 0
     @blocks[0].enter()
     Crafty.bind 'LeaveBlock', (index) =>
