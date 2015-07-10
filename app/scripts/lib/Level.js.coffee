@@ -41,7 +41,8 @@ class Game.Level
   constructor: (@generator, @data = {}) ->
     @blocks = []
     @bufferLength = 2500
-    @generationPosition = x: 0, y: 50
+    @generationPosition = x: 0, y: 40
+    @visibleHeight = 480 - @generationPosition.y
 
   ##
   # Manually pick a blocktype and add it to

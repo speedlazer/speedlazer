@@ -34,7 +34,7 @@ Crafty.defineScene 'Space', (data) ->
       }
     ]
   })
-  level.addBlock('OpenSpace')
+  level.addBlock('TunnelTwist')
   level.addBlock('TopFloor')
   level.generateBlocks(10) #, { only: ['cleared'] })
 
@@ -49,7 +49,7 @@ Crafty.defineScene 'Space', (data) ->
 
   Crafty('Player').each (index) ->
     @addComponent('ShipSpawnable').spawnPosition(140, 300 + (index * 50))
-    Crafty.e('PlayerInfo').playerInfo(30 + (index * 300), this)
+    Crafty.e('PlayerInfo').playerInfo(30 + (index * 180), this)
 
   Crafty('Player ControlScheme').each -> @spawnShip()
 

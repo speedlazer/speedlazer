@@ -1,18 +1,19 @@
 Crafty.c 'ScrollWall',
   init: ->
+    screenHeight = 480
     @requires('2D, Canvas, Color, Edge, Collision')
     @attr
       x: 0
-      y: 50
+      y: 0
       w: 2
-      h: 710
+      h: screenHeight
       speed:
         x: 0
         y: 0
 
     @_speed = { x: 0, y: 0 }
     @wallEnd = Crafty.e('2D, Canvas, Color, ScrollFront')
-      .attr(x: - (Crafty.viewport.x - Crafty.viewport.width) - 3, y: 40, h: 710, w: 2)
+      .attr(x: - (Crafty.viewport.x - Crafty.viewport.width) - 3, y: 0, h: screenHeight, w: 2)
 
     @bind 'Remove', ->
       @wallEnd.destroy()

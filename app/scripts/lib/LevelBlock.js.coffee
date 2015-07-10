@@ -25,6 +25,8 @@ Game = @Game
 #
 ##
 class Game.LevelBlock
+  screenHeight: 480
+
   constructor: (@level, @settings) ->
     @createdElements = []
     @createdBindings = []

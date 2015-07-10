@@ -8,7 +8,7 @@ Crafty.c 'PlayerInfo',
       .attr(w: 150, h: 20)
       .positionHud(x: x, y: 10, z: 2)
       .textFont(
-        size: '20px',
+        size: '12px',
         weight: 'bold',
         family: 'Courier new'
       )
@@ -17,9 +17,9 @@ Crafty.c 'PlayerInfo',
 
     @lives = Crafty.e('2D, DOM, Text, HUD')
       .attr(w: 250, h: 20)
-      .positionHud(x: x, y: 30, z: 2)
+      .positionHud(x: x, y: 25, z: 2)
       .textFont(
-        size: '20px',
+        size: '12px',
         weight: 'bold',
         family: 'Courier new'
       )

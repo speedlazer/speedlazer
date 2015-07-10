@@ -10,18 +10,19 @@ generator.defineBlock class CityStart extends @Game.LevelBlock
   next: ['OpenSpace']
 
   generate: ->
-    @add(0, 0, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: 2 )
-    @add(0, 700, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: 2 )
+    height = 2
+    @add(0, 0, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
 
   enter: ->
     super
-    x = 400
+    x = 250
     title = Crafty.e('2D, DOM, Text, Tween, Delay, HUD')
-      .attr( w: 750, z: 1 )
+      .attr( w: 350, z: 1 )
       .text('Stage ' + @level.data.stage)
       .positionHud(
         x: x + @x,
-        y: 340,
+        y: 240,
         z: 2
       )
     @add(x, 340, title)
@@ -67,13 +68,15 @@ generator.defineBlock class OpenSpace extends @Game.LevelBlock
   supports: ['speed', 'cleared']
 
   generate: ->
-    @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').attr(w: 1000, h: 2))
-    @add(0, 700, Crafty.e('2D, Canvas, Edge, Color').attr(w: 1000, h: 2))
-    @add(400, 150, Crafty.e('2D, Canvas, Edge, Color').color('#505045').attr(w: 42, h: 70))
-    @add(900, 50, Crafty.e('2D, Canvas, Edge, Color').color('#404045').attr(w: 82, h: 70))
-    @add(600, 250, Crafty.e('2D, Canvas, Edge, Color').color('#505045').attr(w: 52, h: 80))
-    @add(500, 450, Crafty.e('2D, Canvas, Edge, Color').color('#505045').attr(w: 52, h: 40))
-    @add(800, 550, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr(w: 82, h: 30))
+    height = 2
+    @add(0, 0, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+
+    @add(400, 75, Crafty.e('2D, Canvas, Edge, Color').color('#505045').attr(w: 22, h: 35))
+    @add(900, 25, Crafty.e('2D, Canvas, Edge, Color').color('#404045').attr(w: 42, h: 35))
+    @add(600, 125, Crafty.e('2D, Canvas, Edge, Color').color('#505045').attr(w: 32, h: 40))
+    @add(500, 225, Crafty.e('2D, Canvas, Edge, Color').color('#505045').attr(w: 32, h: 20))
+    @add(800, 275, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr(w: 42, h: 15))
 
 
 generator.defineBlock class TopFloor extends @Game.LevelBlock
@@ -85,18 +88,20 @@ generator.defineBlock class TopFloor extends @Game.LevelBlock
   supports: ['speed', 'cleared']
 
   generate: ->
-    @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 350, h: 30 }))
-    @add(350, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: 140 }))
-    @add(450, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 550, h: 50 }))
-    @add(0, 700, Crafty.e('2D, Canvas, Edge, Color').attr({ w: 1000, h: 2}))
+    height = 2
+    @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 350, h: 15 }))
+    @add(350, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: 70 }))
+    @add(450, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 550, h: 25 }))
+
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
 
   enter: ->
     only = @settings.only || []
     if only.indexOf('cleared') is -1
-      @add(650, 300, Crafty.e('Enemy').enemy())
-      @add(1000 + (Math.random() * 50), 400 + (Math.random() * 150), Crafty.e('Enemy').enemy())
-      @add(1200 + (Math.random() * 50), 100 + (Math.random() * 250), Crafty.e('Enemy').enemy())
-      @add(1200 + (Math.random() * 250), 600 + (Math.random() * 100), Crafty.e('Enemy').enemy())
+      @add(650, 150, Crafty.e('Enemy').enemy())
+      @add(1000 + (Math.random() * 50), 200 + (Math.random() * 75), Crafty.e('Enemy').enemy())
+      @add(1200 + (Math.random() * 50), 50 + (Math.random() * 125), Crafty.e('Enemy').enemy())
+      @add(1200 + (Math.random() * 250), 300 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
 
 generator.defineBlock class Tunnel extends @Game.LevelBlock
@@ -108,19 +113,25 @@ generator.defineBlock class Tunnel extends @Game.LevelBlock
   supports: ['speed', 'cleared']
 
   generate: ->
-    @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 350, h: 30 }))
-    @add(350, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: 140 }))
-    @add(450, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 550, h: 50 }))
-    @add(0, 670, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 350, h: 30 }))
-    @add(350, 560, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: 140 }))
-    @add(450, 650, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 550, h: 50 }))
+    @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 350, h: 15 }))
+    @add(350, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: 70 }))
+    @add(450, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 550, h: 25 }))
+
+    h = 15
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 350, h: h }))
+
+    h = 70
+    @add(350, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: h }))
+
+    h = 25
+    @add(450, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 550, h: h }))
 
   enter: ->
     only = @settings.only || []
     if only.indexOf('cleared') is -1
-      @add(1000 + (Math.random() * 50), 400 + (Math.random() * 150), Crafty.e('Enemy').enemy())
-      @add(1200 + (Math.random() * 50), 300 + (Math.random() * 250), Crafty.e('Enemy').enemy())
-      @add(1200 + (Math.random() * 250), 200 + (Math.random() * 100), Crafty.e('Enemy').enemy())
+      @add(1000 + (Math.random() * 50), 200 + (Math.random() * 75), Crafty.e('Enemy').enemy())
+      @add(1200 + (Math.random() * 50), 150 + (Math.random() * 125), Crafty.e('Enemy').enemy())
+      @add(1200 + (Math.random() * 250), 100 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
 
 generator.defineBlock class TunnelTwist extends @Game.LevelBlock
@@ -131,13 +142,18 @@ generator.defineBlock class TunnelTwist extends @Game.LevelBlock
   next: ['TunnelTwist', 'Tunnel']
   supports: ['cleared']
   generate: ->
-    @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 250, h: 30 }))
-    @add(250, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: 440 }))
-    @add(350, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 650, h: 50 }))
+    @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 250, h: 15 }))
+    @add(250, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: 220 }))
+    @add(350, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 650, h: 25 }))
 
-    @add(0, 670, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 650, h: 30 }))
-    @add(650, 260, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: 440 }))
-    @add(750, 650, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 250, h: 50 }))
+    h = 15
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 650, h: h }))
+
+    h = 220
+    @add(650, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: h }))
+
+    h = 25
+    @add(750, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 250, h: h }))
 
 generator.defineBlock class Dialog extends @Game.LevelBlock
   name: 'Dialog'
@@ -156,14 +172,14 @@ generator.defineBlock class Dialog extends @Game.LevelBlock
       dialog = @settings.dialog[dialogIndex]
 
 
-      x = 40
+      x = 60
 
       Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
-        .attr( w: 750)
+        .attr( w: 550)
         .text(dialog.name)
         .positionHud(
-          x: x + @x
-          y: 700 - (dialog.lines.length * 20)
+          x: x
+          y: @screenHeight - ((dialog.lines.length + 2) * 20)
           z: 2
         )
         .textColor('#909090')
@@ -175,11 +191,11 @@ generator.defineBlock class Dialog extends @Game.LevelBlock
 
       for line, i in dialog.lines
         Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
-          .attr( w: 750)
+          .attr( w: 550)
           .text(line)
           .positionHud(
-            x: x + @x
-            y: 700 + ((dialog.lines.length - i) * 20)
+            x: x
+            y: @screenHeight - ((dialog.lines.length + 1 - i) * 20)
             z: 2
           )
           .textColor('#909090')

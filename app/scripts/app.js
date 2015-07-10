@@ -13,6 +13,11 @@ $(document).on('click', 'button', function () {
   if (screenfull.enabled) {
     screenfull.request($('#cr-stage')[0]);
     $(this).blur();
+    document.addEventListener(screenfull.raw.fullscreenchange, function () {
+      if (!screenfull.isFullscreen) {
+        // exit fullscreen code here
+      }
+    });
   }
 });
 

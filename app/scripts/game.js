@@ -6,7 +6,7 @@ var Game = {
     Crafty.load([ ], function () {
 
       // Start crafty and set a background color so that we can see it's working
-      Crafty.init(1024, 768);
+      Crafty.init(640, 480);
       Crafty.background('#000000');
 
       Crafty.e('Player, Color')
