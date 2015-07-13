@@ -1,27 +1,31 @@
 Crafty.c 'PlayerAssignable',
   init: ->
-    @one 'Fire', @_assignControls
+    @_attachControllerAssignTrigger()
     @preferredPlayer = null
 
   _assignControls: ->
-    player = @_playerWithoutControls(@preferredPlayer)
+    player = @_preferredplayer() || @_firstUnassignedPlayer()
 
     unless player?
       # Try again next time
-      @one('Fire', @_assignControls)
+      @_attachControllerAssignTrigger()
       return
     @preferredPlayer = player.getId()
 
     @setupControls(player)
     player.one 'Deactivated', =>
-      @one('Fire', @_assignControls)
+      @_attachControllerAssignTrigger()
 
-  _playerWithoutControls: (preferred) ->
-    if preferred isnt null
-      preferredPlayer = Crafty(preferred)
-      unless preferredPlayer.has('ControlScheme')
-        return preferredPlayer
+  _attachControllerAssignTrigger: ->
+    @one 'Fire', @_assignControls
 
+  _preferredplayer: (preferred) ->
+    if @preferredPlayer isnt null
+      player = Crafty(@preferredPlayer)
+      unless player.has('ControlScheme')
+        return player
+        
+  _firstUnassignedPlayer: ->
     players = Crafty('Player')
     for playerId in players
       player = Crafty(playerId)
