@@ -89,7 +89,8 @@ class Game.Level
       if index > 0
         @blocks[index].inScreen()
         @blocks[index - 1].leave()
-        @blocks[index - 1].clean()
+      if index > 1
+        @blocks[index - 2].clean()
 
     Crafty.bind 'EnterBlock', (index) =>
       @blocks[index].enter()

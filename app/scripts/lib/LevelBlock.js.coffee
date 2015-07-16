@@ -88,6 +88,15 @@ class Game.LevelBlock
     element.attr x: @x + x, y: @y + y
     @createdElements.push element
 
+  addBackground: (x, y, element, speed) ->
+    element.addComponent('ViewportRelativeMotion').viewportRelativeMotion(
+      x: @x + x
+      y: @y + y
+      speed: speed
+    )
+    @createdElements.push element
+
+
   # Helper method to bind to an event in the game
   # and registers the bind for auto unbinding.
   bind: (event, callback) ->

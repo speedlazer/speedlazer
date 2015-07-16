@@ -34,6 +34,7 @@ Crafty.defineScene 'Space', (data) ->
       }
     ]
   })
+  level.addBlock('OpenSpace')
   level.generateBlocks(10) #, { only: ['cleared'] })
 
   level.addBlock('LevelEnd')
