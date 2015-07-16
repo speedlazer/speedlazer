@@ -40,23 +40,24 @@ generator.defineBlock class CityStart extends @Game.LevelBlock
 generator.defineBlock class LevelEnd extends @Game.LevelBlock
   name: 'LevelEnd'
   delta:
-    x: 1500
+    x: 800
     y: 0
   next: []
 
   generate: ->
-    @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').attr(w: 1500, h: 2))
-    @add(0, 700, Crafty.e('2D, Canvas, Edge, Color').attr(w: 1500, h: 2))
+    h = 2
+    @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: h))
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: h))
 
   inScreen: ->
     Crafty('ScrollWall').each ->
       @off()
     endLevelTrigger = Crafty.e('2D, Canvas, Color, Collision')
-      .attr({ w: 10, h: 700 })
+      .attr({ w: 10, h: @level.visibleHeight })
       .onHit 'PlayerControlledShip', ->
         Crafty.trigger('EndOfLevel')
         @destroy()
-    @add(1000, 0, endLevelTrigger)
+    @add(640, 0, endLevelTrigger)
 
 
 generator.defineBlock class OpenSpace extends @Game.LevelBlock
@@ -170,8 +171,6 @@ generator.defineBlock class Dialog extends @Game.LevelBlock
     dialogIndex = @determineDialog(start)
     if dialogIndex?
       dialog = @settings.dialog[dialogIndex]
-
-
       x = 60
 
       Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
@@ -179,7 +178,7 @@ generator.defineBlock class Dialog extends @Game.LevelBlock
         .text(dialog.name)
         .positionHud(
           x: x
-          y: @screenHeight - ((dialog.lines.length + 2) * 20)
+          y: @level.visibleHeight - ((dialog.lines.length + 2) * 20)
           z: 2
         )
         .textColor('#909090')
@@ -195,7 +194,7 @@ generator.defineBlock class Dialog extends @Game.LevelBlock
           .text(line)
           .positionHud(
             x: x
-            y: @screenHeight - ((dialog.lines.length + 1 - i) * 20)
+            y: @level.visibleHeight - ((dialog.lines.length + 1 - i) * 20)
             z: 2
           )
           .textColor('#909090')

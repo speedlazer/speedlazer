@@ -34,8 +34,6 @@ Crafty.defineScene 'Space', (data) ->
       }
     ]
   })
-  level.addBlock('TunnelTwist')
-  level.addBlock('TopFloor')
   level.generateBlocks(10) #, { only: ['cleared'] })
 
   level.addBlock('LevelEnd')
