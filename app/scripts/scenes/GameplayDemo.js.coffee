@@ -56,8 +56,10 @@ Crafty.defineScene 'GameplayDemo', (data) ->
     ]
   })
   level.addBlock('GameplayDemo.TunnelStart')
-  level.generateBlocks(amount: 3) #, { only: ['cleared'] })
-  level.generateBlocks(stopBefore: 'GameplayDemo.Tunnel')
+  #level.generateBlocks(amount: 1) #, { only: ['cleared'] })
+  #level.generateBlocks(stopBefore: 'GameplayDemo.Tunnel')
+  level.addBlock 'GameplayDemo.Event', inScreen: ->
+    @level.setForcedSpeed(0)
   level.addBlock('GameplayDemo.Dialog', {
     dialog: [
       {
@@ -69,10 +71,9 @@ Crafty.defineScene 'GameplayDemo', (data) ->
       }
     ]
   })
-  level.addBlock 'GameplayDemo.Event', enter: ->
-    @level.setForcedSpeed(0)
+  # TODO: Add section with lasers!
   level.addBlock('GameplayDemo.Tunnel')
-  level.generateBlocks(amount: 2)
+  #level.generateBlocks(amount: 2)
   level.addBlock('GameplayDemo.Dialog', {
     dialog: [
       {
@@ -84,12 +85,11 @@ Crafty.defineScene 'GameplayDemo', (data) ->
       }
     ]
   })
-  level.addBlock('GameplayDemo.Tunnel')
-  level.addBlock 'GameplayDemo.Event', enter: ->
+  level.addBlock 'GameplayDemo.Event', inScreen: ->
     @level.setForcedSpeed(4)
   level.addBlock('GameplayDemo.TunnelTwist')
   level.generateBlocks(amount: 3, only: ['cleared'])
-  level.generateBlocks(stopBefore: 'GameplayDemo.Asteroids')
+  level.generateBlocks(stopBefore: 'GameplayDemo.Asteroids', only: ['cleared'])
 
   level.addBlock('GameplayDemo.End')
   level.start()
