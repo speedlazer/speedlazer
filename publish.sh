@@ -4,7 +4,7 @@ set -e
 grunt
 rm -r dist
 git checkout gh-pages
-git rm dist/
+git rm -r dist/
 git commit -m 'prepare for release'
 git checkout master
 grunt
