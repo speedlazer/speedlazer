@@ -58,7 +58,7 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   level.addBlock('GameplayDemo.TunnelStart')
   #level.generateBlocks(amount: 1) #, { only: ['cleared'] })
   #level.generateBlocks(stopBefore: 'GameplayDemo.Tunnel')
-  level.addBlock 'GameplayDemo.Event', inScreen: ->
+  level.addBlock 'GameplayDemo.Event', leave: ->
     @level.setForcedSpeed(0)
   level.addBlock('GameplayDemo.Dialog', {
     dialog: [
@@ -88,8 +88,8 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   level.addBlock 'GameplayDemo.Event', inScreen: ->
     @level.setForcedSpeed(4)
   level.addBlock('GameplayDemo.TunnelTwist')
-  level.generateBlocks(amount: 3, only: ['cleared'])
-  level.generateBlocks(stopBefore: 'GameplayDemo.Asteroids', only: ['cleared'])
+  level.generateBlocks(amount: 2, only: ['cleared'])
+  level.generateBlocks(stopBefore: 'GameplayDemo.Asteroids')
 
   level.addBlock('GameplayDemo.End')
   level.start()
