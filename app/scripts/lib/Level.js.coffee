@@ -67,14 +67,18 @@ class Game.Level
   # @param {amount} amount of blocks to be placed.
   # @param {settings} settings to be passed to all
   #   generated blocks.
-  generateBlocks: (amount, settings = {}) ->
+  generateBlocks: (settings = {}) ->
     return if @blocks.length is 0
     # Get the current tile type
     lastBlock = @blocks[@blocks.length - 1]
     blockType = lastBlock.name
 
+    amount = settings.amount ? 30
+    return if settings.stopBefore? and settings.stopBefore is blockType
+
     for num in [1..amount]
       blockType = @_determineNextTileType blockType, settings
+      return if settings.stopBefore? and settings.stopBefore is blockType
       @addBlock blockType, settings
 
   ##
@@ -91,9 +95,34 @@ class Game.Level
         @blocks[index - 1].leave()
       if index > 1
         @blocks[index - 2].clean()
+    @_scrollWall = Crafty.e('ScrollWall')
+    @_forcedSpeed = 1
+    @_playersActive = no
+
+    Crafty.one 'ShipSpawned', =>
+      @_playersActive = yes
+      @_scrollWall.scrollWall(@_forcedSpeed)
+
+    Crafty.bind 'ShipSpawned', (ship) =>
+      ship.forcedSpeed(@_forcedSpeed)
 
     Crafty.bind 'EnterBlock', (index) =>
       @blocks[index].enter()
+
+    Crafty('Player').each (index) ->
+      @addComponent('ShipSpawnable').spawnPosition(140, 300 + (index * 50))
+      Crafty.e('PlayerInfo').playerInfo(30 + (index * 180), this)
+
+    Crafty('Player ControlScheme').each -> @spawnShip()
+
+
+  setForcedSpeed: (speed) ->
+    @_forcedSpeed = speed
+    if @_playersActive
+      @_scrollWall.scrollWall(@_forcedSpeed)
+    Crafty('PlayerControlledShip').each ->
+      @forcedSpeed speed
+
 
   ##
   # Stop the level, clean up event handlers and
@@ -101,6 +130,7 @@ class Game.Level
   stop: ->
     Crafty.unbind('LeaveBlock')
     Crafty.unbind('EnterBlock')
+    Crafty.unbind('ShipSpawned')
     b.clean() for b in @blocks
 
   # Generate more level from tile 'start'
@@ -118,6 +148,8 @@ class Game.Level
   _determineNextTileType: (blockType, settings) ->
     blockKlass = @generator.buildingBlocks[blockType]
     candidates = blockKlass::next
+    if candidates.length is 0
+      throw 'TODO: Look back in blocks to get point for generation'
     maxAllowedRepitition = 2
     blockCount = @blocks.length
 

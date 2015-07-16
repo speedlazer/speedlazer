@@ -47,7 +47,7 @@ Crafty.defineScene 'GameOver', ->
           points: 0
         })
       @one 'Activated', ->
-        Crafty.enterScene 'Space', { stage: 1 }
+        Crafty.enterScene 'GameplayDemo', { stage: 1 }
 
     @delay ->
       Crafty.enterScene('Intro')

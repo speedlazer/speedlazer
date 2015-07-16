@@ -2,12 +2,14 @@
 # Import
 generator = @Game.levelGenerator
 
-generator.defineBlock class CityStart extends @Game.LevelBlock
-  name: 'CityStart'
+GameplayDemo = {}
+
+generator.defineBlock class GameplayDemo.Start extends @Game.LevelBlock
+  name: 'GameplayDemo.Start'
   delta:
     x: 200
     y: 0
-  next: ['OpenSpace']
+  next: ['GameplayDemo.Asteroids']
 
   generate: ->
     height = 2
@@ -37,8 +39,8 @@ generator.defineBlock class CityStart extends @Game.LevelBlock
       , 3000, 0)
 
 
-generator.defineBlock class LevelEnd extends @Game.LevelBlock
-  name: 'LevelEnd'
+generator.defineBlock class GameplayDemo.End extends @Game.LevelBlock
+  name: 'GameplayDemo.End'
   delta:
     x: 800
     y: 0
@@ -60,12 +62,12 @@ generator.defineBlock class LevelEnd extends @Game.LevelBlock
     @add(640, 0, endLevelTrigger)
 
 
-generator.defineBlock class OpenSpace extends @Game.LevelBlock
-  name: 'OpenSpace'
+generator.defineBlock class GameplayDemo.Asteroids extends @Game.LevelBlock
+  name: 'GameplayDemo.Asteroids'
   delta:
     x: 1000
     y: 0
-  next: ['OpenSpace', 'TunnelStart']
+  next: ['GameplayDemo.Asteroids', 'GameplayDemo.TunnelStart']
   supports: ['speed', 'cleared']
 
   generate: ->
@@ -80,12 +82,12 @@ generator.defineBlock class OpenSpace extends @Game.LevelBlock
     @add(800, 275, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr(w: 42, h: 15))
 
 
-generator.defineBlock class TunnelStart extends @Game.LevelBlock
-  name: 'TunnelStart'
+generator.defineBlock class GameplayDemo.TunnelStart extends @Game.LevelBlock
+  name: 'GameplayDemo.TunnelStart'
   delta:
     x: 1000
     y: 0
-  next: ['TunnelEnd', 'Tunnel', 'TunnelTwist']
+  next: ['GameplayDemo.TunnelEnd', 'GameplayDemo.Tunnel', 'GameplayDemo.TunnelTwist']
   supports: ['speed', 'cleared']
 
   generate: ->
@@ -108,12 +110,12 @@ generator.defineBlock class TunnelStart extends @Game.LevelBlock
       @add(1200 + (Math.random() * 50), 50 + (Math.random() * 125), Crafty.e('Enemy').enemy())
       @add(1200 + (Math.random() * 250), 300 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
-generator.defineBlock class TunnelEnd extends @Game.LevelBlock
-  name: 'TunnelEnd'
+generator.defineBlock class GameplayDemo.TunnelEnd extends @Game.LevelBlock
+  name: 'GameplayDemo.TunnelEnd'
   delta:
     x: 1000
     y: 0
-  next: ['OpenSpace', 'TunnelStart']
+  next: ['GameplayDemo.Asteroids', 'GameplayDemo.TunnelStart']
   supports: ['speed', 'cleared']
 
   generate: ->
@@ -142,12 +144,12 @@ generator.defineBlock class TunnelEnd extends @Game.LevelBlock
       @add(1200 + (Math.random() * 250), 300 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
 
-generator.defineBlock class Tunnel extends @Game.LevelBlock
-  name: 'Tunnel'
+generator.defineBlock class GameplayDemo.Tunnel extends @Game.LevelBlock
+  name: 'GameplayDemo.Tunnel'
   delta:
     x: 1000
     y: 0
-  next: ['TunnelEnd', 'Tunnel', 'TunnelTwist']
+  next: ['GameplayDemo.TunnelEnd', 'GameplayDemo.Tunnel', 'GameplayDemo.TunnelTwist']
   supports: ['speed', 'cleared']
 
   generate: ->
@@ -174,12 +176,12 @@ generator.defineBlock class Tunnel extends @Game.LevelBlock
       @add(1200 + (Math.random() * 250), 100 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
 
-generator.defineBlock class TunnelTwist extends @Game.LevelBlock
-  name: 'TunnelTwist'
+generator.defineBlock class GameplayDemo.TunnelTwist extends @Game.LevelBlock
+  name: 'GameplayDemo.TunnelTwist'
   delta:
     x: 1000
     y: 0
-  next: ['TunnelTwist', 'Tunnel']
+  next: ['GameplayDemo.TunnelTwist', 'GameplayDemo.Tunnel']
   supports: ['cleared']
   generate: ->
     @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 250, h: 15 }))
@@ -197,8 +199,8 @@ generator.defineBlock class TunnelTwist extends @Game.LevelBlock
 
     @add(0, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: @delta.x, h: @level.visibleHeight }))
 
-generator.defineBlock class Dialog extends @Game.LevelBlock
-  name: 'Dialog'
+generator.defineBlock class GameplayDemo.Dialog extends @Game.LevelBlock
+  name: 'GameplayDemo.Dialog'
   delta:
     x: 0
     y: 0
@@ -251,7 +253,7 @@ generator.defineBlock class Dialog extends @Game.LevelBlock
 
       Crafty.e('Dialog, Delay').delay( =>
           @showDialog(start + 1)
-        , 3000, 0)
+        , 2500 * dialog.lines.length, 0)
 
 
   determineDialog: (start = 0) ->
@@ -273,4 +275,23 @@ generator.defineBlock class Dialog extends @Game.LevelBlock
       continue unless canShow
       return i
     null
+
+generator.defineBlock class GameplayDemo.Event extends @Game.LevelBlock
+  name: 'GameplayDemo.Event'
+  delta:
+    x: 0
+    y: 0
+  next: []
+
+  inScreen: ->
+    super
+    @settings.inScreen?.apply this
+
+  enter: ->
+    super
+    @settings.enter?.apply this
+
+  leave: ->
+    super
+    @settings.leave?.apply this
 
