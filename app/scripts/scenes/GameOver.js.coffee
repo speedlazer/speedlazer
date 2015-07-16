@@ -5,22 +5,24 @@ Crafty.defineScene 'GameOver', ->
   Crafty.viewport.y = 0
 
   Crafty.e('2D, DOM, Text')
-    .attr(x: 200, y: 210, w: 450)
+    .attr(x: 0, y: 110, w: 640)
     .text('Game Over')
     .textColor('#FF0000')
+    .css("textAlign", "center")
     .textFont({
-      size: '80px',
+      size: '50px',
       weight: 'bold',
       family: 'Courier new'
     })
 
   Crafty('Player ControlScheme').each (index) ->
     Crafty.e('2D, DOM, Text')
-      .attr(x: 240, y: 310 + (index * 50), w: 700)
+      .attr(x: 0, y: 200 + (index * 30), w: 640)
       .text(@name + ': ' + @points)
       .textColor(@color())
+      .css("textAlign", "center")
       .textFont({
-        size: '50px',
+        size: '30px',
         weight: 'bold',
         family: 'Courier new'
       })
@@ -28,11 +30,12 @@ Crafty.defineScene 'GameOver', ->
   # After a timeout, be able to replay
   Crafty.e('Delay').delay ->
     Crafty.e('2D, DOM, Text')
-      .attr(x: 200, y: 590, w: 750)
+      .attr(x: 0, y: 350, w: 640)
       .text('Press fire to start again')
       .textColor('#FF0000')
+      .css("textAlign", "center")
       .textFont(
-        size: '30px',
+        size: '20px',
         weight: 'bold',
         family: 'Courier new'
       )
