@@ -2,12 +2,15 @@
 set -e
 
 grunt
+rm -r dist
 git checkout gh-pages
-git rm "$(git ls-files dist/scripts/*.combined-scripts.js)"
-git rm "$(git ls-files dist/styles/*.main.css)"
+git rm dist/
+git commit -m 'prepare for release'
+git checkout master
+grunt
+git checkout gh-pages
 git add dist/
+git commit --amend -m 'game update'
 
-git status
-
-echo 'ready to be committed!'
+echo 'ready to be pushed!'
 
