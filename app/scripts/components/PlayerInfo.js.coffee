@@ -30,12 +30,10 @@ Crafty.c 'PlayerInfo',
 
     @listenTo player, 'UpdateLives', @updatePlayerInfo
     @listenTo player, 'UpdatePoints', @updatePlayerInfo
-    @listenTo player, 'NewComponent', (cl) ->
-      for n in cl when n is 'ControlScheme'
-        @updatePlayerInfo()
-    @listenTo player, 'RemoveComponent', (n) ->
-      if n is 'ControlScheme'
-        @updatePlayerInfo()
+    @listenTo player, 'Activated', =>
+      @updatePlayerInfo()
+    @listenTo player, 'Deactivated', =>
+      @updatePlayerInfo()
     this
 
   updatePlayerInfo: ->
