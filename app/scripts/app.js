@@ -39,4 +39,4 @@ $(window).on("resize", function() {
 scaleGame();
 
 
-Crafty.debugBar.show();
+//Crafty.debugBar.show();
