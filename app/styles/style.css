@@ -1,5 +1,28 @@
 /* Put your CSS here */
-html, body {
-    margin: 0 0;
+html,
+body {
+  margin: 0 0;
+  background: #000;
 }
 
+html {
+  box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+#cr-stage {
+  image-rendering: -moz-crisp-edges;         /* Firefox */
+  image-rendering:   -o-crisp-edges;         /* Opera */
+  image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+
+  margin: 0 auto;
+  transform-origin: top center;
+}
+.fullscreen #cr-stage {
+  transform-origin: center center;
+}
