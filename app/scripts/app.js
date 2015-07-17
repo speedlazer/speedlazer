@@ -9,16 +9,34 @@ require('scripts/game');
 window.Game.start();
 
 // Handle the fullscreen button
-$(document).on('click', 'button', function () {
+$(document).on('click', function () {
   if (screenfull.enabled) {
     screenfull.request($('#cr-stage')[0]);
-    $(this).blur();
+    $("body").addClass("fullscreen");
     document.addEventListener(screenfull.raw.fullscreenchange, function () {
       if (!screenfull.isFullscreen) {
         // exit fullscreen code here
+        $("body").removeClass("fullscreen");
       }
     });
   }
 });
+
+
+function scaleGame() {
+  var stageHeight = $("#cr-stage").height(),
+      viewportHeight = $(window).height()
+      ratio = viewportHeight / stageHeight;
+
+      console.log(viewportHeight);
+
+  $("#cr-stage").css("transform", "scale("+ratio+")");
+}
+$(window).on("resize", function() {
+  scaleGame();
+});
+
+scaleGame();
+
 
 Crafty.debugBar.show();
