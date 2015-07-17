@@ -9,6 +9,10 @@ Crafty.defineScene 'GameplayDemo', (data) ->
 
   level = Game.levelGenerator.createLevel(stage: data.stage)
   level.addBlock('GameplayDemo.Start')
+  level.addBlock 'GameplayDemo.Event', leave: ->
+    @level.setForcedSpeed(0)
+  level.addBlock('GameplayDemo.Lasers')
+
   level.addBlock('GameplayDemo.Dialog', {
     dialog: [
       {

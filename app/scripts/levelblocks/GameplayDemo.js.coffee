@@ -175,6 +175,48 @@ generator.defineBlock class GameplayDemo.Tunnel extends @Game.LevelBlock
       @add(1200 + (Math.random() * 50), 150 + (Math.random() * 125), Crafty.e('Enemy').enemy())
       @add(1200 + (Math.random() * 250), 100 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
+generator.defineBlock class GameplayDemo.Lasers extends @Game.LevelBlock
+  name: 'GameplayDemo.Lasers'
+  delta:
+    x: 1000
+    y: 0
+  next: ['GameplayDemo.TunnelEnd', 'GameplayDemo.Tunnel', 'GameplayDemo.TunnelTwist']
+  supports: ['speed', 'cleared']
+
+  generate: ->
+    h = 15
+    @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: @delta.x, h: h }))
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: @delta.x, h: h }))
+
+    h = 100
+    @add(300, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 10, h: h }))
+    @add(200, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 90, h: 10 }))
+
+    h = 100
+    @add(600, 15, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 10, h: h }))
+    @add(500, 15 + h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 110, h: 10 }))
+    @add(500, 25 + h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 10, h: h }))
+    @add(500, 25 + h + h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 110, h: 10 }))
+
+    @add(800, 100, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 10, h: @level.visibleHeight - 100 }))
+
+    # background
+    @add(0, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: @delta.x, h: @level.visibleHeight }))
+
+  #enter: ->
+    console.log 'Add the lasers!'
+
+    t = Crafty.e('LaserTurret')
+    @add(100, 15, t)
+    t.color('#808020').laserTurret(
+      orientation: 'down'
+    )
+
+    t = Crafty.e('LaserTurret')
+    @add(500, @level.visibleHeight - 15, t)
+    t.color('#808020').laserTurret(
+      orientation: 'up'
+    )
 
 generator.defineBlock class GameplayDemo.TunnelTwist extends @Game.LevelBlock
   name: 'GameplayDemo.TunnelTwist'
