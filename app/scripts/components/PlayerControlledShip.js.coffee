@@ -14,6 +14,10 @@ Crafty.c 'PlayerControlledShip',
       @onHit 'Enemy', ->
         return if @has('Invincible')
         @trigger('Hit')
+
+      @onHit 'LaserBeam', ->
+        return if @has('Invincible')
+        @trigger('Hit')
     , 10, 0
 
     @bind 'EnterFrame', ->

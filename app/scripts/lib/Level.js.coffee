@@ -87,7 +87,8 @@ class Game.Level
     Crafty.viewport.x = 0
     Crafty.viewport.y = 0
     @_update 0
-    @blocks[0].enter()
+    for block in @blocks when block.x < 640
+      block.enter()
     Crafty.bind 'LeaveBlock', (index) =>
       @_update index
       if index > 0

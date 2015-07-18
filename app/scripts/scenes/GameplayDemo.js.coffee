@@ -9,9 +9,6 @@ Crafty.defineScene 'GameplayDemo', (data) ->
 
   level = Game.levelGenerator.createLevel(stage: data.stage)
   level.addBlock('GameplayDemo.Start')
-  level.addBlock 'GameplayDemo.Event', leave: ->
-    @level.setForcedSpeed(0)
-  level.addBlock('GameplayDemo.Lasers')
 
   level.addBlock('GameplayDemo.Dialog', {
     dialog: [
@@ -62,9 +59,9 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   level.addBlock('GameplayDemo.TunnelStart')
   #level.generateBlocks(amount: 1) #, { only: ['cleared'] })
   #level.generateBlocks(stopBefore: 'GameplayDemo.Tunnel')
-  level.addBlock 'GameplayDemo.Event', leave: ->
-    @level.setForcedSpeed(0)
+  level.addBlock('GameplayDemo.Tunnel')
   level.addBlock('GameplayDemo.Dialog', {
+    triggerOn: 'enter'
     dialog: [
       {
         has: ['Player 1'],
@@ -75,9 +72,11 @@ Crafty.defineScene 'GameplayDemo', (data) ->
       }
     ]
   })
-  # TODO: Add section with lasers!
-  level.addBlock('GameplayDemo.Tunnel')
-  #level.generateBlocks(amount: 2)
+  level.addBlock 'GameplayDemo.Event', enter: ->
+    @level.setForcedSpeed(0)
+
+  level.addBlock('GameplayDemo.Lasers')
+  level.generateBlocks(amount: 1)
   level.addBlock('GameplayDemo.Dialog', {
     dialog: [
       {
