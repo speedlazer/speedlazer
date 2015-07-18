@@ -198,7 +198,7 @@ generator.defineBlock class GameplayDemo.Lasers extends @Game.LevelBlock
     @add(650, 15, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 10, h: h }))
     @add(600, 15 + h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 60, h: 10 }))
     @add(600, 25 + h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 10, h: h2 }))
-    @add(600, 25 + h + h2, Crafty.e('2D, Canvas, Edge, Color, Glass').color('#404040').attr({ w: 60, h: 10, alpha: 0.5, z: 1 }))
+    @add(600, 25 + h + h2, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 60, h: 10 }))
     @add(650, 25 + h2, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 60, h: 10 }))
 
     @add(900, 100, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 10, h: @level.visibleHeight - 100 }))
