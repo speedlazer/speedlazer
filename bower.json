@@ -9,6 +9,7 @@
     "requirejs-jquery": "~0.25.0",
     "crafty-gamepad": "matthijsgroen/crafty-gamepad",
     "screenfull": "~2.0.0",
-    "seedrandom": "~2.4.0"
+    "seedrandom": "~2.4.0",
+    "jsbezier": "*"
   }
 }
