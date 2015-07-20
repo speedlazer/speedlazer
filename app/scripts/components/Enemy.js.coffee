@@ -1,14 +1,14 @@
 Crafty.c 'Enemy',
   init: ->
-    @requires '2D, Canvas, Color, Collision'
+    @requires '2D, Canvas, Color, Collision, Choreography'
 
   enemy: ->
     @attr w: 50, h: 50, health: 300
     @color '#0000FF'
-    @bind 'EnterFrame', ->
-      @x = @x - 1
-      minX = (-Crafty.viewport._x)
-      @destroy() if @x < minX
+    #@bind 'EnterFrame', ->
+      #@x = @x - 1
+      #minX = (-Crafty.viewport._x) - 300
+      #@destroy() if @x < minX
 
     @onHit 'Bullet', (e) ->
       bullet = e[0].obj

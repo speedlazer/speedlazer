@@ -102,13 +102,26 @@ generator.defineBlock class GameplayDemo.TunnelStart extends @Game.LevelBlock
     @addBackground(380, @level.visibleHeight - 180, Crafty.e('2D, Canvas, Color').color('#505050').attr({ z: -1, w: 40, h: 180 }), .5)
     @addBackground(380, @level.visibleHeight - 90, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -2, w: 40, h: 90 }), .25)
 
-  enter: ->
+  inScreen: ->
     only = @settings.only || []
     if only.indexOf('cleared') is -1
-      @add(650, 150, Crafty.e('Enemy').enemy())
-      @add(1000 + (Math.random() * 50), 200 + (Math.random() * 75), Crafty.e('Enemy').enemy())
-      @add(1200 + (Math.random() * 50), 50 + (Math.random() * 125), Crafty.e('Enemy').enemy())
-      @add(1200 + (Math.random() * 250), 300 + (Math.random() * 50), Crafty.e('Enemy').enemy())
+      c = [
+        x: -100
+        duration: 1000
+        type: 'linear'
+      ,
+        y: 100
+        duration: 1000
+        type: 'linear'
+      ]
+
+      e = Crafty.e('Enemy')
+      @add(650, 150, e)
+      e.enemy().choreography(c)
+
+      #@add(1000 + (Math.random() * 50), 200 + (Math.random() * 75), Crafty.e('Enemy').enemy())
+      #@add(1200 + (Math.random() * 50), 50 + (Math.random() * 125), Crafty.e('Enemy').enemy())
+      #@add(1200 + (Math.random() * 250), 300 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
 generator.defineBlock class GameplayDemo.TunnelEnd extends @Game.LevelBlock
   name: 'GameplayDemo.TunnelEnd'
