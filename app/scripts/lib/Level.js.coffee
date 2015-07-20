@@ -52,6 +52,7 @@ class Game.Level
   #   used by this block
   addBlock: (blockType, settings = {}) ->
     klass = @generator.buildingBlocks[blockType]
+    throw new Error("#{blockType} not found") unless klass?
     block = new klass(this, settings)
     @blocks.push block
 

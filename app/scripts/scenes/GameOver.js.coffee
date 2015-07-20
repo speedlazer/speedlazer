@@ -11,7 +11,7 @@ Crafty.defineScene 'GameOver', ->
     .attr(x: 0, y: 110, w: 640)
     .text('Game Over')
     .textColor('#FF0000')
-    .css("textAlign", "center")
+    .css('textAlign', 'center')
     .textFont({
       size: '50px',
       weight: 'bold',

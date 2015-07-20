@@ -4,36 +4,34 @@ Crafty.defineScene 'City', (data) ->
   Game = window.Game
 
   # constructor
-  Crafty.background('#000')
+  Crafty.background('#8080FF')
 
-  level = Game.levelGenerator.createLevel(stage: data.stage)
-  level.addBlock('GameplayDemo.Start')
+  level = Game.levelGenerator.createLevel
+    stage: data.stage
+    title: 'City'
+  level.addBlock('Generic.Start')
 
-  level.addBlock('GameplayDemo.Dialog', {
+  level.addBlock('Generic.Dialog', {
     dialog: [
-      {
-        has: ['Player 1'],
-        name: 'John',
-        lines: [
-          'Welcome to the gameplay demo!'
-          'Let\'s do some target practice!'
-        ]
-      },
-      {
-        has: ['Player 1', 'Player 2'],
-        name: 'Jim',
-        lines: [
-          'Yeah let\'s shoot stuff!'
-        ]
-      },
-      {
-        only: ['Player 2'],
-        name: 'Jim',
-        lines: [
-          'Woohoo target practice!'
-          'Kill kill kill!!!'
-        ]
-      }
+      has: ['Player 1'],
+      name: 'John',
+      lines: [
+        'Welcome to the gameplay demo!'
+        'Let\'s do some target practice!'
+      ]
+    ,
+      has: ['Player 1', 'Player 2'],
+      name: 'Jim',
+      lines: [
+        'Yeah let\'s shoot stuff!'
+      ]
+    ,
+      only: ['Player 2'],
+      name: 'Jim',
+      lines: [
+        'Woohoo target practice!'
+        'Kill kill kill!!!'
+      ]
     ]
   })
   level.addBlock('GameplayDemo.Asteroids')

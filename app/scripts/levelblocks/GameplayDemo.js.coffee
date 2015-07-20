@@ -2,44 +2,7 @@
 # Import
 generator = @Game.levelGenerator
 
-GameplayDemo = {}
-
-generator.defineBlock class GameplayDemo.Start extends @Game.LevelBlock
-  name: 'GameplayDemo.Start'
-  delta:
-    x: 200
-    y: 0
-  next: ['GameplayDemo.Asteroids']
-
-  generate: ->
-    height = 2
-    @add(0, 0, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
-
-  enter: ->
-    super
-    x = 250
-    title = Crafty.e('2D, DOM, Text, Tween, Delay, HUD')
-      .attr( w: 350, z: 1 )
-      .text('Stage ' + @level.data.stage)
-      .positionHud(
-        x: x + @x,
-        y: 240,
-        z: -1
-      )
-    @add(x, 340, title)
-
-    title.textColor('#FF0000')
-      .textFont({
-        size: '30px',
-        weight: 'bold',
-        family: 'Courier new'
-      }).delay( ->
-        @tween({ viewportY: title.viewportY + 500, alpha: 0 }, 3000)
-      , 3000, 0)
-
-
-generator.defineBlock class GameplayDemo.End extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.End'
   delta:
     x: 800
@@ -62,7 +25,7 @@ generator.defineBlock class GameplayDemo.End extends @Game.LevelBlock
     @add(640, 0, endLevelTrigger)
 
 
-generator.defineBlock class GameplayDemo.Asteroids extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.Asteroids'
   delta:
     x: 1000
@@ -82,7 +45,7 @@ generator.defineBlock class GameplayDemo.Asteroids extends @Game.LevelBlock
     @add(800, 275, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr(w: 42, h: 15))
 
 
-generator.defineBlock class GameplayDemo.TunnelStart extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.TunnelStart'
   delta:
     x: 1000
@@ -141,7 +104,7 @@ generator.defineBlock class GameplayDemo.TunnelStart extends @Game.LevelBlock
       #@add(1200 + (Math.random() * 50), 50 + (Math.random() * 125), Crafty.e('Enemy').enemy())
       #@add(1200 + (Math.random() * 250), 300 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
-generator.defineBlock class GameplayDemo.TunnelEnd extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.TunnelEnd'
   delta:
     x: 1000
@@ -202,7 +165,7 @@ generator.defineBlock class GameplayDemo.TunnelEnd extends @Game.LevelBlock
       #@add(1200 + (Math.random() * 250), 300 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
 
-generator.defineBlock class GameplayDemo.Tunnel extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.Tunnel'
   delta:
     x: 1000
@@ -260,7 +223,7 @@ generator.defineBlock class GameplayDemo.Tunnel extends @Game.LevelBlock
       #@add(1200 + (Math.random() * 50), 150 + (Math.random() * 125), Crafty.e('Enemy').enemy())
       #@add(1200 + (Math.random() * 250), 100 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
-generator.defineBlock class GameplayDemo.Lasers extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.Lasers'
   delta:
     x: 1000
@@ -319,7 +282,7 @@ generator.defineBlock class GameplayDemo.Lasers extends @Game.LevelBlock
       pauseOnEdges: 300
     )
 
-generator.defineBlock class GameplayDemo.Lasers2 extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.Lasers2'
   delta:
     x: 800
@@ -359,7 +322,7 @@ generator.defineBlock class GameplayDemo.Lasers2 extends @Game.LevelBlock
       pauseOnEdges: 500
     )
 
-generator.defineBlock class GameplayDemo.TunnelTwist extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.TunnelTwist'
   delta:
     x: 1000
@@ -381,108 +344,3 @@ generator.defineBlock class GameplayDemo.TunnelTwist extends @Game.LevelBlock
     @add(750, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 250, h: h }))
 
     @add(0, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: @delta.x, h: @level.visibleHeight }))
-
-generator.defineBlock class GameplayDemo.Dialog extends @Game.LevelBlock
-  name: 'GameplayDemo.Dialog'
-  delta:
-    x: 0
-    y: 0
-  next: []
-  inScreen: ->
-    super
-    @showDialog() if !@settings.triggerOn? or @settings.triggerOn is 'inScreen'
-
-  enter: ->
-    super
-    @showDialog() if @settings.triggerOn is 'enter'
-
-  leave: ->
-    super
-    @showDialog() if @settings.triggerOn is 'leave'
-
-  showDialog: (start = 0) ->
-    Crafty('Dialog').each -> @destroy()
-    dialogIndex = @determineDialog(start)
-    if dialogIndex?
-      dialog = @settings.dialog[dialogIndex]
-      x = 60
-
-      Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
-        .attr( w: 550)
-        .text(dialog.name)
-        .positionHud(
-          x: x
-          y: @level.visibleHeight - ((dialog.lines.length + 2) * 20)
-          z: 2
-        )
-        .textColor('#909090')
-        .textFont({
-          size: '16px',
-          weight: 'bold',
-          family: 'Courier new'
-        })
-
-      for line, i in dialog.lines
-        Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
-          .attr( w: 550)
-          .text(line)
-          .positionHud(
-            x: x
-            y: @level.visibleHeight - ((dialog.lines.length + 1 - i) * 20)
-            z: 2
-          )
-          .textColor('#909090')
-          .textFont({
-            size: '16px',
-            weight: 'bold',
-            family: 'Courier new'
-          })
-
-
-      console.log dialog.name
-      console.log "  #{line}" for line in dialog.lines
-
-      Crafty.e('Dialog, Delay').delay( =>
-          @showDialog(start + 1)
-        , 2500 * dialog.lines.length, 0)
-
-
-  determineDialog: (start = 0) ->
-    players = []
-    Crafty('Player ControlScheme').each ->
-      players.push(@name) if @lives > 0
-
-    for dialog, i in @settings.dialog when i >= start
-      canShow = yes
-
-      if dialog.has?
-        for playerName in dialog.has
-          canShow = no if players.indexOf(playerName) is -1
-
-      if dialog.only?
-        for playerName in players
-          canShow = no if dialog.only.indexOf(playerName) is -1
-
-      continue unless canShow
-      return i
-    null
-
-generator.defineBlock class GameplayDemo.Event extends @Game.LevelBlock
-  name: 'GameplayDemo.Event'
-  delta:
-    x: 0
-    y: 0
-  next: []
-
-  inScreen: ->
-    super
-    @settings.inScreen?.apply this
-
-  enter: ->
-    super
-    @settings.enter?.apply this
-
-  leave: ->
-    super
-    @settings.leave?.apply this
-
