@@ -188,6 +188,104 @@ generator.defineBlock class GameplayDemo.Tunnel extends @Game.LevelBlock
       @add(1200 + (Math.random() * 50), 150 + (Math.random() * 125), Crafty.e('Enemy').enemy())
       @add(1200 + (Math.random() * 250), 100 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
+generator.defineBlock class GameplayDemo.Lasers extends @Game.LevelBlock
+  name: 'GameplayDemo.Lasers'
+  delta:
+    x: 1000
+    y: 0
+  next: ['GameplayDemo.Lasers2', 'GameplayDemo.TunnelTwist']
+
+  generate: ->
+    h = 15
+    @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: @delta.x, h: h }))
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: @delta.x, h: h }))
+
+    h = 100
+    @add(300, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 10, h: h }))
+    @add(250, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 50, h: 10 }))
+
+    @add(400, 15 + h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 110, h: 10 }))
+
+    h = 100
+    h2 = 200
+    @add(650, 15, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 10, h: h }))
+    @add(600, 15 + h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 60, h: 10 }))
+    @add(600, 25 + h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 10, h: h2 }))
+    @add(600, 25 + h + h2, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 60, h: 10 }))
+    @add(650, 25 + h2, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 60, h: 10 }))
+
+    @add(900, 100, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 10, h: @level.visibleHeight - 100 }))
+
+    # background
+    @add(0, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: @delta.x, h: @level.visibleHeight }))
+
+  enter: ->
+    t = Crafty.e('LaserTurret')
+    @add(150, 15, t)
+    t.color('#808020').laserTurret(
+      orientation: 'down'
+      range: 160
+      duration: 4000
+      pauseOnEdges: 500
+    )
+
+    t = Crafty.e('LaserTurret')
+    @add(570, @level.visibleHeight - 15, t)
+    t.color('#808020').laserTurret(
+      orientation: 'up'
+      range: -200
+      duration: 2000
+      pauseOnEdges: 300
+    )
+
+    t = Crafty.e('LaserTurret')
+    @add(830, @level.visibleHeight - 15, t)
+    t.color('#808020').laserTurret(
+      orientation: 'up'
+      range: -200
+      duration: 2000
+      pauseOnEdges: 300
+    )
+
+generator.defineBlock class GameplayDemo.Lasers2 extends @Game.LevelBlock
+  name: 'GameplayDemo.Lasers2'
+  delta:
+    x: 800
+    y: 0
+  next: ['GameplayDemo.TunnelEnd', 'GameplayDemo.Tunnel', 'GameplayDemo.TunnelTwist']
+  supports: ['speed', 'cleared']
+
+  generate: ->
+    h = 15
+    @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: @delta.x, h: h }))
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: @delta.x, h: h }))
+
+    h = 250
+    @add(300, h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: 10 }))
+    @add(400, h, Crafty.e('2D, Canvas, Edge, Color, Glass').color('#404040').attr({ w: 100, h: 10, alpha: 0.5, z: 1 }))
+    @add(500, h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: 10 }))
+
+    # background
+    @add(0, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: @delta.x, h: @level.visibleHeight }))
+
+  enter: ->
+    t = Crafty.e('LaserTurret')
+    @add(200, 15, t)
+    t.color('#808020').laserTurret(
+      orientation: 'down'
+      range: 350
+      duration: 5200
+      pauseOnEdges: 500
+    )
+
+    t = Crafty.e('LaserTurret')
+    @add(300, @level.visibleHeight - 15, t)
+    t.color('#808020').laserTurret(
+      orientation: 'up'
+      range: 350
+      duration: 5200
+      pauseOnEdges: 500
+    )
 
 generator.defineBlock class GameplayDemo.TunnelTwist extends @Game.LevelBlock
   name: 'GameplayDemo.TunnelTwist'
@@ -220,7 +318,15 @@ generator.defineBlock class GameplayDemo.Dialog extends @Game.LevelBlock
   next: []
   inScreen: ->
     super
-    @showDialog()
+    @showDialog() if !@settings.triggerOn? or @settings.triggerOn is 'inScreen'
+
+  enter: ->
+    super
+    @showDialog() if @settings.triggerOn is 'enter'
+
+  leave: ->
+    super
+    @showDialog() if @settings.triggerOn is 'leave'
 
   showDialog: (start = 0) ->
     Crafty('Dialog').each -> @destroy()
