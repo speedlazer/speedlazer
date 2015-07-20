@@ -56,8 +56,8 @@ Crafty.defineScene 'GameplayDemo', (data) ->
       }
     ]
   })
-  level.addBlock 'GameplayDemo.Event', inScreen: ->
-    @level.setForcedSpeed(0)
+  #level.addBlock 'GameplayDemo.Event', inScreen: ->
+    #@level.setForcedSpeed(0)
   level.addBlock('GameplayDemo.TunnelStart')
   #level.generateBlocks(amount: 1) #, { only: ['cleared'] })
   #level.generateBlocks(stopBefore: 'GameplayDemo.Tunnel')

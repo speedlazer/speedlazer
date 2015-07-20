@@ -106,18 +106,32 @@ generator.defineBlock class GameplayDemo.TunnelStart extends @Game.LevelBlock
     only = @settings.only || []
     if only.indexOf('cleared') is -1
       c = [
-        x: -100
-        duration: 1000
-        type: 'linear'
+        length: 2
+        x: -400
+        y: 50
+        duration: 3000
+        type: 'sine'
       ,
-        y: 100
-        duration: 1000
-        type: 'linear'
+        length: 0.5
+        x: 400
+        y: 50
+        duration: 3000
+        type: 'sine'
+      ,
+        length: 0.5
+        start: 0.5
+        x: -300
+        y: 200
+        duration: 3000
+        type: 'sine'
       ]
 
-      e = Crafty.e('Enemy')
-      @add(650, 150, e)
-      e.enemy().choreography(c)
+      Crafty.e('Delay').delay(
+        =>
+          e = Crafty.e('Enemy')
+          @add(650, 150, e)
+          e.enemy().choreography(c, -1)
+      , 500, 5)
 
       #@add(1000 + (Math.random() * 50), 200 + (Math.random() * 75), Crafty.e('Enemy').enemy())
       #@add(1200 + (Math.random() * 50), 50 + (Math.random() * 125), Crafty.e('Enemy').enemy())

@@ -3,7 +3,7 @@ Crafty.c 'Enemy',
     @requires '2D, Canvas, Color, Collision, Choreography'
 
   enemy: ->
-    @attr w: 50, h: 50, health: 300
+    @attr w: 25, h: 25, health: 300
     @color '#0000FF'
     #@bind 'EnterFrame', ->
       #@x = @x - 1
