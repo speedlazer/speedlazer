@@ -1,9 +1,7 @@
 Crafty.c 'Choreography',
   init: ->
-    @requires 'Tween'
     @bind("EnterFrame", @_choreographyTick)
 
-    # TODO: Plugin system?
     @_ctypes =
       linear: @_executeLinear
       sine: @_executeSine
@@ -29,7 +27,11 @@ Crafty.c 'Choreography',
         return
 
     part = @_choreography[number]
+    if part.event?
+      @trigger(part.event, { entity: this, data: part.data })
+
     @_setupPart part, number
+
 
   _choreographyTick: (frameData) ->
     return unless @_currentPart?
@@ -50,7 +52,7 @@ Crafty.c 'Choreography',
       dy: part.y ? 0
       length: part.length ? 1
       start: part.start ? 0
-      easing: new Crafty.easing(part.duration)
+      easing: new Crafty.easing(part.duration ? 0)
 
   _executeLinear: (v) ->
     @x = @_currentPart.x + (v * @_currentPart.dx)

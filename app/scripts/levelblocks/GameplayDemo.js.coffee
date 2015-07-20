@@ -117,6 +117,9 @@ generator.defineBlock class GameplayDemo.TunnelStart extends @Game.LevelBlock
         y: 50
         duration: 3000
         type: 'sine'
+        event: 'retreat'
+        data:
+          name: 'fooo'
       ,
         length: 0.5
         start: 0.5
@@ -129,6 +132,7 @@ generator.defineBlock class GameplayDemo.TunnelStart extends @Game.LevelBlock
       Crafty.e('Delay').delay(
         =>
           e = Crafty.e('Enemy')
+          e.bind('retreat', (data) -> console.log "Retreating! #{data.data.name}")
           @add(650, 150, e)
           e.enemy().choreography(c, -1)
       , 500, 5)
