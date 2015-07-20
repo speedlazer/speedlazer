@@ -2,6 +2,7 @@
 
 var Game = {
   // Initialize and start our game
+  firstLevel: 'City',
   start: function () {
     Crafty.load([ ], function () {
 

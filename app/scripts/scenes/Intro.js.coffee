@@ -1,4 +1,7 @@
 Crafty.defineScene 'Intro', ->
+  # import from globals
+  Game = window.Game
+
   # constructor
   Crafty.background('#000000')
   Crafty.viewport.x = 0
@@ -41,7 +44,7 @@ Crafty.defineScene 'Intro', ->
         points: 0
       })
     @one 'Activated', ->
-      Crafty.enterScene('GameplayDemo', { stage: 1 })
+      Crafty.enterScene(Game.firstLevel, { stage: 1 })
 
 , ->
   # destructor

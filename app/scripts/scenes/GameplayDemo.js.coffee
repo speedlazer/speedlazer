@@ -4,8 +4,6 @@ Crafty.defineScene 'GameplayDemo', (data) ->
 
   # constructor
   Crafty.background('#000')
-  Crafty.viewport.x = 0
-  Crafty.viewport.y = 0
 
   level = Game.levelGenerator.createLevel(stage: data.stage)
   level.addBlock('GameplayDemo.Start')
@@ -56,8 +54,8 @@ Crafty.defineScene 'GameplayDemo', (data) ->
       }
     ]
   })
-  #level.addBlock 'GameplayDemo.Event', inScreen: ->
-    #@level.setForcedSpeed(0)
+  level.addBlock 'GameplayDemo.Event', inScreen: ->
+    @level.setForcedSpeed(0)
   level.addBlock('GameplayDemo.TunnelStart')
   #level.generateBlocks(amount: 1) #, { only: ['cleared'] })
   #level.generateBlocks(stopBefore: 'GameplayDemo.Tunnel')
@@ -114,7 +112,6 @@ Crafty.defineScene 'GameplayDemo', (data) ->
 
 , ->
   # destructor
-  Crafty.unbind('EnterFrame')
   Crafty.unbind('PlayerDied')
   Crafty.unbind('EndOfLevel')
   Crafty('Player').each -> @removeComponent('ShipSpawnable')

@@ -1,4 +1,7 @@
 Crafty.defineScene 'GameOver', ->
+  # import from globals
+  Game = window.Game
+
   # constructor
   Crafty.background('#111')
   Crafty.viewport.x = 0
@@ -47,7 +50,7 @@ Crafty.defineScene 'GameOver', ->
           points: 0
         })
       @one 'Activated', ->
-        Crafty.enterScene 'GameplayDemo', { stage: 1 }
+        Crafty.enterScene Game.firstLevel, { stage: 1 }
 
     @delay ->
       Crafty.enterScene('Intro')
