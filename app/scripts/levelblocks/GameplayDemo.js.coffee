@@ -165,10 +165,37 @@ generator.defineBlock class GameplayDemo.TunnelEnd extends @Game.LevelBlock
   enter: ->
     only = @settings.only || []
     if only.indexOf('cleared') is -1
-      @add(650, 150, Crafty.e('Enemy').enemy())
-      @add(1000 + (Math.random() * 50), 200 + (Math.random() * 75), Crafty.e('Enemy').enemy())
-      @add(1200 + (Math.random() * 50), 50 + (Math.random() * 125), Crafty.e('Enemy').enemy())
-      @add(1200 + (Math.random() * 250), 300 + (Math.random() * 50), Crafty.e('Enemy').enemy())
+      c = [
+        length: 2
+        x: -400
+        y: 50
+        duration: 3000
+        type: 'sine'
+      ,
+        length: 0.5
+        x: 400
+        y: 50
+        duration: 3000
+        type: 'sine'
+      ,
+        length: 0.5
+        start: 0.5
+        x: -300
+        y: 200
+        duration: 3000
+        type: 'sine'
+      ]
+
+      Crafty.e('Delay').delay(
+        =>
+          e = Crafty.e('Enemy')
+          @add(650, 150, e)
+          e.enemy().choreography(c, -1)
+      , 500, 5)
+      #@add(650, 150, Crafty.e('Enemy').enemy())
+      #@add(1000 + (Math.random() * 50), 200 + (Math.random() * 75), Crafty.e('Enemy').enemy())
+      #@add(1200 + (Math.random() * 50), 50 + (Math.random() * 125), Crafty.e('Enemy').enemy())
+      #@add(1200 + (Math.random() * 250), 300 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
 
 generator.defineBlock class GameplayDemo.Tunnel extends @Game.LevelBlock
@@ -198,9 +225,36 @@ generator.defineBlock class GameplayDemo.Tunnel extends @Game.LevelBlock
   enter: ->
     only = @settings.only || []
     if only.indexOf('cleared') is -1
-      @add(1000 + (Math.random() * 50), 200 + (Math.random() * 75), Crafty.e('Enemy').enemy())
-      @add(1200 + (Math.random() * 50), 150 + (Math.random() * 125), Crafty.e('Enemy').enemy())
-      @add(1200 + (Math.random() * 250), 100 + (Math.random() * 50), Crafty.e('Enemy').enemy())
+      c = [
+        length: 2
+        x: -400
+        y: 50
+        duration: 3000
+        type: 'sine'
+      ,
+        length: 0.5
+        x: 400
+        y: 50
+        duration: 3000
+        type: 'sine'
+      ,
+        length: 0.5
+        start: 0.5
+        x: -300
+        y: 200
+        duration: 3000
+        type: 'sine'
+      ]
+
+      Crafty.e('Delay').delay(
+        =>
+          e = Crafty.e('Enemy')
+          @add(650, 150, e)
+          e.enemy().choreography(c, -1)
+      , 500, 5)
+      #@add(1000 + (Math.random() * 50), 200 + (Math.random() * 75), Crafty.e('Enemy').enemy())
+      #@add(1200 + (Math.random() * 50), 150 + (Math.random() * 125), Crafty.e('Enemy').enemy())
+      #@add(1200 + (Math.random() * 250), 100 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
 generator.defineBlock class GameplayDemo.Lasers extends @Game.LevelBlock
   name: 'GameplayDemo.Lasers'
