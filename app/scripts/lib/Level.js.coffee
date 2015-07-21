@@ -117,14 +117,12 @@ class Game.Level
 
     Crafty('Player ControlScheme').each -> @spawnShip()
 
-
   setForcedSpeed: (speed) ->
     @_forcedSpeed = speed
     if @_playersActive
       @_scrollWall.scrollWall(@_forcedSpeed)
     Crafty('PlayerControlledShip').each ->
       @forcedSpeed speed
-
 
   ##
   # Stop the level, clean up event handlers and
@@ -152,6 +150,9 @@ class Game.Level
     candidates = blockKlass::next
     if candidates.length is 0
       throw 'TODO: Look back in blocks to get point for generation'
+
+    return settings.stopBefore if settings.stopBefore? and candidates.indexOf(settings.stopBefore) isnt -1
+
     maxAllowedRepitition = 2
     blockCount = @blocks.length
 
@@ -164,7 +165,7 @@ class Game.Level
         if block.blockType is blockType
           repetitionCount++
         else
-          break
+          break if block.delta.x > 0
 
       if repetitionCount >= maxAllowedRepitition
         newCandidates = [] # Make sure repetition does not continue

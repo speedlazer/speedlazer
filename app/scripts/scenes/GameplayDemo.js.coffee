@@ -10,84 +10,92 @@ Crafty.defineScene 'GameplayDemo', (data) ->
     title: 'Gameplay Demo'
 
   level.addBlock('Generic.Start')
-  level.addBlock('Generic.Dialog', {
-    dialog: [
-      has: ['Player 1'],
-      name: 'John',
-      lines: [
-        'Welcome to the gameplay demo!'
-        'Let\'s do some target practice!'
-      ]
-    ,
-      has: ['Player 1', 'Player 2'],
-      name: 'Jim',
-      lines: [
-        'Yeah let\'s shoot stuff!'
-      ]
-    ,
-      only: ['Player 2'],
-      name: 'Jim',
-      lines: [
-        'Woohoo target practice!'
-        'Kill kill kill!!!'
-      ]
-    ]
-  })
-  level.addBlock('GameplayDemo.Asteroids')
-  level.addBlock('Generic.Dialog', {
-    dialog: [
-      only: ['Player 1'],
-      name: 'John',
-      lines: [
-        'Entering the tunnel!'
-      ]
-    ,
-      has: ['Player 2'],
-      name: 'Jim',
-      lines: [
-        'Prepare for darkness!!!'
-      ]
-    ]
-  })
-  level.addBlock('GameplayDemo.TunnelStart')
-  #level.generateBlocks(amount: 1) #, { only: ['cleared'] })
-  #level.generateBlocks(stopBefore: 'GameplayDemo.Tunnel')
-  level.addBlock('GameplayDemo.Tunnel')
-  level.addBlock('Generic.Dialog', {
-    triggerOn: 'enter'
-    dialog: [
-      has: ['Player 1'],
-      name: 'John',
-      lines: [
-        'Slow down! Lasers!!'
-      ]
-    ,
-      only: ['Player 2'],
-      name: 'Jim',
-      lines: [
-        'Uhoh! Danger!'
-      ]
-    ]
-  })
-  level.addBlock 'Generic.Event', enter: ->
-    @level.setForcedSpeed(0)
+  #level.addBlock('Generic.Dialog', {
+    #dialog: [
+      #has: ['Player 1'],
+      #name: 'John',
+      #lines: [
+        #'Welcome to the gameplay demo!'
+        #'Let\'s do some target practice!'
+      #]
+    #,
+      #has: ['Player 1', 'Player 2'],
+      #name: 'Jim',
+      #lines: [
+        #'Yeah let\'s shoot stuff!'
+      #]
+    #,
+      #only: ['Player 2'],
+      #name: 'Jim',
+      #lines: [
+        #'Woohoo target practice!'
+        #'Kill kill kill!!!'
+      #]
+    #]
+  #})
+  #level.addBlock('GameplayDemo.Asteroids')
+  #level.addBlock('Generic.Dialog', {
+    #dialog: [
+      #only: ['Player 1'],
+      #name: 'John',
+      #lines: [
+        #'Entering the tunnel!'
+      #]
+    #,
+      #has: ['Player 2'],
+      #name: 'Jim',
+      #lines: [
+        #'Prepare for darkness!!!'
+      #]
+    #]
+  #})
+  #level.addBlock('GameplayDemo.TunnelStart')
+  #level.addBlock('GameplayDemo.Tunnel')
+  #level.addBlock('Generic.Dialog', {
+    #triggerOn: 'enter'
+    #dialog: [
+      #has: ['Player 1'],
+      #name: 'John',
+      #lines: [
+        #'Slow down! Lasers!!'
+      #]
+    #,
+      #only: ['Player 2'],
+      #name: 'Jim',
+      #lines: [
+        #'Uhoh! Danger!'
+      #]
+    #]
+  #})
+  #level.addBlock 'Generic.Event', enter: ->
+    #@level.setForcedSpeed(0)
 
-  level.addBlock('GameplayDemo.Lasers')
-  level.generateBlocks(amount: 1)
-  level.addBlock('Generic.Dialog', {
-    dialog: [
-      has: ['Player 1'],
-      name: 'John',
-      lines: [
-        'Let\'s get out of here!'
-      ]
-    ]
-  })
+  #level.addBlock('GameplayDemo.Lasers')
+  #level.generateBlocks(amount: 1)
+  #level.addBlock('Generic.Dialog', {
+    #dialog: [
+      #has: ['Player 1'],
+      #name: 'John',
+      #lines: [
+        #'Let\'s get out of here!'
+      #]
+    #]
+  #})
   level.addBlock 'Generic.Event', inScreen: ->
     @level.setForcedSpeed(4)
   level.addBlock('GameplayDemo.TunnelTwist')
-  level.generateBlocks(amount: 2, only: ['cleared'])
+  #level.generateBlocks(amount: 2, only: ['cleared'])
   level.generateBlocks(stopBefore: 'GameplayDemo.Asteroids')
+  level.addBlock 'Generic.Event',
+    enter: ->
+      @level.setForcedSpeed(1)
+    leave: ->
+      @level.setForcedSpeed(x: 1, y: -.25)
+  level.addBlock('GameplayDemo.Ocean')
+  level.addBlock 'Generic.Event',
+    enter: ->
+      @level.setForcedSpeed(1)
+  level.addBlock('GameplayDemo.Ocean')
 
   level.addBlock('GameplayDemo.End')
   level.start()

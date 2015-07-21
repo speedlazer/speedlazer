@@ -22,8 +22,10 @@ Crafty.c 'PlayerControlledShip',
 
     @bind 'EnterFrame', ->
       @x += @_forcedSpeed.x
+      @y += @_forcedSpeed.y
       # Move player back if flying into an object
       @x -= @_forcedSpeed.x if @hit('Edge')
+      @y -= @_forcedSpeed.y if @hit('Edge')
 
       # still hitting an object? then we where forced in
       # and are crashed (squashed probably)
@@ -35,7 +37,7 @@ Crafty.c 'PlayerControlledShip',
       @_forcedSpeed.y = speed.y
     else
       @_forcedSpeed.x = speed
-      @_forcedSpeed.y = speed
+      @_forcedSpeed.y = 0
     this
 
   shoot: ->

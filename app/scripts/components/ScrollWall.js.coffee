@@ -20,6 +20,7 @@ Crafty.c 'ScrollWall',
 
     @bind 'EnterFrame', ->
       speedX = @_speed.x
+      speedY = @_speed.y
 
       # When the ships are in the first 30% of the screen,
       # speed up the camera.
@@ -30,7 +31,11 @@ Crafty.c 'ScrollWall',
 
       @x += speedX
       @wallEnd.x += speedX
+      @y += speedY
+      @wallEnd.y += speedY
+
       Crafty.viewport.scroll('_x', -@x)
+      Crafty.viewport.scroll('_y', -@y)
       Crafty.viewport._clamp()
 
     @onHit 'PlayerControlledShip', (el) ->
@@ -45,7 +50,7 @@ Crafty.c 'ScrollWall',
       @_speed.y = speed.y
     else
       @_speed.x = speed
-      @_speed.y = speed
+      @_speed.y = 0
     this
 
   off: ->
