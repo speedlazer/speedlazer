@@ -27,9 +27,10 @@ Crafty.c 'ScrollWall',
       Crafty('PlayerControlledShip').each ->
         margin = Crafty.viewport.width / 3.0
         if @x >  (- (Crafty.viewport.x - Crafty.viewport.width)) - margin
-          perc = (speedX + 2) / speedX
+          if speedX > 0
+            perc = (speedX + 2) / speedX
+            speedY *= perc
           speedX += 2
-          speedY *= perc
 
       @x += speedX
       @wallEnd.x += speedX

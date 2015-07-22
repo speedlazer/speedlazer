@@ -375,6 +375,7 @@ generator.defineBlock class extends @Game.LevelBlock
     height = 2
     @add(0, @yMotion, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
     @add(0, @yMotion, Crafty.e('2D, Canvas, Edge').attr w: 2, h: Math.abs @yMotion)
+    @add(@delta.x - height, @level.visibleHeight + @yMotion, Crafty.e('2D, Canvas, Edge').attr w: height, h: Math.abs @yMotion)
 
     height = 25
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
@@ -407,7 +408,10 @@ generator.defineBlock class extends @Game.LevelBlock
 
   generate: ->
     height = 2
-    @add(0, -800, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+    @yMotion = -180
+
+    @add(0, @yMotion, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height)
+    @add(0, @level.visibleHeight + @yMotion, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height)
 
     height = 25
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
