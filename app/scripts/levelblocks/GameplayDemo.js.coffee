@@ -370,9 +370,11 @@ generator.defineBlock class extends @Game.LevelBlock
   next: ['GameplayDemo.OceanHight']
 
   generate: ->
+    @yMotion = -180
+
     height = 2
-    @add(0, -180, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
-    @add(0, -180, Crafty.e('2D, Canvas, Edge').attr w: 2, h: 180)
+    @add(0, @yMotion, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+    @add(0, @yMotion, Crafty.e('2D, Canvas, Edge').attr w: 2, h: Math.abs @yMotion)
 
     height = 25
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
@@ -390,7 +392,8 @@ generator.defineBlock class extends @Game.LevelBlock
     else
       @_speedX = @level._forcedSpeed
 
-    @level.setForcedSpeed(x: @_speedX, y: @_speedX * -.5)
+    yFactor = @yMotion / (@delta.x - 640)
+    @level.setForcedSpeed(x: @_speedX, y: @_speedX * yFactor)
 
   outScreen: ->
     @level.setForcedSpeed(@_speedX)
@@ -425,8 +428,10 @@ generator.defineBlock class extends @Game.LevelBlock
   next: ['GameplayDemo.Ocean', 'GameplayDemo.TunnelStart']
 
   generate: ->
+    @yMotion = 180
     height = 2
-    @add(0, -800, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+    @add(0, -@yMotion, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+    @add(@delta.x - 2, -@yMotion, Crafty.e('2D, Canvas, Edge').attr w: 2, h: Math.abs @yMotion)
 
     height = 25
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
@@ -444,7 +449,8 @@ generator.defineBlock class extends @Game.LevelBlock
       @_speedX = @level._forcedSpeed?.x
     else
       @_speedX = @level._forcedSpeed
-    @level.setForcedSpeed(x: @_speedX, y: @_speedX * .5)
+    yFactor = @yMotion / (@delta.x - 640)
+    @level.setForcedSpeed(x: @_speedX, y: @_speedX * yFactor)
 
   outScreen: ->
     @level.setForcedSpeed(@_speedX)

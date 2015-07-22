@@ -93,10 +93,10 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   #})
   #level.addBlock 'Generic.Event', inScreen: ->
     #@level.setForcedSpeed(4)
-  level.addBlock('GameplayDemo.TunnelTwist')
+  level.addBlock('GameplayDemo.Tunnel', only: ['cleared'])
   #level.generateBlocks(amount: 2, only: ['cleared'])
   #level.generateBlocks(stopBefore: 'GameplayDemo.Asteroids')
-  level.addBlock('GameplayDemo.TunnelEnd')
+  level.addBlock('GameplayDemo.TunnelEnd', only: ['cleared'])
   #level.addBlock 'Generic.Event',
     #enter: ->
       #@level.setForcedSpeed(1)
