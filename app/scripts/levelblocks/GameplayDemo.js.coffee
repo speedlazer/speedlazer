@@ -389,7 +389,8 @@ generator.defineBlock class extends @Game.LevelBlock
       @_speedX = @level._forcedSpeed?.x
     else
       @_speedX = @level._forcedSpeed
-    @level.setForcedSpeed(x: @_speedX, y: -.5)
+
+    @level.setForcedSpeed(x: @_speedX, y: @_speedX * -.5)
 
   outScreen: ->
     @level.setForcedSpeed(@_speedX)
@@ -443,7 +444,7 @@ generator.defineBlock class extends @Game.LevelBlock
       @_speedX = @level._forcedSpeed?.x
     else
       @_speedX = @level._forcedSpeed
-    @level.setForcedSpeed(x: @_speedX, y: .5)
+    @level.setForcedSpeed(x: @_speedX, y: @_speedX * .5)
 
   outScreen: ->
     @level.setForcedSpeed(@_speedX)

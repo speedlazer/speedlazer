@@ -97,9 +97,9 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   #level.generateBlocks(amount: 2, only: ['cleared'])
   #level.generateBlocks(stopBefore: 'GameplayDemo.Asteroids')
   level.addBlock('GameplayDemo.TunnelEnd')
-  level.addBlock 'Generic.Event',
-    enter: ->
-      @level.setForcedSpeed(1)
+  #level.addBlock 'Generic.Event',
+    #enter: ->
+      #@level.setForcedSpeed(1)
   level.addBlock('GameplayDemo.Ocean')
   level.addBlock('GameplayDemo.OceanRiser')
   level.addBlock('GameplayDemo.OceanHigh')
