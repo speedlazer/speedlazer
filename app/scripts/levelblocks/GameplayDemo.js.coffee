@@ -346,6 +346,89 @@ generator.defineBlock class extends @Game.LevelBlock
     @add(0, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: @delta.x, h: @level.visibleHeight }))
 
 generator.defineBlock class extends @Game.LevelBlock
+  name: 'GameplayDemo.PerspectiveTest'
+  delta:
+    x: 640
+    y: 0
+  next: []
+
+  generate: ->
+    @add(0, 0, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: @level.visibleHeight, alpha: 0.2, z: -1).color('#FF0000'))
+    @add(0, 0, Crafty.e('2D, Canvas, Color').attr(w: 5, h: @level.visibleHeight, z: -1).color('#FF0000'))
+
+    @addBackground(0, @level.visibleHeight * .25, Crafty.e('2D, Canvas, Color').attr(w: @delta.x * .5, h: @level.visibleHeight * .5, alpha: 0.2, z: -2).color('#00FF00'), .5)
+    @addBackground(0, @level.visibleHeight * .25, Crafty.e('2D, Canvas, Color').attr(w: 5, h: @level.visibleHeight * .5, z: -2).color('#00FF00'), .5)
+
+    @addBackground(0, @level.visibleHeight * .375, Crafty.e('2D, Canvas, Color').attr(w: @delta.x * .25, h: @level.visibleHeight * .25, alpha: 0.7, z: -3).color('#0000FF'), .25)
+    @addBackground(0, @level.visibleHeight * .375, Crafty.e('2D, Canvas, Color').attr(w: 5, h: @level.visibleHeight * .25, z: -3).color('#0000FF'), .25)
+
+generator.defineBlock class extends @Game.LevelBlock
+  name: 'GameplayDemo.OceanRiser'
+  delta:
+    x: 1000
+    y: 0
+  next: ['GameplayDemo.OceanHight']
+
+  generate: ->
+    height = 2
+    @add(0, -800, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+
+    height = 25
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
+    @addBackground(0, @level.visibleHeight - 65, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -2, w: @delta.x * .5, h: 65 }), .5)
+    @addBackground(0, @level.visibleHeight - 85, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -3, w: @delta.x * .25, h: 85 }), .25)
+    @addBackground(200, 45, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 200, h: 55 }), .5)
+    @addBackground(200, 65, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 150, h: 55 }), .25)
+
+  enter: ->
+    super
+    console.log @name
+
+generator.defineBlock class extends @Game.LevelBlock
+  name: 'GameplayDemo.OceanHigh'
+  delta:
+    x: 1000
+    y: 0
+  next: ['GameplayDemo.OceanHight', 'GameplayDemo.OceanLower']
+
+  generate: ->
+    height = 2
+    @add(0, -800, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+
+    height = 25
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
+    @addBackground(0, @level.visibleHeight - 65, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -2, w: @delta.x * .5, h: 65 }), .5)
+    @addBackground(0, @level.visibleHeight - 85, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -3, w: @delta.x * .25, h: 85 }), .25)
+    @addBackground(200, 45, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 200, h: 55 }), .5)
+    @addBackground(200, 65, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 150, h: 55 }), .25)
+
+  enter: ->
+    super
+    console.log @name
+
+generator.defineBlock class extends @Game.LevelBlock
+  name: 'GameplayDemo.OceanLower'
+  delta:
+    x: 1000
+    y: 0
+  next: ['GameplayDemo.Ocean', 'GameplayDemo.TunnelStart']
+
+  generate: ->
+    height = 2
+    @add(0, -800, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+
+    height = 25
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
+    @addBackground(0, @level.visibleHeight - 65, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -2, w: @delta.x * .5, h: 65 }), .5)
+    @addBackground(0, @level.visibleHeight - 85, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -3, w: @delta.x * .25, h: 85 }), .25)
+    @addBackground(200, 45, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 200, h: 55 }), .5)
+    @addBackground(200, 65, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 150, h: 55 }), .25)
+
+  enter: ->
+    super
+    console.log @name
+
+generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.Ocean'
   delta:
     x: 1000
@@ -358,8 +441,12 @@ generator.defineBlock class extends @Game.LevelBlock
 
     height = 25
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
-    @addBackground(0, @level.visibleHeight - 45, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -2, w: @delta.x * .5, h: 45 }), .5)
-    @addBackground(0, @level.visibleHeight - 65, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -3, w: @delta.x * .25, h: 65 }), .25)
-    @addBackground(200, 55, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 200, h: 55 }), .5)
-    @addBackground(200, 55, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -2, w: 100, h: 55 }), .25)
+    @addBackground(0, @level.visibleHeight - 65, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -2, w: @delta.x * .5, h: 65 }), .5)
+    @addBackground(0, @level.visibleHeight - 85, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -3, w: @delta.x * .25, h: 85 }), .25)
+    @addBackground(200, 45, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 200, h: 55 }), .5)
+    @addBackground(200, 65, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 150, h: 55 }), .25)
+
+  enter: ->
+    super
+    console.log @name
 
