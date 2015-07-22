@@ -371,7 +371,8 @@ generator.defineBlock class extends @Game.LevelBlock
 
   generate: ->
     height = 2
-    @add(0, -800, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+    @add(0, -180, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+    @add(0, -180, Crafty.e('2D, Canvas, Edge').attr w: 2, h: 180)
 
     height = 25
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
@@ -381,8 +382,17 @@ generator.defineBlock class extends @Game.LevelBlock
     @addBackground(200, 65, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 150, h: 55 }), .25)
 
   enter: ->
-    super
     console.log @name
+
+  inScreen: ->
+    if @level._forcedSpeed?.x?
+      @_speedX = @level._forcedSpeed?.x
+    else
+      @_speedX = @level._forcedSpeed
+    @level.setForcedSpeed(x: @_speedX, y: -.5)
+
+  outScreen: ->
+    @level.setForcedSpeed(@_speedX)
 
 generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.OceanHigh'
@@ -428,6 +438,16 @@ generator.defineBlock class extends @Game.LevelBlock
     super
     console.log @name
 
+  inScreen: ->
+    if @level._forcedSpeed?.x?
+      @_speedX = @level._forcedSpeed?.x
+    else
+      @_speedX = @level._forcedSpeed
+    @level.setForcedSpeed(x: @_speedX, y: .5)
+
+  outScreen: ->
+    @level.setForcedSpeed(@_speedX)
+
 generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.Ocean'
   delta:
@@ -437,7 +457,7 @@ generator.defineBlock class extends @Game.LevelBlock
 
   generate: ->
     height = 2
-    @add(0, -800, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
+    @add(0, 0, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
 
     height = 25
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))

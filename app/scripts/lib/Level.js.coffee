@@ -87,18 +87,18 @@ class Game.Level
   start: ->
     Crafty.viewport.x = 0
     Crafty.viewport.y = 0
+    @_forcedSpeed = 1
     @_update 0
     for block in @blocks when block.x < 640
       block.enter()
     Crafty.bind 'LeaveBlock', (index) =>
       @_update index
       if index > 0
-        @blocks[index].inScreen()
         @blocks[index - 1].leave()
+        @blocks[index].inScreen()
       if index > 1
         @blocks[index - 2].clean()
     @_scrollWall = Crafty.e('ScrollWall')
-    @_forcedSpeed = 1
     @_playersActive = no
 
     Crafty.one 'ShipSpawned', =>
@@ -109,6 +109,8 @@ class Game.Level
       ship.forcedSpeed(@_forcedSpeed)
 
     Crafty.bind 'EnterBlock', (index) =>
+      if index > 0
+        @blocks[index - 1].outScreen()
       @blocks[index].enter()
 
     Crafty('Player').each (index) ->

@@ -68,6 +68,10 @@ class Game.LevelBlock
   # an ideal moment to speed up movement, show dialog, etc
   inScreen: ->
 
+  # The block is fully in screen now, the right side
+  # of the block is touching the right side of the screen
+  outScreen: ->
+
   # The block is out of screen.
   leave: ->
 

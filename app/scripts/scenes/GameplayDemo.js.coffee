@@ -12,7 +12,7 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   level.addBlock('Generic.Start')
   level.addBlock 'Generic.Event',
     enter: ->
-      @level.setForcedSpeed(0)
+      @level.setForcedSpeed(2)
 
   #level.addBlock('GameplayDemo.PerspectiveTest')
   #level.addBlock('GameplayDemo.PerspectiveTest')
@@ -100,12 +100,8 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   level.addBlock 'Generic.Event',
     enter: ->
       @level.setForcedSpeed(1)
-    leave: ->
-      @level.setForcedSpeed(x: 1, y: -.5)
+  level.addBlock('GameplayDemo.Ocean')
   level.addBlock('GameplayDemo.OceanRiser')
-  level.addBlock 'Generic.Event',
-    enter: ->
-      @level.setForcedSpeed(1)
   level.addBlock('GameplayDemo.OceanHigh')
   level.addBlock('GameplayDemo.OceanHigh')
   level.addBlock('GameplayDemo.OceanLower')

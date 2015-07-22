@@ -1,5 +1,5 @@
-if no
-  Crafty.c 'Edge',
-    init: ->
-      @requires 'Color'
-      @color '#FFFF00'
+#if no
+Crafty.c 'Edge',
+  init: ->
+    @requires 'Color'
+    @color '#FFFF00'
