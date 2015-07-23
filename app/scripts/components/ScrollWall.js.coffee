@@ -67,7 +67,6 @@ Crafty.c 'ScrollWall',
 
     @wallBottom.onHit 'PlayerControlledShip', (el) =>
       # Push the player upward
-      console.log 'floor collide'
       for e in el
         p = e.obj
         p.attr y: @wallBottom.y - p.h
