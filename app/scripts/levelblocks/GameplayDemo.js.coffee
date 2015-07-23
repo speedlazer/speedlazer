@@ -34,10 +34,6 @@ generator.defineBlock class extends @Game.LevelBlock
   supports: ['speed', 'cleared']
 
   generate: ->
-    height = 2
-    @add(0, 0, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
-
     @add(400, 75, Crafty.e('2D, Canvas, Edge, Color').color('#505045').attr(w: 22, h: 35))
     @add(900, 25, Crafty.e('2D, Canvas, Edge, Color').color('#404045').attr(w: 42, h: 35))
     @add(600, 125, Crafty.e('2D, Canvas, Edge, Color').color('#505045').attr(w: 32, h: 40))
@@ -54,11 +50,9 @@ generator.defineBlock class extends @Game.LevelBlock
   supports: ['speed', 'cleared']
 
   generate: ->
-    height = 2
     @add(0, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 350, h: 15 }))
     @add(350, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 100, h: 70 }))
     @add(450, 0, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 550, h: 25 }))
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
     @add(380, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: @delta.x - 380, h: @level.visibleHeight }))
 
     @addBackground(380, @level.visibleHeight - 360, Crafty.e('2D, Canvas, Color').color('#303030').attr({ z: 2, w: 40, h: 360 }), 1.5)
@@ -100,10 +94,6 @@ generator.defineBlock class extends @Game.LevelBlock
           e.enemy().choreography(c, -1)
       , 500, 5)
 
-      #@add(1000 + (Math.random() * 50), 200 + (Math.random() * 75), Crafty.e('Enemy').enemy())
-      #@add(1200 + (Math.random() * 50), 50 + (Math.random() * 125), Crafty.e('Enemy').enemy())
-      #@add(1200 + (Math.random() * 250), 300 + (Math.random() * 50), Crafty.e('Enemy').enemy())
-
 generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.TunnelEnd'
   delta:
@@ -113,8 +103,6 @@ generator.defineBlock class extends @Game.LevelBlock
   supports: ['speed', 'cleared']
 
   generate: ->
-    height = 2
-    @add(0, 0, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
 
     h = 15
     @add(0, @level.visibleHeight - h, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr({ w: 350, h: h }))
@@ -159,10 +147,6 @@ generator.defineBlock class extends @Game.LevelBlock
           @add(650, 150, e)
           e.enemy().choreography(c, -1)
       , 500, 5)
-      #@add(650, 150, Crafty.e('Enemy').enemy())
-      #@add(1000 + (Math.random() * 50), 200 + (Math.random() * 75), Crafty.e('Enemy').enemy())
-      #@add(1200 + (Math.random() * 50), 50 + (Math.random() * 125), Crafty.e('Enemy').enemy())
-      #@add(1200 + (Math.random() * 250), 300 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
 
 generator.defineBlock class extends @Game.LevelBlock
@@ -219,9 +203,6 @@ generator.defineBlock class extends @Game.LevelBlock
           @add(650, 150, e)
           e.enemy().choreography(c, -1)
       , 500, 5)
-      #@add(1000 + (Math.random() * 50), 200 + (Math.random() * 75), Crafty.e('Enemy').enemy())
-      #@add(1200 + (Math.random() * 50), 150 + (Math.random() * 125), Crafty.e('Enemy').enemy())
-      #@add(1200 + (Math.random() * 250), 100 + (Math.random() * 50), Crafty.e('Enemy').enemy())
 
 generator.defineBlock class extends @Game.LevelBlock
   name: 'GameplayDemo.Lasers'
@@ -372,11 +353,6 @@ generator.defineBlock class extends @Game.LevelBlock
   generate: ->
     @yMotion = -180
 
-    height = 2
-    @add(0, @yMotion, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
-    @add(0, @yMotion, Crafty.e('2D, Canvas, Edge').attr w: 2, h: Math.abs @yMotion)
-    @add(@delta.x - height, @level.visibleHeight + @yMotion, Crafty.e('2D, Canvas, Edge').attr w: height, h: Math.abs @yMotion)
-
     height = 25
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
     @addBackground(0, @level.visibleHeight - 65, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -2, w: @delta.x * .5, h: 65 }), .5)
@@ -410,12 +386,7 @@ generator.defineBlock class extends @Game.LevelBlock
     height = 2
     @yMotion = -180
 
-    @add(0, 0, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height)
-    @add(0, @level.visibleHeight, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height)
-
     height = 25
-    #@add(0, @level.visibleHeight - height _ , Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
-
     @addBackground(0, @level.visibleHeight - 65 - @yMotion, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -2, w: @delta.x * .5, h: 65 }), .5)
     @addBackground(0, @level.visibleHeight - 85 - @yMotion, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -3, w: @delta.x * .25, h: 85 }), .25)
     @addBackground(200, 45 - @yMotion, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 200, h: 55 }), .5)
@@ -434,10 +405,6 @@ generator.defineBlock class extends @Game.LevelBlock
 
   generate: ->
     @yMotion = 180
-    height = 2
-    @add(0, 0, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
-    @add(@delta.x - 2, 0, Crafty.e('2D, Canvas, Edge').attr w: 2, h: Math.abs @yMotion)
-
     height = 25
     @add(0, @level.visibleHeight - height + @yMotion, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
 
@@ -469,9 +436,6 @@ generator.defineBlock class extends @Game.LevelBlock
   next: ['GameplayDemo.Ocean', 'GameplayDemo.TunnelStart']
 
   generate: ->
-    height = 2
-    @add(0, 0, Crafty.e('2D, Canvas, Edge').attr w: @delta.x, h: height )
-
     height = 25
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
     @addBackground(0, @level.visibleHeight - 65, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -2, w: @delta.x * .5, h: 65 }), .5)
