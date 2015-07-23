@@ -14,11 +14,11 @@ Crafty.c 'ScrollWall',
     @wallEnd = Crafty.e('2D, Canvas, Color, ScrollFront')
       .attr(x: - (Crafty.viewport.x - Crafty.viewport.width) - 3, y: 0, h: Crafty.viewport.height, w: 2)
 
-    @wallTop = Crafty.e('2D, Canvas, Edge')
+    @wallTop = Crafty.e('2D, Canvas, Edge, Collision')
       .attr(x: 0, y: 40, h: 2, w: Crafty.viewport.width)
 
-    @wallBottom = Crafty.e('2D, Canvas, Edge')
-      .attr(x: 0, y: Crafty.viewport.height, h: 2, w: Crafty.viewport.width)
+    @wallBottom = Crafty.e('2D, Canvas, Edge, Collision')
+      .attr(x: 0, y: Crafty.viewport.height - 2, h: 2, w: Crafty.viewport.width)
 
 
     @bind 'Remove', ->
@@ -58,6 +58,19 @@ Crafty.c 'ScrollWall',
       for e in el
         p = e.obj
         p.attr x: p.x + @_speed.x
+
+    @wallTop.onHit 'PlayerControlledShip', (el) =>
+      # Push the player downward
+      for e in el
+        p = e.obj
+        p.attr y: p.y + @_speed.y
+
+    @wallBottom.onHit 'PlayerControlledShip', (el) =>
+      # Push the player upward
+      console.log 'floor collide'
+      for e in el
+        p = e.obj
+        p.attr y: @wallBottom.y - p.h
 
   scrollWall: (speed) ->
     if speed.x? && speed.y?
