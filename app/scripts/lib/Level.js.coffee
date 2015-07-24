@@ -40,6 +40,7 @@ class Game.Level
 
   constructor: (@generator, @data = {}) ->
     @blocks = []
+    @buildedBlocks = []
     @bufferLength = 2500
     @generationPosition = x: 0, y: 40
     @visibleHeight = 480 - @generationPosition.y
@@ -96,8 +97,8 @@ class Game.Level
       if index > 0
         @blocks[index - 1].leave()
         @blocks[index].inScreen()
-      if index > 1
-        @blocks[index - 2].clean()
+
+      @_cleanupBuildBlocks()
     @_scrollWall = Crafty.e('ScrollWall')
     @_playersActive = no
 
@@ -142,10 +143,21 @@ class Game.Level
 
     for block, i in @blocks when i >= start
       block.build(@generationPosition, i)
+      @buildedBlocks.push block
+
       @generationPosition =
         x: block.x + block.delta.x
         y: block.y + block.delta.y
       break if @generationPosition.x > endX
+
+  _cleanupBuildBlocks: ->
+    keep = []
+    for block in @buildedBlocks
+      if block.canCleanup()
+        block.clean()
+      else
+        keep.push block
+    @buildedBlocks = keep
 
   _determineNextTileType: (blockType, settings) ->
     blockKlass = @generator.buildingBlocks[blockType]

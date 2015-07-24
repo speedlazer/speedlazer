@@ -100,10 +100,16 @@ class Game.LevelBlock
     )
     @createdElements.push element
 
-
   # Helper method to bind to an event in the game
   # and registers the bind for auto unbinding.
   bind: (event, callback) ->
     @createdBindings.push { event, callback }
     Crafty.bind(event, callback)
+
+  canCleanup: ->
+    cameraX = Crafty.viewport._x * -1
+    for elem in @createdElements
+      if elem.x + elem.w > cameraX
+        return no
+    yes
 
