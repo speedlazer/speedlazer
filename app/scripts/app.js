@@ -6,7 +6,7 @@ require('scripts/compiled/scenes');
 
 require('scripts/game');
 
-window.Game.start(false);
+window.Game.start(true);
 
 // Handle the fullscreen button
 $(document).on('click', function () {

@@ -10,6 +10,16 @@ Crafty.defineScene 'GameplayDemo', (data) ->
     title: 'Gameplay Demo'
 
   level.addBlock('Generic.Start')
+  level.addBlock 'Generic.Event',
+    enter: ->
+      @level.setForcedSpeed(2)
+
+  level.addBlock('GameplayDemo.PerspectiveTest')
+  level.addBlock('GameplayDemo.PerspectiveTest')
+  level.addBlock 'Generic.Event',
+    enter: ->
+      @level.setForcedSpeed(1)
+
   level.addBlock('Generic.Dialog', {
     dialog: [
       has: ['Player 1'],
@@ -50,8 +60,6 @@ Crafty.defineScene 'GameplayDemo', (data) ->
     ]
   })
   level.addBlock('GameplayDemo.TunnelStart')
-  #level.generateBlocks(amount: 1) #, { only: ['cleared'] })
-  #level.generateBlocks(stopBefore: 'GameplayDemo.Tunnel')
   level.addBlock('GameplayDemo.Tunnel')
   level.addBlock('Generic.Dialog', {
     triggerOn: 'enter'
@@ -85,9 +93,19 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   })
   level.addBlock 'Generic.Event', inScreen: ->
     @level.setForcedSpeed(4)
-  level.addBlock('GameplayDemo.TunnelTwist')
+  level.addBlock('GameplayDemo.Tunnel', only: ['cleared'])
   level.generateBlocks(amount: 2, only: ['cleared'])
-  level.generateBlocks(stopBefore: 'GameplayDemo.Asteroids')
+  level.generateBlocks(stopBefore: 'GameplayDemo.TunnelEnd')
+  level.addBlock('GameplayDemo.TunnelEnd', only: ['cleared'])
+  level.addBlock 'Generic.Event',
+    enter: ->
+      @level.setForcedSpeed(2)
+  level.addBlock('GameplayDemo.Ocean')
+  level.addBlock('GameplayDemo.OceanRiser')
+  level.addBlock('GameplayDemo.OceanHigh')
+  level.addBlock('GameplayDemo.OceanHigh')
+  level.addBlock('GameplayDemo.OceanLower')
+  level.addBlock('GameplayDemo.Ocean')
 
   level.addBlock('GameplayDemo.End')
   level.start()

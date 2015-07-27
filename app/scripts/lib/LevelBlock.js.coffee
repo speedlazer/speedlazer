@@ -68,6 +68,10 @@ class Game.LevelBlock
   # an ideal moment to speed up movement, show dialog, etc
   inScreen: ->
 
+  # The block is fully in screen now, the right side
+  # of the block is touching the right side of the screen
+  outScreen: ->
+
   # The block is out of screen.
   leave: ->
 
@@ -96,10 +100,17 @@ class Game.LevelBlock
     )
     @createdElements.push element
 
-
   # Helper method to bind to an event in the game
   # and registers the bind for auto unbinding.
   bind: (event, callback) ->
     @createdBindings.push { event, callback }
     Crafty.bind(event, callback)
+
+  canCleanup: ->
+    cameraX = Crafty.viewport._x * -1
+    return no if @x > cameraX
+    for elem in @createdElements
+      if elem.x + elem.w > cameraX
+        return no
+    yes
 

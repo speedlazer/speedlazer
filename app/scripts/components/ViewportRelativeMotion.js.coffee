@@ -16,9 +16,11 @@ Crafty.c 'ViewportRelativeMotion',
 
     @motion = Crafty.bind 'ViewportScroll', =>
       shifted = (@_initialViewport.x - Crafty.viewport._x) * (@_speed - 1)
-      x = @_location.x - shifted
-      @attr x: x
+      newX = @_location.x - shifted
+      newY = @_location.y - (Crafty.viewport._y * (1 - @_speed))
+      @attr x: newX, y: newY
     this
 
   remove: ->
-    Crafty.unbind 'ViewportScroll', @motion
+    #Crafty.unbind 'ViewportScroll', @motion
+    Crafty.unbind 'CameraScroll', @motion
