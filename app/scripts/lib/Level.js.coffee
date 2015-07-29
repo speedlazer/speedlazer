@@ -40,8 +40,9 @@ class Game.Level
 
   constructor: (@generator, @data = {}) ->
     @blocks = []
+    @levelDefinition = []
     @buildedBlocks = []
-    @bufferLength = 2500
+    @bufferLength = 640 * 4
     @generationPosition = x: 0, y: 40
     @visibleHeight = 480 - @generationPosition.y
 
@@ -52,10 +53,7 @@ class Game.Level
   # @param {settings} specific settings to be
   #   used by this block
   addBlock: (blockType, settings = {}) ->
-    klass = @generator.buildingBlocks[blockType]
-    throw new Error("#{blockType} not found") unless klass?
-    block = new klass(this, settings)
-    @blocks.push block
+    @levelDefinition.push { type: 'block', blockType, settings }
 
   ##
   # Generate a certain amount of blocks in
@@ -70,18 +68,7 @@ class Game.Level
   # @param {settings} settings to be passed to all
   #   generated blocks.
   generateBlocks: (settings = {}) ->
-    return if @blocks.length is 0
-    # Get the current tile type
-    lastBlock = @blocks[@blocks.length - 1]
-    blockType = lastBlock.name
-
-    amount = settings.amount ? 30
-    return if settings.stopBefore? and settings.stopBefore is blockType
-
-    for num in [1..amount]
-      blockType = @_determineNextTileType blockType, settings
-      return if settings.stopBefore? and settings.stopBefore is blockType
-      @addBlock blockType, settings
+    @levelDefinition.push { type: 'generation', settings }
 
   ##
   # Start the level, and generation of blocks
@@ -90,8 +77,10 @@ class Game.Level
     Crafty.viewport.y = 0
     @_forcedSpeed = 1
     @_update 0
+
     for block in @blocks when block.x < 640
       block.enter()
+
     Crafty.bind 'LeaveBlock', (index) =>
       @_update index
       if index > 0
@@ -138,17 +127,67 @@ class Game.Level
 
   # Generate more level from tile 'start'
   _update: (start) ->
+    @generationDefinition ?= 0
+
     startX = @blocks[start]?.x || 0
     endX = startX + @bufferLength
 
-    for block, i in @blocks when i >= start
-      block.build(@generationPosition, i)
-      @buildedBlocks.push block
+    counter = 0
+    overflowThreshold = 10
 
-      @generationPosition =
-        x: block.x + block.delta.x
-        y: block.y + block.delta.y
-      break if @generationPosition.x > endX
+    while @generationPosition.x < endX and @generationDefinition < @levelDefinition.length and counter < overflowThreshold
+      currentGenerator = @levelDefinition[@generationDefinition]
+      @_generateLevel currentGenerator
+      counter += 1
+
+  _generateLevel: (generator) ->
+    if generator.type is 'block'
+      @_generateDefinedBlock generator
+    else if generator.type is 'generation'
+      @_generateBlocks generator
+    else
+      console.log 'no support yet for', generator.type
+
+  _generateDefinedBlock: (generator) ->
+    @_addGeneratedBlock generator.blockType, generator.settings
+    @generationDefinition += 1 # add a block once
+
+  _addGeneratedBlock: (blockType, settings) ->
+    klass = @generator.buildingBlocks[blockType]
+    throw new Error("#{blockType} not found") unless klass?
+    block = new klass(this, settings)
+    @blocks.push block
+    block.build(@generationPosition, @blocks.length - 1)
+    @generationPosition =
+      x: block.x + block.delta.x
+      y: block.y + block.delta.y
+
+  _generateBlocks: (generator) ->
+    return if @blocks.length is 0
+    # Get the current tile type
+    lastBlock = @blocks[@blocks.length - 1]
+    blockType = lastBlock.name
+
+    settings = generator.settings
+
+    amount = settings.amount ? 30
+
+    if settings.stopBefore? and settings.stopBefore is blockType
+      @generationDefinition += 1 # done!
+      return
+
+    if amount <= (generator.amountGenerated ? 0)
+      @generationDefinition += 1 # done!
+      return
+
+    blockType = @_determineNextTileType blockType, settings
+    if settings.stopBefore? and settings.stopBefore is blockType
+      @generationDefinition += 1 # done!
+      return
+
+    @_addGeneratedBlock blockType, settings
+    generator.amountGenerated ?= 0
+    generator.amountGenerated += 1
 
   _cleanupBuildBlocks: ->
     keep = []
