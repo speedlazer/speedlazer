@@ -181,7 +181,6 @@ class Game.Level
       return
 
     if settings.until?.apply(this)
-      console.log 'goal met!'
       @generationDefinition += 1 # done!
       return
 
