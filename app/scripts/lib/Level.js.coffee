@@ -180,6 +180,11 @@ class Game.Level
       @generationDefinition += 1 # done!
       return
 
+    if settings.until?.apply(this)
+      console.log 'goal met!'
+      @generationDefinition += 1 # done!
+      return
+
     blockType = @_determineNextTileType blockType, settings
     if settings.stopBefore? and settings.stopBefore is blockType
       @generationDefinition += 1 # done!

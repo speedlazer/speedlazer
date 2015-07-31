@@ -17,8 +17,36 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   level.addBlock('GameplayDemo.PerspectiveTest')
   level.addBlock('GameplayDemo.PerspectiveTest')
 
+  level.addBlock 'Generic.Event', inScreen: ->
+    @level.data.needToKill = 10
+
+    counter = Crafty.e('2D, DOM, Text, HUD')
+      .text("Enemies Left: #{@level.data.needToKill}")
+      .textColor('#FF0000')
+      .css('textAlign', 'center')
+      .textFont({
+        size: '20px',
+        weight: 'bold',
+        family: 'Courier new'
+      })
+      .attr(w: 640)
+      .positionHud(x: 0, y: 110, z: 2)
+    evt = Crafty.bind 'EnemyDestroyed', =>
+      @level.data.needToKill -= 1
+      counter.text("Enemies Left: #{@level.data.needToKill}")
+      if @level.data.needToKill <= 0
+        counter.destroy()
+        Crafty.unbind evt
+        @level.data.needToKill = 0
   level.addBlock('GameplayDemo.TunnelStart', only: ['cleared'])
-  level.generateBlocks(amount: 3, only: ['cleared'])
+
+    #@level.bindEvent('enemyCounter', '
+  #Crafty.bind('EnemyDestroyed', => console.log 'detecting destruction!')
+
+  level.generateBlocks until: ->
+    console.log 'checking goal', @data.needToKill
+    @data.needToKill is 0
+
 
   #level.addBlock 'Generic.Event',
     #enter: ->

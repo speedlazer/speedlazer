@@ -16,6 +16,7 @@ Crafty.c 'Enemy',
       @health -= bullet.damage
       if @health <= 0
         bullet.trigger 'DestroyTarget', target: this
+        Crafty.trigger('EnemyDestroyed', this)
         @destroy()
       bullet.destroy()
 
