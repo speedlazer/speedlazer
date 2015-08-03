@@ -122,7 +122,11 @@ generator.defineBlock class extends @Game.LevelBlock
       for condition in conditions.split(',')
         [inverse, value] = @convertCondition(condition)
 
-        canShow = no unless value in elements
+        unless inverse
+          canShow = no unless value in elements
+        else
+          canShow = no unless value not in elements
+
 
       #if dialog.has?
         #for playerName in dialog.has
