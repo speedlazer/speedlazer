@@ -41,6 +41,7 @@ generator.defineBlock class extends @Game.LevelBlock
     x: 0
     y: 0
   next: []
+
   inScreen: ->
     super
     @showDialog() if !@settings.triggerOn? or @settings.triggerOn is 'inScreen'
@@ -56,25 +57,29 @@ generator.defineBlock class extends @Game.LevelBlock
   showDialog: (start = 0) ->
     Crafty('Dialog').each -> @destroy()
     dialogIndex = @determineDialog(start)
+
     if dialogIndex?
       dialog = @settings.dialog[dialogIndex]
+      [conditions, speaker, lines...] = dialog.split(':')
+      lines = lines.join(':').split('\n')
+
       x = 60
 
       Crafty.e('2D, DOM, Color, Tween, HUD, Dialog')
-        .attr(w: 570, h: ((dialog.lines.length + 3) * 20), alpha: 0.5)
+        .attr(w: 570, h: ((lines.length + 3) * 20), alpha: 0.5)
         .color('#000000')
         .positionHud(
           x: x - 10
-          y: @level.visibleHeight - ((dialog.lines.length + 3) * 20)
+          y: @level.visibleHeight - ((lines.length + 3) * 20)
           z: 2
         )
 
       Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
         .attr( w: 550)
-        .text(dialog.name)
+        .text(speaker)
         .positionHud(
           x: x
-          y: @level.visibleHeight - ((dialog.lines.length + 2) * 20)
+          y: @level.visibleHeight - ((lines.length + 2) * 20)
           z: 2
         )
         .textColor('#909090')
@@ -84,13 +89,13 @@ generator.defineBlock class extends @Game.LevelBlock
           family: 'Courier new'
         })
 
-      for line, i in dialog.lines
+      for line, i in lines
         Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
           .attr( w: 550)
           .text(line)
           .positionHud(
             x: x
-            y: @level.visibleHeight - ((dialog.lines.length + 1 - i) * 20)
+            y: @level.visibleHeight - ((lines.length + 1 - i) * 20)
             z: 2
           )
           .textColor('#909090')
@@ -102,28 +107,42 @@ generator.defineBlock class extends @Game.LevelBlock
 
       Crafty.e('Dialog, Delay').delay( =>
           @showDialog(start + 1)
-        , 2500 * dialog.lines.length, 0)
+        , 2500 * lines.length, 0)
 
 
   determineDialog: (start = 0) ->
-    players = []
+    elements = []
     Crafty('Player ControlScheme').each ->
-      players.push(@name) if @lives > 0
+      elements.push(@name) if @lives > 0
 
     for dialog, i in @settings.dialog when i >= start
       canShow = yes
+      [conditions, ...] = dialog.split(':')
 
-      if dialog.has?
-        for playerName in dialog.has
-          canShow = no if players.indexOf(playerName) is -1
+      for condition in conditions.split(',')
+        [inverse, value] = @convertCondition(condition)
 
-      if dialog.only?
-        for playerName in players
-          canShow = no if dialog.only.indexOf(playerName) is -1
+        canShow = no unless value in elements
+
+      #if dialog.has?
+        #for playerName in dialog.has
+          #canShow = no if players.indexOf(playerName) is -1
+
+      #if dialog.only?
+        #for playerName in players
+          #canShow = no if dialog.only.indexOf(playerName) is -1
 
       continue unless canShow
       return i
     null
+
+  convertCondition: (condition) ->
+    inverse = condition.slice(0, 1) is '!'
+    packedValue = condition.slice(if inverse then 1 else 0)
+    value = "Player #{v[1]}" if v = /p(\d)/.exec packedValue
+
+    [inverse, value]
+
 
 generator.defineBlock class extends @Game.LevelBlock
   name: 'Generic.Event'

@@ -16,41 +16,16 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   level.addBlock 'Generic.Event', enter: -> @level.setForcedSpeed(1)
   level.addBlock('Generic.Dialog', {
     dialog: [
-      has: ['Player 1'],
-      name: 'John',
-      lines: [
-        'Welcome to the gameplay demo!'
-        'Let\'s do some target practice!'
-      ]
-    ,
-      has: ['Player 1', 'Player 2'],
-      name: 'Jim',
-      lines: [
-        'Yeah let\'s shoot stuff!'
-      ]
-    ,
-      only: ['Player 2'],
-      name: 'Jim',
-      lines: [
-        'Woohoo target practice!'
-        'Kill kill kill!!!'
-      ]
+      'p1:John:Welcome to the gameplay demo!\nLet\'s do some target practice!'
+      'p1,p2:Jim:Yeah let\'s shoot stuff!'
+      '!p1,p2:Jim:Whoohoo target practice!\nKill kill kill!!!'
     ]
   })
   level.addBlock('GameplayDemo.Asteroids')
   level.addBlock('Generic.Dialog', {
     dialog: [
-      only: ['Player 1'],
-      name: 'John',
-      lines: [
-        'Entering the tunnel!'
-      ]
-    ,
-      has: ['Player 2'],
-      name: 'Jim',
-      lines: [
-        'Prepare for darkness!!!'
-      ]
+      'p1,!p2:John:Entering the tunnel!'
+      'p2:Jim:Prepare for darkness!!!'
     ]
   })
   level.addBlock 'Generic.Event', inScreen: ->
@@ -83,17 +58,8 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   level.addBlock('Generic.Dialog', {
     triggerOn: 'enter'
     dialog: [
-      has: ['Player 1'],
-      name: 'John',
-      lines: [
-        'Slow down! Lasers!!'
-      ]
-    ,
-      only: ['Player 2'],
-      name: 'Jim',
-      lines: [
-        'Uhoh! Danger!'
-      ]
+      'p1:John:Slow down! Lasers!!'
+      '!p1,p2:Jim:Uh oh! Danger!'
     ]
   })
   level.addBlock 'Generic.Event', enter: ->
@@ -103,11 +69,7 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   level.generateBlocks(amount: 1)
   level.addBlock('Generic.Dialog', {
     dialog: [
-      has: ['Player 1'],
-      name: 'John',
-      lines: [
-        'Let\'s get out of here!'
-      ]
+      'p1:John:Let\'s get out of here!'
     ]
   })
   level.addBlock 'Generic.Event', inScreen: -> @level.setForcedSpeed(4)

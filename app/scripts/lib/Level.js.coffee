@@ -64,9 +64,13 @@ class Game.Level
   # This method needs at least one block already
   # placed in the level.
   #
-  # @param {amount} amount of blocks to be placed.
-  # @param {settings} settings to be passed to all
+  # @param settings the settings to be passed to all
   #   generated blocks.
+  # @option settings [Number] amount the amount of blocks to generate
+  # @option settings [Function] until keep generating level until
+  #   the provided function returns true
+  # @option settings [String] stopBefore generate until the provided
+  #   blocktype can fit after the last block in the level
   generateBlocks: (settings = {}) ->
     @levelDefinition.push { type: 'generation', settings }
 
@@ -142,17 +146,17 @@ class Game.Level
 
   _generateLevel: (generator) ->
     if generator.type is 'block'
-      @_generateDefinedBlock generator
+      @_generatePredefinedBlock generator
     else if generator.type is 'generation'
       @_generateBlocks generator
     else
       console.log 'no support yet for', generator.type
 
-  _generateDefinedBlock: (generator) ->
-    @_addGeneratedBlock generator.blockType, generator.settings
+  _generatePredefinedBlock: (generator) ->
+    @_addBlockToLevel generator.blockType, generator.settings
     @generationDefinition += 1 # add a block once
 
-  _addGeneratedBlock: (blockType, settings) ->
+  _addBlockToLevel: (blockType, settings) ->
     klass = @generator.buildingBlocks[blockType]
     throw new Error("#{blockType} not found") unless klass?
     block = new klass(this, settings)
@@ -189,7 +193,7 @@ class Game.Level
       @generationDefinition += 1 # done!
       return
 
-    @_addGeneratedBlock blockType, settings
+    @_addBlockToLevel blockType, settings
     generator.amountGenerated ?= 0
     generator.amountGenerated += 1
 
