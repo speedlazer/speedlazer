@@ -20,10 +20,10 @@ var Game = {
         .setName('Player 2')
         .color('#00FF00');
 
-      Crafty.e('Player, Color')
-        .attr({ name: 'Player 3' })
-        .setName('Player 3')
-        .color('#0000FF');
+      //Crafty.e('Player, Color')
+        //.attr({ name: 'Player 3' })
+        //.setName('Player 3')
+        //.color('#0000FF');
 
       Crafty.e('KeyboardControls, PlayerAssignable')
         .controls({
