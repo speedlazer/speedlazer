@@ -1,3 +1,4 @@
+# TODO: Document
 Crafty.c 'Choreography',
   init: ->
     @bind("EnterFrame", @_choreographyTick)
@@ -6,6 +7,8 @@ Crafty.c 'Choreography',
       linear: @_executeLinear
       sine: @_executeSine
       delay: @_executeDelay
+      # hold: #holds position within viewport (HUD)
+      # viewport: move to position within viewport
 
   remove: ->
 
@@ -29,9 +32,7 @@ Crafty.c 'Choreography',
     part = @_choreography[number]
     if part.event?
       @trigger(part.event, { entity: this, data: part.data })
-
     @_setupPart part, number
-
 
   _choreographyTick: (frameData) ->
     return unless @_currentPart?

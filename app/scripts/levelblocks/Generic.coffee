@@ -127,15 +127,6 @@ generator.defineBlock class extends @Game.LevelBlock
         else
           canShow = no unless value not in elements
 
-
-      #if dialog.has?
-        #for playerName in dialog.has
-          #canShow = no if players.indexOf(playerName) is -1
-
-      #if dialog.only?
-        #for playerName in players
-          #canShow = no if dialog.only.indexOf(playerName) is -1
-
       continue unless canShow
       return i
     null
@@ -166,5 +157,4 @@ generator.defineBlock class extends @Game.LevelBlock
   leave: ->
     super
     @settings.leave?.apply this
-
 

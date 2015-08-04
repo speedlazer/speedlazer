@@ -10,31 +10,8 @@ Crafty.defineScene 'City', (data) ->
     stage: data.stage
     title: 'City'
   level.addBlock('Generic.Start')
-
-  level.addBlock('Generic.Dialog', {
-    dialog: [
-      has: ['Player 1'],
-      name: 'John',
-      lines: [
-        'Welcome to the gameplay demo!'
-        'Let\'s do some target practice!'
-      ]
-    ,
-      has: ['Player 1', 'Player 2'],
-      name: 'Jim',
-      lines: [
-        'Yeah let\'s shoot stuff!'
-      ]
-    ,
-      only: ['Player 2'],
-      name: 'Jim',
-      lines: [
-        'Woohoo target practice!'
-        'Kill kill kill!!!'
-      ]
-    ]
-  })
-  level.addBlock('GameplayDemo.Asteroids')
+  level.addBlock('City.Ocean')
+  level.generateBlocks amount: 10
   level.addBlock('GameplayDemo.End')
   level.start()
 

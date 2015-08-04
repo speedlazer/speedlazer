@@ -1,41 +1,19 @@
+###
+
+# Level
+
+The level is used to orchestrate the placement of
+LevelBlock's to form a level.
+
+A level can be created through the LevelGenerator
+
+Optionally, data can be passed in. All the blocks in
+a level can access and use and modify this data.
+
+###
+
 Game = @Game
 
-##
-# Level
-#
-# The level is used to orchestrate the placement of
-# LevelBlock's to form a level.
-#
-# A level can be created through the LevelGenerator
-#
-# Optionally, data can be passed in. All the blocks in
-# a level can access and use and modify this data.
-#
-# blocks can be added in 2 ways.
-# Manually, through #addBlock and automatically,
-# through #generateBlocks
-#
-# Starting a level:
-#
-# using #start, the level can be started. This will
-# trigger the '#generate' of blocks to build their
-# environment for a certain amount of pixels.
-#
-# Then the camera moves through the level, additional
-# blocks will '#generate' and earlier blocks will
-# be '#clean'-ed.
-#
-# during this movement of the camera, each block also
-#
-# gets 3 triggers to optionally act upon (useful for
-# placing enemies or other events)
-#
-# - #enter The camera start moving into this block
-# - #inScreen The block is touching the left side of the camera,
-#   and will start moving out-of-view
-# - #leave The block has moved out-of-view of the camera
-#   this will also cause the '#clean' action
-##
 class Game.Level
 
   constructor: (@generator, @data = {}) ->
@@ -46,36 +24,66 @@ class Game.Level
     @generationPosition = x: 0, y: 40
     @visibleHeight = 480 - @generationPosition.y
 
-  ##
-  # Manually pick a blocktype and add it to
-  # the level.
-  # @param {blockType} LevelBlock name to add
-  # @param {settings} specific settings to be
-  #   used by this block
+  ###
+  blocks can be added in 2 ways.
+  Manually, through #addBlock and automatically,
+
+  Manually pick a blocktype and add it to
+  the level.
+  @param {blockType} LevelBlock name to add
+  @param {settings} specific settings to be
+   used by this block
+  ###
   addBlock: (blockType, settings = {}) ->
     @levelDefinition.push { type: 'block', blockType, settings }
 
-  ##
-  # Generate a certain amount of blocks in
-  # sequence. A random pick from the '.next'
-  # property from LevelBlock will determine
-  # which block will be placed next.
-  #
-  # This method needs at least one block already
-  # placed in the level.
-  #
-  # @param settings the settings to be passed to all
-  #   generated blocks.
-  # @option settings [Number] amount the amount of blocks to generate
-  # @option settings [Function] until keep generating level until
-  #   the provided function returns true
-  # @option settings [String] stopBefore generate until the provided
-  #   blocktype can fit after the last block in the level
+
+  ###
+  through #generateBlocks
+
+  Generate a certain amount of blocks in
+  sequence. A random pick from the '.next'
+  property from LevelBlock will determine
+  which block will be placed next.
+
+  This method needs at least one block already
+  placed in the level.
+
+  @param {object} settings the settings to be passed to all
+    generated blocks.
+  @option {number} settings amount the amount of blocks to generate
+  @option settings [Function] until keep generating level until
+    the provided function returns true
+  @option settings [String] stopBefore generate until the provided
+    blocktype can fit after the last block in the level
+
+  ###
   generateBlocks: (settings = {}) ->
     @levelDefinition.push { type: 'generation', settings }
 
-  ##
-  # Start the level, and generation of blocks
+  ###
+  Starting a level:
+
+  using #start, the level can be started. This will
+  trigger the '#generate' of blocks to build their
+  environment for a certain amount of pixels.
+
+  Then the camera moves through the level, additional
+  blocks will '#generate' and earlier blocks will
+  be '#clean'-ed.
+
+  during this movement of the camera, each block also
+
+  gets 3 triggers to optionally act upon (useful for
+  placing enemies or other events)
+
+  - #enter The camera start moving into this block
+  - #inScreen The block is touching the left side of the camera,
+    and will start moving out-of-view
+  - #leave The block has moved out-of-view of the camera
+    this will also cause the '#clean' action
+
+  ###
   start: ->
     Crafty.viewport.x = 0
     Crafty.viewport.y = 0
