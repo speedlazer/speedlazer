@@ -7,8 +7,7 @@ Crafty.c 'Choreography',
       linear: @_executeLinear
       sine: @_executeSine
       delay: @_executeDelay
-      # hold: #holds position within viewport (HUD)
-      # viewport: move to position within viewport
+      viewport: @_executeMoveIntoViewport # move to position within viewport
 
   remove: ->
 
@@ -65,4 +64,15 @@ Crafty.c 'Choreography',
     @y = @_currentPart.y + (Math.sin(-(Math.PI + (Math.PI * @_currentPart.start * 2)) + (v * @_currentPart.length * Math.PI * 2)) * halfY)
 
   _executeDelay: (v) ->
+
+  _executeMoveIntoViewport: (v) ->
+    # the goal are current coordinates on screen
+    destinationX = -Crafty.viewport.x + @_currentPart.dx
+    diffX = destinationX - @x
+    @x = @x + (diffX * v)
+
+    destinationY = -Crafty.viewport.y + @_currentPart.dy
+    diffY = destinationY - @y
+    @y = @y + (diffY * v)
+
 

@@ -19,23 +19,62 @@ generator.defineBlock class extends @Game.LevelBlock
     @addBackground(200, 55, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 75, h: 25 }), .45)
 
   inScreen: ->
+    #@level.setForcedSpeed 0
     only = @settings.only || []
-    #if only.indexOf('cleared') is -1
-      #@spawnEnemies()
+    if only.indexOf('cleared') is -1
+      @spawnEnemies()
 
   spawnEnemies: ->
-    c = [
-      length: 1
-      x: 620
-      y: 150
-      duration: 2000
-      type: 'viewport'
-    ]
-
+    @enemiesSpawned = 0
     Crafty.e('Delay').delay(
       =>
         e = Crafty.e('Enemy')
         e.bind('retreat', (data) -> console.log "Retreating! #{data.data.name}")
+
+        c = [
+          length: 1
+          x: 600
+          y: 200
+          duration: 400
+          type: 'viewport'
+        ]
+        offset = 500
+        durations = [
+          offset + 1500        # 1
+          offset + 1000 + 900  # 4
+          offset + 500  + 300  # 2
+          offset        + 600  # 3
+        ]
+
+        if @enemiesSpawned % 2 is 0
+          c.push
+            length: 1
+            x: 600
+            y: 50 + (Math.floor(@enemiesSpawned / 2) * 100)
+            duration: durations[@enemiesSpawned]
+            type: 'viewport'
+          c.push
+            length: 1
+            x: 20
+            y: 50 + (Math.floor(@enemiesSpawned / 2) * 100)
+            duration: 1000
+            type: 'viewport'
+        else
+          c.push
+            length: 1
+            x: 600
+            y: 350 - (Math.floor(@enemiesSpawned / 2) * 100)
+            duration: durations[@enemiesSpawned]
+            type: 'viewport'
+          c.push
+            length: 1
+            x: 20
+            y: 350 - (Math.floor(@enemiesSpawned / 2) * 100)
+            duration: 1000
+            type: 'viewport'
+
         @add(750, 150, e)
-        e.enemy().choreography(c, 1)
-    , 500, 1)
+        @enemiesSpawned += 1
+
+        e.enemy().choreography(c, 0)
+    , 500, 3)

@@ -30,6 +30,7 @@ class Game.Level
 
   Manually pick a blocktype and add it to
   the level.
+
   @param {blockType} LevelBlock name to add
   @param {settings} specific settings to be
    used by this block
