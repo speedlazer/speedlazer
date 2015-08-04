@@ -4,7 +4,7 @@ Crafty.defineScene 'City', (data) ->
   Game = window.Game
 
   # constructor
-  Crafty.background('#8080FF')
+  Crafty.background('#602020')
 
   level = Game.levelGenerator.createLevel
     stage: data.stage
@@ -14,6 +14,30 @@ Crafty.defineScene 'City', (data) ->
   level.generateBlocks amount: 10
   level.addBlock('GameplayDemo.End')
   level.start()
+
+  v = 0
+  co =
+    r: 0x60
+    g: 0x20
+    b: 0x20
+  cd =
+    r: 0x80
+    g: 0x80
+    b: 0xFF
+  steps = 80
+  Crafty.e('Delay').delay(
+    =>
+      v += 1
+      p = v * 1.0 / steps
+      c =
+        r: co.r * (1 - p) + cd.r * p
+        b: co.b * (1 - p) + cd.g * p
+        g: co.g * (1 - p) + cd.b * p
+      cs = (i.toString(16).slice(0, 2) for k, i of c)
+
+      Crafty.background("##{cs.join('')}")
+      #console.log "##{cs.join('')}"
+  , 500, steps - 1)
 
   Crafty.bind 'EndOfLevel', ->
     level.stop()
