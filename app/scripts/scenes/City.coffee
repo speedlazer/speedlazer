@@ -24,7 +24,8 @@ Crafty.defineScene 'City', (data) ->
     r: 0x80
     g: 0x80
     b: 0xFF
-  steps = 80
+
+  steps = 160
   Crafty.e('Delay').delay(
     =>
       v += 1
@@ -115,9 +116,9 @@ Crafty.defineScene 'City', (data) ->
       h = yMax - yMin
       covered.push(w * h)
 
-
-    perc = Math.max(covered...) / sunArea
-    perc = 1 if covered > sunArea
+    maxCoverage = Math.max(covered...) * 1.7
+    perc = maxCoverage / sunArea
+    perc = 1 if maxCoverage > sunArea
     for e in glare
       e.attr alpha: e.originalAlpha * (1 - perc)
 
