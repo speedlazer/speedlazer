@@ -42,7 +42,7 @@ Crafty.defineScene 'City', (data) ->
   duration = steps * 500 * 2
 
   sun = Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Collision')
-    .attr(w: 60, h: 60, z: -1000, x: 550, y: 710)
+    .attr(w: 60, h: 60, z: -1000)
     .color('#DDDD00')
     .viewportRelativeMotion(
       x: 550
@@ -53,8 +53,19 @@ Crafty.defineScene 'City', (data) ->
     .attr(dx: 200)
 
   glare = []
-  glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween')
-    .attr(w: 80, h: 80, z: 1000, x: 150, y: 10, alpha: 0.7, originalAlpha: 0.7)
+  glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Glare')
+    .attr(w: 90, h: 90, z: 900, alpha: 0.4, originalAlpha: 0.4)
+    .color('#FFFFFF')
+    .viewportRelativeMotion(
+      x: 550
+      y: 395
+      speed: 0
+    )
+    .tween({ dy: -340 }, duration)
+    .attr(dx: 185)
+  )
+  glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Glare')
+    .attr(w: 80, h: 80, z: 1000, alpha: 0.7, originalAlpha: 0.7)
     .color('#B0B0FF')
     .viewportRelativeMotion(
       x: 150
@@ -65,8 +76,8 @@ Crafty.defineScene 'City', (data) ->
     .attr(dx: -200)
   )
 
-  glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween')
-    .attr(w: 10, h: 10, z: 1000, x: 150, y: 10, alpha: 0.8, originalAlpha: 0.8)
+  glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Glare')
+    .attr(w: 10, h: 10, z: 1000, alpha: 0.8, originalAlpha: 0.8)
     .color('#FF9090')
     .viewportRelativeMotion(
       x: 150
@@ -77,8 +88,8 @@ Crafty.defineScene 'City', (data) ->
     .attr(dx: -100)
   )
 
-  glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween')
-    .attr(w: 200, h: 200, z: 1000, x: 150, y: 10, alpha: 0.2, originalAlpha: 0.2)
+  glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Glare')
+    .attr(w: 200, h: 200, z: 1000, alpha: 0.2, originalAlpha: 0.2)
     .color('#FF9090')
     .viewportRelativeMotion(
       x: 150
@@ -88,10 +99,13 @@ Crafty.defineScene 'City', (data) ->
     .tween({ dy: 410 }, duration)
     .attr(dx: -300)
   )
-  sun.onHit '2D', (c) ->
-    covered = 0
+  Crafty.bind 'EnterFrame', ->
+    covered = [0]
     sunArea = sun.area()
-    for o in c
+
+    for o in sun.hit('2D')
+      continue if o.obj is sun
+      continue if o.obj.has 'Glare'
       e = o.obj
       xMin = Math.max(sun.x, e.x)
       xMax = Math.min(sun.x + sun.w, e.x + e.w)
@@ -99,9 +113,10 @@ Crafty.defineScene 'City', (data) ->
       yMin = Math.max(sun.y, e.y)
       yMax = Math.min(sun.y + sun.h, e.y + e.h)
       h = yMax - yMin
-      covered += w * h
+      covered.push(w * h)
 
-    perc = covered / sunArea
+
+    perc = Math.max(covered...) / sunArea
     perc = 1 if covered > sunArea
     for e in glare
       e.attr alpha: e.originalAlpha * (1 - perc)
