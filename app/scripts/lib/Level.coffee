@@ -3,8 +3,8 @@
 # Level
 
 The level is used to orchestrate the placement of
-LevelBlock's to form a level.
-
+LevelBlock's to form a level.showDialog: ->
+new @Game.Dialog @settings.dialog
 A level can be created through the LevelGenerator
 
 Optionally, data can be passed in. All the blocks in
@@ -128,6 +128,9 @@ class Game.Level
       @_scrollWall.scrollWall(@_forcedSpeed)
     Crafty('PlayerControlledShip').each ->
       @forcedSpeed speed
+
+  showDialog: (dialog) ->
+    new Game.Dialog dialog, this
 
   ##
   # Stop the level, clean up event handlers and

@@ -14,7 +14,9 @@ Crafty.defineScene 'City', (data) ->
   level.generateBlocks amount: 1
   level.addBlock 'City.Ocean',
     inScreen: ->
-      console.log 'woohoo generic binding!'
+      @level.showDialog [
+        'p1:You:woohoo generic binding!'
+      ]
   level.generateBlocks amount: 10
   level.addBlock 'GameplayDemo.End'
   level.start()
@@ -59,7 +61,7 @@ Crafty.defineScene 'City', (data) ->
 
   glare = []
   glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Glare')
-    .attr(w: 90, h: 90, z: 900, alpha: 0.4, originalAlpha: 0.4)
+    .attr(w: 90, h: 90, z: 90, alpha: 0.4, originalAlpha: 0.4)
     .color('#FFFFFF')
     .viewportRelativeMotion(
       x: 550
@@ -70,7 +72,7 @@ Crafty.defineScene 'City', (data) ->
     .attr(dx: 185)
   )
   glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Glare')
-    .attr(w: 80, h: 80, z: 1000, alpha: 0.7, originalAlpha: 0.7)
+    .attr(w: 80, h: 80, z: 91, alpha: 0.7, originalAlpha: 0.7)
     .color('#B0B0FF')
     .viewportRelativeMotion(
       x: 150
@@ -82,7 +84,7 @@ Crafty.defineScene 'City', (data) ->
   )
 
   glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Glare')
-    .attr(w: 10, h: 10, z: 1000, alpha: 0.8, originalAlpha: 0.8)
+    .attr(w: 10, h: 10, z: 92, alpha: 0.8, originalAlpha: 0.8)
     .color('#FF9090')
     .viewportRelativeMotion(
       x: 150
@@ -94,7 +96,7 @@ Crafty.defineScene 'City', (data) ->
   )
 
   glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Glare')
-    .attr(w: 200, h: 200, z: 1000, alpha: 0.2, originalAlpha: 0.2)
+    .attr(w: 200, h: 200, z: 93, alpha: 0.2, originalAlpha: 0.2)
     .color('#FF9090')
     .viewportRelativeMotion(
       x: 150
@@ -111,6 +113,7 @@ Crafty.defineScene 'City', (data) ->
     for o in sun.hit('2D')
       continue if o.obj is sun
       continue if o.obj.has 'Glare'
+      continue if o.obj.has 'HUD'
       e = o.obj
       xMin = Math.max(sun.x, e.x)
       xMax = Math.min(sun.x + sun.w, e.x + e.w)
