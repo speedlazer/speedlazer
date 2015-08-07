@@ -9,10 +9,14 @@ Crafty.defineScene 'City', (data) ->
   level = Game.levelGenerator.createLevel
     stage: data.stage
     title: 'City'
-  level.addBlock('Generic.Start')
-  level.addBlock('City.Ocean')
+  level.addBlock 'Generic.Start'
+  level.addBlock 'City.Ocean'
+  level.generateBlocks amount: 1
+  level.addBlock 'City.Ocean',
+    inScreen: ->
+      console.log 'woohoo generic binding!'
   level.generateBlocks amount: 10
-  level.addBlock('GameplayDemo.End')
+  level.addBlock 'GameplayDemo.End'
   level.start()
 
   v = 0

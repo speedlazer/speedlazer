@@ -58,22 +58,27 @@ class Game.LevelBlock
 
   # Generate terrain of the level
   generate: ->
+    @settings.generate?.apply this
 
   # The Camera starts moving into this block.
   # the ideal moment to spawn enemies!
   enter: ->
+    @settings.enter?.apply this
 
   # The block is fully in screen now, the left side
   # of the block is touching the left side of the screen
   # an ideal moment to speed up movement, show dialog, etc
   inScreen: ->
+    @settings.inScreen?.apply this
 
   # The block is fully in screen now, the right side
   # of the block is touching the right side of the screen
   outScreen: ->
+    @settings.outScreen?.apply this
 
   # The block is out of screen.
   leave: ->
+    @settings.leave?.apply this
 
   # Gets called when the block is moved out of
   # screen, or the level stops.

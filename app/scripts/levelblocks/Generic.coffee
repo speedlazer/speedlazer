@@ -145,16 +145,3 @@ generator.defineBlock class extends @Game.LevelBlock
     x: 0
     y: 0
   next: []
-
-  inScreen: ->
-    super
-    @settings.inScreen?.apply this
-
-  enter: ->
-    super
-    @settings.enter?.apply this
-
-  leave: ->
-    super
-    @settings.leave?.apply this
-
