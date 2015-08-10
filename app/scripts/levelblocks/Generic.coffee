@@ -35,29 +35,3 @@ generator.defineBlock class extends @Game.LevelBlock
           @destroy()
       , 3000, 0)
 
-generator.defineBlock class extends @Game.LevelBlock
-  name: 'Generic.Dialog'
-  delta:
-    x: 0
-    y: 0
-  next: []
-
-  inScreen: ->
-    super
-    @level.showDialog(@settings.dialog) if !@settings.triggerOn? or @settings.triggerOn is 'inScreen'
-
-  enter: ->
-    super
-    @level.showDialog(@settings.dialog) if @settings.triggerOn is 'enter'
-
-  leave: ->
-    super
-    @level.showDialog(@settings.dialog) if @settings.triggerOn is 'leave'
-
-
-generator.defineBlock class extends @Game.LevelBlock
-  name: 'Generic.Event'
-  delta:
-    x: 0
-    y: 0
-  next: []

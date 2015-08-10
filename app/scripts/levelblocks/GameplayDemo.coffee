@@ -236,6 +236,7 @@ generator.defineBlock class extends @Game.LevelBlock
     @add(0, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: @delta.x, h: @level.visibleHeight }))
 
   enter: ->
+    super
     t = Crafty.e('LaserTurret')
     @add(150, 15, t)
     t.color('#808020').laserTurret(

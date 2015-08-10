@@ -41,20 +41,19 @@ Crafty.c 'PlayerControlledShip',
     this
 
   shoot: ->
-
-    #Crafty.e('Bullet')
-      #.color(@color())
-      #.attr
-        #x: @x + @w
-        #y: @y + (@h / 2.0)
-        #w: 5
-        #h: 5
-      #.fire
-        #origin: this
-        #damage: 100
-        #speed: @_forcedSpeed.x + 3
-        #direction: 0
-      #.bind 'HitTarget', =>
-        #@trigger('BulletHit')
-      #.bind 'DestroyTarget', =>
-        #@trigger('BulletDestroyedTarget')
+    Crafty.e('Bullet')
+      .color(@color())
+      .attr
+        x: @x + @w
+        y: @y + (@h / 2.0)
+        w: 5
+        h: 5
+      .fire
+        origin: this
+        damage: 100
+        speed: @_forcedSpeed.x + 3
+        direction: 0
+      .bind 'HitTarget', =>
+        @trigger('BulletHit')
+      .bind 'DestroyTarget', =>
+        @trigger('BulletDestroyedTarget')
