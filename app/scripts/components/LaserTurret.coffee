@@ -3,14 +3,21 @@ Crafty.c 'LaserTurret',
   init: ->
     @requires '2D, Canvas, Edge, Color, Tween, Delay'
     @attr w: 20, h: 20
-    @detectionBeam = Crafty.e('2D, Collision')
-    @beam = Crafty.e('2D, Canvas, Color, LaserBeam')
+
+    @detectionBeam = Crafty.e('2D, Collision').attr
+      x: 5
+      w: 10
+    @attach @detectionBeam
+
+    @beam = Crafty.e('2D, Canvas, Color, LaserBeam').attr
+      x: 5
+      w: 10
+    .color '#FF00FF'
+    @attach @beam
 
   remove: ->
     @unbind 'TweenEnd'
     @unbind 'EnterFrame'
-    @beam.destroy()
-    @detectionBeam.destroy()
 
   laserTurret: (config) ->
     @_config = config
@@ -39,11 +46,8 @@ Crafty.c 'LaserTurret',
       laserEnd = beamLength
 
     @detectionBeam
-      #.color('#400040')
       .attr(
-        x: @x + 5
         y: laserStart
-        w: 10
         h: laserEnd
       )
     for object in @detectionBeam.hit('Edge')
@@ -60,11 +64,8 @@ Crafty.c 'LaserTurret',
           laserEnd = @y - collision
 
     @beam
-      .color('#FF00FF')
       .attr(
-        x: @x + 5
         y: laserStart
-        w: 10
         h: laserEnd
       )
     this

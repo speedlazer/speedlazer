@@ -21,36 +21,36 @@ Crafty.defineScene 'GameplayDemo', (data) ->
         '!p1,p2:Jim:Whoohoo target practice!\nKill kill kill!!!'
       ]
 
-  level.addBlock 'GameplayDemo.Asteroids',
-    outScreen: ->
-      @level.showDialog [
-        'p1,!p2:John:Entering the tunnel!'
-        'p2:Jim:Prepare for darkness!!!'
-      ]
-      @level.data.needToKill = 10
+  #level.addBlock 'GameplayDemo.Asteroids',
+    #outScreen: ->
+      #@level.showDialog [
+        #'p1,!p2:John:Entering the tunnel!'
+        #'p2:Jim:Prepare for darkness!!!'
+      #]
+      #@level.data.needToKill = 10
 
-      counter = Crafty.e('2D, DOM, Text, HUD')
-        .text("Enemies Left: #{@level.data.needToKill}")
-        .textColor('#FF0000')
-        .css('textAlign', 'center')
-        .textFont({
-          size: '20px',
-          weight: 'bold',
-          family: 'Courier new'
-        })
-        .attr(w: 640)
-        .positionHud(x: 0, y: 110, z: 2)
-      evt = Crafty.bind 'EnemyDestroyed', =>
-        @level.data.needToKill -= 1
-        counter.text("Enemies Left: #{@level.data.needToKill}")
-        if @level.data.needToKill <= 0
-          counter.destroy()
-          Crafty.unbind evt
-          @level.data.needToKill = 0
+      #counter = Crafty.e('2D, DOM, Text, HUD')
+        #.text("Enemies Left: #{@level.data.needToKill}")
+        #.textColor('#FF0000')
+        #.css('textAlign', 'center')
+        #.textFont({
+          #size: '20px',
+          #weight: 'bold',
+          #family: 'Courier new'
+        #})
+        #.attr(w: 640)
+        #.positionHud(x: 0, y: 110, z: 2)
+      #evt = Crafty.bind 'EnemyDestroyed', =>
+        #@level.data.needToKill -= 1
+        #counter.text("Enemies Left: #{@level.data.needToKill}")
+        #if @level.data.needToKill <= 0
+          #counter.destroy()
+          #Crafty.unbind evt
+          #@level.data.needToKill = 0
 
   level.addBlock('GameplayDemo.TunnelStart', only: ['cleared'])
-  level.generateBlocks until: -> @data.needToKill is 0
-  level.generateBlocks(stopBefore: 'GameplayDemo.Tunnel')
+  #level.generateBlocks until: -> @data.needToKill is 0
+  #level.generateBlocks(stopBefore: 'GameplayDemo.Tunnel')
 
   level.addBlock 'GameplayDemo.Lasers',
     enter: ->
