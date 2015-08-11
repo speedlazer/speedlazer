@@ -1,7 +1,7 @@
 Crafty.c 'Bullet',
   init: ->
     @addComponent '2D, Canvas, Color, Collision'
- 
+
   fire: (properties) ->
     @attr(damage: properties.damage).bind('EnterFrame', =>
       @_nextPosition(properties.speed)
@@ -11,10 +11,10 @@ Crafty.c 'Bullet',
     ).onHit 'Edge', ->
       @destroy()
     this
- 
+
   _nextPosition: (speed) ->
     @x = @x + speed
-    
+
   _maxXforViewPort: ->
    maxX = -Crafty.viewport._x + Crafty.viewport._width / Crafty.viewport._scale
    maxX + 200

@@ -9,21 +9,31 @@ Crafty.defineScene 'City', (data) ->
   level = Game.levelGenerator.createLevel
     stage: data.stage
     title: 'City'
+
+
   level.addBlock 'Generic.Start'
   level.addBlock 'City.Ocean',
     only: ['cleared']
     inScreen: ->
       @level.showDialog [
-        'p1:General:Let\'s show for the last time how nice these babies where!'
+        'p1,!p2:John:Too bad we have to bring this baby to the museum!'
+
       ]
+  level.addBlock 'City.Ocean',
+    only: ['cleared']
+
+  level.generateBlocks amount: 2
+
+  level.addBlock 'City.Ocean',
     generate: ->
       @add(400, 260, Crafty.e('PowerUp').powerUp(contains: 'lasers'))
 
   level.generateBlocks amount: 2
-  level.addBlock 'City.Ocean'
 
   level.generateBlocks amount: 10
   level.addBlock 'GameplayDemo.End'
+
+
   level.start(armedPlayers: no)
 
   v = 0
@@ -48,92 +58,16 @@ Crafty.defineScene 'City', (data) ->
       cs = (i.toString(16).slice(0, 2) for k, i of c)
 
       Crafty.background("##{cs.join('')}")
-      #console.log "##{cs.join('')}"
   , 500, steps - 1)
 
   duration = steps * 500 * 2
 
-  sun = Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Collision')
-    .attr(w: 60, h: 60, z: -1000)
-    .color('#DDDD00')
-    .viewportRelativeMotion(
-      x: 550
+  sun = Crafty.e('Sun')
+    .sun(
+      x: 620
       y: 410
-      speed: 0
     )
-    .tween({ dy: -340 }, duration)
-    .attr(dx: 200)
-
-  glare = []
-  glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Glare')
-    .attr(w: 90, h: 90, z: 90, alpha: 0.4, originalAlpha: 0.4)
-    .color('#FFFFFF')
-    .viewportRelativeMotion(
-      x: 550
-      y: 395
-      speed: 0
-    )
-    .tween({ dy: -340 }, duration)
-    .attr(dx: 185)
-  )
-  glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Glare')
-    .attr(w: 80, h: 80, z: 91, alpha: 0.7, originalAlpha: 0.7)
-    .color('#B0B0FF')
-    .viewportRelativeMotion(
-      x: 150
-      y: 10
-      speed: 0
-    )
-    .tween({ dy: 340 }, duration)
-    .attr(dx: -200)
-  )
-
-  glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Glare')
-    .attr(w: 10, h: 10, z: 92, alpha: 0.8, originalAlpha: 0.8)
-    .color('#FF9090')
-    .viewportRelativeMotion(
-      x: 150
-      y: 80
-      speed: 0
-    )
-    .tween({ dy: 250 }, duration)
-    .attr(dx: -100)
-  )
-
-  glare.push(Crafty.e('2D, Canvas, Color, ViewportRelativeMotion, Tween, Glare')
-    .attr(w: 200, h: 200, z: 93, alpha: 0.2, originalAlpha: 0.2)
-    .color('#FF9090')
-    .viewportRelativeMotion(
-      x: 150
-      y: -80
-      speed: 0
-    )
-    .tween({ dy: 410 }, duration)
-    .attr(dx: -300)
-  )
-  Crafty.bind 'EnterFrame', ->
-    covered = [0]
-    sunArea = sun.area()
-
-    for o in sun.hit('2D')
-      continue if o.obj is sun
-      continue if o.obj.has 'Glare'
-      continue if o.obj.has 'HUD'
-      e = o.obj
-      xMin = Math.max(sun.x, e.x)
-      xMax = Math.min(sun.x + sun.w, e.x + e.w)
-      w = xMax - xMin
-      yMin = Math.max(sun.y, e.y)
-      yMax = Math.min(sun.y + sun.h, e.y + e.h)
-      h = yMax - yMin
-      covered.push(w * h)
-
-    maxCoverage = Math.max(covered...) * 1.7
-    perc = maxCoverage / sunArea
-    perc = 1 if maxCoverage > sunArea
-    for e in glare
-      e.attr alpha: e.originalAlpha * (1 - perc)
-
+    .tween({ dy: -340, dx: 120 }, duration)
 
   Crafty.bind 'EndOfLevel', ->
     level.stop()
@@ -150,6 +84,7 @@ Crafty.defineScene 'City', (data) ->
 
 , ->
   # destructor
+  Crafty('Delay').each -> @destroy()
   Crafty.unbind('PlayerDied')
   Crafty.unbind('EndOfLevel')
   Crafty('Player').each -> @removeComponent('ShipSpawnable')
