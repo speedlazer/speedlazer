@@ -51,9 +51,18 @@ Crafty.c 'PlayerControlledShip',
 
   pickUp: (powerUp) ->
     contents =  powerUp.settings.contains
+    if @installItem contents
+      powerUp.destroy()
 
-    if contents is 'lasers'
+  installItem: (item) ->
+    return false if @hasItem item
+    @items.push item
+    if item is 'lasers'
       @primaryWeapon = Crafty.e('WeaponLaser')
       @primaryWeapon.install(this)
+      return true
 
-    powerUp.destroy()
+  hasItem: (item) ->
+    @items ?= []
+    return ~@items.indexOf item
+

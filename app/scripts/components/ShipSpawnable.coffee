@@ -9,7 +9,7 @@ Crafty.c 'ShipSpawnable',
     @spawnPosition = { x: x, y: y }
     this
 
-  spawnShip: ->
+  spawnShip: (armed = yes) ->
     return unless @has('ControlScheme')
     return unless @lives > 0
 
@@ -20,13 +20,15 @@ Crafty.c 'ShipSpawnable',
 
     ship.color(@color()) if @has('Color')
     @assignControls(ship) if @has('ControlScheme')
+    ship.installItem 'lasers' if armed
 
     @listenTo ship, 'BulletHit', -> @addPoints(10)
     @listenTo ship, 'BulletDestroyedTarget', -> @addPoints(50)
     @listenTo ship, 'Hit', ->
+      hasLasers = ship.hasItem 'lasers'
       ship.destroy()
       @loseLife()
-      @spawnShip()
+      @spawnShip(hasLasers)
     Crafty.trigger('ShipSpawned', ship)
     this
 

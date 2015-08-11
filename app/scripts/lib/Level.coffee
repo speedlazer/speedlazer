@@ -85,7 +85,12 @@ class Game.Level
     this will also cause the '#clean' action
 
   ###
-  start: ->
+  start: (settings = {}) ->
+    defaults =
+      armedPlayers: yes
+
+    settings[k] ?= v for k, v of defaults
+
     Crafty.viewport.x = 0
     Crafty.viewport.y = 0
     @_forcedSpeed = 1
@@ -120,7 +125,8 @@ class Game.Level
       @addComponent('ShipSpawnable').spawnPosition(140, 300 + (index * 50))
       Crafty.e('PlayerInfo').playerInfo(30 + (index * 180), this)
 
-    Crafty('Player ControlScheme').each -> @spawnShip()
+    Crafty('Player ControlScheme').each ->
+      @spawnShip(settings.armedPlayers)
 
   setForcedSpeed: (speed) ->
     @_forcedSpeed = speed

@@ -17,16 +17,14 @@ Crafty.defineScene 'City', (data) ->
         'p1:General:Let\'s show for the last time how nice these babies where!'
       ]
     generate: ->
-      @add(400, 260, Crafty.e('PowerUp').powerUp(
-        contains: 'lasers'
-        marking: 'W'
-      ))
+      @add(400, 260, Crafty.e('PowerUp').powerUp(contains: 'lasers'))
+
   level.generateBlocks amount: 2
   level.addBlock 'City.Ocean'
 
   level.generateBlocks amount: 10
   level.addBlock 'GameplayDemo.End'
-  level.start()
+  level.start(armedPlayers: no)
 
   v = 0
   co =
