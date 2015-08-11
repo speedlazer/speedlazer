@@ -10,13 +10,20 @@ Crafty.defineScene 'City', (data) ->
     stage: data.stage
     title: 'City'
   level.addBlock 'Generic.Start'
-  level.addBlock 'City.Ocean'
-  level.generateBlocks amount: 1
   level.addBlock 'City.Ocean',
+    only: ['cleared']
     inScreen: ->
       @level.showDialog [
-        'p1:You:woohoo generic binding!'
+        'p1:General:Let\'s show for the last time how nice these babies where!'
       ]
+    generate: ->
+      @add(400, 260, Crafty.e('PowerUp').powerUp(
+        contains: 'lasers'
+        marking: 'W'
+      ))
+  level.generateBlocks amount: 2
+  level.addBlock 'City.Ocean'
+
   level.generateBlocks amount: 10
   level.addBlock 'GameplayDemo.End'
   level.start()

@@ -11,21 +11,17 @@ Crafty.c 'ScrollWall',
         y: 0
 
     @_speed = { x: 0, y: 0 }
-    # TODO use @attach! to attach children that automatically move along and are removed as well!
     @wallEnd = Crafty.e('2D, Canvas, Color, ScrollFront')
       .attr(x: - (Crafty.viewport.x - Crafty.viewport.width) - 3, y: 0, h: Crafty.viewport.height, w: 2)
+    @attach @wallEnd
 
     @wallTop = Crafty.e('2D, Canvas, Edge, Collision')
       .attr(x: 0, y: 40, h: 2, w: Crafty.viewport.width)
+    @attach @wallTop
 
     @wallBottom = Crafty.e('2D, Canvas, Edge, Collision')
       .attr(x: 0, y: Crafty.viewport.height - 2, h: 2, w: Crafty.viewport.width)
-
-
-    @bind 'Remove', ->
-      @wallEnd.destroy()
-      @wallTop.destroy()
-      @wallBottom.destroy()
+    @attach @wallBottom
 
     @bind 'EnterFrame', ->
       speedX = @_speed.x
@@ -43,12 +39,6 @@ Crafty.c 'ScrollWall',
 
       @x += speedX
       @y += speedY
-      @wallEnd.x += speedX
-      @wallEnd.y += speedY
-      @wallTop.x += speedX
-      @wallTop.y += speedY
-      @wallBottom.x += speedX
-      @wallBottom.y += speedY
 
       Crafty.viewport.scroll('_y', -@y)
       Crafty.viewport.scroll('_x', -@x)

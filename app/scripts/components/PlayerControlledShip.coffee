@@ -20,6 +20,9 @@ Crafty.c 'PlayerControlledShip',
         @trigger('Hit')
     , 10, 0
 
+    @onHit 'PowerUp', (e) ->
+      @pickUp(pu.obj) for pu in e
+
     @bind 'EnterFrame', ->
       @x += @_forcedSpeed.x
       @y += @_forcedSpeed.y
@@ -31,6 +34,8 @@ Crafty.c 'PlayerControlledShip',
       # and are crashed (squashed probably)
       @trigger('Hit') if @hit('Edge')
 
+    @primaryWeapon = undefined
+
   forcedSpeed: (speed) ->
     if speed.x? && speed.y?
       @_forcedSpeed.x = speed.x
@@ -41,19 +46,14 @@ Crafty.c 'PlayerControlledShip',
     this
 
   shoot: ->
-    Crafty.e('Bullet')
-      .color(@color())
-      .attr
-        x: @x + @w
-        y: @y + (@h / 2.0)
-        w: 5
-        h: 5
-      .fire
-        origin: this
-        damage: 100
-        speed: @_forcedSpeed.x + 3
-        direction: 0
-      .bind 'HitTarget', =>
-        @trigger('BulletHit')
-      .bind 'DestroyTarget', =>
-        @trigger('BulletDestroyedTarget')
+    return unless @primaryWeapon?
+    @primaryWeapon.shoot()
+
+  pickUp: (powerUp) ->
+    contents =  powerUp.settings.contains
+
+    if contents is 'lasers'
+      @primaryWeapon = Crafty.e('WeaponLaser')
+      @primaryWeapon.install(this)
+
+    powerUp.destroy()
