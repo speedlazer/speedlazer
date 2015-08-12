@@ -10,16 +10,18 @@ Crafty.defineScene 'City', (data) ->
     stage: data.stage
     title: 'City'
 
-
-  level.addBlock 'Generic.Start'
   level.addBlock 'City.Ocean',
     only: ['cleared']
-    inScreen: ->
+    enter: ->
+      text = "Stage #{@level.data.stage}: #{@level.data.title}"
+      Crafty.e('StageTitle').stageTitle(text)
+
       @level.showDialog [
         'p1,p2:John:Too bad we have to bring these babies to the museum!'
         'p1,!p2:John:Too bad we have to bring this baby to the museum!'
         ':General:Just give her a good last flight,\nwe document some moves on the way!'
       ]
+
   level.addBlock 'City.Ocean',
     only: ['cleared']
     outScreen: ->
