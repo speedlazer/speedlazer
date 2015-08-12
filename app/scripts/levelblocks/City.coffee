@@ -59,7 +59,8 @@ generator.defineBlock class extends @Game.LevelBlock
             length: 1
             x: 20
             y: 50 + (Math.floor(@enemiesSpawned / 2) * 100)
-            duration: 1000
+            maxSpeed: 2
+            duration: 4000
             type: 'viewport'
         else
           c.push
@@ -72,7 +73,8 @@ generator.defineBlock class extends @Game.LevelBlock
             length: 1
             x: 20
             y: 350 - (Math.floor(@enemiesSpawned / 2) * 100)
-            duration: 1000
+            maxSpeed: 2
+            duration: 4000
             type: 'viewport'
 
         @add(750, 150, e)

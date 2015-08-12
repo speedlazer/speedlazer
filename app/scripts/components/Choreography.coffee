@@ -52,6 +52,7 @@ Crafty.c 'Choreography',
       dy: part.y ? 0
       length: part.length ? 1
       start: part.start ? 0
+      maxSpeed: part.maxSpeed
       easing: new Crafty.easing(part.duration ? 0)
 
   _executeLinear: (v) ->
@@ -69,10 +70,18 @@ Crafty.c 'Choreography',
     # the goal are current coordinates on screen
     destinationX = -Crafty.viewport.x + @_currentPart.dx
     diffX = destinationX - @x
-    @x = @x + (diffX * v)
+    motionX = (diffX * v)
+    if @_currentPart.maxSpeed? and Math.abs(motionX) > @_currentPart.maxSpeed
+      motionX = @_currentPart.maxSpeed
+      motionX *= -1 if diffX < 0
+    @x = @x + motionX
 
     destinationY = -Crafty.viewport.y + @_currentPart.dy
     diffY = destinationY - @y
-    @y = @y + (diffY * v)
+    motionY = (diffY * v)
+    if @_currentPart.maxSpeed? and Math.abs(motionY) > @_currentPart.maxSpeed
+      motionY = @_currentPart.maxSpeed
+      motionY *= -1 if diffX < 0
+    @y = @y + motionY
 
 

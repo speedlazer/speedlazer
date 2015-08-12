@@ -72,6 +72,7 @@ class Game.Dialog
       [conditions, ...] = dialog.split(':')
 
       for condition in conditions.split(',')
+        continue if condition is ''
         [inverse, value] = @convertCondition(condition)
 
         unless inverse

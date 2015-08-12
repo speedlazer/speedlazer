@@ -16,17 +16,26 @@ Crafty.defineScene 'City', (data) ->
     only: ['cleared']
     inScreen: ->
       @level.showDialog [
+        'p1,p2:John:Too bad we have to bring these babies to the museum!'
         'p1,!p2:John:Too bad we have to bring this baby to the museum!'
-
+        ':General:Just give her a good last flight,\nwe document some moves on the way!'
       ]
   level.addBlock 'City.Ocean',
     only: ['cleared']
+    outScreen: ->
+      @level.showDialog [
+        ':General:Evade the upcoming drones!'
+      ]
 
   level.generateBlocks amount: 2
 
   level.addBlock 'City.Ocean',
     generate: ->
       @add(400, 260, Crafty.e('PowerUp').powerUp(contains: 'lasers'))
+    enter: ->
+      @level.showDialog [
+        ':General:We dropped an upgrade to show the weapon systems'
+      ]
 
   level.generateBlocks amount: 2
 
@@ -62,7 +71,7 @@ Crafty.defineScene 'City', (data) ->
 
   duration = steps * 500 * 2
 
-  sun = Crafty.e('Sun')
+  Crafty.e('Sun')
     .sun(
       x: 620
       y: 410
