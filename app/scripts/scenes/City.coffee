@@ -11,7 +11,6 @@ Crafty.defineScene 'City', (data) ->
     title: 'City'
 
   level.addBlock 'City.Ocean',
-    only: ['cleared']
     enter: ->
       text = "Stage #{@level.data.stage}: #{@level.data.title}"
       Crafty.e('StageTitle').stageTitle(text)
@@ -22,9 +21,10 @@ Crafty.defineScene 'City', (data) ->
         ':General:Just give her a good last flight,\nwe document some moves on the way!'
       ])
 
+  level.addBlock 'City.Ocean'
+
   level.addBlock 'City.Ocean',
-    only: ['cleared']
-    outScreen: ->
+    enter: ->
       @level.showDialog([
         ':General:Evade the upcoming drones!'
       ]).on 'Finished', =>
@@ -41,7 +41,7 @@ Crafty.defineScene 'City', (data) ->
       @level.showDialog([
         ':General:We dropped an upgrade to show the weapon systems'
       ]).on 'Finished', =>
-        @add(40, 260, Crafty.e('PowerUp').powerUp(contains: 'lasers'))
+        @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers'), x: 640, y: 300
 
 
   level.generateBlocks
@@ -54,8 +54,8 @@ Crafty.defineScene 'City', (data) ->
         Crafty.e('PowerUp').powerUp(contains: 'lasers').attr(
           x: last.x
           y: last.y
+          z: -1
         )
-        console.log 'well done!'
 
   level.addBlock 'GameplayDemo.End'
 

@@ -123,11 +123,11 @@ class Game.Level
       @blocks[index].enter()
 
     Crafty('Player').each (index) ->
-      @addComponent('ShipSpawnable').spawnPosition(140, 300 + (index * 50))
+      @addComponent('ShipSpawnable').spawnPosition(140, 300 + (index * 50), settings.armedPlayers)
       Crafty.e('PlayerInfo').playerInfo(30 + (index * 180), this)
 
     Crafty('Player ControlScheme').each ->
-      @spawnShip(settings.armedPlayers)
+      @spawnShip()
 
   setForcedSpeed: (speed) ->
     @_forcedSpeed = speed

@@ -2,14 +2,15 @@ Crafty.c 'ShipSpawnable',
   init: ->
     @requires('Listener')
     @bind('Activated', @spawnShip)
+
   remove: ->
     @unbind('Activated', @spawnShip)
 
-  spawnPosition: (x, y) ->
+  spawnPosition: (x, y, @armed = yes) ->
     @spawnPosition = { x: x, y: y }
     this
 
-  spawnShip: (armed = yes) ->
+  spawnShip: (armed = @armed) ->
     return unless @has('ControlScheme')
     return unless @lives > 0
 
