@@ -42,6 +42,8 @@ Crafty.defineScene 'City', (data) ->
         ':General:We dropped an upgrade to show the weapon systems'
       ]).on 'Finished', =>
         @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers'), x: 640, y: 300
+        if Crafty('PlayerControlledShip').length > 1
+          @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers'), x: 640, y: 100
 
 
   level.generateBlocks
