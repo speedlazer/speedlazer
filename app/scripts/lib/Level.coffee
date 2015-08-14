@@ -103,6 +103,7 @@ class Game.Level
       @_update index
       if index > 0
         @blocks[index - 1].leave()
+        @currentBlockIndex = index
         @blocks[index].inScreen()
 
       @_cleanupBuildBlocks()
@@ -135,8 +136,20 @@ class Game.Level
     Crafty('PlayerControlledShip').each ->
       @forcedSpeed speed
 
-  showDialog: (dialog) ->
-    new Game.Dialog dialog, this
+  showDialog: (dialog, callback) ->
+    new Game.Dialog dialog, this, callback
+
+  spawnEnemies: (formation, enemyComponent, callback) ->
+    new Game.EnemyFormation[formation](this, enemyComponent, callback)
+
+  addComponent: (c, relativePosition) ->
+    block = @blocks[@currentBlockIndex]
+    return unless block?
+    position =
+      x: relativePosition.x + @_scrollWall.x - block.x
+      y: relativePosition.y + @_scrollWall.y - block.y
+
+    block.add(position.x, position.y, c)
 
   ##
   # Stop the level, clean up event handlers and

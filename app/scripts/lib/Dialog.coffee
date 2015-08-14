@@ -1,38 +1,70 @@
 
 Game = @Game
 
-class Game.Dialog
+class Game.EventHandler
+  constructor: ->
+    @eventHandling = {}
+
+  on: (event, callback) ->
+    q = @eventHandling[event] ?= []
+    q.push callback
+    this
+
+  handle: (event, args...) ->
+    e(args...) for e in @eventHandling[event] ? []
+
+class Game.Dialog extends Game.EventHandler
 
   constructor: (@dialog, @level) ->
+    super
     @showDialog()
 
   showDialog: (start = 0) ->
     Crafty('Dialog').each -> @destroy()
     dialogIndex = @determineDialog(start)
 
-    if dialogIndex?
-      dialog = @dialog[dialogIndex]
-      [conditions, speaker, lines...] = dialog.split(':')
-      lines = lines.join(':').split('\n')
+    unless dialogIndex?
+      @handle('Finished')
+      return
 
-      x = 60
+    dialog = @dialog[dialogIndex]
+    [conditions, speaker, lines...] = dialog.split(':')
+    lines = lines.join(':').split('\n')
 
-      Crafty.e('2D, DOM, Color, Tween, HUD, Dialog')
-        .attr(w: 570, h: ((lines.length + 3) * 20), alpha: 0.5)
-        .color('#000000')
-        .positionHud(
-          x: x - 10
-          y: @level.visibleHeight - ((lines.length + 3) * 20)
-          z: 100
-        )
+    x = 60
 
+    Crafty.e('2D, DOM, Color, Tween, HUD, Dialog')
+      .attr(w: 570, h: ((lines.length + 3) * 20), alpha: 0.5)
+      .color('#000000')
+      .positionHud(
+        x: x - 10
+        y: @level.visibleHeight - ((lines.length + 3) * 20)
+        z: 100
+      )
+
+    Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
+      .attr( w: 550)
+      .text(speaker)
+      .positionHud(
+        x: x
+        y: @level.visibleHeight - ((lines.length + 2) * 20)
+        z: 100
+      )
+      .textColor('#909090')
+      .textFont({
+        size: '16px',
+        weight: 'bold',
+        family: 'Courier new'
+      })
+
+    for line, i in lines
       Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
         .attr( w: 550)
-        .text(speaker)
+        .text(line)
         .positionHud(
           x: x
-          y: @level.visibleHeight - ((lines.length + 2) * 20)
-          z: 100
+          y: @level.visibleHeight - ((lines.length + 1 - i) * 20)
+          z: 101
         )
         .textColor('#909090')
         .textFont({
@@ -41,25 +73,9 @@ class Game.Dialog
           family: 'Courier new'
         })
 
-      for line, i in lines
-        Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
-          .attr( w: 550)
-          .text(line)
-          .positionHud(
-            x: x
-            y: @level.visibleHeight - ((lines.length + 1 - i) * 20)
-            z: 101
-          )
-          .textColor('#909090')
-          .textFont({
-            size: '16px',
-            weight: 'bold',
-            family: 'Courier new'
-          })
-
-      Crafty.e('Dialog, Delay').delay( =>
-          @showDialog(start + 1)
-        , 2500 * lines.length, 0)
+    Crafty.e('Dialog, Delay').delay( =>
+        @showDialog(start + 1)
+      , 2500 * lines.length, 0)
 
 
   determineDialog: (start = 0) ->

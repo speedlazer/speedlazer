@@ -16,34 +16,48 @@ Crafty.defineScene 'City', (data) ->
       text = "Stage #{@level.data.stage}: #{@level.data.title}"
       Crafty.e('StageTitle').stageTitle(text)
 
-      @level.showDialog [
+      @level.showDialog([
         'p1,p2:John:Too bad we have to bring these babies to the museum!'
         'p1,!p2:John:Too bad we have to bring this baby to the museum!'
         ':General:Just give her a good last flight,\nwe document some moves on the way!'
-      ]
+      ])
 
   level.addBlock 'City.Ocean',
     only: ['cleared']
     outScreen: ->
-      @level.showDialog [
+      @level.showDialog([
         ':General:Evade the upcoming drones!'
-      ]
+      ]).on 'Finished', =>
+        @level.spawnEnemies(
+          'FlyOver'
+          'Enemy'
+        )
 
-  level.generateBlocks amount: 2
+  #level.generateBlocks amount: 2
 
   level.addBlock 'City.Ocean',
     generate: ->
-      @add(400, 260, Crafty.e('PowerUp').powerUp(contains: 'lasers'))
     enter: ->
-      @level.showDialog [
+      @level.showDialog([
         ':General:We dropped an upgrade to show the weapon systems'
-      ]
+      ]).on 'Finished', =>
+        @add(40, 260, Crafty.e('PowerUp').powerUp(contains: 'lasers'))
 
-  level.generateBlocks amount: 2
 
-  level.generateBlocks amount: 10
+  level.generateBlocks
+    amount: 2
+    inScreen: ->
+      @level.spawnEnemies(
+        'FlyOver'
+        'Enemy'
+      ).on 'LastDestroyed', (last) ->
+        Crafty.e('PowerUp').powerUp(contains: 'lasers').attr(
+          x: last.x
+          y: last.y
+        )
+        console.log 'well done!'
+
   level.addBlock 'GameplayDemo.End'
-
 
   level.start(armedPlayers: no)
 

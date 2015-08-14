@@ -13,6 +13,7 @@ Crafty.c 'Enemy',
       if @health <= 0
         bullet.trigger 'DestroyTarget', target: this
         Crafty.trigger('EnemyDestroyed', this)
+        @trigger('Destroyed', this)
         @destroy()
       bullet.destroy()
 
