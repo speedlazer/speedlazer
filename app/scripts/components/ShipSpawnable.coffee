@@ -6,18 +6,21 @@ Crafty.c 'ShipSpawnable',
   remove: ->
     @unbind('Activated', @spawnShip)
 
-  spawnPosition: (x, y, @armed = yes) ->
-    @spawnPosition = { x: x, y: y }
+  spawnPosition: (@spawnPosition, @armed = yes) ->
+    @spawnPosition ?= ->
+      x: x
+      y: y
     this
 
   spawnShip: (armed = @armed) ->
     return unless @has('ControlScheme')
     return unless @lives > 0
 
+    pos = @spawnPosition()
     ship = Crafty.e('PlayerControlledShip')
       .attr
-        x: @spawnPosition.x - Crafty.viewport.x
-        y: @spawnPosition.y - Crafty.viewport.y
+        x: pos.x - Crafty.viewport.x
+        y: pos.y - Crafty.viewport.y
 
     ship.color(@color()) if @has('Color')
     @assignControls(ship) if @has('ControlScheme')

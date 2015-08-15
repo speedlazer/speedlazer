@@ -1,6 +1,6 @@
 Crafty.c 'PlayerControlledShip',
   init: ->
-    @requires '2D, Canvas, Color, Collision, Delay'
+    @requires '2D, Canvas, Color, Collision, Delay, Choreography'
     @attr w: 30, h: 30
     @bind 'Moved', (from) ->
       if @hit('Edge') # Contain player within playfield
@@ -55,7 +55,7 @@ Crafty.c 'PlayerControlledShip',
       powerUp.destroy()
 
   installItem: (item) ->
-    return false if @hasItem item
+    return true if @hasItem item
     @items.push item
     if item is 'lasers'
       @primaryWeapon = Crafty.e('WeaponLaser')

@@ -10,6 +10,8 @@ Crafty.defineScene 'City', (data) ->
     stage: data.stage
     title: 'City'
 
+  level.addBlock 'City.Intro'
+
   level.addBlock 'City.Ocean',
     enter: ->
       text = "Stage #{@level.data.stage}: #{@level.data.title}"
@@ -61,7 +63,11 @@ Crafty.defineScene 'City', (data) ->
 
   level.addBlock 'GameplayDemo.End'
 
-  level.start(armedPlayers: no)
+  level.start
+    armedPlayers: no
+    speed: 0
+    controlsEnabled: no
+
 
   v = 0
   co =

@@ -1,6 +1,5 @@
 Crafty.c 'ControlScheme',
   init: ->
-    #debugger
     @trigger('Activated')
     Crafty.trigger('PlayerActivated')
 
