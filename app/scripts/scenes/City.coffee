@@ -10,9 +10,7 @@ Crafty.defineScene 'City', (data) ->
     stage: data.stage
     title: 'City'
 
-  level.addBlock 'City.Intro'
-
-  level.addBlock 'City.Ocean',
+  level.addBlock 'City.Intro',
     enter: ->
       text = "Stage #{@level.data.stage}: #{@level.data.title}"
       Crafty.e('StageTitle').stageTitle(text)
@@ -22,6 +20,8 @@ Crafty.defineScene 'City', (data) ->
         'p1,!p2:John:Too bad we have to bring this baby to the museum!'
         ':General:Just give her a good last flight,\nwe document some moves on the way!'
       ])
+    playerLeave: ->
+      @level.setForcedSpeed 1
 
   level.addBlock 'City.Ocean'
 
@@ -68,7 +68,7 @@ Crafty.defineScene 'City', (data) ->
     speed: 0
     viewport:
       x: 0
-      y: 80
+      y: 120
 
 
   v = 0

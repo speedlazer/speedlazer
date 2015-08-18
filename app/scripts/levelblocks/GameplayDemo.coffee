@@ -63,13 +63,13 @@ generator.defineBlock class extends @Game.LevelBlock
     only = @settings.only || []
     if only.indexOf('cleared') is -1
       c = [
-        length: 2
+        repeat: 2
         x: -400
         y: 50
         duration: 3000
         type: 'sine'
       ,
-        length: 0.5
+        repeat: 0.5
         x: 400
         y: 50
         duration: 3000
@@ -78,7 +78,7 @@ generator.defineBlock class extends @Game.LevelBlock
         data:
           name: 'fooo'
       ,
-        length: 0.5
+        repeat: 0.5
         start: 0.5
         x: -300
         y: 200
@@ -121,19 +121,19 @@ generator.defineBlock class extends @Game.LevelBlock
     only = @settings.only || []
     if only.indexOf('cleared') is -1
       c = [
-        length: 2
+        repeat: 2
         x: -400
         y: 50
         duration: 3000
         type: 'sine'
       ,
-        length: 0.5
+        repeat: 0.5
         x: 400
         y: 50
         duration: 3000
         type: 'sine'
       ,
-        length: 0.5
+        repeat: 0.5
         start: 0.5
         x: -300
         y: 200
@@ -177,19 +177,19 @@ generator.defineBlock class extends @Game.LevelBlock
     only = @settings.only || []
     if only.indexOf('cleared') is -1
       c = [
-        length: 2
+        repeat: 2
         x: -400
         y: 50
         duration: 3000
         type: 'sine'
       ,
-        length: 0.5
+        repeat: 0.5
         x: 400
         y: 50
         duration: 3000
         type: 'sine'
       ,
-        length: 0.5
+        repeat: 0.5
         start: 0.5
         x: -300
         y: 200
