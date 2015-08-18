@@ -8,15 +8,15 @@ Crafty.c 'HUD',
       viewportX: x
       viewportY: y
       viewportZ: z
-      x: x - Crafty.viewport._x
-      y: y - Crafty.viewport._y
+      x: x - Crafty.viewport.x
+      y: y - Crafty.viewport.y
       z: z
-    @hudFloat = Crafty.bind 'ViewportScroll', =>
+    @hudFloat = Crafty.bind 'EnterFrame', =>
       @attr
-        x: @viewportX - Crafty.viewport._x
-        y: @viewportY - Crafty.viewport._y
+        x: @viewportX - Crafty.viewport.x
+        y: @viewportY - Crafty.viewport.y
     this
 
   remove: ->
-    Crafty.unbind 'ViewportScroll', @hudFloat
+    Crafty.unbind 'EnterFrame', @hudFloat
 
