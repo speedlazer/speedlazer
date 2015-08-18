@@ -40,9 +40,9 @@ Crafty.c 'ScrollWall',
       @x += speedX
       @y += speedY
 
-      Crafty.viewport.scroll('_y', -@y)
-      Crafty.viewport.scroll('_x', -@x)
-      #Crafty.viewport._clamp() # TODO: Figure out what this does and if we need it
+      Crafty.viewport.y = -@y
+      Crafty.viewport.x = -@x
+      Crafty.viewport._clamp() # TODO: Figure out what this does and if we need it
 
     @onHit 'PlayerControlledShip', (el) ->
       # Push the player forward
