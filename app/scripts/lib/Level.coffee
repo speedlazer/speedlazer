@@ -133,6 +133,11 @@ class Game.Level
         @blocks[index - 1].outScreen()
       @blocks[index].enter()
 
+    Crafty.bind 'PlayerEnterBlock', (index) =>
+      if index > 0
+        @blocks[index - 1].playerLeave()
+      @blocks[index].playerEnter()
+
   _placePlayerShips: (settings) ->
     Crafty.one 'ShipSpawned', =>
       @_playersActive = yes

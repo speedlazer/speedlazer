@@ -52,6 +52,10 @@ class Game.LevelBlock
         unless @triggeredFront
           Crafty.trigger('EnterBlock', index)
           @triggeredFront = yes
+      .onHit 'PlayerControlledShip', ->
+        unless @triggeredPlayerFront
+          Crafty.trigger('PlayerEnterBlock', index)
+          @triggeredPlayerFront = yes
       .onHit 'ScrollWall', ->
         @destroy()
         Crafty.trigger('LeaveBlock', index)
@@ -64,6 +68,12 @@ class Game.LevelBlock
   # the ideal moment to spawn enemies!
   enter: ->
     @settings.enter?.apply this
+
+  playerEnter: ->
+    @settings.playerEnter?.apply this
+
+  playerLeave: ->
+    @settings.playerLeave?.apply this
 
   # The block is fully in screen now, the left side
   # of the block is touching the left side of the screen
