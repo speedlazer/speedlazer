@@ -1,6 +1,6 @@
 Crafty.c 'PlayerControlledShip',
   init: ->
-    @requires '2D, Canvas, Color, Collision, Delay, Choreography'
+    @requires '2D, Canvas, Color, Collision, Delay'
     @attr w: 30, h: 30
     @bind 'Moved', (from) ->
       if @hit('Edge') # Contain player within playfield

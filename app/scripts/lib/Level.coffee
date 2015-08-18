@@ -91,10 +91,13 @@ class Game.Level
       speed: 1
       controlsEnabled: yes
       spawnPosition:
-        x: 190
-        y: 380
+        x: 100
+        y: 200
       spawnOffset:
         x: -50
+        y: 0
+      viewport:
+        x: 0
         y: 0
 
     settings[k] ?= v for k, v of defaults
@@ -103,6 +106,14 @@ class Game.Level
     Crafty.viewport.y = 0
     @_controlsEnabled = settings.controlsEnabled
     @_forcedSpeed = settings.speed
+
+    @_scrollWall = Crafty.e('ScrollWall').attr
+      x: settings.viewport.x
+      y: settings.viewport.y
+
+    @_playersActive = no
+
+    @_placePlayerShips settings
     @_update 0
 
     for block in @blocks when block.x < 640
@@ -116,21 +127,16 @@ class Game.Level
         @blocks[index].inScreen()
 
       @_cleanupBuildBlocks()
-    @_scrollWall = Crafty.e('ScrollWall')
-    @_playersActive = no
-
-    Crafty.one 'ShipSpawned', =>
-      @_playersActive = yes
-      @_scrollWall.scrollWall(@_forcedSpeed)
-
-    Crafty.bind 'ShipSpawned', (ship) =>
-      ship.forcedSpeed @_forcedSpeed
-      #ship.disableControl() unless @_controlsEnabled
 
     Crafty.bind 'EnterBlock', (index) =>
       if index > 0
         @blocks[index - 1].outScreen()
       @blocks[index].enter()
+
+  _placePlayerShips: (settings) ->
+    Crafty.one 'ShipSpawned', =>
+      @_playersActive = yes
+      @_scrollWall.scrollWall(@_forcedSpeed)
 
     Crafty('Player').each (index) ->
       spawnPosition = ->
@@ -141,10 +147,15 @@ class Game.Level
         pos
 
       @addComponent('ShipSpawnable').spawnPosition(spawnPosition, settings.armedPlayers)
+
       Crafty.e('PlayerInfo').playerInfo(30 + (index * 180), this)
 
     Crafty('Player ControlScheme').each ->
       @spawnShip()
+
+    Crafty.bind 'ShipSpawned', (ship) =>
+      ship.forcedSpeed @_forcedSpeed
+      #ship.disableControl() unless @_controlsEnabled
 
   setForcedSpeed: (speed) ->
     @_forcedSpeed = speed

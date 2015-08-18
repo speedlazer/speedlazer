@@ -66,7 +66,9 @@ Crafty.defineScene 'City', (data) ->
   level.start
     armedPlayers: no
     speed: 0
-    controlsEnabled: no
+    viewport:
+      x: 0
+      y: 80
 
 
   v = 0
@@ -79,7 +81,8 @@ Crafty.defineScene 'City', (data) ->
     g: 0x80
     b: 0xFF
 
-  steps = 160
+  steps = 320
+  delay = 1000
   Crafty.e('Delay').delay(
     =>
       v += 1
@@ -91,9 +94,9 @@ Crafty.defineScene 'City', (data) ->
       cs = (i.toString(16).slice(0, 2) for k, i of c)
 
       Crafty.background("##{cs.join('')}")
-  , 500, steps - 1)
+  , delay, steps - 1)
 
-  duration = steps * 500 * 2
+  duration = steps * delay * 2
 
   Crafty.e('Sun')
     .sun(
