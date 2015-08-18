@@ -50,7 +50,7 @@ Crafty.c 'Choreography',
       y: @y
       dx: part.x ? 0
       dy: part.y ? 0
-      length: part.length ? 1
+      repeat: part.repeat ? 1
       start: part.start ? 0
       maxSpeed: part.maxSpeed
       easing: new Crafty.easing(part.duration ? 0)
@@ -62,7 +62,7 @@ Crafty.c 'Choreography',
   _executeSine: (v) ->
     halfY = @_currentPart.dy
     @x = @_currentPart.x + (v * @_currentPart.dx)
-    @y = @_currentPart.y + (Math.sin(-(Math.PI + (Math.PI * @_currentPart.start * 2)) + (v * @_currentPart.length * Math.PI * 2)) * halfY)
+    @y = @_currentPart.y + (Math.sin(-(Math.PI + (Math.PI * @_currentPart.start * 2)) + (v * @_currentPart.repeat * Math.PI * 2)) * halfY)
 
   _executeDelay: (v) ->
 
