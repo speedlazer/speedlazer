@@ -33,45 +33,42 @@ class Game.Dialog extends Game.EventHandler
 
     x = 60
 
-    Crafty.e('2D, DOM, Color, Tween, HUD, Dialog')
-      .attr(w: 570, h: ((lines.length + 3) * 20), alpha: 0.5)
+    back = Crafty.e('2D, Canvas, Color, Tween, HUD, Dialog')
+      .attr(w: 570, h: ((lines.length + 2) * 20), alpha: 0.5)
       .color('#000000')
       .positionHud(
         x: x - 10
-        y: @level.visibleHeight - ((lines.length + 3) * 20)
+        y: @level.visibleHeight - ((lines.length + 1) * 20)
         z: 100
       )
 
-    Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
-      .attr( w: 550)
+    speaker = Crafty.e('2D, Canvas, Text')
+      .attr(w: 550, x: back.x + 10, y: back.y + 10, z: 101, alpha: 1)
       .text(speaker)
-      .positionHud(
-        x: x
-        y: @level.visibleHeight - ((lines.length + 2) * 20)
-        z: 100
-      )
-      .textColor('#909090')
+      .textColor('#707070')
       .textFont({
         size: '16px',
         weight: 'bold',
-        family: 'Courier new'
+        family: 'Bank Gothic'
       })
+    back.attach(speaker)
 
     for line, i in lines
-      Crafty.e('2D, DOM, Text, Tween, HUD, Dialog')
-        .attr( w: 550)
-        .text(line)
-        .positionHud(
-          x: x
-          y: @level.visibleHeight - ((lines.length + 1 - i) * 20)
+      back.attach(Crafty.e('2D, Canvas, Text')
+        .attr(
+          w: 550,
+          x: back.x + 10,
+          y: back.y + 30 + (i * 20)
           z: 101
         )
+        .text(line)
         .textColor('#909090')
         .textFont({
           size: '16px',
           weight: 'bold',
-          family: 'Courier new'
+          family: 'Bank Gothic'
         })
+      )
 
     Crafty.e('Dialog, Delay').delay( =>
         @showDialog(start + 1)

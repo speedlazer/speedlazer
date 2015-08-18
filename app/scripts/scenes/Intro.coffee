@@ -7,7 +7,7 @@ Crafty.defineScene 'Intro', ->
   Crafty.viewport.x = 0
   Crafty.viewport.y = 0
 
-  Crafty.e('2D, DOM, Text, Tween, Delay')
+  Crafty.e('2D, Canvas, Text, Tween, Delay')
     .attr(x: 150, y: 210, w: 450)
     .text('Speedlazer')
     .textColor('#0000ff')
@@ -16,13 +16,13 @@ Crafty.defineScene 'Intro', ->
       weight: 'bold'
       family: 'Courier new'
     ).delay ->
-      @tween({ x: 250 }, 1000)
+      @tween({ x: 250 }, 2000)
       @one('TweenEnd', ->
-        @tween({ x: 150 }, 1000)
+        @tween({ x: 150 }, 2000)
       )
     , 2000, -1
 
-  Crafty.e('2D, DOM, Text, Tween, Delay')
+  Crafty.e('2D, Canvas, Text, Tween, Delay')
     .attr(x: 200, y: 290, w: 750)
     .text('Press fire to start!')
     .textColor('#FF0000')
