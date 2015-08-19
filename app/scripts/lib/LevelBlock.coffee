@@ -121,6 +121,13 @@ class Game.LevelBlock
     @createdBindings.push { event, callback }
     Crafty.bind(event, callback)
 
+  unbind: (event) ->
+    unbound = []
+    for b in @createdBindings when b.event is event
+      unbound.push b
+      Crafty.unbind(b.event, b.callback)
+    @createdBindings = _.without(@createdBindings, unbound...)
+
   canCleanup: ->
     cameraX = Crafty.viewport._x * -1
     return no if @x > cameraX

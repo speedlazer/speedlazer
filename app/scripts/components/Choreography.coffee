@@ -18,6 +18,15 @@ Crafty.c 'Choreography',
     @_setupCPart(0)
     this
 
+  synchChoreography: (otherComponent) ->
+    @_choreography = _.clone otherComponent._choreography
+    @_repeats = otherComponent._repeats
+    @_repeated = otherComponent._repeated
+    @_currentPart = _.clone otherComponent._currentPart
+    @_currentPart.x = @x
+    @_currentPart.y = @y
+    @_currentPart.easing = _.clone otherComponent._currentPart.easing
+
   _setupCPart: (number) ->
     @_currentPart = null
     unless number < @_choreography.length

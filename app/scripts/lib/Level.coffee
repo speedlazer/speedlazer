@@ -136,7 +136,7 @@ class Game.Level
     Crafty.bind 'PlayerEnterBlock', (index) =>
       if index > 0
         @blocks[index - 1].playerLeave()
-      @blocks[index].playerEnter()
+      @blocks[index]?.playerEnter()
 
   _placePlayerShips: (settings) ->
     Crafty.one 'ShipSpawned', =>
@@ -145,10 +145,10 @@ class Game.Level
 
     Crafty('Player').each (index) ->
       spawnPosition = ->
-        pos = settings.spawnPosition
+        pos = _.clone settings.spawnPosition
         Crafty('PlayerControlledShip').each ->
-          pos.x = @x + settings.spawnOffset.x
-          pos.y = @y + settings.spawnOffset.y
+          pos.x = @x + settings.spawnOffset.x + Crafty.viewport.x
+          pos.y = @y + settings.spawnOffset.y + Crafty.viewport.y
         pos
 
       @addComponent('ShipSpawnable').spawnPosition(spawnPosition, settings.armedPlayers)

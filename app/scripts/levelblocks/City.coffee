@@ -72,16 +72,41 @@ generator.defineBlock class extends @Game.LevelBlock
         x: 60
         duration: 3500
         event: 'shipExterior'
+      ,
+        type: 'delay'
+        duration: 1000
+        event: 'unlock'
+      ,
+        type: 'delay'
+        duration: 1000
+        event: 'go'
     ]
     block = this
+    leadAnimated = null
+
+    fixOtherShips = (newShip) ->
+      return unless leadAnimated
+      return unless leadAnimated.has 'Choreography'
+      newShip.attr(x: leadAnimated.x - 50, y: leadAnimated.y)
+      newShip.disableControl() if leadAnimated.disableControls
+      newShip.addComponent 'Choreography'
+      newShip.synchChoreography leadAnimated
+      newShip.one 'ChoreographyEnd', ->
+        @removeComponent 'Choreography', no
+      newShip.one 'unlock', -> @enableControl()
+
+    @bind 'ShipSpawned', fixOtherShips
     Crafty('PlayerControlledShip').each (index) ->
+      return unless index is 0
+      leadAnimated = this
       @addComponent 'Choreography'
       @attr x: 360 - (50 * index), y: 400
       @disableControl()
       @choreography c
       @one 'ChoreographyEnd', =>
-        @enableControl()
-        @removeComponent 'ChoreographyEnd', no
+        @removeComponent 'Choreography', 'no'
+        block.unbind 'ShipSpawned'
+      @one 'unlock', -> @enableControl()
       @one 'lift', ->
         Crafty('ScrollWall').each ->
           @addComponent 'Tween'
@@ -89,10 +114,8 @@ generator.defineBlock class extends @Game.LevelBlock
           @one 'TweenEnd', -> @removeComponent 'Tween', no
       @one 'shipExterior', ->
         block.outside.tween({ alpha: 1 }, 3500).addComponent('Edge')
-
-
-  outScreen: ->
-    #@level.setForcedSpeed(@_speedX)
+      @one 'go', ->
+        block.level.setForcedSpeed 1
 
 generator.defineBlock class extends @Game.LevelBlock
   name: 'City.Ocean'

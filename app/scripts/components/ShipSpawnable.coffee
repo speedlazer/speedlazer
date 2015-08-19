@@ -25,15 +25,17 @@ Crafty.c 'ShipSpawnable',
     ship.color(@color()) if @has('Color')
     @assignControls(ship) if @has('ControlScheme')
     ship.installItem 'lasers' if armed
-    ship.start()
 
     @listenTo ship, 'BulletHit', -> @addPoints(10)
     @listenTo ship, 'BulletDestroyedTarget', -> @addPoints(50)
+    Crafty.trigger('ShipSpawned', ship)
+    # We start it after the spawned event, so that listeners can
+    # reposition it before
+    ship.start()
     @listenTo ship, 'Hit', ->
       hasLasers = ship.hasItem 'lasers'
       ship.destroy()
       @loseLife()
       @spawnShip(hasLasers)
-    Crafty.trigger('ShipSpawned', ship)
     this
 
