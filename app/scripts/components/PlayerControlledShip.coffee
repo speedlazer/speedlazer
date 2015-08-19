@@ -1,6 +1,6 @@
 Crafty.c 'PlayerControlledShip',
   init: ->
-    @requires '2D, Canvas, Color, Collision, Delay'
+    @requires '2D, Canvas, Color, Collision'
     @attr w: 30, h: 30
     @bind 'Moved', (from) ->
       if @hit('Edge') # Contain player within playfield
@@ -9,20 +9,17 @@ Crafty.c 'PlayerControlledShip',
       x: 0
       y: 0
 
-    @delay ->
-      @addComponent('Invincible').invincibleDuration(2000)
-      @onHit 'Enemy', ->
-        return if @has('Invincible')
-        @trigger('Hit')
+  start: ->
+    @addComponent('Invincible').invincibleDuration(2000)
+    @onHit 'Enemy', ->
+      return if @has('Invincible')
+      @trigger('Hit')
 
-      @onHit 'LaserBeam', ->
-        return if @has('Invincible')
-        @trigger('Hit')
-    , 10, 0
-
+    @onHit 'LaserBeam', ->
+      return if @has('Invincible')
+      @trigger('Hit')
     @onHit 'PowerUp', (e) ->
       @pickUp(pu.obj) for pu in e
-
     @bind 'EnterFrame', ->
       @x += @_forcedSpeed.x
       @y += @_forcedSpeed.y
@@ -35,6 +32,7 @@ Crafty.c 'PlayerControlledShip',
       @trigger('Hit') if @hit('Edge')
 
     @primaryWeapon = undefined
+    this
 
   forcedSpeed: (speed) ->
     if speed.x? && speed.y?

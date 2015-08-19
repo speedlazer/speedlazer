@@ -25,6 +25,7 @@ Crafty.c 'ShipSpawnable',
     ship.color(@color()) if @has('Color')
     @assignControls(ship) if @has('ControlScheme')
     ship.installItem 'lasers' if armed
+    ship.start()
 
     @listenTo ship, 'BulletHit', -> @addPoints(10)
     @listenTo ship, 'BulletDestroyedTarget', -> @addPoints(50)
