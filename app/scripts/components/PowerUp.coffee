@@ -10,7 +10,6 @@ Crafty.c 'PowerUp',
 
   powerUp: (@settings) ->
     if @settings.marking
-      console.log @settings.marking
       marking = Crafty.e('2D,Canvas,Text')
         .textColor('#000000')
         .textFont({
