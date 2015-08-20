@@ -23,8 +23,8 @@ Crafty.c 'Choreography',
     @_repeats = otherComponent._repeats
     @_repeated = otherComponent._repeated
     @_currentPart = _.clone otherComponent._currentPart
-    @_currentPart.x = @x
-    @_currentPart.y = @y
+    @_currentPart.x += (@x - otherComponent.x)
+    @_currentPart.y += (@y - otherComponent.y)
     @_currentPart.easing = _.clone otherComponent._currentPart.easing
 
   _setupCPart: (number) ->
