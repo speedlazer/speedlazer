@@ -20,8 +20,6 @@ Crafty.defineScene 'City', (data) ->
         'p1,!p2:John:Too bad we have to bring this baby to the museum!'
         ':General:Just give her a good last flight,\nwe document some moves on the way!'
       ])
-    playerLeave: ->
-      @level.setForcedSpeed 1
 
   level.addBlock 'City.Ocean'
 
@@ -43,9 +41,9 @@ Crafty.defineScene 'City', (data) ->
       @level.showDialog([
         ':General:We dropped an upgrade to show the weapon systems'
       ]).on 'Finished', =>
-        @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers'), x: 640, y: 300
+        @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L'), x: 640, y: 300
         if Crafty('PlayerControlledShip').length > 1
-          @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers'), x: 640, y: 100
+          @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L'), x: 640, y: 100
 
 
   level.generateBlocks
@@ -55,7 +53,7 @@ Crafty.defineScene 'City', (data) ->
         'FlyOver'
         'Enemy'
       ).on 'LastDestroyed', (last) ->
-        Crafty.e('PowerUp').powerUp(contains: 'lasers').attr(
+        Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
           x: last.x
           y: last.y
           z: -1
@@ -69,7 +67,6 @@ Crafty.defineScene 'City', (data) ->
     viewport:
       x: 0
       y: 120
-
 
   v = 0
   co =

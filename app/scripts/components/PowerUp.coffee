@@ -9,4 +9,16 @@ Crafty.c 'PowerUp',
   remove: ->
 
   powerUp: (@settings) ->
+    if @settings.marking
+      console.log @settings.marking
+      marking = Crafty.e('2D,Canvas,Text')
+        .textColor('#000000')
+        .textFont({
+          size: '16px',
+          weight: 'bold',
+          family: 'Bank Gothic'
+        })
+        .text(@settings.marking)
+        .attr x: 4, y: 1
+      @attach marking
     this

@@ -176,11 +176,12 @@ class Game.Level
     new Game.EnemyFormation[formation](this, enemyComponent, callback)
 
   addComponent: (c, relativePosition) ->
-    block = @blocks[@currentBlockIndex]
+    block = @blocks[@currentBlockIndex ? 0]
     return unless block?
     position =
       x: relativePosition.x + @_scrollWall.x - block.x
       y: relativePosition.y + @_scrollWall.y - block.y
+    console.log position
 
     block.add(position.x, position.y, c)
 
