@@ -181,7 +181,6 @@ class Game.Level
     position =
       x: relativePosition.x + @_scrollWall.x - block.x
       y: relativePosition.y + @_scrollWall.y - block.y
-    console.log position
 
     block.add(position.x, position.y, c)
 

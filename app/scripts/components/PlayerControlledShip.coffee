@@ -19,7 +19,9 @@ Crafty.c 'PlayerControlledShip',
       return if @has('Invincible')
       @trigger('Hit')
     @onHit 'PowerUp', (e) ->
-      @pickUp(pu.obj) for pu in e
+      for pu in e
+        @pickUp(pu.obj)
+        @trigger('PowerUp', pu.obj)
     @bind 'EnterFrame', ->
       @x += @_forcedSpeed.x
       @y += @_forcedSpeed.y

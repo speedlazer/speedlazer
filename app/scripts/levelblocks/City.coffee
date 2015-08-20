@@ -21,6 +21,10 @@ generator.defineBlock class extends @Game.LevelBlock
     @add(50, @level.visibleHeight - 350, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: 350, h: 150 }))
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: 3, w: shipLength, h: 70, alpha: 0.3 }))
 
+
+    @elevator = Crafty.e('2D, Canvas, Color, Tween').color('#707070').attr({ z: 0, w: 100, h: 5 })
+    @add(140, @level.visibleHeight - height - 25, @elevator)
+
     @outside = Crafty.e('2D, Canvas, Color, Tween').color('#303030').attr({ z: 0, w: shipLength + 10, h: 195 - height, alpha: 0 })
     @add(0, @level.visibleHeight - @outside.h - height, @outside)
 
@@ -64,12 +68,13 @@ generator.defineBlock class extends @Game.LevelBlock
         duration: 5500
       ,
         type: 'linear'
-        y: -160
+        y: -150
         duration: 5500
         event: 'lift'
       ,
         type: 'linear'
-        x: 60
+        x: 70
+        y: -10
         duration: 3500
         event: 'shipExterior'
       ,
@@ -78,7 +83,7 @@ generator.defineBlock class extends @Game.LevelBlock
         event: 'unlock'
       ,
         type: 'delay'
-        duration: 1000
+        duration: 1
         event: 'go'
     ]
     block = this
@@ -108,9 +113,10 @@ generator.defineBlock class extends @Game.LevelBlock
         block.unbind 'ShipSpawned'
       @one 'unlock', -> @enableControl()
       @one 'lift', ->
+        block.elevator.tween({ y: block.elevator.y - 150 }, 5500)
         Crafty('ScrollWall').each ->
           @addComponent 'Tween'
-          @tween { y: 0 }, 7500
+          @tween { y: 0 }, 8500
           @one 'TweenEnd', -> @removeComponent 'Tween', no
       @one 'shipExterior', ->
         block.outside.tween({ alpha: 1 }, 3500).addComponent('Edge')

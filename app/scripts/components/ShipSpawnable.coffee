@@ -28,6 +28,7 @@ Crafty.c 'ShipSpawnable',
 
     @listenTo ship, 'BulletHit', -> @addPoints(10)
     @listenTo ship, 'BulletDestroyedTarget', -> @addPoints(50)
+    @listenTo ship, 'PowerUp', -> @addPoints(20)
     Crafty.trigger('ShipSpawned', ship)
     # We start it after the spawned event, so that listeners can
     # reposition it before
