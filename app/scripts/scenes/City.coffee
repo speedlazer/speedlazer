@@ -30,10 +30,9 @@ Crafty.defineScene 'City', (data) ->
       ]).on 'Finished', =>
         @level.spawnEnemies(
           'FlyOver'
-          'Enemy'
+          -> Crafty.e('Drone').drone()
         )
 
-  #level.generateBlocks amount: 2
 
   level.addBlock 'City.Ocean',
     generate: ->
@@ -48,16 +47,26 @@ Crafty.defineScene 'City', (data) ->
 
   level.generateBlocks
     amount: 2
-    inScreen: ->
+    enter: ->
       @level.spawnEnemies(
         'FlyOver'
-        'Enemy'
+        -> Crafty.e('Drone').drone()
       ).on 'LastDestroyed', (last) ->
         Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
           x: last.x
           y: last.y
           z: -1
         )
+
+  level.addBlock 'City.Ocean',
+    enter: ->
+      @level.spawnEnemies(
+        'Splash'
+        -> Crafty.e('BackgroundDrone').drone()
+      )
+
+
+  level.generateBlocks amount: 2
 
   level.addBlock 'GameplayDemo.End'
 
