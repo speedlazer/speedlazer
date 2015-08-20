@@ -173,7 +173,11 @@ class Game.Level
     new Game.Dialog dialog, this, callback
 
   spawnEnemies: (formation, enemyComponent, callback) ->
-    new Game.EnemyFormation[formation](this, enemyComponent, callback)
+    formationClass = Game.EnemyFormation[formation]
+    formations = _.keys Game.EnemyFormation
+    throw new Error("Not a valid formation: #{formation}. " +
+      "Use one of: #{formations.join ','}") unless formationClass?
+    new formationClass(this, enemyComponent, callback)
 
   addComponent: (c, relativePosition) ->
     block = @blocks[@currentBlockIndex ? 0]
