@@ -8,6 +8,7 @@ Crafty.c 'PlayerControlledShip',
     @_forcedSpeed =
       x: 0
       y: 0
+    @primaryWeapon = undefined
 
   start: ->
     @addComponent('Invincible').invincibleDuration(2000)
@@ -33,7 +34,6 @@ Crafty.c 'PlayerControlledShip',
       # and are crashed (squashed probably)
       @trigger('Hit') if @hit('Edge')
 
-    @primaryWeapon = undefined
     this
 
   forcedSpeed: (speed) ->

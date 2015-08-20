@@ -10,28 +10,31 @@ Crafty.defineScene 'City', (data) ->
     stage: data.stage
     title: 'City'
 
-  level.addBlock 'City.Intro',
-    enter: ->
-      text = "Stage #{@level.data.stage}: #{@level.data.title}"
-      Crafty.e('StageTitle').stageTitle(text)
+  building = yes
 
-      @level.showDialog([
-        'p1,p2:John:Too bad we have to bring these babies to the museum!'
-        'p1,!p2:John:Too bad we have to bring this baby to the museum!'
-        ':General:Just give her a good last flight,\nwe document some moves on the way!'
-      ])
+  unless building
+    level.addBlock 'City.Intro',
+      enter: ->
+        text = "Stage #{@level.data.stage}: #{@level.data.title}"
+        Crafty.e('StageTitle').stageTitle(text)
 
-  level.addBlock 'City.Ocean'
+        @level.showDialog([
+          'p1,p2:john:Too bad we have to bring these babies to the museum!'
+          'p1,!p2:john:Too bad we have to bring this baby to the museum!'
+          ':general:Just give her a good last flight,\nwe document some moves on the way!'
+        ])
 
-  level.addBlock 'City.Ocean',
-    enter: ->
-      @level.showDialog([
-        ':General:Evade the upcoming drones!'
-      ]).on 'Finished', =>
-        @level.spawnEnemies(
-          'FlyOver'
-          -> Crafty.e('Drone').drone()
-        )
+    level.addBlock 'City.Ocean'
+
+    level.addBlock 'City.Ocean',
+      enter: ->
+        @level.showDialog([
+          ':general:Evade the upcoming drones!'
+        ]).on 'finished', =>
+          @level.spawnEnemies(
+            'FlyOver'
+            -> Crafty.e('drone').drone()
+          )
 
 
   level.addBlock 'City.Ocean',
@@ -70,12 +73,18 @@ Crafty.defineScene 'City', (data) ->
 
   level.addBlock 'GameplayDemo.End'
 
-  level.start
-    armedPlayers: no
-    speed: 0
-    viewport:
-      x: 0
-      y: 120
+
+  if building
+    level.start
+      armedPlayers: yes
+      speed: 1
+  else
+    level.start
+      armedPlayers: no
+      speed: 0
+      viewport:
+        x: 0
+        y: 120
 
   v = 0
   co =

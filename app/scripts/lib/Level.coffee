@@ -105,7 +105,7 @@ class Game.Level
     Crafty.viewport.x = 0
     Crafty.viewport.y = 0
     @_controlsEnabled = settings.controlsEnabled
-    @_forcedSpeed = settings.speed
+    @setForcedSpeed settings.speed
 
     @_scrollWall = Crafty.e('ScrollWall').attr
       x: settings.viewport.x
@@ -160,7 +160,7 @@ class Game.Level
 
     Crafty.bind 'ShipSpawned', (ship) =>
       ship.forcedSpeed @_forcedSpeed
-      #ship.disableControl() unless @_controlsEnabled
+      ship.disableControl() unless @_controlsEnabled
 
   setForcedSpeed: (speed) ->
     @_forcedSpeed = speed
