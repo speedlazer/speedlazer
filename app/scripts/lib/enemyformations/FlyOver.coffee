@@ -4,13 +4,13 @@ Game.EnemyFormation ?= {}
 
 class Game.EnemyFormation.FlyOver extends Game.EventHandler
 
-  constructor: (@level, @enemyType, @callback) ->
+  constructor: (@level, @enemyConstructor, @callback) ->
     super
     @enemiesSpawned = 0
     @enemiesDestroyed = 0
     Crafty.e('Delay').delay(
       =>
-        e = Crafty.e(@enemyType)
+        e = @enemyConstructor(@enemiesSpawned)
 
         c = [
           length: 1
@@ -72,5 +72,5 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
         @level.addComponent(e, x: 750, y: 150)
         @enemiesSpawned += 1
 
-        e.enemy().choreography(c, 0)
+        e.choreography(c, 0)
     , 500, 3)
