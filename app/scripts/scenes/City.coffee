@@ -10,54 +10,51 @@ Crafty.defineScene 'City', (data) ->
     stage: data.stage
     title: 'City'
 
-  building = no
+  level.addBlock 'City.Intro',
+    enter: ->
+      text = "Stage #{@level.data.stage}: #{@level.data.title}"
+      Crafty.e('StageTitle').stageTitle(text)
 
-  unless building
-    level.addBlock 'City.Intro',
-      enter: ->
-        text = "Stage #{@level.data.stage}: #{@level.data.title}"
-        Crafty.e('StageTitle').stageTitle(text)
+      @level.showDialog([
+        'p1,p2:john:Too bad we have to bring these ships to the museum!'
+        'p1,!p2:john:Too bad we have to bring this ship to the museum!'
+        ':general:Just give her a good last flight,\nwe document some moves on the way!'
+      ])
 
-        @level.showDialog([
-          'p1,p2:john:Too bad we have to bring these ships to the museum!'
-          'p1,!p2:john:Too bad we have to bring this ship to the museum!'
-          ':general:Just give her a good last flight,\nwe document some moves on the way!'
-        ])
+  level.addBlock 'City.Ocean'
 
-    level.addBlock 'City.Ocean'
-
-    level.addBlock 'City.Ocean',
-      enter: ->
-        @level.showDialog([
-          ':general:Evade the upcoming drones!'
-        ]).on 'Finished', =>
-          @level.spawnEnemies(
-            'FlyOver'
-            -> Crafty.e('Drone').drone()
-          )
-
-    level.addBlock 'City.Ocean',
-      generate: ->
-      enter: ->
-        @level.showDialog([
-          ':General:We dropped an upgrade to show the weapon systems'
-        ]).on 'Finished', =>
-          @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L'), x: 640, y: 300
-          if Crafty('PlayerControlledShip').length > 1
-            @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L'), x: 640, y: 100
-
-    level.generateBlocks
-      amount: 2
-      enter: ->
+  level.addBlock 'City.Ocean',
+    enter: ->
+      @level.showDialog([
+        ':general:Evade the upcoming drones!'
+      ]).on 'Finished', =>
         @level.spawnEnemies(
           'FlyOver'
           -> Crafty.e('Drone').drone()
-        ).on 'LastDestroyed', (last) ->
-          Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
-            x: last.x
-            y: last.y
-            z: -1
-          )
+        )
+
+  level.addBlock 'City.Ocean',
+    generate: ->
+    enter: ->
+      @level.showDialog([
+        ':General:We dropped an upgrade to show the weapon systems'
+      ]).on 'Finished', =>
+        @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L'), x: 640, y: 300
+        if Crafty('PlayerControlledShip').length > 1
+          @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L'), x: 640, y: 100
+
+  level.generateBlocks
+    amount: 2
+    enter: ->
+      @level.spawnEnemies(
+        'FlyOver'
+        -> Crafty.e('Drone').drone()
+      ).on 'LastDestroyed', (last) ->
+        Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
+          x: last.x
+          y: last.y
+          z: -1
+        )
 
   level.addBlock 'City.Ocean',
     enter: ->
@@ -73,25 +70,16 @@ Crafty.defineScene 'City', (data) ->
             -> Crafty.e('Drone,Weaponized').drone()
           )
 
-
-
-
   level.generateBlocks amount: 2
 
   level.addBlock 'GameplayDemo.End'
 
-
-  if building
-    level.start
-      armedPlayers: yes
-      speed: 1
-  else
-    level.start
-      armedPlayers: no
-      speed: 0
-      viewport:
-        x: 0
-        y: 120
+  level.start
+    armedPlayers: no
+    speed: 0
+    viewport:
+      x: 0
+      y: 120
 
   v = 0
   co =
