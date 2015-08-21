@@ -23,13 +23,13 @@ Crafty.c 'Drone',
             Crafty.e('2D,Canvas,Color,Enemy,Tween').attr(
               x: @x - @w
               y: @y + (@h / 2)
-              w: 4
-              h: 4
+              w: 6
+              h: 6
             ).color('#FFFF00').tween(
               x: @x - 640
-              1000
+              2000
             )
-        , 500, 5)
+        , 1500, 5)
 
     this
 

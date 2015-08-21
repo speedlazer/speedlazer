@@ -21,9 +21,9 @@ class Game.EnemyFormation.Splash extends Game.EventHandler
         ,
           start: 0.5
           repeat: 1
-          x: -100
+          x: -50
           y: 50
-          duration: 4500
+          duration: 2500
           type: 'sine'
         ,
           x: -10

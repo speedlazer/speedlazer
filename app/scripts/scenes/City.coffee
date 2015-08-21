@@ -16,9 +16,9 @@ Crafty.defineScene 'City', (data) ->
       Crafty.e('StageTitle').stageTitle(text)
 
       @level.showDialog([
-        'p1,p2:john:Too bad we have to bring these ships to the museum!'
-        'p1,!p2:john:Too bad we have to bring this ship to the museum!'
-        ':general:Just give her a good last flight,\nwe document some moves on the way!'
+        'p1,p2:John:Too bad we have to bring these ships to the museum!'
+        'p1,!p2:John:Too bad we have to bring this ship to the museum!'
+        ':General:Just give her a good last flight,\nwe document some moves on the way!'
       ])
 
   level.addBlock 'City.Ocean'
@@ -56,7 +56,8 @@ Crafty.defineScene 'City', (data) ->
           z: -1
         )
 
-  level.addBlock 'City.Ocean',
+  level.generateBlocks
+    amount: 1
     enter: ->
       @level.spawnEnemies(
         'Splash'
@@ -70,9 +71,31 @@ Crafty.defineScene 'City', (data) ->
             -> Crafty.e('Drone,Weaponized').drone()
           )
 
-  level.generateBlocks amount: 2
+  level.generateBlocks
+    amount: 1
+    enter: ->
+      @level.showDialog([
+        ':General:Their AI has been compromised by our rogue prototype!\nEliminate it!'
+        'p1:John:How?'
+        'p2,!p1:Jack:What the...'
+        ':General:It\'s hiding in the city! go!'
+      ])
 
-  level.addBlock 'GameplayDemo.End'
+  level.generateBlocks
+    amount: 2
+    enter: ->
+      console.log 'spawn'
+      @level.spawnEnemies(
+        'FlyOver'
+        -> Crafty.e('Drone,Weaponized').drone()
+      )
+
+
+  level.addBlock 'GameplayDemo.End',
+    enter: ->
+      @level.showDialog([
+        ':Game:This is it for now.. More content coming soon!\nStarting test level...'
+      ])
 
   level.start
     armedPlayers: no
