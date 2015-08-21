@@ -81,11 +81,18 @@ Crafty.defineScene 'City', (data) ->
       x: 0
       y: 120
 
+
+  ##
+  # Setup the recoloring background to show a dawn in progress
   v = 0
+
+  # origin
   co =
     r: 0x60
     g: 0x20
     b: 0x20
+
+  # destination
   cd =
     r: 0x80
     g: 0x80
@@ -119,6 +126,7 @@ Crafty.defineScene 'City', (data) ->
     level.stop()
     Crafty.enterScene('GameplayDemo', { stage: data.stage + 1 })
 
+  # TODO: Extract this to 'level'
   Crafty.bind 'PlayerDied', ->
     playersActive = no
     Crafty('Player ControlScheme').each ->
