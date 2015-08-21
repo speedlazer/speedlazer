@@ -52,8 +52,8 @@ generator.defineBlock class extends @Game.LevelBlock
         @splash.attr(alpha: 1).tween(alpha: 0, w: 30, x: @splash.x - 10, h: 30, y: @splash.y - 30, 750)
 
 
-    @addBackground(-600, @level.visibleHeight - 65, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -2, w: ((@delta.x + 600) * .5) + 1, h: 65 }), .5)
-    @addBackground(-300, @level.visibleHeight - 85, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -3, w: ((@delta.x + 300) * .25) + 1, h: 85 }), .25)
+    @addBackground(-600, @level.visibleHeight - 65, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -3, w: ((@delta.x + 600) * .5) + 1, h: 65 }), .5)
+    @addBackground(-300, @level.visibleHeight - 85, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -4, w: ((@delta.x + 300) * .25) + 1, h: 85 }), .25)
 
     @addBackground(0, @level.visibleHeight + 40, Crafty.e('2D, Canvas, Color').color('#000040').attr({ z: 3, w: ((@delta.x + 300)) + 1, h: 185 }), 1.25)
 
@@ -134,8 +134,8 @@ generator.defineBlock class extends @Game.LevelBlock
     super
     height = 25
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height).color('#000080'))
-    @addBackground(0, @level.visibleHeight - 65, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -2, w: (@delta.x * .5) + 1, h: 65 }), .5)
-    @addBackground(0, @level.visibleHeight - 85, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -3, w: (@delta.x * .25) + 1, h: 85 }), .25)
+    @addBackground(0, @level.visibleHeight - 65, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -3, w: (@delta.x * .5) + 1, h: 65 }), .5)
+    @addBackground(0, @level.visibleHeight - 85, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -4, w: (@delta.x * .25) + 1, h: 85 }), .25)
 
     @addBackground(200, 45, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 100, h: 25 }), .5)
     @addBackground(200, 55, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 75, h: 25 }), .45)

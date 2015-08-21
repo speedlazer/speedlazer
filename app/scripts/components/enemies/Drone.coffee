@@ -16,5 +16,22 @@ Crafty.c 'Drone',
         @trigger('Destroyed', this)
         @destroy()
       bullet.destroy()
+    if @has('Weaponized')
+      @bind 'Shoot', =>
+        @shooting = Crafty.e('Delay').delay(
+          =>
+            Crafty.e('2D,Canvas,Color,Enemy,Tween').attr(
+              x: @x - @w
+              y: @y + (@h / 2)
+              w: 4
+              h: 4
+            ).color('#FFFF00').tween(
+              x: @x - 640
+              1000
+            )
+        , 500, 5)
 
     this
+
+  remove: ->
+    @shooting.destroy() if @shooting?

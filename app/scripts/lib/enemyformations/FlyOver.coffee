@@ -41,6 +41,7 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
             maxSpeed: 2
             duration: 4000
             type: 'viewport'
+            event: 'Shoot'
         else
           c.push
             length: 1
@@ -55,7 +56,12 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
             maxSpeed: 2
             duration: 4000
             type: 'viewport'
+            event: 'Shoot'
 
+        c.push
+          type: 'linear'
+          duration: 100
+          x: -100
         c.push
           type: 'delay'
           duration: 1
