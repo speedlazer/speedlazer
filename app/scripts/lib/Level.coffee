@@ -131,12 +131,22 @@ class Game.Level
     Crafty.bind 'EnterBlock', (index) =>
       if index > 0
         @blocks[index - 1].outScreen()
+      @newBlockIndex = index
       @blocks[index].enter()
 
     Crafty.bind 'PlayerEnterBlock', (index) =>
       if index > 0
         @blocks[index - 1].playerLeave()
       @blocks[index]?.playerEnter()
+
+    Crafty.bind 'ViewportScroll', =>
+      b = @blocks[@newBlockIndex ? 0]
+      x = Math.round (- b.x - Crafty.viewport.x) + Crafty.viewport.width
+      y = Math.round (- b.y - Crafty.viewport.y) + Crafty.viewport.height
+      if x isnt @notifyX or y isnt @notifyY
+        @notifyY = y
+        @notifyX = x
+        b.at x, y
 
   _placePlayerShips: (settings) ->
     Crafty.one 'ShipSpawned', =>
@@ -195,6 +205,7 @@ class Game.Level
     Crafty.unbind('LeaveBlock')
     Crafty.unbind('EnterBlock')
     Crafty.unbind('ShipSpawned')
+    Crafty.unbind('ViewportScroll')
     b.clean() for b in @blocks
 
   # Generate more level from tile 'start'
