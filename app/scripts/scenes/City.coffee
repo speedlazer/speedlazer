@@ -69,7 +69,12 @@ Crafty.defineScene 'City', (data) ->
           @level.spawnEnemies(
             'FlyOver'
             -> Crafty.e('Drone,Weaponized').drone()
-          )
+          ).on 'LastDestroyed', (last) ->
+            Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
+              x: last.x
+              y: last.y
+              z: -1
+            )
 
   level.generateBlocks
     amount: 1
@@ -82,20 +87,30 @@ Crafty.defineScene 'City', (data) ->
       ])
 
   level.generateBlocks
-    amount: 2
+    amount: 8
     enter: ->
       console.log 'spawn!'
       @level.spawnEnemies(
         'FlyOver'
         -> Crafty.e('Drone,Weaponized').drone()
-      )
+      ).on 'LastDestroyed', (last) ->
+        Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
+          x: last.x
+          y: last.y
+          z: -1
+        )
     at: (x) ->
       if x is 320
         console.log 'Extra spawn!'
         @level.spawnEnemies(
           'FlyOver'
           -> Crafty.e('Drone,Weaponized').drone()
-        )
+        ).on 'LastDestroyed', (last) ->
+          Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
+            x: last.x
+            y: last.y
+            z: -1
+          )
 
   level.addBlock 'GameplayDemo.End',
     enter: ->
@@ -104,7 +119,7 @@ Crafty.defineScene 'City', (data) ->
       ])
 
   level.start
-    armedPlayers: no
+    #armedPlayers: no
     speed: 0
     viewport:
       x: 0

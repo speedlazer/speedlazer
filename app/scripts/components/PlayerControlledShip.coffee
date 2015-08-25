@@ -55,7 +55,10 @@ Crafty.c 'PlayerControlledShip',
       powerUp.destroy()
 
   installItem: (item) ->
-    return true if @hasItem item
+    if @hasItem item
+      if item is 'lasers'
+        @primaryWeapon.addXP()
+      return true
     @items.push item
     if item is 'lasers'
       @primaryWeapon = Crafty.e('WeaponLaser')

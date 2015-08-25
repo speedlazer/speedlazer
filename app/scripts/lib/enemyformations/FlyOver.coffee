@@ -6,6 +6,7 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
 
   constructor: (@level, @enemyConstructor, @callback) ->
     super
+    @enemiesToSpawn = 4
     @enemiesSpawned = 0
     @enemiesDestroyed = 0
     Crafty.e('Delay').delay(
@@ -74,7 +75,7 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
         e.bind 'Destroyed', =>
           @enemiesDestroyed += 1
           @handle('Destroyed', e)
-          if @enemiesDestroyed is @enemiesSpawned
+          if @enemiesDestroyed is @enemiesToSpawn
             @handle('LastDestroyed', e)
 
         @level.addComponent(e, x: 750, y: 150)
