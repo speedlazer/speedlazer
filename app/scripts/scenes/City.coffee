@@ -89,7 +89,6 @@ Crafty.defineScene 'City', (data) ->
   level.generateBlocks
     amount: 8
     enter: ->
-      console.log 'spawn!'
       @level.spawnEnemies(
         'FlyOver'
         -> Crafty.e('Drone,Weaponized').drone()
@@ -101,7 +100,6 @@ Crafty.defineScene 'City', (data) ->
         )
     at: (x) ->
       if x is 320
-        console.log 'Extra spawn!'
         @level.spawnEnemies(
           'FlyOver'
           -> Crafty.e('Drone,Weaponized').drone()

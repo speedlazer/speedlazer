@@ -30,7 +30,7 @@ Crafty.c 'GamepadControls',
     ship.addComponent('GamepadMultiway, Gamepad')
       .gamepad(@controlMap.gamepadIndex)
       .gamepadMultiway
-        speed: { y: 3, x: 1.5 }
+        speed: { y: 4, x: 3 }
         gamepadIndex: @controlMap.gamepadIndex
 
     @listenTo ship, 'GamepadKeyChange', (e) =>

@@ -16,12 +16,16 @@ Crafty.c 'WeaponLaser',
       y: @ship.y + 15
     @ship.attach this
 
-  addXP: ->
-    @xp += 1
+  addXP: (amount) ->
+    @xp += amount
+    level = @level
     @level = @determineLevel @xp
+    if level isnt @level
+      @trigger 'levelUp', @level
 
   determineLevel: (xp) ->
-    levelBoundaries = [3, 8, 20, 50]
+    levelBoundaries = [150, 400, 1000, 2500]
+    levelBoundaries = [15, 40, 100, 250]
     neededXP = 0
     level = 0
     for i in levelBoundaries
@@ -29,16 +33,16 @@ Crafty.c 'WeaponLaser',
       level += 1 if xp >= neededXP
 
     progress = (xp - (levelBoundaries[level - 1] ? 0)) / levelBoundaries[level]
-    console.log 'level: ', level, progress * 100, '%'
+    #console.log 'level: ', level, progress * 100, '%'
     return level
 
   shoot: ->
     settings = switch @level
-      when 0 then w: 4, speed: 2, h: 3
-      when 1 then w: 6, speed: 3, h: 4
-      when 2 then w: 8, speed: 4, h: 5
+      when 0 then w: 4, speed: 5, h: 3
+      when 1 then w: 6, speed: 5, h: 4
+      when 2 then w: 8, speed: 5, h: 5
       when 3 then w: 10, speed: 5, h: 5
-      when 4 then w: 12, speed: 7, h: 6
+      when 4 then w: 12, speed: 5, h: 6
 
     Crafty.e('Bullet')
       .color(@ship.color())
@@ -53,7 +57,9 @@ Crafty.c 'WeaponLaser',
         speed: @ship._forcedSpeed.x + settings.speed
         direction: 0
       .bind 'HitTarget', =>
+        @addXP(1)
         @ship.trigger('BulletHit')
       .bind 'DestroyTarget', =>
+        @addXP(5)
         @ship.trigger('BulletDestroyedTarget')
 

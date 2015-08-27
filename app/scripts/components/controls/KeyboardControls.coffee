@@ -39,7 +39,7 @@ Crafty.c 'KeyboardControls',
           movementMap[key] = value
 
     ship.addComponent('Multiway, Keyboard')
-      .multiway({ y: 3, x: 1.5 }, movementMap)
+      .multiway({ y: 4, x: 3 }, movementMap)
 
     @listenTo ship, 'KeyDown', (e) ->
       ship.shoot() if e.key is controlMap.fire

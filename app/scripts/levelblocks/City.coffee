@@ -65,21 +65,21 @@ generator.defineBlock class extends @Game.LevelBlock
     c = [
         type: 'linear'
         x: -160
-        duration: 5500
+        duration: 2500
       ,
         type: 'linear'
         y: -150
-        duration: 5500
+        duration: 2500
         event: 'lift'
       ,
         type: 'linear'
         x: 70
         y: -10
-        duration: 3500
+        duration: 1500
         event: 'shipExterior'
       ,
         type: 'delay'
-        duration: 1000
+        duration: 500
         event: 'unlock'
       ,
         type: 'delay'
@@ -113,13 +113,13 @@ generator.defineBlock class extends @Game.LevelBlock
         block.unbind 'ShipSpawned'
       @one 'unlock', -> @enableControl()
       @one 'lift', ->
-        block.elevator.tween({ y: block.elevator.y - 150 }, 5500)
+        block.elevator.tween({ y: block.elevator.y - 150 }, 2500)
         Crafty('ScrollWall').each ->
           @addComponent 'Tween'
-          @tween { y: 0 }, 8500
+          @tween { y: 0 }, 5000
           @one 'TweenEnd', -> @removeComponent 'Tween', no
       @one 'shipExterior', ->
-        block.outside.tween({ alpha: 1 }, 3500).addComponent('Edge')
+        block.outside.tween({ alpha: 1 }, 1500).addComponent('Edge')
       @one 'go', ->
         block.level.setForcedSpeed 1
 

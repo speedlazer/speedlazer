@@ -1,6 +1,6 @@
 Crafty.c 'PlayerControlledShip',
   init: ->
-    @requires '2D, Canvas, Color, Collision'
+    @requires '2D, Canvas, Color, Collision, Listener'
     @attr w: 30, h: 30
     @bind 'Moved', (from) ->
       if @hit('Edge') # Contain player within playfield
@@ -57,15 +57,36 @@ Crafty.c 'PlayerControlledShip',
   installItem: (item) ->
     if @hasItem item
       if item is 'lasers'
-        @primaryWeapon.addXP()
+        @primaryWeapon.addXP(10)
       return true
     @items.push item
     if item is 'lasers'
       @primaryWeapon = Crafty.e('WeaponLaser')
       @primaryWeapon.install(this)
+      @listenTo @primaryWeapon, 'levelUp', (level) =>
+        @scoreText '+1'
+
       return true
 
   hasItem: (item) ->
     @items ?= []
     return ~@items.indexOf item
+
+  scoreText: (text) ->
+    Crafty.e('Text, Canvas, 2D, Tween')
+      .textColor('#FFFFFF')
+      .text(text)
+      .attr(
+        x: @x
+        y: @y - 10
+        z: 990
+      )
+      .textFont({
+        size: '16px',
+        weight: 'bold',
+        family: 'Bank Gothic'
+      })
+      .tween(y: @y - 40, alpha: 0.5, 1000)
+      .one('TweenEnd', -> @destroy())
+
 

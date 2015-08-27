@@ -9,6 +9,7 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
     @enemiesToSpawn = 4
     @enemiesSpawned = 0
     @enemiesDestroyed = 0
+    @startRandom = 50 + Math.round(Math.random() * 200)
     Crafty.e('Delay').delay(
       =>
         e = @enemyConstructor(@enemiesSpawned)
@@ -16,7 +17,7 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
         c = [
           length: 1
           x: 600
-          y: 200
+          y: @startRandom
           duration: 400
           type: 'viewport'
         ]
@@ -78,7 +79,7 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
           if @enemiesDestroyed is @enemiesToSpawn
             @handle('LastDestroyed', e)
 
-        @level.addComponent(e, x: 750, y: 150)
+        @level.addComponent(e, x: 750, y: @startRandom)
         @enemiesSpawned += 1
 
         e.choreography(c, 0)
