@@ -30,12 +30,11 @@ Crafty.c 'ScrollWall',
       # When the ships are in the first 30% of the screen,
       # speed up the camera.
       Crafty('PlayerControlledShip').each ->
-        margin = Crafty.viewport.width / 3.0
-        if @x >  (- (Crafty.viewport.x - Crafty.viewport.width)) - margin
-          if speedX > 0
-            perc = (speedX + 2) / speedX
-            speedY *= perc
-          speedX += 2
+        threshold = Crafty.viewport.width * (2.0 / 3.0)
+        relOffset = @x + Crafty.viewport.x
+        if relOffset > threshold
+          percentageOutOfBounds = (relOffset - threshold) / (Crafty.viewport.width - threshold)
+          speedX += (5 + @_forcedSpeed.x) * percentageOutOfBounds
 
       @x += speedX
       @y += speedY
