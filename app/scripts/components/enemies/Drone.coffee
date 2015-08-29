@@ -2,8 +2,9 @@ Crafty.c 'Drone',
   init: ->
     @requires '2D, Canvas, Color, Collision, Choreography, Enemy'
 
-  drone: ->
-    @attr w: 25, h: 25, health: 100
+  drone: (attr = {}) ->
+    @attr _.defaults(attr,
+      w: 25, h: 25, health: 100)
     @color '#0000FF'
 
     @onHit 'Bullet', (e) ->
