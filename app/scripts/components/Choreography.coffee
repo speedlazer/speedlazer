@@ -55,7 +55,7 @@ Crafty.c 'Choreography',
   _setupPart: (part, number) ->
     @_currentPart = _.extend(_.clone(part),
       part: number
-      x: @y
+      x: @x
       y: @y
       dx: part.x ? 0
       dy: part.y ? 0
