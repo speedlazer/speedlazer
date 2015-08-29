@@ -165,12 +165,12 @@ class Game.Level
 
       Crafty.e('PlayerInfo').playerInfo(30 + (index * 180), this)
 
-    Crafty('Player ControlScheme').each ->
-      @spawnShip()
-
     Crafty.bind 'ShipSpawned', (ship) =>
       ship.forcedSpeed @_forcedSpeed
       ship.disableControl() unless @_controlsEnabled
+
+    Crafty('Player ControlScheme').each ->
+      @spawnShip()
 
   setForcedSpeed: (speed) ->
     @_forcedSpeed = speed
@@ -189,12 +189,20 @@ class Game.Level
       "Use one of: #{formations.join ','}") unless formationClass?
     new formationClass(this, enemyComponent, callback)
 
-  addComponent: (c, relativePosition) ->
+  getComponentOffset: ->
     block = @blocks[@currentBlockIndex ? 0]
     return unless block?
+    x: @_scrollWall.x - block.x
+    y: @_scrollWall.y - block.y
+
+  addComponent: (c, relativePosition, offset = null) ->
+    block = @blocks[@currentBlockIndex ? 0]
+    return unless block?
+    unless offset?
+      offset = @getComponentOffset()
     position =
-      x: relativePosition.x + @_scrollWall.x - block.x
-      y: relativePosition.y + @_scrollWall.y - block.y
+      x: relativePosition.x + offset.x
+      y: relativePosition.y + offset.y
 
     block.add(position.x, position.y, c)
 

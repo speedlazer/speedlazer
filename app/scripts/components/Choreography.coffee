@@ -8,6 +8,7 @@ Crafty.c 'Choreography',
       sine: @_executeSine
       delay: @_executeDelay
       viewport: @_executeMoveIntoViewport # move to position within viewport
+      bezier: @_executeBezier
 
   remove: ->
 
@@ -52,17 +53,14 @@ Crafty.c 'Choreography',
       @_setupCPart @_currentPart.part + 1
 
   _setupPart: (part, number) ->
-    @_currentPart =
+    @_currentPart = _.extend(_.clone(part),
       part: number
-      type: part.type
-      x: @x
+      x: @y
       y: @y
       dx: part.x ? 0
       dy: part.y ? 0
-      repeat: part.repeat ? 1
-      start: part.start ? 0
-      maxSpeed: part.maxSpeed
       easing: new Crafty.easing(part.duration ? 0)
+    )
 
   _executeLinear: (v) ->
     @x = @_currentPart.x + (v * @_currentPart.dx)
@@ -92,5 +90,21 @@ Crafty.c 'Choreography',
       motionY = @_currentPart.maxSpeed
       motionY *= -1 if diffX < 0
     @y = @y + motionY
+
+  _executeBezier: (v) ->
+    bp = new Game.BezierPath
+    unless @_currentPart.bPath?
+      scaled = bp.scalePoints(@_currentPart.path,
+        origin:
+          x: @x
+          y: @y
+        scale:
+          x: Crafty.viewport.width
+          y: Crafty.viewport.height
+      )
+      @_currentPart.bPath = bp.buildPathFrom scaled
+    point = bp.pointOnPath(@_currentPart.bPath, v)
+    @x = point.x
+    @y = point.y
 
 

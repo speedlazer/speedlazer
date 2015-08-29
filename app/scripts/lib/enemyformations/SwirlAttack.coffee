@@ -6,31 +6,47 @@ class Game.EnemyFormation.SwirlAttack extends Game.EventHandler
 
   constructor: (@level, @enemyConstructor, @callback) ->
     super
-    @enemiesToSpawn = 4
+    @enemiesToSpawn = 8
     @enemiesSpawned = 0
     @enemiesDestroyed = 0
+    @offset = @level.getComponentOffset()
+
     Crafty.e('Delay').delay(
       =>
         c = [
-          type: 'linear'
-          x: -100
-          y: 400
-          duration: 1500
-        ,
-          type: 'sine'
-          x: -300
-          y: 200
-          duration: 1500
-          start: 0.5
-          repeat: 0.25
+          type: 'bezier'
+          path: [
+              x: 0.946875
+              y: 0.05
+            ,
+              x: 0.775
+              y: 0.5583333333333333
+            ,
+              x: 0.39375
+              y: 0.7625
+            ,
+              x: 0.071875
+              y: 0.4041666666666667
+            ,
+              x: 0.365625
+              y: 0.08333333333333333
+            ,
+              x: 0.628125
+              y: 0.38333333333333336
+            ,
+              x: 0.2375
+              y: 0.8583333333333333
+            ,
+              x: -0.0125
+              y: 0.9625
+          ]
 
-
+          duration: 5500
         ]
         e = @enemyConstructor(@enemiesSpawned)
 
-
-        @level.addComponent(e, x: 750, y: -20)
+        @level.addComponent(e, x: 750, y: -20, @offset)
         @enemiesSpawned += 1
 
         e.choreography(c, 0)
-    , 500, 3)
+    , 250, @enemiesToSpawn - 1)
