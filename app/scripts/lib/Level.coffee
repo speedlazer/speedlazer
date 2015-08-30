@@ -199,8 +199,7 @@ class Game.Level
 
   finishStage: ->
     # start showing player stats and counting scores...
-
-    @data.stageFinished = yes
+    Crafty.e('StageEnd').stageEnd this
 
   ##
   # Stop the level, clean up event handlers and
