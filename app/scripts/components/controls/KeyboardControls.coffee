@@ -42,4 +42,7 @@ Crafty.c 'KeyboardControls',
       .multiway({ y: 4, x: 3 }, movementMap)
 
     @listenTo ship, 'KeyDown', (e) ->
-      ship.shoot() if e.key is controlMap.fire
+      ship.shoot(true) if e.key is controlMap.fire
+
+    @listenTo ship, 'KeyUp', (e) ->
+      ship.shoot(false) if e.key is controlMap.fire

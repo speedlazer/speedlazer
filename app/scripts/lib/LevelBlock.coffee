@@ -39,6 +39,7 @@ class Game.LevelBlock
     return if @generated
     @x ?= pos.x
     @y ?= pos.y
+    @index = index
     @generated = yes
     @generate()
     @_notifyEnterFunction index

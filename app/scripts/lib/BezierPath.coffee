@@ -42,6 +42,17 @@ class Game.BezierPath
     result
 
   pointOnPath: (path, location) ->
+    [curve, v, ci] = @getCurveAndLocation(path, location)
+    p = jsBezier.pointOnCurve(curve.points, v)
+    p.c = ci
+    p
+
+  angleOnPath: (path, location) ->
+    [curve, v] = @getCurveAndLocation(path, location)
+    gradient = jsBezier.gradientAtPoint(curve.points, v)
+    gradient * 45.0
+
+  getCurveAndLocation: (path, location) ->
     distance = 0.0
     currentCurve = 0
 
@@ -56,7 +67,7 @@ class Game.BezierPath
     partDistance = curve.distance / path.distance
     pastDistance = distance / path.distance
     v = ((location - pastDistance) / partDistance)
-    jsBezier.pointOnCurve(curve.points, v)
+    [curve, v, currentCurve]
 
   getCurveControlPoints: (points) ->
     n = points.length - 1

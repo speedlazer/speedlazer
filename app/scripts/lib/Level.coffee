@@ -136,7 +136,7 @@ class Game.Level
 
     Crafty.bind 'PlayerEnterBlock', (index) =>
       if index > 0
-        @blocks[index - 1].playerLeave()
+        @blocks[index - 1]?.playerLeave()
       @blocks[index]?.playerEnter()
 
     Crafty.bind 'ViewportScroll', =>

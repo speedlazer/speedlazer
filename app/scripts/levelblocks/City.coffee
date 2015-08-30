@@ -126,7 +126,7 @@ generator.defineBlock class extends @Game.LevelBlock
 generator.defineBlock class extends @Game.LevelBlock
   name: 'City.Ocean'
   delta:
-    x: 640
+    x: 400
     y: 0
   next: ['City.Ocean']
 

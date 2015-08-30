@@ -90,25 +90,14 @@ Crafty.defineScene 'City', (data) ->
     amount: 8
     enter: ->
       @level.spawnEnemies(
-        'SwirlAttack'
-        -> Crafty.e('Drone').drone(health: 200)
+        if @index % 2 is 0 then 'SwirlAttack' else 'SwirlAttack2'
+        -> Crafty.e('Drone').drone()
       ).on 'LastDestroyed', (last) ->
         Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
           x: last.x
           y: last.y
           z: -1
         )
-    at: (x) ->
-      if x is 320
-        @level.spawnEnemies(
-          'SwirlAttack'
-          -> Crafty.e('Drone').drone(health: 200)
-        ).on 'LastDestroyed', (last) ->
-          Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
-            x: last.x
-            y: last.y
-            z: -1
-          )
 
   level.addBlock 'GameplayDemo.End',
     enter: ->
