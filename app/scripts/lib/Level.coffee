@@ -139,15 +139,6 @@ class Game.Level
         @blocks[index - 1]?.playerLeave()
       @blocks[index]?.playerEnter()
 
-    Crafty.bind 'ViewportScroll', =>
-      b = @blocks[@newBlockIndex ? 0]
-      x = Math.round (- b.x - Crafty.viewport.x) + Crafty.viewport.width
-      y = Math.round (- b.y - Crafty.viewport.y) + Crafty.viewport.height
-      if x isnt @notifyX or y isnt @notifyY
-        @notifyY = y
-        @notifyX = x
-        b.at x, y
-
   _placePlayerShips: (settings) ->
     Crafty.one 'ShipSpawned', =>
       @_playersActive = yes
@@ -205,6 +196,11 @@ class Game.Level
       y: relativePosition.y + offset.y
 
     block.add(position.x, position.y, c)
+
+  finishStage: ->
+    # start showing player stats and counting scores...
+
+    @data.stageFinished = yes
 
   ##
   # Stop the level, clean up event handlers and

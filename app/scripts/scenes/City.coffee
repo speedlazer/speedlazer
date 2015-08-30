@@ -43,67 +43,85 @@ Crafty.defineScene 'City', (data) ->
         if Crafty('PlayerControlledShip').length > 1
           @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L'), x: 640, y: 100
 
-  level.generateBlocks
-    amount: 2
-    enter: ->
-      @level.spawnEnemies(
-        'FlyOver'
-        -> Crafty.e('Drone').drone()
-      ).on 'LastDestroyed', (last) ->
-        Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
-          x: last.x
-          y: last.y
-          z: -1
-        )
+  #level.generateBlocks
+    #amount: 2
+    #enter: ->
+      #@level.spawnEnemies(
+        #'FlyOver'
+        #-> Crafty.e('Drone').drone()
+      #).on 'LastDestroyed', (last) ->
+        #Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
+          #x: last.x
+          #y: last.y
+          #z: -1
+        #)
+
+  #level.generateBlocks
+    #amount: 1
+    #enter: ->
+      #@level.spawnEnemies(
+        #'Splash'
+        #-> Crafty.e('BackgroundDrone').drone()
+      #).on 'LastDestroyed', (last) =>
+        #@level.showDialog([
+          #':General:Wtf is happening with our drones?'
+        #]).on 'Finished', =>
+          #@level.spawnEnemies(
+            #'FlyOver'
+            #-> Crafty.e('Drone,Weaponized').drone()
+          #).on 'LastDestroyed', (last) ->
+            #Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
+              #x: last.x
+              #y: last.y
+              #z: -1
+            #)
+
+  #level.generateBlocks
+    #amount: 1
+    #enter: ->
+      #@level.showDialog([
+        #':General:Their AI has been compromised by our rogue prototype!\nEliminate it!'
+        #'p1:John:How?'
+        #'p2,!p1:Jack:What the...'
+        #':General:It\'s hiding in the city! go!'
+      #])
+
+  #level.generateBlocks
+    #amount: 8
+    #enter: ->
+      #@level.spawnEnemies(
+        #if @index % 2 is 0 then 'SwirlAttack' else 'SwirlAttack2'
+        #-> Crafty.e('Drone').drone()
+      #).on 'LastDestroyed', (last) ->
+        #Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
+          #x: last.x
+          #y: last.y
+          #z: -1
+        #)
 
   level.generateBlocks
     amount: 1
-    enter: ->
-      @level.spawnEnemies(
-        'Splash'
-        -> Crafty.e('BackgroundDrone').drone()
-      ).on 'LastDestroyed', (last) =>
-        @level.showDialog([
-          ':General:Wtf is happening with our drones?'
-        ]).on 'Finished', =>
-          @level.spawnEnemies(
-            'FlyOver'
-            -> Crafty.e('Drone,Weaponized').drone()
-          ).on 'LastDestroyed', (last) ->
-            Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
-              x: last.x
-              y: last.y
-              z: -1
-            )
-
-  level.generateBlocks
-    amount: 1
-    enter: ->
-      @level.showDialog([
-        ':General:Their AI has been compromised by our rogue prototype!\nEliminate it!'
-        'p1:John:How?'
-        'p2,!p1:Jack:What the...'
-        ':General:It\'s hiding in the city! go!'
-      ])
-
-  level.generateBlocks
-    amount: 8
-    enter: ->
-      @level.spawnEnemies(
-        if @index % 2 is 0 then 'SwirlAttack' else 'SwirlAttack2'
-        -> Crafty.e('Drone').drone()
-      ).on 'LastDestroyed', (last) ->
-        Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
-          x: last.x
-          y: last.y
-          z: -1
-        )
-
-  level.addBlock 'GameplayDemo.End',
     enter: ->
       @level.showDialog([
         ':Game:This is it for now.. More content coming soon!\nStarting test level...'
       ])
+    inScreen: ->
+      console.log 'Start couting points!'
+      @level.finishStage()
+
+  level.generateBlocks
+    until: -> @data.stageFinished
+
+  level.generateBlocks
+    amount: 5
+    enter: ->
+      Crafty('ScrollWall').each -> @off()
+      endLevelTrigger = Crafty.e('2D, Canvas, Color, Collision')
+        .attr({ w: 10, h: @level.visibleHeight })
+        .onHit 'PlayerControlledShip', ->
+          Crafty.trigger('EndOfLevel')
+          @destroy()
+      @add(0, 0, endLevelTrigger)
 
   level.start
     armedPlayers: no

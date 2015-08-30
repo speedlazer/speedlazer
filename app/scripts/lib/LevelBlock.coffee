@@ -91,9 +91,6 @@ class Game.LevelBlock
   leave: ->
     @settings.leave?.apply this
 
-  at: (x, y) ->
-    @settings.at?.apply this, arguments
-
   # Gets called when the block is moved out of
   # screen, or the level stops.
   clean: ->
