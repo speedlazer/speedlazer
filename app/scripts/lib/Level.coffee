@@ -113,6 +113,10 @@ class Game.Level
 
     @_playersActive = no
 
+    Crafty.bind 'EnemySpawned', =>
+      @data.enemiesSpawned ?= 0
+      @data.enemiesSpawned += 1
+
     @_placePlayerShips settings
     @_update 0
 

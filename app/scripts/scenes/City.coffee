@@ -23,15 +23,15 @@ Crafty.defineScene 'City', (data) ->
 
   level.addBlock 'City.Ocean'
 
-  #level.addBlock 'City.Ocean',
-    #enter: ->
-      #@level.showDialog([
-        #':general:Evade the upcoming drones!'
-      #]).on 'Finished', =>
-        #@level.spawnEnemies(
-          #'FlyOver'
-          #-> Crafty.e('Drone').drone()
-        #)
+  level.addBlock 'City.Ocean',
+    enter: ->
+      @level.showDialog([
+        ':general:Evade the upcoming drones!'
+      ]).on 'Finished', =>
+        @level.spawnEnemies(
+          'FlyOver'
+          -> Crafty.e('Drone').drone()
+        )
 
   #level.addBlock 'City.Ocean',
     #generate: ->
@@ -124,7 +124,7 @@ Crafty.defineScene 'City', (data) ->
       @add(0, 0, endLevelTrigger)
 
   level.start
-    armedPlayers: no
+    armedPlayers: yes
     speed: 0
     viewport:
       x: 0

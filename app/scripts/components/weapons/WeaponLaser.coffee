@@ -36,7 +36,8 @@ Crafty.c 'WeaponLaser',
     #console.log 'level: ', level, progress * 100, '%'
     return level
 
-  shoot: ->
+  shoot: (onOff) ->
+    return unless onOff
     settings = switch @level
       when 0 then w: 4, speed: 5, h: 3
       when 1 then w: 6, speed: 5, h: 4

@@ -45,9 +45,10 @@ Crafty.c 'PlayerControlledShip',
       @_forcedSpeed.y = 0
     this
 
-  shoot: ->
+  shoot: (onOff) ->
     return unless @primaryWeapon?
-    @primaryWeapon.shoot()
+    @trigger 'Shoot' if onOff
+    @primaryWeapon.shoot(onOff)
 
   pickUp: (powerUp) ->
     contents =  powerUp.settings.contains

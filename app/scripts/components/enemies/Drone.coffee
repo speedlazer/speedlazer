@@ -3,6 +3,7 @@ Crafty.c 'Drone',
     @requires '2D, Canvas, Color, Collision, Choreography, Enemy'
 
   drone: (attr = {}) ->
+    Crafty.trigger('EnemySpawned', this)
     @attr _.defaults(attr,
       w: 25, h: 25, health: 300)
     @origin 'center'
