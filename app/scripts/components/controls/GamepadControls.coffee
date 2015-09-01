@@ -32,7 +32,9 @@ Crafty.c 'GamepadControls',
       .gamepadMultiway
         speed: { y: 4, x: 3 }
         gamepadIndex: @controlMap.gamepadIndex
+        analog: yes
 
     @listenTo ship, 'GamepadKeyChange', (e) =>
-      if e.button is @controlMap.fire && e.pressed
-        ship.shoot()
+      if e.button is @controlMap.fire
+        ship.shoot(e.pressed)
+

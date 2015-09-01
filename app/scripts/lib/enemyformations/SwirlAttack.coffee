@@ -15,7 +15,7 @@ class Game.EnemyFormation.SwirlAttack extends Game.EventHandler
       =>
         c = [
           type: 'bezier'
-          rotation: yes
+          rotation: no
           path: [
               x: 0.946875
               y: 0.05
