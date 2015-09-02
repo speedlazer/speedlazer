@@ -11,8 +11,8 @@ Crafty.c 'ScrollWall',
         y: 0
 
     @_speed = { x: 0, y: 0 }
-    @wallEnd = Crafty.e('2D, Canvas, Color, ScrollFront')
-      .attr(x: - (Crafty.viewport.x - Crafty.viewport.width) - 3, y: 0, h: Crafty.viewport.height, w: 2)
+    @wallEnd = Crafty.e('2D, Canvas, ScrollFront')
+      .attr(x: - (Crafty.viewport.x - Crafty.viewport.width) - 3, y: 0, h: Crafty.viewport.height, w: 12)
     @attach @wallEnd
 
     @wallTop = Crafty.e('2D, Canvas, Edge, Collision')
