@@ -9,17 +9,22 @@ Crafty.c 'ViewportRelativeMotion',
     @_initialViewport =
       x: (Crafty.viewport.width / 4)
     @_location =
-      x: x + ((x - @_initialViewport.x) * (@_speed - 1))
-      y: y
+      sx: x + ((x - @_initialViewport.x) * (@_speed - 1))
+      sy: y
       dx: @dx ? 0
       dy: @dy ? 0
 
+    shifted = (@_initialViewport.x - Crafty.viewport._x) * (@_speed - 1)
+    newX = @_location.sx - shifted + @dx
+    newY = @_location.sy - (Crafty.viewport._y * (1 - @_speed)) + @dy
+    @_location.x = newX
+    @_location.y = newY
     @attr @_location
 
     @motion = Crafty.bind 'ViewportScroll', =>
       shifted = (@_initialViewport.x - Crafty.viewport._x) * (@_speed - 1)
-      newX = @_location.x - shifted + @dx
-      newY = @_location.y - (Crafty.viewport._y * (1 - @_speed)) + @dy
+      newX = @_location.sx - shifted + @dx
+      newY = @_location.sy - (Crafty.viewport._y * (1 - @_speed)) + @dy
       @attr x: newX, y: newY
     this
 
