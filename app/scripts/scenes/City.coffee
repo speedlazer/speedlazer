@@ -106,7 +106,6 @@ Crafty.defineScene 'City', (data) ->
         ':Game:This is it for now.. More content coming soon!\nStarting test level...'
       ])
     inScreen: ->
-      console.log 'Start couting points!'
       @level.finishStage()
 
   level.generateBlocks

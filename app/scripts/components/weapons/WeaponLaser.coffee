@@ -33,7 +33,6 @@ Crafty.c 'WeaponLaser',
       level += 1 if xp >= neededXP
 
     progress = (xp - (levelBoundaries[level - 1] ? 0)) / levelBoundaries[level]
-    #console.log 'level: ', level, progress * 100, '%'
     return level
 
   shoot: (onOff) ->
