@@ -17,6 +17,7 @@ Crafty.c 'Drone',
         bullet.trigger 'DestroyTarget', target: this
         Crafty.trigger('EnemyDestroyed', this)
         @trigger('Destroyed', this)
+        Crafty.e('Explosion').explode({ @x, @y, @w, @h })
         @destroy()
       bullet.destroy()
     if @has('Weaponized')

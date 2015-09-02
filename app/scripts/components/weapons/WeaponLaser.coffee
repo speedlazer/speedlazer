@@ -45,7 +45,8 @@ Crafty.c 'WeaponLaser',
       when 4 then w: 12, speed: 7, h: 6
 
     Crafty.e('Bullet')
-      .color(@ship.color())
+      .color('#FFFF00')
+      #.color(@ship.color())
       .attr
         x: @x + @w
         y: @y + (@h / 2) - (settings.h / 2)
