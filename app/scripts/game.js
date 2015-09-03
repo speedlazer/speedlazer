@@ -12,12 +12,12 @@ var Game = {
       Crafty.background('#000000');
 
       Crafty.e('Player, Color')
-        .attr({ name: 'Player 1' })
+        .attr({ name: 'Player 1', z: 0 })
         .setName('Player 1')
         .color('#FF0000');
 
       Crafty.e('Player, Color')
-        .attr({ name: 'Player 2' })
+        .attr({ name: 'Player 2', z: 10 })
         .setName('Player 2')
         .color('#00FF00');
 

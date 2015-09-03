@@ -21,6 +21,7 @@ Crafty.c 'ShipSpawnable',
       .attr
         x: pos.x - Crafty.viewport.x
         y: pos.y - Crafty.viewport.y
+        z: @z
 
     @ship.color(@color()) if @has('Color')
     @assignControls(@ship) if @has('ControlScheme')

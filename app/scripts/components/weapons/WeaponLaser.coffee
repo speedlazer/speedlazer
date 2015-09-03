@@ -14,6 +14,7 @@ Crafty.c 'WeaponLaser',
     @attr
       x: @ship.x + 10
       y: @ship.y + 15
+      z: @ship.z + 1
     @ship.attach this
 
   addXP: (amount) ->
