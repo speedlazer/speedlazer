@@ -167,7 +167,7 @@ Crafty.defineScene 'City', (data) ->
       x: 620
       y: 410
     )
-    .tween({ dy: -340, dx: 120 }, duration)
+    .tween({ dy: -320, dx: 115 }, duration)
 
   Crafty.bind 'EndOfLevel', ->
     level.stop()
