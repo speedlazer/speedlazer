@@ -1,34 +1,49 @@
 Crafty.c 'StageEnd',
   init: ->
-    @requires '2D, DOM, Text, HUD, Delay'
+    @requires '2D, Canvas, HUD, Delay, Color'
 
   stageEnd: (level) ->
     @lineNr = 0
-    this.attr w: 640, z: 1
-      .css 'textAlign', 'center'
+
+    this.attr(
+      w: 580
+      h: 200
+      alpha: 0.2
+    )
+    .positionHud(
+      x: 40
+      y: 130
+      z: 90
+    )
+    .color('#000000')
+
+    c = Crafty.e('Text, DOM').attr(
+      x: @x
+      y: @y + 10
+      w: @w
+      z: 91
+    ).css 'textAlign', 'center'
       .text "Stage #{level.data.stage} Cleared: #{level.data.title}"
-      .positionHud(
-        x: @x,
-        y: 60,
-        z: -1
-      )
       .textColor('#FFFFFF')
       .textFont({
         size: '12px',
         weight: 'bold',
         family: 'Courier new'
-      }).delay((i) ->
-        switch @lineNr
-          when 0
-            @showPlayerHeaders()
-            @showAccuracy level
-          when 2 then @showShotsFired level
-          when 3 then @showEnemiesKilled level
-          when 4 then @showLives level
-          when 5 then @showWeaponXP level
-          when 6 then @showTotals level
-          when 7 then level.data.stageFinished = yes
-      , 1000, 6)
+      })
+    @attach c
+
+    @delay((i) ->
+      switch @lineNr
+        when 0
+          @showPlayerHeaders()
+          @showAccuracy level
+          level.data.stageFinished = yes
+        when 2 then @showShotsFired level
+        when 3 then @showEnemiesKilled level
+        when 4 then @showLives level
+        when 5 then @showWeaponXP level
+        when 6 then @showTotals level
+    , 2000, 6)
 
   showPlayerHeaders: ->
     cells = ['']
@@ -50,7 +65,7 @@ Crafty.c 'StageEnd',
           value = 0.0
         cells.push "#{value}%"
         score = Math.round(value * 100)
-        cells.push "#{score}"
+        cells.push score
         @stats.bonus += score
       else
         cells.push ''
@@ -70,7 +85,7 @@ Crafty.c 'StageEnd',
           accuracy = 0.0
 
         score = Math.round(value * (accuracy + accuracy))
-        cells.push "#{score}"
+        cells.push score
         @stats.bonus += score
       else
         cells.push ''
@@ -89,7 +104,7 @@ Crafty.c 'StageEnd',
         cells.push "#{value}%"
 
         score = Math.round(value * 100)
-        cells.push "#{score}"
+        cells.push score
         @stats.bonus += score
       else
         cells.push ''
@@ -103,7 +118,7 @@ Crafty.c 'StageEnd',
         value = @lives
         cells.push "#{value}"
         score = Math.round(value * 1000)
-        cells.push "#{score}"
+        cells.push score
         @stats.bonus += score
       else
         cells.push ''
@@ -117,7 +132,7 @@ Crafty.c 'StageEnd',
         value = @ship?.primaryWeapon?.xp ? 0
         cells.push "#{value}"
         score = Math.round(value * 10)
-        cells.push "#{score}"
+        cells.push score
         @stats.bonus += score
       else
         cells.push ''
@@ -140,45 +155,44 @@ Crafty.c 'StageEnd',
   addCelledLine: (cells) ->
     @lineNr += 1
 
-    y = 80 + (@lineNr * 20)
+    y = 150 + (@lineNr * 20)
 
-    xOffset = 70
+    xOffset = 0
     cellWidth = 500.0 / (cells.length + .5)
     for cell, i in cells
-      cw = cellWidth
-      cw += (cellWidth / 2.0) if i is 0
-      if i is 0
-        x = @x + xOffset
-      else
-        x = @x + xOffset + (cellWidth * (i + .5))
+      do (cell, i) =>
+        cw = cellWidth
+        cw += (cellWidth / 2.0) if i is 0
+        if i is 0
+          x = @x + xOffset
+        else
+          x = @x + xOffset + (cellWidth * (i + .5))
 
-      c = Crafty.e('Text, DOM').attr(
-        x: x
-        y: y
-        w: cw
-        z: 3
-      ).css 'textAlign', 'right'
-        .text cell
-        .textColor('#FFFFFF')
-        .textFont({
-          size: '12px',
-          weight: 'normal',
-          family: 'Courier new'
-        })
-      @attach c
-      c2 = Crafty.e('Text, DOM').attr(
-        x: x
-        y: y + 2
-        w: cw
-        z: 2
-      ).css 'textAlign', 'right'
-        .text cell
-        .textColor('#000000')
-        .textFont({
-          size: '12px',
-          weight: 'bold',
-          family: 'Courier new'
-        })
-      @attach c2
+        c = Crafty.e('Text, DOM').attr(
+          x: x
+          y: y
+          w: cw
+          z: 3
+        ).css 'textAlign', 'right'
+          .text cell
+          .textColor('#FFFFFF')
+          .textFont({
+            size: '12px',
+            weight: 'normal',
+            family: 'Courier new'
+          })
+
+        if i in [2, 4] and typeof cell is 'number'
+          c.attr endScore: cell, v: 0
+          c.text c.v
+          c.bind 'EnterFrame', (fd) ->
+            @v += (fd.dt * 3) + 3
+            if @v > @endScore
+              @v = @endScore
+              @unbind 'EnterFrame'
+            @text @v
+
+
+        @attach c
 
 
