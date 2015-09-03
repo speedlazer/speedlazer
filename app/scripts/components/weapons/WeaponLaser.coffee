@@ -26,7 +26,7 @@ Crafty.c 'WeaponLaser',
 
   determineLevel: (xp) ->
     levelBoundaries = [150, 400, 1000, 2500]
-    levelBoundaries = [15, 40, 100, 250]
+    #levelBoundaries = [15, 40, 100, 250]
     neededXP = 0
     level = 0
     for i in levelBoundaries
