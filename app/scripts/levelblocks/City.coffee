@@ -18,9 +18,9 @@ generator.defineBlock class extends @Game.LevelBlock
     #@add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height + 80).color('#000080'))
     #@add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: height + 80).color('#000080'))
 
-    height = 45
+    height = 85
     @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 90).color('#000080'))
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height + 10, z: -1).color('#000080'))
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height + 10, z: -3).color('#000080'))
 
     height = 25
     @add(0, @level.visibleHeight - 200, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: shipLength, h: 300 }))
@@ -58,8 +58,8 @@ generator.defineBlock class extends @Game.LevelBlock
         @splash.attr(alpha: 1).tween(alpha: 0, w: 30, x: @splash.x - 10, h: 30, y: @splash.y - 30, 750)
 
 
-    @addBackground(-600, @level.visibleHeight - 105, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -3, w: ((@delta.x + 600) * .5) + 1, h: 105 }), .5)
-    @addBackground(-300, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -4, w: ((@delta.x + 300) * .25) + 1, h: 155 }), .25)
+    @addBackground(-600, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -5, w: ((@delta.x + 600) * .5) + 1, h: 105 }), .5)
+    @addBackground(-300, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -6, w: ((@delta.x + 300) * .25) + 1, h: 155 }), .25)
 
     @addBackground(0, @level.visibleHeight + 40, Crafty.e('2D, Canvas, Color').color('#000040').attr({ z: 3, w: ((@delta.x + 300)) + 1, h: 185 }), 1.25)
 
@@ -138,11 +138,11 @@ generator.defineBlock class extends @Game.LevelBlock
 
   generate: ->
     super
-    height = 45
+    height = 85
     @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -1).color('#000080'))
-    @addBackground(0, @level.visibleHeight - 105, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -3, w: (@delta.x * .5) + 1, h: 105 }), .5)
-    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -4, w: (@delta.x * .25) + 1, h: 155 }), .25)
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -3).color('#000080'))
+    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -5, w: (@delta.x * .5) + 1, h: 105 }), .5)
+    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -6, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
     y = (Math.random() * 20) + 40
     @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 100, h: 25 }), .5)
