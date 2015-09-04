@@ -147,3 +147,92 @@ generator.defineBlock class extends @Game.LevelBlock
     y = (Math.random() * 20) + 40
     @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 100, h: 25 }), .5)
     @addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 75, h: 25 }), .45)
+
+generator.defineBlock class extends @Game.LevelBlock
+  name: 'City.CoastStart'
+  delta:
+    x: 400
+    y: 0
+  next: ['City.Coast']
+
+  generate: ->
+    super
+    height = 85
+    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -3).color('#000080'))
+    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -5, w: (@delta.x * .5) + 1, h: 105 }), .5)
+    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -6, w: (@delta.x * .25) + 1, h: 155 }), .25)
+
+    # This is just for a small impression, this will be replaced by a sprite
+    @addBackground(150, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -5, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(120, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -5, w: (50 * .25) + 1, h: 15 }), .25)
+
+    @addBackground(230, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -5, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(190, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -5, w: (50 * .25) + 1, h: 15 }), .25)
+
+    #y = (Math.random() * 20) + 40
+    #@addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 100, h: 25 }), .5)
+    #@addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 75, h: 25 }), .45)
+    #
+
+generator.defineBlock class extends @Game.LevelBlock
+  name: 'City.Coast'
+  delta:
+    x: 400
+    y: 0
+  next: ['City.Coast']
+
+  generate: ->
+    super
+    height = 85
+    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -3).color('#000080'))
+    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -5, w: (@delta.x * .5) + 1, h: 105 }), .5)
+    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -6, w: (@delta.x * .25) + 1, h: 155 }), .25)
+
+    # This is just for a small impression, this will be replaced by a sprite
+    @addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -5, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -5, w: (50 * .25) + 1, h: 15 }), .25)
+
+    @addBackground(170, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -5, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -5, w: (50 * .25) + 1, h: 15 }), .25)
+
+    @addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -5, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -5, w: (50 * .25) + 1, h: 15 }), .25)
+
+    y = (Math.random() * 20) + 40
+    @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 100, h: 25 }), .5)
+    @addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 75, h: 25 }), .45)
+
+
+generator.defineBlock class extends @Game.LevelBlock
+  name: 'City.Bay'
+  delta:
+    x: 400
+    y: 0
+  next: ['City.Bay']
+
+  generate: ->
+    super
+    height = 85
+    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -3).color('#000080'))
+    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -5, w: (@delta.x * .5) + 1, h: 105 }), .5)
+    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -6, w: (@delta.x * .25) + 1, h: 155 }), .25)
+
+    # This is just for a small impression, this will be replaced by a sprite
+    @addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -5, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -5, w: (50 * .25) + 1, h: 15 }), .25)
+
+    @addBackground(170, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -5, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -5, w: (50 * .25) + 1, h: 15 }), .25)
+
+    @addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -5, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -5, w: (50 * .25) + 1, h: 15 }), .25)
+
+    @addBackground(0, @level.visibleHeight - 135, Crafty.e('2D, Canvas, Color').color('#C0C0C0').attr({ z: -4, w: (@delta.x * .5) + 1, h: 30 }), .5)
+
+
+    #y = (Math.random() * 20) + 40
+    #@addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 100, h: 25 }), .5)
+    #@addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 75, h: 25 }), .45)
