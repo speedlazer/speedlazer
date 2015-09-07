@@ -11,6 +11,7 @@ Crafty.defineScene 'City', (data) ->
     title: 'City'
 
   level.addBlock 'City.Intro',
+    fast: yes
     enter: ->
       text = "Stage #{@level.data.stage}: #{@level.data.title}"
       Crafty.e('StageTitle').stageTitle(text)
@@ -113,6 +114,8 @@ Crafty.defineScene 'City', (data) ->
       @level.finishStage()
 
   level.addBlock 'City.Bay'
+  level.addBlock 'City.Bay'
+  level.addBlock 'City.UnderBridge'
 
   level.generateBlocks
     until: -> @data.stageFinished
