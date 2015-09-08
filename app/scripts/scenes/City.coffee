@@ -11,7 +11,7 @@ Crafty.defineScene 'City', (data) ->
     title: 'City'
 
   level.addBlock 'City.Intro',
-    fast: yes
+    #fast: yes
     enter: ->
       text = "Stage #{@level.data.stage}: #{@level.data.title}"
       Crafty.e('StageTitle').stageTitle(text)
@@ -24,7 +24,6 @@ Crafty.defineScene 'City', (data) ->
 
   level.addBlock 'City.Ocean'
 
-  ###
   level.addBlock 'City.Ocean',
     enter: ->
       @level.showDialog([
@@ -100,14 +99,17 @@ Crafty.defineScene 'City', (data) ->
           y: last.y
           z: -1
         )
-  ###
 
   level.addBlock 'City.CoastStart'
   level.addBlock 'City.CoastStart'
   level.addBlock 'City.Bay'
   level.addBlock 'City.Bay'
   level.addBlock 'City.UnderBridge'
+  level.addBlock 'City.Bay'
+  level.addBlock 'City.BayRaiser'
 
+  level.addBlock 'City.Bay'
+  level.addBlock 'City.Bay'
 
   level.generateBlocks
     amount: 1
@@ -174,9 +176,9 @@ Crafty.defineScene 'City', (data) ->
   Crafty.e('Sun')
     .sun(
       x: 620
-      y: 410
+      y: 320
     )
-    .tween({ dy: -320, dx: 115 }, duration)
+    .tween({ dy: -230, dx: 115 }, duration)
 
   Crafty.bind 'EndOfLevel', ->
     level.stop()
