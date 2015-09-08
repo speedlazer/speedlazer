@@ -34,7 +34,13 @@ Crafty.c 'ScrollWall',
         relOffset = @x + Crafty.viewport.x
         if relOffset > threshold
           percentageOutOfBounds = (relOffset - threshold) / (Crafty.viewport.width - threshold)
-          speedX += (5 + @_forcedSpeed.x) * percentageOutOfBounds
+          increase = (5 + @_forcedSpeed.x) * percentageOutOfBounds
+
+          if speedX > 0 # Prevend division by zero
+            percentage = (speedX + increase) / speedX
+            speedY *= percentage
+
+          speedX += increase
 
       @x += speedX
       @y += speedY
