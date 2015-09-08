@@ -103,6 +103,11 @@ Crafty.defineScene 'City', (data) ->
   ###
 
   level.addBlock 'City.CoastStart'
+  level.addBlock 'City.CoastStart'
+  level.addBlock 'City.Bay'
+  level.addBlock 'City.Bay'
+  level.addBlock 'City.UnderBridge'
+
 
   level.generateBlocks
     amount: 1
@@ -112,11 +117,6 @@ Crafty.defineScene 'City', (data) ->
       ])
     inScreen: ->
       @level.finishStage()
-
-  level.addBlock 'City.Bay'
-  level.addBlock 'City.Bay'
-  level.addBlock 'City.UnderBridge'
-
   level.generateBlocks
     until: -> @data.stageFinished
 
