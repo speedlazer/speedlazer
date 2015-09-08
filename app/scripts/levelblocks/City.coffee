@@ -290,7 +290,7 @@ generator.defineBlock class extends @Game.LevelBlock
       y = @level.visibleHeight - (480 - (i * 30))
       z = -1 - (1 * i)
       sp = 1.2 - (0.05 * i)
-      hp = (480 - (8 * i)) - (h + y)
+      hp = (460 - (10 * i)) - (h + y)
       @addBackground(0, y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: @delta.x * sp, h: h }), sp)
       if i % 5 is 0
         @addBackground(0, h + y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
