@@ -107,9 +107,8 @@ Crafty.defineScene 'City', (data) ->
   level.addBlock 'City.UnderBridge'
   level.addBlock 'City.Bay'
   level.addBlock 'City.BayRaiser'
-
   level.addBlock 'City.Bay'
-  level.addBlock 'City.Bay'
+  level.addBlock 'City.Skyline'
 
   level.generateBlocks
     amount: 1
