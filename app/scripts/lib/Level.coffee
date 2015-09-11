@@ -185,10 +185,8 @@ class Game.Level
     new formationClass(this, enemyComponent, callback)
 
   getComponentOffset: ->
-    block = @blocks[@currentBlockIndex ? 0]
-    return unless block?
-    x: @_scrollWall.x - block.x
-    y: @_scrollWall.y - block.y
+    x: @_scrollWall.x
+    y: @_scrollWall.y
 
   addComponent: (c, relativePosition, offset = null) ->
     block = @blocks[@currentBlockIndex ? 0]
@@ -196,8 +194,8 @@ class Game.Level
     unless offset?
       offset = @getComponentOffset()
     position =
-      x: relativePosition.x + offset.x
-      y: relativePosition.y + offset.y
+      x: relativePosition.x + offset.x - block.x
+      y: relativePosition.y + offset.y - block.y
 
     block.add(position.x, position.y, c)
 
