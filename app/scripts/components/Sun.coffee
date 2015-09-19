@@ -7,8 +7,6 @@ Crafty.c 'Sun',
     @glare = []
     directGlare = Crafty.e('2D, Canvas, Color, Glare')
       .attr
-        x: -15
-        y: -15
         w: 90
         h: 90
         z: 90
@@ -109,5 +107,9 @@ Crafty.c 'Sun',
         e.attr
           x: @x + (@w / 2) - (e.w / 2) - (dx * 2 * e.res)
           y: @y + (@h / 2) - (e.h / 2) - (dy * 2 * e.res)
+      else
+        e.attr
+          x: @x + (@w / 2) - (e.w / 2)
+          y: @y + (@h / 2) - (e.h / 2)
 
 
