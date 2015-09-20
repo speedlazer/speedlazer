@@ -8,6 +8,8 @@ Crafty.c 'Choreography',
       sine: @_executeSine
       delay: @_executeDelay
       viewport: @_executeMoveIntoViewport # move to position within viewport
+      follow: @_executeFollow
+      tween: @_executeTween
       bezier: @_executeBezier
 
   remove: ->
@@ -61,6 +63,11 @@ Crafty.c 'Choreography',
       dy: part.y ? 0
       easing: new Crafty.easing(part.duration ? 0)
     )
+    if part.properties
+      currentProperties = {}
+      for k of part.properties
+        currentProperties[k] = @[k]
+      @_currentPart.currentProperties = currentProperties
 
   _executeLinear: (v) ->
     @x = @_currentPart.x + (v * @_currentPart.dx)
@@ -90,6 +97,30 @@ Crafty.c 'Choreography',
       motionY = @_currentPart.maxSpeed
       motionY *= -1 if diffX < 0
     @y = @y + motionY
+
+  _executeFollow: (v) ->
+    # the goal are current coordinates on screen
+    destinationX = @_currentPart.target.x + @_currentPart.target.w // 2
+    destinationX -= @w // 2
+
+    diffX = destinationX - @x
+    motionX = (diffX * v)
+    if @_currentPart.maxSpeed? and Math.abs(motionX) > @_currentPart.maxSpeed
+      motionX = @_currentPart.maxSpeed
+      motionX *= -1 if diffX < 0
+    @x = @x + motionX
+
+    #destinationY = @_currentPart.dy
+    #diffY = destinationY - @y
+    #motionY = (diffY * v)
+    #if @_currentPart.maxSpeed? and Math.abs(motionY) > @_currentPart.maxSpeed
+      #motionY = @_currentPart.maxSpeed
+      #motionY *= -1 if diffX < 0
+    #@y = @y + motionY
+
+  _executeTween: (v) ->
+    for k, p of @_currentPart.properties
+      @[k] = (1 - v) * @_currentPart.currentProperties[k] + (v * p)
 
   _executeBezier: (v) ->
     bp = new Game.BezierPath

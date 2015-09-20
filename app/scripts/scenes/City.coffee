@@ -88,7 +88,7 @@ Crafty.defineScene 'City', (data) ->
       ])
 
   level.generateBlocks
-    amount: 8
+    amount: 4
     enter: ->
       @level.spawnEnemies(
         if @index % 2 is 0 then 'SwirlAttack' else 'SwirlAttack2'
@@ -100,10 +100,33 @@ Crafty.defineScene 'City', (data) ->
           z: -1
         )
 
-  level.addBlock 'City.CoastStart'
-  level.addBlock 'City.CoastStart'
-  level.addBlock 'City.Bay'
-  level.addBlock 'City.Bay'
+  level.addBlock 'City.CoastStart',
+    enter: ->
+      @level.spawnEnemies(
+        'UnderWater'
+        -> Crafty.e('Drone').drone()
+      )
+
+  level.generateBlocks
+    amount: 2,
+    enter: ->
+      @level.spawnEnemies(
+        if @index % 2 is 0 then 'SwirlAttack' else 'UnderWater'
+        -> Crafty.e('Drone').drone()
+      )
+
+  level.addBlock 'City.Bay',
+    enter: ->
+      @level.spawnEnemies(
+        'SwirlAttack2'
+        -> Crafty.e('Drone').drone()
+      ).on 'LastDestroyed', (last) ->
+        Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
+          x: last.x
+          y: last.y
+          z: -1
+        )
+
   level.addBlock 'City.UnderBridge'
   level.addBlock 'City.Bay'
   level.addBlock 'City.BayRaiser'

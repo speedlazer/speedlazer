@@ -149,7 +149,7 @@ generator.defineBlock class extends @Game.LevelBlock
   delta:
     x: 400
     y: 0
-  next: ['City.Coast']
+  next: ['City.CoastStart']
 
   generate: ->
     super
