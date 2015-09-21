@@ -8,6 +8,7 @@ generator.defineBlock class extends @Game.LevelBlock
     x: 800
     y: 0
   next: ['City.Ocean']
+  autoNext: yes
 
   generate: ->
     super
@@ -123,7 +124,7 @@ generator.defineBlock class extends @Game.LevelBlock
       @one 'shipExterior', ->
         block.outside.tween({ alpha: 1 }, if block.settings.fast? then 15 else 1500).addComponent('Edge')
       @one 'go', ->
-        block.level.setForcedSpeed 1
+        block.level.setForcedSpeed 2
 
 generator.defineBlock class extends @Game.LevelBlock
   name: 'City.Ocean'
@@ -241,6 +242,7 @@ generator.defineBlock class extends @Game.LevelBlock
     x: 800
     y: 0
   next: ['City.Bay']
+  autoNext: yes
 
   generate: ->
     super
@@ -291,13 +293,14 @@ generator.defineBlock class extends @Game.LevelBlock
 generator.defineBlock class extends @Game.LevelBlock
   name: 'City.BayRaiser'
   delta:
-    x: 600
+    x: 100
     y: 0
   next: ['City.Bay']
+  autoNext: yes
 
   generate: ->
     super
-    @yMotion = -100
+    @yMotion = -27
 
     height = 85
     @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
@@ -309,19 +312,9 @@ generator.defineBlock class extends @Game.LevelBlock
     @addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
     @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
 
-    @addBackground(170, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    @addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
     # Coastline
 
     @addBackground(0, @level.visibleHeight - 135, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .5) + 1, h: 40 }), .5)
-    @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .37) + 1, h: 30 }), .37)
-
-    @addBackground(90, @level.visibleHeight - 270, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -300, w: 80 + 1, h: 150 }), .5)
-    @addBackground(190, @level.visibleHeight - 290, Crafty.e('2D, Canvas, Color').color('#A5A5A5').attr({ z: -300, w: 60 + 1, h: 165 }), .5)
 
   enter: ->
     super
