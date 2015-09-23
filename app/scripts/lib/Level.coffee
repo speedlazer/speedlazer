@@ -24,6 +24,10 @@ class Game.Level
     @generationPosition = x: 0, y: 40
     @visibleHeight = 480 - @generationPosition.y
 
+    { @namespace } = @data
+    if @currentScenery = @data.startScenery
+      @levelDefinition.push { type: 'autofill' }
+
   ###
   blocks can be added in 2 ways.
   Manually, through #addBlock and automatically,
@@ -233,6 +237,12 @@ class Game.Level
       @_generatePredefinedBlock generator
     else if generator.type is 'generation'
       @_generateBlocks generator
+    else if generator.type is 'autofill'
+      blockType = "#{@namespace}.#{@currentScenery}"
+      @_addBlockToLevel(blockType, {})
+      blockKlass = @generator.buildingBlocks[blockType]
+      if next = blockKlass::autoNext
+        @currentScenery = next
     else
       console.log 'no support yet for', generator.type
 

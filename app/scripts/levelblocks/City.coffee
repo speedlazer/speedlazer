@@ -8,7 +8,7 @@ generator.defineBlock class extends @Game.LevelBlock
     x: 800
     y: 0
   next: ['City.Ocean']
-  autoNext: yes
+  autoNext: 'Ocean'
 
   generate: ->
     super
@@ -242,7 +242,7 @@ generator.defineBlock class extends @Game.LevelBlock
     x: 800
     y: 0
   next: ['City.Bay']
-  autoNext: yes
+  autoNext: 'Bay'
 
   generate: ->
     super
@@ -296,7 +296,7 @@ generator.defineBlock class extends @Game.LevelBlock
     x: 100
     y: 0
   next: ['City.Bay']
-  autoNext: yes
+  autoNext: 'Bay'
 
   generate: ->
     super

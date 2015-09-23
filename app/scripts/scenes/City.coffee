@@ -9,19 +9,22 @@ Crafty.defineScene 'City', (data) ->
   level = Game.levelGenerator.createLevel
     stage: data.stage
     title: 'City'
+    namespace: 'City'
+    startScenery: 'Intro'
 
-  level.addBlock 'City.Intro',
+  #level.addBlock 'City.Intro',
     #fast: yes
-    enter: ->
-      text = "Stage #{@level.data.stage}: #{@level.data.title}"
-      Crafty.e('StageTitle').stageTitle(text)
+    #enter: ->
+      #text = "Stage #{@level.data.stage}: #{@level.data.title}"
+      #Crafty.e('StageTitle').stageTitle(text)
 
-      @level.showDialog([
-        'p1,p2:John:Too bad we have to bring these ships to the museum!'
-        'p1,!p2:John:Too bad we have to bring this ship to the museum!'
-        ':General:Just give her a good last flight,\nwe document some moves on the way!'
-      ])
+      #@level.showDialog([
+        #'p1,p2:John:Too bad we have to bring these ships to the museum!'
+        #'p1,!p2:John:Too bad we have to bring this ship to the museum!'
+        #':General:Just give her a good last flight,\nwe document some moves on the way!'
+      #])
 
+  ###
   level.addBlock 'City.Ocean'
 
   level.addBlock 'City.Ocean',
@@ -157,6 +160,7 @@ Crafty.defineScene 'City', (data) ->
           Crafty.trigger('EndOfLevel')
           @destroy()
       @add(0, 0, endLevelTrigger)
+  ###
 
   level.start
     armedPlayers: no
