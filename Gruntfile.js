@@ -32,6 +32,7 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/scripts/compiled/lib.js': '<%= yeoman.app %>/scripts/lib/**/*.*coffee',
           '<%= yeoman.app %>/scripts/compiled/levelblocks.js': '<%= yeoman.app %>/scripts/levelblocks/**/*.*coffee',
           '<%= yeoman.app %>/scripts/compiled/components.js': '<%= yeoman.app %>/scripts/components/**/*.*coffee',
+          '<%= yeoman.app %>/scripts/compiled/game-scripts.js': '<%= yeoman.app %>/scripts/game-scripts/**/*.*coffee',
           '<%= yeoman.app %>/scripts/compiled/scenes.js': '<%= yeoman.app %>/scripts/scenes/**/**.*coffee'
         }
       }

@@ -169,38 +169,7 @@ Crafty.defineScene 'City', (data) ->
       x: 0
       y: 120
 
-  class LazerScript
-    run: (@level) ->
-      @execute()()
-
-    execute: ->
-      @sequence(
-        @introText()
-        @tutorial()
-      )
-
-    introText: ->
-      @say('General', 'Just give her a good last flight,\nwe document some moves on the way!')
-
-    tutorial: ->
-      @say('General', 'Evade the upcoming drones!')
-
-    # DSL Implementation
-
-    # Core
-    sequence: (tasks...) ->
-      -> WhenJS.sequence(tasks)
-
-    # Level
-    say: (speaker, text) ->
-      =>
-        d = WhenJS.defer()
-        @level.showDialog([":#{speaker}:#{text}"]).on('Finished', -> d.resolve())
-        d.promise
-
-
-  l = new LazerScript
-  l.run(level)
+  (new Game.Scripts.Stage1).run level
 
   ##
   # TODO: Extract this

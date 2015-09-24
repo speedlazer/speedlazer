@@ -67,4 +67,5 @@ var Game = {
 window.Game = Game;
 
 require('scripts/compiled/lib');
+require('scripts/compiled/game-scripts');
 require('scripts/compiled/levelblocks');
