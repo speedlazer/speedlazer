@@ -5,8 +5,11 @@
   "keywords": [
     "game play"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "when": "git://github.com/cujojs/when"
+  },
   "devDependencies": {
+    "browserify": "^11.2.0",
     "connect-livereload": "~0.2.0",
     "grunt": "~0.4.1",
     "grunt-concurrent": "~0.3.0",
@@ -34,5 +37,8 @@
   },
   "engines": {
     "node": ">=0.8.0"
+  },
+  "scripts": {
+    "postinstall": "browserify -s WhenJS node_modules/when/build/when.browserify.js --no-detect-globals -o app/libs/when.js"
   }
 }
