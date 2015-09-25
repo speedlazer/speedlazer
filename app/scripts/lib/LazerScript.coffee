@@ -58,7 +58,7 @@ class Game.LazerScript
     =>
       item = @inventory('item', options.item)
       if player = options.inFrontOf
-        @level.addComponent item().attr(z: -1), x: 640, y: player.ship.y
+        @level.addComponent item().attr(z: -1), x: 640, y: player.ship().y
       if pos = options.location
         item().attr(x: pos.x, y: pos.y, z: -1)
 
@@ -66,14 +66,21 @@ class Game.LazerScript
     players = {}
     Crafty('Player').each ->
       players[@name] =
+        name: @name
         active: no
         gameOver: no
         has: (item) ->
-          @ship?.hasItem item
+          @ship()?.hasItem item
+        ship: ->
+          _this = this
+          ship = null
+          Crafty('Player ControlScheme').each ->
+            ship = @ship if @name is _this.name
+          ship
+
 
     Crafty('Player ControlScheme').each ->
       players[@name].active = yes
-      players[@name].ship = @ship
       unless @lives > 0
         players[@name].active = no
         players[@name].gameOver = yes

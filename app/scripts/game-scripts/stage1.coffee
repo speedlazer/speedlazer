@@ -6,6 +6,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     execute: ->
       @inventoryAdd 'enemy', 'default', ->
         Crafty.e('Drone').drone(health: 200)
+      @inventoryAdd 'enemy', 'weaponizedDrone', ->
+        Crafty.e('Drone,Weaponized').drone(health: 200)
       @inventoryAdd 'item', 'lasers', ->
         Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
 
@@ -52,5 +54,5 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @sequence(
         @wave('Splash', enemy: 'backgroundDrone')
         @say('General', 'Wtf is happening with our drones?')
-        @wave('FlyOver')
+        @wave('FlyOver', enemy: 'weaponizedDrone', drop: 'lasers')
       )
