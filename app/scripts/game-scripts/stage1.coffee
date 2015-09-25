@@ -4,6 +4,9 @@ Game.Scripts ||= {}
 
 class Game.Scripts.Stage1 extends Game.LazerScript
     execute: ->
+      @inventoryAdd 'enemy', 'drone', -> Crafty.e('Drone').drone()
+      @inventoryAdd 'item', 'lasers', -> Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
+
       @sequence(
         @introText()
         @tutorial()
@@ -24,6 +27,17 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     tutorial: ->
       @sequence(
         @say('General', 'Evade the upcoming drones!')
-        #@wave('FlyOver', enemy: 'drone')
+        @wave('FlyOver', enemy: 'drone')
+        @say('General', 'We dropped an upgrade to show the weapon systems')
+        @dropWeaponsForEachPlayer()
+        @wait(2000)
+        @wave('FlyOver', enemy: 'drone')
       )
+
+    dropWeaponsForEachPlayer: ->
+      @sequence(
+        @if((-> @player(1).active and !@player(1).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(1)))
+        @if((-> @player(2).active and !@player(2).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(2)))
+      )
+
 

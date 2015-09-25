@@ -10,6 +10,10 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
     @enemiesSpawned = 0
     @enemiesDestroyed = 0
     @startRandom = 50 + Math.round(Math.random() * 200)
+
+    # Duration is needed to know how long this attack needs
+    @duration = 400 + 500 + 1900 + 4000 + 100 + 1 + 1500
+
     Crafty.e('Delay').delay(
       =>
         e = @enemyConstructor(@enemiesSpawned)

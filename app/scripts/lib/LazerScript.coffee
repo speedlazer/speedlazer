@@ -38,12 +38,43 @@ class Game.LazerScript
       @level.showDialog([":#{speaker}:#{text}"]).on('Finished', -> d.resolve())
       d.promise
 
+  wave: (formation, options) ->
+    =>
+      enemyConstructor = @inventory('enemy', options.enemy)
+      wave = @level.spawnEnemies('FlyOver', enemyConstructor)
+      @wait(wave.duration)()
+
+  drop: (options) ->
+    =>
+      item = @inventory('item', options.item)
+      if player = options.inFrontOf
+        @level.addComponent item(), x: 640, y: player.ship.y
+
   player: (nr) ->
     players = {}
-    players["Player #{nr}"] = { active: no, gameOver: no }
+    Crafty('Player').each ->
+      players[@name] =
+        active: no
+        gameOver: no
+        has: (item) ->
+          @ship?.hasItem item
+
     Crafty('Player ControlScheme').each ->
-      players[@name] = { active: yes, gameOver: no }
+      players[@name].active = yes
+      players[@name].ship = @ship
       unless @lives > 0
-        players[@name] = { active: no, gameOver: yes }
+        players[@name].active = no
+        players[@name].gameOver = yes
+
     players["Player #{nr}"]
+
+  inventory: (type, name) ->
+    @invItems ||= {}
+    @invItems[type] ||= {}
+    @invItems[type][name || 'default']
+
+  inventoryAdd: (type, name, constructor) ->
+    @invItems ||= {}
+    @invItems[type] ||= {}
+    @invItems[type][name] = constructor
 
