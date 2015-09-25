@@ -169,7 +169,8 @@ Crafty.defineScene 'City', (data) ->
       x: 0
       y: 120
 
-  (new Game.Scripts.Stage1).run level
+  (new Game.Scripts.Stage1).run(level).then ->
+    console.log 'end of script!'
 
   ##
   # TODO: Extract this

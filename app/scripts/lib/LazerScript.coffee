@@ -30,6 +30,12 @@ class Game.LazerScript
       )
       d.promise
 
+  repeat: (times, event) ->
+    =>
+      return if times is 0
+      event().then =>
+        @repeat(times - 1, event)()
+
   # Level
   say: (speaker, text) ->
     =>
@@ -38,17 +44,23 @@ class Game.LazerScript
       @level.showDialog([":#{speaker}:#{text}"]).on('Finished', -> d.resolve())
       d.promise
 
-  wave: (formation, options) ->
+  wave: (formation, options = {}) ->
     =>
       enemyConstructor = @inventory('enemy', options.enemy)
-      wave = @level.spawnEnemies('FlyOver', enemyConstructor)
+      wave = @level.spawnEnemies(formation, enemyConstructor)
+      if options.drop
+        wave.on 'LastDestroyed', (last) =>
+          @drop(item: options.drop, location: last)()
+
       @wait(wave.duration)()
 
   drop: (options) ->
     =>
       item = @inventory('item', options.item)
       if player = options.inFrontOf
-        @level.addComponent item(), x: 640, y: player.ship.y
+        @level.addComponent item().attr(z: -1), x: 640, y: player.ship.y
+      if pos = options.location
+        item().attr(x: pos.x, y: pos.y, z: -1)
 
   player: (nr) ->
     players = {}

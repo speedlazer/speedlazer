@@ -8,6 +8,7 @@ class Game.EnemyFormation.Splash extends Game.EventHandler
     super
     @enemiesSpawned = 0
     @enemiesDestroyed = 0
+    @duration = 50 + 2500 + 1500 + 500 + 1100
     Crafty.e('Delay').delay(
       =>
         e = @enemyConstructor(@enemiesSpawned)
