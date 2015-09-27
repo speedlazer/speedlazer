@@ -12,6 +12,9 @@ class Game.LazerScript
   sequence: (tasks...) ->
     -> WhenJS.sequence(tasks)
 
+  parallel: (tasks...) ->
+    -> WhenJS.parallel(tasks)
+
   if: (condition, block, elseBlock) ->
     =>
       if condition.apply this
@@ -77,7 +80,6 @@ class Game.LazerScript
           Crafty('Player ControlScheme').each ->
             ship = @ship if @name is _this.name
           ship
-
 
     Crafty('Player ControlScheme').each ->
       players[@name].active = yes

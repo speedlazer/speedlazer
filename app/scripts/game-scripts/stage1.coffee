@@ -15,6 +15,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @introText()
         @tutorial()
         @droneTakeover()
+        @oceanAttacks()
       )
 
     introText: ->
@@ -55,4 +56,20 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @wave('Splash', enemy: 'backgroundDrone')
         @say('General', 'Wtf is happening with our drones?')
         @wave('FlyOver', enemy: 'weaponizedDrone', drop: 'lasers')
+        @say('General', 'Their AI has been compromised by our rogue prototype!\nEliminate it!')
+        @if((-> @player(1).active)
+          @say 'John', 'How?'
+        )
+        @if((-> !@player(1).active and @player(2).active)
+          @say 'Jack', 'What the...'
+        )
+        @say 'General', 'It\'s hiding in the city! go!'
       )
+
+    oceanAttacks: ->
+      @repeat(4, @sequence(
+        @parallel(
+          @wave('SwirlAttack', drop: 'lasers')
+          @wave('SwirlAttack2', drop: 'lasers')
+        )
+      ))

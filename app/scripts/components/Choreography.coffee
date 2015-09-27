@@ -14,7 +14,11 @@ Crafty.c 'Choreography',
 
   remove: ->
 
-  choreography: (c, repeats = 0) ->
+  choreography: (c, options = {}) ->
+    options = _.defaults(options, {
+      repeat: 0
+      compensateCameraSpeed: yes
+    })
     @_choreography = c
     @_repeats = repeats
     @_repeated = 0

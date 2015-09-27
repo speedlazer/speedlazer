@@ -46,7 +46,7 @@ class Game.EnemyFormation.Splash extends Game.EventHandler
         @level.addComponent(e, x: 750, y: 150)
         @enemiesSpawned += 1
 
-        e.choreography(c, 0)
+        e.choreography(c)
         e.one 'splash', ->
           @attr alpha: 0
           @trigger 'Destroyed', this

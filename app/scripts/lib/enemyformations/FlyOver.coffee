@@ -86,5 +86,5 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
         @level.addComponent(e, x: 750, y: @startRandom)
         @enemiesSpawned += 1
 
-        e.choreography(c, 0)
+        e.choreography(c)
     , 500, 3)

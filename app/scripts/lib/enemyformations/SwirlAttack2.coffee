@@ -10,6 +10,7 @@ class Game.EnemyFormation.SwirlAttack2 extends Game.EventHandler
     @enemiesSpawned = 0
     @enemiesDestroyed = 0
     @offset = @level.getComponentOffset()
+    @duration = 10000 + ((@enemiesToSpawn - 2) * 500)
 
     Crafty.e('Delay').delay(
       =>
@@ -52,5 +53,5 @@ class Game.EnemyFormation.SwirlAttack2 extends Game.EventHandler
         @level.addComponent(e, x: 750, y: 400, @offset)
         @enemiesSpawned += 1
 
-        e.choreography(c, 0)
+        e.choreography(c)
     , 500, @enemiesToSpawn - 1)
