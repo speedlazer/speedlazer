@@ -89,6 +89,13 @@ class Game.LazerScript
 
     players["Player #{nr}"]
 
+  setScenery: (scenery) ->
+    =>
+      @level.setScenery scenery
+
+  # Inventory
+  # TODO: Decide how we handle this thoughout game
+
   inventory: (type, name) ->
     @invItems ||= {}
     @invItems[type] ||= {}

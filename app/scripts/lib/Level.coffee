@@ -28,6 +28,8 @@ class Game.Level
     if @currentScenery = @data.startScenery
       @levelDefinition.push { type: 'autofill' }
 
+  setScenery: (@currentScenery) ->
+
   ###
   blocks can be added in 2 ways.
   Manually, through #addBlock and automatically,

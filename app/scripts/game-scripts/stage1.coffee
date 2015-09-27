@@ -16,6 +16,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @tutorial()
         @droneTakeover()
         @oceanAttacks()
+        @setScenery('CoastStart')
       )
 
     introText: ->
