@@ -39,7 +39,7 @@ class Game.EnemyFormation.SwirlAttack extends Game.EventHandler
               x: 0.2375
               y: 0.8583333333333333
             ,
-              x: -0.0125
+              x: -0.0225
               y: 0.9425
           ]
 
@@ -57,5 +57,5 @@ class Game.EnemyFormation.SwirlAttack extends Game.EventHandler
         @level.addComponent(e, x: 750, y: -20, @offset)
         @enemiesSpawned += 1
 
-        e.choreography(c)
+        e.choreography(c, compensateCameraSpeed: yes)
     , 500, @enemiesToSpawn - 1)
