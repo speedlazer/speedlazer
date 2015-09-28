@@ -209,9 +209,9 @@ Crafty.defineScene 'City', (data) ->
   Crafty.e('Sun')
     .sun(
       x: 620
-      y: 320
+      y: 340
     )
-    .tween({ dy: -230, dx: 115 }, duration)
+    .tween({ dy: -250, dx: 115 }, duration)
 
   Crafty.bind 'EndOfLevel', ->
     level.stop()
