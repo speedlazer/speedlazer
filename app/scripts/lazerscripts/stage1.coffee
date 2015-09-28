@@ -15,7 +15,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @introText()
         @tutorial()
         @droneTakeover()
-        @oceanAttacks()
+        @swirlAttacks()
         @setScenery('CoastStart')
       )
 
@@ -67,10 +67,16 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @say 'General', 'It\'s hiding in the city! go!'
       )
 
-    oceanAttacks: ->
-      @repeat(4, @sequence(
+    swirlAttacks: ->
+      @sequence(
+        @wave('SwirlAttack', drop: 'lasers')
+        @wave('SwirlAttack2', drop: 'lasers')
+
         @parallel(
-          @wave('SwirlAttack', drop: 'lasers')
-          @wave('SwirlAttack2', drop: 'lasers')
+          @sequence(
+            @wait(2000)
+            @repeat(4, @wave('SwirlAttack', drop: 'lasers'))
+          )
+          @repeat(4, @wave('SwirlAttack2', drop: 'lasers'))
         )
-      ))
+      )

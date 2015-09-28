@@ -55,6 +55,7 @@ class Game.LazerScript
         wave.on 'LastDestroyed', (last) =>
           @drop(item: options.drop, location: last)()
 
+      # TODO: Any - Wait, Kill
       @wait(wave.duration)()
 
   drop: (options) ->

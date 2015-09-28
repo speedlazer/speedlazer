@@ -30,9 +30,10 @@ module.exports = function (grunt) {
       compile: {
         files: {
           '<%= yeoman.app %>/scripts/compiled/lib.js': '<%= yeoman.app %>/scripts/lib/**/*.*coffee',
-          '<%= yeoman.app %>/scripts/compiled/levelblocks.js': '<%= yeoman.app %>/scripts/levelblocks/**/*.*coffee',
           '<%= yeoman.app %>/scripts/compiled/components.js': '<%= yeoman.app %>/scripts/components/**/*.*coffee',
-          '<%= yeoman.app %>/scripts/compiled/game-scripts.js': '<%= yeoman.app %>/scripts/game-scripts/**/*.*coffee',
+          '<%= yeoman.app %>/scripts/compiled/lazerscripts.js': '<%= yeoman.app %>/scripts/lazerscripts/**/*.*coffee',
+          '<%= yeoman.app %>/scripts/compiled/enemies.js': '<%= yeoman.app %>/scripts/enemies/**/*.*coffee',
+          '<%= yeoman.app %>/scripts/compiled/scenery.js': '<%= yeoman.app %>/scripts/scenery/**/*.*coffee',
           '<%= yeoman.app %>/scripts/compiled/scenes.js': '<%= yeoman.app %>/scripts/scenes/**/**.*coffee'
         }
       }
