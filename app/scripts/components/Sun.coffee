@@ -125,6 +125,10 @@ Crafty.c 'Sun',
         @attr
           alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 10.0) / 10.0)
           h: 1
+      else if 0 < horizonDistance < 1
+        @attr
+          alpha: 1.0
+          h: 1
       else
         @attr
           alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 40.0) / 40.0)
