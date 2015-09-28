@@ -7,6 +7,7 @@ class Game.EnemyFormation.UnderWater extends Game.EventHandler
   constructor: (@level, @enemyConstructor, @callback) ->
     super
     @offset = @level.getComponentOffset()
+    @duration = 5000
 
     waterSpot = Crafty.e('2D, Canvas, Color, Choreography')
       .color('#000040')
