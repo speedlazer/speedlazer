@@ -63,8 +63,8 @@ generator.defineBlock class extends @Game.LevelBlock
 
     @addBackground(0, @level.visibleHeight + 40, Crafty.e('2D, Canvas, Color').color('#000040').attr({ z: 3, w: ((@delta.x + 300)) + 1, h: 185 }), 1.25)
 
-    @addBackground(200, 45, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -200, w: 100, h: 25 }), .5)
-    @addBackground(200, 55, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -300, w: 75, h: 25 }), .45)
+    @addBackground(200, 45, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -200, w: 100, h: 25, alpha: 0.5 }), .5)
+    @addBackground(200, 55, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -300, w: 75, h: 25, alpha: 0.5 }), .45)
 
   enter: ->
     super
@@ -148,8 +148,8 @@ generator.defineBlock class extends @Game.LevelBlock
     @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
 
     y = (Math.random() * 20) + 40
-    @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -200, w: 100, h: 25 }), .5)
-    @addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -300, w: 75, h: 25 }), .45)
+    @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -200, w: 100, h: 25, alpha: 0.5 }), .5)
+    @addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -300, w: 75, h: 25, alpha: 0.5 }), .45)
 
 generator.defineBlock class extends @Game.LevelBlock
   name: 'City.CoastStart'
