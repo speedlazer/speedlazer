@@ -20,7 +20,7 @@ class Game.Level
     @blocks = []
     @levelDefinition = []
     @buildedBlocks = []
-    @bufferLength = 640 * 4
+    @bufferLength = 640 * 3
     @generationPosition = x: 0, y: 40
     @visibleHeight = 480 - @generationPosition.y
 
@@ -124,13 +124,19 @@ class Game.Level
       @data.enemiesSpawned += 1
 
     @_placePlayerShips settings
-    @_update 0
+    @_update()
+    @lastUpdate = Crafty.viewport._x + 200
 
     for block in @blocks when block.x < 640
       block.enter()
 
+    Crafty.bind('ViewportScroll', =>
+      if @lastUpdate - Crafty.viewport._x >= 300
+        @_update()
+        @lastUpdate = Crafty.viewport._x
+    )
+
     Crafty.bind 'LeaveBlock', (index) =>
-      @_update index
       if index > 0
         @blocks[index - 1].leave()
         @currentBlockIndex = index
@@ -219,11 +225,11 @@ class Game.Level
     Crafty.unbind('ViewportScroll')
     b.clean() for b in @blocks
 
-  # Generate more level from tile 'start'
-  _update: (start) ->
+  _update: ->
     @generationDefinition ?= 0
 
-    startX = @blocks[start]?.x || 0
+    #startX = @blocks[start]?.x || 0
+    startX = - Crafty.viewport._x
     endX = startX + @bufferLength
 
     counter = 0
