@@ -41,6 +41,7 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
             y: y
             duration: durations[@enemiesSpawned]
             type: 'viewport'
+            event: 'Shoot'
           c.push
             length: 1
             x: 20
@@ -48,7 +49,6 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
             maxSpeed: 2
             duration: 4000
             type: 'viewport'
-            event: 'Shoot'
         else
           y = 350 - (Math.floor(@enemiesSpawned / 2) * 100) + Math.round(Math.random() * 50)
           c.push
@@ -57,6 +57,7 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
             y: y
             duration: durations[@enemiesSpawned]
             type: 'viewport'
+            event: 'Shoot'
           c.push
             length: 1
             x: 20
@@ -64,7 +65,6 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
             maxSpeed: 2
             duration: 4000
             type: 'viewport'
-            event: 'Shoot'
 
         c.push
           type: 'linear'
