@@ -46,7 +46,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
 
     dropWeaponsForEachPlayer: ->
-      @sequence(
+      @parallel(
         @if((-> @player(1).active and !@player(1).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(1)))
         @if((-> @player(2).active and !@player(2).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(2)))
       )
