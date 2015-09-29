@@ -18,6 +18,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @swirlAttacks()
         @setScenery('CoastStart')
         @underWaterAttacks()
+        @setScenery('Bay')
       )
 
     introText: ->

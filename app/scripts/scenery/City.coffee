@@ -157,6 +157,7 @@ generator.defineBlock class extends @Game.LevelBlock
     x: 400
     y: 0
   next: ['City.CoastStart']
+  autoNext: 'Coast'
 
   generate: ->
     super
