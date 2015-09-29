@@ -19,7 +19,6 @@ class Game.Level
   constructor: (@generator, @data = {}) ->
     @blocks = []
     @levelDefinition = []
-    @buildedBlocks = []
     @bufferLength = 640 * 3
     @generationPosition = x: 0, y: 40
     @visibleHeight = 480 - @generationPosition.y
@@ -228,7 +227,6 @@ class Game.Level
   _update: ->
     @generationDefinition ?= 0
 
-    #startX = @blocks[start]?.x || 0
     startX = - Crafty.viewport._x
     endX = startX + @bufferLength
 
@@ -300,13 +298,11 @@ class Game.Level
     generator.amountGenerated += 1
 
   _cleanupBuildBlocks: ->
-    keep = []
-    for block in @buildedBlocks
-      if block.canCleanup()
+    for block, index in @blocks
+      if block?.canCleanup()
         block.clean()
-      else
-        keep.push block
-    @buildedBlocks = keep
+        @blocks[index] = null
+
 
   _determineNextTileType: (blockType, settings) ->
     blockKlass = @generator.buildingBlocks[blockType]
