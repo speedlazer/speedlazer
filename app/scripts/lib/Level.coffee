@@ -21,6 +21,7 @@ class Game.Level
     @levelDefinition = []
     @bufferLength = 640 * 3
     @generationPosition = x: 0, y: 40
+    @sceneryEvents = []
     @visibleHeight = 480 - @generationPosition.y
 
     { @namespace } = @data
@@ -137,22 +138,33 @@ class Game.Level
 
     Crafty.bind 'LeaveBlock', (index) =>
       if index > 0
-        @blocks[index - 1].leave()
+        @_handleSceneryEvents(@blocks[index - 1], 'leave')
         @currentBlockIndex = index
-        @blocks[index].inScreen()
+        @_handleSceneryEvents(@blocks[index], 'inScreen')
 
       @_cleanupBuildBlocks()
 
     Crafty.bind 'EnterBlock', (index) =>
       if index > 0
-        @blocks[index - 1].outScreen()
+        @_handleSceneryEvents(@blocks[index - 1], 'outScreen')
       @newBlockIndex = index
-      @blocks[index].enter()
+      @_handleSceneryEvents(@blocks[index], 'enter')
 
     Crafty.bind 'PlayerEnterBlock', (index) =>
       if index > 0
-        @blocks[index - 1]?.playerLeave()
-      @blocks[index]?.playerEnter()
+        @_handleSceneryEvents(@blocks[index - 1], 'playerLeave')
+      @_handleSceneryEvents(@blocks[index], 'playerEnter')
+
+  _handleSceneryEvents: (block, eventType) ->
+    return unless block?
+    block[eventType]()
+    for event, index in @sceneryEvents by -1
+      if block.name is "#{@namespace}.#{event.sceneryType}" and eventType is event.eventType
+        event.callback.apply this
+        @sceneryEvents.splice(index, 1)
+
+  notifyScenery: (eventType, sceneryType, callback) ->
+    @sceneryEvents.push { eventType, sceneryType, callback }
 
   _placePlayerShips: (settings) ->
     Crafty.one 'ShipSpawned', =>

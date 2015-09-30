@@ -91,8 +91,33 @@ class Game.LazerScript
     players["Player #{nr}"]
 
   setScenery: (scenery) ->
+    => @level.setScenery scenery
+
+  waitForScenery: (sceneryType, options = { event: 'enter' }) ->
     =>
-      @level.setScenery scenery
+      d = WhenJS.defer()
+      @level.notifyScenery options.event, sceneryType, -> d.resolve()
+      d.promise
+
+  gainHeight: (height, options) ->
+    =>
+      d = WhenJS.defer()
+
+      currentSpeed = @level._forcedSpeed?.x || @level._forcedSpeed
+      { duration } = options
+      speedY = (height / ((duration / 1000.0) * Crafty.timer.FPS()))
+      console.log speedY
+
+      @level.setForcedSpeed(x: currentSpeed, y: -speedY)
+      level = @level
+      Crafty.e('Delay').delay(
+        ->
+          level.setForcedSpeed(currentSpeed)
+          d.resolve()
+        options.duration
+      )
+      d.promise
+
 
   # Inventory
   # TODO: Decide how we handle this thoughout game
