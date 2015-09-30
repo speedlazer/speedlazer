@@ -243,7 +243,7 @@ class Game.Level
     Crafty.unbind('EnterBlock')
     Crafty.unbind('ShipSpawned')
     Crafty.unbind('ViewportScroll')
-    b.clean() for b in @blocks
+    b?.clean() for b in @blocks
 
   _update: ->
     @generationDefinition ?= 0
