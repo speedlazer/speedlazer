@@ -297,6 +297,7 @@ generator.defineBlock class extends @Game.LevelBlock
         @addBackground(@delta.x - pillarWidth, h + y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
 
 
+# TODO: Remove
 generator.defineBlock class extends @Game.LevelBlock
   name: 'City.BayRaiser'
   delta:

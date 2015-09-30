@@ -19,6 +19,17 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @setScenery('CoastStart')
         @underWaterAttacks()
         @setScenery('Bay')
+
+        # TODO: Create enemy content
+        @wait(20000)
+        @setScenery('UnderBridge')
+        @waitForScenery('UnderBridge', event: 'leave')
+        @setScenery('UnderBridge')
+        @waitForScenery('UnderBridge', event: 'playerLeave')
+        @gainHeight(185, duration: 4000)
+        @setScenery('Skyline')
+        @waitForScenery('Skyline', event: 'leave')
+        @showScore()
       )
 
     introText: ->
@@ -74,19 +85,21 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @wave('SwirlAttack', drop: 'lasers')
         @wave('SwirlAttack2', drop: 'lasers')
 
-        @parallel(
-          @repeat(2, @wave('SwirlAttack2', drop: 'lasers'))
-          @sequence(
-            @wait(2000)
-            @repeat(2, @wave('SwirlAttack', drop: 'lasers'))
-          )
-          @sequence(
-            @wait(4000)
-            @repeat(2, @wave('SwirlAttack2', drop: 'lasers'))
-          )
-          @sequence(
-            @wait(6000)
-            @repeat(2, @wave('SwirlAttack', drop: 'lasers'))
+        @repeat(2,
+          @parallel(
+            @wave('SwirlAttack2', drop: 'lasers')
+            @sequence(
+              @wait(3000)
+              @wave('SwirlAttack', drop: 'lasers')
+            )
+            @sequence(
+              @wait(6000)
+              @wave('SwirlAttack2', drop: 'lasers')
+            )
+            @sequence(
+              @wait(9000)
+              @wave('SwirlAttack', drop: 'lasers')
+            )
           )
         )
       )

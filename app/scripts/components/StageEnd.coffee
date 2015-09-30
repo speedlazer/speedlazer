@@ -192,7 +192,6 @@ Crafty.c 'StageEnd',
               @unbind 'EnterFrame'
             @text @v
 
-
         @attach c
 
 

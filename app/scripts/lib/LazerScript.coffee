@@ -118,6 +118,11 @@ class Game.LazerScript
       )
       d.promise
 
+  showScore: ->
+    =>
+      score = @level.finishStage()
+      @wait(15 * 2000)().then =>
+        score.destroy()
 
   # Inventory
   # TODO: Decide how we handle this thoughout game
