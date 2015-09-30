@@ -33,46 +33,17 @@ Crafty.defineScene 'City', (data) ->
         @destroy()
     level.addComponent(endLevelTrigger, x: 640, y: 0)
 
-  ##
-  # TODO: Extract this
-  # Setup the recoloring background to show a dawn in progress
-  v = 0
+  duration = 600 * 1000
+  Crafty.e('ColorFade').colorFade(duration: duration, background: yes,
+    '#602020', '#8080FF')
 
-  # origin
-  co =
-    r: 0x60
-    g: 0x20
-    b: 0x20
-
-  # destination
-  cd =
-    r: 0x80
-    g: 0x80
-    b: 0xFF
-
-  steps = 320
-  delay = 1000
-  Crafty.e('Delay').delay(
-    =>
-      v += 1
-      p = v * 1.0 / steps
-      c =
-        r: co.r * (1 - p) + cd.r * p
-        b: co.b * (1 - p) + cd.g * p
-        g: co.g * (1 - p) + cd.b * p
-      cs = (i.toString(16).slice(0, 2) for k, i of c)
-
-      Crafty.background("##{cs.join('')}")
-  , delay, steps - 1)
-
-  duration = steps * delay * 2
-
-  Crafty.e('Sun')
+  Crafty.e('Sun, ColorFade')
     .sun(
       x: 620
       y: 340
     )
     .tween({ dy: -250, dx: 115 }, duration)
+    .colorFade(duration: duration, '#DD4000', '#DDDD00', '#DDDD00')
 
   Crafty.bind 'EndOfLevel', ->
     level.stop()
