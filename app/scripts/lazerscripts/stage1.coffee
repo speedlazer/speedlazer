@@ -26,7 +26,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @waitForScenery('UnderBridge', event: 'leave')
         @setScenery('UnderBridge')
         @waitForScenery('UnderBridge', event: 'playerLeave')
-        @gainHeight(185, duration: 4000)
+        @gainHeight(200, duration: 4000)
         @setScenery('Skyline')
         @waitForScenery('Skyline', event: 'leave')
         @showScore()

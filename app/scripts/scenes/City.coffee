@@ -12,156 +12,6 @@ Crafty.defineScene 'City', (data) ->
     namespace: 'City'
     startScenery: 'Intro'
 
-  ###
-  level.addBlock 'City.Intro',
-    fast: yes
-    enter: ->
-      text = "Stage #{@level.data.stage}: #{@level.data.title}"
-      Crafty.e('StageTitle').stageTitle(text)
-
-      @level.showDialog([
-        'p1,p2:John:Too bad we have to bring these ships to the museum!'
-        'p1,!p2:John:Too bad we have to bring this ship to the museum!'
-        ':General:Just give her a good last flight,\nwe document some moves on the way!'
-      ])
-
-  level.addBlock 'City.Ocean'
-
-  level.addBlock 'City.Ocean',
-    enter: ->
-      @level.showDialog([
-        ':general:Evade the upcoming drones!'
-      ]).on 'Finished', =>
-        @level.spawnEnemies(
-          'FlyOver'
-          -> Crafty.e('Drone').drone()
-        )
-
-  level.addBlock 'City.Ocean',
-    generate: ->
-    enter: ->
-      @level.showDialog([
-        ':General:We dropped an upgrade to show the weapon systems'
-      ]).on 'Finished', =>
-        @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L'), x: 640, y: 300
-        if Crafty('PlayerControlledShip').length > 1
-          @level.addComponent Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L'), x: 640, y: 100
-
-  level.generateBlocks
-    amount: 2
-    enter: ->
-      @level.spawnEnemies(
-        'FlyOver'
-        -> Crafty.e('Drone').drone()
-      ).on 'LastDestroyed', (last) ->
-        Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
-          x: last.x
-          y: last.y
-          z: -1
-        )
-
-  level.generateBlocks
-    amount: 1
-    enter: ->
-      @level.spawnEnemies(
-        'Splash'
-        -> Crafty.e('BackgroundDrone').drone()
-      ).on 'LastDestroyed', (last) =>
-        @level.showDialog([
-          ':General:Wtf is happening with our drones?'
-        ]).on 'Finished', =>
-          @level.spawnEnemies(
-            'FlyOver'
-            -> Crafty.e('Drone,Weaponized').drone()
-          ).on 'LastDestroyed', (last) ->
-            Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
-              x: last.x
-              y: last.y
-              z: -1
-            )
-
-  level.generateBlocks
-    amount: 1
-    enter: ->
-      @level.showDialog([
-        ':General:Their AI has been compromised by our rogue prototype!\nEliminate it!'
-        'p1:John:How?'
-        'p2,!p1:Jack:What the...'
-        ':General:It\'s hiding in the city! go!'
-      ])
-
-  level.generateBlocks
-    amount: 4
-    enter: ->
-      @level.spawnEnemies(
-        if @index % 2 is 0 then 'SwirlAttack' else 'SwirlAttack2'
-        -> Crafty.e('Drone').drone()
-      ).on 'LastDestroyed', (last) ->
-        Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
-          x: last.x
-          y: last.y
-          z: -1
-        )
-
-  level.addBlock 'City.CoastStart',
-    enter: ->
-      @level.spawnEnemies(
-        'UnderWater'
-        -> Crafty.e('Drone').drone()
-      )
-
-  level.generateBlocks
-    amount: 2,
-    enter: ->
-      @level.spawnEnemies(
-        if @index % 2 is 0 then 'SwirlAttack' else 'UnderWater'
-        -> Crafty.e('Drone').drone()
-      )
-
-  level.addBlock 'City.Bay',
-    enter: ->
-      @level.spawnEnemies(
-        'SwirlAttack2'
-        -> Crafty.e('Drone').drone()
-      ).on 'LastDestroyed', (last) ->
-        Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').attr(
-          x: last.x
-          y: last.y
-          z: -1
-        )
-
-  level.addBlock 'City.UnderBridge'
-  level.addBlock 'City.Bay'
-  level.addBlock 'City.Bay'
-  level.addBlock 'City.UnderBridge'
-  level.addBlock 'City.Bay'
-  level.addBlock 'City.BayRaiser'
-  level.addBlock 'City.Bay'
-  level.addBlock 'City.Skyline'
-
-  level.generateBlocks
-    amount: 1
-    enter: ->
-      @level.showDialog([
-        ':Game:This is it for now.. More content coming soon!\nStarting test level...'
-      ])
-    inScreen: ->
-      @level.finishStage()
-  level.generateBlocks
-    until: -> @data.stageFinished
-
-  level.generateBlocks
-    amount: 5
-    enter: ->
-      Crafty('ScrollWall').each -> @off()
-      endLevelTrigger = Crafty.e('2D, Canvas, Color, Collision')
-        .attr({ w: 10, h: @level.visibleHeight })
-        .onHit 'PlayerControlledShip', ->
-          Crafty.trigger('EndOfLevel')
-          @destroy()
-      @add(0, 0, endLevelTrigger)
-  ###
-
   level.start
     armedPlayers: no
     speed: 0
@@ -169,8 +19,19 @@ Crafty.defineScene 'City', (data) ->
       x: 0
       y: 120
 
-  (new Game.Scripts.Stage1).run(level).then ->
+  (new Game.Scripts.Stage1).run(level).then =>
     console.log 'end of script!'
+
+    # Temporary code to make the player "enjoy" the gameplay
+    # demo level
+
+    Crafty('ScrollWall').each -> @off()
+    endLevelTrigger = Crafty.e('2D, Canvas, Color, Collision')
+      .attr({ w: 10, h: level.visibleHeight })
+      .onHit 'PlayerControlledShip', ->
+        Crafty.trigger('EndOfLevel')
+        @destroy()
+    level.addComponent(endLevelTrigger, x: 640, y: 0)
 
   ##
   # TODO: Extract this
