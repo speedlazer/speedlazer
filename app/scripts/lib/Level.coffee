@@ -155,6 +155,15 @@ class Game.Level
         @_handleSceneryEvents(@blocks[index - 1], 'playerLeave')
       @_handleSceneryEvents(@blocks[index], 'playerEnter')
 
+    Crafty.bind 'PlayerDied', =>
+      playersActive = no
+      Crafty('Player ControlScheme').each ->
+        playersActive = yes if @lives > 0
+
+      unless playersActive
+        @stop()
+        Crafty.enterScene('GameOver')
+
   _handleSceneryEvents: (block, eventType) ->
     return unless block?
     block[eventType]()

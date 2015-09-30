@@ -89,15 +89,6 @@ Crafty.defineScene 'GameplayDemo', (data) ->
     level.stop()
     Crafty.enterScene('GameplayDemo', { stage: data.stage + 1 })
 
-  Crafty.bind 'PlayerDied', ->
-    playersActive = no
-    Crafty('Player ControlScheme').each ->
-      playersActive = yes if @lives > 0
-
-    unless playersActive
-      level.stop()
-      Crafty.enterScene('GameOver')
-
 , ->
   # destructor
   Crafty.unbind('PlayerDied')

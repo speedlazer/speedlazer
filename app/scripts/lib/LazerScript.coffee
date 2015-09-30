@@ -125,7 +125,7 @@ class Game.LazerScript
         score.destroy()
 
   # Inventory
-  # TODO: Decide how we handle this thoughout game
+  # TODO: Decide how we handle inventory thoughout game
 
   inventory: (type, name) ->
     @invItems ||= {}

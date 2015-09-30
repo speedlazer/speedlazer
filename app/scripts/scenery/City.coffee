@@ -297,47 +297,6 @@ generator.defineBlock class extends @Game.LevelBlock
         @addBackground(@delta.x - pillarWidth, h + y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
 
 
-# TODO: Remove
-generator.defineBlock class extends @Game.LevelBlock
-  name: 'City.BayRaiser'
-  delta:
-    x: 100
-    y: 0
-  next: ['City.Bay']
-  autoNext: 'Bay'
-
-  generate: ->
-    super
-    @yMotion = -27
-
-    height = 85
-    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
-    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
-    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
-
-    # This is just for a small impression, this will be replaced by a sprite
-    @addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    # Coastline
-
-    @addBackground(0, @level.visibleHeight - 135, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .5) + 1, h: 40 }), .5)
-
-  enter: ->
-    super
-    if @level._forcedSpeed?.x?
-      @_speedX = @level._forcedSpeed?.x
-    else
-      @_speedX = @level._forcedSpeed
-
-    yFactor = @yMotion / @delta.x
-    @level.setForcedSpeed(x: @_speedX, y: @_speedX * yFactor)
-
-  leave: ->
-    super
-    @level.setForcedSpeed(@_speedX)
-
 generator.defineBlock class extends @Game.LevelBlock
   name: 'City.Skyline'
   delta:

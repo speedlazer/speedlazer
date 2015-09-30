@@ -37,7 +37,7 @@ Crafty.defineScene 'Intro', ->
     , 2000, -1
 
   Crafty('Player').each ->
-    # Turn this into a more generic 'reset player'
+    # TODO: Turn this into a more generic 'reset player'
     @removeComponent('ControlScheme')
       .attr({
         lives: 2,
