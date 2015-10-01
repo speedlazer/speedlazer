@@ -40,7 +40,7 @@ Crafty.defineScene 'City', (data) ->
       y: 340
     )
     .tween({ dy: -250, dx: 115 }, duration)
-    .colorFade(duration: duration, '#DD4000', '#DDDD00', '#DDDD80')
+    .colorFade(duration: duration, '#DD8000', '#DDDD00', '#DDDD80')
 
   Crafty.bind 'EndOfLevel', ->
     level.stop()
