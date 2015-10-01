@@ -1,7 +1,7 @@
 Crafty.c 'Sun',
   init: ->
     @requires '2D, Canvas, Color, ViewportRelativeMotion, Tween, Collision'
-    @attr(w: 30, h: 30, z: -1000)
+    @attr(w: 20, h: 20, z: -1000)
       .color('#DDDD00')
 
     @glare = []
@@ -70,7 +70,7 @@ Crafty.c 'Sun',
     this
 
   remove: ->
-    @unbind 'EnterFrame'
+    @unbind 'EnterFrame', @_updateGlare
 
   _updateGlare: ->
     covered = [0]
@@ -116,7 +116,7 @@ Crafty.c 'Sun',
     # For sunrise / set on water
     horizonDistance = (480 - 155) - @y
 
-    size = 30.0 + (30.0 * (Math.min(Math.max(horizonDistance, 0), 150.0) / 150.0))
+    size = 20.0 + (30.0 * (Math.min(Math.max(horizonDistance, 0), 150.0) / 150.0))
     @w = size
     @h = size
 
@@ -129,9 +129,13 @@ Crafty.c 'Sun',
         @attr
           alpha: 1.0
           h: 1
-      else
+      else if horizonDistance < 40
         @attr
           alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 40.0) / 40.0)
           h: Math.abs(Math.min(horizonDistance / 2.0, 20.0))
+      else
+        @attr
+          alpha: 0
+          h: 20.0
 
 

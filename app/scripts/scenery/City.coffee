@@ -58,7 +58,7 @@ generator.defineBlock class extends @Game.LevelBlock
     @addBackground(-600, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: ((@delta.x + 600) * .5) + 1, h: 105 }), .5)
     @addBackground(-300, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -600, w: ((@delta.x + 300) * .25) + 1, h: 155 }), .25)
 
-    goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr({ z: -599, w: ((@delta.x + 300) * .25) + 1, h: 1 })
+    goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr({ z: -599, w: ((@delta.x + 300) * .25) + 1, h: 1, alpha: 0 })
     @addBackground(-300, @level.visibleHeight - 155, goldenStripe, .25)
 
     @addBackground(0, @level.visibleHeight + 40, Crafty.e('2D, Canvas, Color').color('#000040').attr({ z: 3, w: ((@delta.x + 300)) + 1, h: 185 }), 1.25)
@@ -144,7 +144,7 @@ generator.defineBlock class extends @Game.LevelBlock
     @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
     @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
-    goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr({ z: -599, w: (@delta.x * .25) + 1, h: 1 })
+    goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr({ z: -599, w: (@delta.x * .25) + 1, h: 1, alpha: 0 })
     @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
 
     y = (Math.random() * 20) + 40
