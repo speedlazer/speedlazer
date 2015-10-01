@@ -42,7 +42,7 @@ class Game.Dialog extends Game.EventHandler
         z: 100
       )
 
-    speaker = Crafty.e('2D, Canvas, Text')
+    speakerText = Crafty.e('2D, Canvas, Text')
       .attr(w: 550, x: back.x + 10, y: back.y + 10, z: 101, alpha: 1)
       .text(speaker)
       .textColor('#707070')
@@ -51,7 +51,7 @@ class Game.Dialog extends Game.EventHandler
         weight: 'bold',
         family: 'Bank Gothic'
       })
-    back.attach(speaker)
+    back.attach(speakerText)
 
     for line, i in lines
       back.attach(Crafty.e('2D, Canvas, Text')

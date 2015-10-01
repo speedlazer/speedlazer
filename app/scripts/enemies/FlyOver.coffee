@@ -10,6 +10,10 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
     @enemiesSpawned = 0
     @enemiesDestroyed = 0
     @startRandom = 50 + Math.round(Math.random() * 200)
+
+    # Duration is needed to know how long this attack needs
+    @duration = 400 + 500 + 1900 + 4000 + 100 + 1 + 1500
+
     Crafty.e('Delay').delay(
       =>
         e = @enemyConstructor(@enemiesSpawned)
@@ -37,6 +41,7 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
             y: y
             duration: durations[@enemiesSpawned]
             type: 'viewport'
+            event: 'Shoot'
           c.push
             length: 1
             x: 20
@@ -44,7 +49,6 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
             maxSpeed: 2
             duration: 4000
             type: 'viewport'
-            event: 'Shoot'
         else
           y = 350 - (Math.floor(@enemiesSpawned / 2) * 100) + Math.round(Math.random() * 50)
           c.push
@@ -53,6 +57,7 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
             y: y
             duration: durations[@enemiesSpawned]
             type: 'viewport'
+            event: 'Shoot'
           c.push
             length: 1
             x: 20
@@ -60,7 +65,6 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
             maxSpeed: 2
             duration: 4000
             type: 'viewport'
-            event: 'Shoot'
 
         c.push
           type: 'linear'
@@ -82,5 +86,5 @@ class Game.EnemyFormation.FlyOver extends Game.EventHandler
         @level.addComponent(e, x: 750, y: @startRandom)
         @enemiesSpawned += 1
 
-        e.choreography(c, 0)
+        e.choreography(c)
     , 500, 3)

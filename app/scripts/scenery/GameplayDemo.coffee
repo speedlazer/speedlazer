@@ -91,7 +91,7 @@ generator.defineBlock class extends @Game.LevelBlock
           e = Crafty.e('Enemy')
           e.bind('retreat', (data) -> console.log "Retreating! #{data.data.name}")
           @add(650, 150, e)
-          e.enemy().choreography(c, -1)
+          e.enemy().choreography(c, repeat: -1)
       , 500, 5)
 
 generator.defineBlock class extends @Game.LevelBlock
@@ -145,7 +145,7 @@ generator.defineBlock class extends @Game.LevelBlock
         =>
           e = Crafty.e('Enemy')
           @add(650, 150, e)
-          e.enemy().choreography(c, -1)
+          e.enemy().choreography(c, repeat: -1)
       , 500, 5)
 
 
@@ -201,7 +201,7 @@ generator.defineBlock class extends @Game.LevelBlock
         =>
           e = Crafty.e('Enemy')
           @add(650, 150, e)
-          e.enemy().choreography(c, -1)
+          e.enemy().choreography(c, repeat: -1)
       , 500, 5)
 
 generator.defineBlock class extends @Game.LevelBlock

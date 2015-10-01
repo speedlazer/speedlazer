@@ -1,16 +1,14 @@
 Crafty.c 'Sun',
   init: ->
     @requires '2D, Canvas, Color, ViewportRelativeMotion, Tween, Collision'
-    @attr(w: 60, h: 60, z: -1000)
+    @attr(w: 20, h: 20, z: -1000)
       .color('#DDDD00')
 
     @glare = []
     directGlare = Crafty.e('2D, Canvas, Color, Glare')
       .attr
-        x: -15
-        y: -15
-        w: 90
-        h: 90
+        w: @w * 1.5
+        h: @h * 1.5
         z: 90
         alpha: 0.4
         originalAlpha: 0.4
@@ -72,7 +70,7 @@ Crafty.c 'Sun',
     this
 
   remove: ->
-    @unbind 'EnterFrame'
+    @unbind 'EnterFrame', @_updateGlare
 
   _updateGlare: ->
     covered = [0]
@@ -105,9 +103,39 @@ Crafty.c 'Sun',
     for e in @glare
       e.attr alpha: e.originalAlpha * (1 - perc)
       if e.mirrored
-        #console.log py, px
         e.attr
           x: @x + (@w / 2) - (e.w / 2) - (dx * 2 * e.res)
           y: @y + (@h / 2) - (e.h / 2) - (dy * 2 * e.res)
+      else
+        e.attr
+          w: @w * 1.5
+          h: @h * 1.5
+          x: @x + (@w / 2) - (e.w / 2)
+          y: @y + (@h / 2) - (e.h / 2)
+
+    # For sunrise / set on water
+    horizonDistance = (480 - 155) - @y
+
+    size = 20.0 + (30.0 * (Math.min(Math.max(horizonDistance, 0), 150.0) / 150.0))
+    @w = size
+    @h = size
+
+    Crafty('GoldenStripe').each ->
+      if horizonDistance <= 0
+        @attr
+          alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 10.0) / 10.0)
+          h: 1
+      else if 0 < horizonDistance < 1
+        @attr
+          alpha: 1.0
+          h: 1
+      else if horizonDistance < 40
+        @attr
+          alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 40.0) / 40.0)
+          h: Math.abs(Math.min(horizonDistance / 2.0, 20.0))
+      else
+        @attr
+          alpha: 0
+          h: 20.0
 
 

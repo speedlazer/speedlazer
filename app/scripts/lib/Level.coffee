@@ -19,10 +19,16 @@ class Game.Level
   constructor: (@generator, @data = {}) ->
     @blocks = []
     @levelDefinition = []
-    @buildedBlocks = []
-    @bufferLength = 640 * 4
+    @bufferLength = 640 * 3
     @generationPosition = x: 0, y: 40
+    @sceneryEvents = []
     @visibleHeight = 480 - @generationPosition.y
+
+    { @namespace } = @data
+    if @currentScenery = @data.startScenery
+      @levelDefinition.push { type: 'autofill' }
+
+  setScenery: (@currentScenery) ->
 
   ###
   blocks can be added in 2 ways.
@@ -118,30 +124,56 @@ class Game.Level
       @data.enemiesSpawned += 1
 
     @_placePlayerShips settings
-    @_update 0
+    @_update()
+    @lastUpdate = Crafty.viewport._x + 200
 
     for block in @blocks when block.x < 640
       block.enter()
 
+    Crafty.bind('ViewportScroll', =>
+      if @lastUpdate - Crafty.viewport._x >= 300
+        @_update()
+        @lastUpdate = Crafty.viewport._x
+    )
+
     Crafty.bind 'LeaveBlock', (index) =>
-      @_update index
       if index > 0
-        @blocks[index - 1].leave()
+        @_handleSceneryEvents(@blocks[index - 1], 'leave')
         @currentBlockIndex = index
-        @blocks[index].inScreen()
+        @_handleSceneryEvents(@blocks[index], 'inScreen')
 
       @_cleanupBuildBlocks()
 
     Crafty.bind 'EnterBlock', (index) =>
       if index > 0
-        @blocks[index - 1].outScreen()
+        @_handleSceneryEvents(@blocks[index - 1], 'outScreen')
       @newBlockIndex = index
-      @blocks[index].enter()
+      @_handleSceneryEvents(@blocks[index], 'enter')
 
     Crafty.bind 'PlayerEnterBlock', (index) =>
       if index > 0
-        @blocks[index - 1]?.playerLeave()
-      @blocks[index]?.playerEnter()
+        @_handleSceneryEvents(@blocks[index - 1], 'playerLeave')
+      @_handleSceneryEvents(@blocks[index], 'playerEnter')
+
+    Crafty.bind 'PlayerDied', =>
+      playersActive = no
+      Crafty('Player ControlScheme').each ->
+        playersActive = yes if @lives > 0
+
+      unless playersActive
+        @stop()
+        Crafty.enterScene('GameOver')
+
+  _handleSceneryEvents: (block, eventType) ->
+    return unless block?
+    block[eventType]()
+    for event, index in @sceneryEvents by -1
+      if block.name is "#{@namespace}.#{event.sceneryType}" and eventType is event.eventType
+        event.callback.apply this
+        @sceneryEvents.splice(index, 1)
+
+  notifyScenery: (eventType, sceneryType, callback) ->
+    @sceneryEvents.push { eventType, sceneryType, callback }
 
   _placePlayerShips: (settings) ->
     Crafty.one 'ShipSpawned', =>
@@ -185,10 +217,8 @@ class Game.Level
     new formationClass(this, enemyComponent, callback)
 
   getComponentOffset: ->
-    block = @blocks[@currentBlockIndex ? 0]
-    return unless block?
-    x: @_scrollWall.x - block.x
-    y: @_scrollWall.y - block.y
+    x: @_scrollWall.x
+    y: @_scrollWall.y
 
   addComponent: (c, relativePosition, offset = null) ->
     block = @blocks[@currentBlockIndex ? 0]
@@ -196,8 +226,8 @@ class Game.Level
     unless offset?
       offset = @getComponentOffset()
     position =
-      x: relativePosition.x + offset.x
-      y: relativePosition.y + offset.y
+      x: relativePosition.x + offset.x - block.x
+      y: relativePosition.y + offset.y - block.y
 
     block.add(position.x, position.y, c)
 
@@ -213,13 +243,12 @@ class Game.Level
     Crafty.unbind('EnterBlock')
     Crafty.unbind('ShipSpawned')
     Crafty.unbind('ViewportScroll')
-    b.clean() for b in @blocks
+    b?.clean() for b in @blocks
 
-  # Generate more level from tile 'start'
-  _update: (start) ->
+  _update: ->
     @generationDefinition ?= 0
 
-    startX = @blocks[start]?.x || 0
+    startX = - Crafty.viewport._x
     endX = startX + @bufferLength
 
     counter = 0
@@ -235,6 +264,12 @@ class Game.Level
       @_generatePredefinedBlock generator
     else if generator.type is 'generation'
       @_generateBlocks generator
+    else if generator.type is 'autofill'
+      blockType = "#{@namespace}.#{@currentScenery}"
+      @_addBlockToLevel(blockType, {})
+      blockKlass = @generator.buildingBlocks[blockType]
+      if next = blockKlass::autoNext
+        @currentScenery = next
     else
       console.log 'no support yet for', generator.type
 
@@ -284,13 +319,11 @@ class Game.Level
     generator.amountGenerated += 1
 
   _cleanupBuildBlocks: ->
-    keep = []
-    for block in @buildedBlocks
-      if block.canCleanup()
+    for block, index in @blocks
+      if block?.canCleanup()
         block.clean()
-      else
-        keep.push block
-    @buildedBlocks = keep
+        @blocks[index] = null
+
 
   _determineNextTileType: (blockType, settings) ->
     blockKlass = @generator.buildingBlocks[blockType]

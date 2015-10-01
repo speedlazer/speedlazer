@@ -8,20 +8,30 @@ Crafty.c 'Choreography',
       sine: @_executeSine
       delay: @_executeDelay
       viewport: @_executeMoveIntoViewport # move to position within viewport
+      follow: @_executeFollow
+      tween: @_executeTween
       bezier: @_executeBezier
 
   remove: ->
 
-  choreography: (c, repeats = 0) ->
+  choreography: (c, options = {}) ->
+    @_options = _.defaults(options, {
+      repeat: 0
+      compensateCameraSpeed: no
+    })
+    if @_options.compensateCameraSpeed
+      @camera = Crafty(Crafty('ScrollWall')[0])
+      @_options.cameraLock =
+        x: @camera.x
+
     @_choreography = c
-    @_repeats = repeats
     @_repeated = 0
     @_setupCPart(0)
     this
 
   synchChoreography: (otherComponent) ->
     @_choreography = _.clone otherComponent._choreography
-    @_repeats = otherComponent._repeats
+    @_options = otherComponent._options
     @_repeated = otherComponent._repeated
     @_currentPart = _.clone otherComponent._currentPart
     @_currentPart.x += (@x - otherComponent.x)
@@ -31,7 +41,7 @@ Crafty.c 'Choreography',
   _setupCPart: (number) ->
     @_currentPart = null
     unless number < @_choreography.length
-      if @_repeated < @_repeats or @_repeats is -1
+      if @_repeated < @_options.repeat or @_options.repeats is -1
         @_repeated += 1
         number = 0
       else
@@ -49,6 +59,10 @@ Crafty.c 'Choreography',
     v = @_currentPart.easing.value()
     @_ctypes[@_currentPart.type].apply(this, [v])
 
+    if @_options.compensateCameraSpeed
+      # TODO: Figure out why we need the magic .7 to get enemies off screen.
+      @x += ((@camera.x - @_options.cameraLock.x) * .7)
+
     if @_currentPart.easing.complete
       @_setupCPart @_currentPart.part + 1
 
@@ -61,6 +75,11 @@ Crafty.c 'Choreography',
       dy: part.y ? 0
       easing: new Crafty.easing(part.duration ? 0)
     )
+    if part.properties
+      currentProperties = {}
+      for k of part.properties
+        currentProperties[k] = @[k]
+      @_currentPart.currentProperties = currentProperties
 
   _executeLinear: (v) ->
     @x = @_currentPart.x + (v * @_currentPart.dx)
@@ -90,6 +109,30 @@ Crafty.c 'Choreography',
       motionY = @_currentPart.maxSpeed
       motionY *= -1 if diffX < 0
     @y = @y + motionY
+
+  _executeFollow: (v) ->
+    # the goal are current coordinates on screen
+    destinationX = @_currentPart.target.x + @_currentPart.target.w // 2
+    destinationX -= @w // 2
+
+    diffX = destinationX - @x
+    motionX = (diffX * v)
+    if @_currentPart.maxSpeed? and Math.abs(motionX) > @_currentPart.maxSpeed
+      motionX = @_currentPart.maxSpeed
+      motionX *= -1 if diffX < 0
+    @x = @x + motionX
+
+    #destinationY = @_currentPart.dy
+    #diffY = destinationY - @y
+    #motionY = (diffY * v)
+    #if @_currentPart.maxSpeed? and Math.abs(motionY) > @_currentPart.maxSpeed
+      #motionY = @_currentPart.maxSpeed
+      #motionY *= -1 if diffX < 0
+    #@y = @y + motionY
+
+  _executeTween: (v) ->
+    for k, p of @_currentPart.properties
+      @[k] = (1 - v) * @_currentPart.currentProperties[k] + (v * p)
 
   _executeBezier: (v) ->
     bp = new Game.BezierPath

@@ -131,9 +131,9 @@ class Game.LevelBlock
 
   canCleanup: ->
     cameraX = Crafty.viewport._x * -1
-    return no if @x > cameraX
+    return no if (@x + @delta.x) > cameraX
     for elem in @createdElements
-      if elem.x + elem.w > cameraX
+      if elem.x + elem.w >= cameraX
         return no
     yes
 

@@ -155,7 +155,7 @@ Crafty.c 'StageEnd',
   addCelledLine: (cells) ->
     @lineNr += 1
 
-    y = 150 + (@lineNr * 20)
+    y = @y + 20 + (@lineNr * 20)
 
     xOffset = 0
     cellWidth = 500.0 / (cells.length + .5)
@@ -191,7 +191,6 @@ Crafty.c 'StageEnd',
               @v = @endScore
               @unbind 'EnterFrame'
             @text @v
-
 
         @attach c
 

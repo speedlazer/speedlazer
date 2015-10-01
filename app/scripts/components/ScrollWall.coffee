@@ -11,7 +11,7 @@ Crafty.c 'ScrollWall',
         y: 0
 
     @_speed = { x: 0, y: 0 }
-    @wallEnd = Crafty.e('2D, Canvas, ScrollFront')
+    @wallEnd = Crafty.e('2D, Canvas, ScrollFront, Edge')
       .attr(x: - (Crafty.viewport.x - Crafty.viewport.width) - 3, y: 0, h: Crafty.viewport.height, w: 12)
     @attach @wallEnd
 
@@ -27,14 +27,21 @@ Crafty.c 'ScrollWall',
       speedX = @_speed.x
       speedY = @_speed.y
 
-      # When the ships are in the first 30% of the screen,
-      # speed up the camera.
-      Crafty('PlayerControlledShip').each ->
-        threshold = Crafty.viewport.width * (2.0 / 3.0)
-        relOffset = @x + Crafty.viewport.x
-        if relOffset > threshold
-          percentageOutOfBounds = (relOffset - threshold) / (Crafty.viewport.width - threshold)
-          speedX += (5 + @_forcedSpeed.x) * percentageOutOfBounds
+      if @allowPushing
+        # When the ships are in the first 30% of the screen,
+        # speed up the camera.
+        Crafty('PlayerControlledShip').each ->
+          threshold = Crafty.viewport.width * (2.0 / 3.0)
+          relOffset = @x + Crafty.viewport.x
+          if relOffset > threshold
+            percentageOutOfBounds = (relOffset - threshold) / (Crafty.viewport.width - threshold)
+            increase = (5 + @_forcedSpeed.x) * percentageOutOfBounds
+
+            if speedX > 0 # Prevend division by zero
+              percentage = (speedX + increase) / speedX
+              speedY *= percentage
+
+            speedX += increase
 
       @x += speedX
       @y += speedY
@@ -70,6 +77,9 @@ Crafty.c 'ScrollWall',
       @_speed.y = 0
     this
 
+  setAllowPushing: (@allowPushing) ->
+
   off: ->
+    @wallEnd.removeComponent('Edge')
     @unbind('EnterFrame')
 
