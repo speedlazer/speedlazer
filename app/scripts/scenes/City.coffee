@@ -14,10 +14,7 @@ Crafty.defineScene 'City', (data) ->
 
   level.start
     armedPlayers: no
-    speed: 0
-    viewport:
-      x: 0
-      y: 120
+    speed: 1
 
   (new Game.Scripts.Stage1).run(level).then =>
     console.log 'end of script!'

@@ -68,6 +68,9 @@ generator.defineBlock class extends @Game.LevelBlock
 
   enter: ->
     super
+    @speed = @level._forcedSpeed
+    Crafty('ScrollWall').attr y: 120
+    @level.setForcedSpeed 0
     c = [
         type: 'linear'
         x: -160
@@ -127,7 +130,7 @@ generator.defineBlock class extends @Game.LevelBlock
       @one 'shipExterior', ->
         block.outside.tween({ alpha: 1 }, if block.settings.fast? then 15 else 1500).addComponent('Edge')
       @one 'go', ->
-        block.level.setForcedSpeed 1
+        block.level.setForcedSpeed block.speed
 
 generator.defineBlock class extends @Game.LevelBlock
   name: 'City.Ocean'
