@@ -55,6 +55,7 @@ Crafty.defineScene 'GameplayDemo', (data) ->
   level.addBlock 'GameplayDemo.Lasers',
     enter: ->
       @level.setForcedSpeed(0)
+      Crafty('ScrollWall').allowPushing = yes
       @level.showDialog [
         'p1:John:Slow down! Lasers!!'
         '!p1,p2:Jim:Uh oh! Danger!'
@@ -66,6 +67,7 @@ Crafty.defineScene 'GameplayDemo', (data) ->
       @level.showDialog [
         'p1:John:Let\'s get out of here!'
       ]
+      Crafty('ScrollWall').allowPushing = no
       @level.setForcedSpeed 4
 
   level.addBlock('GameplayDemo.TunnelTwist')
