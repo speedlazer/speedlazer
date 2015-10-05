@@ -2,6 +2,20 @@
 # Import
 generator = @Game.levelGenerator
 
+generator.defineElement 'cloud', ->
+  y = (Math.random() * 20) + 40
+  @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -200, w: 100, h: 25, alpha: 0.5 }), .5)
+  @addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -300, w: 75, h: 25, alpha: 0.5 }), .45)
+
+generator.defineElement 'waterHorizon', ->
+  @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
+
+  goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr({ z: -599, w: (@delta.x * .25) + 1, h: 1, alpha: 0 })
+  @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
+
+generator.defineElement 'water', ->
+  @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
+
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Intro'
   delta:
@@ -54,18 +68,12 @@ generator.defineBlock class extends @Game.LevelScenery
         @barrel.attr alpha: 0
         @splash.attr(alpha: 1).tween(alpha: 0, w: 30, x: @splash.x - 10, h: 30, y: @splash.y - 30, 750)
 
-
-    @addBackground(-600, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: ((@delta.x + 600) * .5) + 1, h: 105 }), .5)
-    @addBackground(-300, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -600, w: ((@delta.x + 300) * .25) + 1, h: 155 }), .25)
-
-    goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr({ z: -599, w: ((@delta.x + 300) * .25) + 1, h: 1, alpha: 0 })
-    @addBackground(-300, @level.visibleHeight - 155, goldenStripe, .25)
+    @addElement 'water'
+    @addElement 'waterHorizon'
 
     @addBackground(0, @level.visibleHeight + 40, Crafty.e('2D, Canvas, Color').color('#000040').attr({ z: 3, w: ((@delta.x + 300)) + 1, h: 185 }), 1.25)
 
-    y = (Math.random() * 20) + 40
-    @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -200, w: 100, h: 25, alpha: 0.5 }), .5)
-    @addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -300, w: 75, h: 25, alpha: 0.5 }), .45)
+    @addElement 'cloud'
 
   enter: ->
     super
@@ -145,15 +153,10 @@ generator.defineBlock class extends @Game.LevelScenery
     height = 85
     @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
-    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
-    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
-    goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr({ z: -599, w: (@delta.x * .25) + 1, h: 1, alpha: 0 })
-    @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
-
-    y = (Math.random() * 20) + 40
-    @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -200, w: 100, h: 25, alpha: 0.5 }), .5)
-    @addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -300, w: 75, h: 25, alpha: 0.5 }), .45)
+    @addElement 'waterHorizon'
+    @addElement 'cloud'
+    @addElement 'water'
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.CoastStart'
@@ -168,7 +171,7 @@ generator.defineBlock class extends @Game.LevelScenery
     height = 85
     @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
-    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
+    @addElement 'water'
     @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
     # This is just for a small impression, this will be replaced by a sprite
@@ -178,10 +181,7 @@ generator.defineBlock class extends @Game.LevelScenery
     @addBackground(230, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
     @addBackground(190, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
 
-    #y = (Math.random() * 20) + 40
-    #@addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 100, h: 25 }), .5)
-    #@addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 75, h: 25 }), .45)
-    #
+    @addElement 'cloud'
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Coast'
@@ -195,7 +195,7 @@ generator.defineBlock class extends @Game.LevelScenery
     height = 85
     @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
-    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
+    @addElement 'water'
     @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
     # This is just for a small impression, this will be replaced by a sprite
@@ -208,9 +208,7 @@ generator.defineBlock class extends @Game.LevelScenery
     @addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
     @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
 
-    y = (Math.random() * 20) + 40
-    @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -200, w: 100, h: 25, alpha: 0.5 }), .5)
-    @addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -300, w: 75, h: 25, alpha: 0.5 }), .45)
+    @addElement 'cloud'
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Bay'
@@ -224,7 +222,7 @@ generator.defineBlock class extends @Game.LevelScenery
     height = 85
     @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
-    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
+    @addElement 'water'
     @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
     # This is just for a small impression, this will be replaced by a sprite
@@ -315,7 +313,7 @@ generator.defineBlock class extends @Game.LevelScenery
     h = 300 + 100
     @addBackground(200, @level.visibleHeight - h, Crafty.e('2D, Canvas, Color').attr(w: 400, h: h, z: 5).color('#000000'), 1.5)
 
-    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
+    @addElement 'water'
     @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
     # This is just for a small impression, this will be replaced by a sprite

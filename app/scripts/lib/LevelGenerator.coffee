@@ -31,12 +31,16 @@ class Game.LevelGenerator
 
   constructor: ->
     @buildingBlocks = {}
+    @elements = {}
 
   ##
   # adds a new block for use in levels
   # @param {klass} is a subclass of LevelScenery
   defineBlock: (klass) ->
     @buildingBlocks[klass::name] = klass
+
+  defineElement: (name, constructor) ->
+    @elements[name] = constructor
 
   ##
   # Create a new level
