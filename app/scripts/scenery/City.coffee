@@ -2,7 +2,7 @@
 # Import
 generator = @Game.levelGenerator
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Intro'
   delta:
     x: 800
@@ -133,7 +133,7 @@ generator.defineBlock class extends @Game.LevelBlock
       @one 'go', ->
         block.level.setForcedSpeed block.speed
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Ocean'
   delta:
     x: 400
@@ -155,7 +155,7 @@ generator.defineBlock class extends @Game.LevelBlock
     @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -200, w: 100, h: 25, alpha: 0.5 }), .5)
     @addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -300, w: 75, h: 25, alpha: 0.5 }), .45)
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'City.CoastStart'
   delta:
     x: 400
@@ -183,7 +183,7 @@ generator.defineBlock class extends @Game.LevelBlock
     #@addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 75, h: 25 }), .45)
     #
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Coast'
   delta:
     x: 400
@@ -212,7 +212,7 @@ generator.defineBlock class extends @Game.LevelBlock
     @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -200, w: 100, h: 25, alpha: 0.5 }), .5)
     @addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -300, w: 75, h: 25, alpha: 0.5 }), .45)
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Bay'
   delta:
     x: 400
@@ -246,7 +246,7 @@ generator.defineBlock class extends @Game.LevelBlock
     @addBackground(190, @level.visibleHeight - 290, Crafty.e('2D, Canvas, Color').color('#A5A5A5').attr({ z: -300, w: 60 + 1, h: 165 }), .5)
 
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'City.UnderBridge'
   delta:
     x: 800
@@ -300,7 +300,7 @@ generator.defineBlock class extends @Game.LevelBlock
         @addBackground(@delta.x - pillarWidth, h + y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
 
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Skyline'
   delta:
     x: 800

@@ -1,10 +1,9 @@
 Game = @Game
 
 ##
-# LevelBlock
+# LevelScenery
 #
-# A part of a level that supplies terrain,
-# enemies and events.
+# A part of a level that supplies terrain
 #
 # Each block uses this class as super class
 #
@@ -19,15 +18,15 @@ Game = @Game
 # and then register the new block at the LevelGenerator
 #
 # example:
-#   class MyBlock extends Game.LevelBlock
+#   class MyBlock extends Game.LevelScenery
 #     ...
 #   Game.levelGenerator.defineBlock MyBlock
 #
 ##
-class Game.LevelBlock
+class Game.LevelScenery
   screenHeight: 480
 
-  constructor: (@level, @settings) ->
+  constructor: (@level, @generator, @settings) ->
     @createdElements = []
     @createdBindings = []
 

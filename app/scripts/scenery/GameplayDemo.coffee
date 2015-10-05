@@ -2,7 +2,21 @@
 # Import
 generator = @Game.levelGenerator
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
+  name: 'Generic.Start'
+  delta:
+    x: 0
+    y: 0
+  next: []
+
+  generate: ->
+
+  enter: ->
+    super
+    text = "Stage #{@level.data.stage}: #{@level.data.title}"
+    Crafty.e('StageTitle').stageTitle(text)
+
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.End'
   delta:
     x: 800
@@ -25,7 +39,7 @@ generator.defineBlock class extends @Game.LevelBlock
     @add(640, 0, endLevelTrigger)
 
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.Asteroids'
   delta:
     x: 1000
@@ -41,7 +55,7 @@ generator.defineBlock class extends @Game.LevelBlock
     @add(800, 275, Crafty.e('2D, Canvas, Edge, Color').color('#404040').attr(w: 42, h: 15))
 
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.TunnelStart'
   delta:
     x: 1000
@@ -94,7 +108,7 @@ generator.defineBlock class extends @Game.LevelBlock
           e.enemy().choreography(c, repeat: -1)
       , 500, 5)
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.TunnelEnd'
   delta:
     x: 1000
@@ -149,7 +163,7 @@ generator.defineBlock class extends @Game.LevelBlock
       , 500, 5)
 
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.Tunnel'
   delta:
     x: 1000
@@ -204,7 +218,7 @@ generator.defineBlock class extends @Game.LevelBlock
           e.enemy().choreography(c, repeat: -1)
       , 500, 5)
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.Lasers'
   delta:
     x: 1000
@@ -264,7 +278,7 @@ generator.defineBlock class extends @Game.LevelBlock
       pauseOnEdges: 300
     )
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.Lasers2'
   delta:
     x: 800
@@ -304,7 +318,7 @@ generator.defineBlock class extends @Game.LevelBlock
       pauseOnEdges: 500
     )
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.TunnelTwist'
   delta:
     x: 1000
@@ -327,7 +341,7 @@ generator.defineBlock class extends @Game.LevelBlock
 
     @add(0, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: @delta.x, h: @level.visibleHeight }))
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.PerspectiveTest'
   delta:
     x: 640
@@ -344,7 +358,7 @@ generator.defineBlock class extends @Game.LevelBlock
     @addBackground(0, @level.visibleHeight * .375, Crafty.e('2D, Canvas, Color').attr(w: @delta.x * .25, h: @level.visibleHeight * .25, alpha: 0.7, z: -3).color('#0000FF'), .25)
     @addBackground(0, @level.visibleHeight * .375, Crafty.e('2D, Canvas, Color').attr(w: 5, h: @level.visibleHeight * .25, z: -3).color('#0000FF'), .25)
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.OceanRiser'
   delta:
     x: 1000
@@ -373,7 +387,7 @@ generator.defineBlock class extends @Game.LevelBlock
   outScreen: ->
     @level.setForcedSpeed(@_speedX)
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.OceanHigh'
   delta:
     x: 1000
@@ -390,7 +404,7 @@ generator.defineBlock class extends @Game.LevelBlock
     @addBackground(200, 45 - @yMotion, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -2, w: 200, h: 55 }), .5)
     @addBackground(200, 65 - @yMotion, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -3, w: 150, h: 55 }), .25)
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.OceanLower'
   delta:
     x: 1000
@@ -418,7 +432,7 @@ generator.defineBlock class extends @Game.LevelBlock
   outScreen: ->
     @level.setForcedSpeed(@_speedX)
 
-generator.defineBlock class extends @Game.LevelBlock
+generator.defineBlock class extends @Game.LevelScenery
   name: 'GameplayDemo.Ocean'
   delta:
     x: 1000

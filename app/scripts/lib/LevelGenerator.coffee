@@ -3,7 +3,7 @@ Game = @Game
 ##
 # LevelGenerator
 #
-# A Level of the game is build up from LevelBlock's
+# A Level of the game is build up from LevelScenery's
 #
 # To create a level, these blocks need to be defined
 # and registered at the LevelGenerator
@@ -13,7 +13,7 @@ Game = @Game
 #
 # example:
 #
-#   class MyBlock extends Game.LevelBlock
+#   class MyBlock extends Game.LevelScenery
 #     ...
 #
 #   Game.levelGenerator.defineBlock MyBlock
@@ -34,7 +34,7 @@ class Game.LevelGenerator
 
   ##
   # adds a new block for use in levels
-  # @param {klass} is a subclass of LevelBlock
+  # @param {klass} is a subclass of LevelScenery
   defineBlock: (klass) ->
     @buildingBlocks[klass::name] = klass
 

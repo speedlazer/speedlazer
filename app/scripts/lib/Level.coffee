@@ -280,7 +280,7 @@ class Game.Level
   _addBlockToLevel: (blockType, settings) ->
     klass = @generator.buildingBlocks[blockType]
     throw new Error("#{blockType} not found") unless klass?
-    block = new klass(this, settings)
+    block = new klass(this, @generator, settings)
     @blocks.push block
     block.build(@generationPosition, @blocks.length - 1)
     @generationPosition =
