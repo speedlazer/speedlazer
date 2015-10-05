@@ -31,7 +31,7 @@ Crafty.defineScene 'City', (data) ->
     level.addComponent(endLevelTrigger, x: 640, y: 0)
 
   duration = 600 * 1000
-  Crafty.e('ColorFade').colorFade(duration: duration, background: yes,
+  Crafty.e('ColorFade, 2D').colorFade(duration: (duration / 2.0), background: yes,
     '#602020', '#8080FF')
 
   Crafty.e('Sun, ColorFade')

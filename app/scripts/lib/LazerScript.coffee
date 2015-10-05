@@ -118,6 +118,10 @@ class Game.LazerScript
       )
       d.promise
 
+  setSpeed: (speed) ->
+    =>
+      @level.setForcedSpeed speed
+
   showScore: ->
     =>
       score = @level.finishStage()
