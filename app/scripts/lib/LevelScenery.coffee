@@ -115,8 +115,8 @@ class Game.LevelScenery
     )
     @createdElements.push element
 
-  addElement: (name) ->
-    @generator.elements[name].apply this
+  addElement: (name, args...) ->
+    @generator.elements[name].apply this, args
 
   # Helper method to bind to an event in the game
   # and registers the bind for auto unbinding.

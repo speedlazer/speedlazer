@@ -124,6 +124,7 @@ class Game.Level
       @data.enemiesSpawned += 1
 
     @_placePlayerShips settings
+    @_seedPreceedingGeometry()
     @_update()
     @lastUpdate = Crafty.viewport._x + 200
 
@@ -287,6 +288,16 @@ class Game.Level
       x: block.x + block.delta.x
       y: block.y + block.delta.y
 
+  _insertBlockToLevel: (blockType, settings) ->
+    klass = @generator.buildingBlocks[blockType]
+    throw new Error("#{blockType} not found") unless klass?
+    block = new klass(this, @generator, settings)
+    @blocks.unshift block
+    @generationPosition =
+      x: @generationPosition.x - block.delta.x
+      y: @generationPosition.y - block.delta.y
+    block.build(@generationPosition, 0)
+
   _generateBlocks: (generator) ->
     return if @blocks.length is 0
     # Get the current tile type
@@ -354,4 +365,16 @@ class Game.Level
         candidates = newCandidates
 
     candidates[Math.floor(Math.random() * candidates.length)]
+
+  _seedPreceedingGeometry: ->
+    blockType = "#{@namespace}.#{@currentScenery}"
+    blockKlass = @generator.buildingBlocks[blockType]
+    if next = blockKlass::autoNext
+      blockType = "#{@namespace}.#{next}"
+
+    p = _.clone @generationPosition
+    @_insertBlockToLevel(blockType, {})
+    @_insertBlockToLevel(blockType, {})
+    @_insertBlockToLevel(blockType, {})
+    @generationPosition = p
 

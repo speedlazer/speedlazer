@@ -11,7 +11,6 @@ Crafty.defineScene 'City', (data) ->
     title: 'City'
     namespace: 'City'
     startScenery: 'Intro'
-    #startScenery: 'Ocean'
 
   level.start
     armedPlayers: no

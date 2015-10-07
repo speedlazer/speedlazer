@@ -16,6 +16,42 @@ generator.defineElement 'waterHorizon', ->
 generator.defineElement 'water', ->
   @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
 
+generator.defineElement 'waterFront', ->
+  height = 85
+  @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
+  @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
+
+generator.defineElement 'cityHorizon', (mode) ->
+  @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
+
+  # This is just for a small impression, this will be replaced by a sprite
+  if mode is 'start'
+    @addBackground(150, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(120, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+
+    @addBackground(230, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(190, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+  else
+    # This is just for a small impression, this will be replaced by a sprite
+    @addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+
+    @addBackground(170, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+
+    @addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+
+generator.defineElement 'city', ->
+    # Coastline
+
+    @addBackground(0, @level.visibleHeight - 135, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .5) + 1, h: 40 }), .5)
+    @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .37) + 1, h: 30 }), .37)
+
+    @addBackground(90, @level.visibleHeight - 270, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -300, w: 80 + 1, h: 150 }), .5)
+    @addBackground(190, @level.visibleHeight - 290, Crafty.e('2D, Canvas, Color').color('#A5A5A5').attr({ z: -300, w: 60 + 1, h: 165 }), .5)
+
+
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Intro'
   delta:
@@ -150,10 +186,8 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-    height = 85
-    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
 
+    @addElement 'waterFront'
     @addElement 'waterHorizon'
     @addElement 'cloud'
     @addElement 'water'
@@ -168,19 +202,9 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-    height = 85
-    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
+    @addElement 'waterFront'
     @addElement 'water'
-    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
-
-    # This is just for a small impression, this will be replaced by a sprite
-    @addBackground(150, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(120, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    @addBackground(230, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(190, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
+    @addElement 'cityHorizon', 'start'
     @addElement 'cloud'
 
 generator.defineBlock class extends @Game.LevelScenery
@@ -192,22 +216,9 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-    height = 85
-    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
+    @addElement 'waterFront'
     @addElement 'water'
-    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
-
-    # This is just for a small impression, this will be replaced by a sprite
-    @addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    @addBackground(170, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    @addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
+    @addElement 'cityHorizon'
     @addElement 'cloud'
 
 generator.defineBlock class extends @Game.LevelScenery
@@ -219,30 +230,10 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-    height = 85
-    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
+    @addElement 'waterFront'
     @addElement 'water'
-    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
-
-    # This is just for a small impression, this will be replaced by a sprite
-    @addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    @addBackground(170, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    @addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    # Coastline
-
-    @addBackground(0, @level.visibleHeight - 135, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .5) + 1, h: 40 }), .5)
-    @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .37) + 1, h: 30 }), .37)
-
-    @addBackground(90, @level.visibleHeight - 270, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -300, w: 80 + 1, h: 150 }), .5)
-    @addBackground(190, @level.visibleHeight - 290, Crafty.e('2D, Canvas, Color').color('#A5A5A5').attr({ z: -300, w: 60 + 1, h: 165 }), .5)
-
+    @addElement 'cityHorizon'
+    @addElement 'city'
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.UnderBridge'
@@ -254,29 +245,10 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-    height = 85
-    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000040'))
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000040'))
-    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#181858').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
-    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
-
-    # This is just for a small impression, this will be replaced by a sprite
-    @addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    @addBackground(170, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    @addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    # Coastline
-
-    @addBackground(0, @level.visibleHeight - 135, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .5) + 1, h: 40 }), .5)
-    @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .37) + 1, h: 30 }), .37)
-
-    @addBackground(90, @level.visibleHeight - 270, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -300, w: 80 + 1, h: 150 }), .5)
-    @addBackground(190, @level.visibleHeight - 290, Crafty.e('2D, Canvas, Color').color('#A5A5A5').attr({ z: -300, w: 60 + 1, h: 165 }), .5)
+    @addElement 'waterFront'
+    @addElement 'water'
+    @addElement 'cityHorizon'
+    @addElement 'city'
 
     # Pillars
     pillarWidth = 80
@@ -316,22 +288,6 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'water'
     @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
-    # This is just for a small impression, this will be replaced by a sprite
-    @addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    @addBackground(170, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    @addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
-
-    # Coastline
-
-    @addBackground(0, @level.visibleHeight - 135, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .5) + 1, h: 40 }), .5)
-    @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .37) + 1, h: 30 }), .37)
-
-    @addBackground(90, @level.visibleHeight - 270, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -300, w: 80 + 1, h: 150 }), .5)
-    @addBackground(190, @level.visibleHeight - 290, Crafty.e('2D, Canvas, Color').color('#A5A5A5').attr({ z: -300, w: 60 + 1, h: 165 }), .5)
-
+    @addElement 'cityHorizon'
+    @addElement 'city'
 
