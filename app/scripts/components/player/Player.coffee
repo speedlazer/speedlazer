@@ -8,6 +8,13 @@ Crafty.c 'Player',
       enemiesKilled: 0
       bonus: 0
 
+  reset: ->
+    @removeComponent('ControlScheme')
+      .attr({
+        lives: 2,
+        points: 0
+      })
+
   loseLife: ->
     return unless @lives > 0
     @lives -= 1

@@ -37,12 +37,7 @@ Crafty.defineScene 'Intro', ->
     , 2000, -1
 
   Crafty('Player').each ->
-    # TODO: Turn this into a more generic 'reset player'
-    @removeComponent('ControlScheme')
-      .attr({
-        lives: 2,
-        points: 0
-      })
+    @reset()
     @one 'Activated', ->
       Crafty.enterScene(Game.firstLevel, { stage: 1 })
 
