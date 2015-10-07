@@ -367,6 +367,8 @@ class Game.Level
     candidates[Math.floor(Math.random() * candidates.length)]
 
   _seedPreceedingGeometry: ->
+    currentGenerator = @levelDefinition[@generationDefinition]
+    return unless currentGenerator?.type is 'autofill'
     blockType = "#{@namespace}.#{@currentScenery}"
     blockKlass = @generator.buildingBlocks[blockType]
     if next = blockKlass::autoNext
