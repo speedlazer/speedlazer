@@ -9,6 +9,7 @@ Crafty.c 'PlayerControlledShip',
       x: 0
       y: 0
     @primaryWeapon = undefined
+    @weaponsEnabled = yes
 
   start: ->
     @addComponent('Invincible').invincibleDuration(2000)
@@ -46,6 +47,7 @@ Crafty.c 'PlayerControlledShip',
     this
 
   shoot: (onOff) ->
+    return unless @weaponsEnabled
     return unless @primaryWeapon?
     @trigger 'Shoot' if onOff
     @primaryWeapon.shoot(onOff)

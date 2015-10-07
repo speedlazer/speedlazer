@@ -96,6 +96,7 @@ class Game.Level
       armedPlayers: yes
       speed: 1
       controlsEnabled: yes
+      weaponsEnabled: yes
       spawnPosition:
         x: 100
         y: 200
@@ -112,6 +113,7 @@ class Game.Level
     Crafty.viewport.y = 0
     @_controlsEnabled = settings.controlsEnabled
     @setForcedSpeed settings.speed
+    @setWeaponsEnabled settings.weaponsEnabled
 
     @_scrollWall = Crafty.e('ScrollWall').attr
       x: settings.viewport.x
@@ -195,6 +197,7 @@ class Game.Level
 
     Crafty.bind 'ShipSpawned', (ship) =>
       ship.forcedSpeed @_forcedSpeed
+      ship.weaponsEnabled =  @_weaponsEnabled
       ship.disableControl() unless @_controlsEnabled
 
     Crafty('Player ControlScheme').each ->
@@ -206,6 +209,11 @@ class Game.Level
       @_scrollWall.scrollWall(@_forcedSpeed)
     Crafty('PlayerControlledShip').each ->
       @forcedSpeed speed
+
+  setWeaponsEnabled: (onOff) ->
+    @_weaponsEnabled = onOff
+    Crafty('PlayerControlledShip').each ->
+      @weaponsEnabled = onOff
 
   showDialog: (dialog, callback) ->
     new Game.Dialog dialog, this, callback

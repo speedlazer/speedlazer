@@ -29,7 +29,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @gainHeight(200, duration: 4000)
         @setScenery('Skyline')
         @waitForScenery('Skyline', event: 'leave')
+        @disableWeapons()
         @showScore()
+        @enableWeapons()
       )
 
     introText: ->

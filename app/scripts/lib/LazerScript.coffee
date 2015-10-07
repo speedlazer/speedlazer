@@ -128,6 +128,14 @@ class Game.LazerScript
       @wait(15 * 2000)().then =>
         score.destroy()
 
+  disableWeapons: ->
+    =>
+      @level.setWeaponsEnabled no
+
+  enableWeapons: ->
+    =>
+      @level.setWeaponsEnabled yes
+
   # Inventory
   # TODO: Decide how we handle inventory thoughout game
 
