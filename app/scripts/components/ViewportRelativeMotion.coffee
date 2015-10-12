@@ -15,8 +15,8 @@ Crafty.c 'ViewportRelativeMotion',
       dy: @dy ? 0
 
     shifted = (@_initialViewport.x - Crafty.viewport._x) * (@_speed - 1)
-    newX = @_location.sx - shifted + @dx
-    newY = @_location.sy - (Crafty.viewport._y * (1 - @_speed)) + @dy
+    newX = @_location.sx - shifted + @_location.dx
+    newY = @_location.sy - (Crafty.viewport._y * (1 - @_speed)) + @_location.dy
     @_location.x = newX
     @_location.y = newY
     @attr @_location
