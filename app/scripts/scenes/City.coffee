@@ -16,7 +16,7 @@ Crafty.defineScene 'City', (data) ->
     armedPlayers: no
     speed: 1
 
-  (new Game.Scripts.Stage1).run(level).then =>
+  new Game.Scripts.Stage1(level).run().then =>
     console.log 'end of script!'
 
     # Temporary code to make the player "enjoy" the gameplay

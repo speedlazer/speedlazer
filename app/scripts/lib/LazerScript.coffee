@@ -1,8 +1,8 @@
 Game = @Game
 
 class Game.LazerScript
-  run: (@level) ->
-    @execute()()
+  constructor: (@level) ->
+  run: -> @execute()()
 
   execute: ->
 
@@ -21,6 +21,9 @@ class Game.LazerScript
         block()
       else
         elseBlock?()
+
+  runScript: (scriptClass) ->
+    => new scriptClass(@level).run()
 
   wait: (amount) ->
     =>
