@@ -2,7 +2,7 @@ Game = @Game
 
 class Game.LazerScript
   constructor: (@level) ->
-  run: -> @execute()()
+  run: -> WhenJS(@execute()())
 
   execute: ->
 

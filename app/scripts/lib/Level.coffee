@@ -93,7 +93,7 @@ class Game.Level
   ###
   start: (settings = {}) ->
     defaults =
-      armedPlayers: yes
+      armedPlayers: no
       speed: 1
       controlsEnabled: yes
       weaponsEnabled: yes
