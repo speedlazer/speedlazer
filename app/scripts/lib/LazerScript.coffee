@@ -160,26 +160,31 @@ class Game.LazerScript
       @enemies[label] = constructor()
 
   moveTo: (settings) ->
-    defaults = {}
     =>
       @enemies ||= {}
+      enemy = @enemies[settings.enemy ? 'default']
+      return unless enemy?
+
+      defaults =
+        x: enemy.x + Crafty.viewport.x
+        y: enemy.y + Crafty.viewport.y
+        speed: enemy.speed
+
 
       # TODO: Verify Choreography element
-      enemy = @enemies[settings.enemy ? 'default']
-      defaults.speed = enemy?.speed
       settings = _.defaults(settings, defaults)
-      return unless enemy?
-      delta = if settings.x? then (Math.abs(settings.x)) else 0
-      delta += if settings.y? then (Math.abs(settings.y)) else 0
+
+      delta = if settings.x? then Math.abs(settings.x - (enemy.x + Crafty.viewport.x)) else 0
+      delta += if settings.y? then Math.abs(settings.y - (enemy.y + Crafty.viewport.y)) else 0
 
       defer = WhenJS.defer()
       enemy.choreography(
         [
-          type: 'linear'
+          type: 'viewport'
           x: settings.x
           y: settings.y
           maxSpeed: settings.speed
-          duration: (delta / settings.speed)
+          duration: (delta / (settings.speed / 50.0)) # FPS
         ]
       ).bind('ChoreographyEnd', ->
         @unbind('ChoreographyEnd')
