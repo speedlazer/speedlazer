@@ -1,24 +1,19 @@
 Crafty.defineScene 'City', (data) ->
-
   # import from globals
   Game = window.Game
 
   # constructor
   Crafty.background('#602020')
 
-  level = Game.levelGenerator.createLevel
-    stage: data.stage
-    title: 'City'
-    namespace: 'City'
-    startScenery: 'Intro'
+  #script = Game.Scripts.Stage1
+  script = Game.Scripts.BossFight
+  level = Game.levelGenerator.createLevel script::metadata
+  level.start()
 
-  level.start
-    armedPlayers: no
-    speed: 1
-
-  new Game.Scripts.Stage1(level).run().then =>
+  new script(level).run()
+  ###
+    .then =>
     console.log 'end of script!'
-
     # Temporary code to make the player "enjoy" the gameplay
     # demo level
 
@@ -29,6 +24,7 @@ Crafty.defineScene 'City', (data) ->
         Crafty.trigger('EndOfLevel')
         @destroy()
     level.addComponent(endLevelTrigger, x: 640, y: 0)
+  ###
 
   duration = 600 * 1000
   Crafty.e('ColorFade, 2D').colorFade(duration: (duration / 2.0), background: yes,

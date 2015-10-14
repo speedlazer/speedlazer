@@ -2,7 +2,9 @@ Game = @Game
 
 class Game.LazerScript
   constructor: (@level) ->
-  run: -> WhenJS(@execute()())
+
+  run: (args...) ->
+    WhenJS(@execute(args...)())
 
   execute: ->
 
@@ -22,8 +24,20 @@ class Game.LazerScript
       else
         elseBlock?()
 
-  runScript: (scriptClass) ->
-    => new scriptClass(@level).run()
+  while: (condition, block) ->
+    =>
+      if condition.apply this
+        WhenJS(block()).then =>
+          @while(condition, block)()
+
+  runScript: (scriptClass, args...) ->
+    =>
+      new scriptClass(@level).run(args...)
+
+  runScriptAsync: (scriptClass, args...) ->
+    =>
+      new scriptClass(@level).run(args...)
+      return
 
   wait: (amount) ->
     =>
@@ -109,7 +123,6 @@ class Game.LazerScript
       currentSpeed = @level._forcedSpeed?.x || @level._forcedSpeed
       { duration } = options
       speedY = (height / ((duration / 1000.0) * Crafty.timer.FPS()))
-      console.log speedY
 
       @level.setForcedSpeed(x: currentSpeed, y: -speedY)
       level = @level
@@ -138,6 +151,55 @@ class Game.LazerScript
   enableWeapons: ->
     =>
       @level.setWeaponsEnabled yes
+
+  # Enemy
+
+  spawn: (constructor, label = 'default') ->
+    =>
+      @enemies ||= {}
+      @enemies[label] = constructor()
+
+  moveTo: (settings) ->
+    defaults = {}
+    =>
+      @enemies ||= {}
+
+      # TODO: Verify Choreography element
+      enemy = @enemies[settings.enemy ? 'default']
+      defaults.speed = enemy?.speed
+      settings = _.defaults(settings, defaults)
+      return unless enemy?
+      delta = if settings.x? then (Math.abs(settings.x)) else 0
+      delta += if settings.y? then (Math.abs(settings.y)) else 0
+
+      defer = WhenJS.defer()
+      enemy.choreography(
+        [
+          type: 'linear'
+          x: settings.x
+          y: settings.y
+          maxSpeed: settings.speed
+          duration: (delta / settings.speed)
+        ]
+      ).bind('ChoreographyEnd', ->
+        @unbind('ChoreographyEnd')
+        @unbind('Destroyed')
+        defer.resolve()
+      ).bind('Destroyed', =>
+        delete @enemies[settings.enemy ? 'default']
+        defer.resolve()
+      )
+      defer.promise
+
+  location: (settings = {}) ->
+    =>
+      enemy = @enemies[settings.enemy ? 'default']
+      { x: enemy.x, y: enemy.y }
+
+  enemy: (name = 'default') ->
+    {
+      alive: @enemies[name]?
+    }
 
   # Inventory
   # TODO: Decide how we handle inventory thoughout game

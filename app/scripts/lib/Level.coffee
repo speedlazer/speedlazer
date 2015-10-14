@@ -107,7 +107,7 @@ class Game.Level
         x: 0
         y: 0
 
-    settings[k] ?= v for k, v of defaults
+    settings = _.defaults(settings, @data, defaults)
 
     Crafty.viewport.x = 0
     Crafty.viewport.y = 0
@@ -179,6 +179,7 @@ class Game.Level
     @sceneryEvents.push { eventType, sceneryType, callback }
 
   _placePlayerShips: (settings) ->
+    console.log settings
     Crafty.one 'ShipSpawned', =>
       @_playersActive = yes
       @_scrollWall.scrollWall(@_forcedSpeed)
