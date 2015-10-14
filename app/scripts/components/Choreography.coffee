@@ -107,7 +107,7 @@ Crafty.c 'Choreography',
     motionY = (diffY * v)
     if @_currentPart.maxSpeed? and Math.abs(motionY) > @_currentPart.maxSpeed
       motionY = @_currentPart.maxSpeed
-      motionY *= -1 if diffX < 0
+      motionY *= -1 if diffY < 0
     @y = @y + motionY
 
   _executeFollow: (v) ->
