@@ -189,7 +189,7 @@ class Game.LazerScript
           x: settings.x
           y: settings.y
           maxSpeed: settings.speed
-          duration: (delta / (settings.speed / 50.0)) # FPS
+          duration: (delta / settings.speed) * (1000 / Crafty.timer.FPS())
         ]
       ).bind('ChoreographyEnd', ->
         @unbind('ChoreographyEnd')
