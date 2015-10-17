@@ -5,6 +5,7 @@ Crafty.c 'Enemy',
   enemy: ->
     Crafty.trigger('EnemySpawned', this)
     @onHit 'Bullet', (e) ->
+      return if @hidden
       bullet = e[0].obj
       bullet.trigger 'HitTarget', target: this
       @health -= bullet.damage
@@ -27,6 +28,10 @@ Crafty.c 'Enemy',
         y: Crafty.viewport.y
 
     this
+
+  hide: (@hideMarker) ->
+    @hidden = yes
+    @attr alpha: 0.0
 
   remove: ->
     Crafty.unbind 'ViewportScroll', @motion

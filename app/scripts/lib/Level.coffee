@@ -179,7 +179,6 @@ class Game.Level
     @sceneryEvents.push { eventType, sceneryType, callback }
 
   _placePlayerShips: (settings) ->
-    console.log settings
     Crafty.one 'ShipSpawned', =>
       @_playersActive = yes
       @_scrollWall.scrollWall(@_forcedSpeed)

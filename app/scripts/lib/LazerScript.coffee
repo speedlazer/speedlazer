@@ -158,6 +158,7 @@ class Game.LazerScript
     =>
       @enemies ||= {}
       @enemies[label] = constructor()
+      @enemies[label].moveState = 'air'
 
   moveTo: (settings) ->
     =>
@@ -165,38 +166,107 @@ class Game.LazerScript
       enemy = @enemies[settings.enemy ? 'default']
       return unless enemy?
 
-      defaults =
-        x: enemy.x + Crafty.viewport.x
-        y: enemy.y + Crafty.viewport.y
-        speed: enemy.speed
+      seaLevel = 420
 
+      if enemy.moveState is 'air'
+        if settings.y? and settings.y > seaLevel
+          airSettings = _.clone settings
+          airSettings.y = seaLevel
+          @_moveAir(enemy, airSettings)
+            .then =>
+              if enemy.health > 0
+                @_setupWaterSpot(enemy)
+                @_waterSplash(enemy)
+            .then =>
+              if enemy.health > 0
+                @_moveWater(enemy, settings)
+        else
+          @_moveAir(enemy, settings)
 
-      # TODO: Verify Choreography element
-      settings = _.defaults(settings, defaults)
+  _setupWaterSpot: (enemy) ->
+    waterSpot = Crafty.e('2D, Canvas, Color, Choreography')
+      .color('#000040')
+      .attr(
+        x: enemy.x - 5
+        y: enemy.y
+        z: -1
+        w: enemy.w + 10
+        h: 20
+        alpha: 0.5
+      )
+    enemy.hide(waterSpot)
 
-      delta = if settings.x? then Math.abs(settings.x - (enemy.x + Crafty.viewport.x)) else 0
-      delta += if settings.y? then Math.abs(settings.y - (enemy.y + Crafty.viewport.y)) else 0
+  _waterSplash: (enemy) ->
+    defer = WhenJS.defer()
+    waterSpot = Crafty.e('2D, Canvas, Color, Choreography')
+      .color('#FFFFFF')
+      .attr(
+        x: enemy.x - 5
+        y: enemy.y
+        z: 1
+        w: enemy.w + 10
+        h: 20
+        alpha: 1.0
+      )
 
-      defer = WhenJS.defer()
+    c = [
+      type: 'tween'
+      properties:
+        h: 80
+        y: waterSpot.y - 40
+        alpha: 0.2
+      duration: 500
+      event: 'splash'
+    ,
+      type: 'tween'
+      properties:
+        h: 20
+        y: waterSpot.y - 20
+        alpha: 0.0
+      duration: 200
+    ]
+    waterSpot.choreography(c).bind 'ChoreographyEnd', ->
+      defer.resolve()
+      @destroy()
 
-      onDestroy = =>
-        delete @enemies[settings.enemy ? 'default']
-        defer.resolve()
+    defer.promise
 
-      enemy.choreography(
-        [
-          type: 'viewport'
-          x: settings.x
-          y: settings.y
-          maxSpeed: settings.speed
-          duration: (delta / settings.speed) * (1000 / Crafty.timer.FPS())
-        ]
-      ).bind('ChoreographyEnd', ->
-        @unbind('ChoreographyEnd')
-        @unbind('Destroyed', onDestroy)
-        defer.resolve()
-      ).bind('Destroyed', onDestroy)
-      defer.promise
+  _moveWater: (enemy, settings) ->
+    # TODO: Adjust water marker to movement position
+
+  _moveAir: (enemy, settings) ->
+    defaults =
+      x: enemy.x + Crafty.viewport.x
+      y: enemy.y + Crafty.viewport.y
+      speed: enemy.speed
+
+    # TODO: Verify Choreography element
+    settings = _.defaults(settings, defaults)
+
+    deltaX = if settings.x? then Math.abs(settings.x - (enemy.x + Crafty.viewport.x)) else 0
+    deltaY = if settings.y? then Math.abs(settings.y - (enemy.y + Crafty.viewport.y)) else 0
+    delta = Math.max(deltaX, deltaY)
+
+    defer = WhenJS.defer()
+
+    onDestroy = =>
+      delete @enemies[settings.enemy ? 'default']
+      defer.resolve()
+
+    enemy.choreography(
+      [
+        type: 'viewport'
+        x: settings.x
+        y: settings.y
+        maxSpeed: settings.speed
+        duration: (delta / settings.speed) * (1000 / Crafty.timer.FPS())
+      ]
+    ).bind('ChoreographyEnd', ->
+      @unbind('ChoreographyEnd')
+      @unbind('Destroyed', onDestroy)
+      defer.resolve()
+    ).bind('Destroyed', onDestroy)
+    defer.promise
 
   location: (settings = {}) ->
     =>
