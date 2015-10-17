@@ -178,6 +178,11 @@ class Game.LazerScript
       delta += if settings.y? then Math.abs(settings.y - (enemy.y + Crafty.viewport.y)) else 0
 
       defer = WhenJS.defer()
+
+      onDestroy = =>
+        delete @enemies[settings.enemy ? 'default']
+        defer.resolve()
+
       enemy.choreography(
         [
           type: 'viewport'
@@ -188,12 +193,9 @@ class Game.LazerScript
         ]
       ).bind('ChoreographyEnd', ->
         @unbind('ChoreographyEnd')
-        @unbind('Destroyed')
+        @unbind('Destroyed', onDestroy)
         defer.resolve()
-      ).bind('Destroyed', =>
-        delete @enemies[settings.enemy ? 'default']
-        defer.resolve()
-      )
+      ).bind('Destroyed', onDestroy)
       defer.promise
 
   location: (settings = {}) ->
