@@ -29,4 +29,4 @@ Crafty.c 'ViewportRelativeMotion',
     this
 
   remove: ->
-    Crafty.unbind 'CameraScroll', @motion
+    Crafty.unbind 'ViewportScroll', @motion
