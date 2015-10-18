@@ -15,6 +15,8 @@ Crafty.c 'Enemy',
         @trigger('Destroyed', this)
         @destroy()
       bullet.destroy()
+
+    # Extract to 'ViewportFixed' Component?
     @_initialViewport =
       x: Crafty.viewport.x
       y: Crafty.viewport.y
