@@ -14,7 +14,7 @@ class Game.Scripts.Stage1Boss extends Game.LazerScript
           speed: 1
         )
       @moveTo(x: 540, y: 200)
-      #@say('Enemy', 'Muhahah...')
+      @say('Enemy', 'Muhahah...')
       @wait 500
       @moveTo(y: 205, speed: 0.1)
       @repeat(2, @sequence(
@@ -49,7 +49,9 @@ class Game.Scripts.Stage1BossMine extends Game.LazerScript
           health: 200
           x: location().x
           y: location().y + 30
-          speed: 2
+          speed: 4
         )
-      @moveTo(y: 450)
+      @moveTo(y: 500)
+      @moveTo(x: 200)
+      @moveTo(y: 200)
     )

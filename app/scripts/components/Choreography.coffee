@@ -112,7 +112,7 @@ Crafty.c 'Choreography',
 
   _executeFollow: (v) ->
     # the goal are current coordinates on screen
-    destinationX = @_currentPart.target.x + @_currentPart.target.w // 2
+    destinationX = @_currentPart.target.x + (@_currentPart.target.w // 2)
     destinationX -= @w // 2
 
     diffX = destinationX - @x
@@ -120,6 +120,7 @@ Crafty.c 'Choreography',
     if @_currentPart.maxSpeed? and Math.abs(motionX) > @_currentPart.maxSpeed
       motionX = @_currentPart.maxSpeed
       motionX *= -1 if diffX < 0
+
     @x = @x + motionX
 
     #destinationY = @_currentPart.dy

@@ -35,5 +35,10 @@ Crafty.c 'Enemy',
     @hidden = yes
     @attr alpha: 0.0
 
+  reveal: ->
+    @hideMarker?.destroy()
+    @hidden = no
+    @attr alpha: 1.0
+
   remove: ->
     Crafty.unbind 'ViewportScroll', @motion

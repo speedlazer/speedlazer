@@ -172,29 +172,45 @@ class Game.LazerScript
         if settings.y? and settings.y > seaLevel
           airSettings = _.clone settings
           airSettings.y = seaLevel
-          @_moveAir(enemy, airSettings)
+          return @_moveAir(enemy, airSettings)
             .then =>
+              enemy.moveState = 'water'
               if enemy.health > 0
                 @_setupWaterSpot(enemy)
                 @_waterSplash(enemy)
-            .then =>
-              if enemy.health > 0
                 @_moveWater(enemy, settings)
         else
-          @_moveAir(enemy, settings)
+          return @_moveAir(enemy, settings)
+
+      if enemy.moveState is 'water'
+        if settings.y? and settings.y < seaLevel
+          waterSettings = _.clone settings
+          waterSettings.y = seaLevel
+          return @_moveWater(enemy, waterSettings)
+            .then =>
+              enemy.moveState = 'air'
+              if enemy.health > 0
+                @_removeWaterSpot(enemy)
+                @_waterSplash(enemy)
+                @_moveAir(enemy, settings)
+        else
+          return @_moveWater(enemy, settings)
 
   _setupWaterSpot: (enemy) ->
-    waterSpot = Crafty.e('2D, Canvas, Color, Choreography')
+    waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween')
       .color('#000040')
       .attr(
+        w: enemy.w + 10
         x: enemy.x - 5
         y: enemy.y
-        z: -1
-        w: enemy.w + 10
         h: 20
-        alpha: 0.5
+        alpha: 0.7
+        z: -1
       )
     enemy.hide(waterSpot)
+
+  _removeWaterSpot: (enemy) ->
+    enemy.reveal()
 
   _waterSplash: (enemy) ->
     defer = WhenJS.defer()
@@ -212,8 +228,8 @@ class Game.LazerScript
     c = [
       type: 'tween'
       properties:
-        h: 80
-        y: waterSpot.y - 40
+        h: 20 * enemy.speed
+        y: waterSpot.y - (20 * enemy.speed)
         alpha: 0.2
       duration: 500
       event: 'splash'
@@ -232,7 +248,73 @@ class Game.LazerScript
     defer.promise
 
   _moveWater: (enemy, settings) ->
+    defaults =
+      x: enemy.x + Crafty.viewport.x
+      y: enemy.y + Crafty.viewport.y
+      speed: enemy.speed
+
+    seaLevel = 420
+    settings = _.defaults(settings, defaults)
     # TODO: Adjust water marker to movement position
+    surfaceSize =
+      w: enemy.w + 10
+      #x: enemy.x - 5
+      y: seaLevel
+      h: 20
+      alpha: 0.7
+    maxSupportedDepth = 700
+    maxDepthSize =
+      w: enemy.w * .3
+      #x: enemy.x + (enemy.w * .3)
+      y: enemy.hideMarker.y + 15
+      h: 5
+      alpha: 0.2
+
+
+    deltaX = if settings.x? then Math.abs(settings.x - (enemy.x + Crafty.viewport.x)) else 0
+    deltaY = if settings.y? then Math.abs(settings.y - (enemy.y + Crafty.viewport.y)) else 0
+    delta = Math.max(deltaX, deltaY)
+    #console.log delta
+
+    duration = (delta / settings.speed) * (1000 / Crafty.timer.FPS())
+
+    if settings.y?
+      depth = Math.min(settings.y, maxSupportedDepth)
+      v = (depth - seaLevel) / (maxSupportedDepth - seaLevel)
+
+      depthProperties = {}
+
+      for k, p of surfaceSize
+        depthProperties[k] = (1 - v) * p + (v * maxDepthSize[k])
+
+      enemy.hideMarker.tween depthProperties, duration
+
+    defer = WhenJS.defer()
+    enemy.attr(
+      x: settings.x
+      y: settings.y
+    )
+
+    onDestroy = =>
+      delete @enemies[settings.enemy ? 'default']
+      defer.resolve()
+
+    #TODO: Fix this
+    enemy.hideMarker.choreography([
+      #type: 'viewport'
+      #x: settings.x
+      type: 'follow'
+      axis: 'x'
+      target: enemy
+      maxSpeed: settings.speed
+      duration: duration
+    ]).bind('ChoreographyEnd', ->
+      @unbind('ChoreographyEnd')
+      @unbind('Destroyed', onDestroy)
+      defer.resolve()
+    ).bind('Destroyed', onDestroy)
+
+    defer.promise
 
   _moveAir: (enemy, settings) ->
     defaults =
