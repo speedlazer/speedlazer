@@ -255,6 +255,7 @@ class Game.LazerScript
 
     seaLevel = 420
     settings = _.defaults(settings, defaults)
+    console.log settings
     # TODO: Adjust water marker to movement position
     surfaceSize =
       w: enemy.w + 10
@@ -291,8 +292,8 @@ class Game.LazerScript
 
     defer = WhenJS.defer()
     enemy.attr(
-      x: settings.x
-      y: settings.y
+      x: settings.x - Crafty.viewport.x
+      y: settings.y - Crafty.viewport.y
     )
 
     onDestroy = =>
