@@ -255,7 +255,6 @@ class Game.LazerScript
 
     seaLevel = 420
     settings = _.defaults(settings, defaults)
-    console.log settings
     # TODO: Adjust water marker to movement position
     surfaceSize =
       w: enemy.w + 10
@@ -275,7 +274,6 @@ class Game.LazerScript
     deltaX = if settings.x? then Math.abs(settings.x - (enemy.x + Crafty.viewport.x)) else 0
     deltaY = if settings.y? then Math.abs(settings.y - (enemy.y + Crafty.viewport.y)) else 0
     delta = Math.max(deltaX, deltaY)
-    #console.log delta
 
     duration = (delta / settings.speed) * (1000 / Crafty.timer.FPS())
 
@@ -300,10 +298,7 @@ class Game.LazerScript
       delete @enemies[settings.enemy ? 'default']
       defer.resolve()
 
-    #TODO: Fix this
     enemy.hideMarker.choreography([
-      #type: 'viewport'
-      #x: settings.x
       type: 'follow'
       axis: 'x'
       target: enemy
@@ -323,7 +318,6 @@ class Game.LazerScript
       y: enemy.y + Crafty.viewport.y
       speed: enemy.speed
 
-    # TODO: Verify Choreography element
     settings = _.defaults(settings, defaults)
 
     deltaX = if settings.x? then Math.abs(settings.x - (enemy.x + Crafty.viewport.x)) else 0
