@@ -8,6 +8,9 @@ class Game.Scripts.BossFight extends Game.LazerScript
     armedPlayers: yes
 
   execute: ->
+    @inventoryAdd 'enemy', 'default', ->
+      Crafty.e('Drone').drone(health: 200)
+
     @sequence(
       @setSpeed(2)
       #@gainHeight(200, duration: 4000)
