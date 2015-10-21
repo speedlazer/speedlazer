@@ -9,8 +9,8 @@ class Game.Scripts.Stage1Boss extends Game.LazerScript
       @spawn ->
         Crafty.e('Drone').drone(
           health: 800
-          x: 680
-          y: 60
+          x: 680 - Crafty.viewport.x
+          y: 60 - Crafty.viewport.y
           speed: 1
         )
       @moveTo(x: 540, y: 200)

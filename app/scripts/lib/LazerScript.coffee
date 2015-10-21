@@ -169,7 +169,7 @@ class Game.LazerScript
       seaLevel = 420
 
       if enemy.moveState is 'air'
-        if settings.y? and settings.y > seaLevel
+        if settings.y? and settings.y > seaLevel + Crafty.viewport.y
           airSettings = _.clone settings
           airSettings.y = seaLevel
           return @_moveAir(enemy, airSettings)
@@ -183,7 +183,7 @@ class Game.LazerScript
           return @_moveAir(enemy, settings)
 
       if enemy.moveState is 'water'
-        if settings.y? and settings.y < seaLevel
+        if settings.y? and settings.y < seaLevel + Crafty.viewport.y
           waterSettings = _.clone settings
           waterSettings.y = seaLevel
           return @_moveWater(enemy, waterSettings)
