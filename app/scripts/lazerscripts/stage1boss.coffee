@@ -49,9 +49,9 @@ class Game.Scripts.Stage1BossMine extends Game.LazerScript
           health: 200
           x: location().x
           y: location().y + 30
-          speed: 2
+          speed: 4
         )
-      @moveTo(y: 425)
+      @moveTo(y: 525)
       @moveTo(x: 200)
       @moveTo(y: 200)
     )

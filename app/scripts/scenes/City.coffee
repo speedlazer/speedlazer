@@ -5,8 +5,8 @@ Crafty.defineScene 'City', (data) ->
   # constructor
   Crafty.background('#602020')
 
-  #script = Game.Scripts.Stage1
-  script = Game.Scripts.BossFight
+  script = Game.Scripts.Stage1
+  #script = Game.Scripts.BossFight
   level = Game.levelGenerator.createLevel script::metadata
   level.start()
 

@@ -22,34 +22,57 @@ generator.defineElement 'waterFront', ->
   @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
 
 generator.defineElement 'cityHorizon', (mode) ->
-  @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
+  # Sky = 8080FF = 128, 128, 255
+  #
+  #       B4B4B4 * 0.3 = 9A9AD9
+  #       909090 * 0.3 = 8888C7
+  #       606060 * 0.3 = 7070DF
+  #       http://meyerweb.com/eric/tools/color-blend/#606060:8080FF:10:hex
+  col1 = '#A6A6C8'
+  col2 = '#8C8CAE'
+  col3 = '#69698B'
+
+  @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color(col3).attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
   # This is just for a small impression, this will be replaced by a sprite
   if mode is 'start'
-    @addBackground(150, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(120, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+    @addBackground(150, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(120, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
 
-    @addBackground(230, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(190, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+    @addBackground(230, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(190, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
   else
     # This is just for a small impression, this will be replaced by a sprite
-    @addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+    @addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
 
-    @addBackground(170, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+    @addBackground(170, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
 
-    @addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color('#909090').attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+    @addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
+    @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
 
 generator.defineElement 'city', ->
-    # Coastline
+  # Coastline
 
-    @addBackground(0, @level.visibleHeight - 135, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .5) + 1, h: 40 }), .5)
-    @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -400, w: (@delta.x * .37) + 1, h: 30 }), .37)
+  # Sky = 8080FF = 128, 128, 255
+  #
+  #       B4B4B4 * 0.2 = 9A9AD9
+  #       909090 * 0.2 = 8888C7
+  #       606060 * 0.2 = 7070DF
+  #       http://meyerweb.com/eric/tools/color-blend/#606060:8080FF:10:hex
+  col1 = '#A6A6C8'
+  col2 = '#8C8CAE'
+  col3 = '#66667D'
+  @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color(col3).attr({ z: -400, w: (@delta.x * .37) + 1, h: 33 }), .37)
 
-    @addBackground(90, @level.visibleHeight - 270, Crafty.e('2D, Canvas, Color').color('#B5B5B5').attr({ z: -300, w: 80 + 1, h: 150 }), .5)
-    @addBackground(190, @level.visibleHeight - 290, Crafty.e('2D, Canvas, Color').color('#A5A5A5').attr({ z: -300, w: 60 + 1, h: 165 }), .5)
+  col1 = '#AFAFBB'
+  col2 = '#8F8F9A'
+  col3 = '#63636E'
+  @addBackground(0, @level.visibleHeight - 135, Crafty.e('2D, Canvas, Color').color(col3).attr({ z: -305, w: (@delta.x * .5) + 1, h: 40 }), .5)
+
+  @addBackground(90, @level.visibleHeight - 270, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -300, w: 80 + 1, h: 150 }), .5)
+  @addBackground(190, @level.visibleHeight - 290, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -300, w: 60 + 1, h: 165 }), .5)
 
 
 generator.defineBlock class extends @Game.LevelScenery
@@ -280,13 +303,13 @@ generator.defineBlock class extends @Game.LevelScenery
   generate: ->
     super
     h = 400 + 100
-    @add(0, @level.visibleHeight - h, Crafty.e('2D, Canvas, Color').attr(w: 300, h: h, z: -1).color('#EEEEEE'))
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, Canvas, Color').attr(w: 300, h: h, z: -1).color('#909090'))
 
     h = 300 + 100
     @addBackground(200, @level.visibleHeight - h, Crafty.e('2D, Canvas, Color').attr(w: 400, h: h, z: 5).color('#000000'), 1.5)
 
     @addElement 'water'
-    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
+    #@addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
     @addElement 'cityHorizon'
     @addElement 'city'
