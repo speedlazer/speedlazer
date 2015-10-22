@@ -3,7 +3,8 @@ Crafty.c 'ViewportRelativeMotion',
 
   remove: ->
 
-  viewportRelativeMotion: ({ x, y, speed }) ->
+  viewportRelativeMotion: ({ x, y, speed, distanceSky }) ->
+    @_distanceSky = distanceSky
     @_startLocation = { x, y }
     @_speed = speed
     @_initialViewport =
@@ -17,6 +18,7 @@ Crafty.c 'ViewportRelativeMotion',
     shifted = (@_initialViewport.x - Crafty.viewport._x) * (@_speed - 1)
     newX = @_location.sx - shifted + @_location.dx
     newY = @_location.sy - (Crafty.viewport._y * (1 - @_speed)) + @_location.dy
+    #newY = @_location.sy - (Crafty.viewport._y * (1 - ((@_speed - 0.25) * 1.2))) + @location.dy
     @_location.x = newX
     @_location.y = newY
     @attr @_location
@@ -24,7 +26,10 @@ Crafty.c 'ViewportRelativeMotion',
     @motion = Crafty.bind 'ViewportScroll', =>
       shifted = (@_initialViewport.x - Crafty.viewport._x) * (@_speed - 1)
       newX = @_location.sx - shifted + @dx
-      newY = @_location.sy - (Crafty.viewport._y * (1 - @_speed)) + @dy
+      if @_distanceSky
+        newY = @_location.sy - (Crafty.viewport._y * (1 - @_speed)) + @dy
+      else
+        newY = @_location.sy - (Crafty.viewport._y * (1 - ((@_speed - 0.25) * 1.2))) + @dy
       @attr x: newX, y: newY
     this
 

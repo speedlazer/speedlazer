@@ -26,6 +26,7 @@ Crafty.defineScene 'City', (data) ->
     level.addComponent(endLevelTrigger, x: 640, y: 0)
   ###
 
+  # TODO: This should be set in script, because other levels / scripts have different positions/sunlight
   duration = 600 * 1000
   Crafty.e('ColorFade, 2D').colorFade(duration: (duration / 2.0), background: yes,
     '#602020', '#8080FF')

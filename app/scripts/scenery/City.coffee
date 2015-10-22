@@ -10,7 +10,7 @@ generator.defineElement 'cloud', ->
 generator.defineElement 'waterHorizon', ->
   @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
-  goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr({ z: -599, w: (@delta.x * .25) + 1, h: 1, alpha: 0 })
+  goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr({ z: -599, w: (@delta.x * .25), h: 1, alpha: 0 })
   @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
 
 generator.defineElement 'water', ->
@@ -64,12 +64,12 @@ generator.defineElement 'city', ->
   col1 = '#A6A6C8'
   col2 = '#8C8CAE'
   col3 = '#66667D'
-  @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color(col3).attr({ z: -400, w: (@delta.x * .37) + 1, h: 33 }), .37)
+  @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color(col3).attr({ z: -400, w: (@delta.x * .37) + 1, h: 83 }), .37)
 
   col1 = '#AFAFBB'
   col2 = '#8F8F9A'
   col3 = '#63636E'
-  @addBackground(0, @level.visibleHeight - 135, Crafty.e('2D, Canvas, Color').color(col3).attr({ z: -305, w: (@delta.x * .5) + 1, h: 40 }), .5)
+  @addBackground(0, @level.visibleHeight - 135, Crafty.e('2D, Canvas, Color').color(col3).attr({ z: -305, w: (@delta.x * .5) + 1, h: 60 }), .5)
 
   @addBackground(90, @level.visibleHeight - 270, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -300, w: 80 + 1, h: 150 }), .5)
   @addBackground(190, @level.visibleHeight - 290, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -300, w: 60 + 1, h: 165 }), .5)
