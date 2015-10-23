@@ -177,11 +177,15 @@ class Game.EnemyScript extends Game.LazerScript
     @component.attr
       x: @component.x - Crafty.viewport.x
       y: @component.y - Crafty.viewport.y
-    @component.bind 'Destroyed', => @enemy.alive = no
+    @component.bind 'Destroyed', =>
+      @enemy.location.x = (@component.x + Crafty.viewport.x)
+      @enemy.location.y = (@component.y + Crafty.viewport.y)
+      @enemy.alive = no
 
     @enemy =
       moveState: 'air'
       alive: yes
+      location: {}
 
     super.then(-> console.log 'success').catch(-> console.log 'fail').finally(-> console.log 'ended')
 
@@ -361,6 +365,6 @@ class Game.EnemyScript extends Game.LazerScript
 
   location: (settings = {}) ->
     =>
-      x: @component.x + Crafty.viewport.x
-      y: @component.y + Crafty.viewport.y
+      x: @enemy.location.x ? (@component.x + Crafty.viewport.x)
+      y: @enemy.location.y ? (@component.y + Crafty.viewport.y)
 
