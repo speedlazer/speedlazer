@@ -13,6 +13,8 @@ Crafty.c 'Choreography',
       bezier: @_executeBezier
 
   remove: ->
+    return unless @_currentPart?
+    @trigger('ChoreographyEnd')
 
   choreography: (c, options = {}) ->
     @_options = _.defaults(options, {
