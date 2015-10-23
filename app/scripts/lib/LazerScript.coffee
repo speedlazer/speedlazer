@@ -4,7 +4,8 @@ class Game.LazerScript
   constructor: (@level) ->
 
   run: (args...) ->
-    WhenJS(@execute(args...)())
+    @currentSequence = Math.random()
+    WhenJS(@execute(args...)(@currentSequence))
 
   execute: ->
 
@@ -12,23 +13,23 @@ class Game.LazerScript
 
   # Core
   sequence: (tasks...) ->
-    -> WhenJS.sequence(tasks)
+    (sequence) -> WhenJS.sequence(tasks, sequence)
 
   parallel: (tasks...) ->
-    -> WhenJS.parallel(tasks)
+    (sequence) -> WhenJS.parallel(tasks, sequence)
 
   if: (condition, block, elseBlock) ->
-    =>
+    (sequence) =>
       if condition.apply this
-        block()
+        block(sequence)
       else
-        elseBlock?()
+        elseBlock?(sequence)
 
   while: (condition, block) ->
-    =>
+    (sequence) =>
       if condition.apply this
-        WhenJS(block()).then =>
-          @while(condition, block)()
+        WhenJS(block(sequence)).then =>
+          @while(condition, block)(sequence)
 
   runScript: (scriptClass, args...) ->
     =>
@@ -40,7 +41,8 @@ class Game.LazerScript
       return
 
   wait: (amount) ->
-    =>
+    (sequence) =>
+      console.log 'in wait', sequence
       d = WhenJS.defer()
       Crafty.e('Delay').delay(
         ->
@@ -51,21 +53,22 @@ class Game.LazerScript
       d.promise
 
   repeat: (times, event) ->
-    =>
+    (sequence) =>
       return if times is 0
-      event().then =>
-        @repeat(times - 1, event)()
+      event(sequence).then =>
+        @repeat(times - 1, event)(sequence)
 
   # Level
   say: (speaker, text) ->
-    =>
+    (sequence) =>
       # TODO: Drastically simplify 'showDialog' when all scripts are working
       d = WhenJS.defer()
       @level.showDialog([":#{speaker}:#{text}"]).on('Finished', -> d.resolve())
       d.promise
 
+  #TODO: This will probably change soon
   wave: (formation, options = {}) ->
-    =>
+    (sequence) =>
       enemyConstructor = @inventory('enemy', options.enemy)
       wave = @level.spawnEnemies(formation, enemyConstructor)
       if options.drop
@@ -73,10 +76,10 @@ class Game.LazerScript
           @drop(item: options.drop, location: last)()
 
       # TODO: Any - Wait, Kill
-      @wait(wave.duration)()
+      @wait(wave.duration)(sequence)
 
   drop: (options) ->
-    =>
+    (sequence) =>
       item = @inventory('item', options.item)
       if player = options.inFrontOf
         @level.addComponent item().attr(z: -1), x: 640, y: player.ship().y
@@ -108,16 +111,16 @@ class Game.LazerScript
     players["Player #{nr}"]
 
   setScenery: (scenery) ->
-    => @level.setScenery scenery
+    (sequence) => @level.setScenery scenery
 
   waitForScenery: (sceneryType, options = { event: 'enter' }) ->
-    =>
+    (sequence) =>
       d = WhenJS.defer()
       @level.notifyScenery options.event, sceneryType, -> d.resolve()
       d.promise
 
   gainHeight: (height, options) ->
-    =>
+    (sequence) =>
       d = WhenJS.defer()
 
       currentSpeed = @level._forcedSpeed?.x || @level._forcedSpeed
@@ -135,92 +138,115 @@ class Game.LazerScript
       d.promise
 
   setSpeed: (speed) ->
-    =>
+    (sequence) =>
       @level.setForcedSpeed speed
 
   showScore: ->
-    =>
+    (sequence) =>
       score = @level.finishStage()
       @wait(15 * 2000)().then =>
         score.destroy()
 
   disableWeapons: ->
-    =>
+    (sequence) =>
       @level.setWeaponsEnabled no
 
   enableWeapons: ->
-    =>
+    (sequence) =>
       @level.setWeaponsEnabled yes
 
-  # Enemy
+  # Inventory
+  # TODO: Decide how we handle inventory thoughout game
 
-  spawn: (constructor, label = 'default') ->
-    =>
-      @enemies ||= {}
-      @enemies[label] = constructor()
-      @enemies[label].moveState = 'air'
+  inventory: (type, name) ->
+    @invItems ||= {}
+    @invItems[type] ||= {}
+    @invItems[type][name || 'default']
+
+  inventoryAdd: (type, name, constructor) ->
+    @invItems ||= {}
+    @invItems[type] ||= {}
+    @invItems[type][name] = constructor
+
+
+  # Enemy
+class Game.EnemyScript extends Game.LazerScript
+
+  run: (args...) ->
+    @component = @spawn(args...)
+    @component.attr
+      x: @component.x - Crafty.viewport.x
+      y: @component.y - Crafty.viewport.y
+    @component.bind 'Destroyed', => @enemy.alive = no
+
+    @enemy =
+      moveState: 'air'
+      alive: yes
+
+    super.then(-> console.log 'success').catch(-> console.log 'fail').finally(-> console.log 'ended')
+
+  spawn: ->
 
   moveTo: (settings) ->
-    =>
-      @enemies ||= {}
-      enemy = @enemies[settings.enemy ? 'default']
-      return unless enemy?
+    (sequence) =>
+      console.log 'in moveTo', sequence
+      return unless @enemy.alive
 
       seaLevel = 420
 
-      if enemy.moveState is 'air'
+      if @enemy.moveState is 'air'
         if settings.y? and settings.y > seaLevel + Crafty.viewport.y
           airSettings = _.clone settings
           airSettings.y = seaLevel
-          return @_moveAir(enemy, airSettings)
+          return @_moveAir(airSettings)
             .then =>
-              enemy.moveState = 'water'
-              if enemy.health > 0
-                @_setupWaterSpot(enemy)
-                @_waterSplash(enemy)
-                @_moveWater(enemy, settings)
+              @enemy.moveState = 'water'
+              if @enemy.alive > 0
+                @_setupWaterSpot()
+                @_waterSplash()
+                @_moveWater(settings)
         else
-          return @_moveAir(enemy, settings)
+          return @_moveAir(settings)
 
-      if enemy.moveState is 'water'
+      if @enemy.moveState is 'water'
         if settings.y? and settings.y < seaLevel + Crafty.viewport.y
           waterSettings = _.clone settings
           waterSettings.y = seaLevel
-          return @_moveWater(enemy, waterSettings)
+          return @_moveWater(waterSettings)
             .then =>
-              enemy.moveState = 'air'
-              if enemy.health > 0
-                @_removeWaterSpot(enemy)
-                @_waterSplash(enemy)
-                @_moveAir(enemy, settings)
+              @enemy.moveState = 'air'
+              if @enemy.alive
+                @_removeWaterSpot()
+                @_waterSplash()
+                @_moveAir(settings)
         else
-          return @_moveWater(enemy, settings)
+          return @_moveWater(settings)
 
-  _setupWaterSpot: (enemy) ->
+  _setupWaterSpot: ->
     waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween')
       .color('#000040')
       .attr(
-        w: enemy.w + 10
-        x: enemy.x - 5
-        y: enemy.y
+        w: @component.w + 10
+        x: @component.x - 5
+        y: @component.y
         h: 20
         alpha: 0.7
         z: -1
       )
-    enemy.hide(waterSpot)
+    @component.hide(waterSpot)
 
-  _removeWaterSpot: (enemy) ->
-    enemy.reveal()
+  _removeWaterSpot: ->
+    @component.reveal()
 
-  _waterSplash: (enemy) ->
+  _waterSplash: ->
     defer = WhenJS.defer()
     waterSpot = Crafty.e('2D, Canvas, Color, Choreography')
       .color('#FFFFFF')
       .attr(
-        x: enemy.x - 5
-        y: enemy.y
+        x: @component.x - 5
+        y: @component.y
         z: 1
-        w: enemy.w + 10
+        w: @component.w + 10
         h: 20
         alpha: 1.0
       )
@@ -228,8 +254,8 @@ class Game.LazerScript
     c = [
       type: 'tween'
       properties:
-        h: 20 * enemy.speed
-        y: waterSpot.y - (20 * enemy.speed)
+        h: 20 * @component.speed
+        y: waterSpot.y - (20 * @component.speed)
         alpha: 0.2
       duration: 500
       event: 'splash'
@@ -247,32 +273,32 @@ class Game.LazerScript
 
     defer.promise
 
-  _moveWater: (enemy, settings) ->
+  _moveWater: (settings) ->
     defaults =
-      x: enemy.x + Crafty.viewport.x
-      y: enemy.y + Crafty.viewport.y
-      speed: enemy.speed
+      x: @component.x + Crafty.viewport.x
+      y: @component.y + Crafty.viewport.y
+      speed: @component.speed
 
     seaLevel = 420
     settings = _.defaults(settings, defaults)
     # TODO: Adjust water marker to movement position
     surfaceSize =
-      w: enemy.w + 10
-      #x: enemy.x - 5
+      w: @component.w + 10
+      #x: @component.x - 5
       y: seaLevel
       h: 20
       alpha: 0.7
     maxSupportedDepth = 700
     maxDepthSize =
-      w: enemy.w * .3
-      #x: enemy.x + (enemy.w * .3)
-      y: enemy.hideMarker.y + 15
+      w: @component.w * .3
+      #x: @component.x + (@component.w * .3)
+      y: @component.hideMarker.y + 15
       h: 5
       alpha: 0.2
 
 
-    deltaX = if settings.x? then Math.abs(settings.x - (enemy.x + Crafty.viewport.x)) else 0
-    deltaY = if settings.y? then Math.abs(settings.y - (enemy.y + Crafty.viewport.y)) else 0
+    deltaX = if settings.x? then Math.abs(settings.x - (@component.x + Crafty.viewport.x)) else 0
+    deltaY = if settings.y? then Math.abs(settings.y - (@component.y + Crafty.viewport.y)) else 0
     delta = Math.max(deltaX, deltaY)
 
     duration = (delta / settings.speed) * (1000 / Crafty.timer.FPS())
@@ -286,51 +312,40 @@ class Game.LazerScript
       for k, p of surfaceSize
         depthProperties[k] = (1 - v) * p + (v * maxDepthSize[k])
 
-      enemy.hideMarker.tween depthProperties, duration
+      @component.hideMarker.tween depthProperties, duration
 
     defer = WhenJS.defer()
-    enemy.attr(
+    @component.attr(
       x: settings.x - Crafty.viewport.x
       y: settings.y - Crafty.viewport.y
     )
 
-    onDestroy = =>
-      delete @enemies[settings.enemy ? 'default']
-      defer.resolve()
-
-    enemy.hideMarker.choreography([
+    @component.hideMarker.choreography([
       type: 'follow'
       axis: 'x'
-      target: enemy
+      target: @component
       maxSpeed: settings.speed
       duration: duration
     ]).bind('ChoreographyEnd', ->
       @unbind('ChoreographyEnd')
-      @unbind('Destroyed', onDestroy)
       defer.resolve()
-    ).bind('Destroyed', onDestroy)
-
+    )
     defer.promise
 
-  _moveAir: (enemy, settings) ->
+  _moveAir: (settings) ->
     defaults =
-      x: enemy.x + Crafty.viewport.x
-      y: enemy.y + Crafty.viewport.y
-      speed: enemy.speed
+      x: @component.x + Crafty.viewport.x
+      y: @component.y + Crafty.viewport.y
+      speed: @component.speed
 
     settings = _.defaults(settings, defaults)
 
-    deltaX = if settings.x? then Math.abs(settings.x - (enemy.x + Crafty.viewport.x)) else 0
-    deltaY = if settings.y? then Math.abs(settings.y - (enemy.y + Crafty.viewport.y)) else 0
+    deltaX = if settings.x? then Math.abs(settings.x - (@component.x + Crafty.viewport.x)) else 0
+    deltaY = if settings.y? then Math.abs(settings.y - (@component.y + Crafty.viewport.y)) else 0
     delta = Math.max(deltaX, deltaY)
 
     defer = WhenJS.defer()
-
-    onDestroy = =>
-      delete @enemies[settings.enemy ? 'default']
-      defer.resolve()
-
-    enemy.choreography(
+    @component.choreography(
       [
         type: 'viewport'
         x: settings.x
@@ -340,31 +355,12 @@ class Game.LazerScript
       ]
     ).bind('ChoreographyEnd', ->
       @unbind('ChoreographyEnd')
-      @unbind('Destroyed', onDestroy)
       defer.resolve()
-    ).bind('Destroyed', onDestroy)
+    )
     defer.promise
 
   location: (settings = {}) ->
     =>
-      enemy = @enemies[settings.enemy ? 'default']
-      { x: enemy.x, y: enemy.y }
-
-  enemy: (name = 'default') ->
-    {
-      alive: @enemies[name]?
-    }
-
-  # Inventory
-  # TODO: Decide how we handle inventory thoughout game
-
-  inventory: (type, name) ->
-    @invItems ||= {}
-    @invItems[type] ||= {}
-    @invItems[type][name || 'default']
-
-  inventoryAdd: (type, name, constructor) ->
-    @invItems ||= {}
-    @invItems[type] ||= {}
-    @invItems[type][name] = constructor
+      x: @component.x + Crafty.viewport.x
+      y: @component.y + Crafty.viewport.y
 

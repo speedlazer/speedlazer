@@ -2,17 +2,18 @@
 Game = @Game
 Game.Scripts ||= {}
 
-class Game.Scripts.Stage1Boss extends Game.LazerScript
+class Game.Scripts.Stage1Boss extends Game.EnemyScript
+
+  spawn: ->
+    Crafty.e('Drone').drone(
+      health: 800
+      x: 680
+      y: 60
+      speed: 1
+    )
 
   execute: ->
     @sequence(
-      @spawn ->
-        Crafty.e('Drone').drone(
-          health: 800
-          x: 680 - Crafty.viewport.x
-          y: 60 - Crafty.viewport.y
-          speed: 1
-        )
       @moveTo(x: 540, y: 200)
       @say('Enemy', 'Muhahah...')
       @wait 500
@@ -23,34 +24,36 @@ class Game.Scripts.Stage1Boss extends Game.LazerScript
           @wait 500
           @moveTo(y: 205, speed: 0.1)
           @wait 500
+
+          @say('Enemy', 'blub...')
         ))
-        @if(
-          => @enemy().alive
-          @runScriptAsync(Game.Scripts.Stage1BossMine, @location())
-        )
+        @runScriptAsync(Game.Scripts.Stage1BossMine, @location())
       ))
       @while(
-        => @enemy().alive
+        => @enemy.alive
         @sequence(
           @moveTo(y: 200, speed: 0.1)
           @wait 500
-          @moveTo(y: 205, speed: 0.1)
+          @moveTo(y: 215, speed: 0.1)
           @wait 500
+          @say('Enemy', 'blub 2...')
         )
       )
+      # Unreachable statement test
       @say('Enemy', 'AAargh...')
     )
 
-class Game.Scripts.Stage1BossMine extends Game.LazerScript
-  execute: (location) ->
+class Game.Scripts.Stage1BossMine extends Game.EnemyScript
+  spawn: (location) ->
+    Crafty.e('Drone').drone(
+      health: 200
+      x: location().x
+      y: location().y + 30
+      speed: 4
+    )
+
+  execute: ->
     @sequence(
-      @spawn ->
-        Crafty.e('Drone').drone(
-          health: 200
-          x: location().x
-          y: location().y + 30
-          speed: 4
-        )
       @moveTo(y: 525)
       @moveTo(x: 200)
       @moveTo(y: 200)
