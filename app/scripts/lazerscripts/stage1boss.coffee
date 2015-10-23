@@ -24,8 +24,6 @@ class Game.Scripts.Stage1Boss extends Game.EnemyScript
           @wait 500
           @moveTo(y: 205, speed: 0.1)
           @wait 500
-
-          @say('Enemy', 'blub...')
         ))
         @runScriptAsync(Game.Scripts.Stage1BossMine, @location())
       ))

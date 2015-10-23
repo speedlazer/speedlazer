@@ -11,7 +11,7 @@ class Game.Scripts.BossFight extends Game.LazerScript
     @sequence(
       @setSpeed(2)
       @runScript(Game.Scripts.Stage1Boss)
-      @gainHeight(200, duration: 4000)
+      @gainHeight(250, duration: 4000)
       @setScenery('Skyline')
       @runScript(Game.Scripts.Stage1Boss)
       @say('Game', 'You Won!...')
