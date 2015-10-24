@@ -48,7 +48,6 @@ Crafty.c 'ScrollWall',
 
       Crafty.viewport.y = -@y if Crafty.viewport.y isnt -@y
       Crafty.viewport.x = -@x if Crafty.viewport.x isnt -@x
-      Crafty.viewport._clamp() # TODO: Figure out what this does and if we need it
 
     @onHit 'PlayerControlledShip', (el) ->
       # Push the player forward
@@ -81,5 +80,8 @@ Crafty.c 'ScrollWall',
 
   off: ->
     @wallEnd.removeComponent('Edge')
+    @unbind('EnterFrame')
+
+  remove: ->
     @unbind('EnterFrame')
 
