@@ -20,7 +20,9 @@ class Game.Dialog extends Game.EventHandler
     @showDialog()
 
   showDialog: (start = 0) ->
-    Crafty('Dialog').each -> @destroy()
+    Crafty('Dialog').each ->
+      @trigger('Abort')
+      @destroy()
     dialogIndex = @determineDialog(start)
 
     unless dialogIndex?
@@ -41,6 +43,7 @@ class Game.Dialog extends Game.EventHandler
         y: @level.visibleHeight - ((lines.length + 1) * 20)
         z: 100
       )
+    back.bind('Abort', => @handle('Abort'))
 
     speakerText = Crafty.e('2D, Canvas, Text')
       .attr(w: 550, x: back.x + 10, y: back.y + 10, z: 101, alpha: 1)
@@ -73,7 +76,6 @@ class Game.Dialog extends Game.EventHandler
     Crafty.e('Dialog, Delay').delay( =>
         @showDialog(start + 1)
       , 2500 * lines.length, 0)
-
 
   determineDialog: (start = 0) ->
     elements = []
