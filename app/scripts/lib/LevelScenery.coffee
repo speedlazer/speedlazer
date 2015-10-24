@@ -34,31 +34,32 @@ class Game.LevelScenery
   # and adds a trigger in the level
   # for notifications for #enter, #inScreen
   # and #leave
-  build: (pos, index) ->
+  build: (pos) -> #, index) ->
     return if @generated
     @x ?= pos.x
     @y ?= pos.y
-    @index = index
+    #@index = index
     @generated = yes
     @generate()
-    @_notifyEnterFunction index
+    @_notifyEnterFunction() # index
 
-  _notifyEnterFunction: (index) ->
+  _notifyEnterFunction: -> #(index) ->
     # TODO: Make this into a single component
+    block = this
     Crafty.e('2D, Canvas, Color, Collision')
       .attr({ x: @x, y: @y, w: 10, h: 800 })
       #.color('#FF00FF')
       .onHit 'ScrollFront', ->
         unless @triggeredFront
-          Crafty.trigger('EnterBlock', index)
+          Crafty.trigger('EnterBlock', block) #, index)
           @triggeredFront = yes
       .onHit 'PlayerControlledShip', ->
         unless @triggeredPlayerFront
-          Crafty.trigger('PlayerEnterBlock', index)
+          Crafty.trigger('PlayerEnterBlock', block) #, index)
           @triggeredPlayerFront = yes
       .onHit 'ScrollWall', ->
+        Crafty.trigger('LeaveBlock', block) #, index)
         @destroy()
-        Crafty.trigger('LeaveBlock', index)
 
   # Generate terrain of the level
   generate: ->
