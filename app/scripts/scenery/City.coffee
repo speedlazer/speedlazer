@@ -302,14 +302,13 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-    h = 400 + 100
+    h = 400 + 200
     @add(0, @level.visibleHeight - h, Crafty.e('2D, Canvas, Color').attr(w: 300, h: h, z: -1).color('#909090'))
 
-    h = 300 + 100
+    h = 300 + 200
     @addBackground(200, @level.visibleHeight - h, Crafty.e('2D, Canvas, Color').attr(w: 400, h: h, z: 5).color('#000000'), 1.5)
 
     @addElement 'water'
-    #@addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
     @addElement 'cityHorizon'
     @addElement 'city'
