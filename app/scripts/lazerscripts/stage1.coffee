@@ -17,9 +17,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
     @sequence(
       @introText()
-      @tutorial()
-      @droneTakeover()
-      @swirlAttacks()
+      #@tutorial()
+      #@droneTakeover()
+      #@swirlAttacks()
       @setScenery('CoastStart')
       @underWaterAttacks()
       @setScenery('Bay')

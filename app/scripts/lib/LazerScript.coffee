@@ -12,14 +12,22 @@ class Game.LazerScript
   # DSL Implementation
 
   # Core
+  _verify: (sequence) ->
+    throw new Error('sequence mismatch') unless sequence is @currentSequence
+
   sequence: (tasks...) ->
-    (sequence) -> WhenJS.sequence(tasks, sequence)
+    (sequence) =>
+      @_verify(sequence)
+      WhenJS.sequence(tasks, sequence)
 
   parallel: (tasks...) ->
-    (sequence) -> WhenJS.parallel(tasks, sequence)
+    (sequence) =>
+      @_verify(sequence)
+      WhenJS.parallel(tasks, sequence)
 
   if: (condition, block, elseBlock) ->
     (sequence) =>
+      @_verify(sequence)
       if condition.apply this
         block(sequence)
       else
@@ -27,22 +35,25 @@ class Game.LazerScript
 
   while: (condition, block) ->
     (sequence) =>
+      @_verify(sequence)
       if condition.apply this
         WhenJS(block(sequence)).then =>
           @while(condition, block)(sequence)
 
   runScript: (scriptClass, args...) ->
-    =>
+    (sequence) =>
+      @_verify(sequence)
       new scriptClass(@level).run(args...)
 
   runScriptAsync: (scriptClass, args...) ->
-    =>
+    (sequence) =>
+      @_verify(sequence)
       new scriptClass(@level).run(args...)
       return
 
   wait: (amount) ->
     (sequence) =>
-      console.log 'in wait', sequence
+      @_verify(sequence)
       d = WhenJS.defer()
       Crafty.e('Delay').delay(
         ->
@@ -54,6 +65,7 @@ class Game.LazerScript
 
   repeat: (times, event) ->
     (sequence) =>
+      @_verify(sequence)
       return if times is 0
       event(sequence).then =>
         @repeat(times - 1, event)(sequence)
@@ -61,14 +73,22 @@ class Game.LazerScript
   # Level
   say: (speaker, text) ->
     (sequence) =>
+      @_verify(sequence)
       # TODO: Drastically simplify 'showDialog' when all scripts are working
       d = WhenJS.defer()
-      @level.showDialog([":#{speaker}:#{text}"]).on('Finished', -> d.resolve())
+      @level.showDialog([":#{speaker}:#{text}"]).on(
+        'Finished', ->
+          d.resolve()
+      ).on(
+        'Abort', ->
+          d.resolve()
+      )
       d.promise
 
   #TODO: This will probably change soon
   wave: (formation, options = {}) ->
     (sequence) =>
+      @_verify(sequence)
       enemyConstructor = @inventory('enemy', options.enemy)
       wave = @level.spawnEnemies(formation, enemyConstructor)
       if options.drop
@@ -80,6 +100,7 @@ class Game.LazerScript
 
   drop: (options) ->
     (sequence) =>
+      @_verify(sequence)
       item = @inventory('item', options.item)
       if player = options.inFrontOf
         @level.addComponent item().attr(z: -1), x: 640, y: player.ship().y
@@ -111,16 +132,20 @@ class Game.LazerScript
     players["Player #{nr}"]
 
   setScenery: (scenery) ->
-    (sequence) => @level.setScenery scenery
+    (sequence) =>
+      @_verify(sequence)
+      @level.setScenery scenery
 
   waitForScenery: (sceneryType, options = { event: 'enter' }) ->
     (sequence) =>
+      @_verify(sequence)
       d = WhenJS.defer()
       @level.notifyScenery options.event, sceneryType, -> d.resolve()
       d.promise
 
   gainHeight: (height, options) ->
     (sequence) =>
+      @_verify(sequence)
       d = WhenJS.defer()
 
       currentSpeed = @level._forcedSpeed?.x || @level._forcedSpeed
@@ -139,20 +164,24 @@ class Game.LazerScript
 
   setSpeed: (speed) ->
     (sequence) =>
+      @_verify(sequence)
       @level.setForcedSpeed speed
 
   showScore: ->
     (sequence) =>
+      @_verify(sequence)
       score = @level.finishStage()
       @wait(15 * 2000)().then =>
         score.destroy()
 
   disableWeapons: ->
     (sequence) =>
+      @_verify(sequence)
       @level.setWeaponsEnabled no
 
   enableWeapons: ->
     (sequence) =>
+      @_verify(sequence)
       @level.setWeaponsEnabled yes
 
   # Inventory
@@ -170,16 +199,18 @@ class Game.LazerScript
 
 
   # Enemy
-class Game.EnemyScript extends Game.LazerScript
+class Game.EntityScript extends Game.LazerScript
 
   run: (args...) ->
-    @component = @spawn(args...)
-    @component.attr
-      x: @component.x - Crafty.viewport.x
-      y: @component.y - Crafty.viewport.y
-    @component.bind 'Destroyed', =>
-      @enemy.location.x = (@component.x + Crafty.viewport.x)
-      @enemy.location.y = (@component.y + Crafty.viewport.y)
+    @entity = @spawn(args...)
+    @boundEvents = []
+    @entity.attr
+      x: @entity.x - Crafty.viewport.x
+      y: @entity.y - Crafty.viewport.y
+
+    @entity.bind 'Destroyed', =>
+      @enemy.location.x = (@entity.x + Crafty.viewport.x)
+      @enemy.location.y = (@entity.y + Crafty.viewport.y)
       @enemy.alive = no
 
     @enemy =
@@ -187,13 +218,36 @@ class Game.EnemyScript extends Game.LazerScript
       alive: yes
       location: {}
 
-    super.then(-> console.log 'success').catch(-> console.log 'fail').finally(-> console.log 'ended')
+    super
+      .then ->
+        console.log 'success'
+      .catch =>
+        console.log 'fail'
+        @alternatePath
+      .finally ->
+        console.log 'ended'
 
   spawn: ->
 
+  bindSequence: (eventName, sequenceFunction, filter) ->
+    filter ?= -> true
+    eventHandler = (args...) =>
+      return unless filter(args...)
+      @currentSequence = Math.random()
+      @entity.unbind(eventName, eventHandler)
+      @alternatePath = WhenJS(sequenceFunction.apply(this, args)(@currentSequence))
+        .then ->
+          console.log 'success'
+        .catch =>
+          console.log 'fail'
+          @alternatePath
+        .finally ->
+          console.log 'alternate path ended'
+    @entity.bind(eventName, eventHandler)
+
   moveTo: (settings) ->
     (sequence) =>
-      console.log 'in moveTo', sequence
+      @_verify(sequence)
       return unless @enemy.alive
 
       seaLevel = 420
@@ -230,27 +284,27 @@ class Game.EnemyScript extends Game.LazerScript
     waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween')
       .color('#000040')
       .attr(
-        w: @component.w + 10
-        x: @component.x - 5
-        y: @component.y
+        w: @entity.w + 10
+        x: @entity.x - 5
+        y: @entity.y
         h: 20
         alpha: 0.7
         z: -1
       )
-    @component.hide(waterSpot)
+    @entity.hide(waterSpot)
 
   _removeWaterSpot: ->
-    @component.reveal()
+    @entity.reveal()
 
   _waterSplash: ->
     defer = WhenJS.defer()
     waterSpot = Crafty.e('2D, Canvas, Color, Choreography')
       .color('#FFFFFF')
       .attr(
-        x: @component.x - 5
-        y: @component.y
+        x: @entity.x - 5
+        y: @entity.y
         z: 1
-        w: @component.w + 10
+        w: @entity.w + 10
         h: 20
         alpha: 1.0
       )
@@ -258,8 +312,8 @@ class Game.EnemyScript extends Game.LazerScript
     c = [
       type: 'tween'
       properties:
-        h: 20 * @component.speed
-        y: waterSpot.y - (20 * @component.speed)
+        h: 20 * @entity.speed
+        y: waterSpot.y - (20 * @entity.speed)
         alpha: 0.2
       duration: 500
       event: 'splash'
@@ -279,30 +333,29 @@ class Game.EnemyScript extends Game.LazerScript
 
   _moveWater: (settings) ->
     defaults =
-      x: @component.x + Crafty.viewport.x
-      y: @component.y + Crafty.viewport.y
-      speed: @component.speed
+      x: @entity.x + Crafty.viewport.x
+      y: @entity.y + Crafty.viewport.y
+      speed: @entity.speed
 
     seaLevel = 420
     settings = _.defaults(settings, defaults)
     # TODO: Adjust water marker to movement position
     surfaceSize =
-      w: @component.w + 10
-      #x: @component.x - 5
+      w: @entity.w + 10
+      #x: @entity.x - 5
       y: seaLevel
       h: 20
       alpha: 0.7
     maxSupportedDepth = 700
     maxDepthSize =
-      w: @component.w * .3
-      #x: @component.x + (@component.w * .3)
-      y: @component.hideMarker.y + 15
+      w: @entity.w * .3
+      #x: @entity.x + (@entity.w * .3)
+      y: @entity.hideMarker.y + 15
       h: 5
       alpha: 0.2
 
-
-    deltaX = if settings.x? then Math.abs(settings.x - (@component.x + Crafty.viewport.x)) else 0
-    deltaY = if settings.y? then Math.abs(settings.y - (@component.y + Crafty.viewport.y)) else 0
+    deltaX = if settings.x? then Math.abs(settings.x - (@entity.x + Crafty.viewport.x)) else 0
+    deltaY = if settings.y? then Math.abs(settings.y - (@entity.y + Crafty.viewport.y)) else 0
     delta = Math.max(deltaX, deltaY)
 
     duration = (delta / settings.speed) * (1000 / Crafty.timer.FPS())
@@ -316,18 +369,18 @@ class Game.EnemyScript extends Game.LazerScript
       for k, p of surfaceSize
         depthProperties[k] = (1 - v) * p + (v * maxDepthSize[k])
 
-      @component.hideMarker.tween depthProperties, duration
+      @entity.hideMarker.tween depthProperties, duration
 
     defer = WhenJS.defer()
-    @component.attr(
+    @entity.attr(
       x: settings.x - Crafty.viewport.x
       y: settings.y - Crafty.viewport.y
     )
 
-    @component.hideMarker.choreography([
+    @entity.hideMarker.choreography([
       type: 'follow'
       axis: 'x'
-      target: @component
+      target: @entity
       maxSpeed: settings.speed
       duration: duration
     ]).bind('ChoreographyEnd', ->
@@ -338,18 +391,18 @@ class Game.EnemyScript extends Game.LazerScript
 
   _moveAir: (settings) ->
     defaults =
-      x: @component.x + Crafty.viewport.x
-      y: @component.y + Crafty.viewport.y
-      speed: @component.speed
+      x: @entity.x + Crafty.viewport.x
+      y: @entity.y + Crafty.viewport.y
+      speed: @entity.speed
 
     settings = _.defaults(settings, defaults)
 
-    deltaX = if settings.x? then Math.abs(settings.x - (@component.x + Crafty.viewport.x)) else 0
-    deltaY = if settings.y? then Math.abs(settings.y - (@component.y + Crafty.viewport.y)) else 0
+    deltaX = if settings.x? then Math.abs(settings.x - (@entity.x + Crafty.viewport.x)) else 0
+    deltaY = if settings.y? then Math.abs(settings.y - (@entity.y + Crafty.viewport.y)) else 0
     delta = Math.max(deltaX, deltaY)
 
     defer = WhenJS.defer()
-    @component.choreography(
+    @entity.choreography(
       [
         type: 'viewport'
         x: settings.x
@@ -365,6 +418,6 @@ class Game.EnemyScript extends Game.LazerScript
 
   location: (settings = {}) ->
     =>
-      x: @enemy.location.x ? (@component.x + Crafty.viewport.x)
-      y: @enemy.location.y ? (@component.y + Crafty.viewport.y)
+      x: @enemy.location.x ? (@entity.x + Crafty.viewport.x)
+      y: @enemy.location.y ? (@entity.y + Crafty.viewport.y)
 

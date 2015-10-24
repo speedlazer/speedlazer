@@ -8,6 +8,7 @@ Crafty.c 'Enemy',
       return if @hidden
       bullet = e[0].obj
       bullet.trigger 'HitTarget', target: this
+      @trigger('Hit', this)
       @health -= bullet.damage
       if @health <= 0
         bullet.trigger 'DestroyTarget', target: this
