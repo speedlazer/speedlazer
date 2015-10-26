@@ -223,13 +223,11 @@ class Game.EntityScript extends Game.LazerScript
       location: {}
 
     super
-      .then ->
-        console.log 'success'
       .catch =>
-        console.log 'fail'
         @alternatePath
-      .finally ->
-        console.log 'ended'
+      .finally =>
+        if @enemy.alive
+          @entity.destroy()
 
   spawn: ->
 
@@ -240,13 +238,8 @@ class Game.EntityScript extends Game.LazerScript
       @currentSequence = Math.random()
       @entity.unbind(eventName, eventHandler)
       @alternatePath = WhenJS(sequenceFunction.apply(this, args)(@currentSequence))
-        .then ->
-          console.log 'success'
         .catch =>
-          console.log 'fail'
           @alternatePath
-        .finally ->
-          console.log 'alternate path ended'
     @entity.bind(eventName, eventHandler)
 
   moveTo: (location, extraSettings = {}) ->
