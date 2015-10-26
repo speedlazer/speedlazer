@@ -36,6 +36,10 @@ class Game.LazerScript
   while: (condition, block) ->
     (sequence) =>
       @_verify(sequence)
+      if block is undefined
+        block = condition
+        condition = -> true
+
       if condition.apply this
         WhenJS(block(sequence)).then =>
           @while(condition, block)(sequence)
