@@ -175,7 +175,7 @@ class Game.LazerScript
     (sequence) =>
       @_verify(sequence)
       score = @level.finishStage()
-      @wait(15 * 2000)().then =>
+      @wait(15 * 2000)(sequence).then =>
         score.destroy()
 
   disableWeapons: ->
