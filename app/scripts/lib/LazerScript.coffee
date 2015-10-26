@@ -249,10 +249,12 @@ class Game.EntityScript extends Game.LazerScript
           console.log 'alternate path ended'
     @entity.bind(eventName, eventHandler)
 
-  moveTo: (settings) ->
+  moveTo: (location, extraSettings = {}) ->
     (sequence) =>
       @_verify(sequence)
       return unless @enemy.alive
+      settings = location?() ? location
+      _.extend(settings, extraSettings)
 
       seaLevel = 420
 
@@ -285,7 +287,7 @@ class Game.EntityScript extends Game.LazerScript
           return @_moveWater(settings)
 
   _setupWaterSpot: ->
-    waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween')
+    waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween, ViewportFixed')
       .color('#000040')
       .attr(
         w: @entity.w + 10
@@ -358,8 +360,8 @@ class Game.EntityScript extends Game.LazerScript
       h: 5
       alpha: 0.2
 
-    deltaX = if settings.x? then Math.abs(settings.x - (@entity.x + Crafty.viewport.x)) else 0
-    deltaY = if settings.y? then Math.abs(settings.y - (@entity.y + Crafty.viewport.y)) else 0
+    deltaX = if settings.x? then Math.abs(settings.x - (@entity.hideMarker.x + Crafty.viewport.x)) else 0
+    deltaY = if settings.y? then Math.abs(settings.y - (@entity.hideMarker.y + Crafty.viewport.y)) else 0
     delta = Math.max(deltaX, deltaY)
 
     duration = (delta / settings.speed) * (1000 / Crafty.timer.FPS())
@@ -424,4 +426,14 @@ class Game.EntityScript extends Game.LazerScript
     =>
       x: @enemy.location.x ? (@entity.x + Crafty.viewport.x)
       y: @enemy.location.y ? (@entity.y + Crafty.viewport.y)
+
+  pickTarget: (selection) ->
+    (sequence) =>
+      ships = Crafty(selection)
+      @target = ships.get Math.floor(Math.random() * ships.length)
+
+  targetLocation: (override = {}) ->
+    =>
+      x: override.x ? (@target.x + Crafty.viewport.x)
+      y: override.y ? (@target.y + Crafty.viewport.y)
 

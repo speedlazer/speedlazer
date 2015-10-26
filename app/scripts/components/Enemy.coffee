@@ -1,6 +1,6 @@
 Crafty.c 'Enemy',
   init: ->
-    @requires '2D, Canvas, Collision, Choreography'
+    @requires '2D, Canvas, Collision, Choreography, ViewportFixed'
 
   enemy: ->
     Crafty.trigger('EnemySpawned', this)
@@ -16,20 +16,6 @@ Crafty.c 'Enemy',
         @trigger('Destroyed', this)
         @destroy()
       bullet.destroy()
-
-    # Extract to 'ViewportFixed' Component?
-    @_initialViewport =
-      x: Crafty.viewport.x
-      y: Crafty.viewport.y
-
-    @motion = Crafty.bind 'ViewportScroll', =>
-      shiftedX = (@_initialViewport.x - Crafty.viewport._x)
-      shiftedY = (@_initialViewport.y - Crafty.viewport._y)
-      @attr x: @x + shiftedX, y: @y + shiftedY
-      @_initialViewport =
-        x: Crafty.viewport.x
-        y: Crafty.viewport.y
-
     this
 
   hide: (@hideMarker) ->
@@ -40,6 +26,3 @@ Crafty.c 'Enemy',
     @hideMarker?.destroy()
     @hidden = no
     @attr alpha: 1.0
-
-  remove: ->
-    Crafty.unbind 'ViewportScroll', @motion
