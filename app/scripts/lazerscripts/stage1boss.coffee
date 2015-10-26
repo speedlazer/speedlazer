@@ -8,13 +8,24 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
     Crafty.e('Drone').drone(
       health: 2000
       x: 680
-      y: 60
-      speed: 1
+      y: 400
+      speed: 9
     )
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
     @bindSequence 'Hit', @fase2, => @entity.health < 1000
+    #@sequence(
+      #@pickTarget('PlayerControlledShip')
+      #@moveTo(x: 680, y: 450)
+      #@repeat(20, @sequence(
+        #@moveTo(@targetLocation(), y: 450, speed: 4)
+        #@wait 150
+      #))
+      #@moveTo(y: -50)
+      ##@wait 10000
+    #)
+
 
     @sequence(
       @moveTo(x: 540, y: 200)
@@ -22,7 +33,6 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
       @wait 500
       @moveTo(y: 205, speed: 0.1)
       @while(
-        => @enemy.alive
         @sequence(
           @runScriptAsync(Game.Scripts.Stage1BossMine, @location())
           @moveTo(y: 200, speed: 0.1)
@@ -42,7 +52,6 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
       @say('Enemy', 'You make me mad!')
       @moveTo(y: 205, speed: 4)
       @while(
-        => @enemy.alive
         @sequence(
           @runScriptAsync(Game.Scripts.Stage1BossMine, @location())
           @moveTo(y: 200, speed: 0.1)
