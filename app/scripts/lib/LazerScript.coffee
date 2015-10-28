@@ -242,6 +242,39 @@ class Game.EntityScript extends Game.LazerScript
           @alternatePath
     @entity.bind(eventName, eventHandler)
 
+  movePath: (path) ->
+    (sequence) =>
+      @_verify(sequence)
+      return unless @enemy.alive
+
+      pp = path[0]
+      d = 0
+      bezierPath = (for p in path
+        [x, y] = p
+        [px, py] = pp
+        a = Math.abs(x - px)
+        b = Math.abs(x - py)
+        c = Math.sqrt(a**2 + b**2)
+        d += c
+        pp = p
+        { x, y }
+      )
+      duration = ((d / @entity.speed) / Crafty.timer.FPS()) * 1000
+
+      defer = WhenJS.defer()
+      @entity.choreography(
+        [
+          type: 'viewportBezier'
+          rotation: yes
+          path: bezierPath
+          duration: duration
+        ], compensateCameraSpeed: yes
+      ).bind('ChoreographyEnd', ->
+        @unbind('ChoreographyEnd')
+        defer.resolve()
+      )
+      defer.promise
+
   moveTo: (location, extraSettings = {}) ->
     (sequence) =>
       @_verify(sequence)

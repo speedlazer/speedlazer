@@ -11,6 +11,7 @@ Crafty.c 'Choreography',
       follow: @_executeFollow
       tween: @_executeTween
       bezier: @_executeBezier
+      viewportBezier: @_executeViewportBezier
 
   remove: ->
     return unless @_currentPart?
@@ -63,7 +64,7 @@ Crafty.c 'Choreography',
 
     if @_options.compensateCameraSpeed
       # TODO: Figure out why we need the magic .7 to get enemies off screen.
-      @x += ((@camera.x - @_options.cameraLock.x) * .7)
+      @x += ((@camera.x - @_options.cameraLock.x))
 
     if @_currentPart.easing.complete
       @_setupCPart @_currentPart.part + 1
@@ -162,5 +163,18 @@ Crafty.c 'Choreography',
 
     @x = point.x
     @y = point.y
+
+
+  _executeViewportBezier: (v) ->
+    bp = new Game.BezierPath
+    unless @_currentPart.bPath?
+      @_currentPart.bPath = bp.buildPathFrom @_currentPart.path
+    point = bp.pointOnPath(@_currentPart.bPath, v)
+
+    if @_currentPart.rotation
+      @rotation = bp.angleOnPath(@_currentPart.bPath, v)
+
+    @x = point.x# + Crafty.viewport.x
+    @y = point.y# + Crafty.viewport.y
 
 

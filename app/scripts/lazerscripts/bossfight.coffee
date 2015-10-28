@@ -4,18 +4,18 @@ Game.Scripts ||= {}
 class Game.Scripts.BossFight extends Game.LazerScript
   metadata:
     namespace: 'City'
-    startScenery: 'Bay'
+    startScenery: 'Ocean'
     armedPlayers: yes
     title: 'City'
     stage: 1
 
   execute: ->
     @sequence(
-      @setSpeed(1)
-      @runScript(Game.Scripts.Stage1Boss)
-      #@gainHeight(250, duration: 4000)
+      @setSpeed(2)
+      @runScript(Game.Scripts.Swirler)
+      @gainHeight(250, duration: 4000)
       #@setScenery('Skyline')
       #@runScript(Game.Scripts.Stage1Boss)
-      #@showScore()
+      @showScore()
       @say('Game', 'You Won!...')
     )

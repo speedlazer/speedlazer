@@ -2,6 +2,28 @@
 Game = @Game
 Game.Scripts ||= {}
 
+class Game.Scripts.Swirler extends Game.EntityScript
+
+  spawn: ->
+    Crafty.e('Drone').drone(
+      health: 200
+      x: 600
+      y: 240
+      speed: 3
+    )
+
+  execute: ->
+    @sequence(
+      @movePath [
+        [600, 240]
+        [320, 100]
+        [100, 240]
+        [320, 400]
+        [600, 250]
+        [-10, 100]
+      ]
+    )
+
 class Game.Scripts.Stage1Boss extends Game.EntityScript
 
   spawn: ->
