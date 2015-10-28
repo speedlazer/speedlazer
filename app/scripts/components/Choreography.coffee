@@ -174,7 +174,7 @@ Crafty.c 'Choreography',
     if @_currentPart.rotation
       @rotation = bp.angleOnPath(@_currentPart.bPath, v)
 
-    @x = point.x# + Crafty.viewport.x
-    @y = point.y# + Crafty.viewport.y
+    @x = point.x #- Crafty.viewport.x
+    @y = point.y #- Crafty.viewport.y
 
 

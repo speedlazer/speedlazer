@@ -10,9 +10,16 @@ class Game.Scripts.BossFight extends Game.LazerScript
     stage: 1
 
   execute: ->
+    @inventoryAdd 'item', 'lasers', ->
+      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
+
     @sequence(
-      @setSpeed(2)
-      @runScript(Game.Scripts.Swirler)
+      @setSpeed(1)
+      @wait 3000
+      @placeSquad Game.Scripts.Swirler,
+        amount: 4
+        delay: 500
+        drop: 'lasers'
       @gainHeight(250, duration: 4000)
       #@setScenery('Skyline')
       #@runScript(Game.Scripts.Stage1Boss)

@@ -7,7 +7,7 @@ class Game.Scripts.Swirler extends Game.EntityScript
   spawn: ->
     Crafty.e('Drone').drone(
       health: 200
-      x: 600
+      x: 680
       y: 240
       speed: 3
     )
@@ -15,7 +15,6 @@ class Game.Scripts.Swirler extends Game.EntityScript
   execute: ->
     @sequence(
       @movePath [
-        [600, 240]
         [320, 100]
         [100, 240]
         [320, 400]

@@ -55,6 +55,37 @@ class Game.LazerScript
       new scriptClass(@level).run(args...)
       return
 
+  placeSquad: (scriptClass, settings) ->
+    (sequence) =>
+      @_verify(sequence)
+      settings = _.defaults(settings,
+        amount: 1
+        delay: 1000
+      )
+      promises = (for i in [0...settings.amount]
+        @wait(i * settings.delay)(sequence).then =>
+          @runScript(scriptClass)(sequence)
+      )
+      WhenJS.all(promises).then (results) =>
+        allKilled = yes
+        lastLocation = null
+        lastKilled = null
+        for { alive, killedAt, location } in results
+          if alive
+            allKilled = no
+          else
+            lastKilled ?= killedAt
+            lastLocation ?= location
+            if killedAt.getTime() > lastKilled.getTime()
+              lastKilled = killedAt
+              lastLocation = location
+
+        if allKilled
+          lastLocation.x -= Crafty.viewport.x
+          lastLocation.y -= Crafty.viewport.y
+          if settings.drop
+            @drop(item: settings.drop, location: lastLocation)(sequence)
+
   wait: (amount) ->
     (sequence) =>
       @_verify(sequence)
@@ -97,7 +128,7 @@ class Game.LazerScript
       wave = @level.spawnEnemies(formation, enemyConstructor)
       if options.drop
         wave.on 'LastDestroyed', (last) =>
-          @drop(item: options.drop, location: last)()
+          @drop(item: options.drop, location: last)(sequence)
 
       # TODO: Any - Wait, Kill
       @wait(wave.duration)(sequence)
@@ -216,6 +247,7 @@ class Game.EntityScript extends Game.LazerScript
       @enemy.location.x = (@entity.x + Crafty.viewport.x)
       @enemy.location.y = (@entity.y + Crafty.viewport.y)
       @enemy.alive = no
+      @enemy.killedAt = new Date
 
     @enemy =
       moveState: 'air'
@@ -228,6 +260,8 @@ class Game.EntityScript extends Game.LazerScript
       .finally =>
         if @enemy.alive
           @entity.destroy()
+      .then =>
+        @enemy
 
   spawn: ->
 
@@ -246,6 +280,10 @@ class Game.EntityScript extends Game.LazerScript
     (sequence) =>
       @_verify(sequence)
       return unless @enemy.alive
+      path.unshift [
+        @entity.x + Crafty.viewport.x
+        @entity.y + Crafty.viewport.y
+      ]
 
       pp = path[0]
       d = 0
@@ -257,7 +295,7 @@ class Game.EntityScript extends Game.LazerScript
         c = Math.sqrt(a**2 + b**2)
         d += c
         pp = p
-        { x, y }
+        { x: x - Crafty.viewport.x, y: y - Crafty.viewport.y }
       )
       duration = ((d / @entity.speed) / Crafty.timer.FPS()) * 1000
 
