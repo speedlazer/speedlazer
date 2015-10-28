@@ -8,8 +8,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     startScenery: 'Intro'
 
   execute: ->
-    @inventoryAdd 'enemy', 'default', ->
-      Crafty.e('Drone').drone(health: 200)
+    #@inventoryAdd 'enemy', 'default', ->
+      #Crafty.e('Drone').drone(health: 200)
     @inventoryAdd 'enemy', 'weaponizedDrone', ->
       Crafty.e('Drone,Weaponized').drone(health: 200)
     @inventoryAdd 'item', 'lasers', ->
@@ -17,25 +17,24 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
     @sequence(
       @introText()
-      #@tutorial()
-      #@droneTakeover()
+      @tutorial()
+      @droneTakeover()
       #@swirlAttacks()
-      @setScenery('CoastStart')
-      @underWaterAttacks()
-      @setScenery('Bay')
+      #@setScenery('CoastStart')
+      #@underWaterAttacks()
+      #@setScenery('Bay')
 
-      # TODO: Create enemy content
-      @wait(20000)
-      @setScenery('UnderBridge')
-      @waitForScenery('UnderBridge', event: 'leave')
-      @setScenery('UnderBridge')
-      @waitForScenery('UnderBridge', event: 'leave')
-      @gainHeight(250, duration: 4000)
-      @setScenery('Skyline')
-      @waitForScenery('Skyline', event: 'leave')
-      @disableWeapons()
-      @showScore()
-      @enableWeapons()
+      #@wait(20000)
+      #@setScenery('UnderBridge')
+      #@waitForScenery('UnderBridge', event: 'leave')
+      #@setScenery('UnderBridge')
+      #@waitForScenery('UnderBridge', event: 'leave')
+      #@gainHeight(250, duration: 4000)
+      #@setScenery('Skyline')
+      #@waitForScenery('Skyline', event: 'leave')
+      #@disableWeapons()
+      #@showScore()
+      #@enableWeapons()
     )
 
   introText: ->
@@ -53,12 +52,18 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   tutorial: ->
     @sequence(
       @say('General', 'Evade the upcoming drones!')
-      @wave('FlyOver')
+      @placeSquad Game.Scripts.Swirler,
+        amount: 4
+        delay: 500
+      #@wave('FlyOver')
       @say('General', 'We dropped an upgrade to show the weapon systems')
       @repeat(2, @sequence(
         @dropWeaponsForEachPlayer()
         @wait(2000)
-        @wave('FlyOver', drop: 'lasers')
+        @placeSquad Game.Scripts.Swirler,
+          amount: 4
+          delay: 500
+          drop: 'lasers'
       ))
     )
 
@@ -69,13 +74,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     )
 
   droneTakeover: ->
-    @inventoryAdd 'enemy', 'backgroundDrone', ->
-      Crafty.e('BackgroundDrone').drone()
+    #@inventoryAdd 'enemy', 'backgroundDrone', ->
+      #Crafty.e('BackgroundDrone').drone()
 
     @sequence(
-      @wave('Splash', enemy: 'backgroundDrone')
+      #@wave('Splash', enemy: 'backgroundDrone')
       @say('General', 'Wtf is happening with our drones?')
-      @wave('FlyOver', enemy: 'weaponizedDrone', drop: 'lasers')
+      #@wave('FlyOver', enemy: 'weaponizedDrone', drop: 'lasers')
       @say('General', 'Their AI has been compromised by our rogue prototype!\nEliminate it!')
       @if((-> @player(1).active)
         @say 'John', 'How?'
@@ -86,29 +91,29 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @say 'General', 'It\'s hiding in the city! go!'
     )
 
-  swirlAttacks: ->
-    @sequence(
-      @wave('SwirlAttack', drop: 'lasers')
-      @wave('SwirlAttack2', drop: 'lasers')
+  #swirlAttacks: ->
+    #@sequence(
+      #@wave('SwirlAttack', drop: 'lasers')
+      #@wave('SwirlAttack2', drop: 'lasers')
 
-      @repeat(2,
-        @parallel(
-          @wave('SwirlAttack2', drop: 'lasers')
-          @sequence(
-            @wait(3000)
-            @wave('SwirlAttack', drop: 'lasers')
-          )
-          @sequence(
-            @wait(6000)
-            @wave('SwirlAttack2', drop: 'lasers')
-          )
-          @sequence(
-            @wait(9000)
-            @wave('SwirlAttack', drop: 'lasers')
-          )
-        )
-      )
-    )
+      #@repeat(2,
+        #@parallel(
+          #@wave('SwirlAttack2', drop: 'lasers')
+          #@sequence(
+            #@wait(3000)
+            #@wave('SwirlAttack', drop: 'lasers')
+          #)
+          #@sequence(
+            #@wait(6000)
+            #@wave('SwirlAttack2', drop: 'lasers')
+          #)
+          #@sequence(
+            #@wait(9000)
+            #@wave('SwirlAttack', drop: 'lasers')
+          #)
+        #)
+      #)
+    #)
 
-  underWaterAttacks: ->
-    @repeat(3, @wave('UnderWater'))
+  #underWaterAttacks: ->
+    #@repeat(3, @wave('UnderWater'))

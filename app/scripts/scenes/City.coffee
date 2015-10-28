@@ -5,26 +5,23 @@ Crafty.defineScene 'City', (data) ->
   # constructor
   Crafty.background('#602020')
 
-  #script = Game.Scripts.Stage1
-  script = Game.Scripts.BossFight
+  script = Game.Scripts.Stage1
+  #script = Game.Scripts.BossFight
   level = Game.levelGenerator.createLevel script::metadata
   level.start()
 
-  new script(level).run()
-  ###
-    .then =>
+  new script(level).run().then =>
     console.log 'end of script!'
     # Temporary code to make the player "enjoy" the gameplay
     # demo level
 
-    Crafty('ScrollWall').each -> @off()
-    endLevelTrigger = Crafty.e('2D, Canvas, Color, Collision')
-      .attr({ w: 10, h: level.visibleHeight })
-      .onHit 'PlayerControlledShip', ->
-        Crafty.trigger('EndOfLevel')
-        @destroy()
-    level.addComponent(endLevelTrigger, x: 640, y: 0)
-  ###
+    #Crafty('ScrollWall').each -> @off()
+    #endLevelTrigger = Crafty.e('2D, Canvas, Color, Collision')
+      #.attr({ w: 10, h: level.visibleHeight })
+      #.onHit 'PlayerControlledShip', ->
+        #Crafty.trigger('EndOfLevel')
+        #@destroy()
+    #level.addComponent(endLevelTrigger, x: 640, y: 0)
 
   # TODO: This should be set in script, because other levels / scripts have different positions/sunlight
   duration = 600 * 1000

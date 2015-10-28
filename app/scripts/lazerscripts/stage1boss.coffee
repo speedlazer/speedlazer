@@ -18,10 +18,11 @@ class Game.Scripts.Swirler extends Game.EntityScript
         [320, 100]
         [100, 240]
         [320, 400]
-        [600, 250]
+        [550, 250]
         [-10, 100]
       ]
     )
+
 
 class Game.Scripts.Stage1Boss extends Game.EntityScript
 
