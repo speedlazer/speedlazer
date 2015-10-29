@@ -263,6 +263,7 @@ class Game.EntityScript extends Game.LazerScript
       y: @entity.y - Crafty.viewport.y
 
     @entity.bind 'Destroyed', =>
+      @currentSequence = null
       @enemy.location.x = (@entity.x + Crafty.viewport.x)
       @enemy.location.y = (@entity.y + Crafty.viewport.y)
       @enemy.alive = no
@@ -316,7 +317,7 @@ class Game.EntityScript extends Game.LazerScript
         pp = p
         { x: x - Crafty.viewport.x, y: y - Crafty.viewport.y }
       )
-      duration = ((d / @entity.speed) / Crafty.timer.FPS()) * 1000
+      duration = (d / @entity.speed) * 1000
 
       defer = WhenJS.defer()
       @entity.choreography(
@@ -401,8 +402,8 @@ class Game.EntityScript extends Game.LazerScript
     c = [
       type: 'tween'
       properties:
-        h: 20 * @entity.speed
-        y: waterSpot.y - (20 * @entity.speed)
+        h: (@entity.speed / 3)
+        y: waterSpot.y - (@entity.speed / 3)
         alpha: 0.2
       duration: 500
       event: 'splash'
@@ -428,7 +429,6 @@ class Game.EntityScript extends Game.LazerScript
 
     seaLevel = 420
     settings = _.defaults(settings, defaults)
-    # TODO: Adjust water marker to movement position
     surfaceSize =
       w: @entity.w + 10
       #x: @entity.x - 5
@@ -447,7 +447,7 @@ class Game.EntityScript extends Game.LazerScript
     deltaY = if settings.y? then Math.abs(settings.y - (@entity.hideMarker.y + Crafty.viewport.y)) else 0
     delta = Math.max(deltaX, deltaY)
 
-    duration = (delta / settings.speed) * (1000 / Crafty.timer.FPS())
+    duration = (delta / settings.speed) * 1000
 
     if settings.y?
       depth = Math.min(settings.y, maxSupportedDepth)
@@ -488,7 +488,7 @@ class Game.EntityScript extends Game.LazerScript
 
     deltaX = if settings.x? then Math.abs(settings.x - (@entity.x + Crafty.viewport.x)) else 0
     deltaY = if settings.y? then Math.abs(settings.y - (@entity.y + Crafty.viewport.y)) else 0
-    delta = Math.max(deltaX, deltaY)
+    delta = Math.sqrt((deltaX ** 2) + (deltaY ** 2))
 
     defer = WhenJS.defer()
     @entity.choreography(
@@ -497,7 +497,7 @@ class Game.EntityScript extends Game.LazerScript
         x: settings.x
         y: settings.y
         maxSpeed: settings.speed
-        duration: (delta / settings.speed) * (1000 / Crafty.timer.FPS())
+        duration: (delta / settings.speed) * 1000
       ]
     ).bind('ChoreographyEnd', ->
       @unbind('ChoreographyEnd')

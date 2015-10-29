@@ -97,21 +97,18 @@ Crafty.c 'Choreography',
 
   _executeMoveIntoViewport: (v) ->
     # the goal are current coordinates on screen
-    destinationX = -Crafty.viewport.x + @_currentPart.dx
-    diffX = destinationX - @x
+    destinationX = @_currentPart.dx
+    @_currentPart.moveOriginX ?= @_currentPart.x + Crafty.viewport.x
+    diffX = destinationX - @_currentPart.moveOriginX
     motionX = (diffX * v)
-    if @_currentPart.maxSpeed? and Math.abs(motionX) > @_currentPart.maxSpeed
-      motionX = @_currentPart.maxSpeed
-      motionX *= -1 if diffX < 0
-    @x = @x + motionX
+    @x = @_currentPart.moveOriginX + motionX - Crafty.viewport.x
 
-    destinationY = -Crafty.viewport.y + @_currentPart.dy
-    diffY = destinationY - @y
+    destinationY = @_currentPart.dy
+    @_currentPart.moveOriginY ?= @_currentPart.y + Crafty.viewport.y
+    diffY = destinationY - @_currentPart.moveOriginY
+
     motionY = (diffY * v)
-    if @_currentPart.maxSpeed? and Math.abs(motionY) > @_currentPart.maxSpeed
-      motionY = @_currentPart.maxSpeed
-      motionY *= -1 if diffY < 0
-    @y = @y + motionY
+    @y = @_currentPart.moveOriginY + motionY - Crafty.viewport.y
 
   _executeFollow: (v) ->
     # the goal are current coordinates on screen
