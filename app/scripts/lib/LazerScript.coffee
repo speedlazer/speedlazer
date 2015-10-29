@@ -219,6 +219,15 @@ class Game.LazerScript
       @_verify(sequence)
       @level.setWeaponsEnabled yes
 
+  explosion: (location) ->
+    (sequence) =>
+      @_verify(sequence)
+      { x, y } = location()
+      x -= Crafty.viewport.x
+      y -= Crafty.viewport.y
+
+      Crafty.e('Explosion').explode({ x, y, w: 30, h: 30 })
+
   # Inventory
   # TODO: Decide how we handle inventory thoughout game
 
@@ -500,12 +509,3 @@ class Game.EntityScript extends Game.LazerScript
     =>
       x: override.x ? (@target.x + Crafty.viewport.x)
       y: override.y ? (@target.y + Crafty.viewport.y)
-
-  explosion: (location) ->
-    (sequence) =>
-      @_verify(sequence)
-      { x, y } = location()
-      x -= Crafty.viewport.x
-      y -= Crafty.viewport.y
-
-      Crafty.e('Explosion').explode({ x, y, w: 30, h: 30 })
