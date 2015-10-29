@@ -13,9 +13,12 @@ Crafty.c 'PlayerControlledShip',
 
   start: ->
     @addComponent('Invincible').invincibleDuration(2000)
-    @onHit 'Enemy', ->
+    @onHit 'Enemy', (collision) ->
       return if @has('Invincible')
-      @trigger('Hit')
+      hit = no
+      for e in collision
+        hit = yes unless e.obj.hidden
+      @trigger('Hit') if hit
 
     @onHit 'LaserBeam', ->
       return if @has('Invincible')
