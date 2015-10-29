@@ -10,24 +10,21 @@ Crafty.c 'Drone',
 
     @enemy()
 
-    @bind 'Destroyed', =>
-      Crafty.e('Explosion').explode({ @x, @y, @w, @h })
-
-    if @has('Weaponized')
-      @bind 'Shoot', =>
-        @shooting = Crafty.e('Delay').delay(
-          =>
-            Crafty.e('2D,Canvas,Color,Enemy,Tween').attr(
-              x: @x - @w
-              y: @y + (@h / 2)
-              w: 6
-              h: 6
-            ).color('#FFFF00').tween(
-              x: @x - 640
-              2000
-            )
-        , 1500, 5)
+    #if @has('Weaponized')
+      #@bind 'Shoot', =>
+        #@shooting = Crafty.e('Delay').delay(
+          #=>
+            #Crafty.e('2D,Canvas,Color,Enemy,Tween').attr(
+              #x: @x - @w
+              #y: @y + (@h / 2)
+              #w: 6
+              #h: 6
+            #).color('#FFFF00').tween(
+              #x: @x - 640
+              #2000
+            #)
+        #, 1500, 5)
     this
 
-  remove: ->
-    @shooting.destroy() if @shooting?
+  #remove: ->
+    #@shooting.destroy() if @shooting?
