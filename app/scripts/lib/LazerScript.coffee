@@ -44,6 +44,22 @@ class Game.LazerScript
         WhenJS(block(sequence)).then =>
           @while(condition, block)(sequence)
 
+  repeat: (times, block) ->
+    (sequence) =>
+      @_verify(sequence)
+      # Syntactic sugar:
+      # this allows for writing
+      # @repeat(@sequence( ...
+      #
+      # which feels more natural
+      # that a @while without a condition
+      if block is undefined
+        return @while(times)(sequence)
+
+      return if times is 0
+      WhenJS(block(sequence)).then =>
+        @repeat(times - 1, event)(sequence)
+
   runScript: (scriptClass, args...) ->
     (sequence) =>
       @_verify(sequence)
@@ -55,13 +71,27 @@ class Game.LazerScript
       new scriptClass(@level).run(args...)
       return
 
-  placeSquad: (scriptClass, settings) ->
+  wait: (amount) ->
+    (sequence) =>
+      @_verify(sequence)
+      d = WhenJS.defer()
+      Crafty.e('Delay').delay(
+        ->
+          d.resolve()
+          @destroy()
+        amount
+      )
+      d.promise
+
+  # Level
+  placeSquad: (scriptClass, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
       settings = _.defaults(settings,
         amount: 1
         delay: 1000
       )
+
       promises = (for i in [0...settings.amount]
         @wait(i * settings.delay)(sequence).then =>
           @runScript(scriptClass)(sequence)
@@ -86,26 +116,6 @@ class Game.LazerScript
           if settings.drop
             @drop(item: settings.drop, location: lastLocation)(sequence)
 
-  wait: (amount) ->
-    (sequence) =>
-      @_verify(sequence)
-      d = WhenJS.defer()
-      Crafty.e('Delay').delay(
-        ->
-          d.resolve()
-          @destroy()
-        amount
-      )
-      d.promise
-
-  repeat: (times, event) ->
-    (sequence) =>
-      @_verify(sequence)
-      return if times is 0
-      event(sequence).then =>
-        @repeat(times - 1, event)(sequence)
-
-  # Level
   say: (speaker, text) ->
     (sequence) =>
       @_verify(sequence)
