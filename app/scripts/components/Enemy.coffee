@@ -26,3 +26,6 @@ Crafty.c 'Enemy',
     @hideMarker?.destroy()
     @hidden = no
     @attr alpha: 1.0
+
+  remove: ->
+    @hideMarker?.destroy()
