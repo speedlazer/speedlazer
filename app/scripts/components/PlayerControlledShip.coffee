@@ -20,6 +20,7 @@ Crafty.c 'PlayerControlledShip',
         hit = yes unless e.obj.hidden
       @trigger('Hit') if hit
 
+    # TODO: Potential code for removal
     @onHit 'LaserBeam', ->
       return if @has('Invincible')
       @trigger('Hit')
