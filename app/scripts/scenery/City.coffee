@@ -184,11 +184,14 @@ generator.defineBlock class extends @Game.LevelScenery
       @addComponent 'Choreography'
       @attr x: 360 - (50 * index), y: 380
       @disableControl()
+      @weaponsEnabled = no
       @choreography c
       @one 'ChoreographyEnd', =>
         @removeComponent 'Choreography', 'no'
         block.unbind 'ShipSpawned'
-      @one 'unlock', -> @enableControl()
+      @one 'unlock', ->
+        @enableControl()
+        @weaponsEnabled = yes
       @one 'lift', ->
         block.elevator.tween({ y: block.elevator.y - 130 }, if block.settings.fast? then 25 else 2500)
         Crafty('ScrollWall').each ->
