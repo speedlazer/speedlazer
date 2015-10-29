@@ -58,7 +58,7 @@ class Game.LazerScript
 
       return if times is 0
       WhenJS(block(sequence)).then =>
-        @repeat(times - 1, event)(sequence)
+        @repeat(times - 1, block)(sequence)
 
   runScript: (scriptClass, args...) ->
     (sequence) =>
