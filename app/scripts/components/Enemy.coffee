@@ -18,6 +18,15 @@ Crafty.c 'Enemy',
       bullet.destroy()
     this
 
+  sendToBackground: (scale, z) ->
+    currentScale = @scale ? 1.0
+    @attr
+      scale: scale
+      w: (@w / currentScale) * scale
+      h: (@h / currentScale) * scale
+      z: z
+    @hidden = yes
+
   hide: (@hideMarker) ->
     @hidden = yes
     @attr alpha: 0.0
@@ -25,7 +34,14 @@ Crafty.c 'Enemy',
   reveal: ->
     @hideMarker?.destroy()
     @hidden = no
-    @attr alpha: 1.0
+    currentScale = @scale ? 1.0
+    scale = 1.0
+    @attr
+      scale: scale
+      w: (@w / currentScale) * scale
+      h: (@h / currentScale) * scale
+      alpha: 1.0,
+      z: 0
 
   remove: ->
     @hideMarker?.destroy()

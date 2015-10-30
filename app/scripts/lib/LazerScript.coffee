@@ -296,6 +296,11 @@ class Game.EntityScript extends Game.LazerScript
           @alternatePath
     @entity.bind(eventName, eventHandler)
 
+  sendToBackground: (scale, z) ->
+    (sequence) =>
+      @_verify(sequence)
+      @entity.sendToBackground(scale, z)
+
   movePath: (path) ->
     (sequence) =>
       @_verify(sequence)
@@ -340,7 +345,7 @@ class Game.EntityScript extends Game.LazerScript
       settings = location?() ? location
       _.extend(settings, extraSettings)
 
-      seaLevel = 420
+      seaLevel = @_getSeaLevel()
 
       if @enemy.moveState is 'air'
         if settings.y? and settings.y > seaLevel + Crafty.viewport.y
@@ -427,7 +432,7 @@ class Game.EntityScript extends Game.LazerScript
       y: @entity.y + Crafty.viewport.y
       speed: @entity.speed
 
-    seaLevel = 420
+    seaLevel = @_getSeaLevel()
     settings = _.defaults(settings, defaults)
     surfaceSize =
       w: @entity.w + 10
@@ -477,6 +482,11 @@ class Game.EntityScript extends Game.LazerScript
       defer.resolve()
     )
     defer.promise
+
+  _getSeaLevel: ->
+    #if @entity.hidden
+    350 + (70 * (@entity.scale ? 1.0))
+    #420
 
   _moveAir: (settings) ->
     defaults =
