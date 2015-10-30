@@ -90,11 +90,12 @@ class Game.LazerScript
       settings = _.defaults(settings,
         amount: 1
         delay: 1000
+        options: {}
       )
 
       promises = (for i in [0...settings.amount]
         @wait(i * settings.delay)(sequence).then =>
-          @runScript(scriptClass)(sequence)
+          @runScript(scriptClass, settings.options)(sequence)
       )
       WhenJS.all(promises).then (results) =>
         allKilled = yes

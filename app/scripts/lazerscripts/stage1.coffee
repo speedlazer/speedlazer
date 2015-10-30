@@ -5,9 +5,9 @@ Game.Scripts ||= {}
 class Game.Scripts.Stage1 extends Game.LazerScript
   metadata:
     namespace: 'City'
-    #startScenery: 'Ocean'
-    startScenery: 'Intro'
-    armedPlayers: no
+    startScenery: 'Ocean'
+    #startScenery: 'Intro'
+    #armedPlayers: no
     speed: 50
 
   execute: ->
@@ -19,11 +19,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
 
     @sequence(
-      @introText()
-      @tutorial()
-      @droneTakeover()
+      #@introText()
+      #@tutorial()
+      #@droneTakeover()
+      @repeat(4, @swirlAttacks())
       @setScenery('CoastStart')
-      #@swirlAttacks()
       #@underWaterAttacks()
       #@setScenery('Bay')
 
@@ -54,18 +54,18 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   tutorial: ->
     @sequence(
-      @say('General', 'Evade the upcoming drones!')
+      @say('General', 'We send some drones for target practice')
       @placeSquad Game.Scripts.Swirler,
         amount: 4
-        delay: 300
-      #@wave('FlyOver')
-      @say('General', 'We dropped an upgrade to show the weapon systems')
+        delay: 500
+        drop: 'lasers'
+      @say('General', 'We dropped a weapon system for you,\nTest it on those drones if you like')
       @repeat(2, @sequence(
         @dropWeaponsForEachPlayer()
         @wait(2000)
         @placeSquad Game.Scripts.Swirler,
           amount: 4
-          delay: 300
+          delay: 500
           drop: 'lasers'
       ))
     )
@@ -95,8 +95,17 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @say 'General', 'It\'s hiding in the city! go!'
     )
 
-  #swirlAttacks: ->
-    #@sequence(
+  swirlAttacks: ->
+    @parallel(
+      @repeat 4, @placeSquad Game.Scripts.Swirler,
+        amount: 4
+        delay: 500
+        drop: 'lasers'
+      @repeat 4, @placeSquad Game.Scripts.Swirler2,
+        amount: 4
+        delay: 500
+        drop: 'lasers'
+    )
       #@wave('SwirlAttack', drop: 'lasers')
       #@wave('SwirlAttack2', drop: 'lasers')
 
