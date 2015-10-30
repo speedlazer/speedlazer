@@ -5,13 +5,16 @@ Game.Scripts ||= {}
 class Game.Scripts.Stage1 extends Game.LazerScript
   metadata:
     namespace: 'City'
+    #startScenery: 'Ocean'
     startScenery: 'Intro'
+    armedPlayers: no
+    speed: 50
 
   execute: ->
     #@inventoryAdd 'enemy', 'default', ->
       #Crafty.e('Drone').drone(health: 200)
-    @inventoryAdd 'enemy', 'weaponizedDrone', ->
-      Crafty.e('Drone,Weaponized').drone(health: 200)
+    #@inventoryAdd 'enemy', 'weaponizedDrone', ->
+      #Crafty.e('Drone,Weaponized').drone(health: 200)
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
 
@@ -19,8 +22,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @introText()
       @tutorial()
       @droneTakeover()
+      @setScenery('CoastStart')
       #@swirlAttacks()
-      #@setScenery('CoastStart')
       #@underWaterAttacks()
       #@setScenery('Bay')
 
@@ -54,7 +57,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @say('General', 'Evade the upcoming drones!')
       @placeSquad Game.Scripts.Swirler,
         amount: 4
-        delay: 500
+        delay: 300
       #@wave('FlyOver')
       @say('General', 'We dropped an upgrade to show the weapon systems')
       @repeat(2, @sequence(
@@ -62,7 +65,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @wait(2000)
         @placeSquad Game.Scripts.Swirler,
           amount: 4
-          delay: 500
+          delay: 300
           drop: 'lasers'
       ))
     )
@@ -74,13 +77,14 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     )
 
   droneTakeover: ->
-    #@inventoryAdd 'enemy', 'backgroundDrone', ->
-      #Crafty.e('BackgroundDrone').drone()
-
     @sequence(
-      #@wave('Splash', enemy: 'backgroundDrone')
+      @placeSquad Game.Scripts.Splasher,
+        amount: 4
+        delay: 750
       @say('General', 'Wtf is happening with our drones?')
+
       #@wave('FlyOver', enemy: 'weaponizedDrone', drop: 'lasers')
+
       @say('General', 'Their AI has been compromised by our rogue prototype!\nEliminate it!')
       @if((-> @player(1).active)
         @say 'John', 'How?'
