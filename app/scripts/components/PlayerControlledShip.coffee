@@ -13,10 +13,14 @@ Crafty.c 'PlayerControlledShip',
 
   start: ->
     @addComponent('Invincible').invincibleDuration(2000)
-    @onHit 'Enemy', ->
+    @onHit 'Enemy', (collision) ->
       return if @has('Invincible')
-      @trigger('Hit')
+      hit = no
+      for e in collision
+        hit = yes unless e.obj.hidden
+      @trigger('Hit') if hit
 
+    # TODO: Potential code for removal
     @onHit 'LaserBeam', ->
       return if @has('Invincible')
       @trigger('Hit')
@@ -24,12 +28,14 @@ Crafty.c 'PlayerControlledShip',
       for pu in e
         @pickUp(pu.obj)
         @trigger('PowerUp', pu.obj)
-    @bind 'EnterFrame', ->
-      @x += @_forcedSpeed.x
-      @y += @_forcedSpeed.y
+    @bind 'EnterFrame', (fd) ->
+      motionX = (@_forcedSpeed.x / 1000.0) * fd.dt
+      motionY = (@_forcedSpeed.y / 1000.0) * fd.dt
+      @x += motionX
+      @y += motionY
       # Move player back if flying into an object
-      @x -= @_forcedSpeed.x if @hit('Edge')
-      @y -= @_forcedSpeed.y if @hit('Edge')
+      @x -= motionX if @hit('Edge')
+      @y -= motionY if @hit('Edge')
 
       # still hitting an object? then we where forced in
       # and are crashed (squashed probably)

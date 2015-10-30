@@ -23,7 +23,7 @@ Crafty.c 'ScrollWall',
       .attr(x: 0, y: Crafty.viewport.height - 2, h: 2, w: Crafty.viewport.width)
     @attach @wallBottom
 
-    @bind 'EnterFrame', ->
+    @bind 'EnterFrame', (fd) ->
       speedX = @_speed.x
       speedY = @_speed.y
 
@@ -43,30 +43,33 @@ Crafty.c 'ScrollWall',
 
             speedX += increase
 
-      @x += speedX
-      @y += speedY
+      # the speed is px / sec
+      # the time passed is fd.dt in milliseconds
+      @x += (speedX / 1000.0) * fd.dt
+      @y += (speedY / 1000.0) * fd.dt
 
       Crafty.viewport.y = -@y if Crafty.viewport.y isnt -@y
       Crafty.viewport.x = -@x if Crafty.viewport.x isnt -@x
-      Crafty.viewport._clamp() # TODO: Figure out what this does and if we need it
 
-    @onHit 'PlayerControlledShip', (el) ->
-      # Push the player forward
-      for e in el
-        p = e.obj
-        p.attr x: p.x + @_speed.x
+    # TODO: Verify correctness of these statements
 
-    @wallTop.onHit 'PlayerControlledShip', (el) =>
-      # Push the player downward
-      for e in el
-        p = e.obj
-        p.attr y: p.y + @_speed.y
+    #@onHit 'PlayerControlledShip', (el) ->
+      ## Push the player forward
+      #for e in el
+        #p = e.obj
+        #p.attr x: p.x + @_speed.x
 
-    @wallBottom.onHit 'PlayerControlledShip', (el) =>
-      # Push the player upward
-      for e in el
-        p = e.obj
-        p.attr y: @wallBottom.y - p.h
+    #@wallTop.onHit 'PlayerControlledShip', (el) =>
+      ## Push the player downward
+      #for e in el
+        #p = e.obj
+        #p.attr y: p.y + @_speed.y
+
+    #@wallBottom.onHit 'PlayerControlledShip', (el) =>
+      ## Push the player upward
+      #for e in el
+        #p = e.obj
+        #p.attr y: @wallBottom.y - p.h
 
   scrollWall: (speed) ->
     if speed.x? && speed.y?
@@ -81,5 +84,8 @@ Crafty.c 'ScrollWall',
 
   off: ->
     @wallEnd.removeComponent('Edge')
+    @unbind('EnterFrame')
+
+  remove: ->
     @unbind('EnterFrame')
 

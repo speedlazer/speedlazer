@@ -1,35 +1,29 @@
 Crafty.defineScene 'City', (data) ->
-
   # import from globals
   Game = window.Game
 
   # constructor
   Crafty.background('#602020')
 
-  level = Game.levelGenerator.createLevel
-    stage: data.stage
-    title: 'City'
-    namespace: 'City'
-    startScenery: 'Intro'
+  script = Game.Scripts.Stage1
+  #script = Game.Scripts.BossFight
+  level = Game.levelGenerator.createLevel script::metadata
+  level.start()
 
-  level.start
-    armedPlayers: no
-    speed: 1
-
-  (new Game.Scripts.Stage1).run(level).then =>
+  new script(level).run().then =>
     console.log 'end of script!'
-
     # Temporary code to make the player "enjoy" the gameplay
     # demo level
 
-    Crafty('ScrollWall').each -> @off()
-    endLevelTrigger = Crafty.e('2D, Canvas, Color, Collision')
-      .attr({ w: 10, h: level.visibleHeight })
-      .onHit 'PlayerControlledShip', ->
-        Crafty.trigger('EndOfLevel')
-        @destroy()
-    level.addComponent(endLevelTrigger, x: 640, y: 0)
+    #Crafty('ScrollWall').each -> @off()
+    #endLevelTrigger = Crafty.e('2D, Canvas, Color, Collision')
+      #.attr({ w: 10, h: level.visibleHeight })
+      #.onHit 'PlayerControlledShip', ->
+        #Crafty.trigger('EndOfLevel')
+        #@destroy()
+    #level.addComponent(endLevelTrigger, x: 640, y: 0)
 
+  # TODO: This should be set in script, because other levels / scripts have different positions/sunlight
   duration = 600 * 1000
   Crafty.e('ColorFade, 2D').colorFade(duration: (duration / 2.0), background: yes,
     '#602020', '#8080FF')

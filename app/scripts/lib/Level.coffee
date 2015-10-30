@@ -107,7 +107,7 @@ class Game.Level
         x: 0
         y: 0
 
-    settings[k] ?= v for k, v of defaults
+    settings = _.defaults(settings, @data, defaults)
 
     Crafty.viewport.x = 0
     Crafty.viewport.y = 0
@@ -139,24 +139,21 @@ class Game.Level
         @lastUpdate = Crafty.viewport._x
     )
 
-    Crafty.bind 'LeaveBlock', (index) =>
-      if index > 0
-        @_handleSceneryEvents(@blocks[index - 1], 'leave')
-        @currentBlockIndex = index
-        @_handleSceneryEvents(@blocks[index], 'inScreen')
-
+    Crafty.bind 'LeaveBlock', (block) => #(index) =>
+      index = _.indexOf(@blocks, block)
+      @_handleSceneryEvents(@blocks[index - 1], 'leave') if index > 0
+      @_handleSceneryEvents(block, 'inScreen')
       @_cleanupBuildBlocks()
 
-    Crafty.bind 'EnterBlock', (index) =>
-      if index > 0
-        @_handleSceneryEvents(@blocks[index - 1], 'outScreen')
-      @newBlockIndex = index
-      @_handleSceneryEvents(@blocks[index], 'enter')
+    Crafty.bind 'EnterBlock', (block) => #(index) =>
+      index = _.indexOf(@blocks, block)
+      @_handleSceneryEvents(@blocks[index - 1], 'outScreen') if index > 0
+      @_handleSceneryEvents(block, 'enter')
 
-    Crafty.bind 'PlayerEnterBlock', (index) =>
-      if index > 0
-        @_handleSceneryEvents(@blocks[index - 1], 'playerLeave')
-      @_handleSceneryEvents(@blocks[index], 'playerEnter')
+    Crafty.bind 'PlayerEnterBlock', (block) => #(index) =>
+      index = _.indexOf(@blocks, block)
+      @_handleSceneryEvents(@blocks[index - 1], 'playerLeave') if index > 0
+      @_handleSceneryEvents(block, 'playerEnter')
 
     Crafty.bind 'PlayerDied', =>
       playersActive = no
@@ -288,10 +285,10 @@ class Game.Level
 
   _addBlockToLevel: (blockType, settings) ->
     klass = @generator.buildingBlocks[blockType]
-    throw new Error("#{blockType} not found") unless klass?
+    #throw new Error("#{blockType} not found") unless klass?
     block = new klass(this, @generator, settings)
     @blocks.push block
-    block.build(@generationPosition, @blocks.length - 1)
+    block.build(@generationPosition) #, @blocks.length - 1)
     @generationPosition =
       x: block.x + block.delta.x
       y: block.y + block.delta.y
@@ -304,7 +301,7 @@ class Game.Level
     @generationPosition =
       x: @generationPosition.x - block.delta.x
       y: @generationPosition.y - block.delta.y
-    block.build(@generationPosition, 0)
+    block.build(@generationPosition) #, 0)
 
   _generateBlocks: (generator) ->
     return if @blocks.length is 0
@@ -338,11 +335,10 @@ class Game.Level
     generator.amountGenerated += 1
 
   _cleanupBuildBlocks: ->
-    for block, index in @blocks
-      if block?.canCleanup()
-        block.clean()
-        @blocks[index] = null
-
+    first = @blocks[0]
+    while first.canCleanup()
+      @blocks.shift().clean()
+      first = @blocks[0]
 
   _determineNextTileType: (blockType, settings) ->
     blockKlass = @generator.buildingBlocks[blockType]

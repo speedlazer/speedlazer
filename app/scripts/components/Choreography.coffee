@@ -11,8 +11,11 @@ Crafty.c 'Choreography',
       follow: @_executeFollow
       tween: @_executeTween
       bezier: @_executeBezier
+      viewportBezier: @_executeViewportBezier
 
   remove: ->
+    return unless @_currentPart?
+    @trigger('ChoreographyEnd')
 
   choreography: (c, options = {}) ->
     @_options = _.defaults(options, {
@@ -61,7 +64,7 @@ Crafty.c 'Choreography',
 
     if @_options.compensateCameraSpeed
       # TODO: Figure out why we need the magic .7 to get enemies off screen.
-      @x += ((@camera.x - @_options.cameraLock.x) * .7)
+      @x += ((@camera.x - @_options.cameraLock.x))
 
     if @_currentPart.easing.complete
       @_setupCPart @_currentPart.part + 1
@@ -94,32 +97,31 @@ Crafty.c 'Choreography',
 
   _executeMoveIntoViewport: (v) ->
     # the goal are current coordinates on screen
-    destinationX = -Crafty.viewport.x + @_currentPart.dx
-    diffX = destinationX - @x
+    destinationX = @_currentPart.dx
+    @_currentPart.moveOriginX ?= @_currentPart.x + Crafty.viewport.x
+    diffX = destinationX - @_currentPart.moveOriginX
     motionX = (diffX * v)
-    if @_currentPart.maxSpeed? and Math.abs(motionX) > @_currentPart.maxSpeed
-      motionX = @_currentPart.maxSpeed
-      motionX *= -1 if diffX < 0
-    @x = @x + motionX
+    @x = @_currentPart.moveOriginX + motionX - Crafty.viewport.x
 
-    destinationY = -Crafty.viewport.y + @_currentPart.dy
-    diffY = destinationY - @y
+    destinationY = @_currentPart.dy
+    @_currentPart.moveOriginY ?= @_currentPart.y + Crafty.viewport.y
+    diffY = destinationY - @_currentPart.moveOriginY
+
     motionY = (diffY * v)
-    if @_currentPart.maxSpeed? and Math.abs(motionY) > @_currentPart.maxSpeed
-      motionY = @_currentPart.maxSpeed
-      motionY *= -1 if diffX < 0
-    @y = @y + motionY
+    @y = @_currentPart.moveOriginY + motionY - Crafty.viewport.y
 
   _executeFollow: (v) ->
     # the goal are current coordinates on screen
-    destinationX = @_currentPart.target.x + @_currentPart.target.w // 2
+    destinationX = @_currentPart.target.x + (@_currentPart.target.w // 2)
     destinationX -= @w // 2
 
     diffX = destinationX - @x
     motionX = (diffX * v)
+    console.log diffX, motionX
     if @_currentPart.maxSpeed? and Math.abs(motionX) > @_currentPart.maxSpeed
       motionX = @_currentPart.maxSpeed
       motionX *= -1 if diffX < 0
+
     @x = @x + motionX
 
     #destinationY = @_currentPart.dy
@@ -147,12 +149,19 @@ Crafty.c 'Choreography',
       )
       @_currentPart.bPath = bp.buildPathFrom scaled
     point = bp.pointOnPath(@_currentPart.bPath, v)
-    #if point.c isnt @_currentPart.curveIndex
-      #i = point.c
-        #JSON.stringify(@_currentPart.path[i]), ' to ',
-        #JSON.stringify(@_currentPart.path[i + 1])
 
-      #@_currentPart.curveIndex = point.c
+    if @_currentPart.rotation
+      @rotation = bp.angleOnPath(@_currentPart.bPath, v)
+
+    @x = point.x
+    @y = point.y
+
+
+  _executeViewportBezier: (v) ->
+    bp = new Game.BezierPath
+    unless @_currentPart.bPath?
+      @_currentPart.bPath = bp.buildPathFrom @_currentPart.path
+    point = bp.pointOnPath(@_currentPart.bPath, v)
 
     if @_currentPart.rotation
       @rotation = bp.angleOnPath(@_currentPart.bPath, v)

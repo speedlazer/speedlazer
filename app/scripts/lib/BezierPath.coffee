@@ -48,9 +48,11 @@ class Game.BezierPath
     p
 
   angleOnPath: (path, location) ->
-    [curve, v] = @getCurveAndLocation(path, location)
-    gradient = jsBezier.gradientAtPoint(curve.points, v)
-    gradient * 45.0
+    p1 = @pointOnPath(path, location)
+    p2 = @pointOnPath(path, Math.min(location + 0.01, 1.0))
+    angle = Math.atan2(p1.y - p2.y, p1.x - p2.x)
+    angle *= 180 / Math.PI
+    angle
 
   getCurveAndLocation: (path, location) ->
     distance = 0.0

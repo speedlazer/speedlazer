@@ -39,11 +39,11 @@ Crafty.c 'WeaponLaser',
   shoot: (onOff) ->
     return unless onOff
     settings = switch @level
-      when 0 then w: 4, speed: 7, h: 3
-      when 1 then w: 6, speed: 7, h: 4
-      when 2 then w: 8, speed: 7, h: 5
-      when 3 then w: 10, speed: 7, h: 5
-      when 4 then w: 12, speed: 7, h: 6
+      when 0 then w: 4, speed: 350, h: 3
+      when 1 then w: 6, speed: 350, h: 4
+      when 2 then w: 8, speed: 350, h: 5
+      when 3 then w: 10, speed: 350, h: 5
+      when 4 then w: 12, speed: 350, h: 6
 
     Crafty.e('Bullet')
       .color('#FFFF00')
