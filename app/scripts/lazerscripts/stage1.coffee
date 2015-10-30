@@ -5,39 +5,37 @@ Game.Scripts ||= {}
 class Game.Scripts.Stage1 extends Game.LazerScript
   metadata:
     namespace: 'City'
-    startScenery: 'Ocean'
-    #startScenery: 'Intro'
-    #armedPlayers: no
+    #startScenery: 'Ocean'
+    startScenery: 'Intro'
+    armedPlayers: no
     speed: 50
 
   execute: ->
-    #@inventoryAdd 'enemy', 'default', ->
-      #Crafty.e('Drone').drone(health: 200)
-    #@inventoryAdd 'enemy', 'weaponizedDrone', ->
-      #Crafty.e('Drone,Weaponized').drone(health: 200)
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
 
     @sequence(
-      #@introText()
-      #@tutorial()
-      #@droneTakeover()
-      @repeat(4, @swirlAttacks())
+      @introText()
+      @tutorial()
+      @droneTakeover()
+      @swirlAttacks()
       @setScenery('CoastStart')
-      #@underWaterAttacks()
-      #@setScenery('Bay')
+      @swirlAttacks()
+      @underWaterAttacks()
+      @setScenery('Bay')
 
-      #@wait(20000)
-      #@setScenery('UnderBridge')
-      #@waitForScenery('UnderBridge', event: 'leave')
-      #@setScenery('UnderBridge')
-      #@waitForScenery('UnderBridge', event: 'leave')
-      #@gainHeight(250, duration: 4000)
-      #@setScenery('Skyline')
-      #@waitForScenery('Skyline', event: 'leave')
-      #@disableWeapons()
-      #@showScore()
-      #@enableWeapons()
+      @setSpeed 250
+      @wait(20000)
+      @setScenery('UnderBridge')
+      @waitForScenery('UnderBridge', event: 'leave')
+      @setScenery('UnderBridge')
+      @waitForScenery('UnderBridge', event: 'leave')
+      @gainHeight(250, duration: 4000)
+      @setScenery('Skyline')
+      @waitForScenery('Skyline', event: 'leave')
+      @disableWeapons()
+      @showScore()
+      @enableWeapons()
     )
 
   introText: ->
@@ -83,6 +81,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         delay: 750
       @say('General', 'Wtf is happening with our drones?')
 
+      # TODO: Add shooting enemies
       #@wave('FlyOver', enemy: 'weaponizedDrone', drop: 'lasers')
 
       @say('General', 'Their AI has been compromised by our rogue prototype!\nEliminate it!')
@@ -97,11 +96,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   swirlAttacks: ->
     @parallel(
-      @repeat 4, @placeSquad Game.Scripts.Swirler,
+      @repeat 2, @placeSquad Game.Scripts.Swirler,
         amount: 4
         delay: 500
         drop: 'lasers'
-      @repeat 4, @placeSquad Game.Scripts.Swirler2,
+      @repeat 2, @placeSquad Game.Scripts.Swirler2,
         amount: 4
         delay: 500
         drop: 'lasers'
@@ -128,5 +127,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       #)
     #)
 
-  #underWaterAttacks: ->
-    #@repeat(3, @wave('UnderWater'))
+  underWaterAttacks: ->
+    @repeat 3, @placeSquad Game.Scripts.Stalker
+

@@ -5,7 +5,6 @@ class Game.Scripts.BossFight extends Game.LazerScript
   metadata:
     namespace: 'City'
     startScenery: 'Ocean'
-    armedPlayers: yes
     title: 'City'
     stage: 1
 
@@ -15,14 +14,14 @@ class Game.Scripts.BossFight extends Game.LazerScript
 
     @sequence(
       @setSpeed(1)
-      @wait 3000
-      @placeSquad Game.Scripts.Swirler,
-        amount: 4
-        delay: 500
-        drop: 'lasers'
-      @gainHeight(250, duration: 4000)
+      #@wait 3000
+      #@placeSquad Game.Scripts.Swirler,
+        #amount: 4
+        #delay: 500
+        #drop: 'lasers'
+      #@gainHeight(250, duration: 4000)
       #@setScenery('Skyline')
-      #@runScript(Game.Scripts.Stage1Boss)
-      @showScore()
+      @runScript(Game.Scripts.Stage1Boss)
+      #@showScore()
       @say('Game', 'You Won!...')
     )

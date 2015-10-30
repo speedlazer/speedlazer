@@ -196,7 +196,7 @@ class Game.LazerScript
 
       currentSpeed = @level._forcedSpeed?.x || @level._forcedSpeed
       { duration } = options
-      speedY = (height / ((duration / 1000.0) * Crafty.timer.FPS()))
+      speedY = (height / duration) * 1000
 
       @level.setForcedSpeed(x: currentSpeed, y: -speedY)
       level = @level
@@ -451,8 +451,7 @@ class Game.EntityScript extends Game.LazerScript
 
     deltaX = if settings.x? then Math.abs(settings.x - (@entity.hideMarker.x + Crafty.viewport.x)) else 0
     deltaY = if settings.y? then Math.abs(settings.y - (@entity.hideMarker.y + Crafty.viewport.y)) else 0
-    delta = Math.max(deltaX, deltaY)
-
+    delta = Math.sqrt((deltaX ** 2) + (deltaY ** 2))
     duration = (delta / settings.speed) * 1000
 
     if settings.y?
@@ -473,9 +472,8 @@ class Game.EntityScript extends Game.LazerScript
     )
 
     @entity.hideMarker.choreography([
-      type: 'follow'
-      axis: 'x'
-      target: @entity
+      type: 'viewport'
+      x: settings.x
       maxSpeed: settings.speed
       duration: duration
     ]).bind('ChoreographyEnd', ->
@@ -485,9 +483,7 @@ class Game.EntityScript extends Game.LazerScript
     defer.promise
 
   _getSeaLevel: ->
-    #if @entity.hidden
     350 + (70 * (@entity.scale ? 1.0))
-    #420
 
   _moveAir: (settings) ->
     defaults =

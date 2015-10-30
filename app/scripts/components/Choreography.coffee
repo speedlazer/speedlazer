@@ -117,6 +117,7 @@ Crafty.c 'Choreography',
 
     diffX = destinationX - @x
     motionX = (diffX * v)
+    console.log diffX, motionX
     if @_currentPart.maxSpeed? and Math.abs(motionX) > @_currentPart.maxSpeed
       motionX = @_currentPart.maxSpeed
       motionX *= -1 if diffX < 0
@@ -148,12 +149,6 @@ Crafty.c 'Choreography',
       )
       @_currentPart.bPath = bp.buildPathFrom scaled
     point = bp.pointOnPath(@_currentPart.bPath, v)
-    #if point.c isnt @_currentPart.curveIndex
-      #i = point.c
-        #JSON.stringify(@_currentPart.path[i]), ' to ',
-        #JSON.stringify(@_currentPart.path[i + 1])
-
-      #@_currentPart.curveIndex = point.c
 
     if @_currentPart.rotation
       @rotation = bp.angleOnPath(@_currentPart.bPath, v)
@@ -171,7 +166,7 @@ Crafty.c 'Choreography',
     if @_currentPart.rotation
       @rotation = bp.angleOnPath(@_currentPart.bPath, v)
 
-    @x = point.x #- Crafty.viewport.x
-    @y = point.y #- Crafty.viewport.y
+    @x = point.x
+    @y = point.y
 
 
