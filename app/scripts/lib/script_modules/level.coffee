@@ -109,10 +109,10 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       @level.setForcedSpeed speed
 
-  showScore: ->
+  showScore: (stage, title) ->
     (sequence) =>
       @_verify(sequence)
-      score = @level.finishStage()
+      score = Crafty.e('StageEnd').stageEnd(@level, stage, title)
       @wait(15 * 2000)(sequence).then =>
         score.destroy()
 

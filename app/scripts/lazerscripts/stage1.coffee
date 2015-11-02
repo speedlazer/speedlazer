@@ -34,7 +34,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setScenery('Skyline')
       @waitForScenery('Skyline', event: 'leave')
       @disableWeapons()
-      @showScore()
+      @showScore(1, 'City')
       @enableWeapons()
     )
 

@@ -164,10 +164,6 @@ class Game.Level
 
     block.add(position.x, position.y, c)
 
-  finishStage: ->
-    # start showing player stats and counting scores...
-    Crafty.e('StageEnd').stageEnd this
-
   ##
   # Stop the level, clean up event handlers and
   # blocks
