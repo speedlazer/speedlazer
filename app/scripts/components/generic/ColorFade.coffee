@@ -12,6 +12,7 @@ Crafty.c 'ColorFade',
     pos = @v / @duration
     if pos >= 1
       @unbind 'EnterFrame'
+      @trigger 'ColorFadeFinished'
 
     color = @_buildColor(pos, @colors)
     if @background

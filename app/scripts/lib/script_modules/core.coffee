@@ -55,12 +55,11 @@ Game.ScriptModule.Core =
       @_verify(sequence)
       new scriptClass(@level).run(args...)
 
-  # TODO: Change this in a seperate '@asynch' keyword?
-  #runScriptAsync: (scriptClass, args...) ->
-    #(sequence) =>
-      #@_verify(sequence)
-      #new scriptClass(@level).run(args...)
-      #return
+  async: (task) ->
+    (sequence) =>
+      @_verify(sequence)
+      task(sequence)
+      return
 
   wait: (amount) ->
     (sequence) =>
