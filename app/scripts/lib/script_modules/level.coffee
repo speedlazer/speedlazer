@@ -38,16 +38,7 @@ Game.ScriptModule.Level =
   say: (speaker, text) ->
     (sequence) =>
       @_verify(sequence)
-      # TODO: Drastically simplify 'showDialog' when all scripts are working
-      d = WhenJS.defer()
-      @level.showDialog([":#{speaker}:#{text}"]).on(
-        'Finished', ->
-          d.resolve()
-      ).on(
-        'Abort', ->
-          d.resolve()
-      )
-      d.promise
+      Game.say(speaker, text, bottom: @level.visibleHeight)
 
   drop: (options) ->
     (sequence) =>

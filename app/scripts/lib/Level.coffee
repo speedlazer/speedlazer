@@ -212,16 +212,6 @@ class Game.Level
     Crafty('PlayerControlledShip').each ->
       @weaponsEnabled = onOff
 
-  showDialog: (dialog, callback) ->
-    new Game.Dialog dialog, this, callback
-
-  spawnEnemies: (formation, enemyComponent, callback) ->
-    formationClass = Game.EnemyFormation[formation]
-    formations = _.keys Game.EnemyFormation
-    throw new Error("Not a valid formation: #{formation}. " +
-      "Use one of: #{formations.join ','}") unless formationClass?
-    new formationClass(this, enemyComponent, callback)
-
   getComponentOffset: ->
     x: @_scrollWall.x
     y: @_scrollWall.y
