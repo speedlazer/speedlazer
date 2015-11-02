@@ -20,14 +20,11 @@ Crafty.c 'PlayerControlledShip',
         hit = yes unless e.obj.hidden
       @trigger('Hit') if hit
 
-    # TODO: Potential code for removal
-    @onHit 'LaserBeam', ->
-      return if @has('Invincible')
-      @trigger('Hit')
     @onHit 'PowerUp', (e) ->
       for pu in e
         @pickUp(pu.obj)
         @trigger('PowerUp', pu.obj)
+
     @bind 'EnterFrame', (fd) ->
       motionX = (@_forcedSpeed.x / 1000.0) * fd.dt
       motionY = (@_forcedSpeed.y / 1000.0) * fd.dt

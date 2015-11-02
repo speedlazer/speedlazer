@@ -44,7 +44,6 @@ class Game.LevelScenery
     @_notifyEnterFunction() # index
 
   _notifyEnterFunction: -> #(index) ->
-    # TODO: Make this into a single component
     block = this
     Crafty.e('2D, Canvas, Color, Collision')
       .attr({ x: @x, y: @y, w: 10, h: 800 })

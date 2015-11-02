@@ -4,14 +4,12 @@ Crafty.c 'Choreography',
     @bind("EnterFrame", @_choreographyTick)
 
     @_ctypes =
-      linear: @_executeLinear
-      sine: @_executeSine
-      delay: @_executeDelay
-      viewport: @_executeMoveIntoViewport # move to position within viewport
-      follow: @_executeFollow
-      tween: @_executeTween
       bezier: @_executeBezier
+      delay: @_executeDelay
+      linear: @_executeLinear
+      viewport: @_executeMoveIntoViewport
       viewportBezier: @_executeViewportBezier
+      tween: @_executeTween
 
   remove: ->
     return unless @_currentPart?
@@ -64,7 +62,6 @@ Crafty.c 'Choreography',
     @_ctypes[@_currentPart.type].apply(this, [v])
 
     if @_options.compensateCameraSpeed
-      # TODO: Figure out why we need the magic .7 to get enemies off screen.
       @x += ((@camera.x - @_options.cameraLock.x))
 
     if @_currentPart.easing.complete
@@ -89,11 +86,6 @@ Crafty.c 'Choreography',
     @x = @_currentPart.x + (v * @_currentPart.dx)
     @y = @_currentPart.y + (v * @_currentPart.dy)
 
-  _executeSine: (v) ->
-    halfY = @_currentPart.dy
-    @x = @_currentPart.x + (v * @_currentPart.dx)
-    @y = @_currentPart.y + (Math.sin(-(Math.PI + (Math.PI * @_currentPart.start * 2)) + (v * @_currentPart.repeat * Math.PI * 2)) * halfY)
-
   _executeDelay: (v) ->
 
   _executeMoveIntoViewport: (v) ->
@@ -110,28 +102,6 @@ Crafty.c 'Choreography',
 
     motionY = (diffY * v)
     @y = @_currentPart.moveOriginY + motionY - Crafty.viewport.y
-
-  _executeFollow: (v) ->
-    # the goal are current coordinates on screen
-    destinationX = @_currentPart.target.x + (@_currentPart.target.w // 2)
-    destinationX -= @w // 2
-
-    diffX = destinationX - @x
-    motionX = (diffX * v)
-    console.log diffX, motionX
-    if @_currentPart.maxSpeed? and Math.abs(motionX) > @_currentPart.maxSpeed
-      motionX = @_currentPart.maxSpeed
-      motionX *= -1 if diffX < 0
-
-    @x = @x + motionX
-
-    #destinationY = @_currentPart.dy
-    #diffY = destinationY - @y
-    #motionY = (diffY * v)
-    #if @_currentPart.maxSpeed? and Math.abs(motionY) > @_currentPart.maxSpeed
-      #motionY = @_currentPart.maxSpeed
-      #motionY *= -1 if diffX < 0
-    #@y = @y + motionY
 
   _executeTween: (v) ->
     for k, p of @_currentPart.properties
@@ -156,7 +126,6 @@ Crafty.c 'Choreography',
 
     @x = point.x
     @y = point.y
-
 
   _executeViewportBezier: (v) ->
     bp = new Game.BezierPath
