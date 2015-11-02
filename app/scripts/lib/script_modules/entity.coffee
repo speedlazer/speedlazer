@@ -18,10 +18,13 @@ Game.ScriptModule.Entity =
       @_verify(sequence)
       @entity.sendToBackground(scale, z)
 
-  movePath: (path) ->
+  movePath: (path, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
       return unless @enemy.alive
+      settings = _.defaults(settings,
+        rotate: yes
+      )
       path.unshift [
         @entity.x + Crafty.viewport.x
         @entity.y + Crafty.viewport.y
@@ -45,7 +48,7 @@ Game.ScriptModule.Entity =
       @entity.choreography(
         [
           type: 'viewportBezier'
-          rotation: yes
+          rotation: settings.rotate
           path: bezierPath
           duration: duration
         ], compensateCameraSpeed: yes
