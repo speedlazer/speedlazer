@@ -111,6 +111,14 @@ module.exports = function (grunt) {
           ]
         }]
       },
+      compiled: {
+        files: [{
+          dot: true,
+          src: [
+            '<%= yeoman.app %>/scripts/compiled/*.js',
+          ]
+        }]
+      },
       server: '.tmp'
     },
     jshint: {

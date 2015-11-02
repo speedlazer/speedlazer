@@ -49,19 +49,6 @@ Game.ScriptModule.Level =
       )
       d.promise
 
-  #TODO: This will probably change soon
-  wave: (formation, options = {}) ->
-    (sequence) =>
-      @_verify(sequence)
-      enemyConstructor = @inventory('enemy', options.enemy)
-      wave = @level.spawnEnemies(formation, enemyConstructor)
-      if options.drop
-        wave.on 'LastDestroyed', (last) =>
-          @drop(item: options.drop, location: last)(sequence)
-
-      # TODO: Any - Wait, Kill
-      @wait(wave.duration)(sequence)
-
   drop: (options) ->
     (sequence) =>
       @_verify(sequence)

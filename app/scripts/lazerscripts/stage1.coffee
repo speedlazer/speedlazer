@@ -82,7 +82,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @say('General', 'Wtf is happening with our drones?')
 
       # TODO: Add shooting enemies
-      #@wave('FlyOver', enemy: 'weaponizedDrone', drop: 'lasers')
 
       @say('General', 'Their AI has been compromised by our rogue prototype!\nEliminate it!')
       @if((-> @player(1).active)
@@ -105,27 +104,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         delay: 500
         drop: 'lasers'
     )
-      #@wave('SwirlAttack', drop: 'lasers')
-      #@wave('SwirlAttack2', drop: 'lasers')
-
-      #@repeat(2,
-        #@parallel(
-          #@wave('SwirlAttack2', drop: 'lasers')
-          #@sequence(
-            #@wait(3000)
-            #@wave('SwirlAttack', drop: 'lasers')
-          #)
-          #@sequence(
-            #@wait(6000)
-            #@wave('SwirlAttack2', drop: 'lasers')
-          #)
-          #@sequence(
-            #@wait(9000)
-            #@wave('SwirlAttack', drop: 'lasers')
-          #)
-        #)
-      #)
-    #)
 
   underWaterAttacks: ->
     @repeat 3, @placeSquad Game.Scripts.Stalker

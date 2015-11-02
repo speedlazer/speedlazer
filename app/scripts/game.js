@@ -65,6 +65,3 @@ var Game = {
 // Export
 window.Game = Game;
 
-require('scripts/compiled/lib');
-require('scripts/compiled/lazerscripts');
-require('scripts/compiled/scenery');

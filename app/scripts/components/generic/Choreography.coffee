@@ -15,6 +15,7 @@ Crafty.c 'Choreography',
 
   remove: ->
     return unless @_currentPart?
+    @_currentPart = null
     @trigger('ChoreographyEnd')
 
   choreography: (c, options = {}) ->

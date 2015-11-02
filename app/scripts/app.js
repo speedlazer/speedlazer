@@ -1,10 +1,13 @@
-'use strict';
 require('scripts/components/*');
 require('scripts/compiled/components');
+require('scripts/game');
+require('scripts/compiled/lib');
+require('scripts/compiled/lazerscripts');
+require('scripts/compiled/scenery');
 require('scripts/scenes/*');
 require('scripts/compiled/scenes');
-require('scripts/game');
 
+'use strict';
 window.Game.start(false);
 
 // Handle the fullscreen button
