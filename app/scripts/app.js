@@ -3,7 +3,6 @@ require('scripts/components/*');
 require('scripts/compiled/components');
 require('scripts/scenes/*');
 require('scripts/compiled/scenes');
-
 require('scripts/game');
 
 window.Game.start(false);
@@ -35,6 +34,5 @@ $(window).on('resize', function() {
 });
 
 scaleGame();
-
 
 //Crafty.debugBar.show();
