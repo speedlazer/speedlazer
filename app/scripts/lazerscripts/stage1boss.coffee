@@ -17,7 +17,7 @@ class Game.Scripts.Swirler2 extends Game.EntityScript
       [320, 300]
       [130, 240]
       [340, 100]
-      [550, 250]
+      [570, 260]
       [-10, 400]
     ]
 

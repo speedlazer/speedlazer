@@ -142,17 +142,17 @@ generator.defineBlock class extends @Game.LevelScenery
     c = [
         type: 'linear'
         x: -160
-        duration: if @settings.fast? then 25 else 2500
+        duration: 2500
       ,
         type: 'linear'
         y: -130
-        duration: if @settings.fast? then 25 else 2500
+        duration: 2500
         event: 'lift'
       ,
         type: 'linear'
         x: 70
         y: -10
-        duration: if @settings.fast? then 15 else 2500
+        duration: 2500
         event: 'shipExterior'
       ,
         type: 'delay'
@@ -193,13 +193,13 @@ generator.defineBlock class extends @Game.LevelScenery
         @enableControl()
         @weaponsEnabled = yes
       @one 'lift', ->
-        block.elevator.tween({ y: block.elevator.y - 130 }, if block.settings.fast? then 25 else 2500)
+        block.elevator.tween({ y: block.elevator.y - 130 }, 2500)
         Crafty('ScrollWall').each ->
           @addComponent 'Tween'
-          @tween { y: 0 }, if block.settings.fast? then 50 else 5000
+          @tween { y: 0 }, 5000
           @one 'TweenEnd', -> @removeComponent 'Tween', no
       @one 'shipExterior', ->
-        block.outside.tween({ alpha: 1 }, if block.settings.fast? then 15 else 1500).addComponent('Edge')
+        block.outside.tween({ alpha: 1 }, 1500).addComponent('Edge')
       @one 'go', ->
         block.level.setForcedSpeed block.speed
 

@@ -131,12 +131,15 @@ Crafty.c 'Choreography',
     bp = new Game.BezierPath
     unless @_currentPart.bPath?
       @_currentPart.bPath = bp.buildPathFrom @_currentPart.path
-    point = bp.pointOnPath(@_currentPart.bPath, v)
+    unless @_currentPart.viewport?
+      @_currentPart.viewport =
+        y: Crafty.viewport.y
 
     if @_currentPart.rotation
       @rotation = bp.angleOnPath(@_currentPart.bPath, v)
 
-    @x = point.x
-    @y = point.y
+    shiftedY = (@_currentPart.viewport.y - Crafty.viewport.y)
+    point = bp.pointOnPath(@_currentPart.bPath, v)
 
+    @attr x: point.x, y: point.y + shiftedY
 
