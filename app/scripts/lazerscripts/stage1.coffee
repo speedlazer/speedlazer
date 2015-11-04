@@ -110,29 +110,5 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @repeat 3, @placeSquad Game.Scripts.Stalker
 
   sunRise: ->
-    duration = 600 * 1000
-
-    @parallel(
-      =>
-        Crafty.background('#602020')
-        d = WhenJS.defer()
-        Crafty.e('ColorFade, 2D').colorFade(duration: (duration / 2.0), background: yes,
-          '#602020', '#8080FF')
-          .bind('ColorFadeFinished', ->
-            d.resolve()
-            @destroy()
-          )
-        d.promise
-      =>
-        d = WhenJS.defer()
-        Crafty.e('Sun, ColorFade')
-          .sun(
-            x: 620
-            y: 340
-          )
-          .tween({ dy: -250, dx: 115 }, duration)
-          .colorFade(duration: duration, '#DD8000', '#DDDD00', '#DDDD80')
-          .bind('ColorFadeFinished', -> d.resolve())
-        d.promise
-    )
+    @runScript(Game.Scripts.SunRise)
 

@@ -7,11 +7,14 @@ Crafty.c 'ColorFade',
     @v = 0
     @bind 'EnterFrame', @_recolor
 
+  remove: ->
+    @unbind 'EnterFrame', @_recolor
+
   _recolor: (fd) ->
     @v += fd.dt
     pos = @v / @duration
     if pos >= 1
-      @unbind 'EnterFrame'
+      @unbind 'EnterFrame', @_recolor
       @trigger 'ColorFadeFinished'
 
     color = @_buildColor(pos, @colors)

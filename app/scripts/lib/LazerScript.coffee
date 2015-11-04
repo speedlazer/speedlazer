@@ -22,7 +22,7 @@ class Game.LazerScript
     @invItems[type] ||= {}
     @invItems[type][name] = constructor
 
-_.extend Game.LazerScript::, Game.ScriptModule.Core, Game.ScriptModule.Level
+_.extend Game.LazerScript::, Game.ScriptModule.Core, Game.ScriptModule.Level, Game.ScriptModule.Colors
 
 # Could these be merged? V ^
 

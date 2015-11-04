@@ -118,7 +118,7 @@ Game.ScriptModule.Entity =
       .attr(
         x: @entity.x - 5
         y: @entity.y
-        z: 1
+        z: @entity.z + 1
         w: @entity.w + 10
         h: 20
         alpha: 1.0

@@ -1,9 +1,10 @@
 Crafty.c 'Sun',
   init: ->
-    @requires '2D, Canvas, Color, ViewportRelativeMotion, Tween, Collision'
+    @requires '2D, Canvas, Color, Choreography, ViewportFixed, Collision'
     @attr(w: 20, h: 20, z: -1000)
       .color('#DDDD00')
 
+    @origin 'center'
     @glare = []
     directGlare = Crafty.e('2D, Canvas, Color, Glare')
       .attr
@@ -13,6 +14,7 @@ Crafty.c 'Sun',
         alpha: 0.4
         originalAlpha: 0.4
       .color('#FFFFFF')
+      .origin('center')
     @attach directGlare
     @glare.push directGlare
 
@@ -26,6 +28,7 @@ Crafty.c 'Sun',
         alpha: 0.7
         originalAlpha: 0.7
       .color('#B0B0FF')
+      .origin('center')
     @attach blueGlare
     @glare.push blueGlare
 
@@ -39,6 +42,7 @@ Crafty.c 'Sun',
         alpha: 0.8
         originalAlpha: 0.8
       .color('#FF9090')
+      .origin('center')
     @attach redGlare
     @glare.push redGlare
 
@@ -52,21 +56,12 @@ Crafty.c 'Sun',
         res: 1.1
         originalAlpha: 0.2
       .color('#FF9090')
+      .origin('center')
     @attach bigGlare
     @glare.push bigGlare
 
-  sun: (position) ->
-    { x, y } = position
-    vx = Crafty.viewport.width / 2
-    dx = x - vx
-    @viewportRelativeMotion(
-      x: x
-      y: y
-      speed: 0
-      distanceSky: yes
-    )
-    .attr(dx: dx)
-
+  sun: (settings) ->
+    @attr settings
     @bind 'EnterFrame', @_updateGlare
     this
 
@@ -117,7 +112,7 @@ Crafty.c 'Sun',
     # For sunrise / set on water
     horizonDistance = (480 - 155) - (Crafty.viewport._y) - @y
 
-    size = 20.0 + (30.0 * (Math.min(Math.max(horizonDistance, 0), 150.0) / 150.0))
+    size = 20.0 + (15.0 * (Math.min(Math.max(horizonDistance, 0), 150.0) / 150.0))
     @w = size
     @h = size
 
