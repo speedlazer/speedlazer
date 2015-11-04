@@ -2,7 +2,7 @@ Crafty.c 'StageEnd',
   init: ->
     @requires '2D, Canvas, HUD, Delay, Color'
 
-  stageEnd: (level) ->
+  stageEnd: (level, stage, title) ->
     @lineNr = 0
 
     this.attr(
@@ -23,7 +23,7 @@ Crafty.c 'StageEnd',
       w: @w
       z: 91
     ).css 'textAlign', 'center'
-      .text "Stage #{level.data.stage} Cleared: #{level.data.title}"
+      .text "Stage #{stage} Cleared: #{title}"
       .textColor('#FFFFFF')
       .textFont({
         size: '12px',
@@ -37,7 +37,6 @@ Crafty.c 'StageEnd',
         when 0
           @showPlayerHeaders()
           @showAccuracy level
-          level.data.stageFinished = yes
         when 2 then @showShotsFired level
         when 3 then @showEnemiesKilled level
         when 4 then @showLives level

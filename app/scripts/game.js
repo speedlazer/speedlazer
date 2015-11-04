@@ -3,7 +3,7 @@
 var Game = {
   // Initialize and start our game
   start: function (demo) {
-    this.firstLevel = demo ? 'GameplayDemo' : 'City';
+    this.firstLevel = 'Game'
     Crafty.load([ ], function () {
 
       // Start crafty and set a background color so that we can see it's working
@@ -58,7 +58,6 @@ var Game = {
 
       // Simply start splashscreen
       Crafty.enterScene('Intro');
-      //Crafty.enterScene('Space', { stage: 1 });
     });
   }
 };
@@ -66,7 +65,3 @@ var Game = {
 // Export
 window.Game = Game;
 
-require('scripts/compiled/lib');
-require('scripts/compiled/enemies');
-require('scripts/compiled/lazerscripts');
-require('scripts/compiled/scenery');

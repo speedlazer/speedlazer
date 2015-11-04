@@ -52,7 +52,6 @@ Crafty.c 'ScrollWall',
       Crafty.viewport.x = -@x if Crafty.viewport.x isnt -@x
 
     # TODO: Verify correctness of these statements
-
     #@onHit 'PlayerControlledShip', (el) ->
       ## Push the player forward
       #for e in el
