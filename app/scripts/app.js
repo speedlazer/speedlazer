@@ -1,3 +1,4 @@
+'use strict';
 require('scripts/components/*');
 require('scripts/compiled/components');
 require('scripts/game');
@@ -7,7 +8,6 @@ require('scripts/compiled/scenery');
 require('scripts/scenes/*');
 require('scripts/compiled/scenes');
 
-'use strict';
 window.Game.start(false);
 
 // Handle the fullscreen button

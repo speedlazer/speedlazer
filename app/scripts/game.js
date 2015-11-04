@@ -2,8 +2,8 @@
 
 var Game = {
   // Initialize and start our game
-  start: function (demo) {
-    this.firstLevel = 'Game'
+  start: function () {
+    this.firstLevel = 'Game';
     Crafty.load([ ], function () {
 
       // Start crafty and set a background color so that we can see it's working
