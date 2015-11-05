@@ -100,10 +100,14 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         amount: 4
         delay: 500
         drop: 'lasers'
-      @repeat 2, @placeSquad Game.Scripts.Swirler2,
+        options:
+          shootOnSight: yes
+      @repeat 2, @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 500
         drop: 'lasers'
+        options:
+          shootOnSight: yes
     )
 
   underWaterAttacks: ->
