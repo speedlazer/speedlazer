@@ -31,6 +31,7 @@ class Game.EntityScript extends Game.LazerScript
   run: (args...) ->
     @boundEvents = []
     @entity = @spawn(args...)
+    @options = args[0] ? {}
 
     if @entity?
       @entity.attr

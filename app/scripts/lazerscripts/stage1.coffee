@@ -5,9 +5,9 @@ Game.Scripts ||= {}
 class Game.Scripts.Stage1 extends Game.LazerScript
   metadata:
     namespace: 'City'
-    #startScenery: 'Ocean'
-    startScenery: 'Intro'
-    armedPlayers: no
+    startScenery: 'Ocean'
+    #startScenery: 'Intro'
+    #armedPlayers: no
     speed: 50
 
   execute: ->
@@ -19,14 +19,25 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @introText()
       @tutorial()
       @droneTakeover()
-      @swirlAttacks()
+      @parallel(
+        @sequence(
+          @wait 2000
+          @say 'General', 'We\'re under attack!'
+        )
+        @swirlAttacks()
+      )
       @setScenery('CoastStart')
       @swirlAttacks()
       @underWaterAttacks()
-      @setScenery('Bay')
+      @mineSwarm()
 
-      @setSpeed 250
-      @wait(20000)
+      @setScenery('Bay')
+      @underWaterAttacks()
+      @parallel(
+        @swirlAttacks()
+        @mineSwarm()
+      )
+
       @setScenery('UnderBridge')
       @waitForScenery('UnderBridge', event: 'leave')
       @setScenery('UnderBridge')
@@ -54,11 +65,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   tutorial: ->
     @sequence(
       @say('General', 'We send some drones for target practice')
-      @placeSquad Game.Scripts.Swirler,
-        amount: 4
-        delay: 500
-        drop: 'lasers'
-      @say('General', 'We dropped a weapon system for you,\nTest it on those drones if you like')
+      #@placeSquad Game.Scripts.Swirler,
+        #amount: 4
+        #delay: 500
+        #drop: 'lasers'
+      #@say('General', 'We dropped a weapon system for you,\nTest it on those drones if you like')
       @repeat(2, @sequence(
         @dropWeaponsForEachPlayer()
         @wait(2000)
@@ -84,14 +95,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       # TODO: Add shooting enemies
 
-      @say('General', 'Their AI has been compromised by our rogue prototype!\nEliminate it!')
-      @if((-> @player(1).active)
-        @say 'John', 'How?'
-      )
-      @if((-> !@player(1).active and @player(2).active)
-        @say 'Jack', 'What the...'
-      )
-      @say 'General', 'It\'s hiding in the city! go!'
+      @say('General', 'They do not respond to our commands anymore!\nThey have been taken over!')
     )
 
   swirlAttacks: ->
@@ -111,8 +115,33 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     )
 
   underWaterAttacks: ->
-    @repeat 3, @placeSquad Game.Scripts.Stalker
+    @sequence(
+      @placeSquad Game.Scripts.Stalker
+      @repeat 2, @parallel(
+        @placeSquad Game.Scripts.Stalker
+        @placeSquad Game.Scripts.Shooter,
+          amount: 4
+          delay: 1000
+          drop: 'lasers'
+          options:
+            shootOnSight: yes
+        @placeSquad Game.Scripts.Swirler,
+          amount: 4
+          delay: 1000
+          drop: 'lasers'
+          options:
+            shootOnSight: yes
+      )
+    )
 
   sunRise: ->
     @runScript(Game.Scripts.SunRise)
+
+  mineSwarm: ->
+    @placeSquad Game.Scripts.JumpMine,
+      amount: 8
+      delay: 300
+      options:
+        x: -> (Math.round(Math.random() * 5) * 60) + 200
+        y: -> (Math.round(Math.random() * 5) * 40) + 60
 

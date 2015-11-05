@@ -104,7 +104,7 @@ Game.ScriptModule.Entity =
         y: @entity.y
         h: 20
         alpha: 0.7
-        z: -1
+        z: @entity.z - 1
       )
     @entity.hide(waterSpot)
 
