@@ -1,13 +1,13 @@
 Game = @Game
 Game.Scripts ||= {}
 
-class Game.Scripts.Swirler extends Game.EntityScript
+class Game.Scripts.Shooter extends Game.EntityScript
 
   spawn: (options) ->
     d = Crafty.e('Drone').drone(
       health: 200
       x: 680
-      y: 240
+      y: 340
       speed: options.speed ? 200
     )
     if options.shootOnSight
@@ -17,11 +17,11 @@ class Game.Scripts.Swirler extends Game.EntityScript
   execute: ->
     @bindSequence 'Destroyed', @onKilled
     @movePath [
-      [320, 100]
-      [100, 240]
-      [320, 400]
-      [550, 250]
-      [-10, 100]
+      [320, 300]
+      [130, 240]
+      [340, 100]
+      [570, 260]
+      [-10, 400]
     ]
 
   onKilled: ->

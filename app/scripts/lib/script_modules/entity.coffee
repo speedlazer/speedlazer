@@ -104,7 +104,7 @@ Game.ScriptModule.Entity =
         y: @entity.y
         h: 20
         alpha: 0.7
-        z: -1
+        z: @entity.z - 1
       )
     @entity.hide(waterSpot)
 
@@ -202,7 +202,7 @@ Game.ScriptModule.Entity =
     defer.promise
 
   _getSeaLevel: ->
-    350 + (70 * (@entity.scale ? 1.0))
+    220 + (220 * (@entity.scale ? 1.0))
 
   _moveAir: (settings) ->
     defaults =

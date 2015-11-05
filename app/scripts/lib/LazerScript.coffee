@@ -5,9 +5,22 @@ class Game.LazerScript
 
   run: (args...) ->
     @currentSequence = Math.random()
-    WhenJS(@execute(args...)(@currentSequence))
+    Crafty.bind 'PlayerDied', @_endScriptOnGameOver
+
+    WhenJS(@execute(args...)(@currentSequence)).finally =>
+      console.log 'unbind'
+      Crafty.unbind 'PlayerDied', @_endScriptOnGameOver
 
   execute: ->
+
+  _endScriptOnGameOver: =>
+    console.log 'check!'
+    playersActive = no
+    Crafty('Player ControlScheme').each ->
+      playersActive = yes if @lives > 0
+
+    unless playersActive
+      @currentSequence = null
 
   # Inventory
   # TODO: Decide how we handle inventory thoughout game
@@ -31,6 +44,7 @@ class Game.EntityScript extends Game.LazerScript
   run: (args...) ->
     @boundEvents = []
     @entity = @spawn(args...)
+    @options = args[0] ? {}
 
     if @entity?
       @entity.attr

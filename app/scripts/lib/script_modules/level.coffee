@@ -78,6 +78,13 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       @level.setScenery scenery
 
+  # Supported eventTypes:
+  # - leave
+  # - inScreen
+  # - outScreen
+  # - enter
+  # - playerLeave
+  # - playerEnter
   waitForScenery: (sceneryType, options = { event: 'enter' }) ->
     (sequence) =>
       @_verify(sequence)
@@ -126,12 +133,20 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       @level.setWeaponsEnabled yes
 
-  explosion: (location) ->
+  explosion: (location, options = { damage: no, radius: 20 }) ->
     (sequence) =>
       @_verify(sequence)
       { x, y } = location()
       x -= Crafty.viewport.x
       y -= Crafty.viewport.y
 
-      Crafty.e('Explosion').explode({ x, y, w: 30, h: 30 })
+      e = Crafty.e('Explosion').explode(
+        x: x
+        y: y
+        w: 30
+        h: 30
+        radius: options.radius
+      )
+      if options.damage
+        e.addComponent('Enemy')
 

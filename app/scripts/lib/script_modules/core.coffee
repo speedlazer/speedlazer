@@ -73,3 +73,7 @@ Game.ScriptModule.Core =
       )
       d.promise
 
+  endSequence: ->
+    (sequence) =>
+      @_verify(sequence)
+      throw new Error('sequence aborted')

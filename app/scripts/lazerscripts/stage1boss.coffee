@@ -54,7 +54,7 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
       @wait 500
       @moveTo(y: 205, speed: 5)
       @repeat @sequence(
-        @runScriptAsync(Game.Scripts.Stage1BossMine, @location())
+        @async @runScript(Game.Scripts.Stage1BossMine, @location())
         @moveTo(y: 200, speed: 5)
         @wait 500
         @moveTo(y: 205, speed: 5)
@@ -71,7 +71,7 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
       @say('Enemy', 'You make me mad!')
       @moveTo(y: 205, speed: 100)
       @repeat @sequence(
-        @runScriptAsync(Game.Scripts.Stage1BossMine, @location())
+        @async @runScript(Game.Scripts.Stage1BossMine, @location())
         @moveTo(y: 200, speed: 5)
         @wait 500
         @moveTo(y: 205, speed: 5)
