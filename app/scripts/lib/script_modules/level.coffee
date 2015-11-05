@@ -78,6 +78,13 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       @level.setScenery scenery
 
+  # Supported eventTypes:
+  # - leave
+  # - inScreen
+  # - outScreen
+  # - enter
+  # - playerLeave
+  # - playerEnter
   waitForScenery: (sceneryType, options = { event: 'enter' }) ->
     (sequence) =>
       @_verify(sequence)
