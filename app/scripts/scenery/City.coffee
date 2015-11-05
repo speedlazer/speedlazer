@@ -15,9 +15,10 @@ generator.defineElement 'waterHorizon', ->
 
 generator.defineElement 'water', ->
   @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
+  @addBackground(0, @level.visibleHeight - 90, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -301, w: (@delta.x * .5) + 1, h: 70 }), .5)
 
 generator.defineElement 'waterFront', ->
-  height = 85
+  height = 65
   @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
   @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
 
@@ -88,7 +89,7 @@ generator.defineBlock class extends @Game.LevelScenery
 
     shipLength = 700
 
-    height = 85
+    height = 65
     @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 90).color('#000080'))
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height + 10, z: -300).color('#000080'))
 
@@ -175,7 +176,10 @@ generator.defineBlock class extends @Game.LevelScenery
       newShip.synchChoreography leadAnimated
       newShip.one 'ChoreographyEnd', ->
         @removeComponent 'Choreography', no
-      newShip.one 'unlock', -> @enableControl()
+      newShip.one 'unlock', ->
+        @enableControl()
+        @weaponsEnabled = yes
+      newShip.weaponsEnabled = leadAnimated.weaponsEnabled
 
     @bind 'ShipSpawned', fixOtherShips
     Crafty('PlayerControlledShip').each (index) ->
@@ -287,9 +291,9 @@ generator.defineBlock class extends @Game.LevelScenery
            '#383838', '#404040', '#484848', '#505050', '#585858', '#606060', '#686868'][11 - (i // 2)]
       h = 120 - (8 * i)
       y = @level.visibleHeight - (480 - (i * 30))
-      z = -1 - (1 * i)
+      z = -3 - (1 * i)
       sp = 1.2 - (0.05 * i)
-      hp = (460 - (10 * i)) - (h + y)
+      hp = (420 - (6 * i)) - (h + y)
       @addBackground(0, y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: @delta.x * sp, h: h }), sp)
       if i % 5 is 0
         @addBackground(0, h + y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
