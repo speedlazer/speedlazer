@@ -8,7 +8,6 @@ class Game.LazerScript
     Crafty.bind 'PlayerDied', @_endScriptOnGameOver
 
     WhenJS(@execute(args...)(@currentSequence)).finally =>
-      console.log 'unbind'
       Crafty.unbind 'PlayerDied', @_endScriptOnGameOver
 
   execute: ->

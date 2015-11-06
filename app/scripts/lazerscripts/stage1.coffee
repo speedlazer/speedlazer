@@ -50,12 +50,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @mineSwarm()
       @mineSwarm()
 
-      #@waitForScenery('UnderBridge', event: 'inScreen')
+      @waitForScenery('UnderBridge', event: 'inScreen')
       #@setSpeed 0
       #@say 'Level', 'Bossfight Stage 1\n'
 
       #@setSpeed 50
-      @waitForScenery('UnderBridge', event: 'leave')
+      #@waitForScenery('UnderBridge', event: 'leave')
       #@gainHeight(300, duration: 4000)
 
       #@setScenery('Skyline')

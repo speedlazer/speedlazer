@@ -113,36 +113,72 @@ Game.ScriptModule.Entity =
 
   _waterSplash: ->
     defer = WhenJS.defer()
-    waterSpot = Crafty.e('2D, Canvas, Color, Choreography')
-      .color('#FFFFFF')
-      .attr(
-        x: @entity.x - 5
-        y: @entity.y
-        z: @entity.z + 1
-        w: @entity.w + 10
-        h: 20
-        alpha: 1.0
-      )
 
-    c = [
-      type: 'tween'
-      properties:
-        h: (@entity.speed / 3)
-        y: waterSpot.y - (@entity.speed / 3)
-        alpha: 0.2
-      duration: 500
-      event: 'splash'
-    ,
-      type: 'tween'
-      properties:
-        h: 20
-        y: waterSpot.y - 20
-        alpha: 0.0
-      duration: 200
-    ]
-    waterSpot.choreography(c).bind 'ChoreographyEnd', ->
+    options =
+      maxParticles: 40
+      size: 18
+      sizeRandom: 4
+      speed: 1
+      speedRandom: 1.2
+      # Lifespan in frames
+      lifeSpan: 29
+      lifeSpanRandom: 7
+      # Angle is calculated clockwise: 12pm is 0deg, 3pm is 90deg etc.
+      angle: 0
+      angleRandom: 34
+      startColour: [235, 235, 255, 1]
+      startColourRandom: [48, 50, 45, 0.2]
+      endColour: [235, 235, 235, 0]
+      endColourRandom: [60, 60, 60, 0.1]
+      # Only applies when fastMode is off, specifies how sharp the gradients are drawn
+      sharpness: 20
+      sharpnessRandom: 10
+      # Random spread from origin
+      spread: 20
+      # How many frames should this last
+      duration: 700 / Crafty.timer.FPS()
+      # Will draw squares instead of circle gradients
+      #fastMode: false,
+      fastMode: yes
+      gravity: { x: 0, y: - (@entity.speed / 1000) }
+      # sensible values are 0-3
+      jitter: 0
+    p = Crafty.e("2D,Canvas,Particles").attr(
+      x: @entity.x
+      y: @entity.y
+    ).particles(options).bind 'ParticleEnd', ->
       defer.resolve()
       @destroy()
+
+    #waterSpot = Crafty.e('2D, Canvas, Color, Choreography')
+      #.color('#FFFFFF')
+      #.attr(
+        #x: @entity.x - 5
+        #y: @entity.y
+        #z: @entity.z + 1
+        #w: @entity.w + 10
+        #h: 20
+        #alpha: 1.0
+      #)
+
+    #c = [
+      #type: 'tween'
+      #properties:
+        #h: (@entity.speed / 3)
+        #y: waterSpot.y - (@entity.speed / 3)
+        #alpha: 0.2
+      #duration: 500
+      #event: 'splash'
+    #,
+      #type: 'tween'
+      #properties:
+        #h: 20
+        #y: waterSpot.y - 20
+        #alpha: 0.0
+      #duration: 200
+    #]
+    #waterSpot.choreography(c).bind 'ChoreographyEnd', ->
+      #@destroy()
 
     defer.promise
 
@@ -233,8 +269,8 @@ Game.ScriptModule.Entity =
 
   location: (settings = {}) ->
     =>
-      x: @enemy.location.x ? (@entity.x + Crafty.viewport.x)
-      y: @enemy.location.y ? (@entity.y + Crafty.viewport.y)
+      x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2))
+      y: (@enemy.location.y ? (@entity.y + Crafty.viewport.y) + (@entity.h / 2))
 
   pickTarget: (selection) ->
     (sequence) =>
