@@ -13,7 +13,6 @@ class Game.LazerScript
   execute: ->
 
   _endScriptOnGameOver: =>
-    console.log 'check!'
     playersActive = no
     Crafty('Player ControlScheme').each ->
       playersActive = yes if @lives > 0

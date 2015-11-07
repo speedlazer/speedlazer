@@ -114,7 +114,6 @@ Game.ScriptModule.Entity =
   _waterSplash: ->
     defer = WhenJS.defer()
     size = 20 / ((Math.abs(@entity.z) / 100) + 1)
-    console.log size, @entity.z, size
 
     options =
       maxParticles: 100

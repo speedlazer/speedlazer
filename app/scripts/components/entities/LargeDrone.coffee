@@ -1,12 +1,12 @@
-Crafty.c 'Mine',
+Crafty.c 'LargeDrone',
   init: ->
     @requires 'Color, Enemy'
 
-  mine: (attr = {}) ->
+  drone: (attr = {}) ->
     @attr _.defaults(attr,
-      w: 25, h: 25, health: 200)
+      w: 45, h: 35, health: 800)
     @origin 'center'
-    @color '#555555'
+    @color '#0000DF'
 
     @enemy()
     this

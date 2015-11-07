@@ -5,7 +5,7 @@ class Game.Scripts.JumpMine extends Game.EntityScript
 
   spawn: (options) ->
     x = if options.direction is 'right' then 720 else -80
-    Crafty.e('Mine').drone(
+    Crafty.e('Mine').mine(
       x: x
       y: 340
       speed: options.speed ? 200

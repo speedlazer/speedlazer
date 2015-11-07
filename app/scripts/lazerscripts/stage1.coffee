@@ -1,10 +1,10 @@
-
 Game = @Game
 Game.Scripts ||= {}
 
 class Game.Scripts.Stage1 extends Game.LazerScript
   metadata:
     namespace: 'City'
+    #startScenery: 'UnderBridge'
     #startScenery: 'Ocean'
     startScenery: 'Intro'
     #armedPlayers: no
@@ -26,6 +26,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         )
         @swirlAttacks()
       )
+
       @setScenery('CoastStart')
       @swirlAttacks()
       @underWaterAttacks()
@@ -37,28 +38,38 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @swirlAttacks()
         @mineSwarm()
       )
-      @setScenery('UnderBridge')
+      @parallel(
+        @placeSquad Game.Scripts.Stalker
+        @mineSwarm direction: 'left'
+      )
 
+      @setScenery('UnderBridge')
       @parallel(
         @sequence(
           @stalkerShootout()
-          @mineSwarm()
+          @parallel(
+            @placeSquad Game.Scripts.Stalker
+            @mineSwarm direction: 'left'
+          )
+          @swirlAttacks()
         )
         @waitForScenery('UnderBridge', event: 'leave')
       )
       @setScenery('UnderBridge')
       @mineSwarm()
+      @setSpeed 25
+      @mineSwarm direction: 'left'
       @mineSwarm()
 
       @waitForScenery('UnderBridge', event: 'inScreen')
-      #@setSpeed 0
-      #@say 'Level', 'Bossfight Stage 1\n'
+      @setSpeed 0
+      @bossFightStage1()
+      @say('General', 'Hunt him down!')
 
-      #@setSpeed 50
-      #@waitForScenery('UnderBridge', event: 'leave')
-      #@gainHeight(300, duration: 4000)
+      @gainHeight(300, duration: 4000)
 
-      #@setScenery('Skyline')
+      @setScenery('Skyline')
+
       #@waitForScenery('Skyline', event: 'leave')
       @disableWeapons()
       @showScore(1, 'City')
@@ -85,7 +96,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @say 'General', 'It\'s too bad these ships are too expensive for mass\n' +
         'production and have to be taken out of commission'
 
-      @wait 5000 # Maybe more/better script text here?
+      @wait 3000
     )
 
   tutorial: ->
@@ -112,7 +123,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.Splasher,
         amount: 4
         delay: 750
-      @say('General', 'Wtf is happening with our drones?')
+      @say('General', 'What the hell is happening with our drones?')
       @say('General', 'They do not respond to our commands anymore!\nThey have been taken over!')
     )
 
@@ -141,13 +152,14 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   sunRise: ->
     @runScript(Game.Scripts.SunRise)
 
-  mineSwarm: ->
+  mineSwarm: (options = { direction: 'right' })->
     @placeSquad Game.Scripts.JumpMine,
       amount: 8
       delay: 300
       options:
         x: -> (Math.round(Math.random() * 10) * 40) + 200
-        y: -> (Math.round(Math.random() * 5) * 40) + 60
+        y: -> (Math.round(Math.random() * 8) * 40) + 60
+        direction: options.direction
 
   stalkerShootout: ->
     @parallel(
@@ -165,3 +177,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         options:
           shootOnSight: yes
     )
+
+  bossFightStage1: ->
+    @placeSquad Game.Scripts.Stage1BossStage1
