@@ -265,9 +265,10 @@ module.exports = function (grunt) {
     }
 
     grunt.task.run([
+      'clean:compiled',
       'clean:server',
-      'neuter:server',
       'coffee',
+      'neuter:server',
       'connect:livereload',
       'open',
       'watch'
