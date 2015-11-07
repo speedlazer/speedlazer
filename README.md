@@ -40,11 +40,14 @@ https://github.com/matthijsgroen/game-play/issues
 
 # Setup for development
 
+Make sure you have the [Live reload Chrom
+plugin](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei)
+
 ```
 npm install
 bower install
+grunt serve
 ```
-
 
 # Building a game from scratch
 
