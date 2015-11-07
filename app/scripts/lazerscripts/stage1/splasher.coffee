@@ -8,7 +8,7 @@ class Game.Scripts.Splasher extends Game.EntityScript
       health: 200
       x: 680
       y: 400
-      speed: 100
+      speed: 300
     )
 
   execute: ->
@@ -16,11 +16,8 @@ class Game.Scripts.Splasher extends Game.EntityScript
       @sendToBackground(0.75, -200)
       @movePath [
         [620, 270]
-        [520, 320]
-        [420, 230]
-        [320, 330]
-        [319, 360]
+        [420, 350]
       ]
-      @moveTo y: 600
+      @moveTo y: 600, speed: 100
     )
 
