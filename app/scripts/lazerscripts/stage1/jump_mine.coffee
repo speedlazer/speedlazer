@@ -4,17 +4,17 @@ Game.Scripts ||= {}
 class Game.Scripts.JumpMine extends Game.EntityScript
 
   spawn: (options) ->
+    x = if options.direction is 'right' then 720 else -80
     Crafty.e('Mine').drone(
-      x: 720
+      x: x
       y: 340
       speed: options.speed ? 200
     )
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-
     @sequence(
-      @moveTo(x: 720, y: 450, speed: 400)
+      @moveTo(y: 450, speed: 400)
       @moveTo(x: @options.x())
       @moveTo(y: @options.y())
       @wait 2000
