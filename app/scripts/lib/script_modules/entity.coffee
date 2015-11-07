@@ -18,6 +18,27 @@ Game.ScriptModule.Entity =
       @_verify(sequence)
       @entity.sendToBackground(scale, z)
 
+  reveal: ->
+    (sequence) =>
+      @_verify(sequence)
+      d = WhenJS.defer()
+      scale = @entity.scale
+      duration = Math.abs(1.0 - scale) * 1000
+      targetW = @entity.w / scale
+      targetH = @entity.h / scale
+
+      @entity.choreography([
+        type: 'tween'
+        properties:
+          scale: 1.0
+          w: targetW
+          h: targetH
+        duration: duration
+      ]).one 'ChoreographyEnd', =>
+        @entity.reveal()
+        d.resolve()
+      d.promise
+
   movePath: (path, settings = {}) ->
     (sequence) =>
       @_verify(sequence)

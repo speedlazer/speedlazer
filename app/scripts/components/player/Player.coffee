@@ -1,12 +1,11 @@
 Crafty.c 'Player',
-  lives: 2
-  points: 0
   init: ->
     @stats =
       shotsFired: 0
       shotsHit: 0
       enemiesKilled: 0
       bonus: 0
+    @reset()
 
   reset: ->
     @removeComponent('ControlScheme')

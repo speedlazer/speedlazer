@@ -4,8 +4,7 @@ Game.Scripts ||= {}
 class Game.Scripts.Stage1 extends Game.LazerScript
   metadata:
     namespace: 'City'
-    #startScenery: 'UnderBridge'
-    #startScenery: 'Ocean'
+    #startScenery: 'Bay'
     startScenery: 'Intro'
     #armedPlayers: no
     speed: 50
@@ -68,7 +67,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @gainHeight(300, duration: 4000)
 
-      @setScenery('Skyline')
+      @cityFighting()
+
 
       #@waitForScenery('Skyline', event: 'leave')
       @disableWeapons()
@@ -180,3 +180,19 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   bossFightStage1: ->
     @placeSquad Game.Scripts.Stage1BossStage1
+
+  cityFighting: ->
+    @sequence(
+      @setScenery('Skyline')
+      @repeat 3, @sequence(
+        @placeSquad Game.Scripts.ScraperFlyer,
+          amount: 8
+          delay: 750
+        @placeSquad Game.Scripts.Swirler,
+          amount: 8
+          delay: 750
+          options:
+            shootOnSight: yes
+      )
+    )
+
