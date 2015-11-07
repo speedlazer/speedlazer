@@ -5,7 +5,7 @@ class Game.Scripts.JumpMine extends Game.EntityScript
 
   spawn: (options) ->
     Crafty.e('Mine').drone(
-      x: 680
+      x: 720
       y: 340
       speed: options.speed ? 200
     )
@@ -14,7 +14,7 @@ class Game.Scripts.JumpMine extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
 
     @sequence(
-      @moveTo(x: 680, y: 450)
+      @moveTo(x: 720, y: 450, speed: 400)
       @moveTo(x: @options.x())
       @moveTo(y: @options.y())
       @wait 2000

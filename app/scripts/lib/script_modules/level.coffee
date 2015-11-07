@@ -143,8 +143,6 @@ Game.ScriptModule.Level =
       e = Crafty.e('Explosion').explode(
         x: x
         y: y
-        w: 30
-        h: 30
         radius: options.radius
       )
       if options.damage

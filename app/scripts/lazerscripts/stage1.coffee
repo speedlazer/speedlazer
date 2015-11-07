@@ -146,7 +146,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       amount: 8
       delay: 300
       options:
-        x: -> (Math.round(Math.random() * 10) * 40) + 240
+        x: -> (Math.round(Math.random() * 10) * 40) + 200
         y: -> (Math.round(Math.random() * 5) * 40) + 60
 
   stalkerShootout: ->

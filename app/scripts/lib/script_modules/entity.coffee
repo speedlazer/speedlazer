@@ -115,40 +115,47 @@ Game.ScriptModule.Entity =
     defer = WhenJS.defer()
 
     options =
-      maxParticles: 40
-      size: 18
+      maxParticles: 100
+      size: 20
       sizeRandom: 4
-      speed: 1
-      speedRandom: 1.2
+      speed: 4
+      speedRandom: 0.2
       # Lifespan in frames
-      lifeSpan: 29
+      lifeSpan: 39
       lifeSpanRandom: 7
       # Angle is calculated clockwise: 12pm is 0deg, 3pm is 90deg etc.
       angle: 0
-      angleRandom: 34
-      startColour: [235, 235, 255, 1]
-      startColourRandom: [48, 50, 45, 0.2]
-      endColour: [235, 235, 235, 0]
-      endColourRandom: [60, 60, 60, 0.1]
+      angleRandom: 20
+      startColour: [50, 50, 170, 1]
+      startColourRandom: [0, 0, 0, 0]
+      endColour: [255, 255, 255, 0.1]
+      endColourRandom: [30, 30, 30, 0.1]
       # Only applies when fastMode is off, specifies how sharp the gradients are drawn
       sharpness: 20
       sharpnessRandom: 10
       # Random spread from origin
       spread: 20
       # How many frames should this last
-      duration: 700 / Crafty.timer.FPS()
+      #duration: -1
+      duration: 900 / Crafty.timer.FPS()
       # Will draw squares instead of circle gradients
       #fastMode: false,
       fastMode: yes
-      gravity: { x: 0, y: - (@entity.speed / 1000) }
+      gravity: { x: 0, y: 0.15 }
       # sensible values are 0-3
-      jitter: 0
-    p = Crafty.e("2D,Canvas,Particles").attr(
+      jitter: 1
+    cleanupDelay = (options.lifeSpan + options.lifeSpanRandom) * Crafty.timer.FPS()
+
+    Crafty.e("2D,Canvas,Particles,Delay").attr(
       x: @entity.x
       y: @entity.y
     ).particles(options).bind 'ParticleEnd', ->
+      # Particleend means the duration is passed.
+      # This stops new particles from emiting.
+      # But the particles are still alive for their lifetime
       defer.resolve()
-      @destroy()
+      @delay((-> @destroy()), cleanupDelay)
+      #@destroy()
 
     #waterSpot = Crafty.e('2D, Canvas, Color, Choreography')
       #.color('#FFFFFF')
