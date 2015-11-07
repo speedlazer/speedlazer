@@ -113,15 +113,17 @@ Game.ScriptModule.Entity =
 
   _waterSplash: ->
     defer = WhenJS.defer()
+    size = 20 / ((Math.abs(@entity.z) / 100) + 1)
+    console.log size, @entity.z, size
 
     options =
       maxParticles: 100
-      size: 20
+      size: size
       sizeRandom: 4
-      speed: 4
+      speed: 4 / ((Math.abs(@entity.z) / 200) + 1)
       speedRandom: 0.2
       # Lifespan in frames
-      lifeSpan: 39
+      lifeSpan: 39 / ((Math.abs(@entity.z) / 50) + 1)
       lifeSpanRandom: 7
       # Angle is calculated clockwise: 12pm is 0deg, 3pm is 90deg etc.
       angle: 0
