@@ -49,6 +49,10 @@ bower install
 grunt serve
 ```
 
+The game files are in `app/scripts`. The "Game" is in
+`app/scripts/scenes/Game.coffee`. But it mainly runs DSL scripts,
+located in `app/scripts/lazerscripts`
+
 # Building a game from scratch
 
 See: https://github.com/sgmeyer/generator-crafty
