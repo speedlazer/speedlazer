@@ -108,9 +108,6 @@ generator.defineBlock class extends @Game.LevelScenery
     @barrel = Crafty.e('2D, Tween, Canvas, Color, Collision, Choreography').color('#606000').attr({ z: 3, w: 10, h: 15 })
     @add(500, @level.visibleHeight - @outside.h - height - @barrel.h, @barrel)
 
-    @splash = Crafty.e('2D, Tween, Canvas, Color').color('#E0E0E0').attr({ z: 3, w: 10, h: 1, alpha: 0 })
-    @add(485, @level.visibleHeight - height + 10, @splash)
-
     @barrelKnock = no
     knockOff = [
         type: 'linear'
@@ -126,7 +123,11 @@ generator.defineBlock class extends @Game.LevelScenery
       @barrelKnock = yes
       @barrel.choreography(knockOff).tween(rotation: 90, 1500).one 'splash', =>
         @barrel.attr alpha: 0
-        @splash.attr(alpha: 1).tween(alpha: 0, w: 30, x: @splash.x - 10, h: 30, y: @splash.y - 30, 750)
+        Crafty.e('WaterSplash').waterSplash(
+          x: @barrel.x
+          y: @barrel.y
+          size: @barrel.h
+        )
 
     @addElement 'water'
     @addElement 'waterHorizon'

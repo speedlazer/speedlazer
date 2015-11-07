@@ -113,80 +113,12 @@ Game.ScriptModule.Entity =
 
   _waterSplash: ->
     defer = WhenJS.defer()
-    size = 20 / ((Math.abs(@entity.z) / 100) + 1)
-
-    options =
-      maxParticles: 100
-      size: size
-      sizeRandom: 4
-      speed: 4 / ((Math.abs(@entity.z) / 200) + 1)
-      speedRandom: 0.2
-      # Lifespan in frames
-      lifeSpan: 39 / ((Math.abs(@entity.z) / 50) + 1)
-      lifeSpanRandom: 7
-      # Angle is calculated clockwise: 12pm is 0deg, 3pm is 90deg etc.
-      angle: 0
-      angleRandom: 20
-      startColour: [50, 50, 170, 1]
-      startColourRandom: [0, 0, 0, 0]
-      endColour: [255, 255, 255, 0.1]
-      endColourRandom: [30, 30, 30, 0.1]
-      # Only applies when fastMode is off, specifies how sharp the gradients are drawn
-      sharpness: 20
-      sharpnessRandom: 10
-      # Random spread from origin
-      spread: 20
-      # How many frames should this last
-      #duration: -1
-      duration: 900 / Crafty.timer.FPS()
-      # Will draw squares instead of circle gradients
-      #fastMode: false,
-      fastMode: yes
-      gravity: { x: 0, y: 0.15 }
-      # sensible values are 0-3
-      jitter: 1
-    cleanupDelay = (options.lifeSpan + options.lifeSpanRandom) * Crafty.timer.FPS()
-
-    Crafty.e("2D,Canvas,Particles,Delay").attr(
+    Crafty.e('WaterSplash').waterSplash(
       x: @entity.x
       y: @entity.y
-    ).particles(options).bind 'ParticleEnd', ->
-      # Particleend means the duration is passed.
-      # This stops new particles from emiting.
-      # But the particles are still alive for their lifetime
+      size: @entity.w
+    ).bind 'ParticleEnd', ->
       defer.resolve()
-      @delay((-> @destroy()), cleanupDelay)
-      #@destroy()
-
-    #waterSpot = Crafty.e('2D, Canvas, Color, Choreography')
-      #.color('#FFFFFF')
-      #.attr(
-        #x: @entity.x - 5
-        #y: @entity.y
-        #z: @entity.z + 1
-        #w: @entity.w + 10
-        #h: 20
-        #alpha: 1.0
-      #)
-
-    #c = [
-      #type: 'tween'
-      #properties:
-        #h: (@entity.speed / 3)
-        #y: waterSpot.y - (@entity.speed / 3)
-        #alpha: 0.2
-      #duration: 500
-      #event: 'splash'
-    #,
-      #type: 'tween'
-      #properties:
-        #h: 20
-        #y: waterSpot.y - 20
-        #alpha: 0.0
-      #duration: 200
-    #]
-    #waterSpot.choreography(c).bind 'ChoreographyEnd', ->
-      #@destroy()
 
     defer.promise
 
