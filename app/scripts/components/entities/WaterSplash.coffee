@@ -3,8 +3,6 @@ Crafty.c 'WaterSplash',
     @requires '2D,Canvas,Particles,Delay'
 
   waterSplash: (attr) ->
-    console.log attr.size
-
     options =
       maxParticles: 100
       size: attr.size / 2
