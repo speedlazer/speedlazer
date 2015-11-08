@@ -20,9 +20,16 @@ html {
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
 
-  margin: 0 auto;
-  transform-origin: top center;
+  margin: 0 auto 0 0;
+  transform-origin: top left;
+}
+section#help {
+  width: 300px;
+  float: right;
+  color: #404040;
+  text-align: right;
 }
 .fullscreen #cr-stage {
   transform-origin: center center;
+  margin: 0 auto;
 }

@@ -11,7 +11,7 @@ require('scripts/compiled/scenes');
 window.Game.start(false);
 
 // Handle the fullscreen button
-$(document).on('click', function () {
+$(document).on('click', '#cr-stage', function () {
   if (screenfull.enabled) {
     screenfull.request($('#cr-stage')[0]);
     $('body').addClass('fullscreen');
