@@ -23,12 +23,10 @@ class Game.Scripts.Stalker extends Game.EntityScript
       @moveTo(y: 340, speed: 200)
 
       # Wobble once before moving up
-      @repeat(1, @sequence(
-        @wait 100
-        @moveTo(y: 350, speed: 100)
-        @wait 100
-        @moveTo(y: 340, speed: 100)
-      ))
+      @wait 100
+      @moveTo(y: 350, speed: 100)
+      @wait 100
+      @moveTo(y: 340, speed: 100)
 
       @moveTo(y: -50)
     )
