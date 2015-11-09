@@ -16,6 +16,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @introText()
       @tutorial()
       @droneTakeover()
+      @checkpoint(scenery: 'Ocean')
       @parallel(
         @sequence(
           @wait 2000
@@ -27,6 +28,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setScenery('CoastStart')
       @swirlAttacks()
       @underWaterAttacks()
+
+      @checkpoint()
       @mineSwarm()
 
       @setScenery('Bay')
@@ -40,6 +43,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @mineSwarm direction: 'left'
       )
 
+      @checkpoint()
       @setScenery('UnderBridge')
       @parallel(
         @sequence(
@@ -52,6 +56,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         )
         @waitForScenery('UnderBridge', event: 'leave')
       )
+      @checkpoint(scenery: 'Bay')
       @setScenery('UnderBridge')
       @mineSwarm()
       @setSpeed 25
@@ -61,7 +66,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
       @bossFightStage1()
+      @setSpeed 50
       @say('General', 'Hunt him down!')
+      @checkpoint(scenery: 'Bay')
 
       @gainHeight(300, duration: 4000)
 

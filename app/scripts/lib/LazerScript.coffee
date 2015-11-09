@@ -5,6 +5,10 @@ class Game.LazerScript
 
   run: (args...) ->
     @currentSequence = Math.random()
+    @options = args[0] ? {}
+    @startAtCheckpoint = @options.startAtCheckpoint
+    @currentCheckpoint = 0
+
     Crafty.bind 'PlayerDied', @_endScriptOnGameOver
 
     WhenJS(@execute(args...)(@currentSequence)).finally =>

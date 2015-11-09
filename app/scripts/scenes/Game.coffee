@@ -9,7 +9,10 @@ Crafty.defineScene 'Game', (data) ->
   level = Game.levelGenerator.createLevel script::metadata
   level.start()
 
-  new script(level).run().then =>
+  options =
+    startAtCheckpoint: 0
+
+  new script(level).run(options).then =>
     console.log 'end of script!'
 
 , ->

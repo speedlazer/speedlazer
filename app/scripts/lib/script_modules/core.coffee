@@ -5,6 +5,9 @@ Game.ScriptModule.Core =
   _verify: (sequence) ->
     throw new Error('sequence mismatch') unless sequence is @currentSequence
 
+  _skippingToCheckpoint: ->
+    @startAtCheckpoint? and @currentCheckpoint < @startAtCheckpoint
+
   # Runs a sequence of steps:
   # example:
   #   @sequence(
@@ -83,6 +86,7 @@ Game.ScriptModule.Core =
   wait: (amount) ->
     (sequence) =>
       @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
       d = WhenJS.defer()
       Crafty.e('Delay').delay(
         ->
@@ -96,3 +100,11 @@ Game.ScriptModule.Core =
     (sequence) =>
       @_verify(sequence)
       throw new Error('sequence aborted')
+
+  checkpoint: (settings = {}) ->
+    (sequence) =>
+      @_verify(sequence)
+      @currentCheckpoint += 1
+      return WhenJS() if @_skippingToCheckpoint()
+      scenery = settings.scenery ? @currentScenery
+      @level.setScenery scenery
