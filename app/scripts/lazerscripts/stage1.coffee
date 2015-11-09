@@ -4,10 +4,6 @@ Game.Scripts ||= {}
 class Game.Scripts.Stage1 extends Game.LazerScript
   metadata:
     namespace: 'City'
-    #startScenery: 'UnderBridge'
-    #startScenery: 'Ocean'
-    startScenery: 'Intro'
-    #armedPlayers: no
     speed: 50
 
   execute: ->
@@ -15,6 +11,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
 
     @sequence(
+      @setScenery('Intro')
       @async @sunRise()
       @introText()
       @tutorial()
@@ -79,19 +76,23 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   introText: ->
     @sequence(
       @wait 2000 # Time for more players to activate
-      @if((-> @player(1).active and @player(2).active)
-        @say 'John', 'Too bad we have to bring these ships to the museum!'
-      # else
-        @say 'John', 'Too bad we have to bring this ship to the museum!'
-      )
       @if((-> @player(1).active and !@player(2).active)
-        @say 'General', 'Just give her a good last flight John,'
+        @sequence(
+          @say 'John', 'I hate that we have bring this ship to the museum!'
+          @say 'General', 'Just give her a good last flight John,'
+        )
       )
       @if((-> !@player(1).active and @player(2).active)
-        @say 'General', 'Give her a good last flight Jim,'
+        @sequence(
+          @say 'Jim', 'I don\'t want to bring this ship to the museum!'
+          @say 'General', 'Give her a good last flight Jim,'
+        )
       )
       @if((-> @player(1).active and @player(2).active)
-        @say 'General', 'Give her a good last flight guys,'
+        @sequence(
+          @say 'John', 'I hate that we have bring these ships to the museum!'
+          @say 'General', 'Give her a good last flight guys,'
+        )
       )
       @say 'General', 'It\'s too bad these ships are too expensive for mass\n' +
         'production and have to be taken out of commission'
