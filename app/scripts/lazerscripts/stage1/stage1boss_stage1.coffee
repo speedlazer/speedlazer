@@ -13,7 +13,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @bindSequence 'Hit', @fase2, => @entity.health < 3000
+    @bindSequence 'Hit', @fase2, => @entity.health < 5000
 
     @sequence(
       @disableWeapons()
