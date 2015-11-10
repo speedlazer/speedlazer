@@ -63,7 +63,7 @@ var Game = {
     });
   },
   resetCredits: function() {
-    this.credits = 2;
+    this.credits = 2; // This is actually 'Extra' credits, so in total 3
   }
 };
 
