@@ -75,11 +75,13 @@ Game.ScriptModule.Core =
   runScript: (scriptClass, args...) ->
     (sequence) =>
       @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
       new scriptClass(@level).run(args...)
 
   async: (task) ->
     (sequence) =>
       @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
       task(sequence)
       return
 
@@ -101,10 +103,10 @@ Game.ScriptModule.Core =
       @_verify(sequence)
       throw new Error('sequence aborted')
 
-  checkpoint: (settings = {}) ->
+  checkpoint: (task) ->
     (sequence) =>
       @_verify(sequence)
       @currentCheckpoint += 1
       return WhenJS() if @_skippingToCheckpoint()
-      scenery = settings.scenery ? @currentScenery
-      @level.setScenery scenery
+      if @currentCheckpoint is @startAtCheckpoint and task?
+        task(sequence)

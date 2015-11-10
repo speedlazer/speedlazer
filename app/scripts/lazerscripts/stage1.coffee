@@ -12,11 +12,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
     @sequence(
       @setScenery('Intro')
-      @async @sunRise()
+      @sunRise()
       @introText()
       @tutorial()
       @droneTakeover()
-      @checkpoint(scenery: 'Ocean')
+
+      @checkpoint @checkpointStart('Ocean', 60000)
+
       @parallel(
         @sequence(
           @wait 2000
@@ -24,14 +26,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         )
         @swirlAttacks()
       )
-
       @setScenery('CoastStart')
       @swirlAttacks()
       @underWaterAttacks()
 
-      @checkpoint()
-      @mineSwarm()
+      @checkpoint @checkpointStart('CoastStart', 150000)
 
+      @mineSwarm()
       @setScenery('Bay')
       @underWaterAttacks()
       @parallel(
@@ -43,7 +44,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @mineSwarm direction: 'left'
       )
 
-      @checkpoint()
+      @checkpoint @checkpointStart('Bay', 240000)
+
       @setScenery('UnderBridge')
       @parallel(
         @sequence(
@@ -56,22 +58,22 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         )
         @waitForScenery('UnderBridge', event: 'leave')
       )
-      @checkpoint(scenery: 'Bay')
+
+      @checkpoint @checkpointStart('Bay', 300000)
+
       @setScenery('UnderBridge')
       @mineSwarm()
-      @setSpeed 25
       @mineSwarm direction: 'left'
       @mineSwarm()
-
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
       @bossFightStage1()
       @setSpeed 50
       @say('General', 'Hunt him down!')
-      @checkpoint(scenery: 'Bay')
+
+      @checkpoint @checkpointStart('Bay', 390000)
 
       @gainHeight(300, duration: 4000)
-
       @setScenery('Skyline')
 
       #@waitForScenery('Skyline', event: 'leave')
@@ -157,8 +159,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @repeat 2, @stalkerShootout()
     )
 
-  sunRise: ->
-    @runScript(Game.Scripts.SunRise)
+  sunRise: (options = { skipTo: 0 }) ->
+    @async @runScript(Game.Scripts.SunRise, options)
 
   mineSwarm: (options = { direction: 'right' })->
     @placeSquad Game.Scripts.JumpMine,
@@ -188,3 +190,10 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   bossFightStage1: ->
     @placeSquad Game.Scripts.Stage1BossStage1
+
+  checkpointStart: (scenery, sunSkip) ->
+    @parallel(
+      @setScenery(scenery)
+      @sunRise(skipTo: sunSkip)
+      @wait 2000
+    )

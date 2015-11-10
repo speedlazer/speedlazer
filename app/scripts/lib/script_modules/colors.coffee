@@ -14,8 +14,10 @@ Game.ScriptModule.Colors =
     (sequence) =>
        Crafty.background(colors[0])
        d = WhenJS.defer()
-       Crafty.e('ColorFade, 2D').colorFade(duration: settings.duration, background: yes,
-         colors...)
+       Crafty.e('ColorFade, 2D').colorFade(
+         duration: settings.duration,
+         skip: settings.skip ? 0
+         background: yes, colors...)
          .bind('ColorFadeFinished', ->
            d.resolve()
            @destroy()
