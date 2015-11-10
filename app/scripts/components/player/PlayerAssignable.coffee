@@ -11,8 +11,7 @@ Crafty.c 'PlayerAssignable',
       @_attachControllerAssignTrigger()
       return
     @preferredPlayer = player.getId()
-    return unless player.credits > 0
-    player.credits -= 1
+
     @setupControls(player)
     player.one 'Deactivated', =>
       @_attachControllerAssignTrigger()

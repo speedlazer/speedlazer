@@ -20,7 +20,7 @@ Crafty.defineScene 'GameOver', (data) ->
 
   Crafty('Player ControlScheme').each (index) ->
     Crafty.e('2D, DOM, Text')
-      .attr(x: 0, y: 200 + (index * 50), w: 640)
+      .attr(x: 0, y: 200 + (index * 30), w: 640)
       .text(@name + ': ' + @points)
       .textColor(@color())
       .css("textAlign", "center")
@@ -29,30 +29,27 @@ Crafty.defineScene 'GameOver', (data) ->
         weight: 'bold',
         family: 'Courier new'
       })
-    text = if @credits is 1
-      "1 Credit left"
-    else
-      "#{@credits} Credits left"
-
-    Crafty.e('2D, DOM, Text')
-      .attr(x: 0, y: 230 + (index * 50), w: 640)
-      .text(text)
-      .textColor(@color())
-      .css("textAlign", "center")
-      .textFont({
-        size: '15px',
-        weight: 'bold',
-        family: 'Courier new'
-      })
 
   # After a timeout, be able to replay
   Crafty.e('Delay').delay ->
-    # TODO: Check if continues left
-    creditsLeft = []
-    Crafty('Player ControlScheme').each -> creditsLeft.push this if @credits > 0
-
-    if creditsLeft.length > 0
+    if Game.credits > 0
       time = 10
+
+      text = if Game.credits is 1
+        "1 Credit left"
+      else
+        "#{Game.credits} Credits left"
+
+      Crafty.e('2D, DOM, Text')
+        .attr(x: 0, y: 320, w: 640)
+        .textColor('#FF0000')
+        .css("textAlign", "center")
+        .textFont(
+          size: '20px',
+          weight: 'bold',
+          family: 'Courier new'
+        )
+        .text(text)
       e = Crafty.e('2D, DOM, Text')
         .attr(x: 0, y: 350, w: 640)
         .textColor('#FF0000')
@@ -63,8 +60,6 @@ Crafty.defineScene 'GameOver', (data) ->
           family: 'Courier new'
         )
       prefix = "Press fire to continue"
-      if creditsLeft.length is 1
-        prefix = "#{creditsLeft[0].name} press fire to continue"
       e.text("#{prefix} #{"00#{time}".slice(-2)}")
       @delay ->
         time -= 1
@@ -75,7 +70,7 @@ Crafty.defineScene 'GameOver', (data) ->
       Crafty('Player').each ->
         @reset()
         @one 'Activated', ->
-          # TODO: Add a continue to the stats
+          Game.credits -= 1
           Crafty.enterScene Game.firstLevel, { checkpoint: data.checkpoint }
     else
       @delay ->

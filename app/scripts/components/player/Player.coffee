@@ -1,10 +1,6 @@
 Crafty.c 'Player',
 
   init: ->
-    @resetCredits()
-
-  resetCredits: ->
-    @credits = 3
     @reset()
 
   reset: ->
