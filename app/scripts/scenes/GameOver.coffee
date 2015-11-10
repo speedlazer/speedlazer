@@ -1,4 +1,4 @@
-Crafty.defineScene 'GameOver', ->
+Crafty.defineScene 'GameOver', (data) ->
   # import from globals
   Game = window.Game
 
@@ -45,7 +45,8 @@ Crafty.defineScene 'GameOver', ->
     Crafty('Player').each ->
       @reset()
       @one 'Activated', ->
-        Crafty.enterScene Game.firstLevel, { stage: 1 }
+        # TODO: Add a continue to the stats
+        Crafty.enterScene Game.firstLevel, { checkpoint: data.checkpoint }
 
     @delay ->
       Crafty.enterScene('Intro')

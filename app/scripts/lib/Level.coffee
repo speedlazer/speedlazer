@@ -73,7 +73,7 @@ class Game.Level
 
       unless playersActive
         @stop()
-        Crafty.enterScene('GameOver')
+        Crafty.trigger('GameOver')
 
   _setupLevelScenery: ->
     return unless @currentScenery?
