@@ -37,9 +37,9 @@ Crafty.defineScene 'Intro', ->
     , 2000, -1
 
   Crafty('Player').each ->
-    @reset()
+    @resetCredits()
     @one 'Activated', ->
-      Crafty.enterScene(Game.firstLevel, { stage: 1 })
+      Crafty.enterScene(Game.firstLevel)
 
 , ->
   # destructor

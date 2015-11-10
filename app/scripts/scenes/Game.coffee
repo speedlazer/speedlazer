@@ -1,4 +1,4 @@
-Crafty.defineScene 'Game', (data) ->
+Crafty.defineScene 'Game', (data = {}) ->
   # constructor
   #
   # import from globals

@@ -1,14 +1,19 @@
 Crafty.c 'Player',
-  lives: 2
-  points: 0
+
   init: ->
+    @resetCredits()
+
+  resetCredits: ->
+    @credits = 3
+    @reset()
+
+  reset: ->
     @stats =
       shotsFired: 0
       shotsHit: 0
       enemiesKilled: 0
       bonus: 0
 
-  reset: ->
     @removeComponent('ControlScheme')
       .attr({
         lives: 2,
