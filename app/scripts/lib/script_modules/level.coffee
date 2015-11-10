@@ -5,6 +5,7 @@ Game.ScriptModule.Level =
   placeSquad: (scriptClass, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
       settings = _.defaults(settings,
         amount: 1
         delay: 1000
@@ -38,6 +39,7 @@ Game.ScriptModule.Level =
   say: (speaker, text) ->
     (sequence) =>
       @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
       Game.say(speaker, text, bottom: @level.visibleHeight)
 
   drop: (options) ->
@@ -76,6 +78,8 @@ Game.ScriptModule.Level =
   setScenery: (scenery) ->
     (sequence) =>
       @_verify(sequence)
+      @currentScenery = scenery
+      return WhenJS() if @_skippingToCheckpoint()
       @level.setScenery scenery
 
   # Supported eventTypes:
@@ -88,6 +92,7 @@ Game.ScriptModule.Level =
   waitForScenery: (sceneryType, options = { event: 'enter' }) ->
     (sequence) =>
       @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
       d = WhenJS.defer()
       @level.notifyScenery options.event, sceneryType, -> d.resolve()
       d.promise

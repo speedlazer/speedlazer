@@ -4,6 +4,8 @@ var Game = {
   // Initialize and start our game
   start: function () {
     this.firstLevel = 'Game';
+    this.resetCredits();
+
     Crafty.load([ ], function () {
 
       // Start crafty and set a background color so that we can see it's working
@@ -59,6 +61,9 @@ var Game = {
       // Simply start splashscreen
       Crafty.enterScene('Intro');
     });
+  },
+  resetCredits: function() {
+    this.credits = 2; // This is actually 'Extra' credits, so in total 3
   }
 };
 

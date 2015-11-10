@@ -20,6 +20,7 @@ Crafty.c 'Choreography',
     @_options = _.defaults(options, {
       repeat: 0
       compensateCameraSpeed: no
+      skip: 0
     })
     if @_options.compensateCameraSpeed
       @camera = Crafty(Crafty('ScrollWall')[0])
@@ -28,7 +29,15 @@ Crafty.c 'Choreography',
 
     @_choreography = c
     @_repeated = 0
-    @_setupCPart(0)
+    part = 0
+    @_setupCPart(part)
+    toSkip = options.skip
+    if toSkip > 0
+      while toSkip > @_currentPart.duration
+        toSkip -= @_currentPart.duration
+        part += 1
+        @_setupCPart(part)
+      @_currentPart.easing.tick(toSkip)
     this
 
   synchChoreography: (otherComponent) ->
