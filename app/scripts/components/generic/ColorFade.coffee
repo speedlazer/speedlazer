@@ -3,8 +3,9 @@ Crafty.c 'ColorFade',
     @requires('Color')
 
   colorFade: (options, @colors...) ->
-    { @duration, @background } = options
+    { @duration, @background, skip } = options
     @v = 0
+    @v += skip ? 0
     @bind 'EnterFrame', @_recolor
 
   remove: ->
@@ -16,6 +17,7 @@ Crafty.c 'ColorFade',
     if pos >= 1
       @unbind 'EnterFrame', @_recolor
       @trigger 'ColorFadeFinished'
+      pos = 1
 
     color = @_buildColor(pos, @colors)
     if @background

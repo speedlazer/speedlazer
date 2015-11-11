@@ -8,7 +8,7 @@ class Game.Scripts.Stalker extends Game.EntityScript
       health: 100
       x: 680
       y: 400
-      speed: 300
+      speed: 600
     )
 
   execute: ->
@@ -20,6 +20,14 @@ class Game.Scripts.Stalker extends Game.EntityScript
         @moveTo(@targetLocation(), y: 450, speed: 200)
         @wait 100
       ))
+      @moveTo(y: 340, speed: 200)
+
+      # Wobble once before moving up
+      @wait 100
+      @moveTo(y: 350, speed: 100)
+      @wait 100
+      @moveTo(y: 340, speed: 100)
+
       @moveTo(y: -50)
     )
 

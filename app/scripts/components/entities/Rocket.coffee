@@ -40,8 +40,8 @@ Crafty.c 'Rocket',
       jitter: 0
 
     @attach Crafty.e("2D,Canvas,Particles").attr(
-      x: @x + @w - Crafty.viewport.x
-      y: @y - Crafty.viewport.y
+      x: @x + @w
+      y: @y
     ).particles(options)
 
     @enemy()

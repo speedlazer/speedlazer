@@ -24,10 +24,17 @@ html {
   transform-origin: top left;
 }
 section#help {
-  width: 300px;
+  width: 20em;
   float: right;
-  color: #404040;
+  color: #666;
   text-align: right;
+  padding: 1em;
+}
+a {
+  color: #fff;
+}
+dt {
+  color: #999;
 }
 .fullscreen #cr-stage {
   transform-origin: center center;

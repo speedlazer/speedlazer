@@ -1,6 +1,7 @@
 Crafty.defineScene 'Intro', ->
   # import from globals
   Game = window.Game
+  Game.resetCredits()
 
   # constructor
   Crafty.background('#000000')
@@ -39,7 +40,7 @@ Crafty.defineScene 'Intro', ->
   Crafty('Player').each ->
     @reset()
     @one 'Activated', ->
-      Crafty.enterScene(Game.firstLevel, { stage: 1 })
+      Crafty.enterScene(Game.firstLevel)
 
 , ->
   # destructor

@@ -24,18 +24,10 @@ Crafty.c 'PlayerAssignable',
       player = Crafty(@preferredPlayer)
       unless player.has('ControlScheme')
         return player
-        
+
   _firstUnassignedPlayer: ->
     players = Crafty('Player')
     for playerId in players
       player = Crafty(playerId)
       return player unless player.has('ControlScheme')
 
-Crafty.c 'ControlScheme',
-  init: ->
-    @trigger('Activated')
-    Crafty.trigger('PlayerActivated')
-
-  remove: ->
-    @trigger('Deactivated')
-    Crafty.trigger('PlayerDeactivated')

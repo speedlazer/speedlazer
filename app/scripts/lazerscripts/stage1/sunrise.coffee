@@ -22,12 +22,12 @@ class Game.Scripts.SunRise extends Game.EntityScript
     @sequence(
       @moveTo x: 620, y: 340, speed: 2000
       @parallel(
-        @backgroundColorFade duration: 150000, '#602020', '#8080FF'
+        @backgroundColorFade duration: 150000, skip: @options.skipTo, '#602020', '#8080FF'
         @movePath [
           [420, 150]
           [320, 100]
-        ], rotate: no
-        @colorFade duration: 300000, '#DD8000', '#DDDD00', '#DDDD80'
+        ], rotate: no, skip: @options.skipTo
+        @colorFade duration: 300000, skip: @options.skipTo, '#DD8000', '#DDDD00', '#DDDD80'
       )
     )
 

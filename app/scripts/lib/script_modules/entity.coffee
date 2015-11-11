@@ -45,6 +45,7 @@ Game.ScriptModule.Entity =
       return unless @enemy.alive
       settings = _.defaults(settings,
         rotate: yes
+        skip: 0
       )
       path.unshift [
         @entity.x + Crafty.viewport.x
@@ -72,7 +73,7 @@ Game.ScriptModule.Entity =
           rotation: settings.rotate
           path: bezierPath
           duration: duration
-        ], compensateCameraSpeed: yes
+        ], compensateCameraSpeed: yes, skip: settings.skip
       ).bind('ChoreographyEnd', ->
         @unbind('ChoreographyEnd')
         defer.resolve()

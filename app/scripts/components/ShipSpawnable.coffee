@@ -43,9 +43,19 @@ Crafty.c 'ShipSpawnable',
     @ship.start()
     @listenTo @ship, 'Hit', ->
       hasLasers = @ship.hasItem 'lasers'
+      Crafty.e('Explosion').explode(
+        x: @ship.x + (@ship.w / 2)
+        y: @ship.y + (@ship.h / 2)
+        radius: @ship.w
+      )
       @ship.destroy()
       @ship = null
-      @loseLife()
-      @spawnShip(hasLasers)
+      Crafty.e('Delay').delay(
+        =>
+          @loseLife()
+          @spawnShip(hasLasers)
+        2000
+        0
+      )
     this
 

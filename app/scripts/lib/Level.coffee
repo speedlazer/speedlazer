@@ -27,6 +27,7 @@ class Game.Level
     @currentScenery = @data.startScenery
 
   setScenery: (@currentScenery) ->
+    @_setupLevelScenery()
 
   start: (settings = {}) ->
     defaults =
@@ -63,6 +64,20 @@ class Game.Level
       @data.enemiesSpawned += 1
 
     @_placePlayerShips settings
+    @_setupLevelScenery()
+
+    Crafty.bind 'PlayerDied', =>
+      playersActive = no
+      Crafty('Player ControlScheme').each ->
+        playersActive = yes if @lives > 0
+
+      unless playersActive
+        @stop()
+        Crafty.trigger('GameOver')
+
+  _setupLevelScenery: ->
+    return unless @currentScenery?
+    return unless @blocks.length is 0
     @_seedPreceedingGeometry()
     @_update()
     @lastUpdate = Crafty.viewport._x + 200
@@ -92,14 +107,6 @@ class Game.Level
       @_handleSceneryEvents(@blocks[index - 1], 'playerLeave') if index > 0
       @_handleSceneryEvents(block, 'playerEnter')
 
-    Crafty.bind 'PlayerDied', =>
-      playersActive = no
-      Crafty('Player ControlScheme').each ->
-        playersActive = yes if @lives > 0
-
-      unless playersActive
-        @stop()
-        Crafty.enterScene('GameOver')
 
   _handleSceneryEvents: (block, eventType) ->
     return unless block?
