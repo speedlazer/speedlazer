@@ -138,7 +138,7 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       @level.setWeaponsEnabled yes
 
-  explosion: (location, options = { damage: no, radius: 20 }) ->
+  explosion: (location, options = { damage: 0, radius: 20 }) ->
     (sequence) =>
       @_verify(sequence)
       { x, y } = location()
@@ -149,6 +149,7 @@ Game.ScriptModule.Level =
         x: x
         y: y
         radius: options.radius
+        damage: options.damage
       )
       if options.damage
         e.addComponent('Enemy')

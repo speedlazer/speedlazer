@@ -3,6 +3,7 @@ Game.ScriptModule ?= {}
 
 Game.ScriptModule.Entity =
   bindSequence: (eventName, sequenceFunction, filter) ->
+    return unless sequenceFunction?
     filter ?= -> true
     eventHandler = (args...) =>
       return unless filter(args...)

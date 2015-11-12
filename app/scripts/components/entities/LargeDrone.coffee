@@ -9,4 +9,10 @@ Crafty.c 'LargeDrone',
     @color '#0000DF'
 
     @enemy()
+    @onHit 'Mine', (e) ->
+      return if @hidden
+      for c in e
+        mine = c.obj
+        return if mine.hidden
+        mine.absorbDamage(300) # Mine collision on LargeDrone triggers explosion of mine
     this

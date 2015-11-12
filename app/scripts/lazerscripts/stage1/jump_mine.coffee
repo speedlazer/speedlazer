@@ -22,13 +22,13 @@ class Game.Scripts.JumpMine extends Game.EntityScript
         @moveTo(x: -50, speed: 35)
         @sequence(
           @wait 5000
-          @explosion(@location(), damage: yes, radius: 40)
+          @explosion(@location(), damage: 300, radius: 40)
           @endSequence()
         )
       )
     )
 
   onKilled: ->
-    @explosion(@location(), damage: yes, radius: 40)
+    @explosion(@location(), damage: 300, radius: 40)
 
 

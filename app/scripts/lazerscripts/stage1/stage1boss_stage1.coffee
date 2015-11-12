@@ -12,7 +12,6 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     )
 
   execute: ->
-    @bindSequence 'Destroyed', @onKilled
     @bindSequence 'Hit', @fase2, => @entity.health < 5000
 
     @sequence(
@@ -73,7 +72,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
     )
 
   onKilled: ->
-    @explosion(@location(), damage: yes, radius: 40)
+    @explosion(@location(), damage: 200, radius: 40)
 
 
 class Game.Scripts.Stage1BossRocket extends Game.EntityScript
@@ -91,6 +90,6 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
     @moveTo(x: -205)
 
   onKilled: ->
-    @explosion(@location(), damage: yes, radius: 40)
+    @explosion(@location(), damage: 400, radius: 40)
 
 
