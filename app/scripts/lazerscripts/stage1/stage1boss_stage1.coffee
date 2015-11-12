@@ -5,14 +5,14 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
   spawn: ->
     Crafty.e('LargeDrone').drone(
-      health: 8000
+      health: 160000
       x: 680
       y: 400
       speed: 100
     )
 
   execute: ->
-    @bindSequence 'Hit', @fase2, => @entity.health < 5000
+    @bindSequence 'Hit', @fase2, => @entity.health < 140000
 
     @sequence(
       @disableWeapons()
@@ -37,7 +37,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     )
 
   fase2: ->
-    @bindSequence 'Hit', @fase3, => @entity.health < 1000
+    @bindSequence 'Hit', @fase3, => @entity.health < 120000
 
     @sequence(
       @setSpeed 50
@@ -46,9 +46,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
   fase3: ->
     @sequence(
-      @disableWeapons()
       @moveTo(x: 740, y: 100, speed: 100)
-      @enableWeapons()
     )
 
 class Game.Scripts.Stage1BossMine extends Game.EntityScript
@@ -90,6 +88,6 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
     @moveTo(x: -205)
 
   onKilled: ->
-    @explosion(@location(), damage: 400, radius: 40)
+    @explosion(@location(), damage: 200, radius: 40)
 
 

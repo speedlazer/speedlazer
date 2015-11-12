@@ -68,10 +68,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
       @bossFightStage1()
-      @setSpeed 50
-      @say('General', 'Hunt him down!')
 
       @checkpoint @checkpointStart('Bay', 390000)
+      @setSpeed 50
+      @say('General', 'Hunt him down!')
+      @setSpeed 100
 
       @gainHeight(300, duration: 4000)
       @setScenery('Skyline')

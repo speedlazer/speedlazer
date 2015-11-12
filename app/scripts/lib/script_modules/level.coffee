@@ -1,6 +1,21 @@
 Game = @Game
 Game.ScriptModule ?= {}
 
+# Actions to control the flow of a level
+#
+# - placeSquad
+# - say
+# - drop
+# - player
+# - setScenery
+# - waitForScenery
+# - gainHeight
+# - setSpeed
+# - showScore
+# - disableWeapons
+# - enableWeapons
+# - explosion
+#
 Game.ScriptModule.Level =
   placeSquad: (scriptClass, settings = {}) ->
     (sequence) =>

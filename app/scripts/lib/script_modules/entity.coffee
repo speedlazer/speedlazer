@@ -1,6 +1,16 @@
 Game = @Game
 Game.ScriptModule ?= {}
 
+# Actions to control an entity in the game
+#
+# - bindSequence
+# - sendToBackground
+# - movePath
+# - moveTo
+# - location
+# - pickTarget
+# - targetLocation
+#
 Game.ScriptModule.Entity =
   bindSequence: (eventName, sequenceFunction, filter) ->
     return unless sequenceFunction?
@@ -216,8 +226,8 @@ Game.ScriptModule.Entity =
 
   pickTarget: (selection) ->
     (sequence) =>
-      ships = Crafty(selection)
-      @target = ships.get Math.floor(Math.random() * ships.length)
+      entities = Crafty(selection)
+      @target = entities.get Math.floor(Math.random() * entities.length)
 
   targetLocation: (override = {}) ->
     =>
