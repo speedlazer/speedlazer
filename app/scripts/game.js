@@ -31,6 +31,7 @@ var Game = {
       Crafty.e('KeyboardControls, PlayerAssignable')
         .controls({
           fire: Crafty.keys.SPACE,
+          secondary: Crafty.keys.CTRL,
           up: Crafty.keys.UP_ARROW,
           down: Crafty.keys.DOWN_ARROW,
           left: Crafty.keys.LEFT_ARROW,
@@ -40,6 +41,7 @@ var Game = {
       Crafty.e('KeyboardControls, PlayerAssignable')
         .controls({
           fire: Crafty.keys.G,
+          secondary: Crafty.keys.H,
           up: Crafty.keys.W,
           down: Crafty.keys.S,
           left: Crafty.keys.A,
@@ -49,13 +51,15 @@ var Game = {
       Crafty.e('GamepadControls, PlayerAssignable')
         .controls({
           gamepadIndex: 0,
-          fire: 0
+          fire: 0,
+          secondary: 1
         });
 
       Crafty.e('GamepadControls, PlayerAssignable')
         .controls({
           gamepadIndex: 1,
-          fire: 0
+          fire: 0,
+          secondary: 1
         });
 
       // Simply start splashscreen

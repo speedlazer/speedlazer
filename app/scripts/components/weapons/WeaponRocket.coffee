@@ -1,21 +1,29 @@
-Crafty.c 'WeaponLaser',
+Crafty.c 'WeaponRocket',
   init: ->
     @requires '2D,Canvas,Color'
-    @color '#808080'
+    @color '#404040'
     @attr
       w: 30
-      h: 5
+      h: 8
 
   remove: ->
+    @unbind 'EnterFrame', @_coolDown
 
   install: (@ship) ->
     @xp = 0
     @level = @determineLevel @xp
     @attr
-      x: @ship.x + 10
-      y: @ship.y + 15
+      x: @ship.x + 5
+      y: @ship.y + 25
       z: @ship.z + 1
     @ship.attach this
+    @heat = 0
+    @bind 'EnterFrame', @_coolDown
+
+  _coolDown: (fd) ->
+    @heat -= fd.dt
+    if @heat < 0
+      @heat = 0
 
   addXP: (amount) ->
     @xp += amount
@@ -38,6 +46,9 @@ Crafty.c 'WeaponLaser',
 
   shoot: (onOff) ->
     return unless onOff
+    return if @heat > 0
+    @heat = 2000
+
     settings = switch @level
       when 0 then w: 4, speed: 350, h: 3
       when 1 then w: 6, speed: 350, h: 4
@@ -45,7 +56,7 @@ Crafty.c 'WeaponLaser',
       when 3 then w: 10, speed: 350, h: 5
       when 4 then w: 12, speed: 350, h: 6
 
-    Crafty.e('Bullet')
+    Crafty.e('MiniRocket')
       .attr
         x: @x + @w
         y: @y + (@h / 2) - (settings.h / 2)
@@ -53,7 +64,8 @@ Crafty.c 'WeaponLaser',
         h: settings.h
       .fire
         origin: this
-        damage: 100
+        damage: 400
+        radius: 20
         speed: @ship._forcedSpeed.x + settings.speed
         direction: 0
       .bind 'HitTarget', =>

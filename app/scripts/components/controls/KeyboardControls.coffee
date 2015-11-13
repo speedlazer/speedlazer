@@ -43,6 +43,9 @@ Crafty.c 'KeyboardControls',
 
     @listenTo ship, 'KeyDown', (e) ->
       ship.shoot(true) if e.key is controlMap.fire
+      ship.secondary(true) if e.key is controlMap.secondary
 
     @listenTo ship, 'KeyUp', (e) ->
       ship.shoot(false) if e.key is controlMap.fire
+      ship.secondary(false) if e.key is controlMap.secondary
+

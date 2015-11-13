@@ -19,7 +19,7 @@ generator.defineElement 'water', ->
 
 generator.defineElement 'waterFront', ->
   height = 65
-  @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
+  @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Solid, Color').attr(w: @delta.x, h: 10).color('#000080'))
   @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
 
 generator.defineElement 'cityHorizon', (mode) ->
@@ -90,7 +90,7 @@ generator.defineBlock class extends @Game.LevelScenery
     shipLength = 700
 
     height = 65
-    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 90).color('#000080'))
+    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Solid, Color').attr(w: @delta.x, h: 90).color('#000080'))
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height + 10, z: -300).color('#000080'))
 
     height = 15
@@ -204,7 +204,7 @@ generator.defineBlock class extends @Game.LevelScenery
           @tween { y: 0 }, 5000
           @one 'TweenEnd', -> @removeComponent 'Tween', no
       @one 'shipExterior', ->
-        block.outside.tween({ alpha: 1 }, 1500).addComponent('Edge')
+        block.outside.tween({ alpha: 1 }, 1500).addComponent('Solid')
       @one 'go', ->
         block.level.setForcedSpeed block.speed
 
