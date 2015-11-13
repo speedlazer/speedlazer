@@ -108,7 +108,7 @@ Game.ScriptModule.Entity =
           return @_moveWater(settings)
 
   _setupWaterSpot: ->
-    waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween, ViewportFixed')
+    waterSpot = Crafty.e('2D, WebGL, Color, Choreography, Tween, ViewportFixed')
       .color('#000040')
       .attr(
         w: @entity.w + 10

@@ -1,6 +1,6 @@
 Crafty.c 'Mine',
   init: ->
-    @requires 'Color, Enemy'
+    @requires 'Enemy, Color'
 
   mine: (attr = {}) ->
     @attr _.defaults(attr,

@@ -1,6 +1,6 @@
 Crafty.c 'LargeDrone',
   init: ->
-    @requires 'Color, Enemy'
+    @requires 'Enemy, Color'
 
   drone: (attr = {}) ->
     @attr _.defaults(attr,

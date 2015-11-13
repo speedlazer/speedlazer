@@ -1,6 +1,6 @@
 Crafty.c 'PowerUp',
   init: ->
-    @requires '2D,Canvas,Color'
+    @requires '2D,WebGL,Color'
     @color '#20FF20'
     @attr
       w: 20
@@ -10,7 +10,7 @@ Crafty.c 'PowerUp',
 
   powerUp: (@settings) ->
     if @settings.marking
-      marking = Crafty.e('2D,Canvas,Text')
+      marking = Crafty.e('2D,DOM,Text')
         .textColor('#000000')
         .textFont({
           size: '16px',
