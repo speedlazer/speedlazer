@@ -1,6 +1,6 @@
 Crafty.c 'Bullet',
   init: ->
-    @requires '2D, WebGL, Color, Collision'
+    @requires '2D, Canvas, Color, Collision'
     @color '#FFFF00'
 
   fire: (properties) ->

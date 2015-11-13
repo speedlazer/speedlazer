@@ -1,7 +1,7 @@
 'use strict';
 require('scripts/components/*');
 require('scripts/compiled/components');
-require('scripts/game');
+require('scripts/compiled/game');
 require('scripts/compiled/lib');
 require('scripts/compiled/lazerscripts');
 require('scripts/compiled/scenery');

@@ -1,6 +1,6 @@
 Crafty.c 'Enemy',
   init: ->
-    @requires '2D, WebGL, Collision, Choreography, ViewportFixed'
+    @requires '2D, Canvas, Collision, Choreography, ViewportFixed'
 
   enemy: ->
     Crafty.trigger('EnemySpawned', this)

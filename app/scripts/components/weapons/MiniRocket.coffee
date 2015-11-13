@@ -1,6 +1,6 @@
 Crafty.c 'MiniRocket',
   init: ->
-    @requires '2D, WebGL, Color, Collision'
+    @requires '2D, Canvas, Color, Collision'
     @color '#FF0000'
 
   fire: (attr = {}) ->
@@ -45,7 +45,7 @@ Crafty.c 'MiniRocket',
       # sensible values are 0-3
       jitter: 0
 
-    @attach Crafty.e("2D,WebGL,Particles").attr(
+    @attach Crafty.e("2D,Canvas,Particles").attr(
       x: @x
       y: @y
     ).particles(options)

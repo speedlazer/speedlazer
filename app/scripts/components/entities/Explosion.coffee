@@ -1,6 +1,6 @@
 Crafty.c 'Explosion',
   init: ->
-    @requires '2D,WebGL,Color,Tween,Delay'
+    @requires '2D,Canvas,Color,Tween,Delay'
 
   explode: (attr) ->
     radius = attr.radius ? 20
@@ -55,7 +55,7 @@ Crafty.c 'Explosion',
       @destroy()
 
     cleanupDelay = (options.lifeSpan + options.lifeSpanRandom) * Crafty.timer.FPS()
-    Crafty.e("2D,WebGL,Particles,Delay").attr(
+    Crafty.e("2D,Canvas,Particles,Delay").attr(
       x: @x
       y: @y
     ).particles(options).bind 'ParticleEnd', ->
@@ -64,7 +64,7 @@ Crafty.c 'Explosion',
       # But the particles are still alive for their lifetime
       @delay((-> @destroy()), cleanupDelay)
 
-    #p = Crafty.e("2D,WebGL,Particles").attr(
+    #p = Crafty.e("2D,Canvas,Particles").attr(
       #x: @entity.x
       #y: @entity.y
     #).particles(options).bind 'ParticleEnd', ->

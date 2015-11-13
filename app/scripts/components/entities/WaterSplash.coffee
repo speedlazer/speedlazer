@@ -1,6 +1,6 @@
 Crafty.c 'WaterSplash',
   init: ->
-    @requires '2D,WebGL,Particles,Delay'
+    @requires '2D,Canvas,Particles,Delay'
 
   waterSplash: (attr) ->
     options =

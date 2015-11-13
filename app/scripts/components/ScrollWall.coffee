@@ -1,6 +1,6 @@
 Crafty.c 'ScrollWall',
   init: ->
-    @requires('2D, WebGL, Color, Edge, Collision')
+    @requires('2D, Canvas, Color, Edge, Collision')
     @attr
       x: 0
       y: 0
@@ -11,15 +11,15 @@ Crafty.c 'ScrollWall',
         y: 0
 
     @_speed = { x: 0, y: 0 }
-    @wallEnd = Crafty.e('2D, WebGL, ScrollFront, Edge')
+    @wallEnd = Crafty.e('2D, Canvas, ScrollFront, Edge')
       .attr(x: - (Crafty.viewport.x - Crafty.viewport.width) - 3, y: 0, h: Crafty.viewport.height, w: 12)
     @attach @wallEnd
 
-    @wallTop = Crafty.e('2D, WebGL, Edge, Collision')
+    @wallTop = Crafty.e('2D, Canvas, Edge, Collision')
       .attr(x: 0, y: 40, h: 2, w: Crafty.viewport.width)
     @attach @wallTop
 
-    @wallBottom = Crafty.e('2D, WebGL, Edge, Collision')
+    @wallBottom = Crafty.e('2D, Canvas, Edge, Collision')
       .attr(x: 0, y: Crafty.viewport.height - 2, h: 2, w: Crafty.viewport.width)
     @attach @wallBottom
 

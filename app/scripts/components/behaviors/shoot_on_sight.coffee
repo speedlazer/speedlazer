@@ -17,7 +17,7 @@ Crafty.c 'ShootOnSight',
 
   _shoot: (angle) ->
     @lastShotAt = 0
-    Crafty.e('2D, WebGL, Enemy, Color, ViewportFixed').attr(
+    Crafty.e('2D, Canvas, Enemy, Color, ViewportFixed').attr(
       x: @x
       y: @y
       w: 4
