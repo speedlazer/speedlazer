@@ -4,7 +4,9 @@ Crafty.c 'PlayerControlledShip',
     @attr w: 30, h: 30
     @bind 'Moved', (from) ->
       if @hit('Edge') or @hit('Solid') # Contain player within playfield
-        @attr x: from.x, y: from.y
+        setBack = {}
+        setBack[from.axis] = from.oldValue
+        @attr setBack
     @_forcedSpeed =
       x: 0
       y: 0
