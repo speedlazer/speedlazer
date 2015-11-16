@@ -14,6 +14,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
     @sequence(
       @setScenery('Intro')
+      @async @runScript Game.Scripts.IntroBarrel
       @sunRise()
       @introText()
       @tutorial()
