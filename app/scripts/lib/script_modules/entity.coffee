@@ -17,9 +17,12 @@ Game.ScriptModule.Entity =
     filter ?= -> true
     eventHandler = (args...) =>
       return unless filter(args...)
-      @currentSequence = Math.random()
       @entity.unbind(eventName, eventHandler)
-      @alternatePath = WhenJS(sequenceFunction.apply(this, args)(@currentSequence))
+      p = (sequence) =>
+        @alternatePath = null
+        sequenceFunction.apply(this, args)(sequence)
+      @currentSequence = sequence = Math.random()
+      @alternatePath = WhenJS(p(sequence))
         .catch =>
           @alternatePath
     @entity.bind(eventName, eventHandler)
@@ -64,8 +67,7 @@ Game.ScriptModule.Entity =
           path: bezierPath
           duration: duration
         ], compensateCameraSpeed: yes, skip: settings.skip
-      ).bind('ChoreographyEnd', ->
-        @unbind('ChoreographyEnd')
+      ).one('ChoreographyEnd', ->
         defer.resolve()
       )
       defer.promise
@@ -129,7 +131,7 @@ Game.ScriptModule.Entity =
       x: @entity.x
       y: @entity.y
       size: @entity.w
-    ).bind 'ParticleEnd', ->
+    ).one 'ParticleEnd', ->
       defer.resolve()
 
     defer.promise
@@ -183,8 +185,7 @@ Game.ScriptModule.Entity =
       x: settings.x
       maxSpeed: settings.speed
       duration: duration
-    ]).bind('ChoreographyEnd', ->
-      @unbind('ChoreographyEnd')
+    ]).one('ChoreographyEnd', ->
       defer.resolve()
     )
     defer.promise
@@ -213,8 +214,7 @@ Game.ScriptModule.Entity =
         maxSpeed: settings.speed
         duration: (delta / settings.speed) * 1000
       ]
-    ).bind('ChoreographyEnd', ->
-      @unbind('ChoreographyEnd')
+    ).one('ChoreographyEnd', ->
       defer.resolve()
     )
     defer.promise

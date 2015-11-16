@@ -222,7 +222,6 @@ class Game.Level
   _cleanupBuildBlocks: ->
     first = @blocks[0]
     while first.canCleanup()
-      console.log 'cleaning up', Crafty('*').length
       @blocks.shift().clean()
       first = @blocks[0]
 
