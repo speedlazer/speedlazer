@@ -239,6 +239,14 @@ Game.ScriptModule.Entity =
     )
     defer.promise
 
+  rotate: (degrees, duration) ->
+    (sequence) =>
+      @_verify(sequence)
+      defer = WhenJS.defer()
+      @entity.tween({ rotation: degrees }, duration)
+        .one 'TweenEnd', -> defer.resolve()
+      defer.promise
+
   location: (settings = {}) ->
     =>
       x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2))
