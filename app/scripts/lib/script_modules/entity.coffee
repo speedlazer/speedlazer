@@ -247,6 +247,14 @@ Game.ScriptModule.Entity =
         .one 'TweenEnd', -> defer.resolve()
       defer.promise
 
+  setLocation: (location) ->
+    (sequence) =>
+      settings = location?() ? location
+      @entity.attr(
+        x: settings.x - Crafty.viewport.x
+        y: settings.y - Crafty.viewport.y
+      )
+
   location: (settings = {}) ->
     =>
       x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2))
@@ -259,5 +267,5 @@ Game.ScriptModule.Entity =
 
   targetLocation: (override = {}) ->
     =>
-      x: override.x ? (@target.x + Crafty.viewport.x)
-      y: override.y ? (@target.y + Crafty.viewport.y)
+      x: (override.x ? (@target.x + Crafty.viewport.x)) + (override.offsetX ? 0)
+      y: (override.y ? (@target.y + Crafty.viewport.y)) + (override.offsetY ? 0)
