@@ -20,9 +20,9 @@ Game.ScriptModule.Entity =
       @entity.unbind(eventName, eventHandler)
       p = (sequence) =>
         @alternatePath = null
-        sequenceFunction.apply(this, args)(sequence)
+        WhenJS(sequenceFunction.apply(this, args)(sequence))
       @currentSequence = sequence = Math.random()
-      @alternatePath = WhenJS(p(sequence))
+      @alternatePath = p(sequence)
         .catch =>
           @alternatePath
     @entity.bind(eventName, eventHandler)
@@ -88,7 +88,7 @@ Game.ScriptModule.Entity =
           return @_moveAir(airSettings)
             .then =>
               @enemy.moveState = 'water'
-              if @enemy.alive > 0
+              if @enemy.alive
                 @_setupWaterSpot()
                 @_waterSplash()
                 @_moveWater(settings)
@@ -110,7 +110,7 @@ Game.ScriptModule.Entity =
           return @_moveWater(settings)
 
   _setupWaterSpot: ->
-    waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween, ViewportFixed')
+    waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween')
       .color('#000040')
       .attr(
         w: @entity.w + 10
@@ -120,6 +120,8 @@ Game.ScriptModule.Entity =
         alpha: 0.7
         z: @entity.z - 1
       )
+    if @entity.has('ViewportFixed')
+      waterSpot.addComponent('ViewportFixed')
     @entity.hide(waterSpot)
 
   _removeWaterSpot: ->
@@ -138,9 +140,11 @@ Game.ScriptModule.Entity =
 
   _moveWater: (settings) ->
     defaults =
-      x: @entity.x + Crafty.viewport.x
-      y: @entity.y + Crafty.viewport.y
       speed: @entity.speed
+
+    if @entity.has('ViewportFixed')
+      defaults.x = @entity.x + Crafty.viewport.x
+      defaults.y = @entity.y + Crafty.viewport.y
 
     seaLevel = @_getSeaLevel()
     settings = _.defaults(settings, defaults)
@@ -180,8 +184,15 @@ Game.ScriptModule.Entity =
       y: settings.y - Crafty.viewport.y
     )
 
+    type = if @entity.has('ViewportFixed')
+      'viewport'
+    else
+      settings.x = deltaX
+      settings.y = deltaY
+      'linear'
+
     @entity.hideMarker.choreography([
-      type: 'viewport'
+      type: type
       x: settings.x
       maxSpeed: settings.speed
       duration: duration
@@ -195,9 +206,11 @@ Game.ScriptModule.Entity =
 
   _moveAir: (settings) ->
     defaults =
-      x: @entity.x + Crafty.viewport.x
-      y: @entity.y + Crafty.viewport.y
       speed: @entity.speed
+
+    if @entity.has('ViewportFixed')
+      defaults.x = @entity.x + Crafty.viewport.x
+      defaults.y = @entity.y + Crafty.viewport.y
 
     settings = _.defaults(settings, defaults)
 
@@ -206,9 +219,16 @@ Game.ScriptModule.Entity =
     delta = Math.sqrt((deltaX ** 2) + (deltaY ** 2))
 
     defer = WhenJS.defer()
+    type = if @entity.has('ViewportFixed')
+      'viewport'
+    else
+      settings.x = deltaX
+      settings.y = deltaY
+      'linear'
+
     @entity.choreography(
       [
-        type: 'viewport'
+        type: type
         x: settings.x
         y: settings.y
         maxSpeed: settings.speed
