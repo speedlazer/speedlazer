@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "appPath": "app",
   "dependencies": {
-    "Crafty-Distro": "https://github.com/craftyjs/Crafty-Distro.git#nightlies",
-    "crafty-gamepad": "svenjacobs/crafty-gamepad",
+    "Crafty-Distro": "craftyjs/Crafty-Distro#nightlies",
+    "crafty-gamepad": "matthijsgroen/crafty-gamepad#support-crafty-0.7.0",
     "jquery": "~1.7.2",
     "jsbezier": "*",
     "modernizr": "~2.6.2",
