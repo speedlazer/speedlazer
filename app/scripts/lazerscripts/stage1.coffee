@@ -81,11 +81,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @gainHeight(300, duration: 4000)
       @setScenery('Skyline')
 
-      @repeat @mineSwarm()
       #@waitForScenery('Skyline', event: 'leave')
-      #@disableWeapons()
-      #@showScore(1, 'City')
-      #@enableWeapons()
+      @disableWeapons()
+      @showScore(1, 'City')
+      @enableWeapons()
+      @say 'Game', 'End of gameplay for now... \nStarting endless enemies'
+      @repeat @mineSwarm()
     )
 
   introText: ->

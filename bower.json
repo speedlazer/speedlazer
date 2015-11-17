@@ -4,7 +4,7 @@
   "appPath": "app",
   "dependencies": {
     "Crafty-Distro": "craftyjs/Crafty-Distro#nightlies",
-    "crafty-gamepad": "matthijsgroen/crafty-gamepad#support-crafty-0.7.0",
+    "crafty-gamepad": "svenjacobs/crafty-gamepad",
     "jquery": "~1.7.2",
     "jsbezier": "*",
     "modernizr": "~2.6.2",
