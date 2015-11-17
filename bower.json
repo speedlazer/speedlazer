@@ -3,13 +3,14 @@
   "version": "0.0.0",
   "appPath": "app",
   "dependencies": {
+    "Crafty-Distro": "craftyjs/Crafty-Distro#nightlies",
+    "crafty-gamepad": "svenjacobs/crafty-gamepad",
     "jquery": "~1.7.2",
-    "underscore": "~1.8.3",
+    "jsbezier": "*",
     "modernizr": "~2.6.2",
     "requirejs-jquery": "~0.25.0",
-    "crafty-gamepad": "svenjacobs/crafty-gamepad",
     "screenfull": "~2.0.0",
     "seedrandom": "~2.4.0",
-    "jsbezier": "*"
+    "underscore": "~1.8.3"
   }
 }

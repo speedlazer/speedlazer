@@ -1,6 +1,18 @@
 Game = @Game
 Game.ScriptModule ?= {}
 
+# Core scripting mechanics. Mainly Controlflow statements
+#
+#  - sequence
+#  - parallel
+#  - if
+#  - while
+#  - repeat
+#  - runScript
+#  - async
+#  - wait
+#  - checkpoint
+#
 Game.ScriptModule.Core =
   _verify: (sequence) ->
     throw new Error('sequence mismatch') unless sequence is @currentSequence
@@ -8,8 +20,9 @@ Game.ScriptModule.Core =
   _skippingToCheckpoint: ->
     @startAtCheckpoint? and @currentCheckpoint < @startAtCheckpoint
 
-  # Runs a sequence of steps:
+  # Runs a sequence of steps.
   # example:
+  #
   #   @sequence(
   #     @moveTo(x: 30)
   #     @moveTo(y: 50)
@@ -19,8 +32,9 @@ Game.ScriptModule.Core =
       @_verify(sequence)
       WhenJS.sequence(tasks, sequence)
 
-  # Runs steps in parallel, and completes when the last branch has finished
+  # Runs steps in parallel, and completes when the last branch has finished.
   # example:
+  #
   #   @parallel(
   #     @placeSquad Game.Scripts.EnemyType1
   #     @placeSquad Game.Scripts.EnemyType2
@@ -30,8 +44,9 @@ Game.ScriptModule.Core =
       @_verify(sequence)
       WhenJS.parallel(tasks, sequence)
 
-  # Executes step conditionally
+  # Executes step conditionally.
   # example:
+  #
   #   @if((=> Math.random() > 0.5),
   #     @sequence(...)
   #   # else
@@ -45,6 +60,15 @@ Game.ScriptModule.Core =
       else
         elseBlock?(sequence)
 
+  # Repeat until condition is met.
+  # example:
+  #
+  #   @while((=> Math.random() > 0.5),
+  #     @sequence(...)
+  #   )
+  #
+  # if no condition is provided, it will
+  # loop forever. (see `repeat`)
   while: (condition, block) ->
     (sequence) =>
       @_verify(sequence)
@@ -56,6 +80,14 @@ Game.ScriptModule.Core =
         WhenJS(block(sequence)).then =>
           @while(condition, block)(sequence)
 
+  # Repeat forever or amount of times.
+  # example for infinite repeat (see `while`):
+  #
+  #   @repeat @placeSquad Game.Scripts.EnemyType1
+  #
+  # example:
+  #
+  #   @repeat 3, @placeSquad Game.Scripts.EnemyType1
   repeat: (times, block) ->
     (sequence) =>
       @_verify(sequence)
@@ -72,12 +104,17 @@ Game.ScriptModule.Core =
       WhenJS(block(sequence)).then =>
         @repeat(times - 1, block)(sequence)
 
+  # Run a subscript, and continue after completion.
+  # example:
+  #
+  #   @runScript Game.Scripts.EnemyType1, argsForScript...
   runScript: (scriptClass, args...) ->
     (sequence) =>
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
       new scriptClass(@level).run(args...)
 
+  # Execute a task, but don't wait for results.
   async: (task) ->
     (sequence) =>
       @_verify(sequence)
@@ -85,6 +122,7 @@ Game.ScriptModule.Core =
       task(sequence)
       return
 
+  # Wait an amount of milliseconds.
   wait: (amount) ->
     (sequence) =>
       @_verify(sequence)
@@ -98,11 +136,19 @@ Game.ScriptModule.Core =
       )
       d.promise
 
+  # Stops the current script chain.
   endSequence: ->
     (sequence) =>
       @_verify(sequence)
       throw new Error('sequence aborted')
 
+  # Define a checkpoint.
+  # When the user starts at this checkpoint,
+  # the provided task is executed.
+  #
+  # Typically, this task sets the correct background,
+  # provides a small delay to ease the player in the gameplay
+  # and could provide some powerups.
   checkpoint: (task) ->
     (sequence) =>
       @_verify(sequence)

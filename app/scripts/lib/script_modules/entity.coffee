@@ -1,18 +1,51 @@
 Game = @Game
 Game.ScriptModule ?= {}
 
+# Actions to control an entity in the game
+#
+# - bindSequence
+# - sendToBackground
+# - reveal
+# - movePath
+# - moveTo
+# - location
+# - pickTarget
+# - targetLocation
+#
 Game.ScriptModule.Entity =
+  # Change the execution sequence when the bound entity fires a trigger.
+  #
+  # You can use this to:
+  # - Show an explosion when an enemy is killed
+  # - Change the behaviour of an enemy when his health is below a certain point
+  # - Let a barrel drop when touched
+  #
+  # example:
+  #
+  # @bindSequence 'Destroyed', @onKilled
+  # @bindSequence 'Hit', @fase2, => @entity.health < 140000
+  #
+  # When the new sequence is triggered, the event is unbound from
+  # the entity. So the sequence will always be started once. When a new
+  # sequence is started, a current running one will be aborted.
   bindSequence: (eventName, sequenceFunction, filter) ->
+    return unless sequenceFunction?
     filter ?= -> true
     eventHandler = (args...) =>
       return unless filter(args...)
-      @currentSequence = Math.random()
       @entity.unbind(eventName, eventHandler)
-      @alternatePath = WhenJS(sequenceFunction.apply(this, args)(@currentSequence))
+      p = (sequence) =>
+        @alternatePath = null
+        WhenJS(sequenceFunction.apply(this, args)(sequence))
+      @currentSequence = sequence = Math.random()
+      @alternatePath = p(sequence)
         .catch =>
           @alternatePath
     @entity.bind(eventName, eventHandler)
 
+  # remove an entity from the current gameplay. This means it cannot shoot
+  # the player, and the player cannot shoot the entity. This is useful
+  # for moving entities behind scenery.
   sendToBackground: (scale, z) ->
     (sequence) =>
       @_verify(sequence)
@@ -39,6 +72,24 @@ Game.ScriptModule.Entity =
         d.resolve()
       d.promise
 
+  # Move an entity through a set of coordinates (relative to the viewport)
+  # in a bezier path. By default the entity moves with its own 'speed' property
+  # but can be overridden with settings.
+  #
+  # example:
+  #
+  # @movePath [
+  #   [320, 100]
+  #   [100, 240]
+  #   [320, 400]
+  #   [550, 250]
+  #   [-10, 100]
+  # ]
+  #
+  # extra settings supported:
+  # - speed: override the speed of the entity (in px/sec)
+  # - rotate: yes/no should the entity rotate along the path?
+  # - skip: amount of milliseconds to skip in this animation
   movePath: (path, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
@@ -74,12 +125,19 @@ Game.ScriptModule.Entity =
           path: bezierPath
           duration: duration
         ], compensateCameraSpeed: yes, skip: settings.skip
-      ).bind('ChoreographyEnd', ->
-        @unbind('ChoreographyEnd')
+      ).one('ChoreographyEnd', ->
         defer.resolve()
       )
       defer.promise
 
+  # Moves the entity to a coordinate
+  # the provided coordinate can also be a function (that does not take arguments)
+  # that returns an object with an 'x' and an 'y'.
+  #
+  # This method moves an entity below water if the Y gets below the 'seaLevel'
+  #
+  # extra settings can be provided:
+  # - speed: override the default speed of the entity (in px/sec)
   moveTo: (location, extraSettings = {}) ->
     (sequence) =>
       @_verify(sequence)
@@ -96,7 +154,7 @@ Game.ScriptModule.Entity =
           return @_moveAir(airSettings)
             .then =>
               @enemy.moveState = 'water'
-              if @enemy.alive > 0
+              if @enemy.alive
                 @_setupWaterSpot()
                 @_waterSplash()
                 @_moveWater(settings)
@@ -118,7 +176,7 @@ Game.ScriptModule.Entity =
           return @_moveWater(settings)
 
   _setupWaterSpot: ->
-    waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween, ViewportFixed')
+    waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween')
       .color('#000040')
       .attr(
         w: @entity.w + 10
@@ -128,6 +186,8 @@ Game.ScriptModule.Entity =
         alpha: 0.7
         z: @entity.z - 1
       )
+    if @entity.has('ViewportFixed')
+      waterSpot.addComponent('ViewportFixed')
     @entity.hide(waterSpot)
 
   _removeWaterSpot: ->
@@ -139,16 +199,18 @@ Game.ScriptModule.Entity =
       x: @entity.x
       y: @entity.y
       size: @entity.w
-    ).bind 'ParticleEnd', ->
+    ).one 'ParticleEnd', ->
       defer.resolve()
 
     defer.promise
 
   _moveWater: (settings) ->
     defaults =
-      x: @entity.x + Crafty.viewport.x
-      y: @entity.y + Crafty.viewport.y
       speed: @entity.speed
+
+    if @entity.has('ViewportFixed')
+      defaults.x = @entity.x + Crafty.viewport.x
+      defaults.y = @entity.y + Crafty.viewport.y
 
     seaLevel = @_getSeaLevel()
     settings = _.defaults(settings, defaults)
@@ -188,13 +250,19 @@ Game.ScriptModule.Entity =
       y: settings.y - Crafty.viewport.y
     )
 
+    type = if @entity.has('ViewportFixed')
+      'viewport'
+    else
+      settings.x = deltaX
+      settings.y = deltaY
+      'linear'
+
     @entity.hideMarker.choreography([
-      type: 'viewport'
+      type: type
       x: settings.x
       maxSpeed: settings.speed
       duration: duration
-    ]).bind('ChoreographyEnd', ->
-      @unbind('ChoreographyEnd')
+    ]).one('ChoreographyEnd', ->
       defer.resolve()
     )
     defer.promise
@@ -204,9 +272,11 @@ Game.ScriptModule.Entity =
 
   _moveAir: (settings) ->
     defaults =
-      x: @entity.x + Crafty.viewport.x
-      y: @entity.y + Crafty.viewport.y
       speed: @entity.speed
+
+    if @entity.has('ViewportFixed')
+      defaults.x = @entity.x + Crafty.viewport.x
+      defaults.y = @entity.y + Crafty.viewport.y
 
     settings = _.defaults(settings, defaults)
 
@@ -215,19 +285,41 @@ Game.ScriptModule.Entity =
     delta = Math.sqrt((deltaX ** 2) + (deltaY ** 2))
 
     defer = WhenJS.defer()
+    type = if @entity.has('ViewportFixed')
+      'viewport'
+    else
+      settings.x = deltaX
+      settings.y = deltaY
+      'linear'
+
     @entity.choreography(
       [
-        type: 'viewport'
+        type: type
         x: settings.x
         y: settings.y
         maxSpeed: settings.speed
         duration: (delta / settings.speed) * 1000
       ]
-    ).bind('ChoreographyEnd', ->
-      @unbind('ChoreographyEnd')
+    ).one('ChoreographyEnd', ->
       defer.resolve()
     )
     defer.promise
+
+  rotate: (degrees, duration) ->
+    (sequence) =>
+      @_verify(sequence)
+      defer = WhenJS.defer()
+      @entity.tween({ rotation: degrees }, duration)
+        .one 'TweenEnd', -> defer.resolve()
+      defer.promise
+
+  setLocation: (location) ->
+    (sequence) =>
+      settings = location?() ? location
+      @entity.attr(
+        x: settings.x - Crafty.viewport.x
+        y: settings.y - Crafty.viewport.y
+      )
 
   location: (settings = {}) ->
     =>
@@ -236,10 +328,10 @@ Game.ScriptModule.Entity =
 
   pickTarget: (selection) ->
     (sequence) =>
-      ships = Crafty(selection)
-      @target = ships.get Math.floor(Math.random() * ships.length)
+      entities = Crafty(selection)
+      @target = entities.get Math.floor(Math.random() * entities.length)
 
   targetLocation: (override = {}) ->
     =>
-      x: override.x ? (@target.x + Crafty.viewport.x)
-      y: override.y ? (@target.y + Crafty.viewport.y)
+      x: (override.x ? (@target.x + Crafty.viewport.x)) + (override.offsetX ? 0)
+      y: (override.y ? (@target.y + Crafty.viewport.y)) + (override.offsetY ? 0)

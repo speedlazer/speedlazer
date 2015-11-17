@@ -1,7 +1,6 @@
 Crafty.c 'Explosion',
   init: ->
-    #@requires 'Color,Tween,2D,Canvas'
-    @requires 'Color,Tween,2D,Canvas,Delay'
+    @requires '2D,Canvas,Color,Tween,Delay'
 
   explode: (attr) ->
     radius = attr.radius ? 20

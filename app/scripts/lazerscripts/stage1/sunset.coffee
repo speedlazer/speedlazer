@@ -11,7 +11,7 @@ class Game.Scripts.SunSet extends Game.EntityScript
         y: sun.y + Crafty.viewport.y
       )
     else
-      Crafty.e('Sun, ColorFade')
+      Crafty.e('Sun, ColorFade, KeepAlive')
         .sun(
           x: 620
           y: 340

@@ -1,6 +1,21 @@
 Game = @Game
 Game.ScriptModule ?= {}
 
+# Actions to control the flow of a level
+#
+# - placeSquad
+# - say
+# - drop
+# - player
+# - setScenery
+# - waitForScenery
+# - gainHeight
+# - setSpeed
+# - showScore
+# - disableWeapons
+# - enableWeapons
+# - explosion
+#
 Game.ScriptModule.Level =
   placeSquad: (scriptClass, settings = {}) ->
     (sequence) =>
@@ -138,7 +153,7 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       @level.setWeaponsEnabled yes
 
-  explosion: (location, options = { damage: no, radius: 20 }) ->
+  explosion: (location, options = { damage: 0, radius: 20 }) ->
     (sequence) =>
       @_verify(sequence)
       { x, y } = location()
@@ -149,6 +164,7 @@ Game.ScriptModule.Level =
         x: x
         y: y
         radius: options.radius
+        damage: options.damage
       )
       if options.damage
         e.addComponent('Enemy')

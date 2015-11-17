@@ -1,24 +1,30 @@
-Crafty.c 'Rocket',
+Crafty.c 'MiniRocket',
   init: ->
-    @requires 'Enemy, Color'
+    @requires '2D, Canvas, Color, Collision'
+    @color '#FF0000'
 
-  rocket: (attr = {}) ->
+  fire: (attr = {}) ->
     @attr _.defaults(attr,
-      w: 45, h: 15, health: 300)
-    @origin 'center'
-    @color '#F00000'
+      w: 35, h: 10)
+    @bind('EnterFrame', (fd) =>
+      @x += (@speed / 1000.0) * fd.dt
+      if @x > @_maxXforViewPort()
+        # Maybe send a bullet miss event
+        @destroy()
+    ).onHit 'Solid', @_impact
+    .onHit 'Enemy', @_impact
 
     options =
-      maxParticles: 150
-      size: 10
-      sizeRandom: 8
-      speed: 3
-      speedRandom: 0.5
+      maxParticles: 100
+      size: 5
+      sizeRandom: 4
+      speed: 2
+      speedRandom: 0.25
       # Lifespan in frames
-      lifeSpan: 19
-      lifeSpanRandom: 7
+      lifeSpan: 13
+      lifeSpanRandom: 5
       # Angle is calculated clockwise: 12pm is 0deg, 3pm is 90deg etc.
-      angle: 90
+      angle: -90
       angleRandom: 10
       startColour: [235, 135, 5, 1]
       startColourRandom: [28, 150, 45, 0.2]
@@ -28,7 +34,7 @@ Crafty.c 'Rocket',
       sharpness: 10
       sharpnessRandom: 10
       # Random spread from origin
-      spread: 5
+      spread: 3
       # How many frames should this last
       duration: -1
       #duration: 400 / Crafty.timer.FPS()
@@ -40,10 +46,20 @@ Crafty.c 'Rocket',
       jitter: 0
 
     @attach Crafty.e("2D,Canvas,Particles").attr(
-      x: @x + @w
+      x: @x
       y: @y
     ).particles(options)
 
-    @enemy()
     this
 
+  _impact: ->
+    Crafty.e('Explosion').explode
+      x: @x + @w
+      y: @y + (@h / 2)
+      radius: @radius
+      damage: @damage
+    @destroy()
+
+  _maxXforViewPort: ->
+    maxX = -Crafty.viewport._x + Crafty.viewport._width / Crafty.viewport._scale
+    maxX + 700

@@ -19,7 +19,7 @@
       )
     back.bind('Abort', -> defer.resolve())
 
-    speakerText = Crafty.e('2D, Canvas, Text')
+    speakerText = Crafty.e('2D, DOM, Text')
       .attr(w: 550, x: back.x + 10, y: back.y + 10, z: 101, alpha: 1)
       .text(speaker)
       .textColor('#707070')
@@ -31,7 +31,7 @@
     back.attach(speakerText)
 
     for line, i in lines
-      back.attach(Crafty.e('2D, Canvas, Text')
+      back.attach(Crafty.e('2D, DOM, Text')
         .attr(
           w: 550,
           x: back.x + 10,

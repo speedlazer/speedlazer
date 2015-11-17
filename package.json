@@ -2,11 +2,16 @@
   "name": "YourGame",
   "version": "0.0.0",
   "description": "game play is an HTML and JavaScript game built using the Crafty.js game engine and the generator-crafty templates.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matthijsgroen/game-play"
+  },
   "keywords": [
     "game play"
   ],
   "dependencies": {
-    "when": "git://github.com/cujojs/when"
+    "when": "github:cujojs/when"
   },
   "devDependencies": {
     "browserify": "^11.2.0",
@@ -39,6 +44,6 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "postinstall": "browserify -s WhenJS node_modules/when/build/when.browserify.js --no-detect-globals -o app/libs/when.js"
+    "postinstall": "browserify -s WhenJS build/when.browserify.js --no-detect-globals -o app/libs/when.js"
   }
 }

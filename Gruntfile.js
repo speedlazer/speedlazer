@@ -33,7 +33,8 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/scripts/compiled/components.js': '<%= yeoman.app %>/scripts/components/**/*.*coffee',
           '<%= yeoman.app %>/scripts/compiled/lazerscripts.js': '<%= yeoman.app %>/scripts/lazerscripts/**/*.*coffee',
           '<%= yeoman.app %>/scripts/compiled/scenery.js': '<%= yeoman.app %>/scripts/scenery/**/*.*coffee',
-          '<%= yeoman.app %>/scripts/compiled/scenes.js': '<%= yeoman.app %>/scripts/scenes/**/**.*coffee'
+          '<%= yeoman.app %>/scripts/compiled/scenes.js': '<%= yeoman.app %>/scripts/scenes/**/**.*coffee',
+          '<%= yeoman.app %>/scripts/compiled/game.js': '<%= yeoman.app %>/scripts/game.coffee'
         }
       }
     },

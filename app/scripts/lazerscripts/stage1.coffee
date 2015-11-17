@@ -9,9 +9,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
+    @inventoryAdd 'item', 'rockets', ->
+      Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
       @setScenery('Intro')
+      @async @runScript Game.Scripts.IntroBarrel
       @sunRise()
       @introText()
       @tutorial()
@@ -68,10 +71,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
       @bossFightStage1()
-      @setSpeed 50
-      @say('General', 'Hunt him down!')
 
       @checkpoint @checkpointStart('Bay', 390000)
+      @dropRocketForEachPlayer()
+      @setSpeed 50
+      @say('General', 'Hunt him down!')
+      @setSpeed 100
 
       @gainHeight(300, duration: 4000)
       @cityFighting()
@@ -80,6 +85,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @disableWeapons()
       @showScore(1, 'City')
       @enableWeapons()
+      @say 'Game', 'End of gameplay for now... \nStarting endless enemies'
+      @repeat @mineSwarm()
     )
 
   introText: ->
@@ -126,6 +133,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @parallel(
       @if((-> @player(1).active and !@player(1).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(1)))
       @if((-> @player(2).active and !@player(2).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(2)))
+    )
+
+  dropRocketForEachPlayer: ->
+    @parallel(
+      @if((-> @player(1).active and !@player(1).has('rockets')), @drop(item: 'rockets', inFrontOf: @player(1)))
+      @if((-> @player(2).active and !@player(2).has('rockets')), @drop(item: 'rockets', inFrontOf: @player(2)))
     )
 
   droneTakeover: ->

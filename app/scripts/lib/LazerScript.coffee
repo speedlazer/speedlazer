@@ -74,7 +74,7 @@ class Game.EntityScript extends Game.LazerScript
       .catch =>
         @alternatePath
       .finally =>
-        if @enemy.alive and @entity.has('Enemy')
+        if @enemy.alive and !@entity.has('KeepAlive')
           @entity.destroy()
       .then =>
         @enemy

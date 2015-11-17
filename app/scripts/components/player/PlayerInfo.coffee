@@ -4,7 +4,7 @@ Crafty.c 'PlayerInfo',
 
   playerInfo: (x, player) ->
     @player = player
-    @score = Crafty.e('2D, Canvas, Text, HUD')
+    @score = Crafty.e('2D, DOM, Text, HUD')
       .attr(w: 150, h: 20)
       .positionHud(x: x, y: 10, z: 2)
       .textFont(
@@ -14,7 +14,7 @@ Crafty.c 'PlayerInfo',
     if @player.has('Color')
       @score.textColor @player.color()
 
-    @lives = Crafty.e('2D, Canvas, Text, HUD')
+    @lives = Crafty.e('2D, DOM, Text, HUD')
       .attr(w: 250, h: 20)
       .positionHud(x: x, y: 25, z: 2)
       .textFont(
