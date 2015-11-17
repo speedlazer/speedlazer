@@ -19,7 +19,7 @@ generator.defineElement 'water', ->
 
 generator.defineElement 'waterFront', ->
   height = 65
-  @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 10).color('#000080'))
+  @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Solid, Color').attr(w: @delta.x, h: 10).color('#000080'))
   @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height - 10, z: -300).color('#000080'))
 
 generator.defineElement 'cityHorizon', (mode) ->
@@ -38,20 +38,20 @@ generator.defineElement 'cityHorizon', (mode) ->
   # This is just for a small impression, this will be replaced by a sprite
   if mode is 'start'
     @addBackground(150, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(120, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+    @addBackground(120, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -501, w: (50 * .25) + 1, h: 15 }), .25)
 
     @addBackground(230, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(190, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+    @addBackground(190, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -501, w: (50 * .25) + 1, h: 15 }), .25)
   else
     # This is just for a small impression, this will be replaced by a sprite
     @addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+    @addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -501, w: (50 * .25) + 1, h: 15 }), .25)
 
     @addBackground(170, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+    @addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -501, w: (50 * .25) + 1, h: 15 }), .25)
 
     @addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -500, w: (50 * .25) + 1, h: 15 }), .25)
+    @addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -501, w: (50 * .25) + 1, h: 15 }), .25)
 
 generator.defineElement 'city', ->
   # Coastline
@@ -73,7 +73,7 @@ generator.defineElement 'city', ->
   @addBackground(0, @level.visibleHeight - 135, Crafty.e('2D, Canvas, Color').color(col3).attr({ z: -305, w: (@delta.x * .5) + 1, h: 60 }), .5)
 
   @addBackground(90, @level.visibleHeight - 270, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -300, w: 80 + 1, h: 150 }), .5)
-  @addBackground(190, @level.visibleHeight - 290, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -300, w: 60 + 1, h: 165 }), .5)
+  @addBackground(190, @level.visibleHeight - 290, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -301, w: 60 + 1, h: 165 }), .5)
 
 
 generator.defineBlock class extends @Game.LevelScenery
@@ -90,44 +90,28 @@ generator.defineBlock class extends @Game.LevelScenery
     shipLength = 700
 
     height = 65
-    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Edge, Color').attr(w: @delta.x, h: 90).color('#000080'))
+    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Solid, Color').attr(w: @delta.x, h: 90).color('#000080'))
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height + 10, z: -300).color('#000080'))
 
-    height = 15
-    @add(0, @level.visibleHeight - 200, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: shipLength, h: 300 }))
-    @add(50, @level.visibleHeight - 350, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: 350, h: 150 }))
+    height = 45
+    shipHeight = 155
+    cabinHeight = 150
+
+    @add(0, @level.visibleHeight - height - shipHeight, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: shipLength, h: shipHeight }))
+    @add(50, @level.visibleHeight - height - shipHeight - cabinHeight, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: 350, h: cabinHeight }))
+
+    # Shadow on the water
     @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: 3, w: shipLength, h: 70, alpha: 0.3 }))
 
 
     @elevator = Crafty.e('2D, Canvas, Color, Tween').color('#707070').attr({ z: 0, w: 100, h: 5 })
-    @add(140, @level.visibleHeight + height - 85, @elevator)
+    @add(140, @level.visibleHeight - 70, @elevator)
 
-    @outside = Crafty.e('2D, Canvas, Color, Tween').color('#303030').attr({ z: 0, w: shipLength + 10, h: 195 - height, alpha: 0 })
+    @outside = Crafty.e('2D, Canvas, Color, Tween').color('#303030').attr({ z: 0, w: shipLength + 10, h: shipHeight - 5, alpha: 0 })
     @add(0, @level.visibleHeight - @outside.h - height, @outside)
 
-    @barrel = Crafty.e('2D, Tween, Canvas, Color, Collision, Choreography').color('#606000').attr({ z: 3, w: 10, h: 15 })
-    @add(500, @level.visibleHeight - @outside.h - height - @barrel.h, @barrel)
-
-    @barrelKnock = no
-    knockOff = [
-        type: 'linear'
-        y: 190
-        duration: 1500
-      ,
-        type: 'delay'
-        event: 'splash'
-        duration: 1
-    ]
-    @barrel.onHit 'PlayerControlledShip', =>
-      return if @barrelKnock
-      @barrelKnock = yes
-      @barrel.choreography(knockOff).tween(rotation: 90, 1500).one 'splash', =>
-        @barrel.attr alpha: 0
-        Crafty.e('WaterSplash').waterSplash(
-          x: @barrel.x
-          y: @barrel.y
-          size: @barrel.h
-        )
+    barrelLocator = Crafty.e('2D, BarrelLocation')
+    @add(500, @level.visibleHeight - @outside.h - height, barrelLocator)
 
     @addElement 'water'
     @addElement 'waterHorizon'
@@ -204,7 +188,7 @@ generator.defineBlock class extends @Game.LevelScenery
           @tween { y: 0 }, 5000
           @one 'TweenEnd', -> @removeComponent 'Tween', no
       @one 'shipExterior', ->
-        block.outside.tween({ alpha: 1 }, 1500).addComponent('Edge')
+        block.outside.tween({ alpha: 1 }, 1500).addComponent('Solid')
       @one 'go', ->
         block.level.setForcedSpeed block.speed
 

@@ -1,6 +1,7 @@
 Crafty.c 'Bullet',
   init: ->
-    @addComponent '2D, Canvas, Color, Collision'
+    @requires '2D, Canvas, Color, Collision'
+    @color '#FFFF00'
 
   fire: (properties) ->
     @attr(damage: properties.damage).bind('EnterFrame', (fd) =>
@@ -8,10 +9,10 @@ Crafty.c 'Bullet',
       if @x > @_maxXforViewPort()
         # Maybe send a bullet miss event
         @destroy()
-    ).onHit 'Edge', ->
+    ).onHit 'Solid', ->
       @destroy()
     this
 
   _maxXforViewPort: ->
-   maxX = -Crafty.viewport._x + Crafty.viewport._width / Crafty.viewport._scale
-   maxX + 200
+    maxX = -Crafty.viewport._x + Crafty.viewport._width / Crafty.viewport._scale
+    maxX + 10

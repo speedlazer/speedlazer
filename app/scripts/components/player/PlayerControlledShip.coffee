@@ -3,12 +3,15 @@ Crafty.c 'PlayerControlledShip',
     @requires '2D, Canvas, Color, Collision, Listener'
     @attr w: 30, h: 30
     @bind 'Moved', (from) ->
-      if @hit('Edge') # Contain player within playfield
-        @attr x: from.x, y: from.y
+      if @hit('Edge') or @hit('Solid') # Contain player within playfield
+        setBack = {}
+        setBack[from.axis] = from.oldValue
+        @attr setBack
     @_forcedSpeed =
       x: 0
       y: 0
     @primaryWeapon = undefined
+    @secondaryWeapon = undefined
     @weaponsEnabled = yes
 
   start: ->
@@ -31,12 +34,13 @@ Crafty.c 'PlayerControlledShip',
       @x += motionX
       @y += motionY
       # Move player back if flying into an object
-      @x -= motionX if @hit('Edge')
-      @y -= motionY if @hit('Edge')
+      if @hit('Edge') or @hit('Solid')
+        @x -= motionX
+        @y -= motionY
 
       # still hitting an object? then we where forced in
       # and are crashed (squashed probably)
-      @trigger('Hit') if @hit('Edge')
+      @trigger('Hit') if @hit('Edge') or @hit('Solid')
 
     this
 
@@ -55,6 +59,12 @@ Crafty.c 'PlayerControlledShip',
     @trigger 'Shoot' if onOff
     @primaryWeapon.shoot(onOff)
 
+  secondary: (onOff) ->
+    return unless @weaponsEnabled
+    return unless @secondaryWeapon?
+    #@trigger 'Shoot' if onOff # TODO: What does this do?
+    @secondaryWeapon.shoot(onOff)
+
   pickUp: (powerUp) ->
     contents =  powerUp.settings.contains
     if @installItem contents
@@ -70,8 +80,13 @@ Crafty.c 'PlayerControlledShip',
       @primaryWeapon = Crafty.e('WeaponLaser')
       @primaryWeapon.install(this)
       @listenTo @primaryWeapon, 'levelUp', (level) =>
-        @scoreText '+1'
-
+        @scoreText 'L +1'
+      return true
+    if item is 'rockets'
+      @secondaryWeapon = Crafty.e('WeaponRocket')
+      @secondaryWeapon.install(this)
+      @listenTo @secondaryWeapon, 'levelUp', (level) =>
+        @scoreText 'R +1'
       return true
 
   hasItem: (item) ->
@@ -79,7 +94,7 @@ Crafty.c 'PlayerControlledShip',
     return ~@items.indexOf item
 
   scoreText: (text) ->
-    Crafty.e('Text, Canvas, 2D, Tween')
+    Crafty.e('Text, DOM, 2D, Tween')
       .textColor('#FFFFFF')
       .text(text)
       .attr(
