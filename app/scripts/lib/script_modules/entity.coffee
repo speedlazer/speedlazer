@@ -12,6 +12,21 @@ Game.ScriptModule ?= {}
 # - targetLocation
 #
 Game.ScriptModule.Entity =
+  # Change the execution sequence when the bound entity fires a trigger.
+  #
+  # You can use this to:
+  # - Show an explosion when an enemy is killed
+  # - Change the behaviour of an enemy when his health is below a certain point
+  # - Let a barrel drop when touched
+  #
+  # example:
+  #
+  # @bindSequence 'Destroyed', @onKilled
+  # @bindSequence 'Hit', @fase2, => @entity.health < 140000
+  #
+  # When the new sequence is triggered, the event is unbound from
+  # the entity. So the sequence will always be started once. When a new
+  # sequence is started, a current running one will be aborted.
   bindSequence: (eventName, sequenceFunction, filter) ->
     return unless sequenceFunction?
     filter ?= -> true
@@ -27,11 +42,32 @@ Game.ScriptModule.Entity =
           @alternatePath
     @entity.bind(eventName, eventHandler)
 
+  # remove an entity from the current gameplay. This means it cannot shoot
+  # the player, and the player cannot shoot the entity. This is useful
+  # for moving entities behind scenery.
   sendToBackground: (scale, z) ->
     (sequence) =>
       @_verify(sequence)
       @entity.sendToBackground(scale, z)
 
+  # Move an entity through a set of coordinates (relative to the viewport)
+  # in a bezier path. By default the entity moves with its own 'speed' property
+  # but can be overridden with settings.
+  #
+  # example:
+  #
+  # @movePath [
+  #   [320, 100]
+  #   [100, 240]
+  #   [320, 400]
+  #   [550, 250]
+  #   [-10, 100]
+  # ]
+  #
+  # extra settings supported:
+  # - speed: override the speed of the entity (in px/sec)
+  # - rotate: yes/no should the entity rotate along the path?
+  # - skip: amount of milliseconds to skip in this animation
   movePath: (path, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
@@ -72,6 +108,14 @@ Game.ScriptModule.Entity =
       )
       defer.promise
 
+  # Moves the entity to a coordinate
+  # the provided coordinate can also be a function (that does not take arguments)
+  # that returns an object with an 'x' and an 'y'.
+  #
+  # This method moves an entity below water if the Y gets below the 'seaLevel'
+  #
+  # extra settings can be provided:
+  # - speed: override the default speed of the entity (in px/sec)
   moveTo: (location, extraSettings = {}) ->
     (sequence) =>
       @_verify(sequence)
