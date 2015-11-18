@@ -70,7 +70,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @mineSwarm()
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
-      @bossFightStage1()
+      @midStageBossFight() # TODO: Drop rocket when retreating
 
       @checkpoint @checkpointStart('Bay', 390000)
       @dropRocketForEachPlayer()
@@ -180,8 +180,16 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       amount: 8
       delay: 300
       options:
-        x: -> (Math.round(Math.random() * 10) * 40) + 200
-        y: -> (Math.round(Math.random() * 8) * 40) + 60
+        grid: new Game.LocationGrid
+          x:
+            start: 200
+            steps: 10
+            stepSize: 40
+          y:
+            start: 60
+            steps: 8
+            stepSize: 40
+
         direction: options.direction
 
   stalkerShootout: ->
@@ -201,7 +209,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           shootOnSight: yes
     )
 
-  bossFightStage1: ->
+  midStageBossFight: ->
     @placeSquad Game.Scripts.Stage1BossStage1
 
   cityFighting: ->
