@@ -17,19 +17,45 @@ Game.ScriptModule ?= {}
 # - explosion
 #
 Game.ScriptModule.Level =
+  # Place a set of multiple enemies.
+  #
+  # It starts multiple 'entityScripts' in parallel, but
+  # keeps trackins state of the scripts. When the scripts reject
+  # (which means the enemies are killed) it can drop an item
+  # on the location of the last killed enemy (if ALL enemies of
+  # the squad are killed).
+  #
+  # @param scriptClass: The entity script to start for each enemy
+  # @param settings (optional)
+  #
+  # settings supported:
+  # - amount: total amount of enemies to spawn (default: 1)
+  # - delay: amount of ms between spawning (default: 1000)
+  # - options: options to pass to each enemy in the squad
+  #
   placeSquad: (scriptClass, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
+      synchronizer = new Game.Synchronizer
+
+      options = _.defaults({}, settings.options,
+        synchronizer: synchronizer
+      )
       settings = _.defaults(settings,
         amount: 1
         delay: 1000
-        options: {}
+      )
+      settings.options = options
+      scripts = (for i in [0...settings.amount]
+        synchronizer.registerEntity(new scriptClass(@level))
       )
 
-      promises = (for i in [0...settings.amount]
-        @wait(i * settings.delay)(sequence).then =>
-          @runScript(scriptClass, settings.options)(sequence)
+      promises = (for script, i in scripts
+        do (script, i) =>
+          @wait(i * settings.delay)(sequence).then =>
+            @_verify(sequence)
+            script.run(settings.options)
       )
       WhenJS.all(promises).then (results) =>
         allKilled = yes
@@ -51,6 +77,13 @@ Game.ScriptModule.Level =
           if settings.drop
             @drop(item: settings.drop, location: lastLocation)(sequence)
 
+  # Show dialog at the bottom of the screen
+  # The duration in screen depends on the amount of lines in the
+  # text param
+  #
+  # @param speaker: the speaker of the text
+  # @param text: the text to display. This can be multiple lines (\n as seperator)
+  #
   say: (speaker, text) ->
     (sequence) =>
       @_verify(sequence)

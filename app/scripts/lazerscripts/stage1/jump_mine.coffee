@@ -17,9 +17,11 @@ class Game.Scripts.JumpMine extends Game.EntityScript
       @moveTo(y: 450, speed: 400)
       @moveTo(x: @options.x())
       @moveTo(y: @options.y())
-      @wait 2000
       @parallel(
-        @moveTo(x: -50, speed: 35)
+        @sequence(
+          @synchronizeOn 'placed'
+          @moveTo(x: -50, speed: 35)
+        )
         @sequence(
           @wait 5000
           @explosion(@location(), damage: 300, radius: 40)

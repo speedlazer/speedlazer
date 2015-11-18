@@ -313,6 +313,11 @@ Game.ScriptModule.Entity =
         .one 'TweenEnd', -> defer.resolve()
       defer.promise
 
+  synchronizeOn: (name) ->
+    (sequence) =>
+      @_verify(sequence)
+      @synchronizer.synchronizeOn(name, this)
+
   setLocation: (location) ->
     (sequence) =>
       settings = location?() ? location
