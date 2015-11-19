@@ -226,8 +226,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           shootOnSight: yes
     )
 
-    @placeSquad Game.Scripts.Stage1BossStage1
-
   cityFighting: ->
     @sequence(
       @setScenery('Skyline')
