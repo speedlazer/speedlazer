@@ -97,7 +97,16 @@ Game.ScriptModule.Level =
       if player = options.inFrontOf
         @level.addComponent item().attr(z: -1), x: 640, y: player.ship().y
       if pos = options.location
-        item().attr(x: pos.x, y: pos.y, z: -1)
+        coords = pos?()
+        # coords from a function are always relative
+        # to the viewport.
+        if coords
+          coords.x -= Crafty.viewport.x
+          coords.y -= Crafty.viewport.y
+        else
+          coords = pos
+
+        item().attr(x: coords.x, y: coords.y, z: -1)
 
   player: (nr) ->
     players = {}

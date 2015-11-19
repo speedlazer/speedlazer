@@ -13,6 +13,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
   execute: ->
     @bindSequence 'Hit', @fase2, => @entity.health < 140000
+    @inventoryAdd 'item', 'rockets', ->
+      Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
       @disableWeapons()
@@ -46,6 +48,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
   fase3: ->
     @sequence(
+      @drop(location: @location(), item: 'rockets')
       @moveTo(x: 740, y: 100, speed: 100)
     )
 
