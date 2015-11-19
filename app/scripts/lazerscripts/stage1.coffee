@@ -70,15 +70,32 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @mineSwarm()
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
-      @midStageBossFight() # TODO: Drop rocket when retreating
+      @placeSquad Game.Scripts.Stage1BossStage1
 
-      @checkpoint @checkpointStart('Bay', 390000)
-      @dropRocketForEachPlayer()
       @setSpeed 50
+      @checkpoint @checkpointMidStage('Bay')
       @say('General', 'Hunt him down!')
       @setSpeed 100
+      @dropRocketForEachPlayer()
+      @placeSquad Game.Scripts.StalkerChain,
+        amount: 4
+        delay: 500
+        drop: 'rockets'
+        options:
+          grid: new Game.LocationGrid
+            y:
+              start: 150
+              steps: 4
+              stepSize: 80
 
-      @gainHeight(300, duration: 4000)
+      @parallel(
+        @sequence(
+          @wait 3000
+          @gainHeight(300, duration: 4000)
+        )
+        @placeSquad Game.Scripts.Stage1BossPopup
+      )
+
       @cityFighting()
 
       #@waitForScenery('Skyline', event: 'leave')
@@ -209,22 +226,20 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           shootOnSight: yes
     )
 
-  midStageBossFight: ->
     @placeSquad Game.Scripts.Stage1BossStage1
 
   cityFighting: ->
     @sequence(
       @setScenery('Skyline')
-      @repeat 3, @sequence(
-        @placeSquad Game.Scripts.ScraperFlyer,
-          amount: 8
-          delay: 750
-        @placeSquad Game.Scripts.Swirler,
-          amount: 8
-          delay: 750
-          options:
-            shootOnSight: yes
-      )
+      @placeSquad Game.Scripts.ScraperFlyer,
+        amount: 8
+        delay: 750
+      @placeSquad Game.Scripts.Swirler,
+        amount: 8
+        delay: 750
+        options:
+          shootOnSight: yes
+      @placeSquad Game.Scripts.Stage1BossPopup
     )
 
   checkpointStart: (scenery, sunSkip) ->
@@ -233,3 +248,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @sunRise(skipTo: sunSkip)
       @wait 2000
     )
+
+  checkpointMidStage: (scenery) ->
+    @parallel(
+      @setScenery(scenery)
+      @sunRise(skipTo: 300000)
+      @dropRocketForEachPlayer()
+      @wait 2000
+    )
+
