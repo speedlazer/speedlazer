@@ -312,8 +312,13 @@ Game.ScriptModule.Entity =
     (sequence) =>
       @_verify(sequence)
       defer = WhenJS.defer()
+      cleanup = ->
+        defer.resolve()
+      @entity.one 'Remove', cleanup
       @entity.tween({ rotation: degrees }, duration)
-        .one 'TweenEnd', -> defer.resolve()
+        .one 'TweenEnd', ->
+          @unbind 'Remove', cleanup
+          defer.resolve()
       defer.promise
 
   # Synchronize all enitities within a squad.
