@@ -38,11 +38,11 @@ Game.ScriptModule.Entity =
       @entity.unbind(eventName, eventHandler)
       p = (sequence) =>
         @alternatePath = null
-        WhenJS(sequenceFunction.apply(this, args)(sequence))
+        WhenJS(sequenceFunction.apply(this, args)(sequence)).catch =>
+          @alternatePath
+
       @currentSequence = sequence = Math.random()
       @alternatePath = p(sequence)
-        .catch =>
-          @alternatePath
     @entity.bind(eventName, eventHandler)
 
   # remove an entity from the current gameplay. This means it cannot shoot
