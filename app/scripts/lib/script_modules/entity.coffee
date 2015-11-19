@@ -8,6 +8,8 @@ Game.ScriptModule ?= {}
 # - reveal
 # - movePath
 # - moveTo
+# - rotate
+# - synchronizeOn
 # - location
 # - pickTarget
 # - targetLocation
@@ -305,6 +307,7 @@ Game.ScriptModule.Entity =
     )
     defer.promise
 
+  # Rotate the entity a given set of degrees over an amount of time
   rotate: (degrees, duration) ->
     (sequence) =>
       @_verify(sequence)
@@ -313,6 +316,10 @@ Game.ScriptModule.Entity =
         .one 'TweenEnd', -> defer.resolve()
       defer.promise
 
+  # Synchronize all enitities within a squad.
+  # This promise gets resolved if all entities in a squad
+  # have reached this point in their script.
+  # Very useful for orchestrated attacks
   synchronizeOn: (name) ->
     (sequence) =>
       @_verify(sequence)

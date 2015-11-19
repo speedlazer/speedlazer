@@ -90,6 +90,20 @@ Game.ScriptModule.Level =
       return WhenJS() if @_skippingToCheckpoint()
       Game.say(speaker, text, bottom: @level.visibleHeight)
 
+  # Drop an item in the screen at a given location,
+  #
+  # options:
+  # - item: name of the item. The item will be pulled from the level's inventory
+  # - inFrontOf: place the item just out of screen at the height of a given location
+  # - location: place the item at the given location
+  #
+  # example:
+  #
+  # @drop item: 'lasers', inFrontOf: @player(1)
+  #
+  # @drop item: 'lasers', location: @location()
+  # @drop item: 'lasers', location: { x: 123, y: 123 }
+  #
   drop: (options) ->
     (sequence) =>
       @_verify(sequence)
@@ -108,6 +122,14 @@ Game.ScriptModule.Level =
 
         item().attr(x: coords.x, y: coords.y, z: -1)
 
+  # Returns an object with information about a player
+  #
+  # @player(1)
+  #  .name : name of the player
+  #  .active : is the player active in the game
+  #  .gameOver : has the player used all of its lives
+  #  .ship() : Reference to the ship of the player
+  #  .has(name) : Checking method if the ship has certain upgrades
   player: (nr) ->
     players = {}
     Crafty('Player').each ->
@@ -132,6 +154,11 @@ Game.ScriptModule.Level =
 
     players["Player #{nr}"]
 
+  # Change the upcoming scenery.
+  # Note that this scenery will be started out of screen,
+  # and can take a while before it is fully in screen.
+  #
+  # @see `waitForScenery`
   setScenery: (scenery) ->
     (sequence) =>
       @_verify(sequence)
@@ -154,6 +181,11 @@ Game.ScriptModule.Level =
       @level.notifyScenery options.event, sceneryType, -> d.resolve()
       d.promise
 
+  # Move the screen upwards or downwards
+  #
+  # height: amount of pixels to gain/lose
+  # options:
+  # - duration : duration in ms to reach the new altitude
   gainHeight: (height, options) ->
     (sequence) =>
       @_verify(sequence)
@@ -173,11 +205,16 @@ Game.ScriptModule.Level =
       )
       d.promise
 
+  # Change the speed of the camera and the playerships.
+  #
+  # speed: the speed in px/sec
   setSpeed: (speed) ->
     (sequence) =>
       @_verify(sequence)
       @level.setForcedSpeed speed
 
+  # Show the scores of the players active in the game
+  # This is used to end a stage in the game
   showScore: (stage, title) ->
     (sequence) =>
       @_verify(sequence)
