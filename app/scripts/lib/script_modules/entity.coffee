@@ -327,7 +327,9 @@ Game.ScriptModule.Entity =
   # Very useful for orchestrated attacks
   synchronizeOn: (name) ->
     (sequence) =>
-      @_verify(sequence)
+      # no sequence verification here, or else
+      # enemies on an alternate path but still alive
+      # will freeze others
       @synchronizer.synchronizeOn(name, this)
 
   setLocation: (location) ->
