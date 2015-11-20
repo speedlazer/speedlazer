@@ -81,7 +81,6 @@ generator.defineBlock class extends @Game.LevelScenery
   delta:
     x: 800
     y: 0
-  next: ['City.Ocean']
   autoNext: 'Ocean'
 
   generate: ->
@@ -197,7 +196,6 @@ generator.defineBlock class extends @Game.LevelScenery
   delta:
     x: 400
     y: 0
-  next: ['City.Ocean']
 
   generate: ->
     super
@@ -212,7 +210,6 @@ generator.defineBlock class extends @Game.LevelScenery
   delta:
     x: 400
     y: 0
-  next: ['City.CoastStart']
   autoNext: 'Coast'
 
   generate: ->
@@ -227,7 +224,6 @@ generator.defineBlock class extends @Game.LevelScenery
   delta:
     x: 400
     y: 0
-  next: ['City.Coast']
 
   generate: ->
     super
@@ -241,7 +237,6 @@ generator.defineBlock class extends @Game.LevelScenery
   delta:
     x: 400
     y: 0
-  next: ['City.Bay']
 
   generate: ->
     super
@@ -255,7 +250,6 @@ generator.defineBlock class extends @Game.LevelScenery
   delta:
     x: 800
     y: 0
-  next: ['City.Bay']
   autoNext: 'Bay'
 
   generate: ->

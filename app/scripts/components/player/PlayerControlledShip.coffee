@@ -12,6 +12,7 @@ Crafty.c 'PlayerControlledShip',
       y: 0
     @primaryWeapon = undefined
     @secondaryWeapon = undefined
+    @superUsed = 0
     @weaponsEnabled = yes
 
   start: ->
@@ -64,6 +65,10 @@ Crafty.c 'PlayerControlledShip',
     return unless @secondaryWeapon?
     #@trigger 'Shoot' if onOff # TODO: What does this do?
     @secondaryWeapon.shoot(onOff)
+
+  superWeapon: (onOff) ->
+    return unless onOff
+    @superUsed += 1
 
   pickUp: (powerUp) ->
     contents =  powerUp.settings.contains

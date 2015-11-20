@@ -2,16 +2,19 @@ Game = @Game
 
 class Game.LocationGrid
   constructor: (settings) ->
-    settings = _.defaults(settings,
-      x:
-        start: 0
-        steps: 1
-        stepSize: 1
-      y:
-        start: 0
-        steps: 1
-        stepSize: 1
-    )
+    settings = _.defaults settings,
+      x: {}
+      y: {}
+
+    settings.x = _.defaults settings.x,
+      start: 0
+      steps: 1
+      stepSize: 1
+
+    settings.y = _.defaults settings.y,
+      start: 0
+      steps: 1
+      stepSize: 1
 
     xs = @_coordList(settings.x)
     ys = @_coordList(settings.y)

@@ -30,7 +30,7 @@ Crafty.c 'GamepadControls',
     ship.addComponent('GamepadMultiway')
       .gamepad(@controlMap.gamepadIndex)
       .gamepadMultiway
-        speed: { y: 200, x: 200 }
+        speed: { y: 250, x: 250 }
         gamepadIndex: @controlMap.gamepadIndex
         analog: yes
 
@@ -39,4 +39,6 @@ Crafty.c 'GamepadControls',
         ship.shoot(e.pressed)
       if e.button is @controlMap.secondary
         ship.secondary(e.pressed)
+      if e.button is @controlMap.super
+        ship.superWeapon(e.pressed)
 
