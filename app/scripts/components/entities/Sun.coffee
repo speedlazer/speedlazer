@@ -77,13 +77,16 @@ Crafty.c 'Sun',
       continue if o.obj.has 'Glare'
       continue if o.obj.has 'HUD'
       e = o.obj
-      xMin = Math.max(@x, e.x)
-      xMax = Math.min(@x + @w, e.x + e.w)
-      w = xMax - xMin
-      yMin = Math.max(@y, e.y)
-      yMax = Math.min(@y + @h, e.y + e.h)
-      h = yMax - yMin
-      covered.push(w * h)
+      if o.type is 'SAT'
+        covered.push ((o.overlap * -1) / 50) * sunArea
+      else
+        xMin = Math.max(@x, e.x)
+        xMax = Math.min(@x + @w, e.x + e.w)
+        w = xMax - xMin
+        yMin = Math.max(@y, e.y)
+        yMax = Math.min(@y + @h, e.y + e.h)
+        h = yMax - yMin
+        covered.push(w * h)
 
     maxCoverage = Math.max(covered...) * 1.7
     perc = maxCoverage / sunArea
