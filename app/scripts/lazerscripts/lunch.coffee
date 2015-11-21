@@ -44,9 +44,9 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide()
       @setScenery('Ocean')
       @nextSlide()
-      @gainHeight 400, duration: 10000
+      @gainHeight 300, duration: 10000
       @nextSlide()
-      @gainHeight -400, duration: 10000
+      @gainHeight -300, duration: 10000
     )
 
 
