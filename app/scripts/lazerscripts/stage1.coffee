@@ -29,19 +29,14 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         )
         @swirlAttacks()
       )
-      @setScenery('CoastStart')
       @swirlAttacks()
+      @setScenery('CoastStart')
       @underWaterAttacks()
 
       @checkpoint @checkpointStart('CoastStart', 150000)
 
       @mineSwarm()
-      =>
-        d = WhenJS.defer()
-        Crafty.load({ images: ['city.png']},
-          -> d.resolve()
-        )
-        d.promise
+      @loadAssets images: ['city.png']
       @setScenery('Bay')
       @underWaterAttacks()
       @parallel(

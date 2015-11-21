@@ -248,3 +248,9 @@ Game.ScriptModule.Level =
       if options.damage
         e.addComponent('Enemy')
 
+
+  loadAssets: (assetObject) ->
+    (sequence) =>
+      d = WhenJS.defer()
+      Crafty.load(assetObject, (-> d.resolve()))
+      d.promise

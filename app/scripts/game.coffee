@@ -4,6 +4,10 @@ Game =
     @firstLevel = 'Game'
     @resetCredits()
 
+    Crafty.paths(
+      audio: 'audio/'
+      images: 'images/'
+    )
     # Start crafty and set a background color so that we can see it's working
     Crafty.init(640, 480)
     Crafty.pixelart(true)
