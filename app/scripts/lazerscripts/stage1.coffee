@@ -233,6 +233,15 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.ScraperFlyer,
         amount: 8
         delay: 750
+      @placeSquad Game.Scripts.MineWall,
+        amount: 8
+        delay: 500
+        options:
+          grid: new Game.LocationGrid
+            y:
+              start: 60
+              steps: 8
+              stepSize: 40
       @placeSquad Game.Scripts.Swirler,
         amount: 8
         delay: 750

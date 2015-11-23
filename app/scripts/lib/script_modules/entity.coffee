@@ -99,6 +99,7 @@ Game.ScriptModule.Entity =
       settings = _.defaults(settings,
         rotate: yes
         skip: 0
+        speed: @entity.speed
       )
       path.unshift [
         @entity.x + Crafty.viewport.x
@@ -108,7 +109,12 @@ Game.ScriptModule.Entity =
       pp = path[0]
       d = 0
       bezierPath = (for p in path
-        [x, y] = p
+        if res = p?()
+          x = res.x
+          y = res.y
+        else
+          [x, y] = p
+
         [px, py] = pp
         a = Math.abs(x - px)
         b = Math.abs(x - py)
@@ -117,7 +123,7 @@ Game.ScriptModule.Entity =
         pp = p
         { x: x - Crafty.viewport.x, y: y - Crafty.viewport.y }
       )
-      duration = (d / @entity.speed) * 1000
+      duration = (d / settings.speed) * 1000
 
       defer = WhenJS.defer()
       @entity.choreography(
