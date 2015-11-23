@@ -67,13 +67,8 @@ generator.defineElement 'city', (offset = 0) ->
   col3 = '#66667D'
   @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color(col3).attr({ z: -400, w: (@delta.x * .37) + 1, h: 83 }), .37)
 
-  col1 = '#AFAFBB'
-  col2 = '#8F8F9A'
-  col3 = '#63636E'
   e = Crafty.e('2D, Canvas, Image, Collision').image('images/city.png').attr({ z: -305 })
-  e.collision(
-    [20, 155, 20, 20, 70, 20, 70, 0, 130, 0, 130, 155]
-  )
+  e.collision([20, 155, 20, 20, 70, 20, 70, 0, 130, 0, 130, 155])
   @addBackground(offset, @level.visibleHeight - 290, e, .5)
 
 generator.defineBlock class extends @Game.LevelScenery
