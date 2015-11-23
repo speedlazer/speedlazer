@@ -28,7 +28,7 @@ class Game.Scripts.SunRise extends Game.EntityScript
           [420, 150]
           [320, 100]
         ], rotate: no, skip: @options.skipTo - 50000
-        @colorFade duration: 600000, skip: (@options.skipTo - 50000), '#DD8000', '#DDDD00', '#DDDD80'
+        #@colorFade duration: 600000, skip: (@options.skipTo - 50000), '#DD8000', '#DDDD00', '#DDDD80'
       )
     )
 

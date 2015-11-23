@@ -1,8 +1,9 @@
 Crafty.c 'Sun',
   init: ->
-    @requires '2D, Canvas, Color, Choreography, ViewportFixed, Collision'
+    Crafty.sprite("images/sun.png", { sun: [0,0,35,35] })
+    @requires '2D, Canvas, Sprite, Choreography, ViewportFixed, Collision, sun'
+
     @attr(w: 20, h: 20, z: -1000)
-      .color('#DDDD00')
 
     @origin 'center'
     @glare = []
@@ -109,8 +110,8 @@ Crafty.c 'Sun',
         e.attr
           w: @w * 1.5
           h: @h * 1.5
-          x: @x + (@w / 2) - (e.w / 2)
-          y: @y + (@h / 2) - (e.h / 2)
+          x: @x - (@w * .5)
+          y: @y - (@h * .5)
 
     # For sunrise / set on water
     horizonDistance = (480 - 155) - (Crafty.viewport._y) - @y
