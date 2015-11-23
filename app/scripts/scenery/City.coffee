@@ -50,9 +50,10 @@ generator.defineBlock class extends @Game.LevelScenery
 
     shipLength = 700
 
-    height = 65
-    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Solid, Color').attr(w: @delta.x, h: 90).color('#000080'))
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height + 10, z: -300).color('#000080'))
+    #height = 65
+    #@add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Solid, Color').attr(w: @delta.x, h: 90).color('#000080'))
+    #@add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height + 10, z: -300).color('#000080'))
+    @addElement 'waterFront'
 
     height = 45
     shipHeight = 155
