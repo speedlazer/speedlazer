@@ -38,24 +38,9 @@ generator.defineElement 'cityHorizon', (mode) ->
   if mode is 'start'
     e = Crafty.e('2D, Canvas, Image').image('images/horizon-city-start.png').attr({ z: -600 })
     @addBackground(0, @level.visibleHeight - 157, e, .25)
-    #@addBackground(150, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    #@addBackground(120, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -501, w: (50 * .25) + 1, h: 15 }), .25)
-
-    #@addBackground(230, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    #@addBackground(190, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -501, w: (50 * .25) + 1, h: 15 }), .25)
   else
     e = Crafty.e('2D, Canvas, Image').image('images/horizon-city.png').attr({ z: -600 })
     @addBackground(0, @level.visibleHeight - 157, e, .25)
-    #@addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color(col3).attr({ z: -600, w: (@delta.x * .25) + 1, h: 30 }), .25)
-    ## This is just for a small impression, this will be replaced by a sprite
-    #@addBackground(90, @level.visibleHeight - 150, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    #@addBackground(60, @level.visibleHeight - 162, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -501, w: (50 * .25) + 1, h: 15 }), .25)
-
-    #@addBackground(170, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    #@addBackground(130, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -501, w: (50 * .25) + 1, h: 15 }), .25)
-
-    #@addBackground(230, @level.visibleHeight - 145, Crafty.e('2D, Canvas, Color').color(col1).attr({ z: -500, w: (40 * .25) + 1, h: 15 }), .25)
-    #@addBackground(330, @level.visibleHeight - 157, Crafty.e('2D, Canvas, Color').color(col2).attr({ z: -501, w: (50 * .25) + 1, h: 15 }), .25)
 
 generator.defineElement 'city', (offset = 0) ->
   # Coastline
