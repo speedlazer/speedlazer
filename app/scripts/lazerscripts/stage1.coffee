@@ -30,6 +30,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @swirlAttacks()
       )
       @swirlAttacks()
+      @loadAssets images: ['horizon-city.png', 'horizon-city-start.png']
       @setScenery('CoastStart')
       @underWaterAttacks()
 
