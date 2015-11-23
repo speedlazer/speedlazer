@@ -1,6 +1,6 @@
 Crafty.c 'Explosion',
   init: ->
-    @requires '2D,Canvas,Color,Tween,Delay'
+    @requires '2D,Tween,Delay'
 
   explode: (attr) ->
     radius = attr.radius ? 20
@@ -55,7 +55,7 @@ Crafty.c 'Explosion',
       @destroy()
 
     cleanupDelay = (options.lifeSpan + options.lifeSpanRandom) * Crafty.timer.FPS()
-    Crafty.e("2D,Canvas,Particles,Delay").attr(
+    Crafty.e("2D,Particles,Delay").attr(
       x: @x
       y: @y
     ).particles(options).bind 'ParticleEnd', ->

@@ -39,7 +39,7 @@ Crafty.c 'Rocket',
       # sensible values are 0-3
       jitter: 0
 
-    @attach Crafty.e("2D,Canvas,Particles").attr(
+    @attach Crafty.e("2D,Particles").attr(
       x: @x + @w
       y: @y
     ).particles(options)
