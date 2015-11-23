@@ -15,17 +15,21 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @sendToBackground(0.5, -400)
-      @movePath [
-        [420, 270]
-        [520, 150]
-        [320, 50]
-      ]
-      @reveal()
-      @movePath [
-        [120, 150]
-        [220, 250]
-        [620, 350]
-      ]
+      @parallel(
+        @movePath [
+          [420, 270]
+          [520, 150]
+          [320, 50]
+          [120, 150]
+          [220, 250]
+          [620, 350]
+        ]
+        @sequence(
+          @wait 3000
+          @scale(1.0, duration: 3000)
+          @reveal()
+        )
+      )
     )
 
   onKilled: ->

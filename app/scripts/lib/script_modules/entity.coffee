@@ -56,21 +56,29 @@ Game.ScriptModule.Entity =
   reveal: ->
     (sequence) =>
       @_verify(sequence)
-      d = WhenJS.defer()
-      scale = @entity.scale
-      duration = Math.abs(1.0 - scale) * 1000
-      targetW = @entity.w / scale
-      targetH = @entity.h / scale
+      @entity.reveal()
 
-      @entity.choreography([
-        type: 'tween'
-        properties:
-          scale: 1.0
-          w: targetW
-          h: targetH
-        duration: duration
-      ]).one 'ChoreographyEnd', =>
-        @entity.reveal()
+  scale: (scale, options = {}) ->
+    (sequence) =>
+      @_verify(sequence)
+      oscale = @entity.scale
+      options = _.defaults(options,
+        duration: Math.abs(scale - oscale) * 1000
+      )
+      d = WhenJS.defer()
+
+      targetW = (@entity.w / oscale) * scale
+      targetH = (@entity.h / oscale) * scale
+
+      cleanup = ->
+        defer.resolve()
+
+      @entity.tween({
+        w: targetW
+        h: targetH
+        scale: scale
+      }, options.duration).one 'TweenEnd', ->
+        @unbind 'Remove', cleanup
         d.resolve()
       d.promise
 
