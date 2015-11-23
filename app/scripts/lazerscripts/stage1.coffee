@@ -13,6 +13,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
+      @loadAssets images: ['water-horizon.png', 'water.png', 'water-front.png']
       @setScenery('Intro')
       @async @runScript Game.Scripts.IntroBarrel
       @sunRise()

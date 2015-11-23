@@ -4,59 +4,37 @@ generator = @Game.levelGenerator
 
 generator.defineElement 'cloud', ->
   y = (Math.random() * 20) + 40
-  @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr({ z: -200, w: 100, h: 25, alpha: 0.5 }), .5)
-  @addBackground(200, y + 10, Crafty.e('2D, Canvas, Color').color('#DDDDDD').attr({ z: -300, w: 75, h: 25, alpha: 0.5 }), .45)
+  @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr(z: -200, w: 100, h: 25, alpha: 0.5), .5)
+  y = (Math.random() * 20) + 130
+  @addBackground(300, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr(z: -200, w: 70, h: 20, alpha: 0.3), .35)
 
 generator.defineElement 'waterHorizon', ->
-  @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Color').color('#6060E0').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
+  @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Image').image('images/water-horizon.png').attr(z: -600), .25)
 
-  goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr({ z: -599, w: (@delta.x * .25), h: 1, alpha: 0 })
+  goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
   @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
 
 generator.defineElement 'water', ->
-  @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
-  @addBackground(0, @level.visibleHeight - 90, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -301, w: (@delta.x * .5) + 1, h: 70 }), .5)
+  @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Image').image('images/water.png').attr(z: -500), .5)
 
 generator.defineElement 'waterFront', ->
   height = 65
   @add(0, @level.visibleHeight - 10, Crafty.e('2D, Solid').attr(w: @delta.x, h: 10))
-  @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height, z: -300).color('#000080'))
+  @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Image').image('images/water-front.png').attr(z: -300))
 
 generator.defineElement 'cityHorizon', (mode) ->
-
-  # Sky = 8080FF = 128, 128, 255
-  #
-  #       B4B4B4 * 0.3 = 9A9AD9
-  #       909090 * 0.3 = 8888C7
-  #       606060 * 0.3 = 7070DF
-  #       http://meyerweb.com/eric/tools/color-blend/#606060:8080FF:10:hex
-  col1 = '#A6A6C8'
-  col2 = '#8C8CAE'
-  col3 = '#69698B'
-
-  # This is just for a small impression, this will be replaced by a sprite
   if mode is 'start'
-    e = Crafty.e('2D, Canvas, Image').image('images/horizon-city-start.png').attr({ z: -600 })
+    e = Crafty.e('2D, Canvas, Image').image('images/horizon-city-start.png').attr(z: -600)
     @addBackground(0, @level.visibleHeight - 157, e, .25)
   else
-    e = Crafty.e('2D, Canvas, Image').image('images/horizon-city.png').attr({ z: -600 })
+    e = Crafty.e('2D, Canvas, Image').image('images/horizon-city.png').attr(z: -600)
     @addBackground(0, @level.visibleHeight - 157, e, .25)
 
 generator.defineElement 'city', (offset = 0) ->
-  # Coastline
-
-  # Sky = 8080FF = 128, 128, 255
-  #
-  #       B4B4B4 * 0.2 = 9A9AD9
-  #       909090 * 0.2 = 8888C7
-  #       606060 * 0.2 = 7070DF
-  #       http://meyerweb.com/eric/tools/color-blend/#606060:8080FF:10:hex
-  col1 = '#A6A6C8'
-  col2 = '#8C8CAE'
   col3 = '#66667D'
-  @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color(col3).attr({ z: -400, w: (@delta.x * .37) + 1, h: 83 }), .37)
+  @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color(col3).attr(z: -400, w: (@delta.x * .37) + 1, h: 83), .37)
 
-  e = Crafty.e('2D, Canvas, Image, Collision').image('images/city.png').attr({ z: -305 })
+  e = Crafty.e('2D, Canvas, Image, Collision').image('images/city.png').attr(z: -305)
   e.collision([20, 155, 20, 20, 70, 20, 70, 0, 130, 0, 130, 155])
   @addBackground(offset, @level.visibleHeight - 290, e, .5)
 
@@ -80,17 +58,17 @@ generator.defineBlock class extends @Game.LevelScenery
     shipHeight = 155
     cabinHeight = 150
 
-    @add(0, @level.visibleHeight - height - shipHeight, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: shipLength, h: shipHeight }))
-    @add(50, @level.visibleHeight - height - shipHeight - cabinHeight, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: 350, h: cabinHeight }))
+    @add(0, @level.visibleHeight - height - shipHeight, Crafty.e('2D, Canvas, Color').color('#202020').attr(z: -1, w: shipLength, h: shipHeight))
+    @add(50, @level.visibleHeight - height - shipHeight - cabinHeight, Crafty.e('2D, Canvas, Color').color('#202020').attr(z: -1, w: 350, h: cabinHeight))
 
     # Shadow on the water
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: 3, w: shipLength, h: 70, alpha: 0.3 }))
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').color('#202020').attr(z: 3, w: shipLength, h: 70, alpha: 0.3))
 
 
-    @elevator = Crafty.e('2D, Canvas, Color, Tween').color('#707070').attr({ z: 0, w: 100, h: 5 })
+    @elevator = Crafty.e('2D, Canvas, Color, Tween').color('#707070').attr(z: 0, w: 100, h: 5)
     @add(140, @level.visibleHeight - 70, @elevator)
 
-    @outside = Crafty.e('2D, Canvas, Color, Tween').color('#303030').attr({ z: 0, w: shipLength + 10, h: shipHeight - 5, alpha: 0 })
+    @outside = Crafty.e('2D, Canvas, Color, Tween').color('#303030').attr(z: 0, w: shipLength + 10, h: shipHeight - 5, alpha: 0)
     @add(0, @level.visibleHeight - @outside.h - height, @outside)
 
     barrelLocator = Crafty.e('2D, BarrelLocation')
@@ -99,7 +77,7 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'water'
     @addElement 'waterHorizon'
 
-    @addBackground(0, @level.visibleHeight + 40, Crafty.e('2D, Canvas, Color').color('#000040').attr({ z: 3, w: ((@delta.x + 300)) + 1, h: 185 }), 1.25)
+    @addBackground(0, @level.visibleHeight + 40, Crafty.e('2D, Canvas, Color').color('#000040').attr(z: 3, w: ((@delta.x + 300)) + 1, h: 185), 1.25)
 
     @addElement 'cloud'
 
