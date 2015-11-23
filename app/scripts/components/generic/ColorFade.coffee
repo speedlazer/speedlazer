@@ -5,7 +5,7 @@ Crafty.c 'ColorFade',
   colorFade: (options, @colors...) ->
     { @duration, @background, skip } = options
     @v = 0
-    @v += skip ? 0
+    @v += Math.max(skip, 0) ? 0
     @bind 'EnterFrame', @_recolor
 
   remove: ->
@@ -14,6 +14,7 @@ Crafty.c 'ColorFade',
   _recolor: (fd) ->
     @v += fd.dt
     pos = @v / @duration
+    pos = 0 if pos < 0
     if pos >= 1
       @unbind 'EnterFrame', @_recolor
       @trigger 'ColorFadeFinished'

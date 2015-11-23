@@ -4,6 +4,10 @@ Game =
     @firstLevel = 'Game'
     @resetCredits()
 
+    Crafty.paths(
+      audio: 'audio/'
+      images: 'images/'
+    )
     # Start crafty and set a background color so that we can see it's working
     Crafty.init(640, 480)
     Crafty.pixelart(true)
@@ -23,6 +27,7 @@ Game =
       .controls
         fire: Crafty.keys.SPACE,
         secondary: Crafty.keys.CTRL,
+        super: Crafty.keys.ENTER,
         up: Crafty.keys.UP_ARROW,
         down: Crafty.keys.DOWN_ARROW,
         left: Crafty.keys.LEFT_ARROW,
@@ -43,14 +48,16 @@ Game =
       .controls
         gamepadIndex: 0,
         fire: 0,
-        secondary: 1
+        secondary: 2,
+        super: 4
 
 
     Crafty.e('GamepadControls, PlayerAssignable')
       .controls
         gamepadIndex: 1,
         fire: 0,
-        secondary: 1
+        secondary: 2,
+        super: 4
 
 
     # Simply start splashscreen

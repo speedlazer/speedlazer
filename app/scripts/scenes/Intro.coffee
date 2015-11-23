@@ -21,7 +21,7 @@ Crafty.defineScene 'Intro', ->
       @one('TweenEnd', ->
         @tween({ x: 150 }, 2000)
       )
-    , 2000, -1
+    , 4000, -1
 
   Crafty.e('2D, DOM, Text, Tween, Delay')
     .attr(x: 200, y: 290, w: 750)

@@ -1,5 +1,4 @@
 Crafty.c 'Player',
-
   init: ->
     @reset()
 
@@ -9,7 +8,6 @@ Crafty.c 'Player',
       shotsHit: 0
       enemiesKilled: 0
       bonus: 0
-
     @removeComponent('ControlScheme')
       .attr({
         lives: 2,

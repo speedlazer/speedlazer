@@ -65,3 +65,12 @@ echo "node_modules" >> .gitignore
 echo "bower_components" >> .gitignore
 ```
 
+# License
+
+The code is licensed under MIT (see LICENSE.txt).
+
+The graphics/audio/music of the game are licensed
+under a Creative Commons
+`BY-NC-SA` [Attribution-NonCommercial-ShareAlike](http://creativecommons.org/licenses/by-nc-sa/4.0/) 4.0 International License.
+(see app/images/LICENSE.txt)
+

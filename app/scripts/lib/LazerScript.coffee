@@ -47,6 +47,8 @@ class Game.EntityScript extends Game.LazerScript
     @boundEvents = []
     @entity = @spawn(args...)
     @options = args[0] ? {}
+    @synchronizer = @options.synchronizer ? new Game.Synchronizer
+    @synchronizer.registerEntity(this)
 
     if @entity?
       @entity.attr
@@ -55,6 +57,7 @@ class Game.EntityScript extends Game.LazerScript
 
       @entity.bind 'Destroyed', =>
         @currentSequence = null
+        @synchronizer.unregisterEntity(this)
         @enemy.location.x = (@entity.x + Crafty.viewport.x)
         @enemy.location.y = (@entity.y + Crafty.viewport.y)
         @enemy.alive = no

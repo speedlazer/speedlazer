@@ -16,6 +16,7 @@ Crafty.c 'ShootOnSight',
       self._shoot(angle + 180) if Math.abs(angle - self.rotation) < 0.5
 
   _shoot: (angle) ->
+    return if @hidden
     @lastShotAt = 0
     Crafty.e('2D, Canvas, Enemy, Color, ViewportFixed').attr(
       x: @x

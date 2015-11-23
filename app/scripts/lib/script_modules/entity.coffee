@@ -5,8 +5,11 @@ Game.ScriptModule ?= {}
 #
 # - bindSequence
 # - sendToBackground
+# - reveal
 # - movePath
 # - moveTo
+# - rotate
+# - synchronizeOn
 # - location
 # - pickTarget
 # - targetLocation
@@ -35,11 +38,11 @@ Game.ScriptModule.Entity =
       @entity.unbind(eventName, eventHandler)
       p = (sequence) =>
         @alternatePath = null
-        WhenJS(sequenceFunction.apply(this, args)(sequence))
+        WhenJS(sequenceFunction.apply(this, args)(sequence)).catch =>
+          @alternatePath
+
       @currentSequence = sequence = Math.random()
       @alternatePath = p(sequence)
-        .catch =>
-          @alternatePath
     @entity.bind(eventName, eventHandler)
 
   # remove an entity from the current gameplay. This means it cannot shoot
@@ -49,6 +52,35 @@ Game.ScriptModule.Entity =
     (sequence) =>
       @_verify(sequence)
       @entity.sendToBackground(scale, z)
+
+  reveal: ->
+    (sequence) =>
+      @_verify(sequence)
+      @entity.reveal()
+
+  scale: (scale, options = {}) ->
+    (sequence) =>
+      @_verify(sequence)
+      oscale = @entity.scale
+      options = _.defaults(options,
+        duration: Math.abs(scale - oscale) * 1000
+      )
+      d = WhenJS.defer()
+
+      targetW = (@entity.w / oscale) * scale
+      targetH = (@entity.h / oscale) * scale
+
+      cleanup = ->
+        defer.resolve()
+
+      @entity.tween({
+        w: targetW
+        h: targetH
+        scale: scale
+      }, options.duration).one 'TweenEnd', ->
+        @unbind 'Remove', cleanup
+        d.resolve()
+      d.promise
 
   # Move an entity through a set of coordinates (relative to the viewport)
   # in a bezier path. By default the entity moves with its own 'speed' property
@@ -75,6 +107,7 @@ Game.ScriptModule.Entity =
       settings = _.defaults(settings,
         rotate: yes
         skip: 0
+        speed: @entity.speed
       )
       path.unshift [
         @entity.x + Crafty.viewport.x
@@ -84,7 +117,12 @@ Game.ScriptModule.Entity =
       pp = path[0]
       d = 0
       bezierPath = (for p in path
-        [x, y] = p
+        if res = p?()
+          x = res.x
+          y = res.y
+        else
+          [x, y] = p
+
         [px, py] = pp
         a = Math.abs(x - px)
         b = Math.abs(x - py)
@@ -93,7 +131,7 @@ Game.ScriptModule.Entity =
         pp = p
         { x: x - Crafty.viewport.x, y: y - Crafty.viewport.y }
       )
-      duration = (d / @entity.speed) * 1000
+      duration = (d / settings.speed) * 1000
 
       defer = WhenJS.defer()
       @entity.choreography(
@@ -283,13 +321,30 @@ Game.ScriptModule.Entity =
     )
     defer.promise
 
+  # Rotate the entity a given set of degrees over an amount of time
   rotate: (degrees, duration) ->
     (sequence) =>
       @_verify(sequence)
       defer = WhenJS.defer()
+      cleanup = ->
+        defer.resolve()
+      @entity.one 'Remove', cleanup
       @entity.tween({ rotation: degrees }, duration)
-        .one 'TweenEnd', -> defer.resolve()
+        .one 'TweenEnd', ->
+          @unbind 'Remove', cleanup
+          defer.resolve()
       defer.promise
+
+  # Synchronize all enitities within a squad.
+  # This promise gets resolved if all entities in a squad
+  # have reached this point in their script.
+  # Very useful for orchestrated attacks
+  synchronizeOn: (name) ->
+    (sequence) =>
+      # no sequence verification here, or else
+      # enemies on an alternate path but still alive
+      # will freeze others
+      @synchronizer.synchronizeOn(name, this)
 
   setLocation: (location) ->
     (sequence) =>

@@ -5,7 +5,7 @@ Crafty.defineScene 'Game', (data = {}) ->
   Game = window.Game
 
   script = Game.Scripts.Stage1
-  #script = Game.Scripts.BossFight
+  #script = Game.Scripts.Lunch
   level = Game.levelGenerator.createLevel script::metadata
   level.start()
 
