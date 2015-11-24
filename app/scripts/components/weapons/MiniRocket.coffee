@@ -40,7 +40,7 @@ Crafty.c 'MiniRocket',
       #duration: 400 / Crafty.timer.FPS()
       # Will draw squares instead of circle gradients
       #fastMode: false
-      fastMode: yes
+      fastMode: no
       gravity: { x: 0, y: -0.12 }
       # sensible values are 0-3
       jitter: 0

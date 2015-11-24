@@ -4,7 +4,7 @@ Crafty.c 'WaterSplash',
 
   waterSplash: (attr) ->
     options =
-      maxParticles: 100
+      maxParticles: 150
       size: attr.size / 2
       sizeRandom: 4
       speed: attr.size / 7
@@ -20,8 +20,8 @@ Crafty.c 'WaterSplash',
       endColour: [255, 255, 255, 0.1]
       endColourRandom: [30, 30, 30, 0.1]
       # Only applies when fastMode is off, specifies how sharp the gradients are drawn
-      sharpness: 20
-      sharpnessRandom: 10
+      sharpness: 10
+      sharpnessRandom: 5
       # Random spread from origin
       spread: attr.size
       # How many frames should this last
@@ -29,7 +29,7 @@ Crafty.c 'WaterSplash',
       duration: 900 / Crafty.timer.FPS()
       # Will draw squares instead of circle gradients
       #fastMode: false,
-      fastMode: yes
+      fastMode: no
       gravity: { x: 0, y: 0.15 }
       # sensible values are 0-3
       jitter: 1

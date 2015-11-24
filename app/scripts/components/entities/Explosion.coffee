@@ -7,7 +7,7 @@ Crafty.c 'Explosion',
     @attr attr
 
     options =
-      maxParticles: 8 * attr.radius
+      maxParticles: 12 * attr.radius
       size: attr.radius
       sizeRandom: 8
       speed: (attr.radius / 13)
@@ -32,7 +32,7 @@ Crafty.c 'Explosion',
       #duration: -1
       # Will draw squares instead of circle gradients
       #fastMode: false
-      fastMode: yes
+      fastMode: no
       gravity: { x: 0, y: 0 }
       # sensible values are 0-3
       jitter: 0
