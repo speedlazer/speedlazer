@@ -47,26 +47,54 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide()
       @setSpeed 250
       @nextSlide()
-      @setScenery('OceanOld')
+      @setScenery('TunnelStart')
+      @waitForScenery 'TunnelStart'
+      @setSpeed 50
+      @nextSlide()
+      @say 'SpeedLazer', 'Hello World!'
+      @say 'SpeedLazer', 'Flavor text can add to story telling'
+      @waitForScenery 'Tunnel', event: 'inScreen'
+      @say 'Enemies', 'Get him!'
+      @placeSquad Game.Scripts.Slider,
+        amount: 5
+        options:
+          grid: new Game.LocationGrid
+            x:
+              start: 680
+              steps: 4
+              stepSize: 40
+            y:
+              start: 100
+              steps: 5
+              stepSize: 50
+      @nextSlide()
+      @placeSquad Game.Scripts.Sine,
+        amount: 5
+        delay: 1500
+      # - Choreography
+
+      @setScenery('TunnelEnd')
+      @setSpeed 250
       @waitForScenery 'OceanOld'
       @setSpeed 50
-      # - Old perspective tunnel
-      # - Old ocean at end of tunnel
       @nextSlide()
-      #@gainHeight 200, duration: 10000
-      #@nextSlide()
-      #@gainHeight -200, duration: 10000
-      #@nextSlide()
-      # - Dialog
-      # - Old enemies again
+      @gainHeight 200, duration: 10000
+      @nextSlide()
+      @gainHeight -200, duration: 10000
+      @nextSlide()
       # - New choreochraphy enemies (swirl)
       #   Delay
       #   Enemies again
+
+
       # - Talk about Lazerscript
       #   Swirling enemies
       #   Enemies from underwater
       # - Enemy that bounces in and out of water
       # - Old particles
+
+      # -- End of presentation!
+      #
       # - Set graphical scenery on
       @loadAssets images: ['water-horizon.png', 'water.png', 'water-front.png']
       @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 6)
