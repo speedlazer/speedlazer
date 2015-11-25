@@ -167,12 +167,12 @@ Game.ScriptModule.Level =
       @level.setScenery scenery
 
   # Supported eventTypes:
-  # - leave
-  # - inScreen
-  # - outScreen
-  # - enter
-  # - playerLeave
-  # - playerEnter
+  # - enter (default) -- The scenery is about to enter the screen
+  # - leave           -- The scenery has just left the screen
+  # - inScreen        -- The scenery is at the left side of the screen (about to move out)
+  # - outScreen       -- The scenery's end is at the right side of the screen (about to move out)
+  # - playerLeave     -- The player is leaving the scenery
+  # - playerEnter     -- The player is entering the scenery
   waitForScenery: (sceneryType, options = { event: 'enter' }) ->
     (sequence) =>
       @_verify(sequence)
