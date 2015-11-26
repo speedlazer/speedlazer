@@ -1,7 +1,12 @@
 Crafty.c 'Sun',
   init: ->
-    Crafty.sprite("images/sun.png", { sun: [0,0,35,35] })
-    Crafty.sprite("images/sun-direct-glare.png", { directGlare: [0,0,100,100] })
+    Crafty.sprite("images/sun.png", {
+      sun: [0,0,20,20]
+      directGlare: [21,0,100,100]
+      redGlare: [0,21,10,10]
+      blueGlare: [122, 0, 80, 80]
+      bigGlare: [0, 101, 200, 200]
+    })
 
     @requires '2D, Canvas, Sprite, Choreography, ViewportFixed, Collision, sun'
 
@@ -21,7 +26,7 @@ Crafty.c 'Sun',
     @attach directGlare
     @glare.push directGlare
 
-    blueGlare = Crafty.e('2D, Canvas, Color, Glare')
+    blueGlare = Crafty.e('2D, Canvas, Glare, blueGlare')
       .attr
         mirrored: yes
         w: 80
@@ -30,26 +35,26 @@ Crafty.c 'Sun',
         res: 0.9
         alpha: 0.7
         originalAlpha: 0.7
-      .color('#B0B0FF')
       .origin('center')
+      #.color('#B0B0FF')
     @attach blueGlare
     @glare.push blueGlare
 
-    redGlare = Crafty.e('2D, Canvas, Color, Glare')
+    redGlare = Crafty.e('2D, Canvas, Glare, redGlare')
       .attr
         mirrored: yes
         w: 10
         h: 10
         z: 92
-        res: 0.82
-        alpha: 0.8
-        originalAlpha: 0.8
-      .color('#FF9090')
+        res: 0.80
+        alpha: 0.6
+        originalAlpha: 0.6
       .origin('center')
+      #.color('#FF9090')
     @attach redGlare
     @glare.push redGlare
 
-    bigGlare = Crafty.e('2D, Canvas, Color, Glare')
+    bigGlare = Crafty.e('2D, Canvas, Glare, bigGlare')
       .attr
         mirrored: yes
         w: 200
@@ -58,8 +63,8 @@ Crafty.c 'Sun',
         alpha: 0.2
         res: 1.1
         originalAlpha: 0.2
-      .color('#FF9090')
       .origin('center')
+      #.color('#FF9090')
     @attach bigGlare
     @glare.push bigGlare
 
@@ -97,8 +102,8 @@ Crafty.c 'Sun',
 
     hw = Crafty.viewport.width / 2
     hh = Crafty.viewport.height / 2
-    dx = @x + (@w / 2) - ((Crafty.viewport._x * -1) + hw)
-    dy = @y + (@h / 2) - ((Crafty.viewport._y * -1) + hh)
+    dx = @x + (@w / 2) - ((Crafty.viewport.x * -1) + hw)
+    dy = @y + (@h / 2) - ((Crafty.viewport.y * -1) + hh)
     px = dx / hw
     py = dy / hh
 
@@ -110,10 +115,10 @@ Crafty.c 'Sun',
           y: @y + (@h / 2) - (e.h / 2) - (dy * 2 * e.res)
       else
         e.attr
-          w: @w * 2.5
-          h: @h * 2.5
-          x: @x - @w
-          y: @y - @h
+          w: @w * 5
+          h: @h * 5
+          x: @x - (2 * @w)
+          y: @y - (2 * @h)
 
     # For sunrise / set on water
     horizonDistance = (480 - 155) - (Crafty.viewport._y) - @y
