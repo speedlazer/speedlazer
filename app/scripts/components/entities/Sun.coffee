@@ -1,11 +1,11 @@
 Crafty.c 'Sun',
   init: ->
     Crafty.sprite("images/sun.png", {
-      sun: [0,0,20,20]
-      directGlare: [21,0,100,100]
-      redGlare: [0,21,10,10]
-      blueGlare: [122, 0, 80, 80]
-      bigGlare: [0, 101, 200, 200]
+      sun: [0,0,35,35]
+      directGlare: [0,81,175,175]
+      redGlare: [0,36,10,10]
+      blueGlare: [120, 0, 80, 80]
+      bigGlare: [0, 256, 200, 200]
     })
 
     @requires '2D, Canvas, Sprite, Choreography, ViewportFixed, Collision, sun'
