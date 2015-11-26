@@ -10,6 +10,8 @@ class Game.Scripts.Lunch extends Game.LazerScript
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
 
+    Game.explosionMode = 'block'
+
     @sequence(
       @setScenery('Blackness')
       @nextSlide()
@@ -70,33 +72,41 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide()
       @placeSquad Game.Scripts.Sine,
         amount: 5
-        delay: 1500
-      # - Choreography
-
+        delay: 1000
       @setScenery('TunnelEnd')
       @setSpeed 250
       @waitForScenery 'OceanOld'
       @setSpeed 50
       @nextSlide()
-      @gainHeight 200, duration: 10000
+      @gainHeight 200, duration: 5000
       @nextSlide()
-      @gainHeight -200, duration: 10000
+      @gainHeight -200, duration: 5000
       @nextSlide()
-      # - New choreochraphy enemies (swirl)
-      #   Delay
-      #   Enemies again
 
+      @placeSquad Game.Scripts.Swirler,
+        amount: 4
+        delay: 500
+      @nextSlide()
+      @placeSquad Game.Scripts.SplashJumper
+      @placeSquad Game.Scripts.Swirler,
+        amount: 4
+        delay: 500
+      @nextSlide()
+      => Game.explosionMode = 'particles'
+      @placeSquad Game.Scripts.Swirler,
+        amount: 4
+        delay: 500
+      @placeSquad Game.Scripts.Stalker
 
       # - Talk about Lazerscript
-      #   Swirling enemies
-      #   Enemies from underwater
-      # - Enemy that bounces in and out of water
-      # - Old particles
 
       # -- End of presentation!
       #
-      # - Set graphical scenery on
+      @nextSlide()
+      => Game.explosionMode = null
       @loadAssets images: ['water-horizon.png', 'water.png', 'water-front.png']
+      @loadAssets images: ['horizon-city.png', 'horizon-city-start.png']
+      @loadAssets images: ['city.png']
       @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 6)
       @setScenery('Ocean')
       @wait 20000
