@@ -72,6 +72,7 @@ Game.ScriptModule.Core =
   while: (condition, block) ->
     (sequence) =>
       @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
       if block is undefined
         block = condition
         condition = -> true
@@ -91,6 +92,7 @@ Game.ScriptModule.Core =
   repeat: (times, block) ->
     (sequence) =>
       @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
       # Syntactic sugar:
       # this allows for writing
       # @repeat(@sequence( ...

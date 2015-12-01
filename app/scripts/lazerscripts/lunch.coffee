@@ -49,6 +49,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide()
       @setSpeed 250
       @nextSlide()
+      @checkpoint @setScenery 'OpenSpace'
       @setScenery('TunnelStart')
       @waitForScenery 'TunnelStart'
       @setSpeed 50
@@ -81,6 +82,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @setSpeed 250
       @waitForScenery 'OceanOld'
       @setSpeed 50
+      @checkpoint @setScenery 'OceanOld'
       @nextSlide()
       @gainHeight 200, duration: 5000
       @nextSlide()
@@ -90,6 +92,10 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @placeSquad Game.Scripts.Swirler,
         amount: 4
         delay: 500
+      @placeSquad Game.Scripts.Swirler,
+        amount: 4
+        delay: 500
+      @placeSquad Game.Scripts.SplashJumper
       @placeSquad Game.Scripts.Swirler,
         amount: 4
         delay: 500
@@ -106,49 +112,29 @@ class Game.Scripts.Lunch extends Game.LazerScript
               stepSize: 100
 
       @nextSlide()
-
-      @placeSquad Game.Scripts.SplashJumper
-      @placeSquad Game.Scripts.Swirler,
-        amount: 4
-        delay: 500
-      @nextSlide()
       => Game.explosionMode = 'particles'
+
+      @loadAssets images: ['water-horizon.png', 'water.png', 'water-front.png']
+      @loadAssets images: ['horizon-city.png', 'horizon-city-start.png']
+      @loadAssets images: ['city.png']
+      @loadAssets images: ['city.png', 'city-layer2.png']
+      @checkpoint @setScenery('OceanOld')
+      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 6)
+      @setScenery('Ocean')
       @placeSquad Game.Scripts.Swirler,
         amount: 4
         delay: 500
       @placeSquad Game.Scripts.Stalker
-
-      # - Talk about Lazerscript
-
-      # -- End of presentation!
-      #
-      @nextSlide()
-      => Game.explosionMode = null
-      @loadAssets images: ['water-horizon.png', 'water.png', 'water-front.png']
-      @loadAssets images: ['horizon-city.png', 'horizon-city-start.png']
-      @loadAssets images: ['city.png']
-      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 6)
-      @setScenery('Ocean')
       @wait 20000
       @setScenery('CoastStart')
+      => Game.explosionMode = null
       @swirlAttacks()
       @swirlAttacks()
       @setScenery('BayStart')
       @mineSwarm()
       @mineSwarm()
-      @setScenery('UnderBridge')
+      #@setScenery('UnderBridge')
       @mineSwarm(direction: 'left')
-      @placeSquad Game.Scripts.StalkerChain,
-        amount: 4
-        delay: 500
-        options:
-          grid: new Game.LocationGrid
-            y:
-              start: 150
-              steps: 4
-              stepSize: 80
-      @waitForScenery('UnderBridge', event: 'inScreen')
-      @setSpeed 0
       @placeSquad Game.Scripts.Stage1BossStage1
     )
 

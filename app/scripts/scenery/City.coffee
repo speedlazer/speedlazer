@@ -31,15 +31,20 @@ generator.defineElement 'cityHorizon', (mode) ->
     @addBackground(0, @level.visibleHeight - 157, e, .25)
 
 generator.defineElement 'city', ->
-  col3 = '#66667D'
-  @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color(col3).attr(z: -400, w: (@delta.x * .37) + 1, h: 83), .37)
+  #col3 = '#66667D'
+  #@addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color(col3).attr(z: -400, w: 297, h: 83), .37)
+
+  bg =Crafty.e('2D, Canvas, Image, Collision')
+    .image('images/city-layer2.png').attr(z: -400)
+    .collision([4, 29, 72, 29, 72, 118, 4, 118])
+  @addBackground(0, @level.visibleHeight - 57 - 220, bg, .37)
 
   e = Crafty.e('2D, Canvas, Image, Collision').image('images/city.png').attr(z: -305)
-  e.collision([20, 155, 20, 20, 70, 20, 70, 0, 130, 0, 130, 155])
+  e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
   c = Crafty.e('2D, Collision')
   c.attr(w: e.w, h: e.h)
-  c.collision([20, 155, 20, 20, 70, 20, 70, 0, 130, 0, 130, 155])
+  c.collision([20, 155, 0, 80, 20, 20, 70, 20, 70, 155])
 
   @addBackground(0, @level.visibleHeight - 290, e, .5)
   @addBackground(400, @level.visibleHeight - 290, c, .5)

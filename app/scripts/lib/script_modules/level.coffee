@@ -193,6 +193,7 @@ Game.ScriptModule.Level =
 
       currentSpeed = @level._forcedSpeed?.x || @level._forcedSpeed
       { duration } = options
+      duration = 1 if @_skippingToCheckpoint()
       speedY = (height / duration) * 1000
 
       @level.setForcedSpeed(x: currentSpeed, y: -speedY)
@@ -201,7 +202,7 @@ Game.ScriptModule.Level =
         ->
           level.setForcedSpeed(currentSpeed)
           d.resolve()
-        options.duration
+        duration
       )
       d.promise
 
