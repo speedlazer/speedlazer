@@ -74,6 +74,10 @@ class Game.Scripts.Lunch extends Game.LazerScript
         amount: 5
         delay: 1000
       @setScenery('TunnelEnd')
+      @wait 3000
+      @placeSquad Game.Scripts.Sine,
+        amount: 5
+        delay: 1000
       @setSpeed 250
       @waitForScenery 'OceanOld'
       @setSpeed 50
@@ -86,7 +90,23 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @placeSquad Game.Scripts.Swirler,
         amount: 4
         delay: 500
+      @placeSquad Game.Scripts.Swirler,
+        amount: 4
+        delay: 500
       @nextSlide()
+
+      @placeSquad Game.Scripts.LittleDancer,
+        amount: 4
+        delay: 2000
+        options:
+          grid: new Game.LocationGrid
+            x:
+              start: 150
+              steps: 4
+              stepSize: 100
+
+      @nextSlide()
+
       @placeSquad Game.Scripts.SplashJumper
       @placeSquad Game.Scripts.Swirler,
         amount: 4
@@ -112,7 +132,9 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @wait 20000
       @setScenery('CoastStart')
       @swirlAttacks()
-      @setScenery('Bay')
+      @swirlAttacks()
+      @setScenery('BayStart')
+      @mineSwarm()
       @mineSwarm()
       @setScenery('UnderBridge')
       @mineSwarm(direction: 'left')

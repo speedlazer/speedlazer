@@ -30,13 +30,24 @@ generator.defineElement 'cityHorizon', (mode) ->
     e = Crafty.e('2D, Canvas, Image').image('images/horizon-city.png').attr(z: -600)
     @addBackground(0, @level.visibleHeight - 157, e, .25)
 
-generator.defineElement 'city', (offset = 0) ->
+generator.defineElement 'city', ->
   col3 = '#66667D'
   @addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color(col3).attr(z: -400, w: (@delta.x * .37) + 1, h: 83), .37)
 
   e = Crafty.e('2D, Canvas, Image, Collision').image('images/city.png').attr(z: -305)
   e.collision([20, 155, 20, 20, 70, 20, 70, 0, 130, 0, 130, 155])
-  @addBackground(offset, @level.visibleHeight - 290, e, .5)
+
+  c = Crafty.e('2D, Collision')
+  c.attr(w: e.w, h: e.h)
+  c.collision([20, 155, 20, 20, 70, 20, 70, 0, 130, 0, 130, 155])
+
+  @addBackground(0, @level.visibleHeight - 290, e, .5)
+  @addBackground(400, @level.visibleHeight - 290, c, .5)
+
+generator.defineElement 'cityStart', ->
+  e = Crafty.e('2D, Canvas, Image, Collision').image('images/city-start.png').attr(z: -305)
+  e.collision([220, 155, 220, 20, 270, 20, 270, 0, 330, 0, 330, 155])
+  @addBackground(0, @level.visibleHeight - 290, e, .5)
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Intro'
@@ -78,7 +89,7 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'water'
     @addElement 'waterHorizon'
 
-    @addBackground(0, @level.visibleHeight + 40, Crafty.e('2D, Canvas, Color').color('#000040').attr(z: 3, w: ((@delta.x + 300)) + 1, h: 185), 1.25)
+    @addBackground(0, @level.visibleHeight + 30, Crafty.e('2D, Canvas, Color').color('#000040').attr(z: 3, w: ((@delta.x + 300)) + 1, h: 185), 1.25)
 
     @addElement 'cloud'
 
@@ -196,6 +207,20 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'cloud'
 
 generator.defineBlock class extends @Game.LevelScenery
+  name: 'City.BayStart'
+  delta:
+    x: 800
+    y: 0
+  autoNext: 'Bay'
+
+  generate: ->
+    super
+    @addElement 'waterFront'
+    @addElement 'water'
+    @addElement 'cityHorizon'
+    @addElement 'cityStart'
+
+generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Bay'
   delta:
     x: 800
@@ -207,7 +232,6 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'water'
     @addElement 'cityHorizon'
     @addElement 'city'
-    @addElement 'city', 400
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.UnderBridge'
@@ -222,7 +246,6 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'water'
     @addElement 'cityHorizon'
     @addElement 'city'
-    @addElement 'city', 400
 
     # Pillars
     pillarWidth = 80
@@ -263,5 +286,4 @@ generator.defineBlock class extends @Game.LevelScenery
 
     @addElement 'cityHorizon'
     @addElement 'city'
-    @addElement 'city', 400
 
