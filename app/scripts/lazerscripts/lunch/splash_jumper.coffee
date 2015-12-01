@@ -8,7 +8,7 @@ class Game.Scripts.SplashJumper extends Game.EntityScript
       health: 200
       x: 680
       y: 200
-      speed: 100
+      speed: 300
     )
 
   execute: ->
@@ -18,10 +18,7 @@ class Game.Scripts.SplashJumper extends Game.EntityScript
       @wait 3000
       @repeat @sequence(
         @moveTo y: 50
-        @moveTo x: 500
         @moveTo y: 600
-        @moveTo x: 20
-        @moveTo y: 50
       )
     )
 
