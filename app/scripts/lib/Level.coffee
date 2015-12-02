@@ -31,7 +31,7 @@ class Game.Level
 
   start: (settings = {}) ->
     defaults =
-      armedPlayers: yes
+      armedPlayers: 'lasers'
       speed: 1
       controlsEnabled: yes
       weaponsEnabled: yes

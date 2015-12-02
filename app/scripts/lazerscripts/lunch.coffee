@@ -5,6 +5,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
   metadata:
     namespace: 'City'
     speed: 0
+    armedPlayers: 'oldlasers'
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
@@ -90,13 +91,17 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide()
 
       @placeSquad Game.Scripts.Swirler,
+        drop: 'lasers'
         amount: 4
         delay: 500
       @placeSquad Game.Scripts.Swirler,
+        drop: 'lasers'
         amount: 4
         delay: 500
       @placeSquad Game.Scripts.SplashJumper
+        drop: 'lasers'
       @placeSquad Game.Scripts.Swirler,
+        drop: 'lasers'
         amount: 4
         delay: 500
       @nextSlide()
@@ -122,9 +127,11 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 6)
       @setScenery('Ocean')
       @placeSquad Game.Scripts.Swirler,
+        drop: 'lasers'
         amount: 4
         delay: 500
       @placeSquad Game.Scripts.Stalker
+        drop: 'lasers'
       @wait 20000
       @setScenery('CoastStart')
       => Game.explosionMode = null

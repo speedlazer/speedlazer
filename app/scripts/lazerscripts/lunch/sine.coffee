@@ -14,11 +14,11 @@ class Game.Scripts.Sine extends Game.EntityScript
   execute: ->
     @movePath [
       [500, 150]
-      [400, 200]
-      [300, 250]
-      [200, 200]
+      [400, 225]
+      [300, 300]
+      [200, 225]
       [100, 150]
-      [0, 200]
-      [-100, 250]
+      [0, 225]
+      [-100, 300]
     ], rotate: no
 

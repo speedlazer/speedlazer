@@ -4,6 +4,7 @@ Game.Scripts ||= {}
 class Game.Scripts.Stage1 extends Game.LazerScript
   metadata:
     namespace: 'City'
+    armedPlayers: 'lasers'
     speed: 50
 
   execute: ->
