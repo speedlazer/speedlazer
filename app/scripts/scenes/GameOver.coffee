@@ -3,7 +3,7 @@ Crafty.defineScene 'GameOver', (data) ->
   Game = window.Game
 
   # constructor
-  Crafty.background('#111')
+  Crafty.background('#000')
   Crafty.viewport.x = 0
   Crafty.viewport.y = 0
 

@@ -15,10 +15,10 @@ class Game.Scripts.SplashJumper extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @moveTo x: 500
-      @wait 3000
+      @wait 500
       @repeat @sequence(
-        @moveTo y: 50
         @moveTo y: 600
+        @moveTo y: 50
       )
     )
 

@@ -59,47 +59,54 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @say 'SpeedLazer', 'Flavor text can add to story telling'
       @waitForScenery 'Tunnel', event: 'inScreen'
       @say 'Enemies', 'Get him!'
-      @placeSquad Game.Scripts.Slider,
-        amount: 5
-        options:
-          grid: new Game.LocationGrid
-            x:
-              start: 680
-              steps: 4
-              stepSize: 40
-            y:
-              start: 100
-              steps: 5
-              stepSize: 50
-      @nextSlide()
-      @placeSquad Game.Scripts.Sine,
-        amount: 5
-        delay: 1000
+
+      @nextSlide @sequence(
+        @placeSquad Game.Scripts.Slider,
+          amount: 5
+          options:
+            grid: new Game.LocationGrid
+              x:
+                start: 680
+                steps: 4
+                stepSize: 40
+              y:
+                start: 100
+                steps: 5
+                stepSize: 50
+        @wait 3000
+      )
+      @nextSlide @sequence(
+        @placeSquad Game.Scripts.Sine,
+          amount: 5
+          delay: 1000
+        @wait 3000
+      )
       @setScenery('TunnelEnd')
-      @wait 3000
-      @placeSquad Game.Scripts.Sine,
-        amount: 5
-        delay: 1000
-      @setSpeed 250
-      @waitForScenery 'OceanOld'
+      @setSpeed 350
+
+      @waitForScenery 'TunnelEnd', event: 'inScreen'
       @setSpeed 50
       @checkpoint @setScenery 'OceanOld'
       @nextSlide()
-      @gainHeight 200, duration: 5000
+      @parallel(
+        @gainHeight 200, duration: 5000
+        @placeSquad Game.Scripts.Sine,
+          amount: 5
+          delay: 1000
+      )
       @nextSlide()
       @gainHeight -200, duration: 5000
-      @nextSlide()
+      @nextSlide(
+        @placeSquad Game.Scripts.Swirler,
+          drop: 'lasers'
+          amount: 4
+          delay: 500
+      )
+      @checkpoint @setScenery 'OceanOld'
 
-      @placeSquad Game.Scripts.Swirler,
+      @placeSquad Game.Scripts.SplashJumper,
         drop: 'lasers'
-        amount: 4
-        delay: 500
-      @placeSquad Game.Scripts.Swirler,
-        drop: 'lasers'
-        amount: 4
-        delay: 500
-      @placeSquad Game.Scripts.SplashJumper
-        drop: 'lasers'
+
       @placeSquad Game.Scripts.Swirler,
         drop: 'lasers'
         amount: 4
@@ -130,7 +137,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
         drop: 'lasers'
         amount: 4
         delay: 500
-      @placeSquad Game.Scripts.Stalker
+      @placeSquad Game.Scripts.Stalker,
         drop: 'lasers'
       @wait 20000
       @setScenery('CoastStart')
@@ -146,14 +153,15 @@ class Game.Scripts.Lunch extends Game.LazerScript
     )
 
 
-  nextSlide: ->
+  nextSlide: (task) ->
     @sequence(
+      => @player(1).ship()?.superUsed = 0
       @while((=>
         if @player(1).ship()?
           @player(1).ship().superUsed is 0
         else
           true
-      ), @wait(1000))
+      ), task ? @wait(1000))
       => @player(1).ship().superUsed = 0
     )
 

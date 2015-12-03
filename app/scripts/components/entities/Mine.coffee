@@ -1,5 +1,6 @@
 Crafty.c 'Mine',
   init: ->
+    # TODO: Try out a sprite sheet with powers of 2 dimensions for WebGL
     Crafty.sprite(25, 25, "images/mine.png", {
       standardMine: [0,0]
     }, 1)
