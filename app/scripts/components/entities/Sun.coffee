@@ -8,7 +8,7 @@ Crafty.c 'Sun',
       bigGlare: [0, 256, 200, 200]
     })
 
-    @requires '2D, Canvas, Sprite, Choreography, ViewportFixed, Collision, sun'
+    @requires '2D, Canvas, Choreography, ViewportFixed, Collision, sun'
 
     @attr(w: 20, h: 20, z: -1000)
 
