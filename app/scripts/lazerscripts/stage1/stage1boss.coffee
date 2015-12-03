@@ -67,6 +67,9 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       @moveTo(y: 525)
       @moveTo(@targetLocation(), y: 450)
       @moveTo(@targetLocation(x: null))
+      @animate 'open'
+      @wait 200
+      @animate 'blink', -1
       @wait 1000
       @explosion(@location(), damage: yes, radius: 40)
     )

@@ -1,12 +1,22 @@
 Crafty.c 'Mine',
   init: ->
-    @requires 'Enemy, Color'
+    Crafty.sprite(25, 25, "images/mine.png", {
+      standardMine: [0,0]
+    }, 1)
+
+    @requires 'Enemy, standardMine, SpriteAnimation'
+    @reel 'open', 200, [[1, 0], [2, 0]]
+    @reel 'close', 200, [[1, 0], [0, 0]]
+    @reel 'blink', 100, [[2, 0], [3, 0]]
+
+    @bind 'EnterFrame', (fd) ->
+      delta = (360 / 4000) * fd.dt
+      @attr rotation: @rotation + delta
+
 
   mine: (attr = {}) ->
-    @attr _.defaults(attr,
-      w: 25, h: 25, health: 200)
+    @attr _.defaults(attr, h: 25, w: 25, health: 200)
     @origin 'center'
-    @color '#111111'
 
     @enemy()
     this
