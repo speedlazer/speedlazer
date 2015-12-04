@@ -65,7 +65,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @checkpoint @checkpointStart('Coast', 150000)
 
       @mineSwarm()
-      @loadAssets images: ['city.png', 'city-layer2.png']
+      @loadAssets images: ['city.png', 'city-layer2.png', 'city-bridge.png']
       @setScenery('BayStart')
       @underWaterAttacks()
       @parallel(

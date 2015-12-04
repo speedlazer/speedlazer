@@ -49,6 +49,17 @@ generator.defineElement 'city', ->
   @addBackground(0, @level.visibleHeight - 290, e, .5)
   @addBackground(400, @level.visibleHeight - 290, c, .5)
 
+generator.defineElement 'city-bridge', ->
+  bg =Crafty.e('2D, Canvas, Image, Collision')
+    .image('images/city-layer2.png').attr(z: -400)
+    .collision([4, 29, 72, 29, 72, 118, 4, 118])
+  @addBackground(0, @level.visibleHeight - 57 - 220, bg, .37)
+
+  e = Crafty.e('2D, Canvas, Image, Collision').image('images/city-bridge.png').attr(z: -305)
+  e.collision([35, 155, 35, 0, 130, 0, 130, 155])
+
+  @addBackground(0, @level.visibleHeight - 290, e, .5)
+
 generator.defineElement 'cityStart', ->
   e = Crafty.e('2D, Canvas, Image, Collision').image('images/city-start.png').attr(z: -305)
   e.collision([220, 155, 220, 20, 270, 20, 270, 0, 330, 0, 330, 155])
@@ -250,12 +261,14 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'waterFront'
     @addElement 'water'
     @addElement 'cityHorizon'
-    @addElement 'city'
+    @addElement 'city-bridge'
+
+    bridgeWidth = 640
 
     # Pillars
     pillarWidth = 80
     @addBackground(0, @level.visibleHeight - 480, Crafty.e('2D, Canvas, Color').color('#000000').attr({ z: 3, w: pillarWidth * 1.5, h: 480, alpha: 0.7 }), 1.5)
-    @addBackground(@delta.x - pillarWidth, @level.visibleHeight - 480, Crafty.e('2D, Canvas, Color').color('#000000').attr({ z: 3, w: pillarWidth * 1.5, h: 480, alpha: 0.7 }), 1.5)
+    @addBackground(bridgeWidth - pillarWidth, @level.visibleHeight - 480, Crafty.e('2D, Canvas, Color').color('#000000').attr({ z: 3, w: pillarWidth * 1.5, h: 480, alpha: 0.7 }), 1.5)
 
     # Deck
     for i in [0..11]
@@ -266,10 +279,10 @@ generator.defineBlock class extends @Game.LevelScenery
       z = -3 - (1 * i)
       sp = 1.2 - (0.05 * i)
       hp = (420 - (6 * i)) - (h + y)
-      @addBackground(0, y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: @delta.x * sp, h: h }), sp)
+      @addBackground(0, y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: bridgeWidth * sp, h: h }), sp)
       if i % 5 is 0
         @addBackground(0, h + y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
-        @addBackground(@delta.x - pillarWidth, h + y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
+        @addBackground(bridgeWidth - pillarWidth, h + y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
 
 
 generator.defineBlock class extends @Game.LevelScenery
