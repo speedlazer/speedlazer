@@ -161,7 +161,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @loadAssets images: ['city.png']
       @loadAssets images: ['city.png', 'city-layer2.png']
       @checkpoint @setScenery('OceanOld')
-      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 6)
+      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 4)
       @setScenery('OceanToNew')
       @placeSquad Game.Scripts.Swirler,
         drop: 'lasers'
