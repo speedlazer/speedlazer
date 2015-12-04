@@ -26,7 +26,7 @@ Game =
     Crafty.e('KeyboardControls, PlayerAssignable')
       .controls
         fire: Crafty.keys.SPACE,
-        secondary: Crafty.keys.CTRL,
+        secondary: Crafty.keys.PERIOD,
         super: Crafty.keys.ENTER,
         up: Crafty.keys.UP_ARROW,
         down: Crafty.keys.DOWN_ARROW,
