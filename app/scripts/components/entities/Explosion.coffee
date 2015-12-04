@@ -63,8 +63,8 @@ Crafty.c 'Explosion',
     if @explosionMode isnt 'block'
       cleanupDelay = (options.lifeSpan + options.lifeSpanRandom) * Crafty.timer.FPS()
       Crafty.e("2D,Particles,Delay").attr(
-        x: @x
-        y: @y
+        x: @x - (attr.radius / 2)
+        y: @y - (attr.radius / 2)
       ).particles(options).bind 'ParticleEnd', ->
         # Particleend means the duration is passed.
         # This stops new particles from emiting.
