@@ -197,16 +197,27 @@ Game.ScriptModule.Entity =
           return @_moveWater(settings)
 
   _setupWaterSpot: ->
-    waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween')
-      .color('#000040')
-      .attr(
-        w: @entity.w + 10
-        x: @entity.x - 5
-        y: @entity.y
-        h: 20
-        alpha: 0.7
-        z: @entity.z - 1
-      )
+    if Game.explosionMode?
+      waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween')
+        .color('#000040')
+        .attr(
+          w: @entity.w + 10
+          x: @entity.x - 5
+          y: @entity.y
+          h: 20
+          alpha: 0.7
+          z: @entity.z - 1
+        )
+    else
+      waterSpot = Crafty.e('2D, Canvas, shadow, Choreography, Tween')
+        .attr(
+          w: @entity.w + 10
+          x: @entity.x - 5
+          y: @entity.y
+          h: 20
+          z: @entity.z - 1
+        )
+
     if @entity.has('ViewportFixed')
       waterSpot.addComponent('ViewportFixed')
     @entity.hide(waterSpot)
