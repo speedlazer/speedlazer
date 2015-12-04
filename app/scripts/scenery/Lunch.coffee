@@ -30,6 +30,24 @@ generator.defineBlock class extends @Game.LevelScenery
     @addBackground(0, @level.visibleHeight - 90, Crafty.e('2D, Canvas, Color').color('#3030B0').attr({ z: -301, w: (@delta.x * .5) + 1, h: 70 }), .5)
 
 generator.defineBlock class extends @Game.LevelScenery
+  name: 'City.OceanToNew'
+  delta:
+    x: 800
+    y: 0
+  autoNext: 'Ocean'
+
+  generate: ->
+    super
+    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Image').image('images/water-horizon-old.png').attr(z: -600), .25)
+    goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
+    @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
+    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Image').image('images/water-old.png').attr(z: -500), .5)
+
+    height = 65
+    @add(0, @level.visibleHeight - 10, Crafty.e('2D, Solid').attr(w: @delta.x, h: 10))
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Image').image('images/water-front-old.png').attr(z: -300))
+
+generator.defineBlock class extends @Game.LevelScenery
   name: 'City.OpenSpace'
   delta:
     x: 700

@@ -14,6 +14,25 @@ class Game.Scripts.Lunch extends Game.LazerScript
     Game.explosionMode = 'block'
 
     @sequence(
+      @loadAssets(
+        images: ['water-horizon.png', 'water.png', 'water-front.png']
+        sprites:
+          'mine.png':
+            tile: 25
+            tileh: 25
+            map:
+              standardMine: [0,0]
+            paddingX: 1
+          'sun.png':
+            tile: 1
+            tileh: 1
+            map:
+              sun: [0,0,35,35]
+              directGlare: [0,81,175,175]
+              redGlare: [0,36,10,10]
+              blueGlare: [120, 0, 80, 80]
+              bigGlare: [0, 256, 200, 200]
+      )
       @setScenery('Blackness')
       @nextSlide()
       @placeSquad Game.Scripts.Slider,
@@ -126,13 +145,12 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide()
       => Game.explosionMode = 'particles'
 
-      @loadAssets images: ['water-horizon.png', 'water.png', 'water-front.png']
       @loadAssets images: ['horizon-city.png', 'horizon-city-start.png']
       @loadAssets images: ['city.png']
       @loadAssets images: ['city.png', 'city-layer2.png']
       @checkpoint @setScenery('OceanOld')
       @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 6)
-      @setScenery('Ocean')
+      @setScenery('OceanToNew')
       @placeSquad Game.Scripts.Swirler,
         drop: 'lasers'
         amount: 4
@@ -146,8 +164,6 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @swirlAttacks()
       @setScenery('BayStart')
       @mineSwarm()
-      @mineSwarm()
-      #@setScenery('UnderBridge')
       @mineSwarm(direction: 'left')
       @placeSquad Game.Scripts.Stage1BossStage1
     )
