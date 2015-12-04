@@ -1,12 +1,11 @@
 Crafty.c 'Rocket',
   init: ->
-    @requires 'Enemy, Color'
+    @requires 'Enemy, standardRocket'
 
   rocket: (attr = {}) ->
     @attr _.defaults(attr,
-      w: 45, h: 15, health: 300)
+      health: 300)
     @origin 'center'
-    @color '#F00000'
 
     options =
       maxParticles: 150

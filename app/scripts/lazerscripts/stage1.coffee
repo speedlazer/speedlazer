@@ -24,6 +24,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             map:
               standardMine: [0,0]
             paddingX: 1
+          'rocket.png':
+            tile: 45
+            tileh: 15
+            map:
+              standardRocket: [0,0]
+            paddingX: 1
           'sun.png':
             tile: 1
             tileh: 1
