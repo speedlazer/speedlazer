@@ -23,11 +23,12 @@ generator.defineElement 'waterFront', ->
   @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Image').image('images/water-front.png').attr(z: -300))
 
 generator.defineElement 'cityHorizon', (mode) ->
+  @addElement 'waterHorizon'
   if mode is 'start'
-    e = Crafty.e('2D, Canvas, Image').image('images/horizon-city-start.png').attr(z: -600)
+    e = Crafty.e('2D, Canvas, Image').image('images/horizon-city-start.png').attr(z: -598)
     @addBackground(0, @level.visibleHeight - 157, e, .25)
   else
-    e = Crafty.e('2D, Canvas, Image').image('images/horizon-city.png').attr(z: -600)
+    e = Crafty.e('2D, Canvas, Image').image('images/horizon-city.png').attr(z: -598)
     @addBackground(0, @level.visibleHeight - 157, e, .25)
 
 generator.defineElement 'city', ->
