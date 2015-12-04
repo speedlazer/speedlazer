@@ -377,10 +377,25 @@ Game.ScriptModule.Entity =
 
   pickTarget: (selection) ->
     (sequence) =>
-      entities = Crafty(selection)
-      @target = entities.get Math.floor(Math.random() * entities.length)
+      pickTarget = (selection) ->
+        entities = Crafty(selection)
+        return null if entities.length is 0
+        entities.get Math.floor(Math.random() * entities.length)
+
+      # TODO: When this script is done, unbind events
+      refreshTarget = (ship) =>
+        @target = { x: ship.x, y: ship.y }
+        Crafty.one 'ShipSpawned', (ship) =>
+          @target = pickTarget(selection)
+          @target.one 'Destroyed', refreshTarget
+
+      @target = pickTarget(selection)
+
+      if selection is 'PlayerControlledShip'
+        @target.one 'Destroyed', refreshTarget
 
   targetLocation: (override = {}) ->
     =>
       x: (override.x ? (@target.x + Crafty.viewport.x)) + (override.offsetX ? 0)
       y: (override.y ? (@target.y + Crafty.viewport.y)) + (override.offsetY ? 0)
+

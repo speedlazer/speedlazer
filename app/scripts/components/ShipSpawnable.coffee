@@ -48,6 +48,7 @@ Crafty.c 'ShipSpawnable',
         y: @ship.y + (@ship.h / 2)
         radius: @ship.w
       )
+      @ship.trigger('Destroyed', @ship)
       @ship.destroy()
       @ship = null
       Crafty.e('Delay').delay(
