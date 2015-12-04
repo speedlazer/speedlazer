@@ -14,7 +14,26 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
-      @loadAssets images: ['water-horizon.png', 'water.png', 'water-front.png']
+
+      @loadAssets(
+        images: ['water-horizon.png', 'water.png', 'water-front.png']
+        sprites:
+          'mine.png':
+            tile: 25
+            tileh: 25
+            map:
+              standardMine: [0,0]
+          'sun.png':
+            tile: 1
+            tileh: 1
+            map:
+              sun: [0,0,35,35]
+              directGlare: [0,81,175,175]
+              redGlare: [0,36,10,10]
+              blueGlare: [120, 0, 80, 80]
+              bigGlare: [0, 256, 200, 200]
+      )
+
       @setScenery('Intro')
       @async @runScript Game.Scripts.IntroBarrel
       @sunRise()
