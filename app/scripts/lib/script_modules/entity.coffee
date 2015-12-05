@@ -198,7 +198,7 @@ Game.ScriptModule.Entity =
 
   _setupWaterSpot: ->
     if Game.explosionMode?
-      waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween')
+      waterSpot = Crafty.e('2D, WebGL, Color, Choreography, Tween')
         .color('#000040')
         .attr(
           w: @entity.w + 10
@@ -209,7 +209,7 @@ Game.ScriptModule.Entity =
           z: @entity.z - 1
         )
     else
-      waterSpot = Crafty.e('2D, Canvas, shadow, Choreography, Tween')
+      waterSpot = Crafty.e('2D, WebGL, shadow, Choreography, Tween')
         .attr(
           w: @entity.w + 10
           x: @entity.x - 5

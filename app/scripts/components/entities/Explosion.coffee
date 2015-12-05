@@ -4,7 +4,7 @@ Crafty.c 'Explosion',
 
     @explosionMode = window.Game.explosionMode
     if @explosionMode is 'block'
-      @requires 'Canvas, Color'
+      @requires 'WebGL, Color'
 
   explode: (attr) ->
     radius = attr.radius ? 20

@@ -1,6 +1,6 @@
 Crafty.c 'MiniRocket',
   init: ->
-    @requires '2D, Canvas, Color, Collision'
+    @requires '2D, WebGL, Color, Collision'
     @color '#FF0000'
 
   fire: (attr = {}) ->

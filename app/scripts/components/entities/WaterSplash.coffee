@@ -4,7 +4,7 @@ Crafty.c 'WaterSplash',
 
     @explosionMode = window.Game.explosionMode
     if @explosionMode is 'block'
-      @requires 'Canvas, Color, Tween'
+      @requires 'WebGL, Color, Tween'
 
   waterSplash: (attr) ->
     options =

@@ -4,43 +4,43 @@ generator = @Game.levelGenerator
 
 generator.defineElement 'cloud', ->
   y = (Math.random() * 20) + 40
-  @addBackground(200, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr(z: -200, w: 100, h: 25, alpha: 0.5), .5)
+  @addBackground(200, y, Crafty.e('2D, WebGL, Color').color('#FFFFFF').attr(z: -200, w: 100, h: 25, alpha: 0.5), .5)
   y = (Math.random() * 20) + 130
-  @addBackground(300, y, Crafty.e('2D, Canvas, Color').color('#FFFFFF').attr(z: -200, w: 70, h: 20, alpha: 0.3), .35)
+  @addBackground(300, y, Crafty.e('2D, WebGL, Color').color('#FFFFFF').attr(z: -200, w: 70, h: 20, alpha: 0.3), .35)
 
 generator.defineElement 'waterHorizon', ->
-  @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, Canvas, Image').image('images/water-horizon.png').attr(z: -600), .25)
+  @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, WebGL, Image').image('images/water-horizon.png').attr(z: -600), .25)
 
-  goldenStripe = Crafty.e('2D, Canvas, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
+  goldenStripe = Crafty.e('2D, WebGL, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
   @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
 
 generator.defineElement 'water', ->
-  @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Image').image('images/water.png').attr(z: -500), .5)
+  @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, Image').image('images/water.png').attr(z: -500), .5)
 
 generator.defineElement 'waterFront', ->
   height = 65
   @add(0, @level.visibleHeight - 10, Crafty.e('2D, Solid').attr(w: @delta.x, h: 10))
-  @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Image').image('images/water-front.png').attr(z: -300))
+  @add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Image').image('images/water-front.png').attr(z: -300))
 
 generator.defineElement 'cityHorizon', (mode) ->
   @addElement 'waterHorizon'
   if mode is 'start'
-    e = Crafty.e('2D, Canvas, Image').image('images/horizon-city-start.png').attr(z: -598)
+    e = Crafty.e('2D, WebGL, Image').image('images/horizon-city-start.png').attr(z: -598)
     @addBackground(0, @level.visibleHeight - 157, e, .25)
   else
-    e = Crafty.e('2D, Canvas, Image').image('images/horizon-city.png').attr(z: -598)
+    e = Crafty.e('2D, WebGL, Image').image('images/horizon-city.png').attr(z: -598)
     @addBackground(0, @level.visibleHeight - 157, e, .25)
 
 generator.defineElement 'city', ->
   #col3 = '#66667D'
-  #@addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, Canvas, Color').color(col3).attr(z: -400, w: 297, h: 83), .37)
+  #@addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, WebGL, Color').color(col3).attr(z: -400, w: 297, h: 83), .37)
 
-  bg =Crafty.e('2D, Canvas, Image, Collision')
+  bg =Crafty.e('2D, WebGL, Image, Collision')
     .image('images/city-layer2.png').attr(z: -400)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
   @addBackground(0, @level.visibleHeight - 57 - 220, bg, .37)
 
-  e = Crafty.e('2D, Canvas, Image, Collision').image('images/city.png').attr(z: -305)
+  e = Crafty.e('2D, WebGL, Image, Collision').image('images/city.png').attr(z: -305)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
   c = Crafty.e('2D, Collision')
@@ -51,18 +51,18 @@ generator.defineElement 'city', ->
   @addBackground(400, @level.visibleHeight - 290, c, .5)
 
 generator.defineElement 'city-bridge', ->
-  bg =Crafty.e('2D, Canvas, Image, Collision')
+  bg =Crafty.e('2D, WebGL, Image, Collision')
     .image('images/city-layer2.png').attr(z: -400)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
   @addBackground(0, @level.visibleHeight - 57 - 220, bg, .37)
 
-  e = Crafty.e('2D, Canvas, Image, Collision').image('images/city-bridge.png').attr(z: -305)
+  e = Crafty.e('2D, WebGL, Image, Collision').image('images/city-bridge.png').attr(z: -305)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
   @addBackground(0, @level.visibleHeight - 290, e, .5)
 
 generator.defineElement 'cityStart', ->
-  e = Crafty.e('2D, Canvas, Image, Collision').image('images/city-start.png').attr(z: -305)
+  e = Crafty.e('2D, WebGL, Image, Collision').image('images/city-start.png').attr(z: -305)
   e.collision([220, 155, 220, 20, 270, 20, 270, 0, 330, 0, 330, 155])
   @addBackground(0, @level.visibleHeight - 290, e, .5)
 
@@ -79,25 +79,25 @@ generator.defineBlock class extends @Game.LevelScenery
     shipLength = 700
 
     #height = 65
-    #@add(0, @level.visibleHeight - 10, Crafty.e('2D, Canvas, Solid, Color').attr(w: @delta.x, h: 90).color('#000080'))
-    #@add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').attr(w: @delta.x, h: height + 10, z: -300).color('#000080'))
+    #@add(0, @level.visibleHeight - 10, Crafty.e('2D, WebGL, Solid, Color').attr(w: @delta.x, h: 90).color('#000080'))
+    #@add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color').attr(w: @delta.x, h: height + 10, z: -300).color('#000080'))
     @addElement 'waterFront'
 
     height = 45
     shipHeight = 155
     cabinHeight = 150
 
-    @add(0, @level.visibleHeight - height - shipHeight, Crafty.e('2D, Canvas, Color').color('#202020').attr(z: -1, w: shipLength, h: shipHeight))
-    @add(50, @level.visibleHeight - height - shipHeight - cabinHeight, Crafty.e('2D, Canvas, Color').color('#202020').attr(z: -1, w: 350, h: cabinHeight))
+    @add(0, @level.visibleHeight - height - shipHeight, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: -1, w: shipLength, h: shipHeight))
+    @add(50, @level.visibleHeight - height - shipHeight - cabinHeight, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: -1, w: 350, h: cabinHeight))
 
     # Shadow on the water
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Color').color('#202020').attr(z: 3, w: shipLength, h: 70, alpha: 0.3))
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: 3, w: shipLength, h: 70, alpha: 0.3))
 
 
-    @elevator = Crafty.e('2D, Canvas, Color, Tween').color('#707070').attr(z: 0, w: 100, h: 5)
+    @elevator = Crafty.e('2D, WebGL, Color, Tween').color('#707070').attr(z: 0, w: 100, h: 5)
     @add(140, @level.visibleHeight - 70, @elevator)
 
-    @outside = Crafty.e('2D, Canvas, Color, Tween').color('#303030').attr(z: 0, w: shipLength + 10, h: shipHeight - 5, alpha: 0)
+    @outside = Crafty.e('2D, WebGL, Color, Tween').color('#303030').attr(z: 0, w: shipLength + 10, h: shipHeight - 5, alpha: 0)
     @add(0, @level.visibleHeight - @outside.h - height, @outside)
 
     barrelLocator = Crafty.e('2D, BarrelLocation')
@@ -106,7 +106,7 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'water'
     @addElement 'waterHorizon'
 
-    @addBackground(0, @level.visibleHeight + 30, Crafty.e('2D, Canvas, Color').color('#000040').attr(z: 3, w: ((@delta.x + 300)) + 1, h: 185), 1.25)
+    @addBackground(0, @level.visibleHeight + 30, Crafty.e('2D, WebGL, Color').color('#000040').attr(z: 3, w: ((@delta.x + 300)) + 1, h: 185), 1.25)
 
     @addElement 'cloud'
 
@@ -268,8 +268,8 @@ generator.defineBlock class extends @Game.LevelScenery
 
     # Pillars
     pillarWidth = 80
-    @addBackground(0, @level.visibleHeight - 480, Crafty.e('2D, Canvas, Color').color('#000000').attr({ z: 3, w: pillarWidth * 1.5, h: 480, alpha: 0.7 }), 1.5)
-    @addBackground(bridgeWidth - pillarWidth, @level.visibleHeight - 480, Crafty.e('2D, Canvas, Color').color('#000000').attr({ z: 3, w: pillarWidth * 1.5, h: 480, alpha: 0.7 }), 1.5)
+    @addBackground(0, @level.visibleHeight - 480, Crafty.e('2D, WebGL, Color').color('#000000').attr({ z: 3, w: pillarWidth * 1.5, h: 480, alpha: 0.7 }), 1.5)
+    @addBackground(bridgeWidth - pillarWidth, @level.visibleHeight - 480, Crafty.e('2D, WebGL, Color').color('#000000').attr({ z: 3, w: pillarWidth * 1.5, h: 480, alpha: 0.7 }), 1.5)
 
     # Deck
     for i in [0..11]
@@ -280,10 +280,10 @@ generator.defineBlock class extends @Game.LevelScenery
       z = -3 - (1 * i)
       sp = 1.2 - (0.05 * i)
       hp = (420 - (6 * i)) - (h + y)
-      @addBackground(0, y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: bridgeWidth * sp, h: h }), sp)
+      @addBackground(0, y, Crafty.e('2D, WebGL, Color').color(c).attr({ z: z, w: bridgeWidth * sp, h: h }), sp)
       if i % 5 is 0
-        @addBackground(0, h + y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
-        @addBackground(bridgeWidth - pillarWidth, h + y, Crafty.e('2D, Canvas, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
+        @addBackground(0, h + y, Crafty.e('2D, WebGL, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
+        @addBackground(bridgeWidth - pillarWidth, h + y, Crafty.e('2D, WebGL, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
 
 
 generator.defineBlock class extends @Game.LevelScenery
@@ -296,10 +296,10 @@ generator.defineBlock class extends @Game.LevelScenery
   generate: ->
     super
     h = 400 + 200
-    @add(0, @level.visibleHeight - h, Crafty.e('2D, Canvas, Color').attr(w: 300, h: h, z: -1).color('#909090'))
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 300, h: h, z: -1).color('#909090'))
 
     h = 300 + 200
-    @addBackground(200, @level.visibleHeight - h, Crafty.e('2D, Canvas, Color').attr(w: 400, h: h, z: 5).color('#000000'), 1.5)
+    @addBackground(200, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 400, h: h, z: 5).color('#000000'), 1.5)
 
     @addElement 'water'
 

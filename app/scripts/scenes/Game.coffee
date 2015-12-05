@@ -17,7 +17,6 @@ Crafty.defineScene 'Game', (data = {}) ->
     console.log 'end of script!'
 
   Crafty.bind 'GameOver', ->
-    #console.log 'Players were at checkpoint', stage.currentCheckpoint
     Crafty.enterScene('GameOver', checkpoint: stage.currentCheckpoint)
 
 , ->
