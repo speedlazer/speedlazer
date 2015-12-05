@@ -56,7 +56,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
     Crafty.e('Mine').mine(
       health: 200
       x: location().x
-      y: location().y + 30
+      y: location().y + 70
       speed: 200
     )
 

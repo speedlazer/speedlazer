@@ -36,6 +36,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             map:
               standardRocket: [0,0]
             paddingX: 1
+          'large-drone.png':
+            tile: 90
+            tileh: 70
+            map:
+              standardLargeDrone: [0,0]
+            paddingX: 1
           'sun.png':
             tile: 1
             tileh: 1

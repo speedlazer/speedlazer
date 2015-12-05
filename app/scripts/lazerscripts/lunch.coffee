@@ -17,6 +17,12 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @loadAssets(
         images: ['water-horizon.png', 'water.png', 'water-front.png']
         sprites:
+          'large-drone.png':
+            tile: 90
+            tileh: 70
+            map:
+              standardLargeDrone: [0,0]
+            paddingX: 1
           'mine.png':
             tile: 25
             tileh: 25
