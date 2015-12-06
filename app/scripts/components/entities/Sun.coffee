@@ -1,6 +1,6 @@
 Crafty.c 'Sun',
   init: ->
-    @requires '2D, WebGL, Choreography, ViewportFixed, Collision, sun'
+    @requires '2D, WebGL, Collision, Choreography, ViewportFixed, sun'
 
     @attr(w: 20, h: 20, z: -1000)
 
@@ -136,5 +136,4 @@ Crafty.c 'Sun',
         @attr
           alpha: 0
           h: 20.0
-
 

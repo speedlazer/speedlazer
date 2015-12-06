@@ -4,14 +4,14 @@ Game.Scripts ||= {}
 class Game.Scripts.SunRise extends Game.EntityScript
 
   spawn: (options) ->
-    sun = Crafty('Sun, ColorFade')
+    sun = Crafty('Sun')
     if sun.length > 0
       sun.attr(
         x: sun.x + Crafty.viewport.x
         y: sun.y + Crafty.viewport.y
       )
     else
-      Crafty.e('Sun, ColorFade, KeepAlive')
+      Crafty.e('Sun, KeepAlive')
         .sun(
           x: 620
           y: 340
