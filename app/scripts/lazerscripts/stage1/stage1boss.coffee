@@ -17,6 +17,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
+      @animate 'eyes', -1
       @disableWeapons()
       @moveTo(x: 540, y: 200)
       @say('Large Drone', 'We have control now! You will suffer!')
@@ -33,7 +34,9 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @moveTo(y: 200, speed: 5)
       @wait 200
       @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @animate 'emptyWing', 0, 'wing'
       @moveTo(y: 205, speed: 5)
+      @animate 'reload', 0, 'wing'
       @wait 200
     )
 
@@ -126,9 +129,13 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
   attackCycle: ->
     @repeat @sequence(
       @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @animate 'emptyWing', 0, 'wing'
       @parallel(
-        @moveTo(@targetLocation(), x: 540)
-        @wait 1000
+        @moveTo(@targetLocation(offsetY: -20), x: 540)
+        @sequence(
+          @animate 'reload', 0, 'wing'
+          @wait 1000
+        )
       )
     )
 

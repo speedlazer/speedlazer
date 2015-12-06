@@ -58,10 +58,13 @@ Game.ScriptModule.Entity =
       @_verify(sequence)
       @entity.reveal()
 
-  animate: (reel, repeat) ->
+  animate: (reel, repeat, member) ->
     (sequence) =>
       @_verify(sequence)
-      @entity.animate(reel, repeat)
+      if member
+        @entity[member].animate(reel, repeat)
+      else
+        @entity.animate(reel, repeat)
 
   scale: (scale, options = {}) ->
     (sequence) =>

@@ -23,6 +23,14 @@ class Game.Scripts.Lunch extends Game.LazerScript
             map:
               standardLargeDrone: [0,0]
             paddingX: 1
+          'large-drone-wing.png':
+            tile: 46
+            tileh: 21
+            map:
+              standardWing: [1,2]
+              wingLoaded: [1,1]
+            paddingX: 1
+            paddingY: 1
           'mine.png':
             tile: 25
             tileh: 25

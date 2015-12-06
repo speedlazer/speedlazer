@@ -42,6 +42,14 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             map:
               standardLargeDrone: [0,0]
             paddingX: 1
+          'large-drone-wing.png':
+            tile: 46
+            tileh: 21
+            map:
+              standardWing: [1,2]
+              wingLoaded: [1,1]
+            paddingX: 1
+            paddingY: 1
           'sun.png':
             tile: 1
             tileh: 1
@@ -106,12 +114,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @checkpoint @checkpointStart('Bay', 300000)
 
-      @setScenery('UnderBridge')
-      @mineSwarm()
-      @mineSwarm direction: 'left'
-      @mineSwarm()
-      @waitForScenery('UnderBridge', event: 'inScreen')
-      @setSpeed 0
+      #@setScenery('UnderBridge')
+      #@mineSwarm()
+      #@mineSwarm direction: 'left'
+      #@mineSwarm()
+      #@waitForScenery('UnderBridge', event: 'inScreen')
+      #@setSpeed 0
       @placeSquad Game.Scripts.Stage1BossStage1
 
       @setSpeed 50
