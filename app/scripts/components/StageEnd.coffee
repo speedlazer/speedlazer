@@ -1,6 +1,6 @@
 Crafty.c 'StageEnd',
   init: ->
-    @requires '2D, WebGL, HUD, Delay, Color'
+    @requires '2D, Canvas, HUD, Delay, Color'
 
   stageEnd: (level, stage, title) ->
     @lineNr = 0

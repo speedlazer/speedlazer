@@ -10,7 +10,7 @@ Crafty.c 'LargeDrone',
     @collision [2, 36, 16,15, 86,2, 88,4, 62,15, 57,46, 46, 66, 18, 66, 3, 47]
     #@color '#0000DF'
 
-    @wing = Crafty.e('2D, WebGL, wingLoaded, SpriteAnimation')
+    @wing = Crafty.e('2D, Canvas, wingLoaded, SpriteAnimation')
     @attach(@wing)
     @wing.attr(x: 20 + @x, y: 28 + @y)
     @wing.reel 'emptyWing', 0, [[1, 2]]

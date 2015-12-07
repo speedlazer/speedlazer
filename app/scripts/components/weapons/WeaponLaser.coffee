@@ -1,6 +1,6 @@
 Crafty.c 'WeaponLaser',
   init: ->
-    @requires '2D,WebGL,Color'
+    @requires '2D,Canvas,Color'
     @color '#808080'
     @attr
       w: 30

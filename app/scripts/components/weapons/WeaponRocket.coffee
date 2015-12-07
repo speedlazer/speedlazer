@@ -1,6 +1,6 @@
 Crafty.c 'WeaponRocket',
   init: ->
-    @requires '2D,WebGL,Color'
+    @requires '2D,Canvas,Color'
     @color '#404040'
     @attr
       w: 30
