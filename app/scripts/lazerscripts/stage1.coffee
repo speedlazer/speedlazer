@@ -111,12 +111,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @checkpoint @checkpointStart('Bay', 300000)
 
-      #@setScenery('UnderBridge')
-      #@mineSwarm()
-      #@mineSwarm direction: 'left'
-      #@mineSwarm()
-      #@waitForScenery('UnderBridge', event: 'inScreen')
-      #@setSpeed 0
+      @setScenery('UnderBridge')
+      @mineSwarm()
+      @mineSwarm direction: 'left'
+      @mineSwarm()
+      @waitForScenery('UnderBridge', event: 'inScreen')
+      @setSpeed 0
       @placeSquad Game.Scripts.Stage1BossStage1
 
       @setSpeed 50
