@@ -17,6 +17,8 @@ Crafty.c 'ShipSpawnable',
     return unless @lives > 0
 
     pos = @spawnPosition()
+    pos.x = 10 if pos.x < 10
+
     @ship = Crafty.e('PlayerControlledShip')
       .attr
         x: pos.x - Crafty.viewport.x
