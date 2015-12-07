@@ -15,12 +15,66 @@ generator.defineElement 'waterHorizon', ->
   @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
 
 generator.defineElement 'water', ->
-  @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, Image').image('images/water.png').attr(z: -500), .5)
+  @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, Canvas, water1').attr(z: -500), .5)
+  water2 = Crafty.e('2D, Canvas, water2').attr(z: -500)
+  @addBackground(400, @level.visibleHeight - 125, water2, .5)
+  water2.originalX = water2.x
+
+  @level.registerWaveTween 'OceanWavesDistance', 5000, 'easeInOutQuad', (v, forward) ->
+    distance = 10
+    width = 200
+    Crafty('water1').each ->
+      if forward
+        @w = width + (v * distance)
+      else
+        @w = width + distance - (v * distance)
+    Crafty('water2').each ->
+      if forward
+        @w = width - (v * distance) + 1
+        @dx = (v * distance) - 1
+      else
+        @w = width - distance + (v * distance) + 1
+        @dx = distance - (v * distance) - 1
 
 generator.defineElement 'waterFront', ->
   height = 65
   @add(0, @level.visibleHeight - 10, Crafty.e('2D, Solid').attr(w: @delta.x, h: 10))
-  @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Image').image('images/water-front.png').attr(z: -300))
+
+  water1 = Crafty.e('2D, Canvas, waterFront1').attr(z: -300)
+  @add(0, @level.visibleHeight - height, water1)
+  water1.originalY = water1.y
+
+  water2 = Crafty.e('2D, Canvas, waterFront2').attr(z: -300)
+  @add(400, @level.visibleHeight - height, water2)
+  water2.originalX = water2.x
+  water2.originalY = water2.y
+
+  @level.registerWaveTween 'OceanWaves', 6000, 'easeInOutQuad', (v, forward) ->
+    distance = 50
+    distanceh = 40
+    moveh = 5
+    width = 400
+    height = 125
+    Crafty('waterFront1').each ->
+      if forward
+        @w = width + (v * distance)
+        @y = @originalY + (v * moveh)
+        @h = height - (v * distanceh)
+      else
+        @w = width + distance - (v * distance)
+        @y = @originalY + moveh - (v * moveh)
+        @h = height - distanceh + (v * distanceh)
+    Crafty('waterFront2').each ->
+      if forward
+        @w = width - (v * distance)
+        @x = @originalX + (v * distance)
+        @y = @originalY + (v * moveh)
+        @h = height - (v * distanceh)
+      else
+        @w = width - distance + (v * distance)
+        @x = @originalX + distance - (v * distance)
+        @y = @originalY + moveh - (v * moveh)
+        @h = height - distanceh + (v * distanceh)
 
 generator.defineElement 'cityHorizon', (mode) ->
   @addElement 'waterHorizon'
@@ -72,9 +126,6 @@ generator.defineBlock class extends @Game.LevelScenery
     x: 800
     y: 0
   autoNext: 'Ocean'
-
-  assets: ->
-    images: ['water-horizon.png', 'water.png', 'water-front.png']
 
   generate: ->
     super
@@ -192,7 +243,20 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
 
   assets: ->
-    images: ['water-horizon.png', 'water.png', 'water-front.png']
+    images: ['water-horizon.png']
+    sprites:
+      'water.png':
+        tile: 200
+        tileh: 105
+        map:
+          water1: [0, 0]
+          water2: [1, 0]
+      'water-front.png':
+        tile: 400
+        tileh: 90
+        map:
+          waterFront1: [0, 0]
+          waterFront2: [1, 0]
 
   generate: ->
     super
@@ -210,7 +274,7 @@ generator.defineBlock class extends @Game.LevelScenery
   autoNext: 'Coast'
 
   assets: ->
-    images: ['horizon-city-start.png', 'water.png', 'water-front.png']
+    images: ['horizon-city-start.png']
 
   generate: ->
     super
@@ -226,7 +290,20 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
 
   assets: ->
-    images: ['horizon-city.png', 'water.png', 'water-front.png']
+    images: ['horizon-city.png']
+    sprites:
+      'water.png':
+        tile: 200
+        tileh: 105
+        map:
+          water1: [0, 0]
+          water2: [1, 0]
+      'water-front.png':
+        tile: 400
+        tileh: 90
+        map:
+          waterFront1: [0, 0]
+          waterFront2: [1, 0]
 
   generate: ->
     super
@@ -243,7 +320,7 @@ generator.defineBlock class extends @Game.LevelScenery
   autoNext: 'Bay'
 
   assets: ->
-    images: ['horizon-city.png', 'city-start.png', 'water-front.png']
+    images: ['city-start.png']
 
   generate: ->
     super
@@ -259,7 +336,14 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
 
   assets: ->
-    images: ['horizon-city.png', 'city.png', 'city-layer2.png', 'water-front.png']
+    images: ['horizon-city.png', 'city.png', 'city-layer2.png']
+    sprites:
+      'water-front.png':
+        tile: 400
+        tileh: 90
+        map:
+          waterFront1: [0, 0]
+          waterFront2: [1, 0]
 
   generate: ->
     super
@@ -276,7 +360,7 @@ generator.defineBlock class extends @Game.LevelScenery
   autoNext: 'Bay'
 
   assets: ->
-    images: ['horizon-city.png', 'city-bridge.png', 'city-layer2.png', 'water-front.png']
+    images: ['city-bridge.png']
 
   generate: ->
     super

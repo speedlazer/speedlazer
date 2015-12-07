@@ -97,6 +97,28 @@ class Game.Level
         @stop()
         Crafty.trigger('GameOver')
 
+    Crafty.bind 'EnterFrame', @_waveTicks
+
+  _waveTicks: (fd) =>
+    @_registeredWaveTweens ?= {}
+    wt.tick(fd.dt) for n, wt of @_registeredWaveTweens
+
+  registerWaveTween: (name, duration, easing, callback) ->
+    @_registeredWaveTweens ?= {}
+    @_registeredWaveTweens[name] ?= new (class
+      constructor: ({ @name, duration, easing, @callback }) ->
+        @ease = new Crafty.easing(duration, easing)
+        @ease.repeat 3
+
+      tick: (dt) ->
+        @ease.tick(dt)
+        v = @ease.value()
+        if @ease.loops is 1
+          @ease.repeat 3
+        forward = (@ease.loops % 2) is 1
+        @callback(v, forward)
+    )({ name, duration, easing, callback })
+
   _setupLevelScenery: ->
     return unless @currentScenery?
     return unless @blocks.length is 0
@@ -201,6 +223,7 @@ class Game.Level
     Crafty.unbind('EnterBlock')
     Crafty.unbind('ShipSpawned')
     Crafty.unbind('ViewportScroll')
+    Crafty.unbind('EnterFrame', @_waveTicks)
     b?.clean() for b in @blocks
 
   _update: ->
