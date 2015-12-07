@@ -73,6 +73,9 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
   autoNext: 'Ocean'
 
+  assets: ->
+    images: ['water-horizon.png', 'water.png', 'water-front.png']
+
   generate: ->
     super
 
@@ -188,6 +191,9 @@ generator.defineBlock class extends @Game.LevelScenery
     x: 800
     y: 0
 
+  assets: ->
+    images: ['water-horizon.png', 'water.png', 'water-front.png']
+
   generate: ->
     super
 
@@ -203,6 +209,9 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
   autoNext: 'Coast'
 
+  assets: ->
+    images: ['horizon-city-start.png', 'water.png', 'water-front.png']
+
   generate: ->
     super
     @addElement 'waterFront'
@@ -215,6 +224,9 @@ generator.defineBlock class extends @Game.LevelScenery
   delta:
     x: 800
     y: 0
+
+  assets: ->
+    images: ['horizon-city.png', 'water.png', 'water-front.png']
 
   generate: ->
     super
@@ -230,6 +242,9 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
   autoNext: 'Bay'
 
+  assets: ->
+    images: ['horizon-city.png', 'city-start.png', 'water-front.png']
+
   generate: ->
     super
     @addElement 'waterFront'
@@ -242,6 +257,9 @@ generator.defineBlock class extends @Game.LevelScenery
   delta:
     x: 800
     y: 0
+
+  assets: ->
+    images: ['horizon-city.png', 'city.png', 'city-layer2.png', 'water-front.png']
 
   generate: ->
     super
@@ -256,6 +274,9 @@ generator.defineBlock class extends @Game.LevelScenery
     x: 800
     y: 0
   autoNext: 'Bay'
+
+  assets: ->
+    images: ['horizon-city.png', 'city-bridge.png', 'city-layer2.png', 'water-front.png']
 
   generate: ->
     super

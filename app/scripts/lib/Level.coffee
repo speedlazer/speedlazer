@@ -26,8 +26,18 @@ class Game.Level
     { @namespace } = @data
     @currentScenery = @data.startScenery
 
-  setScenery: (@currentScenery) ->
-    @_setupLevelScenery()
+  setScenery: (scenery) ->
+    @_loadAssetsForScenery(scenery).then =>
+      @currentScenery = scenery
+      @_setupLevelScenery()
+
+  _loadAssetsForScenery: (scenery) ->
+    blockType = "#{@namespace}.#{scenery}"
+    blockKlass = @generator.buildingBlocks[blockType]
+    blockKlass::loadAssets().then =>
+      console.log 'assetsLoaded', scenery
+      if next = blockKlass::autoNext
+        @_loadAssetsForScenery(next)
 
   start: (settings = {}) ->
     defaults =
@@ -44,6 +54,7 @@ class Game.Level
       viewport:
         x: 0
         y: 0
+      title: ''
 
     settings = _.defaults(settings, @data, defaults)
 
@@ -64,6 +75,17 @@ class Game.Level
       @data.enemiesSpawned += 1
 
     @_placePlayerShips settings
+
+    Crafty.e('2D, DOM, Text, HUD, LevelTitle')
+      .attr(w: 150, h: 20)
+      .positionHud(x: (640 - 150), y: 10, z: 2)
+      .textFont(
+        size: '12px'
+        family: 'Bank Gothic'
+      )
+      .textColor '#A0A0A0'
+      .text settings.title
+
     @_setupLevelScenery()
 
     Crafty.bind 'PlayerDied', =>
@@ -237,3 +259,6 @@ class Game.Level
     @_insertBlockToLevel(blockType, {})
     @generationPosition = p
 
+
+  updateTitle: (newTitle) ->
+    Crafty('LevelTitle').text newTitle

@@ -36,6 +36,9 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
   autoNext: 'Ocean'
 
+  assets: ->
+    images: ['water-horizon-old.png', 'water-old.png', 'water-front-old.png']
+
   generate: ->
     super
     @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, WebGL, Image').image('images/water-horizon-old.png').attr(z: -600), .25)

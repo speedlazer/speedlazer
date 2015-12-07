@@ -15,7 +15,7 @@ Crafty.c 'PlayerInfo',
       @score.textColor @player.color()
 
     @lives = Crafty.e('2D, DOM, Text, HUD')
-      .attr(w: 250, h: 20)
+      .attr(w: 180, h: 20)
       .positionHud(x: x, y: 25, z: 2)
       .textFont(
         size: '12px'

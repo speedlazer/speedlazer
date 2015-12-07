@@ -6,6 +6,8 @@ class Game.Scripts.Lunch extends Game.LazerScript
     namespace: 'City'
     speed: 0
     armedPlayers: 'oldlasers'
+    title: 'In the beginning...'
+    weaponsEnabled: no
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
@@ -15,7 +17,6 @@ class Game.Scripts.Lunch extends Game.LazerScript
 
     @sequence(
       @loadAssets(
-        images: ['water-horizon.png', 'water.png', 'water-front.png']
         sprites:
           'large-drone.png':
             tile: 90
@@ -60,7 +61,9 @@ class Game.Scripts.Lunch extends Game.LazerScript
               bigGlare: [0, 256, 200, 200]
       )
       @setScenery('Blackness')
+      @enableWeapons()
       @nextSlide()
+      @updateTitle 'First enemy'
       @placeSquad Game.Scripts.Slider,
         options:
           grid: new Game.LocationGrid
@@ -70,6 +73,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
               start: 250
 
       @nextSlide()
+      @updateTitle 'More enemies'
       @setScenery('OpenSpace')
       @setSpeed 150
       @parallel(
@@ -91,15 +95,19 @@ class Game.Scripts.Lunch extends Game.LazerScript
         )
       )
       @nextSlide()
+      @updateTitle 'Level geometry'
       @setSpeed 50
       @nextSlide()
+      @updateTitle 'Speed and collision'
       @setSpeed 250
       @nextSlide()
+      @updateTitle 'Backgrounds'
       @checkpoint @setScenery 'OpenSpace'
       @setScenery('TunnelStart')
       @waitForScenery 'TunnelStart'
       @setSpeed 50
       @nextSlide()
+      @updateTitle 'Dialog'
       @say 'SpeedLazer', 'Hello World!'
       @say 'SpeedLazer', 'Flavor text can add to story telling'
       @waitForScenery 'Tunnel', event: 'inScreen'
@@ -120,12 +128,14 @@ class Game.Scripts.Lunch extends Game.LazerScript
                 stepSize: 50
         @wait 3000
       )
+      @updateTitle 'Enemy choreo start'
       @nextSlide @sequence(
         @placeSquad Game.Scripts.Sine,
           amount: 5
           delay: 1000
         @wait 3000
       )
+      @updateTitle 'Start stage 1'
       @setScenery('TunnelEnd')
       @setSpeed 350
 
@@ -133,6 +143,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @setSpeed 50
       @checkpoint @setScenery 'OceanOld'
       @nextSlide()
+      @updateTitle 'Vertical motion'
       @parallel(
         @gainHeight 200, duration: 5000
         @placeSquad Game.Scripts.Sine,
@@ -142,21 +153,17 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide()
       @gainHeight -200, duration: 5000
       @nextSlide(
-        @placeSquad Game.Scripts.Swirler,
-          drop: 'lasers'
-          amount: 4
-          delay: 500
+        @sequence(
+          @updateTitle 'Bezier, powerups, LazerScript'
+          @placeSquad Game.Scripts.Swirler,
+            drop: 'lasers'
+            amount: 4
+            delay: 500
+        )
       )
       @checkpoint @setScenery 'OceanOld'
-
-      @placeSquad Game.Scripts.SplashJumper,
-        drop: 'lasers'
-
-      @placeSquad Game.Scripts.Swirler,
-        drop: 'lasers'
-        amount: 4
-        delay: 500
-      @nextSlide()
+      @updateTitle 'Lazerscript environment'
+      @disableWeapons()
 
       @placeSquad Game.Scripts.LittleDancer,
         amount: 4
@@ -168,24 +175,26 @@ class Game.Scripts.Lunch extends Game.LazerScript
               steps: 4
               stepSize: 100
 
+      @enableWeapons()
+
       @nextSlide()
+      @updateTitle 'Particle effects'
       => Game.explosionMode = 'particles'
 
-      @loadAssets images: ['horizon-city.png', 'horizon-city-start.png']
-      @loadAssets images: ['city.png']
-      @loadAssets images: ['city.png', 'city-layer2.png']
       @checkpoint @setScenery('OceanOld')
       @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 4)
       @setScenery('OceanToNew')
-      @placeSquad Game.Scripts.Swirler,
-        drop: 'lasers'
-        amount: 4
-        delay: 500
-      @placeSquad Game.Scripts.Stalker,
-        drop: 'lasers'
-      @wait 20000
+      @repeat 3, @sequence(
+        @placeSquad Game.Scripts.Swirler,
+          drop: 'lasers'
+          amount: 4
+          delay: 500
+        @placeSquad Game.Scripts.Stalker,
+          drop: 'lasers'
+      )
       @setScenery('CoastStart')
       => Game.explosionMode = null
+      @updateTitle 'Graphics!'
       @swirlAttacks()
       @swirlAttacks()
       @setScenery('BayStart')

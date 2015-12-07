@@ -6,6 +6,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     namespace: 'City'
     armedPlayers: 'lasers'
     speed: 50
+    title: 'City'
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
@@ -14,9 +15,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
-
       @loadAssets(
-        images: ['water-horizon.png', 'water.png', 'water-front.png']
         sprites:
           'mine.png':
             tile: 25
@@ -78,14 +77,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @swirlAttacks()
       )
       @swirlAttacks()
-      @loadAssets images: ['horizon-city.png', 'horizon-city-start.png']
       @setScenery('CoastStart')
       @underWaterAttacks()
 
       @checkpoint @checkpointStart('Coast', 150000)
 
       @mineSwarm()
-      @loadAssets images: ['city.png', 'city-layer2.png', 'city-bridge.png']
       @setScenery('BayStart')
       @underWaterAttacks()
       @parallel(

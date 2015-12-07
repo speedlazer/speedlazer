@@ -162,7 +162,6 @@ Game.ScriptModule.Level =
   setScenery: (scenery) ->
     (sequence) =>
       @_verify(sequence)
-      @currentScenery = scenery
       return WhenJS() if @_skippingToCheckpoint()
       @level.setScenery scenery
 
@@ -255,3 +254,9 @@ Game.ScriptModule.Level =
       d = WhenJS.defer()
       Crafty.load(assetObject, (-> d.resolve()))
       d.promise
+
+  updateTitle: (text) ->
+    (sequence) =>
+      @_verify(sequence)
+      @level.updateTitle(text)
+

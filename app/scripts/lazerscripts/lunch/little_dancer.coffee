@@ -33,6 +33,8 @@ class Game.Scripts.LittleDancer extends Game.EntityScript
       @wait (@index * 500)
       @moveTo(y: 290)
       @wait 100
+      @moveTo(y: 500)
+      @wait 100
       @moveTo(y: 310)
       @synchronizeOn 'afterJump'
       @moveTo(x: 100)
