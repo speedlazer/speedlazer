@@ -25,8 +25,8 @@ Crafty.c 'Sun',
         h: 80
         z: 91
         res: 0.9
-        alpha: 0.7
-        originalAlpha: 0.7
+        alpha: 0.4
+        originalAlpha: 0.4
       .origin('center')
       #.color('#B0B0FF')
     @attach blueGlare
