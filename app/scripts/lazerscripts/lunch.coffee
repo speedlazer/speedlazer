@@ -16,7 +16,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
     Game.explosionMode = 'block'
 
     @sequence(
-      @loadAssets(
+      @loadAssets( # TODO: This will be done in the background later, this is temp code
         sprites:
           'large-drone.png':
             tile: 90
@@ -63,6 +63,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @setScenery('Blackness')
       @enableWeapons()
       @nextSlide()
+
       @updateTitle 'First enemy'
       @placeSquad Game.Scripts.Slider,
         options:
@@ -94,12 +95,15 @@ class Game.Scripts.Lunch extends Game.LazerScript
           @setSpeed 0
         )
       )
+
       @nextSlide()
       @updateTitle 'Level geometry'
       @setSpeed 50
+
       @nextSlide()
       @updateTitle 'Speed and collision'
       @setSpeed 250
+
       @nextSlide()
       @updateTitle 'Backgrounds'
       @checkpoint @setScenery 'OpenSpace'
@@ -107,6 +111,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @waitForScenery 'TunnelStart'
       @setSpeed 50
       @nextSlide()
+
       @updateTitle 'Dialog'
       @say 'SpeedLazer', 'Hello World!'
       @say 'SpeedLazer', 'Flavor text can add to story telling'
@@ -128,6 +133,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
                 stepSize: 50
         @wait 3000
       )
+
       @updateTitle 'Enemy choreo start'
       @nextSlide @sequence(
         @placeSquad Game.Scripts.Sine,
@@ -135,26 +141,38 @@ class Game.Scripts.Lunch extends Game.LazerScript
           delay: 1000
         @wait 3000
       )
+
       @updateTitle 'Start stage 1'
       @setScenery('TunnelEnd')
       @setSpeed 350
 
-      @waitForScenery 'TunnelEnd', event: 'inScreen'
+      @waitForScenery 'OceanOld', event: 'inScreen'
       @setSpeed 50
       @checkpoint @setScenery 'OceanOld'
       @nextSlide()
       @updateTitle 'Vertical motion'
       @parallel(
-        @gainHeight 200, duration: 5000
+        @gainHeight 600, duration: 15000
         @placeSquad Game.Scripts.Sine,
-          amount: 5
+          amount: 8
           delay: 1000
       )
       @nextSlide()
-      @gainHeight -200, duration: 5000
+      @updateTitle 'Bezier, powerups'
+      @parallel(
+        @gainHeight -600, duration: 15000
+        @nextSlide @sequence(
+          @placeSquad Game.Scripts.Swirler,
+            drop: 'lasers'
+            amount: 4
+            delay: 500
+          @waitForScenery 'OceanOld'
+        )
+      )
+
       @nextSlide(
         @sequence(
-          @updateTitle 'Bezier, powerups, LazerScript'
+          @updateTitle 'Lazerscript environment'
           @placeSquad Game.Scripts.Swirler,
             drop: 'lasers'
             amount: 4
@@ -162,7 +180,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
         )
       )
       @checkpoint @setScenery 'OceanOld'
-      @updateTitle 'Lazerscript environment'
+      @updateTitle 'Lazerscript enemies'
       @disableWeapons()
 
       @placeSquad Game.Scripts.LittleDancer,
@@ -201,6 +219,12 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @mineSwarm()
       @mineSwarm(direction: 'left')
       @placeSquad Game.Scripts.Stage1BossStage1
+      @gainHeight 200, duration: 5000
+      @showScore(1, 'Lunch and learn')
+      @repeat @sequence(
+        @placeSquad Game.Scripts.Stage1BossPopup
+        @wait 2000
+      )
     )
 
 

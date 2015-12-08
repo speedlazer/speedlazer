@@ -25,8 +25,7 @@ Crafty.c 'WeaponLaser',
       @trigger 'levelUp', @level
 
   determineLevel: (xp) ->
-    levelBoundaries = [150, 400, 1000, 2500]
-    #levelBoundaries = [15, 40, 100, 250]
+    levelBoundaries = [150, 600, 2400, 9600]
     neededXP = 0
     level = 0
     for i in levelBoundaries
@@ -39,11 +38,10 @@ Crafty.c 'WeaponLaser',
   shoot: (onOff) ->
     return unless onOff
     settings = switch @level
-      when 0 then w: 8, speed: 350, h: 3
-      when 1 then w: 9, speed: 350, h: 4
-      when 2 then w: 10, speed: 350, h: 5
-      when 3 then w: 11, speed: 350, h: 5
-      when 4 then w: 12, speed: 350, h: 6
+      when 0 then w: 6, speed: 350, h: 3
+      when 1 then w: 10, speed: 355, h: 4
+      when 2 then w: 14, speed: 360, h: 5
+      when 3 then w: 18, speed: 365, h: 5
 
     Crafty.e('Bullet')
       .attr

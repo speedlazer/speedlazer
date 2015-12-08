@@ -15,7 +15,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
-      @loadAssets(
+      @loadAssets( # TODO: This will be done in the background later, this is temp code
         sprites:
           'mine.png':
             tile: 25
