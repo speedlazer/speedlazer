@@ -115,7 +115,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @updateTitle 'Dialog'
       @say 'SpeedLazer', 'Hello World!'
       @say 'SpeedLazer', 'Flavor text can add to story telling'
-      @waitForScenery 'Tunnel', event: 'inScreen'
+      @nextSlide()
       @say 'Enemies', 'Get him!'
 
       @nextSlide @sequence(

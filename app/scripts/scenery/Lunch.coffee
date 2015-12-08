@@ -37,7 +37,14 @@ generator.defineBlock class extends @Game.LevelScenery
   autoNext: 'Ocean'
 
   assets: ->
-    images: ['water-horizon-old.png', 'water-old.png', 'water-front-old.png']
+    images: ['water-horizon-old.png', 'water-old.png']
+    sprites:
+      'water-front-old.png':
+        tile: 400
+        tileh: 90
+        map:
+          waterFront1Old: [0, 0]
+          waterFront2Old: [1, 0]
 
   generate: ->
     super
@@ -48,7 +55,16 @@ generator.defineBlock class extends @Game.LevelScenery
 
     height = 65
     @add(0, @level.visibleHeight - 10, Crafty.e('2D, Solid').attr(w: @delta.x, h: 10))
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Image').image('images/water-front-old.png').attr(z: -300))
+    #@add(0, @level.visibleHeight - height, Crafty.e('2D, Canvas, Image').image('images/water-front-old.png').attr(z: -300))
+
+    water1 = Crafty.e('2D, Canvas, waterFront1Old, Wave1').attr(z: -300)
+    @add(0, @level.visibleHeight - height, water1)
+    water1.originalY = water1.y
+
+    water2 = Crafty.e('2D, Canvas, waterFront2Old, Wave2').attr(z: -300)
+    @add(400, @level.visibleHeight - height, water2)
+    water2.originalX = water2.x
+    water2.originalY = water2.y
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.OpenSpace'

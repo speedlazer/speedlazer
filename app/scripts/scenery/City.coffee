@@ -40,11 +40,11 @@ generator.defineElement 'waterFront', ->
   height = 65
   @add(0, @level.visibleHeight - 10, Crafty.e('2D, Solid').attr(w: @delta.x, h: 10))
 
-  water1 = Crafty.e('2D, Canvas, waterFront1').attr(z: -300)
+  water1 = Crafty.e('2D, Canvas, waterFront1, Wave1').attr(z: -300)
   @add(0, @level.visibleHeight - height, water1)
   water1.originalY = water1.y
 
-  water2 = Crafty.e('2D, Canvas, waterFront2').attr(z: -300)
+  water2 = Crafty.e('2D, Canvas, waterFront2, Wave2').attr(z: -300)
   @add(400, @level.visibleHeight - height, water2)
   water2.originalX = water2.x
   water2.originalY = water2.y
@@ -55,7 +55,7 @@ generator.defineElement 'waterFront', ->
     moveh = 5
     width = 400
     height = 125
-    Crafty('waterFront1').each ->
+    Crafty('Wave1').each ->
       if forward
         @w = width + (v * distance)
         @y = @originalY + (v * moveh)
@@ -64,7 +64,7 @@ generator.defineElement 'waterFront', ->
         @w = width + distance - (v * distance)
         @y = @originalY + moveh - (v * moveh)
         @h = height - distanceh + (v * distanceh)
-    Crafty('waterFront2').each ->
+    Crafty('Wave2').each ->
       if forward
         @w = width - (v * distance)
         @x = @originalX + (v * distance)
