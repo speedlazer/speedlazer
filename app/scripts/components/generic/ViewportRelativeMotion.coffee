@@ -29,7 +29,7 @@ Crafty.c 'ViewportRelativeMotion',
       if @_distanceSky
         newY = @_location.sy - (Crafty.viewport._y * (1 - @_speed)) + @dy
       else
-        newY = @_location.sy - (Crafty.viewport._y * (1 - ((@_speed - 0.20) * 1.2))) + @dy
+        newY = @_location.sy - (Crafty.viewport._y * (1 - ((@_speed - 0.225) * 1.2))) + @dy
       @attr x: newX, y: newY
     this
 
