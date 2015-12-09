@@ -96,7 +96,7 @@ generator.defineBlock class extends @Game.LevelScenery
     @add(0, 0, Crafty.e('2D, Canvas, Solid, Color').color('#404040').attr({ w: 350, h: 15 }))
     @add(350, 0, Crafty.e('2D, Canvas, Solid, Color').color('#404040').attr({ w: 100, h: 70 }))
     @add(450, 0, Crafty.e('2D, Canvas, Solid, Color').color('#404040').attr({ w: 550, h: 25 }))
-    @add(380, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: @delta.x - 380, h: @level.visibleHeight }))
+    @add(380, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -100, w: @delta.x - 380, h: @level.visibleHeight }))
 
 
 generator.defineBlock class extends @Game.LevelScenery
@@ -119,7 +119,7 @@ generator.defineBlock class extends @Game.LevelScenery
     h = 25
     @add(450, @level.visibleHeight - h, Crafty.e('2D, Canvas, Solid, Color').color('#404040').attr({ w: 550, h: h }))
 
-    @add(0, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -1, w: 380, h: @level.visibleHeight }))
+    @add(0, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -100, w: 380, h: @level.visibleHeight }))
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Tunnel'
