@@ -71,7 +71,7 @@ Crafty.defineScene 'GameOver', (data) ->
         @reset()
         @one 'Activated', ->
           Game.credits -= 1
-          Crafty.enterScene Game.firstLevel, { checkpoint: data.checkpoint }
+          Crafty.enterScene Game.firstLevel, data
     else
       @delay ->
         Crafty.enterScene('Intro')
