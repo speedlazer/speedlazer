@@ -62,7 +62,8 @@ Game =
         super: 4
 
     # Simply start splashscreen
-    Crafty.enterScene('Game', script: 'Lunch')
+    #Crafty.enterScene('Game', script: 'Lunch')
+    Crafty.enterScene('Intro')
 
   resetCredits: ->
     @credits = 2 # This is actually 'Extra' credits, so in total 3

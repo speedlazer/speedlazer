@@ -10,7 +10,7 @@ Crafty.c 'Player',
       bonus: 0
     @removeComponent('ControlScheme')
       .attr({
-        lives: 4,
+        lives: 2,
         points: 0
       })
 
