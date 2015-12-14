@@ -42,3 +42,10 @@ Crafty.c 'GamepadControls',
       if e.button is @controlMap.super
         ship.superWeapon(e.pressed)
 
+      # TODO: This event is not coming through
+      # when the game is paused,
+      # so unpausing is not possible!
+      #if e.button is @controlMap.pause
+        #if e.pressed
+          #Crafty.pause()
+
