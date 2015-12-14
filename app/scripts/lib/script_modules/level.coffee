@@ -50,6 +50,10 @@ Game.ScriptModule.Level =
       scripts = (for i in [0...settings.amount]
         synchronizer.registerEntity(new scriptClass(@level))
       )
+      loadingAssets = WhenJS(true)
+
+      if scripts[0]?.assets?
+        loadingAssets = scripts[0].assets()(sequence)
 
       promises = (for script, i in scripts
         do (script, i) =>
@@ -57,25 +61,26 @@ Game.ScriptModule.Level =
             @_verify(sequence)
             script.run(settings.options)
       )
-      WhenJS.all(promises).then (results) =>
-        allKilled = yes
-        lastLocation = null
-        lastKilled = null
-        for { alive, killedAt, location } in results
-          if alive
-            allKilled = no
-          else
-            lastKilled ?= killedAt
-            lastLocation ?= location
-            if killedAt.getTime() > lastKilled.getTime()
-              lastKilled = killedAt
-              lastLocation = location
+      loadingAssets.then =>
+        WhenJS.all(promises).then (results) =>
+          allKilled = yes
+          lastLocation = null
+          lastKilled = null
+          for { alive, killedAt, location } in results
+            if alive
+              allKilled = no
+            else
+              lastKilled ?= killedAt
+              lastLocation ?= location
+              if killedAt.getTime() > lastKilled.getTime()
+                lastKilled = killedAt
+                lastLocation = location
 
-        if allKilled
-          lastLocation.x -= Crafty.viewport.x
-          lastLocation.y -= Crafty.viewport.y
-          if settings.drop
-            @drop(item: settings.drop, location: lastLocation)(sequence)
+          if allKilled
+            lastLocation.x -= Crafty.viewport.x
+            lastLocation.y -= Crafty.viewport.y
+            if settings.drop
+              @drop(item: settings.drop, location: lastLocation)(sequence)
 
   # Show dialog at the bottom of the screen
   # The duration in screen depends on the amount of lines in the

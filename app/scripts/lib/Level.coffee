@@ -35,7 +35,6 @@ class Game.Level
     blockType = "#{@namespace}.#{scenery}"
     blockKlass = @generator.buildingBlocks[blockType]
     blockKlass::loadAssets().then =>
-      console.log 'assetsLoaded', scenery
       if next = blockKlass::autoNext
         @_loadAssetsForScenery(next)
 

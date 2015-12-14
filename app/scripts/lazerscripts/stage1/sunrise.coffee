@@ -3,6 +3,20 @@ Game.Scripts ||= {}
 
 class Game.Scripts.SunRise extends Game.EntityScript
 
+  assets: ->
+    @loadAssets(
+      sprites:
+        'sun.png':
+          tile: 1
+          tileh: 1
+          map:
+            sun: [0,0,35,35]
+            directGlare: [0,81,175,175]
+            redGlare: [0,36,10,10]
+            blueGlare: [120, 0, 80, 80]
+            bigGlare: [0, 256, 200, 200]
+    )
+
   spawn: (options) ->
     sun = Crafty('Sun')
     if sun.length > 0

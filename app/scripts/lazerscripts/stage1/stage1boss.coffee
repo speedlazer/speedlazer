@@ -3,6 +3,25 @@ Game.Scripts ||= {}
 
 class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
+  assets: ->
+    @loadAssets(
+      sprites:
+        'large-drone.png':
+          tile: 90
+          tileh: 70
+          map:
+            standardLargeDrone: [0,0]
+          paddingX: 1
+        'large-drone-wing.png':
+          tile: 46
+          tileh: 21
+          map:
+            standardWing: [1,2]
+            wingLoaded: [1,1]
+          paddingX: 1
+          paddingY: 1
+    )
+
   spawn: ->
     Crafty.e('LargeDrone').drone(
       health: 160000
@@ -55,6 +74,17 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     )
 
 class Game.Scripts.Stage1BossMine extends Game.EntityScript
+  assets: ->
+    @loadAssets(
+      sprites:
+        'mine.png':
+          tile: 25
+          tileh: 25
+          map:
+            standardMine: [0,0]
+          paddingX: 1
+    )
+
   spawn: (location) ->
     Crafty.e('Mine').mine(
       health: 200
@@ -82,6 +112,17 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
 
 
 class Game.Scripts.Stage1BossRocket extends Game.EntityScript
+  assets: ->
+    @loadAssets(
+      sprites:
+        'rocket.png':
+          tile: 45
+          tileh: 15
+          map:
+            standardRocket: [0,0]
+          paddingX: 1
+    )
+
   spawn: (location) ->
     Crafty.e('Rocket').rocket(
       health: 200
@@ -100,6 +141,24 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
 
 
 class Game.Scripts.Stage1BossPopup extends Game.EntityScript
+  assets: ->
+    @loadAssets(
+      sprites:
+        'large-drone.png':
+          tile: 90
+          tileh: 70
+          map:
+            standardLargeDrone: [0,0]
+          paddingX: 1
+        'large-drone-wing.png':
+          tile: 46
+          tileh: 21
+          map:
+            standardWing: [1,2]
+            wingLoaded: [1,1]
+          paddingX: 1
+          paddingY: 1
+    )
 
   spawn: ->
     Crafty.e('LargeDrone').drone(

@@ -8,6 +8,17 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     speed: 50
     title: 'City'
 
+  assets: ->
+    @loadAssets(
+      sprites:
+        'shadow.png':
+          tile: 35
+          tileh: 20
+          map:
+            shadow: [0,0]
+          paddingX: 1
+    )
+
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
@@ -15,51 +26,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
-      @loadAssets( # TODO: This will be done in the background later, this is temp code
-        sprites:
-          'mine.png':
-            tile: 25
-            tileh: 25
-            map:
-              standardMine: [0,0]
-            paddingX: 1
-          'shadow.png':
-            tile: 35
-            tileh: 20
-            map:
-              shadow: [0,0]
-            paddingX: 1
-          'rocket.png':
-            tile: 45
-            tileh: 15
-            map:
-              standardRocket: [0,0]
-            paddingX: 1
-          'large-drone.png':
-            tile: 90
-            tileh: 70
-            map:
-              standardLargeDrone: [0,0]
-            paddingX: 1
-          'large-drone-wing.png':
-            tile: 46
-            tileh: 21
-            map:
-              standardWing: [1,2]
-              wingLoaded: [1,1]
-            paddingX: 1
-            paddingY: 1
-          'sun.png':
-            tile: 1
-            tileh: 1
-            map:
-              sun: [0,0,35,35]
-              directGlare: [0,81,175,175]
-              redGlare: [0,36,10,10]
-              blueGlare: [120, 0, 80, 80]
-              bigGlare: [0, 256, 200, 200]
-      )
-
       @setScenery('Intro')
       @async @runScript Game.Scripts.IntroBarrel
       @sunRise()

@@ -3,6 +3,17 @@ Game.Scripts ||= {}
 
 class Game.Scripts.JumpMine extends Game.EntityScript
 
+  assets: ->
+    @loadAssets(
+      sprites:
+        'mine.png':
+          tile: 25
+          tileh: 25
+          map:
+            standardMine: [0,0]
+          paddingX: 1
+    )
+
   spawn: (options) ->
     x = if options.direction is 'right' then 720 else -80
     @target = options.grid.getLocation()
