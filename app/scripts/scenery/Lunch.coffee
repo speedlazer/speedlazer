@@ -89,14 +89,14 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-    @addBackground(380, @level.visibleHeight - 180, Crafty.e('2D, Canvas, Color').color('#505050').attr({ z: -1, w: 40, h: 180 }), .5)
-    @addBackground(380, @level.visibleHeight - 90, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -2, w: 40, h: 90 }), .25)
+    @addBackground(380, @level.visibleHeight - 180, Crafty.e('2D, Canvas, Color').color('#505050').attr({ z: -110, w: 40, h: 180 }), .5)
+    @addBackground(380, @level.visibleHeight - 90, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -200, w: 40, h: 90 }), .25)
     @addBackground(380, @level.visibleHeight - 360, Crafty.e('2D, Canvas, Color').color('#303030').attr({ z: 22, w: 40, h: 360 }), 1.5)
 
     @add(0, 0, Crafty.e('2D, Canvas, Solid, Color').color('#404040').attr({ w: 350, h: 15 }))
     @add(350, 0, Crafty.e('2D, Canvas, Solid, Color').color('#404040').attr({ w: 100, h: 70 }))
     @add(450, 0, Crafty.e('2D, Canvas, Solid, Color').color('#404040').attr({ w: 550, h: 25 }))
-    @add(380, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -100, w: @delta.x - 380, h: @level.visibleHeight }))
+    @add(380, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -10, w: @delta.x - 380, h: @level.visibleHeight }))
 
 
 generator.defineBlock class extends @Game.LevelScenery
@@ -109,8 +109,8 @@ generator.defineBlock class extends @Game.LevelScenery
   generate: ->
     super
     @addBackground(380, @level.visibleHeight - 360, Crafty.e('2D, Canvas, Color').color('#303030').attr({ z: 22, w: 40, h: 360 }), 1.5)
-    @addBackground(380, @level.visibleHeight - 180, Crafty.e('2D, Canvas, Color').color('#505050').attr({ z: -1, w: 40, h: 180 }), .5)
-    @addBackground(380, @level.visibleHeight - 90, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -1000, w: 40, h: 90 }), .25)
+    @addBackground(380, @level.visibleHeight - 180, Crafty.e('2D, Canvas, Color').color('#505050').attr({ z: -110, w: 40, h: 180 }), .5)
+    @addBackground(380, @level.visibleHeight - 90, Crafty.e('2D, Canvas, Color').color('#606060').attr({ z: -200, w: 40, h: 90 }), .25)
 
     h = 15
     @add(0, @level.visibleHeight - h, Crafty.e('2D, Canvas, Solid, Color').color('#404040').attr({ w: 350, h: h }))
@@ -118,8 +118,7 @@ generator.defineBlock class extends @Game.LevelScenery
     @add(350, @level.visibleHeight - h, Crafty.e('2D, Canvas, Solid, Color').color('#404040').attr({ w: 100, h: h }))
     h = 25
     @add(450, @level.visibleHeight - h, Crafty.e('2D, Canvas, Solid, Color').color('#404040').attr({ w: 550, h: h }))
-
-    @add(0, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -100, w: 380, h: @level.visibleHeight }))
+    @add(0, 0, Crafty.e('2D, Canvas, Color').color('#202020').attr({ z: -10, w: 380, h: @level.visibleHeight }))
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Tunnel'
