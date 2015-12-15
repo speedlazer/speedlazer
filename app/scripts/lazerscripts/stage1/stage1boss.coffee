@@ -10,7 +10,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
           tile: 90
           tileh: 70
           map:
-            standardLargeDrone: [0,0]
+            standardLargeDrone: [3,1]
           paddingX: 1
         'large-drone-wing.png':
           tile: 46
@@ -18,6 +18,13 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
           map:
             standardWing: [1,2]
             wingLoaded: [1,1]
+          paddingX: 1
+          paddingY: 1
+        'large-drone-eye.png':
+          tile: 20
+          tileh: 26
+          map:
+            eyeStart: [0,0]
           paddingX: 1
           paddingY: 1
     )
@@ -36,7 +43,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
-      @animate 'eyes', -1
+      @animate 'slow', -1, 'eye'
       @disableWeapons()
       @moveTo(x: 540, y: 200)
       @say('Large Drone', 'We have control now! You will suffer!')
@@ -148,7 +155,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
           tile: 90
           tileh: 70
           map:
-            standardLargeDrone: [0,0]
+            standardLargeDrone: [3,1]
           paddingX: 1
         'large-drone-wing.png':
           tile: 46
@@ -156,6 +163,13 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
           map:
             standardWing: [1,2]
             wingLoaded: [1,1]
+          paddingX: 1
+          paddingY: 1
+        'large-drone-eye.png':
+          tile: 20
+          tileh: 26
+          map:
+            eyeStart: [0,0]
           paddingX: 1
           paddingY: 1
     )
@@ -174,6 +188,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
+      @animate 'slow', -1, 'eye'
       @pickTarget('PlayerControlledShip')
       @moveTo(@targetLocation(), x: 540)
       @attackCycle()
