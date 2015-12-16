@@ -21,6 +21,7 @@ Crafty.c 'Enemy',
 
   absorbDamage: (damage) ->
     @health -= damage
+    @updatedHealth?()
     if @health <= 0
       Crafty.trigger('EnemyDestroyed', this)
       @trigger('Destroyed', this)
