@@ -30,6 +30,14 @@ class Game.LevelScenery
     @createdElements = []
     @createdBindings = []
 
+  loadAssets: ->
+    obj = @assets?()
+    return WhenJS() unless obj?
+    d = WhenJS.defer()
+    # TODO: Add rejection flow
+    Crafty.load(obj, (=> d.resolve()))
+    d.promise
+
   # calls the generate method,
   # and adds a trigger in the level
   # for notifications for #enter, #inScreen

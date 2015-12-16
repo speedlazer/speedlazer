@@ -9,7 +9,7 @@ class Game.Scripts.Slider extends Game.EntityScript
       health: 200
       x: target.x
       y: target.y
-      speed: 50
+      speed: 100
     )
 
   execute: ->

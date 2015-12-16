@@ -3,6 +3,17 @@ Game.Scripts ||= {}
 
 class Game.Scripts.JumpMine extends Game.EntityScript
 
+  assets: ->
+    @loadAssets(
+      sprites:
+        'mine.png':
+          tile: 25
+          tileh: 25
+          map:
+            standardMine: [0,0]
+          paddingX: 1
+    )
+
   spawn: (options) ->
     x = if options.direction is 'right' then 720 else -80
     @target = options.grid.getLocation()
@@ -21,10 +32,14 @@ class Game.Scripts.JumpMine extends Game.EntityScript
       @parallel(
         @sequence(
           @synchronizeOn 'placed'
+          @animate('open')
+          @wait 200
           @moveTo(x: -50, speed: 35)
         )
         @sequence(
-          @wait 5000
+          @wait 4000
+          @animate('blink', -1)
+          @wait 1000
           @explosion(@location(), damage: 300, radius: 40)
           @endSequence()
         )

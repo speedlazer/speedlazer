@@ -6,7 +6,7 @@ Crafty.c 'ShipSpawnable',
   remove: ->
     @unbind('Activated', @spawnShip)
 
-  spawnPosition: (@spawnPosition, @armed = yes) ->
+  spawnPosition: (@spawnPosition, @armed = 'lasers') ->
     @spawnPosition ?= ->
       x: x
       y: y
@@ -17,6 +17,8 @@ Crafty.c 'ShipSpawnable',
     return unless @lives > 0
 
     pos = @spawnPosition()
+    pos.x = 10 if pos.x < 10
+
     @ship = Crafty.e('PlayerControlledShip')
       .attr
         x: pos.x - Crafty.viewport.x
@@ -25,7 +27,8 @@ Crafty.c 'ShipSpawnable',
 
     @ship.color(@color()) if @has('Color')
     @assignControls(@ship) if @has('ControlScheme')
-    @ship.installItem 'lasers' if armed
+
+    @ship.installItem armed if armed
 
     @listenTo @ship, 'BulletHit', ->
       @stats.shotsHit += 1
@@ -42,18 +45,18 @@ Crafty.c 'ShipSpawnable',
     # reposition it before
     @ship.start()
     @listenTo @ship, 'Hit', ->
-      hasLasers = @ship.hasItem 'lasers'
       Crafty.e('Explosion').explode(
         x: @ship.x + (@ship.w / 2)
         y: @ship.y + (@ship.h / 2)
         radius: @ship.w
       )
+      @ship.trigger('Destroyed', @ship)
       @ship.destroy()
       @ship = null
       Crafty.e('Delay').delay(
         =>
           @loseLife()
-          @spawnShip(hasLasers)
+          @spawnShip(armed)
         2000
         0
       )

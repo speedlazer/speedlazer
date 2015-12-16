@@ -4,8 +4,8 @@ Crafty.defineScene 'Game', (data = {}) ->
   # import from globals
   Game = window.Game
 
-  script = Game.Scripts.Stage1
-  #script = Game.Scripts.Lunch
+  scriptName = data?.script ? 'Stage1'
+  script = Game.Scripts[scriptName]
   level = Game.levelGenerator.createLevel script::metadata
   level.start()
 
@@ -17,8 +17,10 @@ Crafty.defineScene 'Game', (data = {}) ->
     console.log 'end of script!'
 
   Crafty.bind 'GameOver', ->
-    #console.log 'Players were at checkpoint', stage.currentCheckpoint
-    Crafty.enterScene('GameOver', checkpoint: stage.currentCheckpoint)
+    Crafty.enterScene('GameOver',
+      checkpoint: stage.currentCheckpoint
+      script: scriptName
+    )
 
 , ->
   # destructor

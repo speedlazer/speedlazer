@@ -1,13 +1,17 @@
 Crafty.c 'Explosion',
   init: ->
-    @requires '2D,Canvas,Color,Tween,Delay'
+    @requires '2D,Tween,Delay'
+
+    @explosionMode = window.Game.explosionMode
+    if @explosionMode is 'block'
+      @requires 'Canvas, Color'
 
   explode: (attr) ->
     radius = attr.radius ? 20
     @attr attr
 
     options =
-      maxParticles: 8 * attr.radius
+      maxParticles: 12 * attr.radius
       size: attr.radius
       sizeRandom: 8
       speed: (attr.radius / 13)
@@ -32,43 +36,40 @@ Crafty.c 'Explosion',
       #duration: -1
       # Will draw squares instead of circle gradients
       #fastMode: false
-      fastMode: yes
+      fastMode: no
       gravity: { x: 0, y: 0 }
       # sensible values are 0-3
       jitter: 0
 
-    #@particles options
     @attr
       w: 1
       h: 1
 
-    #@color '#FF0000'
+    if @explosionMode is 'block'
+      @color '#FF0000'
     @tween({
       x: @x - radius
       y: @y - radius
       w: @w + (radius * 2)
       h: @h + (radius * 2)
-      #alpha: 0
-      #color: '#000000'
+      alpha: 0.2
     }, 500)
     @bind 'TweenEnd', ->
       @destroy()
 
-    cleanupDelay = (options.lifeSpan + options.lifeSpanRandom) * Crafty.timer.FPS()
-    Crafty.e("2D,Canvas,Particles,Delay").attr(
-      x: @x
-      y: @y
-    ).particles(options).bind 'ParticleEnd', ->
-      # Particleend means the duration is passed.
-      # This stops new particles from emiting.
-      # But the particles are still alive for their lifetime
-      @delay((-> @destroy()), cleanupDelay)
+    if @explosionMode is 'particles'
+      options.fastMode = yes
 
-    #p = Crafty.e("2D,Canvas,Particles").attr(
-      #x: @entity.x
-      #y: @entity.y
-    #).particles(options).bind 'ParticleEnd', ->
-      #defer.resolve()
-      #@destroy()
+    if @explosionMode isnt 'block'
+      cleanupDelay = (options.lifeSpan + options.lifeSpanRandom) * Crafty.timer.FPS()
+      Crafty.e("2D,Particles,Delay").attr(
+        x: @x - (attr.radius / 2)
+        y: @y - (attr.radius / 2)
+      ).particles(options).bind 'ParticleEnd', ->
+        # Particleend means the duration is passed.
+        # This stops new particles from emiting.
+        # But the particles are still alive for their lifetime
+        @delay((-> @destroy()), cleanupDelay)
+
     this
 

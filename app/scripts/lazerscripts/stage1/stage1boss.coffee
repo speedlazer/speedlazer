@@ -1,22 +1,51 @@
 Game = @Game
 Game.Scripts ||= {}
 
-class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
+class Game.Scripts.Stage1Boss extends Game.EntityScript
+  assets: ->
+    @loadAssets(
+      sprites:
+        'large-drone.png':
+          tile: 90
+          tileh: 70
+          map:
+            standardLargeDrone: [0,0]
+            damage1LargeDrone: [1,0]
+            damage2LargeDrone: [2,0]
+            damage3LargeDrone: [3,0]
+          paddingX: 1
+        'large-drone-wing.png':
+          tile: 46
+          tileh: 21
+          map:
+            wingLoaded: [3,0]
+          paddingX: 1
+          paddingY: 1
+        'large-drone-eye.png':
+          tile: 20
+          tileh: 26
+          map:
+            eyeStart: [0,0]
+          paddingX: 1
+          paddingY: 1
+    )
+
+class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   spawn: ->
     Crafty.e('LargeDrone').drone(
-      health: 160000
       x: 680
       y: 400
       speed: 100
     )
 
   execute: ->
-    @bindSequence 'Hit', @fase2, => @entity.health < 140000
+    @bindSequence 'Hit', @fase2, => @entity.health < 150000
     @inventoryAdd 'item', 'rockets', ->
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
+      @animate 'slow', -1, 'eye'
       @disableWeapons()
       @moveTo(x: 540, y: 200)
       @say('Large Drone', 'We have control now! You will suffer!')
@@ -33,12 +62,14 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @moveTo(y: 200, speed: 5)
       @wait 200
       @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @animate 'emptyWing', 0, 'wing'
       @moveTo(y: 205, speed: 5)
+      @animate 'reload', 0, 'wing'
       @wait 200
     )
 
   fase2: ->
-    @bindSequence 'Hit', @fase3, => @entity.health < 120000
+    @bindSequence 'Hit', @fase3, => @entity.health < 135000
 
     @sequence(
       @setSpeed 50
@@ -52,11 +83,22 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     )
 
 class Game.Scripts.Stage1BossMine extends Game.EntityScript
+  assets: ->
+    @loadAssets(
+      sprites:
+        'mine.png':
+          tile: 25
+          tileh: 25
+          map:
+            standardMine: [0,0]
+          paddingX: 1
+    )
+
   spawn: (location) ->
     Crafty.e('Mine').mine(
       health: 200
       x: location().x
-      y: location().y + 30
+      y: location().y + 70
       speed: 200
     )
 
@@ -67,6 +109,9 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       @moveTo(y: 525)
       @moveTo(@targetLocation(), y: 450)
       @moveTo(@targetLocation(x: null))
+      @animate 'open'
+      @wait 200
+      @animate 'blink', -1
       @wait 1000
       @explosion(@location(), damage: yes, radius: 40)
     )
@@ -76,6 +121,17 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
 
 
 class Game.Scripts.Stage1BossRocket extends Game.EntityScript
+  assets: ->
+    @loadAssets(
+      sprites:
+        'rocket.png':
+          tile: 45
+          tileh: 15
+          map:
+            standardRocket: [0,0]
+          paddingX: 1
+    )
+
   spawn: (location) ->
     Crafty.e('Rocket').rocket(
       health: 200
@@ -93,22 +149,22 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
     @explosion(@location(), damage: 200, radius: 40)
 
 
-class Game.Scripts.Stage1BossPopup extends Game.EntityScript
-
+class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
   spawn: ->
     Crafty.e('LargeDrone').drone(
-      health: 160000
+      health: 134000
       x: 680
       y: 400
       speed: 100
     )
 
   execute: ->
-    @bindSequence 'Hit', @leaveScreen, => @entity.health < 159000
+    @bindSequence 'Hit', @leaveScreen, => @entity.health < 133000
     @inventoryAdd 'item', 'rockets', ->
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
+      @animate 'slow', -1, 'eye'
       @pickTarget('PlayerControlledShip')
       @moveTo(@targetLocation(), x: 540)
       @attackCycle()
@@ -123,9 +179,13 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
   attackCycle: ->
     @repeat @sequence(
       @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @animate 'emptyWing', 0, 'wing'
       @parallel(
-        @moveTo(@targetLocation(), x: 540)
-        @wait 1000
+        @moveTo(@targetLocation(offsetY: -20), x: 540)
+        @sequence(
+          @animate 'reload', 0, 'wing'
+          @wait 1000
+        )
       )
     )
 

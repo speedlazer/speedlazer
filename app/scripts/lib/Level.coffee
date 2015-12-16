@@ -26,12 +26,21 @@ class Game.Level
     { @namespace } = @data
     @currentScenery = @data.startScenery
 
-  setScenery: (@currentScenery) ->
-    @_setupLevelScenery()
+  setScenery: (scenery) ->
+    @_loadAssetsForScenery(scenery).then =>
+      @currentScenery = scenery
+      @_setupLevelScenery()
+
+  _loadAssetsForScenery: (scenery) ->
+    blockType = "#{@namespace}.#{scenery}"
+    blockKlass = @generator.buildingBlocks[blockType]
+    blockKlass::loadAssets().then =>
+      if next = blockKlass::autoNext
+        @_loadAssetsForScenery(next)
 
   start: (settings = {}) ->
     defaults =
-      armedPlayers: yes
+      armedPlayers: 'lasers'
       speed: 1
       controlsEnabled: yes
       weaponsEnabled: yes
@@ -44,6 +53,7 @@ class Game.Level
       viewport:
         x: 0
         y: 0
+      title: ''
 
     settings = _.defaults(settings, @data, defaults)
 
@@ -64,6 +74,17 @@ class Game.Level
       @data.enemiesSpawned += 1
 
     @_placePlayerShips settings
+
+    Crafty.e('2D, DOM, Text, HUD, LevelTitle')
+      .attr(w: 150, h: 20)
+      .positionHud(x: (640 - 150), y: 10, z: 2)
+      .textFont(
+        size: '8px'
+        family: 'Press Start 2P'
+      )
+      .textColor '#A0A0A0'
+      .text settings.title
+
     @_setupLevelScenery()
 
     Crafty.bind 'PlayerDied', =>
@@ -74,6 +95,28 @@ class Game.Level
       unless playersActive
         @stop()
         Crafty.trigger('GameOver')
+
+    Crafty.bind 'EnterFrame', @_waveTicks
+
+  _waveTicks: (fd) =>
+    @_registeredWaveTweens ?= {}
+    wt.tick(fd.dt) for n, wt of @_registeredWaveTweens
+
+  registerWaveTween: (name, duration, easing, callback) ->
+    @_registeredWaveTweens ?= {}
+    @_registeredWaveTweens[name] ?= new (class
+      constructor: ({ @name, duration, easing, @callback }) ->
+        @ease = new Crafty.easing(duration, easing)
+        @ease.repeat 3
+
+      tick: (dt) ->
+        @ease.tick(dt)
+        v = @ease.value()
+        if @ease.loops is 1
+          @ease.repeat 3
+        forward = (@ease.loops % 2) is 1
+        @callback(v, forward)
+    )({ name, duration, easing, callback })
 
   _setupLevelScenery: ->
     return unless @currentScenery?
@@ -179,6 +222,7 @@ class Game.Level
     Crafty.unbind('EnterBlock')
     Crafty.unbind('ShipSpawned')
     Crafty.unbind('ViewportScroll')
+    Crafty.unbind('EnterFrame', @_waveTicks)
     b?.clean() for b in @blocks
 
   _update: ->
@@ -237,3 +281,6 @@ class Game.Level
     @_insertBlockToLevel(blockType, {})
     @generationPosition = p
 
+
+  updateTitle: (newTitle) ->
+    Crafty('LevelTitle').text newTitle

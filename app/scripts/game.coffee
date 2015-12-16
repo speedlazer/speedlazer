@@ -10,7 +10,7 @@ Game =
     )
     # Start crafty and set a background color so that we can see it's working
     Crafty.init(640, 480)
-    Crafty.pixelart(true)
+    #Crafty.pixelart(true)
     Crafty.background('#000000')
 
     Crafty.e('Player, Color')
@@ -25,42 +25,44 @@ Game =
 
     Crafty.e('KeyboardControls, PlayerAssignable')
       .controls
-        fire: Crafty.keys.SPACE,
-        secondary: Crafty.keys.CTRL,
-        super: Crafty.keys.ENTER,
-        up: Crafty.keys.UP_ARROW,
-        down: Crafty.keys.DOWN_ARROW,
-        left: Crafty.keys.LEFT_ARROW,
+        fire: Crafty.keys.SPACE
+        secondary: Crafty.keys.PERIOD
+        super: Crafty.keys.ENTER
+        up: Crafty.keys.UP_ARROW
+        down: Crafty.keys.DOWN_ARROW
+        left: Crafty.keys.LEFT_ARROW
         right: Crafty.keys.RIGHT_ARROW
+        pause: Crafty.keys.P
 
 
     Crafty.e('KeyboardControls, PlayerAssignable')
       .controls
-        fire: Crafty.keys.G,
-        secondary: Crafty.keys.H,
-        up: Crafty.keys.W,
-        down: Crafty.keys.S,
-        left: Crafty.keys.A,
+        fire: Crafty.keys.G
+        secondary: Crafty.keys.H
+        up: Crafty.keys.W
+        down: Crafty.keys.S
+        left: Crafty.keys.A
         right: Crafty.keys.D
+        pause: Crafty.keys.Q
 
 
     Crafty.e('GamepadControls, PlayerAssignable')
       .controls
-        gamepadIndex: 0,
-        fire: 0,
-        secondary: 2,
+        gamepadIndex: 0
+        fire: 0
+        secondary: 2
         super: 4
-
+        pause: 9
 
     Crafty.e('GamepadControls, PlayerAssignable')
       .controls
-        gamepadIndex: 1,
-        fire: 0,
-        secondary: 2,
+        gamepadIndex: 1
+        fire: 0
+        secondary: 2
         super: 4
-
 
     # Simply start splashscreen
+    #Crafty.enterScene('Game', script: 'Lunch')
     Crafty.enterScene('Intro')
 
   resetCredits: ->

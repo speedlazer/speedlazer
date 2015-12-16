@@ -1,4 +1,4 @@
-Crafty.c 'WeaponLaser',
+Crafty.c 'OldWeaponLaser',
   init: ->
     @requires '2D,Canvas,Color'
     @color '#808080'
@@ -15,6 +15,7 @@ Crafty.c 'WeaponLaser',
       x: @ship.x + 10
       y: @ship.y + 15
       z: @ship.z + 1
+      alpha: 0
     @ship.attach this
 
   addXP: (amount) ->
@@ -25,7 +26,8 @@ Crafty.c 'WeaponLaser',
       @trigger 'levelUp', @level
 
   determineLevel: (xp) ->
-    levelBoundaries = [150, 600, 2400, 9600]
+    levelBoundaries = [150, 400, 1000, 2500]
+    #levelBoundaries = [15, 40, 100, 250]
     neededXP = 0
     level = 0
     for i in levelBoundaries
@@ -38,10 +40,11 @@ Crafty.c 'WeaponLaser',
   shoot: (onOff) ->
     return unless onOff
     settings = switch @level
-      when 0 then w: 6, speed: 350, h: 3
-      when 1 then w: 10, speed: 355, h: 4
-      when 2 then w: 14, speed: 360, h: 5
-      when 3 then w: 18, speed: 365, h: 5
+      when 0 then w: 3, speed: 250, h: 3
+      when 1 then w: 4, speed: 300, h: 2
+      when 2 then w: 6, speed: 300, h: 2
+      when 3 then w: 8, speed: 300, h: 5
+      when 4 then w: 10, speed: 300, h: 6
 
     Crafty.e('Bullet')
       .attr

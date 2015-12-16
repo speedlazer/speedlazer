@@ -13,9 +13,9 @@ Crafty.defineScene 'Intro', ->
     .text('Speedlazer')
     .textColor('#0000ff')
     .textFont(
-      size: '40px'
+      size: '30px'
       weight: 'bold'
-      family: 'Courier new'
+      family: 'Press Start 2P'
     ).delay ->
       @tween({ x: 250 }, 2000)
       @one('TweenEnd', ->
@@ -28,9 +28,9 @@ Crafty.defineScene 'Intro', ->
     .text('Press fire to start!')
     .textColor('#FF0000')
     .textFont(
-      size: '20px'
+      size: '10px'
       weight: 'bold'
-      family: 'Courier new'
+      family: 'Press Start 2P'
     ).delay ->
       @tween({ alpha: 0 }, 1000)
       @one 'TweenEnd', ->

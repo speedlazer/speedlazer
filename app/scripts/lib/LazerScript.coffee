@@ -9,8 +9,14 @@ class Game.LazerScript
     @startAtCheckpoint = @options.startAtCheckpoint
     @currentCheckpoint = 0
 
-    Crafty.bind 'PlayerDied', @_endScriptOnGameOver
+    loadingAssets = WhenJS(true)
+    if this?.assets?
+      loadingAssets = @assets()(@currentSequence)
 
+    loadingAssets.then => @initialize(args...)
+
+  initialize: (args...) ->
+    Crafty.bind 'PlayerDied', @_endScriptOnGameOver
     WhenJS(@execute(args...)(@currentSequence)).finally =>
       Crafty.unbind 'PlayerDied', @_endScriptOnGameOver
 
@@ -43,10 +49,10 @@ _.extend Game.LazerScript::, Game.ScriptModule.Core, Game.ScriptModule.Level, Ga
 
 class Game.EntityScript extends Game.LazerScript
 
-  run: (args...) ->
+  initialize: (args...) ->
     @boundEvents = []
+
     @entity = @spawn(args...)
-    @options = args[0] ? {}
     @synchronizer = @options.synchronizer ? new Game.Synchronizer
     @synchronizer.registerEntity(this)
 

@@ -78,16 +78,28 @@ Crafty.c 'PlayerControlledShip',
   installItem: (item) ->
     if @hasItem item
       if item is 'lasers'
-        @primaryWeapon.addXP(10)
+        @primaryWeapon.addXP(100)
       return true
     @items.push item
+    if item is 'oldlasers'
+      @primaryWeapon?.destroy()
+
+      @primaryWeapon = Crafty.e('OldWeaponLaser')
+      @primaryWeapon.install(this)
+      @listenTo @primaryWeapon, 'levelUp', (level) =>
+        @scoreText 'L +1'
+      return true
     if item is 'lasers'
+      @primaryWeapon?.destroy()
+
       @primaryWeapon = Crafty.e('WeaponLaser')
       @primaryWeapon.install(this)
       @listenTo @primaryWeapon, 'levelUp', (level) =>
         @scoreText 'L +1'
       return true
     if item is 'rockets'
+      @secondaryWeapon?.destroy()
+
       @secondaryWeapon = Crafty.e('WeaponRocket')
       @secondaryWeapon.install(this)
       @listenTo @secondaryWeapon, 'levelUp', (level) =>

@@ -1,22 +1,21 @@
 Crafty.c 'Rocket',
   init: ->
-    @requires 'Enemy, Color'
+    @requires 'Enemy, standardRocket'
 
   rocket: (attr = {}) ->
     @attr _.defaults(attr,
-      w: 45, h: 15, health: 300)
+      health: 300)
     @origin 'center'
-    @color '#F00000'
 
     options =
       maxParticles: 150
-      size: 10
-      sizeRandom: 8
-      speed: 3
+      size: 8
+      sizeRandom: 6
+      speed: 2
       speedRandom: 0.5
       # Lifespan in frames
-      lifeSpan: 19
-      lifeSpanRandom: 7
+      lifeSpan: 16
+      lifeSpanRandom: 4
       # Angle is calculated clockwise: 12pm is 0deg, 3pm is 90deg etc.
       angle: 90
       angleRandom: 10
@@ -28,20 +27,20 @@ Crafty.c 'Rocket',
       sharpness: 10
       sharpnessRandom: 10
       # Random spread from origin
-      spread: 5
+      spread: 2
       # How many frames should this last
       duration: -1
       #duration: 400 / Crafty.timer.FPS()
       # Will draw squares instead of circle gradients
       #fastMode: false
-      fastMode: yes
+      fastMode: no
       gravity: { x: 0, y: -0.12 }
       # sensible values are 0-3
       jitter: 0
 
-    @attach Crafty.e("2D,Canvas,Particles").attr(
+    @attach Crafty.e("2D,Particles").attr(
       x: @x + @w
-      y: @y
+      y: @y + 3
     ).particles(options)
 
     @enemy()

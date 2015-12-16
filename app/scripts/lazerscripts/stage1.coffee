@@ -4,7 +4,20 @@ Game.Scripts ||= {}
 class Game.Scripts.Stage1 extends Game.LazerScript
   metadata:
     namespace: 'City'
+    armedPlayers: 'lasers'
     speed: 50
+    title: 'City'
+
+  assets: ->
+    @loadAssets(
+      sprites:
+        'shadow.png':
+          tile: 35
+          tileh: 20
+          map:
+            shadow: [0,0]
+          paddingX: 1
+    )
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
@@ -13,8 +26,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
-      @setScenery('Intro')
-      @async @runScript Game.Scripts.IntroBarrel
       @sunRise()
       @introText()
       @tutorial()
@@ -33,11 +44,10 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setScenery('CoastStart')
       @underWaterAttacks()
 
-      @checkpoint @checkpointStart('CoastStart', 150000)
+      @checkpoint @checkpointStart('Coast', 150000)
 
       @mineSwarm()
-      @loadAssets images: ['city.png']
-      @setScenery('Bay')
+      @setScenery('BayStart')
       @underWaterAttacks()
       @parallel(
         @swirlAttacks()
@@ -109,6 +119,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   introText: ->
     @sequence(
+      @setScenery('Intro')
+      @async @runScript Game.Scripts.IntroBarrel
       @wait 2000 # Time for more players to activate
       @if((-> @player(1).active and !@player(2).active)
         @sequence(
@@ -136,6 +148,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   tutorial: ->
     @sequence(
+      @setScenery('Ocean')
       @say('General', 'We send some drones for target practice')
       @repeat(2, @sequence(
         @dropWeaponsForEachPlayer()

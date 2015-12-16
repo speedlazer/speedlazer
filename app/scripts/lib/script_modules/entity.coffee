@@ -58,6 +58,14 @@ Game.ScriptModule.Entity =
       @_verify(sequence)
       @entity.reveal()
 
+  animate: (reel, repeat, member) ->
+    (sequence) =>
+      @_verify(sequence)
+      if member
+        @entity[member].animate(reel, repeat)
+      else
+        @entity.animate(reel, repeat)
+
   scale: (scale, options = {}) ->
     (sequence) =>
       @_verify(sequence)
@@ -192,16 +200,27 @@ Game.ScriptModule.Entity =
           return @_moveWater(settings)
 
   _setupWaterSpot: ->
-    waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween')
-      .color('#000040')
-      .attr(
-        w: @entity.w + 10
-        x: @entity.x - 5
-        y: @entity.y
-        h: 20
-        alpha: 0.7
-        z: @entity.z - 1
-      )
+    if Game.explosionMode?
+      waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween')
+        .color('#000040')
+        .attr(
+          w: @entity.w + 10
+          x: @entity.x - 5
+          y: @entity.y
+          h: 20
+          alpha: 0.7
+          z: @entity.z - 1
+        )
+    else
+      waterSpot = Crafty.e('2D, Canvas, shadow, Choreography, Tween')
+        .attr(
+          w: @entity.w + 10
+          x: @entity.x - 5
+          y: @entity.y
+          h: 20
+          z: @entity.z - 1
+        )
+
     if @entity.has('ViewportFixed')
       waterSpot.addComponent('ViewportFixed')
     @entity.hide(waterSpot)
@@ -361,10 +380,25 @@ Game.ScriptModule.Entity =
 
   pickTarget: (selection) ->
     (sequence) =>
-      entities = Crafty(selection)
-      @target = entities.get Math.floor(Math.random() * entities.length)
+      pickTarget = (selection) ->
+        entities = Crafty(selection)
+        return null if entities.length is 0
+        entities.get Math.floor(Math.random() * entities.length)
+
+      # TODO: When this script is done, unbind events
+      refreshTarget = (ship) =>
+        @target = { x: ship.x, y: ship.y }
+        Crafty.one 'ShipSpawned', (ship) =>
+          @target = pickTarget(selection)
+          @target.one 'Destroyed', refreshTarget
+
+      @target = pickTarget(selection)
+
+      if selection is 'PlayerControlledShip'
+        @target.one 'Destroyed', refreshTarget
 
   targetLocation: (override = {}) ->
     =>
       x: (override.x ? (@target.x + Crafty.viewport.x)) + (override.offsetX ? 0)
       y: (override.y ? (@target.y + Crafty.viewport.y)) + (override.offsetY ? 0)
+
