@@ -26,9 +26,9 @@ Crafty.c 'StageEnd',
       .text "Stage #{stage} Cleared: #{title}"
       .textColor('#FFFFFF')
       .textFont({
-        size: '12px',
-        weight: 'bold',
-        family: 'Courier new'
+        size: '12px'
+        weight: 'bold'
+        family: 'Press Start 2P'
       })
     @attach c
 
@@ -176,9 +176,9 @@ Crafty.c 'StageEnd',
           .text cell
           .textColor('#FFFFFF')
           .textFont({
-            size: '12px',
-            weight: 'normal',
-            family: 'Courier new'
+            size: '8px'
+            weight: 'normal'
+            family: 'Press Start 2P'
           })
 
         if i in [2, 4] and typeof cell is 'number'

@@ -24,9 +24,9 @@
       .text(speaker)
       .textColor('#707070')
       .textFont({
-        size: '16px',
-        weight: 'bold',
-        family: 'Bank Gothic'
+        size: '10px'
+        weight: 'bold'
+        family: 'Press Start 2P'
       })
     back.attach(speakerText)
 
@@ -41,9 +41,9 @@
         .text(line)
         .textColor('#909090')
         .textFont({
-          size: '16px',
-          weight: 'bold',
-          family: 'Bank Gothic'
+          size: '10px'
+          weight: 'bold'
+          family: 'Press Start 2P'
         })
       )
 

@@ -13,9 +13,9 @@ Crafty.defineScene 'GameOver', (data) ->
     .textColor('#FF0000')
     .css('textAlign', 'center')
     .textFont({
-      size: '50px',
-      weight: 'bold',
-      family: 'Courier new'
+      size: '40px'
+      weight: 'bold'
+      family: 'Press Start 2P'
     })
 
   Crafty('Player ControlScheme').each (index) ->
@@ -25,9 +25,9 @@ Crafty.defineScene 'GameOver', (data) ->
       .textColor(@color())
       .css("textAlign", "center")
       .textFont({
-        size: '30px',
-        weight: 'bold',
-        family: 'Courier new'
+        size: '20px'
+        weight: 'bold'
+        family: 'Press Start 2P'
       })
 
   # After a timeout, be able to replay
@@ -45,9 +45,9 @@ Crafty.defineScene 'GameOver', (data) ->
         .textColor('#FF0000')
         .css("textAlign", "center")
         .textFont(
-          size: '20px',
-          weight: 'bold',
-          family: 'Courier new'
+          size: '10px'
+          weight: 'bold'
+          family: 'Press Start 2P'
         )
         .text(text)
       e = Crafty.e('2D, DOM, Text')
@@ -55,9 +55,9 @@ Crafty.defineScene 'GameOver', (data) ->
         .textColor('#FF0000')
         .css("textAlign", "center")
         .textFont(
-          size: '20px',
-          weight: 'bold',
-          family: 'Courier new'
+          size: '10px'
+          weight: 'bold'
+          family: 'Press Start 2P'
         )
       prefix = "Press fire to continue"
       e.text("#{prefix} #{"00#{time}".slice(-2)}")

@@ -26,8 +26,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
-      @setScenery('Intro')
-      @async @runScript Game.Scripts.IntroBarrel
       @sunRise()
       @introText()
       @tutorial()
@@ -121,6 +119,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   introText: ->
     @sequence(
+      @setScenery('Intro')
+      @async @runScript Game.Scripts.IntroBarrel
       @wait 2000 # Time for more players to activate
       @if((-> @player(1).active and !@player(2).active)
         @sequence(
@@ -148,6 +148,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   tutorial: ->
     @sequence(
+      @setScenery('Ocean')
       @say('General', 'We send some drones for target practice')
       @repeat(2, @sequence(
         @dropWeaponsForEachPlayer()

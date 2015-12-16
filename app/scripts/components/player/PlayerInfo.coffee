@@ -8,8 +8,8 @@ Crafty.c 'PlayerInfo',
       .attr(w: 150, h: 20)
       .positionHud(x: x, y: 10, z: 2)
       .textFont(
-        size: '12px'
-        family: 'Bank Gothic'
+        size: '8px'
+        family: 'Press Start 2P'
       )
     if @player.has('Color')
       @score.textColor @player.color()
@@ -18,8 +18,8 @@ Crafty.c 'PlayerInfo',
       .attr(w: 180, h: 20)
       .positionHud(x: x, y: 25, z: 2)
       .textFont(
-        size: '12px'
-        family: 'Bank Gothic'
+        size: '8px'
+        family: 'Press Start 2P'
       )
     if @player.has('Color')
       @lives.textColor player.color()

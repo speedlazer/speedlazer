@@ -79,8 +79,8 @@ class Game.Level
       .attr(w: 150, h: 20)
       .positionHud(x: (640 - 150), y: 10, z: 2)
       .textFont(
-        size: '12px'
-        family: 'Bank Gothic'
+        size: '8px'
+        family: 'Press Start 2P'
       )
       .textColor '#A0A0A0'
       .text settings.title
