@@ -10,6 +10,27 @@ require('scripts/compiled/scenes');
 
 window.Game.start(false);
 
+function scaleGame() {
+  var stageHeight = $('#cr-stage').height(),
+    stageWidth = $('#cr-stage').width(),
+    viewportHeight = $(window).height(),
+    viewportWidth = $(window).width();
+
+  if (!$('body').is('.fullscreen')) {
+    viewportWidth = viewportWidth - 210;
+  }
+
+  var ratioY = viewportHeight / stageHeight;
+  var ratioX = viewportWidth / stageWidth;
+  var ratio = Math.min(ratioY, ratioX);
+
+  $('#cr-stage').css('transform', 'scale('+ratio+')');
+}
+
+$(window).on('resize', function() {
+  scaleGame();
+});
+
 // Handle the fullscreen button
 $(document).on('click', '#cr-stage', function () {
   if (screenfull.enabled) {
@@ -24,28 +45,6 @@ $(document).on('click', '#cr-stage', function () {
       }
     });
   }
-});
-
-
-function scaleGame() {
-  var stageHeight = $('#cr-stage').height(),
-    stageWidth = $('#cr-stage').width(),
-    viewportHeight = $(window).height(),
-    viewportWidth = $(window).width();
-
- if (!$('body').is('.fullscreen')) {
-   viewportWidth = viewportWidth - 210;
- }
-
- var ratioY = viewportHeight / stageHeight;
- var ratioX = viewportWidth / stageWidth;
- var ratio = Math.min(ratioY, ratioX);
-
-  $('#cr-stage').css('transform', 'scale('+ratio+')');
-}
-
-$(window).on('resize', function() {
-  scaleGame();
 });
 
 scaleGame();
