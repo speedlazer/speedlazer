@@ -20,12 +20,13 @@ html {
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
 
-  margin: 0 auto 0 0;
   transform-origin: top left;
 }
 section#help {
-  width: 20em;
-  float: right;
+  width: 200px;
+  position: absolute;
+  top: 0;
+  right: 0;
   color: #666;
   text-align: right;
   padding: 1em;
@@ -36,7 +37,7 @@ a {
 dt {
   color: #999;
 }
-.fullscreen #cr-stage {
-  transform-origin: center center;
-  margin: 0 auto;
+.fullscreen #theater {
+  position: absolute;
+  top: 0;
 }

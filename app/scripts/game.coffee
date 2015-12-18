@@ -9,7 +9,8 @@ Game =
       images: 'images/'
     )
     # Start crafty and set a background color so that we can see it's working
-    Crafty.init(640, 480)
+    Crafty.init(640, 480, $('#cr-stage')[0])
+    #Crafty.init(1024, 576, $('#cr-stage')[0]) # PAL+
     #Crafty.pixelart(true)
     Crafty.background('#000000')
 
