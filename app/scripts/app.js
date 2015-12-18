@@ -13,12 +13,14 @@ window.Game.start(false);
 // Handle the fullscreen button
 $(document).on('click', '#cr-stage', function () {
   if (screenfull.enabled) {
-    screenfull.request($('#cr-stage')[0]);
+    screenfull.request($('#theater')[0]);
     $('body').addClass('fullscreen');
+    scaleGame();
     document.addEventListener(screenfull.raw.fullscreenchange, function () {
       if (!screenfull.isFullscreen) {
         // exit fullscreen code here
         $('body').removeClass('fullscreen');
+        scaleGame();
       }
     });
   }
@@ -27,11 +29,21 @@ $(document).on('click', '#cr-stage', function () {
 
 function scaleGame() {
   var stageHeight = $('#cr-stage').height(),
+    stageWidth = $('#cr-stage').width(),
     viewportHeight = $(window).height(),
-    ratio = viewportHeight / stageHeight;
+    viewportWidth = $(window).width();
+
+ if (!$('body').is('.fullscreen')) {
+   viewportWidth = viewportWidth - 210;
+ }
+
+ var ratioY = viewportHeight / stageHeight;
+ var ratioX = viewportWidth / stageWidth;
+ var ratio = Math.min(ratioY, ratioX);
 
   $('#cr-stage').css('transform', 'scale('+ratio+')');
 }
+
 $(window).on('resize', function() {
   scaleGame();
 });
