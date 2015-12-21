@@ -18,7 +18,7 @@ class Game.Level
 
   constructor: (@generator, @data = {}) ->
     @blocks = []
-    @bufferLength = 640 * 3
+    @bufferLength = Crafty.viewport.width * 3
     @generationPosition = x: 0, y: 40
     @sceneryEvents = []
     @visibleHeight = 480 - @generationPosition.y
