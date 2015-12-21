@@ -20,7 +20,7 @@ class Game.Scripts.IntroBarrel extends Game.EntityScript
 
   knockedOff: ->
     @parallel(
-      @moveTo y: 600
+      @moveTo y: 1.25
       @rotate 90, 1500
     )
 
