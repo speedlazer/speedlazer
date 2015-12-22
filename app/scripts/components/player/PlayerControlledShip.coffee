@@ -92,7 +92,7 @@ Crafty.c 'PlayerControlledShip',
     if item is 'lasers'
       @primaryWeapon?.destroy()
 
-      @primaryWeapon = Crafty.e('WeaponLaser')
+      @primaryWeapon = Crafty.e('RapidWeaponLaser')
       @primaryWeapon.install(this)
       @listenTo @primaryWeapon, 'levelUp', (level) =>
         @scoreText 'L +1'
