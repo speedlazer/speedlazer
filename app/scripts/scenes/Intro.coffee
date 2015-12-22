@@ -14,7 +14,7 @@ Crafty.defineScene 'Intro', ->
   offset = .15
 
   Crafty.e('2D, DOM, Text, Tween, Delay')
-    .attr(x: w * (.5 - offset), y: h * .4, w: 450)
+    .attr(x: w * (.5 - offset), y: h * .4, w: 400)
     .text('Speedlazer')
     .textColor('#0000ff')
     .textFont(
@@ -22,7 +22,7 @@ Crafty.defineScene 'Intro', ->
       weight: 'bold'
       family: 'Press Start 2P'
     ).delay ->
-      @tween({ x: (w * (.5 + offset)) - 450  }, 2000)
+      @tween({ x: (w * (.5 + offset)) - 400  }, 2000)
       @one('TweenEnd', ->
         @tween({ x: w * (.5 - offset) }, 2000)
       )
