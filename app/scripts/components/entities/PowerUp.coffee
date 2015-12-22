@@ -1,6 +1,6 @@
 Crafty.c 'PowerUp',
   init: ->
-    @requires '2D,Canvas,Color'
+    @requires '2D,WebGL,Color'
     @color '#20FF20'
     @attr
       w: 20
