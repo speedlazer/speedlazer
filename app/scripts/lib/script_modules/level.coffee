@@ -55,13 +55,13 @@ Game.ScriptModule.Level =
       if scripts[0]?.assets?
         loadingAssets = scripts[0].assets()(sequence)
 
-      promises = (for script, i in scripts
-        do (script, i) =>
-          @wait(i * settings.delay)(sequence).then =>
-            @_verify(sequence)
-            script.run(settings.options)
-      )
       loadingAssets.then =>
+        promises = (for script, i in scripts
+          do (script, i) =>
+            @wait(i * settings.delay)(sequence).then =>
+              @_verify(sequence)
+              script.run(settings.options)
+        )
         WhenJS.all(promises).then (results) =>
           allKilled = yes
           lastLocation = null

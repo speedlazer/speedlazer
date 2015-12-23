@@ -290,7 +290,7 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
 
   assets: ->
-    images: ['horizon-city.png']
+    images: ['horizon-city.png', 'water-horizon.png']
     sprites:
       'water.png':
         tile: 200
@@ -336,7 +336,7 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
 
   assets: ->
-    images: ['horizon-city.png', 'city.png', 'city-layer2.png']
+    images: ['horizon-city.png', 'water-horizon.png', 'city.png', 'city-layer2.png']
     sprites:
       'water-front.png':
         tile: 400
@@ -396,7 +396,9 @@ generator.defineBlock class extends @Game.LevelScenery
   delta:
     x: 800
     y: 0
-  next: ['City.Skyline']
+
+  assets: ->
+    images: ['water-horizon.png', 'horizon-city.png', 'city.png', 'city-layer2.png']
 
   generate: ->
     super
