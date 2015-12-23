@@ -77,9 +77,9 @@ class Game.Level
 
     Crafty.e('2D, DOM, Text, HUD, LevelTitle')
       .attr(w: 150, h: 20)
-      .positionHud(x: (640 - 150), y: 10, z: 2)
+      .positionHud(x: (Crafty.viewport.width - 150), y: 10, z: 2)
       .textFont(
-        size: '8px'
+        size: '10px'
         family: 'Press Start 2P'
       )
       .textColor '#A0A0A0'
@@ -177,7 +177,7 @@ class Game.Level
 
       @addComponent('ShipSpawnable').spawnPosition(spawnPosition, settings.armedPlayers)
 
-      Crafty.e('PlayerInfo').playerInfo(30 + (index * 180), this)
+      Crafty.e('PlayerInfo').playerInfo(30 + (index * (Crafty.viewport.width * .3)), this)
 
     Crafty.bind 'ShipSpawned', (ship) =>
       ship.forcedSpeed @_forcedSpeed
