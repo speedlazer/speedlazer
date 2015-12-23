@@ -21,7 +21,7 @@ class Game.Level
     @bufferLength = Crafty.viewport.width * 3
     @generationPosition = x: 0, y: 40
     @sceneryEvents = []
-    @visibleHeight = 480 - @generationPosition.y
+    @visibleHeight = Crafty.viewport.height - @generationPosition.y
 
     { @namespace } = @data
     @currentScenery = @data.startScenery

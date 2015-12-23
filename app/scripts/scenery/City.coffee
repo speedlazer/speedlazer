@@ -9,10 +9,10 @@ generator.defineElement 'cloud', ->
   @addBackground(300, y, Crafty.e('2D, WebGL, Color').color('#FFFFFF').attr(z: -200, w: 70, h: 20, alpha: 0.3), .35)
 
 generator.defineElement 'waterHorizon', ->
-  @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, WebGL, Image').image('images/water-horizon.png').attr(z: -600), .25)
+  @addBackground(0, @level.visibleHeight - 175, Crafty.e('2D, WebGL, Image').image('images/water-horizon.png').attr(z: -600), .25)
 
   goldenStripe = Crafty.e('2D, WebGL, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
-  @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
+  @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
 
 generator.defineElement 'water', ->
   @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, water1').attr(z: -500), .5)
@@ -21,7 +21,7 @@ generator.defineElement 'water', ->
   water2.originalX = water2.x
 
   @level.registerWaveTween 'OceanWavesDistance', 5000, 'easeInOutQuad', (v, forward) ->
-    distance = 10
+    distance = 20
     width = 200
     Crafty('water1').each ->
       if forward
@@ -80,10 +80,10 @@ generator.defineElement 'cityHorizon', (mode) ->
   @addElement 'waterHorizon'
   if mode is 'start'
     e = Crafty.e('2D, WebGL, Image').image('images/horizon-city-start.png').attr(z: -598)
-    @addBackground(0, @level.visibleHeight - 157, e, .25)
+    @addBackground(0, @level.visibleHeight - 177, e, .25)
   else
     e = Crafty.e('2D, WebGL, Image').image('images/horizon-city.png').attr(z: -598)
-    @addBackground(0, @level.visibleHeight - 157, e, .25)
+    @addBackground(0, @level.visibleHeight - 177, e, .25)
 
 generator.defineElement 'city', ->
   #col3 = '#66667D'
@@ -92,7 +92,7 @@ generator.defineElement 'city', ->
   bg =Crafty.e('2D, WebGL, Image, Collision')
     .image('images/city-layer2.png').attr(z: -400)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
-  @addBackground(0, @level.visibleHeight - 57 - 220, bg, .37)
+  @addBackground(0, @level.visibleHeight - 57 - 240, bg, .37)
 
   e = Crafty.e('2D, WebGL, Image, Collision').image('images/city.png').attr(z: -305)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
@@ -108,7 +108,7 @@ generator.defineElement 'city-bridge', ->
   bg =Crafty.e('2D, WebGL, Image, Collision')
     .image('images/city-layer2.png').attr(z: -400)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
-  @addBackground(0, @level.visibleHeight - 57 - 220, bg, .37)
+  @addBackground(0, @level.visibleHeight - 57 - 240, bg, .37)
 
   e = Crafty.e('2D, WebGL, Image, Collision').image('images/city-bridge.png').attr(z: -305)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
@@ -160,7 +160,7 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'water'
     @addElement 'waterHorizon'
 
-    @addBackground(0, @level.visibleHeight + 30, Crafty.e('2D, WebGL, Color').color('#000040').attr(z: 3, w: ((@delta.x + 300)) + 1, h: 185), 1.25)
+    @addBackground(0, @level.visibleHeight + 30, Crafty.e('2D, WebGL, Color').color('#000040').attr(z: 3, w: ((@delta.x + Crafty.viewport.width * .5)) + 1, h: 185), 1.25)
 
     @addElement 'cloud'
 
@@ -215,7 +215,7 @@ generator.defineBlock class extends @Game.LevelScenery
       return unless index is 0
       leadAnimated = this
       @addComponent 'Choreography'
-      @attr x: 360 - (50 * index), y: 380
+      @attr x: 360 - (50 * index), y: Crafty.viewport.height - 100
       @disableControl()
       @weaponsEnabled = no
       @choreography c

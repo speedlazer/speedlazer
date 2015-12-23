@@ -76,6 +76,7 @@ Crafty.c 'Sun',
       continue if o.obj is this
       continue if o.obj.has 'Glare'
       continue if o.obj.has 'HUD'
+      continue if o.obj.has 'IgnoreSun'
       e = o.obj
       if o.type is 'SAT'
         covered.push ((o.overlap * -1) / 50) * sunArea
@@ -113,7 +114,7 @@ Crafty.c 'Sun',
           y: @y - (2 * @h)
 
     # For sunrise / set on water
-    horizonDistance = (480 - 155) - (Crafty.viewport._y) - @y
+    horizonDistance = (Crafty.viewport.height - 155) - (Crafty.viewport._y) - @y
 
     size = 20.0 + (15.0 * (Math.min(Math.max(horizonDistance, 0), 150.0) / 150.0))
     @w = size

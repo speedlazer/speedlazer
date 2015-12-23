@@ -28,7 +28,7 @@ class Game.Scripts.SunRise extends Game.EntityScript
       Crafty.e('Sun, KeepAlive')
         .sun(
           x: Crafty.viewport.width * .97
-          y: Crafty.viewport.height * .71
+          y: Crafty.viewport.height * .85
           speed: options.speed ? 2
         )
 
@@ -37,7 +37,7 @@ class Game.Scripts.SunRise extends Game.EntityScript
     preColor = (100000 / speed)
     colorDuration = (600000 / speed)
     @sequence(
-      @setLocation x: .97, y: .71
+      @setLocation x: .97, y: .85
       @backgroundColorFade duration: preColor, skip: @options.skipTo, '#000020', '#402020'
       @parallel(
         @backgroundColorFade duration: colorDuration, skip: (@options.skipTo - preColor), '#402020', '#7070CC', '#8080FF'

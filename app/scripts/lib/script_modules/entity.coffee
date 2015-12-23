@@ -181,10 +181,12 @@ Game.ScriptModule.Entity =
       settings = location?() ? location
       _.extend(settings, extraSettings)
 
-      if settings.x? and (@_isFloat(settings.x) or (-1 < settings.x < 2))
+      #if settings.x? and (@_isFloat(settings.x) or (-1 < settings.x < 2))
+      if settings.x? and (-1 < settings.x < 2)
           settings.x *= Crafty.viewport.width
 
-      if settings.y? and (@_isFloat(settings.y) or (-1 < settings.y < 2))
+      #if settings.y? and (@_isFloat(settings.y) or (-1 < settings.y < 2))
+      if settings.y? and (-1 < settings.y < 2)
           settings.y *= Crafty.viewport.height
 
       seaLevel = @_getSeaLevel()
@@ -321,7 +323,7 @@ Game.ScriptModule.Entity =
     defer.promise
 
   _getSeaLevel: ->
-    220 + (220 * (@entity.scale ? 1.0))
+    (Crafty.viewport.height - 260) + (220 * (@entity.scale ? 1.0))
 
   _moveAir: (settings) ->
     defaults =
