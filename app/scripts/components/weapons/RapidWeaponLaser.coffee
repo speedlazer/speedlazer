@@ -34,9 +34,9 @@ Crafty.c 'RapidWeaponLaser',
     if level isnt @level
       @cooldown = switch @level
         when 0 then 200
-        when 1 then 175
-        when 2 then 150
-        when 3 then 125
+        when 1 then 150
+        when 2 then 100
+        when 3 then 50
       @trigger 'levelUp', @level
 
   determineLevel: (xp) ->
@@ -74,10 +74,10 @@ Crafty.c 'RapidWeaponLaser',
 
   _createFrontBullet: ->
     settings = switch @level
-      when 0 then w: 6, speed: 350, h: 3
-      when 1 then w: 10, speed: 355, h: 4
-      when 2 then w: 14, speed: 360, h: 5
-      when 3 then w: 18, speed: 365, h: 5
+      when 0 then w: 6, speed: 550, h: 4
+      when 1 then w: 10, speed: 555, h: 4
+      when 2 then w: 14, speed: 560, h: 4
+      when 3 then w: 18, speed: 565, h: 4
 
     Crafty.e('Bullet')
       .attr
@@ -99,10 +99,10 @@ Crafty.c 'RapidWeaponLaser',
 
   _createBackBullet: ->
     settings = switch @level
-      when 0 then w: 5, speed: 350, h: 3
-      when 1 then w: 8, speed: 355, h: 3
-      when 2 then w: 10, speed: 360, h: 4
-      when 3 then w: 14, speed: 365, h: 4
+      when 0 then w: 5, speed: 550, h: 3
+      when 1 then w: 8, speed: 555, h: 3
+      when 2 then w: 10, speed: 560, h: 3
+      when 3 then w: 14, speed: 565, h: 3
 
     Crafty.e('Bullet')
       .attr
