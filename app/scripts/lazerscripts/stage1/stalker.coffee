@@ -6,8 +6,8 @@ class Game.Scripts.Stalker extends Game.EntityScript
   spawn: ->
     Crafty.e('Drone').drone(
       health: 100
-      x: 680
-      y: 400
+      x: Crafty.viewport.width + 40
+      y: Crafty.viewport.height * .83
       speed: 600
     )
 
@@ -15,18 +15,18 @@ class Game.Scripts.Stalker extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @pickTarget('PlayerControlledShip')
-      @moveTo(x: 680, y: 450)
+      @moveTo(x: 1.1, y: 1.01)
       @repeat(10, @sequence(
-        @moveTo(@targetLocation(), y: 450, speed: 200)
+        @moveTo(@targetLocation(), y: 1.01, speed: 200)
         @wait 100
       ))
-      @moveTo(y: 340, speed: 200)
+      @moveTo(y: .7, speed: 200)
 
       # Wobble once before moving up
       @wait 100
-      @moveTo(y: 350, speed: 100)
+      @moveTo(y: .73, speed: 100)
       @wait 100
-      @moveTo(y: 340, speed: 100)
+      @moveTo(y: .7, speed: 100)
 
       @moveTo(y: -50)
     )

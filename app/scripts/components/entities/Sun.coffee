@@ -1,12 +1,12 @@
 Crafty.c 'Sun',
   init: ->
-    @requires '2D, Canvas, Collision, Choreography, ViewportFixed, sun'
+    @requires '2D, WebGL, Collision, Choreography, ViewportFixed, sun'
 
     @attr(w: 20, h: 20, z: -1000)
 
     @origin 'center'
     @glare = []
-    directGlare = Crafty.e('2D, Canvas, Glare, directGlare')
+    directGlare = Crafty.e('2D, WebGL, Glare, directGlare')
       .attr
         w: @w * 3
         h: @h * 3
@@ -18,7 +18,7 @@ Crafty.c 'Sun',
     @attach directGlare
     @glare.push directGlare
 
-    blueGlare = Crafty.e('2D, Canvas, Glare, blueGlare')
+    blueGlare = Crafty.e('2D, WebGL, Glare, blueGlare')
       .attr
         mirrored: yes
         w: 80
@@ -32,7 +32,7 @@ Crafty.c 'Sun',
     @attach blueGlare
     @glare.push blueGlare
 
-    redGlare = Crafty.e('2D, Canvas, Glare, redGlare')
+    redGlare = Crafty.e('2D, WebGL, Glare, redGlare')
       .attr
         mirrored: yes
         w: 10
@@ -46,7 +46,7 @@ Crafty.c 'Sun',
     @attach redGlare
     @glare.push redGlare
 
-    bigGlare = Crafty.e('2D, Canvas, Glare, bigGlare')
+    bigGlare = Crafty.e('2D, WebGL, Glare, bigGlare')
       .attr
         mirrored: yes
         w: 200
@@ -76,6 +76,7 @@ Crafty.c 'Sun',
       continue if o.obj is this
       continue if o.obj.has 'Glare'
       continue if o.obj.has 'HUD'
+      continue if o.obj.has 'IgnoreSun'
       e = o.obj
       if o.type is 'SAT'
         covered.push ((o.overlap * -1) / 50) * sunArea
@@ -113,7 +114,7 @@ Crafty.c 'Sun',
           y: @y - (2 * @h)
 
     # For sunrise / set on water
-    horizonDistance = (480 - 155) - (Crafty.viewport._y) - @y
+    horizonDistance = (Crafty.viewport.height - 155) - (Crafty.viewport._y) - @y
 
     size = 20.0 + (15.0 * (Math.min(Math.max(horizonDistance, 0), 150.0) / 150.0))
     @w = size
@@ -128,10 +129,10 @@ Crafty.c 'Sun',
         @attr
           alpha: 1.0
           h: 1
-      else if horizonDistance < 40
+      else if horizonDistance < 60
         @attr
-          alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 40.0) / 40.0)
-          h: Math.abs(Math.min(horizonDistance / 2.0, 20.0))
+          alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 60.0) / 60.0)
+          h: Math.abs(Math.min(horizonDistance / 2.0, 40.0))
       else
         @attr
           alpha: 0

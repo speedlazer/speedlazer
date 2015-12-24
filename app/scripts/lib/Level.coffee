@@ -18,10 +18,10 @@ class Game.Level
 
   constructor: (@generator, @data = {}) ->
     @blocks = []
-    @bufferLength = 640 * 3
+    @bufferLength = Crafty.viewport.width * 3
     @generationPosition = x: 0, y: 40
     @sceneryEvents = []
-    @visibleHeight = 480 - @generationPosition.y
+    @visibleHeight = Crafty.viewport.height - @generationPosition.y
 
     { @namespace } = @data
     @currentScenery = @data.startScenery
@@ -37,6 +37,8 @@ class Game.Level
     blockKlass::loadAssets().then =>
       if next = blockKlass::autoNext
         @_loadAssetsForScenery(next)
+      if prev = blockKlass::autoPrevious
+        @_loadAssetsForScenery(prev)
 
   start: (settings = {}) ->
     defaults =
@@ -77,9 +79,9 @@ class Game.Level
 
     Crafty.e('2D, DOM, Text, HUD, LevelTitle')
       .attr(w: 150, h: 20)
-      .positionHud(x: (640 - 150), y: 10, z: 2)
+      .positionHud(x: (Crafty.viewport.width - 150), y: 10, z: 2)
       .textFont(
-        size: '8px'
+        size: '10px'
         family: 'Press Start 2P'
       )
       .textColor '#A0A0A0'
@@ -177,7 +179,7 @@ class Game.Level
 
       @addComponent('ShipSpawnable').spawnPosition(spawnPosition, settings.armedPlayers)
 
-      Crafty.e('PlayerInfo').playerInfo(30 + (index * 180), this)
+      Crafty.e('PlayerInfo').playerInfo(30 + (index * (Crafty.viewport.width * .3)), this)
 
     Crafty.bind 'ShipSpawned', (ship) =>
       ship.forcedSpeed @_forcedSpeed
@@ -274,6 +276,8 @@ class Game.Level
     blockKlass = @generator.buildingBlocks[blockType]
     if next = blockKlass::autoNext
       blockType = "#{@namespace}.#{next}"
+    if prev = blockKlass::autoPrevious
+      blockType = "#{@namespace}.#{prev}"
 
     p = _.clone @generationPosition
     @_insertBlockToLevel(blockType, {})

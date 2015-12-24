@@ -34,8 +34,10 @@ class Game.LevelScenery
     obj = @assets?()
     return WhenJS() unless obj?
     d = WhenJS.defer()
-    # TODO: Add rejection flow
-    Crafty.load(obj, (=> d.resolve()))
+    # TODO: Add rejection flow for failing images.
+    # Now it reports images as error when they are not
+    # loaded because they where already loaded before.
+    Crafty.load(obj, (=> d.resolve())) #, null, ((e) => d.reject(new Error(JSON.stringify(e)))))
     d.promise
 
   # calls the generate method,
@@ -53,7 +55,7 @@ class Game.LevelScenery
 
   _notifyEnterFunction: -> #(index) ->
     block = this
-    Crafty.e('2D, Collision')
+    Crafty.e('2D, IgnoreSun, Collision')
       .attr({ x: @x, y: @y, w: 10, h: 800 })
       #.color('#FF00FF')
       .onHit 'ScrollFront', ->

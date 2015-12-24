@@ -8,21 +8,21 @@ Crafty.c 'ShootOnSight',
   _checkForShot: (fd) ->
     if @lastShotAt?
       @lastShotAt += fd.dt
-      return if @lastShotAt < 1000
+      return if @lastShotAt < 800
     self = this
     Crafty('PlayerControlledShip').each ->
       angle = Math.atan2(self.y - @y, self.x - @x)
       angle *= 180 / Math.PI
-      self._shoot(angle + 180) if Math.abs(angle - self.rotation) < 0.5
+      self._shoot(angle + 180) if Math.abs(angle - self.rotation) < 10
 
   _shoot: (angle) ->
     return if @hidden
     @lastShotAt = 0
-    Crafty.e('2D, Canvas, Enemy, Color, ViewportFixed').attr(
+    Crafty.e('2D, WebGL, Enemy, Color, ViewportFixed').attr(
       x: @x
       y: @y
-      w: 4
-      h: 4
+      w: 6
+      h: 6
       speed: 250
       rotation: angle
     ).color('#FFFF00').bind('EnterFrame', (fd) ->

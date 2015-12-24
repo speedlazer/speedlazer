@@ -7,20 +7,23 @@ Crafty.defineScene 'GameOver', (data) ->
   Crafty.viewport.x = 0
   Crafty.viewport.y = 0
 
+  w = Crafty.viewport.width
+  h = Crafty.viewport.height
+
   Crafty.e('2D, DOM, Text')
-    .attr(x: 0, y: 110, w: 640)
+    .attr(x: 0, y: h * .2, w: w)
     .text('Game Over')
     .textColor('#FF0000')
     .css('textAlign', 'center')
     .textFont({
-      size: '40px'
+      size: '50px'
       weight: 'bold'
       family: 'Press Start 2P'
     })
 
   Crafty('Player ControlScheme').each (index) ->
     Crafty.e('2D, DOM, Text')
-      .attr(x: 0, y: 200 + (index * 30), w: 640)
+      .attr(x: 0, y: (h * .45) + (index * 45), w: w)
       .text(@name + ': ' + @points)
       .textColor(@color())
       .css("textAlign", "center")
@@ -41,21 +44,21 @@ Crafty.defineScene 'GameOver', (data) ->
         "#{Game.credits} Credits left"
 
       Crafty.e('2D, DOM, Text')
-        .attr(x: 0, y: 320, w: 640)
+        .attr(x: 0, y: h * .7, w: w)
         .textColor('#FF0000')
         .css("textAlign", "center")
         .textFont(
-          size: '10px'
+          size: '15px'
           weight: 'bold'
           family: 'Press Start 2P'
         )
         .text(text)
       e = Crafty.e('2D, DOM, Text')
-        .attr(x: 0, y: 350, w: 640)
+        .attr(x: 0, y: (h * .7) + 30, w: w)
         .textColor('#FF0000')
         .css("textAlign", "center")
         .textFont(
-          size: '10px'
+          size: '15px'
           weight: 'bold'
           family: 'Press Start 2P'
         )

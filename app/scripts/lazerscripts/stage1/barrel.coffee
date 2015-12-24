@@ -4,7 +4,7 @@ Game.Scripts ||= {}
 class Game.Scripts.IntroBarrel extends Game.EntityScript
 
   spawn: ->
-    Crafty.e('2D, Canvas, Tween, Color, Collision, Choreography, Hideable')
+    Crafty.e('2D, WebGL, Tween, Color, Collision, Choreography, Hideable')
       .color('#606000')
       .attr({ z: 3, w: 10, h: 15, speed: 150 })
       .onHit 'PlayerControlledShip', ->
@@ -20,7 +20,7 @@ class Game.Scripts.IntroBarrel extends Game.EntityScript
 
   knockedOff: ->
     @parallel(
-      @moveTo y: 600
+      @moveTo y: 1.25
       @rotate 90, 1500
     )
 

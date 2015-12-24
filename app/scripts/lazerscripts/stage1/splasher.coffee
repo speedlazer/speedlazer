@@ -6,8 +6,8 @@ class Game.Scripts.Splasher extends Game.EntityScript
   spawn: ->
     Crafty.e('Drone').drone(
       health: 200
-      x: 680
-      y: 400
+      x: Crafty.viewport.width + 40
+      y: Crafty.viewport.height * .83
       speed: 300
     )
 
@@ -15,9 +15,9 @@ class Game.Scripts.Splasher extends Game.EntityScript
     @sequence(
       @sendToBackground(0.75, -200)
       @movePath [
-        [620, 270]
-        [420, 350]
+        [.96, .56]
+        [.656, .73]
       ]
-      @moveTo y: 600, speed: 100
+      @moveTo y: 1.25, speed: 100
     )
 

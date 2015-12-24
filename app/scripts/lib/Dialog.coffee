@@ -9,7 +9,7 @@
     x = 60
     defer = WhenJS.defer()
 
-    back = Crafty.e('2D, Canvas, Color, Tween, HUD, Dialog')
+    back = Crafty.e('2D, WebGL, Color, Tween, HUD, Dialog')
       .attr(w: 570, h: ((lines.length + 2) * 20), alpha: 0.5)
       .color('#000000')
       .positionHud(

@@ -34,8 +34,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   spawn: ->
     Crafty.e('LargeDrone').drone(
-      x: 680
-      y: 400
+      x: Crafty.viewport.width + 40
+      y: Crafty.viewport.height * .83
       speed: 100
     )
 
@@ -47,25 +47,29 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     @sequence(
       @animate 'slow', -1, 'eye'
       @disableWeapons()
-      @moveTo(x: 540, y: 200)
+      @moveTo(x: .85, y: .41)
       @say('Large Drone', 'We have control now! You will suffer!')
       @say('Large Drone', 'Earths defences are in our hands!')
       @wait 500
       @enableWeapons()
-      @moveTo(y: 205, speed: 5)
+      @moveTo(y: .43, speed: 5)
       @attackCycle()
     )
 
   attackCycle: ->
     @repeat @sequence(
       @async @runScript(Game.Scripts.Stage1BossMine, @location())
-      @moveTo(y: 200, speed: 5)
+      @moveTo(y: .41, speed: 5)
       @wait 200
       @async @runScript(Game.Scripts.Stage1BossRocket, @location())
       @animate 'emptyWing', 0, 'wing'
-      @moveTo(y: 205, speed: 5)
       @animate 'reload', 0, 'wing'
+      @async @runScript(Game.Scripts.Stage1BossMine, @location())
+      @moveTo(y: .43, speed: 5)
+      @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @animate 'emptyWing', 0, 'wing'
       @wait 200
+      @animate 'reload', 0, 'wing'
     )
 
   fase2: ->
@@ -79,7 +83,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
   fase3: ->
     @sequence(
       @drop(location: @location(), item: 'rockets')
-      @moveTo(x: 740, y: 100, speed: 100)
+      @moveTo(x: 1.15, y: .21, speed: 100)
     )
 
 class Game.Scripts.Stage1BossMine extends Game.EntityScript
@@ -106,8 +110,8 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @pickTarget('PlayerControlledShip')
-      @moveTo(y: 525)
-      @moveTo(@targetLocation(), y: 450)
+      @moveTo(y: 1.1)
+      @moveTo(@targetLocation(), y: 1.01)
       @moveTo(@targetLocation(x: null))
       @animate 'open'
       @wait 200
@@ -134,10 +138,10 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
 
   spawn: (location) ->
     Crafty.e('Rocket').rocket(
-      health: 200
+      health: 250
       x: location().x - 30
       y: location().y - 5 + Math.round(Math.random() * 10)
-      speed: 400
+      speed: 600
     )
 
   execute: ->
@@ -153,8 +157,8 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
   spawn: ->
     Crafty.e('LargeDrone').drone(
       health: 134000
-      x: 680
-      y: 400
+      x: Crafty.viewport.width + 40
+      y: Crafty.viewport.height * .83
       speed: 100
     )
 
@@ -166,14 +170,14 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
     @sequence(
       @animate 'slow', -1, 'eye'
       @pickTarget('PlayerControlledShip')
-      @moveTo(@targetLocation(), x: 540)
+      @moveTo(@targetLocation(), x: .845)
       @attackCycle()
     )
 
   leaveScreen: ->
     @sequence(
       @drop(location: @location(), item: 'rockets')
-      @moveTo(x: 740, speed: 100)
+      @moveTo(x: 1.15, speed: 100)
     )
 
   attackCycle: ->
@@ -181,7 +185,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
       @async @runScript(Game.Scripts.Stage1BossRocket, @location())
       @animate 'emptyWing', 0, 'wing'
       @parallel(
-        @moveTo(@targetLocation(offsetY: -20), x: 540)
+        @moveTo(@targetLocation(offsetY: -20), x: .845)
         @sequence(
           @animate 'reload', 0, 'wing'
           @wait 1000

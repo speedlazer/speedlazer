@@ -44,7 +44,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setScenery('CoastStart')
       @underWaterAttacks()
 
-      @checkpoint @checkpointStart('Coast', 150000)
+      @checkpoint @checkpointStart('CoastStart', 150000)
 
       @mineSwarm()
       @setScenery('BayStart')
@@ -208,18 +208,18 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   mineSwarm: (options = { direction: 'right' })->
     @placeSquad Game.Scripts.JumpMine,
-      amount: 8
+      amount: 14
       delay: 300
       options:
         grid: new Game.LocationGrid
           x:
-            start: 200
-            steps: 10
-            stepSize: 40
+            start: 0.3
+            steps: 12
+            stepSize: 0.05
           y:
-            start: 60
-            steps: 8
-            stepSize: 40
+            start: 0.125
+            steps: 12
+            stepSize: 0.05
 
         direction: options.direction
 

@@ -118,11 +118,12 @@ Game.ScriptModule.Entity =
         speed: @entity.speed
       )
       path.unshift [
-        @entity.x + Crafty.viewport.x
-        @entity.y + Crafty.viewport.y
+        Math.round(@entity.x + Crafty.viewport.x)
+        Math.round(@entity.y + Crafty.viewport.y)
       ]
 
       pp = path[0]
+
       d = 0
       bezierPath = (for p in path
         if res = p?()
@@ -131,12 +132,20 @@ Game.ScriptModule.Entity =
         else
           [x, y] = p
 
+        if @_isFloat(x) or (-1 < x < 2)
+          x *= Crafty.viewport.width
+
+        if @_isFloat(y) or (-1 < y < 2)
+          y *= Crafty.viewport.height
+
+        pn = [x, y]
+
         [px, py] = pp
         a = Math.abs(x - px)
-        b = Math.abs(x - py)
+        b = Math.abs(y - py)
         c = Math.sqrt(a**2 + b**2)
         d += c
-        pp = p
+        pp = pn
         { x: x - Crafty.viewport.x, y: y - Crafty.viewport.y }
       )
       duration = (d / settings.speed) * 1000
@@ -154,6 +163,9 @@ Game.ScriptModule.Entity =
       )
       defer.promise
 
+  _isFloat: (n) ->
+    n is +n and n isnt (n|0)
+
   # Moves the entity to a coordinate
   # the provided coordinate can also be a function (that does not take arguments)
   # that returns an object with an 'x' and an 'y'.
@@ -168,6 +180,14 @@ Game.ScriptModule.Entity =
       return unless @enemy.alive
       settings = location?() ? location
       _.extend(settings, extraSettings)
+
+      #if settings.x? and (@_isFloat(settings.x) or (-1 < settings.x < 2))
+      if settings.x? and (-1 < settings.x < 2)
+          settings.x *= Crafty.viewport.width
+
+      #if settings.y? and (@_isFloat(settings.y) or (-1 < settings.y < 2))
+      if settings.y? and (-1 < settings.y < 2)
+          settings.y *= Crafty.viewport.height
 
       seaLevel = @_getSeaLevel()
 
@@ -201,7 +221,7 @@ Game.ScriptModule.Entity =
 
   _setupWaterSpot: ->
     if Game.explosionMode?
-      waterSpot = Crafty.e('2D, Canvas, Color, Choreography, Tween')
+      waterSpot = Crafty.e('2D, WebGL, Color, Choreography, Tween')
         .color('#000040')
         .attr(
           w: @entity.w + 10
@@ -212,7 +232,7 @@ Game.ScriptModule.Entity =
           z: @entity.z - 1
         )
     else
-      waterSpot = Crafty.e('2D, Canvas, shadow, Choreography, Tween')
+      waterSpot = Crafty.e('2D, WebGL, shadow, Choreography, Tween')
         .attr(
           w: @entity.w + 10
           x: @entity.x - 5
@@ -303,7 +323,7 @@ Game.ScriptModule.Entity =
     defer.promise
 
   _getSeaLevel: ->
-    220 + (220 * (@entity.scale ? 1.0))
+    (Crafty.viewport.height - 260) + (220 * (@entity.scale ? 1.0))
 
   _moveAir: (settings) ->
     defaults =
@@ -368,9 +388,17 @@ Game.ScriptModule.Entity =
   setLocation: (location) ->
     (sequence) =>
       settings = location?() ? location
+      { x, y } = settings
+
+      if @_isFloat(x) or -1 < x < 2
+        x *= Crafty.viewport.width
+
+      if @_isFloat(y) or -1 < y < 2
+        y *= Crafty.viewport.height
+
       @entity.attr(
-        x: settings.x - Crafty.viewport.x
-        y: settings.y - Crafty.viewport.y
+        x: x - Crafty.viewport.x
+        y: y - Crafty.viewport.y
       )
 
   location: (settings = {}) ->
