@@ -35,10 +35,13 @@ class Game.Level
     blockType = "#{@namespace}.#{scenery}"
     blockKlass = @generator.buildingBlocks[blockType]
     blockKlass::loadAssets().then =>
-      if next = blockKlass::autoNext
-        @_loadAssetsForScenery(next)
+      nextLoading = []
       if prev = blockKlass::autoPrevious
-        @_loadAssetsForScenery(prev)
+        nextLoading.push => @_loadAssetsForScenery(prev)
+      if next = blockKlass::autoNext
+        nextLoading.push => @_loadAssetsForScenery(next)
+      if nextLoading.length > 0
+        WhenJS.sequence(nextLoading)
 
   start: (settings = {}) ->
     defaults =
