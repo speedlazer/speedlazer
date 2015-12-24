@@ -370,22 +370,23 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'cityHorizon'
     @addElement 'city-bridge'
 
-    bridgeWidth = 640
+    bridgeWidth = Crafty.viewport.width
+    height = Crafty.viewport.height
 
     # Pillars
     pillarWidth = 80
-    @addBackground(0, @level.visibleHeight - 480, Crafty.e('2D, WebGL, Color').color('#000000').attr({ z: 3, w: pillarWidth * 1.5, h: 480, alpha: 0.7 }), 1.5)
-    @addBackground(bridgeWidth - pillarWidth, @level.visibleHeight - 480, Crafty.e('2D, WebGL, Color').color('#000000').attr({ z: 3, w: pillarWidth * 1.5, h: 480, alpha: 0.7 }), 1.5)
+    @addBackground(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color').color('#000000').attr({ z: 20, w: pillarWidth * 1.5, h: height, alpha: 0.7 }), 1.5)
+    @addBackground(bridgeWidth - pillarWidth, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color').color('#000000').attr({ z: 20, w: pillarWidth * 1.5, h: height, alpha: 0.7 }), 1.5)
 
     # Deck
     for i in [0..11]
       c = ['#101010', '#181818', '#202020', '#282828', '#303030',
            '#383838', '#404040', '#484848', '#505050', '#585858', '#606060', '#686868'][11 - (i // 2)]
       h = 120 - (8 * i)
-      y = @level.visibleHeight - (480 - (i * 30))
+      y = @level.visibleHeight - (height - (i * 40))
       z = -3 - (1 * i)
       sp = 1.2 - (0.05 * i)
-      hp = (420 - (6 * i)) - (h + y)
+      hp = (height - 60 - (6 * i)) - (h + y)
       @addBackground(0, y, Crafty.e('2D, WebGL, Color').color(c).attr({ z: z, w: bridgeWidth * sp, h: h }), sp)
       if i % 5 is 0
         @addBackground(0, h + y, Crafty.e('2D, WebGL, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
