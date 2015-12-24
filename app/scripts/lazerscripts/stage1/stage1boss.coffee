@@ -63,14 +63,17 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @wait 200
       @async @runScript(Game.Scripts.Stage1BossRocket, @location())
       @animate 'emptyWing', 0, 'wing'
-      @moveTo(y: .43, speed: 5)
       @animate 'reload', 0, 'wing'
+      @async @runScript(Game.Scripts.Stage1BossMine, @location())
+      @moveTo(y: .43, speed: 5)
+      @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @animate 'emptyWing', 0, 'wing'
       @wait 200
+      @animate 'reload', 0, 'wing'
     )
 
   fase2: ->
     @bindSequence 'Hit', @fase3, => @entity.health < 135000
-    console.log 'on the move!'
 
     @sequence(
       @setSpeed 50
@@ -135,10 +138,10 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
 
   spawn: (location) ->
     Crafty.e('Rocket').rocket(
-      health: 200
+      health: 250
       x: location().x - 30
       y: location().y - 5 + Math.round(Math.random() * 10)
-      speed: 400
+      speed: 600
     )
 
   execute: ->
