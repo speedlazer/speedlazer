@@ -44,7 +44,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setScenery('CoastStart')
       @underWaterAttacks()
 
-      @checkpoint @checkpointStart('Coast', 150000)
+      @checkpoint @checkpointStart('CoastStart', 150000)
 
       @mineSwarm()
       @setScenery('BayStart')

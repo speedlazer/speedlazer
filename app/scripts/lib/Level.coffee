@@ -37,6 +37,8 @@ class Game.Level
     blockKlass::loadAssets().then =>
       if next = blockKlass::autoNext
         @_loadAssetsForScenery(next)
+      if prev = blockKlass::autoPrevious
+        @_loadAssetsForScenery(prev)
 
   start: (settings = {}) ->
     defaults =
@@ -274,6 +276,8 @@ class Game.Level
     blockKlass = @generator.buildingBlocks[blockType]
     if next = blockKlass::autoNext
       blockType = "#{@namespace}.#{next}"
+    if prev = blockKlass::autoPrevious
+      blockType = "#{@namespace}.#{prev}"
 
     p = _.clone @generationPosition
     @_insertBlockToLevel(blockType, {})

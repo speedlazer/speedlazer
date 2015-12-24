@@ -21,7 +21,7 @@ generator.defineElement 'water', ->
   water2.originalX = water2.x
 
   @level.registerWaveTween 'OceanWavesDistance', 5000, 'easeInOutQuad', (v, forward) ->
-    distance = 20
+    distance = 30
     width = 200
     Crafty('water1').each ->
       if forward
@@ -272,6 +272,7 @@ generator.defineBlock class extends @Game.LevelScenery
     x: 800
     y: 0
   autoNext: 'Coast'
+  autoPrevious: 'Ocean'
 
   assets: ->
     images: ['horizon-city-start.png']
