@@ -20,6 +20,7 @@ Crafty.c 'Enemy',
     this
 
   absorbDamage: (damage) ->
+    return unless damage?
     @health -= damage
     @updatedHealth?()
     if @health <= 0
