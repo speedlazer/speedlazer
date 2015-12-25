@@ -20,7 +20,7 @@ Crafty.c 'RapidWeaponLaser',
 
     @shooting = no
     @lastShot = 0
-    @cooldown = 200
+    @cooldown = 250
     @shotsFired = 0
     @burstCount = Infinity
     @frontFire = yes
@@ -33,10 +33,10 @@ Crafty.c 'RapidWeaponLaser',
     @level = @determineLevel @xp
     if level isnt @level
       @cooldown = switch @level
-        when 0 then 200
-        when 1 then 150
-        when 2 then 100
-        when 3 then 50
+        when 0 then 250
+        when 1 then 200
+        when 2 then 150
+        when 3 then 100
       @trigger 'levelUp', @level
 
   determineLevel: (xp) ->
@@ -56,6 +56,7 @@ Crafty.c 'RapidWeaponLaser',
     else
       @shooting = no
       @shotsFired = 0
+      @lastShot = 500
 
   _autoFire: (fd) ->
     @lastShot += fd.dt
@@ -79,7 +80,7 @@ Crafty.c 'RapidWeaponLaser',
       when 2 then w: 14, speed: 560, h: 4
       when 3 then w: 18, speed: 565, h: 4
 
-    Crafty.e('Bullet')
+    Crafty.e('Bullet, IgnoreSun')
       .attr
         x: @x + @w
         y: @y + (@h / 2) - (settings.h / 2) + 1
@@ -104,7 +105,7 @@ Crafty.c 'RapidWeaponLaser',
       when 2 then w: 10, speed: 560, h: 3
       when 3 then w: 14, speed: 565, h: 3
 
-    Crafty.e('Bullet')
+    Crafty.e('Bullet, IgnoreSun')
       .attr
         x: @x + @w
         y: @y + (@h / 2) - (settings.h / 2) - 2
