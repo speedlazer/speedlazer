@@ -13,8 +13,11 @@ Crafty.defineScene 'Game', (data = {}) ->
     startAtCheckpoint: data.checkpoint ? 0
 
   stage = new script(level)
-  stage.run(options).then =>
-    console.log 'end of script!'
+  stage.run(options)
+    .then =>
+      console.log 'end of script!'
+    .catch -> 'Players died'
+
 
   Crafty.bind 'GameOver', ->
     Crafty.enterScene('GameOver',
