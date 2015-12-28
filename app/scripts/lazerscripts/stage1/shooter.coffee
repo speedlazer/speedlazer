@@ -11,7 +11,14 @@ class Game.Scripts.Shooter extends Game.EntityScript
       speed: options.speed ? 200
     )
     if options.shootOnSight
-      d.addComponent('ShootOnSight')
+      d.addComponent('ShootOnSight').shootOnSight
+        projectile: (x, y, angle) =>
+          projectile = Crafty.e('Projectile, Color, Enemy').attr(
+            w: 6
+            h: 6
+            speed: 250
+          ).color('#FFFF00')
+          projectile.shoot(x, y, angle)
     d
 
   execute: ->

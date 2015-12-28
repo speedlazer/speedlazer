@@ -1,37 +1,31 @@
 Crafty.c 'ShootOnSight',
-  init: ->
-    @bind('EnterFrame', @_checkForShot)
 
   remove: ->
     @unbind('EnterFrame', @_checkForShot)
 
+  shootOnSight: (options) ->
+    @shootConfig =  _.defaults(options,
+      targetType: 'PlayerControlledShip'
+      sightAngle: 10
+      shootWhenHidden: no
+      cooldown: 800
+    )
+
+    @bind('EnterFrame', @_checkForShot)
+
   _checkForShot: (fd) ->
     if @lastShotAt?
       @lastShotAt += fd.dt
-      return if @lastShotAt < 800
+      return if @lastShotAt < @shootConfig.cooldown
+
     self = this
-    Crafty('PlayerControlledShip').each ->
+    Crafty(@shootConfig.targetType).each ->
       angle = Math.atan2(self.y - @y, self.x - @x)
       angle *= 180 / Math.PI
-      self._shoot(angle + 180) if Math.abs(angle - self.rotation) < 10
+      self._shoot(angle + 180) if Math.abs(angle - self.rotation) < self.shootConfig.sightAngle
 
   _shoot: (angle) ->
-    return if @hidden
+    return if @hidden and !@shootConfig.shootWhenHidden
     @lastShotAt = 0
-    Crafty.e('2D, WebGL, Enemy, Color, ViewportFixed').attr(
-      x: @x
-      y: @y
-      w: 6
-      h: 6
-      speed: 250
-      rotation: angle
-    ).color('#FFFF00').bind('EnterFrame', (fd) ->
-      dist = fd.dt * (@speed / 1000)
-      @x += Math.cos(@rotation / 180 * Math.PI) * dist
-      @y += Math.sin(@rotation / 180 * Math.PI) * dist
-      if @x < -Crafty.viewport.x || @x > -Crafty.viewport.x + Crafty.viewport.width
-        @destroy()
-      if @y < -Crafty.viewport.y || @y > -Crafty.viewport.y + Crafty.viewport.height
-        @destroy()
 
-    )
+    @shootConfig.projectile(@x, @y, angle)

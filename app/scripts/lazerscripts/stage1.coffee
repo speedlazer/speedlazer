@@ -26,7 +26,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
-      @sunRise()
       @introText()
       @tutorial()
       @droneTakeover()
@@ -120,28 +119,33 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   introText: ->
     @sequence(
       @setScenery('Intro')
+      @sunRise()
+      @cameraCrew()
       @async @runScript Game.Scripts.IntroBarrel
       @wait 2000 # Time for more players to activate
       @if((-> @player(1).active and !@player(2).active)
         @sequence(
-          @say 'John', 'I hate that we have bring this ship to the museum!'
-          @say 'General', 'Just give her a good last flight John,'
+          @say 'General', 'Time to get the last ship to the factory\n' +
+            'to install the automated defence systems'
+          @say 'John', 'I hate that we pilots will be without jobs soon'
         )
       )
       @if((-> !@player(1).active and @player(2).active)
         @sequence(
-          @say 'Jim', 'I don\'t want to bring this ship to the museum!'
-          @say 'General', 'Give her a good last flight Jim,'
+          @say 'General', 'Time to get the last ship to the factory\n' +
+            'to install the automated defence systems'
+          @say 'Jim', 'Man I don\'t trust that AI stuff for one bit'
         )
       )
       @if((-> @player(1).active and @player(2).active)
         @sequence(
-          @say 'John', 'I hate that we have bring these ships to the museum!'
-          @say 'General', 'Give her a good last flight guys,'
+          @say 'General', 'Time to get the last 2 ships to the factory\n' +
+            'to install the automated defence systems'
+          @say 'John', 'I hate that we pilots will be without jobs soon'
         )
       )
-      @say 'General', 'It\'s too bad these ships are too expensive for mass\n' +
-        'production and have to be taken out of commission'
+      @say 'General', 'It saves lives when you no longer need soldiers,\n' +
+      'AI technology is the future after all.'
 
       @wait 3000
     )
@@ -149,7 +153,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   tutorial: ->
     @sequence(
       @setScenery('Ocean')
-      @say('General', 'We send some drones for target practice')
+      @say('General', 'We send some drones for some last manual target practice')
       @repeat(2, @sequence(
         @dropWeaponsForEachPlayer()
         @wait(2000)
@@ -173,13 +177,18 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     )
 
   droneTakeover: ->
-    @sequence(
-      @placeSquad Game.Scripts.Splasher,
+    @parallel(
+      @placeSquad Game.Scripts.CrewShooters,
         amount: 4
         delay: 750
-      @say('General', 'What the hell is happening with our drones?')
-      @say('General', 'They do not respond to our commands anymore!\nThey have been taken over!')
+      @sequence(
+        @say('General', 'What the hell is happening with our drones?')
+        @say('General', 'They do not respond to our commands anymore!\nThe defence AI has been compromised!')
+      )
     )
+
+  cameraCrew: ->
+    @async @runScript(Game.Scripts.CameraCrew)
 
   swirlAttacks: ->
     @parallel(
