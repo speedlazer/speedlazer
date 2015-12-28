@@ -8,7 +8,7 @@ Crafty.c 'Projectile',
       y: y,
       rotation: angle
     )
-    @bind('EnterFrame', (fd) ->
+    @bind('GameLoop', (fd) ->
       dist = fd.dt * (@speed / 1000)
       @x += Math.cos(@rotation / 180 * Math.PI) * dist
       @y += Math.sin(@rotation / 180 * Math.PI) * dist

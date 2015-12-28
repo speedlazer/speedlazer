@@ -1,8 +1,17 @@
 Game =
+  paused: no
+  togglePause: ->
+    @paused = !@paused
+    Crafty.trigger('GamePause', @paused)
+
   # Initialize and start our game
   start: ->
     @firstLevel = 'Game'
     @resetCredits()
+
+    Crafty.bind 'EnterFrame', ->
+      return if Game.paused
+      Crafty.trigger 'GameLoop', arguments...
 
     Crafty.paths(
       audio: 'audio/'
@@ -60,6 +69,7 @@ Game =
         fire: 0
         secondary: 2
         super: 4
+        pause: 9
 
     # Simply start splashscreen
     #Crafty.enterScene('Game', script: 'Lunch')

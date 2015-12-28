@@ -7,7 +7,7 @@ Crafty.c 'WeaponRocket',
       h: 8
 
   remove: ->
-    @unbind 'EnterFrame', @_coolDown
+    @unbind 'GameLoop', @_coolDown
 
   install: (@ship) ->
     @xp = 0
@@ -18,7 +18,7 @@ Crafty.c 'WeaponRocket',
       z: @ship.z + 1
     @ship.attach this
     @heat = 0
-    @bind 'EnterFrame', @_coolDown
+    @bind 'GameLoop', @_coolDown
 
   _coolDown: (fd) ->
     @heat -= fd.dt

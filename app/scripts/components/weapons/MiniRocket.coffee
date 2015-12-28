@@ -6,7 +6,7 @@ Crafty.c 'MiniRocket',
   fire: (attr = {}) ->
     @attr _.defaults(attr,
       w: 35, h: 10)
-    @bind('EnterFrame', (fd) =>
+    @bind('GameLoop', (fd) =>
       @x += (@speed / 1000.0) * fd.dt
       if @x > @_maxXforViewPort()
         # Maybe send a bullet miss event

@@ -29,7 +29,7 @@ Crafty.c 'PlayerControlledShip',
         @pickUp(pu.obj)
         @trigger('PowerUp', pu.obj)
 
-    @bind 'EnterFrame', (fd) ->
+    @bind 'GameLoop', (fd) ->
       motionX = (@_forcedSpeed.x / 1000.0) * fd.dt
       motionY = (@_forcedSpeed.y / 1000.0) * fd.dt
       @x += motionX

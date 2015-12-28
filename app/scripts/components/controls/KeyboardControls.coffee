@@ -40,11 +40,19 @@ Crafty.c 'KeyboardControls',
 
     ship.addComponent('Multiway, Keyboard')
       .multiway({ y: 250, x: 250 }, movementMap)
+      .bind('GamePause', (paused) ->
+        if paused
+          @disabledBeforePause = @disableControls
+          @disableControl()
+        else
+          @enableControl() unless @disabledBeforePause
+      )
 
     @listenTo ship, 'KeyDown', (e) ->
       ship.shoot(true) if e.key is controlMap.fire
       ship.secondary(true) if e.key is controlMap.secondary
       ship.superWeapon(true) if e.key is controlMap.super
+      Game.togglePause() if e.key is controlMap.pause
 
     @listenTo ship, 'KeyUp', (e) ->
       ship.shoot(false) if e.key is controlMap.fire

@@ -45,7 +45,6 @@ Crafty.c 'GamepadControls',
       # TODO: This event is not coming through
       # when the game is paused,
       # so unpausing is not possible!
-      #if e.button is @controlMap.pause
-        #if e.pressed
-          #Crafty.pause()
+      if e.button is @controlMap.pause
+        Game.togglePause() if e.pressed
 

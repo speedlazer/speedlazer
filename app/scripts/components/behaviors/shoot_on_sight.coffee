@@ -1,7 +1,6 @@
 Crafty.c 'ShootOnSight',
-
   remove: ->
-    @unbind('EnterFrame', @_checkForShot)
+    @unbind('GameLoop', @_checkForShot)
 
   shootOnSight: (options) ->
     @shootConfig =  _.defaults(options,
@@ -11,7 +10,7 @@ Crafty.c 'ShootOnSight',
       cooldown: 800
     )
 
-    @bind('EnterFrame', @_checkForShot)
+    @bind('GameLoop', @_checkForShot)
 
   _checkForShot: (fd) ->
     if @lastShotAt?
