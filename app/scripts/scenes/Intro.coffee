@@ -47,6 +47,11 @@ Crafty.defineScene 'Intro', ->
     @one 'Activated', ->
       Crafty.enterScene(Game.firstLevel)
 
+  Crafty.e('Delay').delay ->
+      Crafty.enterScene('Scores')
+    , 20000
+
 , ->
   # destructor
+  Crafty('Delay').each -> @destroy()
   Crafty('Player').each -> @unbind('Activated')

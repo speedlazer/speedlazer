@@ -20,6 +20,14 @@ Crafty.c 'KeyboardControls',
   _keyHandling: (e) ->
     if e.key is @controlMap.fire
       @trigger('Fire', e)
+    if e.key is @controlMap.up
+      @trigger('Up', e)
+    if e.key is @controlMap.down
+      @trigger('Down', e)
+    if e.key is @controlMap.left
+      @trigger('Left', e)
+    if e.key is @controlMap.right
+      @trigger('Right', e)
 
   assignControls: (ship) ->
     controlMap = @controlMap

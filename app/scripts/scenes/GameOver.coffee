@@ -21,66 +21,123 @@ Crafty.defineScene 'GameOver', (data) ->
       family: 'Press Start 2P'
     })
 
-  Crafty('Player ControlScheme').each (index) ->
-    Crafty.e('2D, DOM, Text')
-      .attr(x: 0, y: (h * .45) + (index * 45), w: w)
-      .text(@name + ': ' + @points)
-      .textColor(@color())
-      .css("textAlign", "center")
-      .textFont({
-        size: '20px'
-        weight: 'bold'
-        family: 'Press Start 2P'
-      })
+  task = (data) ->
+    ->
+      highScorePos = null
+      highScorePos = i for s, i in hs when s.player is data.player
 
-  # After a timeout, be able to replay
-  Crafty.e('Delay').delay ->
-    if Game.credits > 0
-      time = 10
-
-      text = if Game.credits is 1
-        "1 Credit left"
-      else
-        "#{Game.credits} Credits left"
+      t = "#{data.name}: #{data.points}"
+      if highScorePos < 10
+        rank = switch highScorePos
+          when 0 then 'ACE'
+          when 1 then '2nd'
+          when 2 then '3rd'
+          else "#{highScorePos + 1}th"
+        t += " - #{rank}"
 
       Crafty.e('2D, DOM, Text')
-        .attr(x: 0, y: h * .7, w: w)
-        .textColor('#FF0000')
+        .attr(x: 0, y: (h * .45) + (data.index * 45), w: w)
+        .text(t)
+        .textColor(data.color)
         .css("textAlign", "center")
-        .textFont(
-          size: '15px'
+        .textFont({
+          size: '20px'
           weight: 'bold'
           family: 'Press Start 2P'
-        )
-        .text(text)
-      e = Crafty.e('2D, DOM, Text')
-        .attr(x: 0, y: (h * .7) + 30, w: w)
-        .textColor('#FF0000')
-        .css("textAlign", "center")
-        .textFont(
-          size: '15px'
-          weight: 'bold'
-          family: 'Press Start 2P'
-        )
-      prefix = "Press fire to continue"
-      e.text("#{prefix} #{"00#{time}".slice(-2)}")
-      @delay ->
-        time -= 1
+        })
+
+      if highScorePos < 10
+        p = Crafty.e('2D, DOM, Text')
+          .attr(x: w * .25, y: (h * .45) + ((data.index + 1) * 45), w: w)
+          .text("Enter name: ")
+          .textColor(data.color)
+          .css("textAlign", "left")
+          .textFont({
+            size: '20px'
+            weight: 'bold'
+            family: 'Press Start 2P'
+          })
+        k = Crafty.e('TextInput')
+          .attr(x: w * .6, y: (h * .45) + ((data.index + 1) * 45), w: w)
+          .textColor(data.color)
+          .css("textAlign", "left")
+          .textFont({
+            size: '20px'
+            weight: 'bold'
+            family: 'Press Start 2P'
+          })
+        k.textInput(data.player, 3).then (name) ->
+          Game.addScoreEntry(data.points, name)
+
+          p.destroy()
+          k.destroy()
+
+  collect = []
+  hs = _.clone Game.highscores()
+
+  Crafty('Player ControlScheme').each (index) ->
+    highscoreEntry = null
+    hs.push { initials: null, player: this, score: @points }
+    collect.push task({
+      index
+      @name
+      @points
+      player: this
+      color: @color()
+    })
+
+  hs = _.sortBy(hs, 'score').reverse()
+
+  WhenJS.sequence(collect).then =>
+
+    # After a timeout, be able to replay
+    Crafty.e('Delay').delay ->
+      if Game.credits > 0
+        time = 10
+
+        text = if Game.credits is 1
+          "1 Credit left"
+        else
+          "#{Game.credits} Credits left"
+
+        Crafty.e('2D, DOM, Text')
+          .attr(x: 0, y: h * .8, w: w)
+          .textColor('#FF0000')
+          .css("textAlign", "center")
+          .textFont(
+            size: '15px'
+            weight: 'bold'
+            family: 'Press Start 2P'
+          )
+          .text(text)
+        e = Crafty.e('2D, DOM, Text')
+          .attr(x: 0, y: (h * .8) + 30, w: w)
+          .textColor('#FF0000')
+          .css("textAlign", "center")
+          .textFont(
+            size: '15px'
+            weight: 'bold'
+            family: 'Press Start 2P'
+          )
+        prefix = "Press fire to continue"
         e.text("#{prefix} #{"00#{time}".slice(-2)}")
-      , 1000, time, ->
-        Crafty.enterScene('Intro')
+        @delay ->
+          time -= 1
+          e.text("#{prefix} #{"00#{time}".slice(-2)}")
+        , 1000, time, ->
+          Crafty.enterScene('Intro')
 
-      Crafty('Player').each ->
-        @reset()
-        @one 'Activated', ->
-          Game.credits -= 1
-          Crafty.enterScene Game.firstLevel, data
-    else
-      @delay ->
-        Crafty.enterScene('Intro')
-      , 10000
+        Crafty('Player').each ->
+          @reset()
+          @one 'Activated', ->
+            Game.credits -= 1
+            Crafty.enterScene Game.firstLevel, data
+      else
+        @delay ->
+          Crafty.enterScene('Intro')
+        , 10000
 
-  , 2000, 0
+    , 2000, 0
 , ->
   # destructor
   Crafty('Delay').each -> @destroy()

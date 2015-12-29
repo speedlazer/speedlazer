@@ -68,6 +68,29 @@ Game =
   resetCredits: ->
     @credits = 2 # This is actually 'Extra' credits, so in total 3
 
+  highscores: ->
+    @loadedList = JSON.parse(localStorage.getItem('SPDLZR') ? '[]')
+
+    defInit = 'SPD'
+    list = [
+      { initials: defInit, score: 200000 }
+      { initials: defInit, score: 100000 }
+      { initials: defInit, score: 80000 }
+      { initials: defInit, score: 60000 }
+      { initials: defInit, score: 40000 }
+      { initials: defInit, score: 20000 }
+      { initials: defInit, score: 10000 }
+      { initials: defInit, score: 5000 }
+      { initials: defInit, score: 2000 }
+      { initials: defInit, score: 1000 }
+    ].concat @loadedList
+    _.sortBy(list, 'score').reverse()
+
+  addScoreEntry: (points, name) ->
+    @loadedList ?= []
+    @loadedList.push({ initials: name, score: points })
+    localStorage.setItem('SPDLZR', JSON.stringify(@loadedList))
+
 # Export
 window.Game = Game
 
