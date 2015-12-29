@@ -2,6 +2,14 @@ Game =
   paused: no
   togglePause: ->
     @paused = !@paused
+    if @paused
+      Crafty('Delay').each -> @pauseDelays()
+      Crafty('Tween').each -> @pauseTweens()
+      Crafty('Particles').each -> @pauseParticles()
+    else
+      Crafty('Delay').each -> @resumeDelays()
+      Crafty('Tween').each -> @resumeTweens()
+      Crafty('Particles').each -> @resumeParticles()
     Crafty.trigger('GamePause', @paused)
 
   # Initialize and start our game
