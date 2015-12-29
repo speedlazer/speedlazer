@@ -77,13 +77,14 @@ Crafty.c 'Choreography',
       @_setupCPart @_currentPart.part + 1
 
   _setupPart: (part, number) ->
+    easingFn = part.easingFn ? 'linear'
     @_currentPart = _.extend(_.clone(part),
       part: number
       x: @x
       y: @y
       dx: part.x
       dy: part.y
-      easing: new Crafty.easing(part.duration ? 0)
+      easing: new Crafty.easing(part.duration ? 0, easingFn)
     )
     if part.properties
       currentProperties = {}

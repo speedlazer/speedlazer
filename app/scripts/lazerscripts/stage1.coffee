@@ -35,31 +35,30 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @parallel(
         @sequence(
           @wait 2000
-          @say 'General', 'Forget that museum. We\'re under attack!'
+          @say 'General', 'We\'re under attack!'
         )
         @swirlAttacks()
       )
-      @swirlAttacks()
       @setScenery('CoastStart')
+      @swirlAttacks()
       @underWaterAttacks()
 
       @checkpoint @checkpointStart('CoastStart', 150000)
 
-      @mineSwarm()
       @setScenery('BayStart')
+      @mineSwarm()
       @underWaterAttacks()
       @parallel(
         @swirlAttacks()
         @mineSwarm()
       )
+      @checkpoint @checkpointStart('Bay', 240000)
+      @setScenery('UnderBridge')
       @parallel(
         @placeSquad Game.Scripts.Stalker
         @mineSwarm direction: 'left'
       )
 
-      @checkpoint @checkpointStart('Bay', 240000)
-
-      @setScenery('UnderBridge')
       @parallel(
         @sequence(
           @stalkerShootout()
@@ -69,7 +68,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           )
           @swirlAttacks()
         )
-        @waitForScenery('UnderBridge', event: 'leave')
       )
 
       @checkpoint @checkpointStart('Bay', 300000)
@@ -181,6 +179,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.CrewShooters,
         amount: 4
         delay: 750
+        drop: 'lasers'
       @sequence(
         @say('General', 'What the hell is happening with our drones?')
         @say('General', 'They do not respond to our commands anymore!\nThe defence AI has been compromised!')
