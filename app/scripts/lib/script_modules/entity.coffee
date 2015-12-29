@@ -347,11 +347,14 @@ Game.ScriptModule.Entity =
       settings.y = deltaY
       'linear'
 
+    easing = settings.easing ? 'linear'
+
     @entity.choreography(
       [
         type: type
         x: settings.x
         y: settings.y
+        easingFn: easing
         maxSpeed: settings.speed
         duration: (delta / settings.speed) * 1000
       ]
@@ -403,8 +406,8 @@ Game.ScriptModule.Entity =
 
   location: (settings = {}) ->
     =>
-      x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2))
-      y: (@enemy.location.y ? (@entity.y + Crafty.viewport.y) + (@entity.h / 2))
+      x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2)) + (settings.offsetX ? 0)
+      y: (@enemy.location.y ? (@entity.y + Crafty.viewport.y) + (@entity.h / 2)) + (settings.offsetY ? 0)
 
   pickTarget: (selection) ->
     (sequence) =>
