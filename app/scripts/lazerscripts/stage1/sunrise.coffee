@@ -29,22 +29,23 @@ class Game.Scripts.SunRise extends Game.EntityScript
         .sun(
           x: Crafty.viewport.width * .97
           y: Crafty.viewport.height * .85
-          speed: options.speed ? 2
+          speed: options.speed ? 1
         )
 
   execute: ->
-    speed = @options.speed ? 2
-    preColor = (100000 / speed)
-    colorDuration = (600000 / speed)
+    speed = @options.speed ? 1
+
+    preColor = (40000 / speed)
+    colorDuration = (500000 / speed)
     @sequence(
-      @setLocation x: .97, y: .85
+      @setLocation x: .97, y: .74
       @backgroundColorFade duration: preColor, skip: @options.skipTo, '#000020', '#402020'
       @parallel(
         @backgroundColorFade duration: colorDuration, skip: (@options.skipTo - preColor), '#402020', '#7070CC', '#8080FF'
         @movePath [
           [.65, .31]
           [.5, .21]
-        ], rotate: no, skip: @options.skipTo - 50000
+        ], rotate: no, skip: @options.skipTo - preColor
       )
     )
 
