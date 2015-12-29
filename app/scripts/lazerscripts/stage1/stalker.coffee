@@ -16,8 +16,8 @@ class Game.Scripts.Stalker extends Game.EntityScript
     @sequence(
       @pickTarget('PlayerControlledShip')
       @moveTo(x: 1.1, y: 1.01)
-      @repeat(10, @sequence(
-        @moveTo(@targetLocation(), y: 1.01, speed: 200)
+      @repeat(5, @sequence(
+        @moveTo(@targetLocation(), y: 1.01, speed: 200, easing: 'easeInOutQuad')
         @wait 100
       ))
       @moveTo(y: .7, speed: 200)

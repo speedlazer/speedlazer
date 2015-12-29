@@ -347,11 +347,14 @@ Game.ScriptModule.Entity =
       settings.y = deltaY
       'linear'
 
+    easing = settings.easing ? 'linear'
+
     @entity.choreography(
       [
         type: type
         x: settings.x
         y: settings.y
+        easingFn: easing
         maxSpeed: settings.speed
         duration: (delta / settings.speed) * 1000
       ]

@@ -21,8 +21,8 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
       @sendToBackground(0.75, -200)
       @moveTo x: .22, y: .45
       @repeat @sequence(
-        @moveTo x: .36, y: .42, speed: 50
-        @moveTo x: .22, y: .45, speed: 50
+        @moveTo x: .36, y: .42, speed: 25, easing: 'easeInOutQuad'
+        @moveTo x: .22, y: .45, speed: 25, easing: 'easeInOutQuad'
       )
     )
 
