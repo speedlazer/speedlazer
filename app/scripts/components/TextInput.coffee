@@ -60,7 +60,7 @@ Crafty.c 'TextInput',
 
 
   _updateText: (name, index, movement) ->
-    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!$ '
+    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_.=!$& '
 
     letter = name[index]
     lindex = chars.indexOf(letter) + chars.length
