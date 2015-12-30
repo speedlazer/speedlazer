@@ -70,6 +70,10 @@ Game =
         secondary: 2
         super: 4
         pause: 9
+        up: 12
+        down: 13
+        left: 14
+        right: 15
 
     Crafty.e('GamepadControls, PlayerAssignable')
       .controls
@@ -78,6 +82,10 @@ Game =
         secondary: 2
         super: 4
         pause: 9
+        up: 12
+        down: 13
+        left: 14
+        right: 15
 
     # Simply start splashscreen
     #Crafty.enterScene('Game', script: 'Lunch')
@@ -85,6 +93,34 @@ Game =
 
   resetCredits: ->
     @credits = 2 # This is actually 'Extra' credits, so in total 3
+
+  highscores: ->
+    loadList = ->
+      data = localStorage.getItem('SPDLZR')
+      return [] unless data
+      k = data.slice(0,20)
+      d = data.slice(20)
+      s = CryptoJS.AES.decrypt(d,k)
+      v = s.toString(CryptoJS.enc.Utf8)
+      return [] unless v.length > 1
+      JSON.parse(v)
+
+    loadedList = loadList()
+
+    defInit = 'SPL'
+    list = [
+      { initials: defInit, score: 6000 }
+      { initials: defInit, score: 5000 }
+      { initials: defInit, score: 4000 }
+      { initials: defInit, score: 3000 }
+      { initials: defInit, score: 2000 }
+      { initials: defInit, score: 1500 }
+      { initials: defInit, score: 1000 }
+      { initials: defInit, score: 500 }
+      { initials: defInit, score: 200 }
+      { initials: defInit, score: 100 }
+    ].concat loadedList
+    _.sortBy(list, 'score').reverse()
 
 # Export
 window.Game = Game

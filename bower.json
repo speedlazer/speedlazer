@@ -11,6 +11,7 @@
     "requirejs-jquery": "~0.25.0",
     "screenfull": "~2.0.0",
     "seedrandom": "~2.4.0",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "cryptojslib": "~3.1.2"
   }
 }
