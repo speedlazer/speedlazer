@@ -41,6 +41,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   execute: ->
     @bindSequence 'Hit', @fase2, => @entity.health < 150000
+    @inventoryAdd 'item', 'lasers', ->
+      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
 
     @sequence(
       @animate 'slow', -1, 'eye'
@@ -162,6 +164,8 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
 
   execute: ->
     @bindSequence 'Hit', @leaveScreen, => @entity.health < 133000
+    @inventoryAdd 'item', 'lasers', ->
+      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
 
     @sequence(
       @animate 'slow', -1, 'eye'
