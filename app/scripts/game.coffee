@@ -53,6 +53,10 @@ Game =
         secondary: 2
         super: 4
         pause: 9
+        up: 12
+        down: 13
+        left: 14
+        right: 15
 
     Crafty.e('GamepadControls, PlayerAssignable')
       .controls
@@ -60,6 +64,10 @@ Game =
         fire: 0
         secondary: 2
         super: 4
+        up: 12
+        down: 13
+        left: 14
+        right: 15
 
     # Simply start splashscreen
     #Crafty.enterScene('Game', script: 'Lunch')
@@ -73,16 +81,16 @@ Game =
 
     defInit = 'SPD'
     list = [
-      { initials: defInit, score: 200000 }
-      { initials: defInit, score: 100000 }
-      { initials: defInit, score: 80000 }
-      { initials: defInit, score: 60000 }
-      { initials: defInit, score: 40000 }
-      { initials: defInit, score: 20000 }
-      { initials: defInit, score: 10000 }
+      { initials: defInit, score: 6000 }
       { initials: defInit, score: 5000 }
+      { initials: defInit, score: 4000 }
+      { initials: defInit, score: 3000 }
       { initials: defInit, score: 2000 }
+      { initials: defInit, score: 1500 }
       { initials: defInit, score: 1000 }
+      { initials: defInit, score: 500 }
+      { initials: defInit, score: 200 }
+      { initials: defInit, score: 100 }
     ].concat @loadedList
     _.sortBy(list, 'score').reverse()
 
