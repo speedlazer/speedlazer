@@ -23,8 +23,19 @@ Crafty.c 'GamepadControls',
     this
 
   _keyHandling: (e) ->
+    return if @lastPressed and @lastPressed.getTime() > (new Date().getTime() - 200)
+
+    @lastPressed = new Date()
     if e.button is @controlMap.fire && e.pressed
       @trigger('Fire', e)
+    if e.button is @controlMap.up && e.pressed
+      @trigger('Up', e)
+    if e.button is @controlMap.down && e.pressed
+      @trigger('Down', e)
+    if e.button is @controlMap.left && e.pressed
+      @trigger('Left', e)
+    if e.button is @controlMap.right && e.pressed
+      @trigger('Right', e)
 
   assignControls: (ship) ->
     ship.addComponent('GamepadMultiway')
