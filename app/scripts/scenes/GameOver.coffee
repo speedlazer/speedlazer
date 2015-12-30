@@ -79,7 +79,11 @@ Crafty.defineScene 'GameOver', (data) ->
             JSON.parse(v)
 
           l = loadList()
-          l.push({ initials: name, score: data.points })
+          l.push({
+            initials: name
+            score: data.points
+            time: (new Date).getTime()
+          })
           d = JSON.stringify(l)
           ky = CryptoJS.AES.encrypt(d, 'secret').toString().slice(8,28)
           ed = CryptoJS.AES.encrypt(d, ky).toString()
