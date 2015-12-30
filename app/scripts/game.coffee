@@ -87,7 +87,7 @@ Game =
       return [] unless v.length > 1
       JSON.parse(v)
 
-    @loadedList = loadList()
+    loadedList = loadList()
 
     defInit = 'SPL'
     list = [
@@ -101,7 +101,7 @@ Game =
       { initials: defInit, score: 500 }
       { initials: defInit, score: 200 }
       { initials: defInit, score: 100 }
-    ].concat @loadedList
+    ].concat loadedList
     _.sortBy(list, 'score').reverse()
 
 # Export
