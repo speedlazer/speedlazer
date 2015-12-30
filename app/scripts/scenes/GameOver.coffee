@@ -145,7 +145,7 @@ Crafty.defineScene 'GameOver', (data) ->
           time -= 1
           e.text("#{prefix} #{"00#{time}".slice(-2)}")
         , 1000, time, ->
-          Crafty.enterScene('Intro')
+          Crafty.enterScene('Scores')
 
         Crafty('Player').each ->
           @reset()
@@ -154,7 +154,7 @@ Crafty.defineScene 'GameOver', (data) ->
             Crafty.enterScene Game.firstLevel, data
       else
         @delay ->
-          Crafty.enterScene('Intro')
+          Crafty.enterScene('Scores')
         , 10000
 
     , 2000, 0
