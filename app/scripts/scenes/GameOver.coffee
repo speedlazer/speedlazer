@@ -67,7 +67,23 @@ Crafty.defineScene 'GameOver', (data) ->
             family: 'Press Start 2P'
           })
         k.textInput(data.player, 3).then (name) ->
-          Game.addScoreEntry(data.points, name)
+
+          loadList = ->
+            dat = localStorage.getItem('SPDLZR')
+            return [] unless dat
+            ko = dat.slice(0,20)
+            d = dat.slice(20)
+            s = CryptoJS.AES.decrypt(d,ko)
+            v = s.toString(CryptoJS.enc.Utf8)
+            return [] unless v.length > 1
+            JSON.parse(v)
+
+          l = loadList()
+          l.push({ initials: name, score: data.points })
+          d = JSON.stringify(l)
+          ky = CryptoJS.AES.encrypt(d, 'secret').toString().slice(8,28)
+          ed = CryptoJS.AES.encrypt(d, ky).toString()
+          localStorage.setItem('SPDLZR', ky + ed)
 
           p.destroy()
           k.destroy()
