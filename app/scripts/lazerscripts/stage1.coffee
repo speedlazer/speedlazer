@@ -84,7 +84,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @checkpoint @checkpointMidStage('Bay')
       @say('General', 'Hunt him down!')
       @setSpeed 100
-      @dropRocketForEachPlayer()
       @placeSquad Game.Scripts.StalkerChain,
         amount: 4
         delay: 500
@@ -106,10 +105,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @cityFighting()
 
-      #@waitForScenery('Skyline', event: 'leave')
-      @disableWeapons()
-      @showScore(1, 'City')
-      @enableWeapons()
       @say 'Game', 'End of gameplay for now... \nStarting endless enemies'
       @repeat @mineSwarm()
     )
@@ -166,12 +161,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @parallel(
       @if((-> @player(1).active and !@player(1).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(1)))
       @if((-> @player(2).active and !@player(2).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(2)))
-    )
-
-  dropRocketForEachPlayer: ->
-    @parallel(
-      @if((-> @player(1).active and !@player(1).has('rockets')), @drop(item: 'rockets', inFrontOf: @player(1)))
-      @if((-> @player(2).active and !@player(2).has('rockets')), @drop(item: 'rockets', inFrontOf: @player(2)))
     )
 
   droneTakeover: ->
@@ -282,7 +271,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @parallel(
       @setScenery(scenery)
       @sunRise(skipTo: 300000)
-      @dropRocketForEachPlayer()
       @wait 2000
     )
 
