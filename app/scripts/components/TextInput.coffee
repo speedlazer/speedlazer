@@ -29,11 +29,16 @@ Crafty.c 'TextInput',
       @_updateCursor(index)
 
     player.bind 'Fire', =>
-      player.unbind('Up')
-      player.unbind('Down')
-      player.unbind('Left')
-      player.unbind('Right')
-      @defer.resolve(name)
+      oldIndex = index
+      index = Math.min(index + 1, length - 1)
+      @_updateCursor(index)
+
+      if index is oldIndex and index is length - 1
+        player.unbind('Up')
+        player.unbind('Down')
+        player.unbind('Left')
+        player.unbind('Right')
+        @defer.resolve(name)
 
     @cursor = Crafty.e('2D, DOM, Text')
       .attr(x: @x, y: @y, w: @w)
