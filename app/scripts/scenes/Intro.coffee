@@ -42,6 +42,19 @@ Crafty.defineScene 'Intro', ->
         @tween({ alpha: 1 }, 1000)
     , 2000, -1
 
+  entry = Game.highscores()[0]
+
+  Crafty.e('2D, DOM, Text')
+    .attr(x: 0, y: (h * .85), w: w)
+    .text("HI SCORE: #{entry.score} #{entry.initials}")
+    .textColor('#FFFF00')
+    .css('textAlign', 'center')
+    .textFont({
+      size: '10px'
+      weight: 'bold'
+      family: 'Press Start 2P'
+    })
+
   Crafty('Player').each ->
     @reset()
     @one 'Activated', ->
