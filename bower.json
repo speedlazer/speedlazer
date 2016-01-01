@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "appPath": "app",
   "dependencies": {
-    "crafty": "matthijsgroen/crafty#test-pause",
+    "crafty": "craftyjs/Crafty-Distro#nightlies",
     "crafty-gamepad": "svenjacobs/crafty-gamepad",
     "jquery": "~1.7.2",
     "jsbezier": "*",

@@ -6,11 +6,12 @@ Game =
       Crafty('Delay').each -> @pauseDelays()
       Crafty('Tween').each -> @pauseTweens()
       Crafty('Particles').each -> @pauseParticles()
+      Crafty.trigger('GamePause', @paused)
     else
+      Crafty.trigger('GamePause', @paused)
       Crafty('Delay').each -> @resumeDelays()
       Crafty('Tween').each -> @resumeTweens()
       Crafty('Particles').each -> @resumeParticles()
-    Crafty.trigger('GamePause', @paused)
 
   # Initialize and start our game
   start: ->

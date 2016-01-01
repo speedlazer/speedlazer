@@ -25,7 +25,27 @@ Crafty.defineScene 'Game', (data = {}) ->
       script: scriptName
     )
 
+  Crafty.bind 'GamePause', (state) ->
+    if state
+      Crafty.e('2D, DOM, Text, PauseText')
+        .attr(
+          x: - Crafty.viewport.x,
+          y: (Crafty.viewport.height * .5) - Crafty.viewport.y,
+          w: Crafty.viewport.width
+        )
+        .text('Game Paused')
+        .textColor('#D0D0D0')
+        .css("textAlign", "center")
+        .textFont(
+          size: '15px'
+          weight: 'bold'
+          family: 'Press Start 2P'
+        )
+    else
+      Crafty('PauseText').each -> @destroy()
+
 , ->
   # destructor
   Crafty('Player').each -> @removeComponent('ShipSpawnable')
   Crafty.unbind('GameOver')
+  Crafty.unbind('GamePause')

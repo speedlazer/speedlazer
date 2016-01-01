@@ -22,8 +22,14 @@ html {
 
   transform-origin: top left;
 }
+h1 {
+  font-size: 1.2em;
+}
+h2 {
+  font-size: 1.1em;
+}
 section#help {
-  width: 200px;
+  width: 160px;
   position: absolute;
   top: 0;
   right: 0;
