@@ -101,7 +101,7 @@ class Game.Level
         @stop()
         Crafty.trigger('GameOver')
 
-    Crafty.bind 'EnterFrame', @_waveTicks
+    Crafty.bind 'GameLoop', @_waveTicks
 
   _waveTicks: (fd) =>
     @_registeredWaveTweens ?= {}
@@ -227,7 +227,7 @@ class Game.Level
     Crafty.unbind('EnterBlock')
     Crafty.unbind('ShipSpawned')
     Crafty.unbind('ViewportScroll')
-    Crafty.unbind('EnterFrame', @_waveTicks)
+    Crafty.unbind('GameLoop', @_waveTicks)
     b?.clean() for b in @blocks
 
   _update: ->

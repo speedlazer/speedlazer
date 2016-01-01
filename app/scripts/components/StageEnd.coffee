@@ -184,11 +184,11 @@ Crafty.c 'StageEnd',
         if i in [2, 4] and typeof cell is 'number'
           c.attr endScore: cell, v: 0
           c.text c.v
-          c.bind 'EnterFrame', (fd) ->
+          c.bind 'GameLoop', (fd) ->
             @v += (fd.dt * 3) + 3
             if @v > @endScore
               @v = @endScore
-              @unbind 'EnterFrame'
+              @unbind 'GameLoop'
             @text @v
 
         @attach c

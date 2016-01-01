@@ -8,9 +8,10 @@
 
     x = 60
     defer = WhenJS.defer()
+    w = Crafty.viewport.width * .8
 
     back = Crafty.e('2D, WebGL, Color, Tween, HUD, Dialog')
-      .attr(w: 570, h: ((lines.length + 2) * 20), alpha: 0.5)
+      .attr(w: w, h: ((lines.length + 2) * 20), alpha: 0.5)
       .color('#000000')
       .positionHud(
         x: x - 10
@@ -20,7 +21,7 @@
     back.bind('Abort', -> defer.resolve())
 
     speakerText = Crafty.e('2D, DOM, Text')
-      .attr(w: 550, x: back.x + 10, y: back.y + 10, z: 101, alpha: 1)
+      .attr(w: w - 20, x: back.x + 10, y: back.y + 10, z: 101, alpha: 1)
       .text(speaker)
       .textColor('#707070')
       .textFont({
@@ -33,7 +34,7 @@
     for line, i in lines
       back.attach(Crafty.e('2D, DOM, Text')
         .attr(
-          w: 550,
+          w: w - 20,
           x: back.x + 10,
           y: back.y + 30 + (i * 20)
           z: 101

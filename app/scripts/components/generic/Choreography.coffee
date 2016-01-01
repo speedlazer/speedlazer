@@ -1,7 +1,7 @@
 # TODO: Document
 Crafty.c 'Choreography',
   init: ->
-    @bind("EnterFrame", @_choreographyTick)
+    @bind('GameLoop', @_choreographyTick)
 
     @_ctypes =
       bezier: @_executeBezier
@@ -82,8 +82,8 @@ Crafty.c 'Choreography',
       part: number
       x: @x
       y: @y
-      dx: part.x ? 0
-      dy: part.y ? 0
+      dx: part.x
+      dy: part.y
       easing: new Crafty.easing(part.duration ? 0, easingFn)
     )
     if part.properties
@@ -93,25 +93,27 @@ Crafty.c 'Choreography',
       @_currentPart.currentProperties = currentProperties
 
   _executeLinear: (v) ->
-    @x = @_currentPart.x + (v * @_currentPart.dx)
-    @y = @_currentPart.y + (v * @_currentPart.dy)
+    @x = @_currentPart.x + (v * (@_currentPart.dx ? 0))
+    @y = @_currentPart.y + (v * (@_currentPart.dy ? 0))
 
   _executeDelay: (v) ->
 
   _executeMoveIntoViewport: (v) ->
     # the goal are current coordinates on screen
     destinationX = @_currentPart.dx
-    @_currentPart.moveOriginX ?= @_currentPart.x + Crafty.viewport.x
-    diffX = destinationX - @_currentPart.moveOriginX
-    motionX = (diffX * v)
-    @x = @_currentPart.moveOriginX + motionX - Crafty.viewport.x
+    if destinationX
+      @_currentPart.moveOriginX ?= @_currentPart.x + Crafty.viewport.x
+      diffX = destinationX - @_currentPart.moveOriginX
+      motionX = (diffX * v)
+      @x = @_currentPart.moveOriginX + motionX - Crafty.viewport.x
 
     destinationY = @_currentPart.dy
-    @_currentPart.moveOriginY ?= @_currentPart.y + Crafty.viewport.y
-    diffY = destinationY - @_currentPart.moveOriginY
+    if destinationY
+      @_currentPart.moveOriginY ?= @_currentPart.y + Crafty.viewport.y
+      diffY = destinationY - @_currentPart.moveOriginY
 
-    motionY = (diffY * v)
-    @y = @_currentPart.moveOriginY + motionY - Crafty.viewport.y
+      motionY = (diffY * v)
+      @y = @_currentPart.moveOriginY + motionY - Crafty.viewport.y
 
   _executeTween: (v) ->
     for k, p of @_currentPart.properties

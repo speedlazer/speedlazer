@@ -23,7 +23,7 @@ Crafty.c 'ScrollWall',
       .attr(x: 0, y: Crafty.viewport.height - 2, h: 2, w: Crafty.viewport.width)
     @attach @wallBottom
 
-    @bind 'EnterFrame', (fd) ->
+    @bind 'GameLoop', (fd) ->
       speedX = @_speed.x
       speedY = @_speed.y
 
@@ -83,8 +83,8 @@ Crafty.c 'ScrollWall',
 
   off: ->
     @wallEnd.removeComponent('Edge')
-    @unbind('EnterFrame')
+    @unbind('GameLoop')
 
   remove: ->
-    @unbind('EnterFrame')
+    @unbind('GameLoop')
 

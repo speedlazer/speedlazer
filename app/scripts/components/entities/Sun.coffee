@@ -62,11 +62,11 @@ Crafty.c 'Sun',
 
   sun: (settings) ->
     @attr settings
-    @bind 'EnterFrame', @_updateGlare
+    @bind 'GameLoop', @_updateGlare
     this
 
   remove: ->
-    @unbind 'EnterFrame', @_updateGlare
+    @unbind 'GameLoop', @_updateGlare
 
   _updateGlare: ->
     covered = [0]

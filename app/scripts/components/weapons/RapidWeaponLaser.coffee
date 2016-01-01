@@ -7,7 +7,7 @@ Crafty.c 'RapidWeaponLaser',
       h: 5
 
   remove: ->
-    @unbind 'EnterFrame', @_autoFire
+    @unbind 'GameLoop', @_autoFire
 
   install: (@ship) ->
     @xp = 0
@@ -25,7 +25,7 @@ Crafty.c 'RapidWeaponLaser',
     @burstCount = Infinity
     @frontFire = yes
 
-    @bind 'EnterFrame', @_autoFire
+    @bind 'GameLoop', @_autoFire
 
   addXP: (amount) ->
     @xp += amount

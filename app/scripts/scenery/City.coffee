@@ -20,21 +20,25 @@ generator.defineElement 'water', ->
   @addBackground(400, @level.visibleHeight - 125, water2, .5)
   water2.originalX = water2.x
 
-  @level.registerWaveTween 'OceanWavesDistance', 5000, 'easeInOutQuad', (v, forward) ->
-    distance = 30
-    width = 200
-    Crafty('water1').each ->
-      if forward
-        @w = width + (v * distance)
-      else
-        @w = width + distance - (v * distance)
-    Crafty('water2').each ->
-      if forward
-        @w = width - (v * distance) + 1
-        @dx = (v * distance) - 1
-      else
-        @w = width - distance + (v * distance) + 1
-        @dx = distance - (v * distance) - 1
+  #@level.registerWaveTween 'OceanWavesDistance', 5000, 'easeInOutQuad', (v, forward) ->
+    #distance = 0
+    #width = 200
+    #Crafty('water1').each ->
+      #if forward
+        #@w = width + (v * distance)
+      #else
+        #@w = width + distance - (v * distance)
+    #Crafty('water2').each ->
+      #if forward
+        #@w = width - (v * distance) + 1
+        #dx = @dx
+        #@dx = distance - (v * distance) - 1
+        #@x += (dx - @dx)
+      #else
+        #@w = width - distance + (v * distance) + 1
+        #dx = @dx
+        #@dx = (v * distance) - 1
+        #@x += (dx - @dx)
 
 generator.defineElement 'waterFront', ->
   height = 65

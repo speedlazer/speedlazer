@@ -1,8 +1,26 @@
 Game =
+  paused: no
+  togglePause: ->
+    @paused = !@paused
+    if @paused
+      Crafty('Delay').each -> @pauseDelays()
+      Crafty('Tween').each -> @pauseTweens()
+      Crafty('Particles').each -> @pauseParticles()
+      Crafty.trigger('GamePause', @paused)
+    else
+      Crafty.trigger('GamePause', @paused)
+      Crafty('Delay').each -> @resumeDelays()
+      Crafty('Tween').each -> @resumeTweens()
+      Crafty('Particles').each -> @resumeParticles()
+
   # Initialize and start our game
   start: ->
     @firstLevel = 'Game'
     @resetCredits()
+
+    Crafty.bind 'EnterFrame', ->
+      return if Game.paused
+      Crafty.trigger 'GameLoop', arguments...
 
     Crafty.paths(
       audio: 'audio/'
@@ -64,6 +82,7 @@ Game =
         fire: 0
         secondary: 2
         super: 4
+        pause: 9
         up: 12
         down: 13
         left: 14

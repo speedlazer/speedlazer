@@ -4,7 +4,7 @@ Crafty.c 'Bullet',
     @color '#FFFF00'
 
   fire: (properties) ->
-    @attr(damage: properties.damage).bind('EnterFrame', (fd) =>
+    @attr(damage: properties.damage).bind('GameLoop', (fd) =>
       @x += (properties.speed / 1000.0) * fd.dt
       if @x > @_maxXforViewPort()
         # Maybe send a bullet miss event
