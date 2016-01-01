@@ -1,10 +1,10 @@
  Crafty.c 'CameraCrew',
   init: ->
-    @requires '2D, WebGL, Color, Choreography, ViewportFixed, Collision, Hideable'
+    @requires '2D, WebGL, Choreography, ViewportFixed, Collision, Hideable, cameraHelicopter'
     @attr(
       w: 60
-      h: 40
-    ).color '#404050'
+      h: 25
+    )
     @origin 'middle left'
 
   cameraCrew: ->

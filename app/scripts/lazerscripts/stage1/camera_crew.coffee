@@ -3,6 +3,17 @@ Game.Scripts ||= {}
 
 class Game.Scripts.CameraCrew extends Game.EntityScript
 
+  assets: ->
+    @loadAssets(
+      sprites:
+        'camera-helicopter.png':
+          tile: 120
+          tileh: 50
+          map:
+            cameraHelicopter: [0,0]
+          paddingX: 0
+    )
+
   spawn: (options) ->
     Crafty.e('CameraCrew')
       .attr(
@@ -17,12 +28,13 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
       @sendToBackground(0.85, -100)
       @setLocation x: 0.45, y: .4
       @moveTo x: -.1
+      => @entity.flip('X')
       @wait 200
       @sendToBackground(0.75, -200)
       @moveTo x: .22, y: .45
       @repeat @sequence(
-        @moveTo x: .36, y: .42, speed: 25, easing: 'easeInOutQuad'
-        @moveTo x: .22, y: .45, speed: 25, easing: 'easeInOutQuad'
+        @moveTo x: .36, y: .47, speed: 25, easing: 'easeInOutQuad'
+        @moveTo x: .22, y: .5, speed: 25, easing: 'easeInOutQuad'
       )
     )
 
@@ -32,8 +44,8 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
         @movePath [
           [.6, .8]
         ], speed: 150
-        @repeat 13, @sequence(
-          @explosion(@location(offsetX: -40, offsetY: -20))
+        @repeat 14, @sequence(
+          @explosion(@location(), radius: 10)
           @wait 200
         )
       )
