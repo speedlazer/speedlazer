@@ -51,8 +51,8 @@ class Game.BezierPath
     p1 = @pointOnPath(path, location)
     p2 = @pointOnPath(path, Math.min(location + 0.01, 1.0))
     angle = Math.atan2(p1.y - p2.y, p1.x - p2.x)
-    angle *= 180 / Math.PI
-    angle
+    angle *= (180 / Math.PI)
+    (angle + 180) % 360
 
   getCurveAndLocation: (path, location) ->
     distance = 0.0
