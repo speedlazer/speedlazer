@@ -87,7 +87,7 @@ Crafty.c 'PlayerControlledShip',
       @primaryWeapon = Crafty.e('OldWeaponLaser')
       @primaryWeapon.install(this)
       @listenTo @primaryWeapon, 'levelUp', (level) =>
-        @scoreText 'L +1'
+        @scoreText "L +#{level}"
       return true
     if item is 'lasers'
       @primaryWeapon?.destroy()
@@ -95,7 +95,7 @@ Crafty.c 'PlayerControlledShip',
       @primaryWeapon = Crafty.e('RapidWeaponLaser')
       @primaryWeapon.install(this)
       @listenTo @primaryWeapon, 'levelUp', (level) =>
-        @scoreText 'L +1'
+        @scoreText "L +#{level}"
       return true
     if item is 'rockets'
       @secondaryWeapon?.destroy()
@@ -118,11 +118,12 @@ Crafty.c 'PlayerControlledShip',
         x: @x
         y: @y - 10
         z: 990
+        w: 100
       )
       .textFont({
-        size: '16px',
+        size: '10px',
         weight: 'bold',
-        family: 'Bank Gothic'
+        family: 'Press Start 2P'
       })
       .tween(y: @y - 40, alpha: 0.5, 1000)
       .one('TweenEnd', -> @destroy())
