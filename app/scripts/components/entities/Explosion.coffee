@@ -11,7 +11,7 @@ Crafty.c 'Explosion',
     @attr attr
 
     options =
-      maxParticles: 12 * attr.radius
+      maxParticles: 6 * attr.radius
       size: attr.radius
       sizeRandom: 8
       speed: (attr.radius / 13)

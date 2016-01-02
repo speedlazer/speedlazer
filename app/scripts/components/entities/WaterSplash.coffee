@@ -9,7 +9,7 @@ Crafty.c 'WaterSplash',
   waterSplash: (attr) ->
     #console.log 'splash', attr.size
     options =
-      maxParticles: 5 * attr.size
+      maxParticles: 2 * attr.size
       size: attr.size / 1.5
       sizeRandom: 4
       speed: attr.size / 20
