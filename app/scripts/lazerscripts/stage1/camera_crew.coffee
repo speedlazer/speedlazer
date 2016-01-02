@@ -42,9 +42,9 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
     @sequence(
       @parallel(
         @movePath [
-          [.6, .8]
+          [.6, .82]
         ], speed: 150
-        @repeat 14, @sequence(
+        @repeat 12, @sequence(
           @explosion(@location(), radius: 10)
           @wait 200
         )
