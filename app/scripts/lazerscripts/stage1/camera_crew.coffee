@@ -11,7 +11,7 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
           tileh: 50
           map:
             cameraHelicopter: [0,0]
-          paddingX: 0
+          paddingX: 1
     )
 
   spawn: (options) ->
