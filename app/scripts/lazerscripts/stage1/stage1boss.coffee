@@ -105,6 +105,8 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       x: location().x
       y: location().y + 70
       speed: 200
+      pointsOnHit: 0
+      pointsOnDestroy: 0
     )
 
   execute: ->
@@ -143,6 +145,8 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
       x: location().x - 30
       y: location().y - 5 + Math.round(Math.random() * 10)
       speed: 600
+      pointsOnHit: 0
+      pointsOnDestroy: 0
     )
 
   execute: ->
