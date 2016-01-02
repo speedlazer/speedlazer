@@ -110,9 +110,9 @@ Game =
 
     defInit = 'SPL'
     list = [
-      { initials: defInit, score: 6000 }
+      { initials: defInit, score: 15000 }
+      { initials: defInit, score: 10000 }
       { initials: defInit, score: 5000 }
-      { initials: defInit, score: 4000 }
       { initials: defInit, score: 3000 }
       { initials: defInit, score: 2000 }
       { initials: defInit, score: 1500 }
