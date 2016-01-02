@@ -22,83 +22,36 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
-    @inventoryAdd 'item', 'rockets', ->
-      Crafty.e('PowerUp').powerUp(contains: 'rockets', marking: 'R')
 
     @sequence(
       @introText()
       @tutorial()
       @droneTakeover()
+      @oceanFighting()
+      @enteringLand()
+      @cityBay()
+      @midstageBossfight()
 
-      @checkpoint @checkpointStart('Ocean', 60000)
-
-      @parallel(
-        @sequence(
-          @wait 2000
-          @say 'General', 'We\'re under attack!'
-        )
-        @swirlAttacks()
-      )
-      @setScenery('CoastStart')
-      @swirlAttacks()
-      @underWaterAttacks()
-
-      @checkpoint @checkpointStart('CoastStart', 150000)
-
-      @setScenery('BayStart')
-      @mineSwarm()
-      @underWaterAttacks()
-      @parallel(
-        @swirlAttacks()
-        @mineSwarm()
-      )
-      @checkpoint @checkpointStart('Bay', 240000)
-      @setScenery('UnderBridge')
-      @parallel(
-        @placeSquad Game.Scripts.Stalker
-        @mineSwarm direction: 'left'
-      )
-
-      @parallel(
-        @sequence(
-          @stalkerShootout()
-          @parallel(
-            @placeSquad Game.Scripts.Stalker
-            @mineSwarm direction: 'left'
-          )
-          @swirlAttacks()
-        )
-      )
-
-      @checkpoint @checkpointStart('Bay', 300000)
-
-      @setScenery('UnderBridge')
-      @mineSwarm()
-      @mineSwarm direction: 'left'
-      @mineSwarm()
-      @waitForScenery('UnderBridge', event: 'inScreen')
-      @setSpeed 0
-      @placeSquad Game.Scripts.Stage1BossStage1
-
-      @setSpeed 50
       @checkpoint @checkpointMidStage('Bay')
       @say('General', 'Hunt him down!')
       @setSpeed 100
-      @placeSquad Game.Scripts.StalkerChain,
+      @placeSquad Game.Scripts.Shooter,
         amount: 4
-        delay: 500
-        drop: 'rockets'
+        delay: 1000
+        drop: 'lasers'
         options:
-          grid: new Game.LocationGrid
-            y:
-              start: 150
-              steps: 4
-              stepSize: 80
+          shootOnSight: yes
 
       @parallel(
         @sequence(
           @wait 3000
           @gainHeight(300, duration: 4000)
+          @placeSquad Game.Scripts.Shooter,
+            amount: 4
+            delay: 1000
+            drop: 'lasers'
+            options:
+              shootOnSight: yes
         )
         @placeSquad Game.Scripts.Stage1BossPopup
       )
@@ -178,6 +131,69 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   cameraCrew: ->
     @async @runScript(Game.Scripts.CameraCrew)
 
+  oceanFighting: ->
+    @sequence(
+      @checkpoint @checkpointStart('Ocean', 60000)
+
+      @parallel(
+        @sequence(
+          @wait 2000
+          @say 'General', 'We\'re under attack!'
+        )
+        @swirlAttacks()
+      )
+      @setScenery('CoastStart')
+      @swirlAttacks()
+      @underWaterAttacks()
+    )
+
+  enteringLand: ->
+    @sequence(
+      @checkpoint @checkpointStart('CoastStart', 150000)
+      @setScenery('BayStart')
+      @mineSwarm()
+      @underWaterAttacks()
+      @parallel(
+        @swirlAttacks()
+        @mineSwarm()
+      )
+    )
+
+  cityBay: ->
+    @sequence(
+      @checkpoint @checkpointStart('Bay', 240000)
+      @setScenery('UnderBridge')
+      @parallel(
+        @placeSquad Game.Scripts.Stalker
+        @mineSwarm direction: 'left'
+      )
+
+      @parallel(
+        @sequence(
+          @stalkerShootout()
+          @parallel(
+            @placeSquad Game.Scripts.Stalker
+            @mineSwarm direction: 'left'
+          )
+          @swirlAttacks()
+        )
+      )
+    )
+
+  midstageBossfight: ->
+    @sequence(
+      @checkpoint @checkpointStart('Bay', 300000)
+      @setScenery('UnderBridge')
+      @mineSwarm()
+      @mineSwarm direction: 'left'
+      @mineSwarm()
+      @waitForScenery('UnderBridge', event: 'inScreen')
+      @setSpeed 0
+      @placeSquad Game.Scripts.Stage1BossStage1
+
+      @setSpeed 50
+    )
+
   swirlAttacks: ->
     @parallel(
       @repeat 2, @placeSquad Game.Scripts.Swirler,
@@ -243,15 +259,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.ScraperFlyer,
         amount: 8
         delay: 750
-      @placeSquad Game.Scripts.MineWall,
-        amount: 8
-        delay: 500
-        options:
-          grid: new Game.LocationGrid
-            y:
-              start: 60
-              steps: 8
-              stepSize: 40
       @placeSquad Game.Scripts.Swirler,
         amount: 8
         delay: 750

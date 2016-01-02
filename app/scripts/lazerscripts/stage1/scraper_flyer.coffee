@@ -7,7 +7,7 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
     Crafty.e('Drone,ShootOnSight').drone(
       health: 200
       x: -50
-      y: 300
+      y: Crafty.viewport.height * .7
       speed: 200
     )
 
@@ -17,12 +17,14 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
       @sendToBackground(0.5, -400)
       @parallel(
         @movePath [
-          [420, 270]
-          [520, 150]
-          [320, 50]
-          [120, 150]
-          [220, 250]
-          [620, 350]
+          [.6, .8]
+          [.8, .3]
+          [.5, .1]
+          [.2, .25]
+          [.5, .7]
+          [.8, .4]
+          [.4, .2]
+          [-.1, .4]
         ]
         @sequence(
           @wait 3000
