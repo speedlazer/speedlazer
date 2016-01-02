@@ -59,7 +59,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @cityFighting()
 
       @say 'Game', 'End of gameplay for now... \nStarting endless enemies'
-      @repeat @mineSwarm()
+      @repeat @mineSwarm(points: no)
     )
 
   introText: ->
@@ -233,7 +233,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             start: 0.125
             steps: 12
             stepSize: 0.05
-
+        points: options.points ? yes
         direction: options.direction
 
   stalkerShootout: ->

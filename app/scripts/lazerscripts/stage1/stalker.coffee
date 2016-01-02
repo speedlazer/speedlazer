@@ -9,6 +9,7 @@ class Game.Scripts.Stalker extends Game.EntityScript
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .83
       speed: 600
+      pointsOnHit: 125
     )
 
   execute: ->

@@ -17,10 +17,13 @@ class Game.Scripts.JumpMine extends Game.EntityScript
   spawn: (options) ->
     x = if options.direction is 'right' then Crafty.viewport.width + 80 else -80
     @target = options.grid.getLocation()
+
     Crafty.e('Mine').mine(
       x: x
       y: 340
       speed: options.speed ? 200
+      pointsOnHit: if options.points then 10 else 0
+      pointsOnDestroy: if options.points then 50 else 0
     )
 
   execute: ->

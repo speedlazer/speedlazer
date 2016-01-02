@@ -7,8 +7,8 @@ class Game.Scripts.IntroBarrel extends Game.EntityScript
     Crafty.e('2D, WebGL, Tween, Color, Collision, Choreography, Hideable')
       .color('#606000')
       .attr({ z: 3, w: 10, h: 15, speed: 150 })
-      .onHit 'PlayerControlledShip', ->
-        @trigger('Knock')
+      .onHit 'PlayerControlledShip', (c) ->
+        @trigger('Knock', c[0].obj)
 
   execute: ->
     @bindSequence 'Knock', @knockedOff
@@ -18,7 +18,8 @@ class Game.Scripts.IntroBarrel extends Game.EntityScript
       @wait 20000
     )
 
-  knockedOff: ->
+  knockedOff: (player) ->
+    player.trigger 'BonusPoints', 25
     @parallel(
       @moveTo y: 1.25
       @rotate 90, 1500

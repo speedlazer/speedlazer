@@ -30,16 +30,23 @@ Crafty.c 'ShipSpawnable',
 
     @ship.installItem armed if armed
 
-    @listenTo @ship, 'BulletHit', ->
+    @listenTo @ship, 'BulletHit', (data) ->
       @stats.shotsHit += 1
-      @addPoints(10)
-    @listenTo @ship, 'BulletDestroyedTarget', ->
+      @addPoints(data?.pointsOnHit ? 0)
+
+    @listenTo @ship, 'BulletDestroyedTarget', (data) ->
       @stats.enemiesKilled += 1
-      @addPoints(50)
+      @addPoints(data?.pointsOnDestroy ? 0)
+
+    @listenTo @ship, 'BonusPoints', (points) ->
+      @addPoints(points)
+
     @listenTo @ship, 'PowerUp', ->
       @addPoints(20)
+
     @listenTo @ship, 'Shoot', ->
       @stats.shotsFired += 1
+
     Crafty.trigger('ShipSpawned', @ship)
     # We start it after the spawned event, so that listeners can
     # reposition it before

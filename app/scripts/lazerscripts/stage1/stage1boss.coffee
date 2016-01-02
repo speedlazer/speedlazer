@@ -37,6 +37,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .83
       speed: 100
+      pointsOnHit: 5
     )
 
   execute: ->
