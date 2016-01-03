@@ -178,6 +178,11 @@ Game.ScriptModule.Entity =
     (sequence) =>
       @_verify(sequence)
       return unless @enemy.alive
+
+      if typeof location is 'string'
+        target = Crafty(location).get 0
+        location = { x: target.x + Crafty.viewport.x, y: target.y + Crafty.viewport.y }
+
       settings = location?() ? location
       _.extend(settings, extraSettings)
 
