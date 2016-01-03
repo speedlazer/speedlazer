@@ -34,6 +34,7 @@
     "grunt-open": "~0.2.0",
     "grunt-replace": "~0.4.4",
     "grunt-rev": "~0.1.0",
+    "grunt-string-replace": "^1.2.1",
     "grunt-svgmin": "~0.2.0",
     "grunt-usemin": "~2.1.1",
     "jshint-stylish": "~0.1.3",

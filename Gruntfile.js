@@ -26,6 +26,21 @@ module.exports = function (grunt) {
 
   grunt.initConfig({
     yeoman: yeomanConfig,
+    'string-replace': {
+      dist: {
+        files: {
+          '<%= yeoman.dist %>/index.html': ['<%= yeoman.dist %>/index.html']
+        },
+        options: {
+          replacements: [
+            {
+              pattern: 'UA-Analytics',
+              replacement: 'UA-71899181-1'
+            }
+          ]
+        }
+      }
+    },
     coffee: {
       compile: {
         files: {
@@ -294,6 +309,7 @@ module.exports = function (grunt) {
     'uglify',
     'copy',
     'rev',
+    'string-replace',
     'usemin'
   ]);
 
