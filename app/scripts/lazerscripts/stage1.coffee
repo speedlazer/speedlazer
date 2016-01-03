@@ -58,6 +58,24 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @cityFighting()
 
+      @repeat 2, @dummyFights()
+      @gainHeight(280, duration: 4000)
+
+      @checkpoint @checkpointMidStage('Skyline')
+      @dummyFights()
+      @setScenery 'SkylineBase'
+      @wait 4000
+
+      @placeSquad Game.Scripts.Stage1BossLeaving
+      @say 'General', 'He went to the military complex\nBut we cant get through those shields now'
+      @wait 3000
+      @say 'Player', 'Ok lets find an underground entrance!'
+      @gainHeight(-580, duration: 4000)
+      @wait 800
+
+      #@gainHeight(-580, duration: 4000)
+
+
       @say 'Game', 'End of gameplay for now... \nStarting endless enemies'
       @repeat @mineSwarm(points: no)
     )
@@ -285,6 +303,18 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         options:
           shootOnSight: yes
       @placeSquad Game.Scripts.Stage1BossPopup
+    )
+
+  dummyFights: ->
+    @parallel(
+      @placeSquad Game.Scripts.ScraperFlyer,
+        amount: 8
+        delay: 750
+      @placeSquad Game.Scripts.Swirler,
+        amount: 8
+        delay: 750
+        options:
+          shootOnSight: yes
     )
 
   checkpointStart: (scenery, sunSkip) ->
