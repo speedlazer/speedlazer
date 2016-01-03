@@ -197,7 +197,7 @@ Game.ScriptModule.Level =
 
       currentSpeed = @level._forcedSpeed?.x || @level._forcedSpeed
       { duration } = options
-      duration = 1 if @_skippingToCheckpoint()
+      duration = (Crafty.timer.FPS() * 2) if @_skippingToCheckpoint()
       speedY = (height / duration) * 1000
 
       @level.setForcedSpeed(x: currentSpeed, y: -speedY)
