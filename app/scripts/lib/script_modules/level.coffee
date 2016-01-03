@@ -114,7 +114,7 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       item = @inventory('item', options.item)
       if player = options.inFrontOf
-        @level.addComponent item().attr(z: -1), x: 640, y: player.ship().y
+        @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: player.ship().y
       if pos = options.location
         coords = pos?()
         # coords from a function are always relative
@@ -264,4 +264,33 @@ Game.ScriptModule.Level =
     (sequence) =>
       @_verify(sequence)
       @level.updateTitle(text)
+
+  pickTarget: (selection) ->
+    (sequence) =>
+      pickTarget = (selection) ->
+        entities = Crafty(selection)
+        return null if entities.length is 0
+        entities.get Math.floor(Math.random() * entities.length)
+
+      # TODO: When this script is done, unbind events
+      refreshTarget = (ship) =>
+        @target = { x: ship.x, y: ship.y }
+        Crafty.one 'ShipSpawned', (ship) =>
+          @target = pickTarget(selection)
+          @target.one 'Destroyed', refreshTarget
+
+      @target = pickTarget(selection)
+
+      if selection is 'PlayerControlledShip'
+        @target.one 'Destroyed', refreshTarget
+
+  targetLocation: (override = {}) ->
+    =>
+      if override.x? and (-1 < override.x < 2)
+        override.x *= Crafty.viewport.width
+      if override.y? and (-1 < override.y < 2)
+        override.y *= Crafty.viewport.height
+
+      x: (override.x ? (@target.x + Crafty.viewport.x)) + (override.offsetX ? 0)
+      y: (override.y ? (@target.y + Crafty.viewport.y)) + (override.offsetY ? 0)
 

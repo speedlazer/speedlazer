@@ -181,13 +181,11 @@ Game.ScriptModule.Entity =
       settings = location?() ? location
       _.extend(settings, extraSettings)
 
-      #if settings.x? and (@_isFloat(settings.x) or (-1 < settings.x < 2))
       if settings.x? and (-1 < settings.x < 2)
-          settings.x *= Crafty.viewport.width
+        settings.x *= Crafty.viewport.width
 
-      #if settings.y? and (@_isFloat(settings.y) or (-1 < settings.y < 2))
       if settings.y? and (-1 < settings.y < 2)
-          settings.y *= Crafty.viewport.height
+        settings.y *= Crafty.viewport.height
 
       seaLevel = @_getSeaLevel()
 
@@ -408,28 +406,4 @@ Game.ScriptModule.Entity =
     =>
       x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2)) + (settings.offsetX ? 0)
       y: (@enemy.location.y ? (@entity.y + Crafty.viewport.y) + (@entity.h / 2)) + (settings.offsetY ? 0)
-
-  pickTarget: (selection) ->
-    (sequence) =>
-      pickTarget = (selection) ->
-        entities = Crafty(selection)
-        return null if entities.length is 0
-        entities.get Math.floor(Math.random() * entities.length)
-
-      # TODO: When this script is done, unbind events
-      refreshTarget = (ship) =>
-        @target = { x: ship.x, y: ship.y }
-        Crafty.one 'ShipSpawned', (ship) =>
-          @target = pickTarget(selection)
-          @target.one 'Destroyed', refreshTarget
-
-      @target = pickTarget(selection)
-
-      if selection is 'PlayerControlledShip'
-        @target.one 'Destroyed', refreshTarget
-
-  targetLocation: (override = {}) ->
-    =>
-      x: (override.x ? (@target.x + Crafty.viewport.x)) + (override.offsetX ? 0)
-      y: (override.y ? (@target.y + Crafty.viewport.y)) + (override.offsetY ? 0)
 
