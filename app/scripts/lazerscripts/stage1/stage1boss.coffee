@@ -211,3 +211,56 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
       )
     )
 
+class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
+  spawn: ->
+    Crafty.e('LargeDrone').drone(
+      health: 134000
+      x: Crafty.viewport.width + 40
+      y: Crafty.viewport.height * .5
+      speed: 100
+    )
+
+  execute: ->
+    @inventoryAdd 'item', 'lasers', ->
+      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
+
+    console.log 'in leaving script'
+
+    @sequence(
+      @animate 'slow', -1, 'eye'
+      @pickTarget('PlayerControlledShip')
+      @moveTo(@targetLocation(), x: .845)
+      @attackCycle()
+      @leaveScreen()
+    )
+
+  leaveScreen: ->
+    @sequence(
+      @animate 'emptyWing', 0, 'wing'
+      => @entity.eye.destroy() # TODO: This is buggy when scaling enemy
+      @sendToBackground(0.9, -100)
+      @parallel(
+        @moveTo(x: -.15, speed: 200)
+        @scale(0.7, duration: 3000)
+      )
+      => @entity.flip('X')
+      @sendToBackground(0.7, -800)
+      @parallel(
+        @moveTo('MiliBase', speed: 200)
+        @scale(0.3, duration: 3000)
+      )
+    )
+
+  attackCycle: ->
+    @repeat 4, @sequence(
+      @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @animate 'emptyWing', 0, 'wing'
+      @parallel(
+        @moveTo(@targetLocation(offsetY: -20), x: .845)
+        @sequence(
+          @animate 'reload', 0, 'wing'
+          @wait 1000
+        )
+      )
+    )
+
