@@ -35,7 +35,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
   spawn: ->
     Crafty.e('LargeDrone').drone(
       x: Crafty.viewport.width + 40
-      y: Crafty.viewport.height * .83
+      y: Crafty.viewport.height * .35
       speed: 100
       pointsOnHit: 5
     )
@@ -48,25 +48,32 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     @sequence(
       @animate 'slow', -1, 'eye'
       @disableWeapons()
-      @moveTo(x: .85, y: .41)
-      @say('Large Drone', 'We have control now! You will suffer!')
-      @say('Large Drone', 'Earths defences are in our hands!')
-      @wait 500
+      @parallel(
+        @moveTo(x: .85, y: .41)
+        @sequence(
+          @say('Large Drone', 'We have control now! You will suffer!')
+          @say('Large Drone', 'Earths defences are in our hands!')
+          @wait 500
+        )
+      )
       @enableWeapons()
+      @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @animate 'emptyWing', 0, 'wing'
+      @animate 'reload', 0, 'wing'
       @moveTo(y: .43, speed: 5)
-      @attackCycle()
+      @attackCycle(5)
     )
 
-  attackCycle: ->
+  attackCycle: (speed) ->
     @repeat @sequence(
       @async @runScript(Game.Scripts.Stage1BossMine, @location())
-      @moveTo(y: .41, speed: 5)
+      @moveTo(y: .41, speed: speed)
       @wait 200
       @async @runScript(Game.Scripts.Stage1BossRocket, @location())
       @animate 'emptyWing', 0, 'wing'
       @animate 'reload', 0, 'wing'
       @async @runScript(Game.Scripts.Stage1BossMine, @location())
-      @moveTo(y: .43, speed: 5)
+      @moveTo(y: .43, speed: speed)
       @async @runScript(Game.Scripts.Stage1BossRocket, @location())
       @animate 'emptyWing', 0, 'wing'
       @wait 200
@@ -74,17 +81,23 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     )
 
   fase2: ->
-    @bindSequence 'Hit', @fase3, => @entity.health < 135000
+    @bindSequence 'Hit', @fase3, => @entity.health < 140000
 
     @sequence(
       @setSpeed 50
-      @attackCycle()
+      @attackCycle(8)
     )
 
   fase3: ->
     @sequence(
       @drop(location: @location(), item: 'lasers')
-      @moveTo(x: 1.15, y: .21, speed: 100)
+      @while(
+        @moveTo(x: 1.15, y: .21, speed: 50)
+        @sequence(
+          @explosion(@location())
+          @wait 700
+        )
+      )
     )
 
 class Game.Scripts.Stage1BossMine extends Game.EntityScript
@@ -163,7 +176,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
     Crafty.e('LargeDrone').drone(
       health: 134000
       x: Crafty.viewport.width + 40
-      y: Crafty.viewport.height * .83
+      y: Crafty.viewport.height * .5
       speed: 100
     )
 
