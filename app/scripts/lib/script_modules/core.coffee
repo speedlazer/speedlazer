@@ -75,11 +75,19 @@ Game.ScriptModule.Core =
       return WhenJS() if @_skippingToCheckpoint()
       if block is undefined
         block = condition
-        condition = -> true
+        condition = ->
+          # Never resolving promise
+          d = WhenJS.defer()
+          d.promise
 
-      if condition.apply this
-        WhenJS(block(sequence)).then =>
-          @while(condition, block)(sequence)
+      whileResolved = no
+      condition(sequence).finally -> whileResolved = yes
+      WhenJS.iterate(
+        -> 1
+        -> whileResolved
+        -> block(sequence)
+        1
+      )
 
   # Repeat forever or amount of times.
   # example for infinite repeat (see `while`):
