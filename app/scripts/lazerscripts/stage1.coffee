@@ -184,10 +184,30 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @sequence(
       @checkpoint @checkpointStart('Bay', 300000)
       @setScenery('UnderBridge')
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'lasers', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'lasers', inFrontOf: @player(2)))
+      )
       @mineSwarm()
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'lasers', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'lasers', inFrontOf: @player(2)))
+      )
       @mineSwarm direction: 'left'
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'lasers', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'lasers', inFrontOf: @player(2)))
+      )
       @mineSwarm()
-      @waitForScenery('UnderBridge', event: 'inScreen')
+      @while(
+        @waitForScenery('UnderBridge', event: 'inScreen')
+        @sequence(
+          @pickTarget('PlayerControlledShip')
+          @runScript(Game.Scripts.Stage1BossRocket, @targetLocation(x: 1.1))
+          @wait 200
+        )
+      )
+
       @setSpeed 0
       @placeSquad Game.Scripts.Stage1BossStage1
 
