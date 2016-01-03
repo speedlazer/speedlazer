@@ -22,6 +22,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
+    @inventoryAdd 'item', 'diagonals', ->
+      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D')
 
     @sequence(
       @introText()
@@ -38,7 +40,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 1000
-        drop: 'lasers'
+        drop: 'diagonals'
         options:
           shootOnSight: yes
 
@@ -114,6 +116,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @parallel(
       @if((-> @player(1).active and !@player(1).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(1)))
       @if((-> @player(2).active and !@player(2).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(2)))
+    )
+
+  dropDiagonalsForEachPlayer: ->
+    @parallel(
+      @if((-> @player(1).active and !@player(1).has('diagonals')), @drop(item: 'diagonals', inFrontOf: @player(1)))
+      @if((-> @player(2).active and !@player(2).has('diagonals')), @drop(item: 'diagonals', inFrontOf: @player(2)))
     )
 
   droneTakeover: ->
@@ -278,6 +286,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @parallel(
       @setScenery(scenery)
       @sunRise(skipTo: 300000)
+      @dropDiagonalsForEachPlayer()
       @wait 2000
     )
 

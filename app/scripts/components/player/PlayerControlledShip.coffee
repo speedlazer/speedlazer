@@ -56,15 +56,14 @@ Crafty.c 'PlayerControlledShip',
 
   shoot: (onOff) ->
     return unless @weaponsEnabled
-    return unless @primaryWeapon?
-    @trigger 'Shoot' if onOff
-    @primaryWeapon.shoot(onOff)
+
+    if @primaryWeapon?
+      @primaryWeapon.shoot(onOff)
+
+    if @secondaryWeapon?
+      @secondaryWeapon.shoot(onOff)
 
   secondary: (onOff) ->
-    return unless @weaponsEnabled
-    return unless @secondaryWeapon?
-    #@trigger 'Shoot' if onOff # TODO: What does this do?
-    @secondaryWeapon.shoot(onOff)
 
   superWeapon: (onOff) ->
     return unless onOff
@@ -79,6 +78,8 @@ Crafty.c 'PlayerControlledShip',
     if @hasItem item
       if item is 'lasers'
         @primaryWeapon.addXP(100)
+      if item is 'diagonals'
+        @secondaryWeapon.addXP(100)
       return true
     @items.push item
     if item is 'oldlasers'
@@ -97,13 +98,13 @@ Crafty.c 'PlayerControlledShip',
       @listenTo @primaryWeapon, 'levelUp', (level) =>
         @scoreText "L +#{level}"
       return true
-    if item is 'rockets'
+    if item is 'diagonals'
       @secondaryWeapon?.destroy()
 
-      @secondaryWeapon = Crafty.e('WeaponRocket')
+      @secondaryWeapon = Crafty.e('RapidDiagonalLaser')
       @secondaryWeapon.install(this)
       @listenTo @secondaryWeapon, 'levelUp', (level) =>
-        @scoreText 'R +1'
+        @scoreText "D +#{level}"
       return true
 
   hasItem: (item) ->
