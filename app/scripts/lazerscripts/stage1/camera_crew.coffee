@@ -40,11 +40,11 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
 
   crash: ->
     @sequence(
-      @parallel(
+      @while(
         @movePath [
           [.6, .82]
         ], speed: 150
-        @repeat 12, @sequence(
+        @sequence(
           @explosion(@location(), radius: 10)
           @wait 200
         )
