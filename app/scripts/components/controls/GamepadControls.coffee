@@ -3,6 +3,7 @@ Crafty.c 'GamepadControls',
     @requires 'Listener'
     @bind 'RemoveComponent', (componentName) ->
       @removeComponent 'GamepadControls' if componentName is 'ControlScheme'
+    @emits = {}
 
   remove: ->
     @unbind 'GamepadKeyChange', @_keyHandling
@@ -26,6 +27,43 @@ Crafty.c 'GamepadControls',
   _stickHandling: (e) ->
     # TODO: Detect start motion, start emitting 'up / down', 'left / right'
     # Detect end motion
+    #
+    #   axis: j,
+    #   value: gamepad.axes[j]
+    if e.axis is 1 # left stick: up / down
+      direction = 'vertical'
+      if e.value < -0.5
+        @_startEmit(direction, 'Up')
+      else if e.value > 0.5
+        @_startEmit(direction, 'Down')
+      else
+        @_stopEmit(direction)
+
+    if e.axis is 0 # left stick: left / right
+      direction = 'horizontal'
+      if e.value < -0.5
+        @_startEmit(direction, 'Left')
+      else if e.value > 0.5
+        @_startEmit(direction, 'Right')
+      else
+        @_stopEmit(direction)
+
+  _startEmit: (axis, value) ->
+    return if @emits[axis]?.value is value
+    @_stopEmit axis
+    @trigger(value)
+    @emits[axis] = {
+      interval: setInterval(
+        =>
+          @trigger(value)
+        200
+      )
+      value: value
+    }
+
+  _stopEmit: (axis) ->
+    clearInterval @emits[axis]?.interval
+    delete @emits[axis]
 
   _keyHandling: (e) ->
     return if @lastPressed and @lastPressed.getTime() > (new Date().getTime() - 200)
