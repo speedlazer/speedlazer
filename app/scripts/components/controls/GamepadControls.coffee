@@ -20,11 +20,15 @@ Crafty.c 'GamepadControls',
     @gamepad controlMap.gamepadIndex
 
     @bind 'GamepadKeyChange', @_keyHandling
+    @bind 'GamepadAxisChange', @_stickHandling
     this
+
+  _stickHandling: (e) ->
+    # TODO: Detect start motion, start emitting 'up / down', 'left / right'
+    # Detect end motion
 
   _keyHandling: (e) ->
     return if @lastPressed and @lastPressed.getTime() > (new Date().getTime() - 200)
-
     @lastPressed = new Date()
     if e.button is @controlMap.fire && e.pressed
       @trigger('Fire', e)
