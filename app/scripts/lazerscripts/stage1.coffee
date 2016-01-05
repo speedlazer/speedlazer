@@ -328,17 +328,22 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     )
 
   checkpointStart: (scenery, sunSkip) ->
-    @parallel(
-      @setScenery(scenery)
-      @sunRise(skipTo: sunSkip)
+    @sequence(
+      @parallel(
+        @setScenery(scenery)
+        @sunRise(skipTo: sunSkip)
+      )
       @wait 2000
     )
 
   checkpointMidStage: (scenery) ->
-    @parallel(
-      @setScenery(scenery)
-      @sunRise(skipTo: 300000)
+    @sequence(
+      @parallel(
+        @sunRise(skipTo: 300000)
+        @setScenery(scenery)
+      )
+      @wait 1000
       @dropDiagonalsForEachPlayer()
-      @wait 2000
+      @wait 1000
     )
 
