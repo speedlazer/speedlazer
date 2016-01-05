@@ -5,39 +5,47 @@ Crafty.c 'RapidWeaponLaser',
     @attr
       w: 30
       h: 5
+    @xp = 0
+    @lastShot = 0
+    @shotsFired = 0
+    @burstCount = Infinity
+    @frontFire = yes
 
   remove: ->
     @unbind 'GameLoop', @_autoFire
 
   install: (@ship) ->
-    @xp = 0
     @level = @determineLevel @xp
     @attr
       x: @ship.x + 10
       y: @ship.y + 15
       z: @ship.z + 1
+      alpha: 1
     @ship.attach this
 
     @shooting = no
-    @lastShot = 0
-    @cooldown = 250
-    @shotsFired = 0
-    @burstCount = Infinity
-    @frontFire = yes
+    @_determineCooldown()
 
     @bind 'GameLoop', @_autoFire
+
+  uninstall: ->
+    @attr alpha: 0
+    @unbind 'GameLoop', @_autoFire
 
   addXP: (amount) ->
     @xp += amount
     level = @level
     @level = @determineLevel @xp
     if level isnt @level
-      @cooldown = switch @level
-        when 0 then 250
-        when 1 then 200
-        when 2 then 150
-        when 3 then 100
+      @_determineCooldown()
       @trigger 'levelUp', @level
+
+  _determineCooldown: ->
+    @cooldown = switch @level
+      when 0 then 250
+      when 1 then 200
+      when 2 then 150
+      when 3 then 100
 
   determineLevel: (xp) ->
     levelBoundaries = [150, 600, 2400, 9600]

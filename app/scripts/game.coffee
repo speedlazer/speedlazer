@@ -44,7 +44,7 @@ Game =
     Crafty.e('KeyboardControls, PlayerAssignable')
       .controls
         fire: Crafty.keys.SPACE
-        secondary: Crafty.keys.PERIOD
+        switchWeapon: Crafty.keys.PERIOD
         super: Crafty.keys.ENTER
         up: Crafty.keys.UP_ARROW
         down: Crafty.keys.DOWN_ARROW
@@ -56,7 +56,7 @@ Game =
     Crafty.e('KeyboardControls, PlayerAssignable')
       .controls
         fire: Crafty.keys.G
-        secondary: Crafty.keys.H
+        switchWeapon: Crafty.keys.H
         up: Crafty.keys.W
         down: Crafty.keys.S
         left: Crafty.keys.A
@@ -68,7 +68,7 @@ Game =
       .controls
         gamepadIndex: 0
         fire: 0
-        secondary: 2
+        switchWeapon: 2
         super: 4
         pause: 9
         up: 12
@@ -80,7 +80,7 @@ Game =
       .controls
         gamepadIndex: 1
         fire: 0
-        secondary: 2
+        switchWeapon: 2
         super: 4
         pause: 9
         up: 12

@@ -21,9 +21,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
+      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'Ls')
+    @inventoryAdd 'item', 'xp', ->
+      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'XP')
     @inventoryAdd 'item', 'diagonals', ->
-      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D')
+      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'Ds')
 
     @sequence(
       @introText()
@@ -40,7 +42,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 1000
-        drop: 'diagonals'
+        drop: 'xp'
         options:
           shootOnSight: yes
 
@@ -51,7 +53,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           @placeSquad Game.Scripts.Shooter,
             amount: 4
             delay: 1000
-            drop: 'lasers'
+            drop: 'xp'
             options:
               shootOnSight: yes
         )
@@ -108,7 +110,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @placeSquad Game.Scripts.Swirler,
           amount: 4
           delay: 500
-          drop: 'lasers'
+          drop: 'xp'
       ))
     )
 
@@ -129,7 +131,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.CrewShooters,
         amount: 4
         delay: 750
-        drop: 'lasers'
+        drop: 'xp'
       @sequence(
         @say('General', 'What the hell is happening with our drones?')
         @say('General', 'They do not respond to our commands anymore!\nThe defence AI has been compromised!')
@@ -207,13 +209,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @repeat 2, @placeSquad Game.Scripts.Swirler,
         amount: 4
         delay: 500
-        drop: 'lasers'
+        drop: 'xp'
         options:
           shootOnSight: yes
       @repeat 2, @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 500
-        drop: 'lasers'
+        drop: 'xp'
         options:
           shootOnSight: yes
     )
@@ -250,13 +252,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 1000
-        drop: 'lasers'
+        drop: 'xp'
         options:
           shootOnSight: yes
       @placeSquad Game.Scripts.Swirler,
         amount: 4
         delay: 1000
-        drop: 'lasers'
+        drop: 'xp'
         options:
           shootOnSight: yes
     )
