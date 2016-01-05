@@ -21,11 +21,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'Ls')
+      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#2020FF')
     @inventoryAdd 'item', 'xp', ->
-      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'XP')
+      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
     @inventoryAdd 'item', 'diagonals', ->
-      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'Ds')
+      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
 
     @sequence(
       @introText()

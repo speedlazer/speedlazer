@@ -43,9 +43,9 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
   execute: ->
     @bindSequence 'Hit', @fase2, => @entity.health < 150000
     @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'Ls')
+      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
     @inventoryAdd 'item', 'diagonals', ->
-      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'Ds')
+      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
 
     @sequence(
       @animate 'slow', -1, 'eye'
@@ -185,7 +185,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
   execute: ->
     @bindSequence 'Hit', @leaveScreen, => @entity.health < 133000
     @inventoryAdd 'item', 'xp', ->
-      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'XP')
+      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
 
     @sequence(
       @animate 'slow', -1, 'eye'
@@ -224,7 +224,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
+      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
 
     console.log 'in leaving script'
 
