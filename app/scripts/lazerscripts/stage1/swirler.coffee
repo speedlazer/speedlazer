@@ -12,11 +12,13 @@ class Game.Scripts.Swirler extends Game.EntityScript
     )
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
+        cooldown: 1000
+        sightAngle: 8
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Projectile, Color, Enemy').attr(
             w: 6
             h: 6
-            speed: 250
+            speed: 350
           ).color('#FFFF00')
           projectile.shoot(x, y, angle)
     d

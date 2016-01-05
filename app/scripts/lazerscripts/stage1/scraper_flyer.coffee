@@ -9,7 +9,16 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
       x: -50
       y: Crafty.viewport.height * .7
       speed: 200
-    )
+    ).shootOnSight
+      cooldown: 1000
+      sightAngle: 8
+      projectile: (x, y, angle) =>
+        projectile = Crafty.e('Projectile, Color, Enemy').attr(
+          w: 6
+          h: 6
+          speed: 350
+        ).color('#FFFF00')
+        projectile.shoot(x, y, angle)
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
