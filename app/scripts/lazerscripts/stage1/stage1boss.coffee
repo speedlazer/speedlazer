@@ -43,7 +43,9 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
   execute: ->
     @bindSequence 'Hit', @fase2, => @entity.health < 150000
     @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
+      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'Ls')
+    @inventoryAdd 'item', 'diagonals', ->
+      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'Ds')
 
     @sequence(
       @animate 'slow', -1, 'eye'
@@ -90,7 +92,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   fase3: ->
     @sequence(
-      @drop(location: @location(), item: 'lasers')
+      @drop(location: @location(), item: 'diagonals')
       @while(
         @moveTo(x: 1.15, y: .21, speed: 50)
         @sequence(
@@ -182,8 +184,8 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
 
   execute: ->
     @bindSequence 'Hit', @leaveScreen, => @entity.health < 133000
-    @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
+    @inventoryAdd 'item', 'xp', ->
+      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'XP')
 
     @sequence(
       @animate 'slow', -1, 'eye'
@@ -194,7 +196,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
 
   leaveScreen: ->
     @sequence(
-      @drop(location: @location(), item: 'lasers')
+      @drop(location: @location(), item: 'xp')
       @moveTo(x: 1.15, speed: 100)
     )
 

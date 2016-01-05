@@ -90,8 +90,8 @@ Crafty.c 'GamepadControls',
     @listenTo ship, 'GamepadKeyChange', (e) =>
       if e.button is @controlMap.fire
         ship.shoot(e.pressed)
-      if e.button is @controlMap.secondary
-        ship.secondary(e.pressed)
+      if e.button is @controlMap.switchWeapon
+        ship.switchWeapon(e.pressed)
       if e.button is @controlMap.super
         ship.superWeapon(e.pressed)
 

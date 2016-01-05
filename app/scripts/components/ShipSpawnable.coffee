@@ -15,6 +15,7 @@ Crafty.c 'ShipSpawnable',
   spawnShip: (armed = @armed) ->
     return unless @has('ControlScheme')
     return unless @lives > 0
+    armed = _.flatten([armed])
 
     pos = @spawnPosition()
     pos.x = 10 if pos.x < 10
@@ -28,7 +29,7 @@ Crafty.c 'ShipSpawnable',
     @ship.color(@color()) if @has('Color')
     @assignControls(@ship) if @has('ControlScheme')
 
-    @ship.installItem armed if armed
+    @ship.installItem(item) for item in armed
 
     @listenTo @ship, 'BulletHit', (data) ->
       @stats.shotsHit += 1
@@ -59,6 +60,7 @@ Crafty.c 'ShipSpawnable',
       )
       @ship.trigger('Destroyed', @ship)
       @ship.destroy()
+      armed = @ship.items
       @ship = null
       Crafty.e('Delay').delay(
         =>

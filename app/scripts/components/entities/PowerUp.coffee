@@ -3,7 +3,7 @@ Crafty.c 'PowerUp',
     @requires '2D,WebGL,Color'
     @color '#20FF20'
     @attr
-      w: 20
+      w: 30
       h: 20
 
   remove: ->
@@ -13,11 +13,10 @@ Crafty.c 'PowerUp',
       marking = Crafty.e('2D,DOM,Text')
         .textColor('#000000')
         .textFont({
-          size: '16px',
-          weight: 'bold',
-          family: 'Bank Gothic'
+          size: '12px'
+          family: 'Press Start 2P'
         })
         .text(@settings.marking)
-        .attr x: 4, y: 1
+        .attr x: 4, y: 4
       @attach marking
     this

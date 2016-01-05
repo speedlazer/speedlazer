@@ -58,12 +58,12 @@ Crafty.c 'KeyboardControls',
 
     @listenTo ship, 'KeyDown', (e) ->
       ship.shoot(true) if e.key is controlMap.fire
-      ship.secondary(true) if e.key is controlMap.secondary
+      ship.switchWeapon(true) if e.key is controlMap.switchWeapon
       ship.superWeapon(true) if e.key is controlMap.super
       Game.togglePause() if e.key is controlMap.pause
 
     @listenTo ship, 'KeyUp', (e) ->
       ship.shoot(false) if e.key is controlMap.fire
-      ship.secondary(false) if e.key is controlMap.secondary
+      ship.switchWeapon(false) if e.key is controlMap.switchWeapon
       ship.superWeapon(false) if e.key is controlMap.super
 

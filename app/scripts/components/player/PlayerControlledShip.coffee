@@ -11,6 +11,7 @@ Crafty.c 'PlayerControlledShip',
       x: 0
       y: 0
     @primaryWeapon = undefined
+    @primaryWeapons = []
     @secondaryWeapon = undefined
     @superUsed = 0
     @weaponsEnabled = yes
@@ -56,15 +57,20 @@ Crafty.c 'PlayerControlledShip',
 
   shoot: (onOff) ->
     return unless @weaponsEnabled
-    return unless @primaryWeapon?
-    @trigger 'Shoot' if onOff
-    @primaryWeapon.shoot(onOff)
 
-  secondary: (onOff) ->
-    return unless @weaponsEnabled
-    return unless @secondaryWeapon?
-    #@trigger 'Shoot' if onOff # TODO: What does this do?
-    @secondaryWeapon.shoot(onOff)
+    if @primaryWeapon?
+      @primaryWeapon.shoot(onOff)
+
+    if @secondaryWeapon?
+      @secondaryWeapon.shoot(onOff)
+
+  switchWeapon: (onOff) ->
+    return unless onOff
+    nextWeapon = (@currentPrimary + 1) % @primaryWeapons.length
+    @primaryWeapon?.uninstall()
+    @primaryWeapon = @primaryWeapons[nextWeapon]
+    @primaryWeapon.install(this)
+    @currentPrimary = nextWeapon
 
   superWeapon: (onOff) ->
     return unless onOff
@@ -76,35 +82,37 @@ Crafty.c 'PlayerControlledShip',
       powerUp.destroy()
 
   installItem: (item) ->
-    if @hasItem item
-      if item is 'lasers'
-        @primaryWeapon.addXP(100)
+    if item is 'xp'
+      @primaryWeapon.addXP(100)
       return true
+
+    return if @hasItem item
+
     @items.push item
-    if item is 'oldlasers'
-      @primaryWeapon?.destroy()
 
-      @primaryWeapon = Crafty.e('OldWeaponLaser')
-      @primaryWeapon.install(this)
-      @listenTo @primaryWeapon, 'levelUp', (level) =>
-        @scoreText "L +#{level}"
-      return true
+    # TODO: Add multiple primary weapons, which can be swapped
+    # Count XP on current weapon only
     if item is 'lasers'
-      @primaryWeapon?.destroy()
-
-      @primaryWeapon = Crafty.e('RapidWeaponLaser')
-      @primaryWeapon.install(this)
-      @listenTo @primaryWeapon, 'levelUp', (level) =>
-        @scoreText "L +#{level}"
+      @_installPrimary 'RapidWeaponLaser'
       return true
-    if item is 'rockets'
-      @secondaryWeapon?.destroy()
 
-      @secondaryWeapon = Crafty.e('WeaponRocket')
-      @secondaryWeapon.install(this)
-      @listenTo @secondaryWeapon, 'levelUp', (level) =>
-        @scoreText 'R +1'
+    if item is 'oldlasers'
+      @_installPrimary 'OldWeaponLaser'
       return true
+
+    if item is 'diagonals'
+      @_installPrimary 'RapidDiagonalLaser'
+      return true
+
+  _installPrimary: (componentName) ->
+    weapon = Crafty.e(componentName)
+    weapon.install(this)
+    @primaryWeapon?.uninstall()
+    @primaryWeapon = weapon
+    @listenTo weapon, 'levelUp', (level) =>
+      @scoreText "L +#{level}"
+    @primaryWeapons.push weapon
+    @currentPrimary = @primaryWeapons.length - 1
 
   hasItem: (item) ->
     @items ?= []

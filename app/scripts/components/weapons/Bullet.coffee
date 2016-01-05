@@ -5,7 +5,11 @@ Crafty.c 'Bullet',
 
   fire: (properties) ->
     @attr(damage: properties.damage).bind('GameLoop', (fd) =>
-      @x += (properties.speed / 1000.0) * fd.dt
+      dist = fd.dt * (properties.speed / 1000)
+
+      @x += Math.cos(properties.direction / 180 * Math.PI) * dist
+      @y += Math.sin(properties.direction / 180 * Math.PI) * dist
+
       if @x > @_maxXforViewPort()
         # Maybe send a bullet miss event
         @destroy()
