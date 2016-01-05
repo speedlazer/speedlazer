@@ -3,7 +3,7 @@ Crafty.c 'PowerUp',
     @requires '2D,WebGL,Color'
     @color '#20FF20'
     @attr
-      w: 30
+      w: 20
       h: 20
 
   remove: ->
