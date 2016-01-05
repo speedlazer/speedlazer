@@ -307,9 +307,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.ScraperFlyer,
         amount: 8
         delay: 750
+        drop: 'xp'
       @placeSquad Game.Scripts.Swirler,
         amount: 8
         delay: 750
+        drop: 'xp'
         options:
           shootOnSight: yes
       @placeSquad Game.Scripts.Stage1BossPopup
@@ -320,9 +322,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.ScraperFlyer,
         amount: 8
         delay: 750
+        drop: 'xp'
       @placeSquad Game.Scripts.Swirler,
         amount: 8
         delay: 750
+        drop: 'xp'
         options:
           shootOnSight: yes
     )
