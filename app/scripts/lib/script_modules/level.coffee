@@ -297,3 +297,8 @@ Game.ScriptModule.Level =
       x: (override.x ? (@target.x + Crafty.viewport.x)) + (override.offsetX ? 0)
       y: (override.y ? (@target.y + Crafty.viewport.y)) + (override.offsetY ? 0)
 
+  changeSeaLevel: (offsetY) ->
+    (sequence) =>
+      @_verify(sequence)
+      @level.sealevelOffset = offsetY
+

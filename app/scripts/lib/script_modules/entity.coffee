@@ -326,7 +326,7 @@ Game.ScriptModule.Entity =
     defer.promise
 
   _getSeaLevel: ->
-    (Crafty.viewport.height - 260) + (220 * (@entity.scale ? 1.0))
+    (Crafty.viewport.height - 260) + (220 * (@entity.scale ? 1.0)) + (@level.sealevelOffset ? 0)
 
   _moveAir: (settings) ->
     defaults =

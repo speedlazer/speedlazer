@@ -74,7 +74,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @say 'General', 'He went to the military complex\nBut we cant get through those shields now'
       @wait 3000
       @say 'Player', 'Ok lets find an underground entrance!'
-      @gainHeight(-580, duration: 4000)
+      @changeSeaLevel 400
+      @gainHeight(-980, duration: 4000)
       @wait 800
 
       #@gainHeight(-580, duration: 4000)
