@@ -198,18 +198,20 @@ Game.ScriptModule.Level =
 
       currentSpeed = @level._forcedSpeed?.x || @level._forcedSpeed
       { duration } = options
-      duration = (Crafty.timer.FPS() * 2) if @_skippingToCheckpoint()
-      speedY = (height / duration) * 1000
+      if @_skippingToCheckpoint()
+        @level.setHeight -height
+      else
+        speedY = (height / duration) * 1000
 
-      @level.setForcedSpeed(x: currentSpeed, y: -speedY)
-      level = @level
-      Crafty.e('Delay').delay(
-        ->
-          level.setForcedSpeed(currentSpeed)
-          d.resolve()
-        duration
-      )
-      d.promise
+        @level.setForcedSpeed(x: currentSpeed, y: -speedY)
+        level = @level
+        Crafty.e('Delay').delay(
+          ->
+            level.setForcedSpeed(currentSpeed)
+            d.resolve()
+          duration
+        )
+        d.promise
 
   # Change the speed of the camera and the playerships.
   #

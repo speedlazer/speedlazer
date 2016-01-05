@@ -213,18 +213,18 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @checkpoint @checkpointStart('Bay', 300000)
       @setScenery('UnderBridge')
       @parallel(
-        @if((-> @player(1).active), @drop(item: 'lasers', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'lasers', inFrontOf: @player(2)))
+        @if((-> @player(1).active), @drop(item: 'xp', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'xp', inFrontOf: @player(2)))
       )
       @mineSwarm()
       @parallel(
-        @if((-> @player(1).active), @drop(item: 'lasers', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'lasers', inFrontOf: @player(2)))
+        @if((-> @player(1).active), @drop(item: 'xp', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'xp', inFrontOf: @player(2)))
       )
       @mineSwarm direction: 'left'
       @parallel(
-        @if((-> @player(1).active), @drop(item: 'lasers', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'lasers', inFrontOf: @player(2)))
+        @if((-> @player(1).active), @drop(item: 'xp', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'xp', inFrontOf: @player(2)))
       )
       @mineSwarm()
       @while(
