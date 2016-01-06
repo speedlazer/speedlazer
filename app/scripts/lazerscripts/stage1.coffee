@@ -36,7 +36,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @cityBay()
       @midstageBossfight()
 
-      @checkpoint @checkpointMidStage('Bay')
+      @checkpoint @checkpointMidStage('Bay', 355000)
       @say('General', 'Hunt him down!')
       @setSpeed 100
       @placeSquad Game.Scripts.Shooter,
@@ -67,7 +67,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @repeat 2, @dummyFights()
       @gainHeight(280, duration: 4000)
 
-      @checkpoint @checkpointMidStage('Skyline')
+      @checkpoint @checkpointMidStage('Skyline', 400000)
       @dummyFights()
       @setScenery 'SkylineBase'
       @while(
@@ -193,7 +193,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   oceanFighting: ->
     @sequence(
-      @checkpoint @checkpointStart('Ocean', 60000)
+      @checkpoint @checkpointStart('Ocean', 42000)
 
       @parallel(
         @sequence(
@@ -209,7 +209,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   enteringLand: ->
     @sequence(
-      @checkpoint @checkpointStart('CoastStart', 150000)
+      @checkpoint @checkpointStart('CoastStart', 110000)
       @setScenery('BayStart')
       @mineSwarm()
       @underWaterAttacks()
@@ -221,7 +221,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   cityBay: ->
     @sequence(
-      @checkpoint @checkpointStart('Bay', 240000)
+      @checkpoint @checkpointStart('Bay', 173000)
       @setScenery('UnderBridge')
       @parallel(
         @placeSquad Game.Scripts.Stalker
@@ -242,7 +242,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   midstageBossfight: ->
     @sequence(
-      @checkpoint @checkpointStart('Bay', 300000)
+      @checkpoint @checkpointStart('Bay', 226000)
       @setScenery('UnderBridge')
       @parallel(
         @if((-> @player(1).active), @drop(item: 'xp', inFrontOf: @player(1)))
@@ -394,10 +394,10 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @wait 2000
     )
 
-  checkpointMidStage: (scenery) ->
+  checkpointMidStage: (scenery, sunSkip) ->
     @sequence(
       @parallel(
-        @sunRise(skipTo: 300000)
+        @sunRise(skipTo: sunSkip)
         @setScenery(scenery)
       )
       @wait 1000
