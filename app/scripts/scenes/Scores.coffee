@@ -1,6 +1,7 @@
 Crafty.defineScene 'Scores', ->
   # import from globals
   Game = window.Game
+  Game.resetCredits()
   # constructor
   Crafty.background('#000000')
   Crafty.viewport.x = 0
