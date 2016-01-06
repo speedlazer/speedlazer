@@ -105,9 +105,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
       @changeSeaLevel 500
       @gainHeight(-580, duration: 6000)
-      @say 'DesignNote', 'Add some enemies and setting here!'
-      @wait 3000
-      @gainHeight(-580, duration: 6000)
+      #@say 'DesignNote', 'Add some enemies and setting here!'
+      #@wait 3000
+      #@gainHeight(-580, duration: 6000)
 
       #@gainHeight(-580, duration: 4000)
 

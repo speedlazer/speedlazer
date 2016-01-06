@@ -37,11 +37,11 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       speed: 100
-      pointsOnHit: 5
+      pointsOnHit: 10
     )
 
   execute: ->
-    @bindSequence 'Hit', @fase2, => @entity.health < 150000
+    @bindSequence 'Hit', @fase2, => @entity.health < 165000
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
     @inventoryAdd 'item', 'diagonals', ->
@@ -86,15 +86,15 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     @parallel(
       @repeat @sequence(
         @async @runScript(Game.Scripts.Stage1BossMine, @location())
-        @wait 1000
+        @wait 800
         @async @runScript(Game.Scripts.Stage1BossRocket, @location())
         @animate 'emptyWing', 0, 'wing'
         @animate 'reload', 0, 'wing'
         @async @runScript(Game.Scripts.Stage1BossMine, @location())
-        @wait 1000
+        @wait 800
         @async @runScript(Game.Scripts.Stage1BossRocket, @location())
         @animate 'emptyWing', 0, 'wing'
-        @wait 1000
+        @wait 800
         @animate 'reload', 0, 'wing'
       )
       @repeat @sequence(
@@ -105,7 +105,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     )
 
   fase2: ->
-    @bindSequence 'Hit', @fase3, => @entity.health < 147000
+    @bindSequence 'Hit', @fase3, => @entity.health < 157000
 
     @sequence(
       @setSpeed 50
@@ -188,7 +188,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
     Crafty.e('Rocket').rocket(
       health: 250
       x: location().x - 30
-      y: location().y - 5 + Math.round(Math.random() * 10)
+      y: location().y - 8 + Math.round(Math.random() * 15)
       speed: 600
       pointsOnHit: 0
       pointsOnDestroy: 0
