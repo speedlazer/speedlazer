@@ -409,13 +409,58 @@ generator.defineBlock class extends @Game.LevelScenery
   generate: ->
     super
     h = 400 + 200
-    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 300, h: h, z: -1).color('#909090'))
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 600, h: h, z: -1).color('#909090'))
 
     h = 300 + 200
-    @addBackground(200, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 400, h: h, z: 5).color('#000000'), 1.5)
+    @addBackground(200, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 700, h: h, z: 5).color('#000000'), 1.5)
 
     @addElement 'water'
 
     @addElement 'cityHorizon'
     @addElement 'city'
+
+generator.defineBlock class extends @Game.LevelScenery
+  name: 'City.SkylineBase'
+  delta:
+    x: 800
+    y: 0
+  autoNext: 'Skyline2'
+
+  assets: ->
+    images: ['city.png', 'city-layer2.png']
+
+  generate: ->
+    super
+    h = 400 + 200
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 600, h: h, z: -1).color('#909090'))
+
+    e = Crafty.e('2D, WebGL, MiliBase, Color').color('#805050').attr(w: 200, h: 400, z: -598)
+    @addBackground(0, @level.visibleHeight - 177, e, .25)
+
+    @addElement 'city'
+
+    h = 400 + 300
+    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color').attr(w: @delta.x, h: h, z: -1).color('#505050'))
+
+generator.defineBlock class extends @Game.LevelScenery
+  name: 'City.Skyline2'
+  delta:
+    x: 800
+    y: 0
+
+  assets: ->
+    images: ['water-horizon.png', 'horizon-city.png', 'city.png', 'city-layer2.png']
+
+  generate: ->
+    super
+    h = 400 + 200
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 600, h: h, z: -1).color('#909090'))
+
+    @addElement 'water'
+
+    @addElement 'cityHorizon'
+    @addElement 'city'
+
+    h = 400 + 300
+    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color').attr(w: @delta.x, h: h, z: -1).color('#505050'))
 

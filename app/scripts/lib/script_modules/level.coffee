@@ -112,9 +112,11 @@ Game.ScriptModule.Level =
   drop: (options) ->
     (sequence) =>
       @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
       item = @inventory('item', options.item)
       if player = options.inFrontOf
-        item().attr(x: Crafty.viewport.width - Crafty.viewport.x, y: player.ship().y, z: -1)
+        @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: player.ship().y + Crafty.viewport.y
+
       if pos = options.location
         coords = pos?()
         # coords from a function are always relative
@@ -197,18 +199,20 @@ Game.ScriptModule.Level =
 
       currentSpeed = @level._forcedSpeed?.x || @level._forcedSpeed
       { duration } = options
-      duration = 1 if @_skippingToCheckpoint()
-      speedY = (height / duration) * 1000
+      if @_skippingToCheckpoint()
+        @level.setHeight -height
+      else
+        speedY = (height / duration) * 1000
 
-      @level.setForcedSpeed(x: currentSpeed, y: -speedY)
-      level = @level
-      Crafty.e('Delay').delay(
-        ->
-          level.setForcedSpeed(currentSpeed)
-          d.resolve()
-        duration
-      )
-      d.promise
+        @level.setForcedSpeed(x: currentSpeed, y: -speedY)
+        level = @level
+        Crafty.e('Delay').delay(
+          ->
+            level.setForcedSpeed(currentSpeed)
+            d.resolve()
+          duration
+        )
+        d.promise
 
   # Change the speed of the camera and the playerships.
   #
@@ -264,4 +268,38 @@ Game.ScriptModule.Level =
     (sequence) =>
       @_verify(sequence)
       @level.updateTitle(text)
+
+  pickTarget: (selection) ->
+    (sequence) =>
+      pickTarget = (selection) ->
+        entities = Crafty(selection)
+        return null if entities.length is 0
+        entities.get Math.floor(Math.random() * entities.length)
+
+      # TODO: When this script is done, unbind events
+      refreshTarget = (ship) =>
+        @target = { x: ship.x, y: ship.y }
+        Crafty.one 'ShipSpawned', (ship) =>
+          @target = pickTarget(selection)
+          @target.one 'Destroyed', refreshTarget
+
+      @target = pickTarget(selection)
+
+      if selection is 'PlayerControlledShip'
+        @target.one 'Destroyed', refreshTarget
+
+  targetLocation: (override = {}) ->
+    =>
+      if override.x? and (-1 < override.x < 2)
+        override.x *= Crafty.viewport.width
+      if override.y? and (-1 < override.y < 2)
+        override.y *= Crafty.viewport.height
+
+      x: (override.x ? (@target.x + Crafty.viewport.x)) + (override.offsetX ? 0)
+      y: (override.y ? (@target.y + Crafty.viewport.y)) + (override.offsetY ? 0)
+
+  changeSeaLevel: (offsetY) ->
+    (sequence) =>
+      @_verify(sequence)
+      @level.sealevelOffset = offsetY
 

@@ -199,6 +199,11 @@ class Game.Level
     Crafty('PlayerControlledShip').each ->
       @forcedSpeed speed
 
+  setHeight: (deltaY) ->
+    @_scrollWall.setHeight deltaY
+    Crafty('PlayerControlledShip').each ->
+      @y += deltaY
+
   setWeaponsEnabled: (onOff) ->
     @_weaponsEnabled = onOff
     Crafty('PlayerControlledShip').each ->

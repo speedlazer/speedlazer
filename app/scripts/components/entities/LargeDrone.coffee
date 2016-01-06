@@ -4,7 +4,7 @@ Crafty.c 'LargeDrone',
 
   drone: (attr = {}) ->
     @attr _.defaults(attr,
-      w: 90, h: 70, health: 160000)
+      w: 90, h: 70, health: 180000)
     @origin 'center'
     @collision [2, 36, 16,15, 86,2, 88,4, 62,15, 57,46, 46, 66, 18, 66, 3, 47]
 
@@ -31,11 +31,11 @@ Crafty.c 'LargeDrone',
 
   updatedHealth: ->
     sprite = 0
-    if @health < 155000
+    if @health < 175000
       sprite = 1
-    if @health < 145000
+    if @health < 147000
       sprite = 2
-    if @health < 135000
+    if @health < 140200
       sprite = 3
 
     @sprite(sprite, 0)

@@ -83,10 +83,10 @@ Crafty.c 'RapidWeaponLaser',
 
   _createFrontBullet: ->
     settings = switch @level
-      when 0 then w: 6, speed: 550, h: 4
-      when 1 then w: 10, speed: 555, h: 4
-      when 2 then w: 14, speed: 560, h: 4
-      when 3 then w: 18, speed: 565, h: 4
+      when 0 then w: 6, speed: 550, h: 3
+      when 1 then w: 10, speed: 555, h: 3
+      when 2 then w: 14, speed: 560, h: 3
+      when 3 then w: 18, speed: 565, h: 3
 
     Crafty.e('Bullet, IgnoreSun')
       .attr
@@ -108,10 +108,10 @@ Crafty.c 'RapidWeaponLaser',
 
   _createBackBullet: ->
     settings = switch @level
-      when 0 then w: 5, speed: 550, h: 3
-      when 1 then w: 8, speed: 555, h: 3
-      when 2 then w: 10, speed: 560, h: 3
-      when 3 then w: 14, speed: 565, h: 3
+      when 0 then w: 5, speed: 550, h: 2
+      when 1 then w: 8, speed: 555, h: 2
+      when 2 then w: 10, speed: 560, h: 2
+      when 3 then w: 14, speed: 565, h: 2
 
     Crafty.e('Bullet, IgnoreSun')
       .attr

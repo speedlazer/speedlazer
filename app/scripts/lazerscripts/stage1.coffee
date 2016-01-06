@@ -21,11 +21,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'Ls')
+      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#2020FF')
     @inventoryAdd 'item', 'xp', ->
-      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'XP')
+      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
     @inventoryAdd 'item', 'diagonals', ->
-      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'Ds')
+      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
 
     @sequence(
       @introText()
@@ -36,7 +36,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @cityBay()
       @midstageBossfight()
 
-      @checkpoint @checkpointMidStage('Bay')
+      @checkpoint @checkpointMidStage('Bay', 355000)
       @say('General', 'Hunt him down!')
       @setSpeed 100
       @placeSquad Game.Scripts.Shooter,
@@ -45,6 +45,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         drop: 'xp'
         options:
           shootOnSight: yes
+
+      @repeat 3, @stalkerShootout()
 
       @parallel(
         @sequence(
@@ -61,6 +63,54 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
 
       @cityFighting()
+
+      @repeat 2, @dummyFights()
+      @gainHeight(280, duration: 4000)
+
+      @checkpoint @checkpointMidStage('Skyline', 400000)
+      @dummyFights()
+      @setScenery 'SkylineBase'
+      @while(
+        @wait 4000
+        @sequence(
+          @pickTarget('PlayerControlledShip')
+          @runScript(Game.Scripts.Stage1BossRocket, @targetLocation(x: 1.1))
+          @wait 200
+        )
+      )
+      @placeSquad Game.Scripts.Stage1BossLeaving
+      @say 'General', 'He went to the military complex!\nBut we cant get through those shields now...'
+      @wait 3000
+      @if((-> @player(1).active and !@player(2).active)
+        @sequence(
+          @say 'John', 'I\'ll try to find another way in!'
+          @say 'General', 'There are rumours about an underground entrance'
+          @say 'John', 'Ok I\'ll check it out'
+        )
+      )
+      @if((-> !@player(1).active and @player(2).active)
+        @sequence(
+          @say 'Jim', 'I\'ll use the underground tunnels!'
+          @say 'General', 'How do you know about those...\n' +
+            'that\'s classified info!'
+        )
+      )
+      @if((-> @player(1).active and @player(2).active)
+        @sequence(
+          @say 'John', 'We\'ll try to find another way in!'
+          @say 'Jim', 'We can use the underground tunnels!'
+          @say 'General', 'How do you know about those...\n' +
+            'that\'s classified info!'
+        )
+      )
+      @changeSeaLevel 500
+      @gainHeight(-580, duration: 6000)
+      #@say 'DesignNote', 'Add some enemies and setting here!'
+      #@wait 3000
+      #@gainHeight(-580, duration: 6000)
+
+      #@gainHeight(-580, duration: 4000)
+
 
       @say 'Game', 'End of gameplay for now... \nStarting endless enemies'
       @repeat @mineSwarm(points: no)
@@ -143,7 +193,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   oceanFighting: ->
     @sequence(
-      @checkpoint @checkpointStart('Ocean', 60000)
+      @checkpoint @checkpointStart('Ocean', 42000)
 
       @parallel(
         @sequence(
@@ -159,7 +209,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   enteringLand: ->
     @sequence(
-      @checkpoint @checkpointStart('CoastStart', 150000)
+      @checkpoint @checkpointStart('CoastStart', 110000)
       @setScenery('BayStart')
       @mineSwarm()
       @underWaterAttacks()
@@ -171,7 +221,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   cityBay: ->
     @sequence(
-      @checkpoint @checkpointStart('Bay', 240000)
+      @checkpoint @checkpointStart('Bay', 173000)
       @setScenery('UnderBridge')
       @parallel(
         @placeSquad Game.Scripts.Stalker
@@ -192,12 +242,32 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   midstageBossfight: ->
     @sequence(
-      @checkpoint @checkpointStart('Bay', 300000)
+      @checkpoint @checkpointStart('Bay', 226000)
       @setScenery('UnderBridge')
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'xp', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'xp', inFrontOf: @player(2)))
+      )
       @mineSwarm()
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'xp', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'xp', inFrontOf: @player(2)))
+      )
       @mineSwarm direction: 'left'
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'xp', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'xp', inFrontOf: @player(2)))
+      )
       @mineSwarm()
-      @waitForScenery('UnderBridge', event: 'inScreen')
+      @while(
+        @waitForScenery('UnderBridge', event: 'inScreen')
+        @sequence(
+          @pickTarget('PlayerControlledShip')
+          @runScript(Game.Scripts.Stage1BossRocket, @targetLocation(x: 1.1))
+          @wait 200
+        )
+      )
+
       @setSpeed 0
       @placeSquad Game.Scripts.Stage1BossStage1
 
@@ -266,29 +336,72 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   cityFighting: ->
     @sequence(
       @setScenery('Skyline')
-      @placeSquad Game.Scripts.ScraperFlyer,
-        amount: 8
-        delay: 750
-      @placeSquad Game.Scripts.Swirler,
-        amount: 8
-        delay: 750
-        options:
-          shootOnSight: yes
-      @placeSquad Game.Scripts.Stage1BossPopup
+      @parallel(
+        @sequence(
+          @placeSquad Game.Scripts.ScraperFlyer,
+            amount: 8
+            delay: 750
+            drop: 'xp'
+          @placeSquad Game.Scripts.Stage1BossPopup
+        )
+        @sequence(
+          @wait 3000
+          @placeSquad Game.Scripts.Swirler,
+            amount: 8
+            delay: 750
+            drop: 'xp'
+            options:
+              shootOnSight: yes
+        )
+      )
+    )
+
+  dummyFights: ->
+    @while(
+      @parallel(
+        @placeSquad Game.Scripts.ScraperFlyer,
+          amount: 8
+          delay: 750
+          drop: 'xp'
+        @placeSquad Game.Scripts.Swirler,
+          amount: 8
+          delay: 500
+          drop: 'xp'
+          options:
+            shootOnSight: yes
+            speed: 300
+        @placeSquad Game.Scripts.Shooter,
+          amount: 8
+          delay: 1000
+          drop: 'xp'
+          options:
+            shootOnSight: yes
+            speed: 300
+      )
+      @sequence(
+        @pickTarget('PlayerControlledShip')
+        @runScript(Game.Scripts.Stage1BossRocket, @targetLocation(x: 1.1))
+        @wait 500
+      )
     )
 
   checkpointStart: (scenery, sunSkip) ->
-    @parallel(
-      @setScenery(scenery)
-      @sunRise(skipTo: sunSkip)
+    @sequence(
+      @parallel(
+        @setScenery(scenery)
+        @sunRise(skipTo: sunSkip)
+      )
       @wait 2000
     )
 
-  checkpointMidStage: (scenery) ->
-    @parallel(
-      @setScenery(scenery)
-      @sunRise(skipTo: 300000)
+  checkpointMidStage: (scenery, sunSkip) ->
+    @sequence(
+      @parallel(
+        @sunRise(skipTo: sunSkip)
+        @setScenery(scenery)
+      )
+      @wait 1000
       @dropDiagonalsForEachPlayer()
-      @wait 2000
+      @wait 1000
     )
 

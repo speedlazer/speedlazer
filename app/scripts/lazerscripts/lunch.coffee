@@ -198,14 +198,27 @@ class Game.Scripts.Lunch extends Game.LazerScript
   nextSlide: (task) ->
     @sequence(
       => @player(1).ship()?.superUsed = 0
-      @while((=>
-        if @player(1).ship()?
-          @player(1).ship().superUsed is 0
-        else
-          true
-      ), task ? @wait(1000))
+      # While now works with 2 promises.
+      @while(
+        @_waitForSuperWeapon()
+        task ? @wait(1000)
+      )
       => @player(1).ship().superUsed = 0
     )
+
+  @_waitForSuperWeapon: ->
+    d = WhenJS.defer()
+    used = no
+    i = setInterval(
+      =>
+        if @player(1).ship()?
+          used = @player(1).ship().superUsed isnt 0
+        if used
+          clearInterval i
+          d.resolve()
+      300
+    )
+    d.promise
 
   mineSwarm: (options = { direction: 'right' })->
     @placeSquad Game.Scripts.JumpMine,
