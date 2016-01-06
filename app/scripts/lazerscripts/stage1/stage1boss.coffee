@@ -82,15 +82,45 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @animate 'reload', 0, 'wing'
     )
 
+  attackCycle2: (speed) ->
+    @parallel(
+      @repeat @sequence(
+        @async @runScript(Game.Scripts.Stage1BossMine, @location())
+        @wait 1000
+        @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+        @animate 'emptyWing', 0, 'wing'
+        @animate 'reload', 0, 'wing'
+        @async @runScript(Game.Scripts.Stage1BossMine, @location())
+        @wait 1000
+        @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+        @animate 'emptyWing', 0, 'wing'
+        @wait 1000
+        @animate 'reload', 0, 'wing'
+      )
+      @repeat @sequence(
+        @pickTarget('PlayerControlledShip')
+        @moveTo(@targetLocation(offsetY: -20), x: .85)
+        @wait(1000)
+      )
+    )
+
   fase2: ->
-    @bindSequence 'Hit', @fase3, => @entity.health < 140000
+    @bindSequence 'Hit', @fase3, => @entity.health < 147000
 
     @sequence(
       @setSpeed 50
-      @attackCycle(8)
+      @attackCycle(7)
     )
 
   fase3: ->
+    @bindSequence 'Hit', @fase4, => @entity.health < 140000
+
+    @sequence(
+      @setSpeed 50
+      @attackCycle2(7)
+    )
+
+  fase4: ->
     @sequence(
       @drop(location: @location(), item: 'diagonals')
       @while(
@@ -179,25 +209,31 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
       health: 134000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
-      speed: 100
+      speed: 150
     )
 
   execute: ->
-    @bindSequence 'Hit', @leaveScreen, => @entity.health < 133000
+    @bindSequence 'Hit', @leaveScreen, => @entity.health < 130000
     @inventoryAdd 'item', 'xp', ->
       Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
 
     @sequence(
       @animate 'slow', -1, 'eye'
       @pickTarget('PlayerControlledShip')
-      @moveTo(@targetLocation(), x: .845)
+      @moveTo(@targetLocation(), x: .845, 200)
       @attackCycle()
     )
 
   leaveScreen: ->
     @sequence(
       @drop(location: @location(), item: 'xp')
-      @moveTo(x: 1.15, speed: 100)
+      @while(
+        @moveTo(x: 1.15, speed: 100)
+        @sequence(
+          @explosion(@location())
+          @wait 700
+        )
+      )
     )
 
   attackCycle: ->
@@ -219,7 +255,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
       health: 134000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
-      speed: 100
+      speed: 150
     )
 
   execute: ->
@@ -231,7 +267,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
     @sequence(
       @animate 'slow', -1, 'eye'
       @pickTarget('PlayerControlledShip')
-      @moveTo(@targetLocation(), x: .845)
+      @moveTo(@targetLocation(), x: .845, speed: 200)
       @attackCycle()
       @leaveScreen()
     )

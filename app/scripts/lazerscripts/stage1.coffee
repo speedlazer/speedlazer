@@ -46,6 +46,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         options:
           shootOnSight: yes
 
+      @repeat 3, @stalkerShootout()
+
       @parallel(
         @sequence(
           @wait 3000
@@ -68,14 +70,42 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @checkpoint @checkpointMidStage('Skyline')
       @dummyFights()
       @setScenery 'SkylineBase'
-      @wait 4000
-
+      @while(
+        @wait 4000
+        @sequence(
+          @pickTarget('PlayerControlledShip')
+          @runScript(Game.Scripts.Stage1BossRocket, @targetLocation(x: 1.1))
+          @wait 200
+        )
+      )
       @placeSquad Game.Scripts.Stage1BossLeaving
-      @say 'General', 'He went to the military complex\nBut we cant get through those shields now'
+      @say 'General', 'He went to the military complex!\nBut we cant get through those shields now...'
       @wait 3000
-      @say 'Player', 'Ok lets find an underground entrance!'
+      @if((-> @player(1).active and !@player(2).active)
+        @sequence(
+          @say 'John', 'I\'ll try to find another way in!'
+          @say 'General', 'There are rumours about an underground entrance'
+          @say 'John', 'Ok I\'ll check it out'
+        )
+      )
+      @if((-> !@player(1).active and @player(2).active)
+        @sequence(
+          @say 'Jim', 'I\'ll use the underground tunnels!'
+          @say 'General', 'How do you know about those...\n' +
+            'that\'s classified info!'
+        )
+      )
+      @if((-> @player(1).active and @player(2).active)
+        @sequence(
+          @say 'John', 'We\'ll try to find another way in!'
+          @say 'Jim', 'We can use the underground tunnels!'
+          @say 'General', 'How do you know about those...\n' +
+            'that\'s classified info!'
+        )
+      )
       @changeSeaLevel 500
       @gainHeight(-580, duration: 6000)
+      @say 'DesignNote', 'Add some enemies and setting here!'
       @wait 3000
       @gainHeight(-580, duration: 6000)
 
@@ -306,31 +336,53 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   cityFighting: ->
     @sequence(
       @setScenery('Skyline')
-      @placeSquad Game.Scripts.ScraperFlyer,
-        amount: 8
-        delay: 750
-        drop: 'xp'
-      @placeSquad Game.Scripts.Swirler,
-        amount: 8
-        delay: 750
-        drop: 'xp'
-        options:
-          shootOnSight: yes
-      @placeSquad Game.Scripts.Stage1BossPopup
+      @parallel(
+        @sequence(
+          @placeSquad Game.Scripts.ScraperFlyer,
+            amount: 8
+            delay: 750
+            drop: 'xp'
+          @placeSquad Game.Scripts.Stage1BossPopup
+        )
+        @sequence(
+          @wait 3000
+          @placeSquad Game.Scripts.Swirler,
+            amount: 8
+            delay: 750
+            drop: 'xp'
+            options:
+              shootOnSight: yes
+        )
+      )
     )
 
   dummyFights: ->
-    @parallel(
-      @placeSquad Game.Scripts.ScraperFlyer,
-        amount: 8
-        delay: 750
-        drop: 'xp'
-      @placeSquad Game.Scripts.Swirler,
-        amount: 8
-        delay: 750
-        drop: 'xp'
-        options:
-          shootOnSight: yes
+    @while(
+      @parallel(
+        @placeSquad Game.Scripts.ScraperFlyer,
+          amount: 8
+          delay: 750
+          drop: 'xp'
+        @placeSquad Game.Scripts.Swirler,
+          amount: 8
+          delay: 500
+          drop: 'xp'
+          options:
+            shootOnSight: yes
+            speed: 300
+        @placeSquad Game.Scripts.Shooter,
+          amount: 8
+          delay: 1000
+          drop: 'xp'
+          options:
+            shootOnSight: yes
+            speed: 300
+      )
+      @sequence(
+        @pickTarget('PlayerControlledShip')
+        @runScript(Game.Scripts.Stage1BossRocket, @targetLocation(x: 1.1))
+        @wait 500
+      )
     )
 
   checkpointStart: (scenery, sunSkip) ->

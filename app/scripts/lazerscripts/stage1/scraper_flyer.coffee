@@ -8,15 +8,15 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
       health: 200
       x: -50
       y: Crafty.viewport.height * .7
-      speed: 200
+      speed: 300
     ).shootOnSight
-      cooldown: 1000
-      sightAngle: 8
+      cooldown: 800
+      sightAngle: 15
       projectile: (x, y, angle) =>
         projectile = Crafty.e('Projectile, Color, Enemy').attr(
           w: 6
           h: 6
-          speed: 350
+          speed: 450
         ).color('#FFFF00')
         projectile.shoot(x, y, angle)
 
@@ -36,8 +36,8 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
           [-.1, .4]
         ]
         @sequence(
-          @wait 3000
-          @scale(1.0, duration: 3000)
+          @wait 2000
+          @scale(1.0, duration: 2000)
           @reveal()
         )
       )
