@@ -439,6 +439,9 @@ generator.defineBlock class extends @Game.LevelScenery
 
     @addElement 'city'
 
+    h = 400 + 300
+    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color').attr(w: @delta.x, h: h, z: -1).color('#505050'))
+
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Skyline2'
   delta:
@@ -457,3 +460,7 @@ generator.defineBlock class extends @Game.LevelScenery
 
     @addElement 'cityHorizon'
     @addElement 'city'
+
+    h = 400 + 300
+    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color').attr(w: @delta.x, h: h, z: -1).color('#505050'))
+

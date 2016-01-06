@@ -115,7 +115,8 @@ Game.ScriptModule.Level =
       return WhenJS() if @_skippingToCheckpoint()
       item = @inventory('item', options.item)
       if player = options.inFrontOf
-        @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: player.ship().y
+        @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: player.ship().y + Crafty.viewport.y
+
       if pos = options.location
         coords = pos?()
         # coords from a function are always relative

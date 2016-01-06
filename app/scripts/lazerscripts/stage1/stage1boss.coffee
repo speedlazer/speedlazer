@@ -246,7 +246,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
         @scale(0.7, duration: 3000)
       )
       => @entity.flip('X')
-      @sendToBackground(0.7, -800)
+      @sendToBackground(0.7, -550)
       @parallel(
         @moveTo('MiliBase', speed: 200)
         @scale(0.3, duration: 3000)
