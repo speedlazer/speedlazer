@@ -8,6 +8,7 @@ class Game.Scripts.IntroBarrel extends Game.EntityScript
       .color('#606000')
       .attr({ z: 3, w: 10, h: 15, speed: 150 })
       .onHit 'PlayerControlledShip', (c) ->
+        return if Game.paused
         @trigger('Knock', c[0].obj)
 
   execute: ->

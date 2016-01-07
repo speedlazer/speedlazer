@@ -11,6 +11,7 @@
   cameraCrew: ->
     @animate 'fly', -1
     @onHit 'BackgroundBullet', (e) ->
+      return if Game.paused
       bullet = e[0].obj
       @trigger('Hit', this)
       bullet.destroy()

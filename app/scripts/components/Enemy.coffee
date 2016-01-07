@@ -8,6 +8,7 @@ Crafty.c 'Enemy',
   enemy: ->
     Crafty.trigger('EnemySpawned', this)
     @onHit 'Bullet', (e) =>
+      return if Game.paused
       return if @hidden
       data = { @pointsOnHit, @pointsOnDestroy }
       bullet = e[0].obj
@@ -20,6 +21,7 @@ Crafty.c 'Enemy',
       bullet.destroy()
 
     @onHit 'Explosion', (e) ->
+      return if Game.paused
       return if @hidden
       for c in e
         splosion = c.obj

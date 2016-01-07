@@ -53,6 +53,7 @@ Crafty.c 'MiniRocket',
     this
 
   _impact: ->
+    return if Game.paused
     Crafty.e('Explosion').explode
       x: @x + @w
       y: @y + (@h / 2)

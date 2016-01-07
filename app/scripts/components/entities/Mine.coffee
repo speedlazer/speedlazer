@@ -9,7 +9,6 @@ Crafty.c 'Mine',
       delta = (360 / 4000) * fd.dt
       @attr rotation: @rotation + delta
 
-
   mine: (attr = {}) ->
     @attr _.defaults(attr, h: 25, w: 25, health: 200)
     @origin 'center'

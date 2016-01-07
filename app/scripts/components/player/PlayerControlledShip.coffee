@@ -19,6 +19,7 @@ Crafty.c 'PlayerControlledShip',
   start: ->
     @addComponent('Invincible').invincibleDuration(2000)
     @onHit 'Enemy', (collision) ->
+      return if Game.paused
       return if @has('Invincible')
       hit = no
       for e in collision
@@ -26,6 +27,7 @@ Crafty.c 'PlayerControlledShip',
       @trigger('Hit') if hit
 
     @onHit 'PowerUp', (e) ->
+      return if Game.paused
       for pu in e
         @pickUp(pu.obj)
         @trigger('PowerUp', pu.obj)

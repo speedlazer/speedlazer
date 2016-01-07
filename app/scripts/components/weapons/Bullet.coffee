@@ -14,6 +14,7 @@ Crafty.c 'Bullet',
         # Maybe send a bullet miss event
         @destroy()
     ).onHit 'Solid', ->
+      return if Game.paused
       @destroy()
     this
 
