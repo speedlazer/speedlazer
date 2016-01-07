@@ -4,7 +4,7 @@ Game.Scripts ||= {}
 class Game.Scripts.CameraCrew extends Game.EntityScript
 
   assets: ->
-    @loadAssets(
+    @loadAssets('helicopter',
       sprites:
         'camera-helicopter.png':
           tile: 120

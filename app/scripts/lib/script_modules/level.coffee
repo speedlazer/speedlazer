@@ -259,11 +259,9 @@ Game.ScriptModule.Level =
         e.addComponent('Enemy')
 
 
-  loadAssets: (assetObject) ->
+  loadAssets: (name, assetObject) ->
     (sequence) =>
-      d = WhenJS.defer()
-      Crafty.load(assetObject, (-> d.resolve()))
-      d.promise
+      @level.loadAssets(name, assetObject)
 
   updateTitle: (text) ->
     (sequence) =>

@@ -10,7 +10,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
     weaponsEnabled: no
 
   assets: ->
-    @loadAssets(
+    @loadAssets('general',
       sprites:
         'shadow.png':
           tile: 35

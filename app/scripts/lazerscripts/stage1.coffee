@@ -9,7 +9,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     title: 'City'
 
   assets: ->
-    @loadAssets(
+    @loadAssets('general',
       sprites:
         'shadow.png':
           tile: 35
@@ -271,7 +271,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           @wait 200
         )
       )
-
       @setSpeed 0
       @placeSquad Game.Scripts.Stage1BossStage1
 

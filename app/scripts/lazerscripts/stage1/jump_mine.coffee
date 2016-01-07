@@ -4,7 +4,7 @@ Game.Scripts ||= {}
 class Game.Scripts.JumpMine extends Game.EntityScript
 
   assets: ->
-    @loadAssets(
+    @loadAssets('mine',
       sprites:
         'mine.png':
           tile: 25

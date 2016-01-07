@@ -296,3 +296,18 @@ class Game.Level
 
   updateTitle: (newTitle) ->
     Crafty('LevelTitle').text newTitle
+
+  loadAssets: (name, assetObject) ->
+    @entityAssets ?= {}
+    return @entityAssets[name].promise if @entityAssets[name]
+    console.log 'loading', name
+    d = WhenJS.defer()
+    @entityAssets[name] =
+      assets: assetObject
+      promise: d.promise
+
+    Crafty.load(assetObject, (-> d.resolve()))
+    d.promise
+
+
+

@@ -4,7 +4,7 @@ Game.Scripts ||= {}
 class Game.Scripts.SunRise extends Game.EntityScript
 
   assets: ->
-    @loadAssets(
+    @loadAssets('sun',
       sprites:
         'sun.png':
           tile: 1
