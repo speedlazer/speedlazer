@@ -202,8 +202,8 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
     @loadAssets('rocket',
       sprites:
         'rocket.png':
-          tile: 45
-          tileh: 15
+          tile: 46
+          tileh: 16
           map:
             standardRocket: [0,0]
           paddingX: 1
