@@ -3,7 +3,7 @@ Game.Scripts ||= {}
 
 class Game.Scripts.Stage1Boss extends Game.EntityScript
   assets: ->
-    @loadAssets(
+    @loadAssets('largeDrone',
       sprites:
         'large-drone.png':
           tile: 90
@@ -59,7 +59,12 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
         )
       )
       @enableWeapons()
-      @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+        options:
+          location: @location()
+          pointsOnDestroy: 0
+          pointsOnHit: 0
+      )
       @animate 'emptyWing', 0, 'wing'
       @animate 'reload', 0, 'wing'
       @moveTo(y: .43, speed: 5)
@@ -71,12 +76,22 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @async @runScript(Game.Scripts.Stage1BossMine, @location())
       @moveTo(y: .41, speed: speed)
       @wait 200
-      @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+        options:
+          location: @location()
+          pointsOnDestroy: 0
+          pointsOnHit: 0
+      )
       @animate 'emptyWing', 0, 'wing'
       @animate 'reload', 0, 'wing'
       @async @runScript(Game.Scripts.Stage1BossMine, @location())
       @moveTo(y: .43, speed: speed)
-      @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+        options:
+          location: @location()
+          pointsOnDestroy: 0
+          pointsOnHit: 0
+      )
       @animate 'emptyWing', 0, 'wing'
       @wait 200
       @animate 'reload', 0, 'wing'
@@ -87,12 +102,22 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @repeat @sequence(
         @async @runScript(Game.Scripts.Stage1BossMine, @location())
         @wait 800
-        @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+        @async @placeSquad(Game.Scripts.Stage1BossRocket,
+          options:
+            location: @location()
+            pointsOnDestroy: 0
+            pointsOnHit: 0
+        )
         @animate 'emptyWing', 0, 'wing'
         @animate 'reload', 0, 'wing'
         @async @runScript(Game.Scripts.Stage1BossMine, @location())
         @wait 800
-        @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+        @async @placeSquad(Game.Scripts.Stage1BossRocket,
+          options:
+            location: @location()
+            pointsOnDestroy: 0
+            pointsOnHit: 0
+        )
         @animate 'emptyWing', 0, 'wing'
         @wait 800
         @animate 'reload', 0, 'wing'
@@ -134,7 +159,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
 class Game.Scripts.Stage1BossMine extends Game.EntityScript
   assets: ->
-    @loadAssets(
+    @loadAssets('mine',
       sprites:
         'mine.png':
           tile: 25
@@ -174,7 +199,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
 
 class Game.Scripts.Stage1BossRocket extends Game.EntityScript
   assets: ->
-    @loadAssets(
+    @loadAssets('rocket',
       sprites:
         'rocket.png':
           tile: 45
@@ -184,14 +209,24 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
           paddingX: 1
     )
 
-  spawn: (location) ->
+  spawn: (options) ->
+    options = _.defaults(options,
+      pointsOHit: 125
+      pointsOnDestroy: 50
+    )
+    return null unless options.location?
+
+    location = options.location?()
+    return null unless location
+
     Crafty.e('Rocket').rocket(
       health: 250
-      x: location().x - 30
-      y: location().y - 8 + Math.round(Math.random() * 15)
+      x: location.x - 30
+      y: location.y - 8 + Math.round(Math.random() * 15)
+      z: 0
       speed: 600
-      pointsOnHit: 0
-      pointsOnDestroy: 0
+      pointsOnHit: options.pointsOnHit
+      pointsOnDestroy: options.pointsOnDestroy
     )
 
   execute: ->
@@ -238,7 +273,10 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
 
   attackCycle: ->
     @repeat @sequence(
-      @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+        options:
+          location: @location()
+      )
       @animate 'emptyWing', 0, 'wing'
       @parallel(
         @moveTo(@targetLocation(offsetY: -20), x: .845)
@@ -261,8 +299,6 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
-
-    console.log 'in leaving script'
 
     @sequence(
       @animate 'slow', -1, 'eye'
@@ -291,7 +327,12 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
 
   attackCycle: ->
     @repeat 4, @sequence(
-      @async @runScript(Game.Scripts.Stage1BossRocket, @location())
+      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+        options:
+          location: @location()
+          pointsOnDestroy: 0
+          pointsOnHit: 0
+      )
       @animate 'emptyWing', 0, 'wing'
       @parallel(
         @moveTo(@targetLocation(offsetY: -20), x: .845)

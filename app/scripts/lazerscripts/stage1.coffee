@@ -74,7 +74,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @wait 4000
         @sequence(
           @pickTarget('PlayerControlledShip')
-          @runScript(Game.Scripts.Stage1BossRocket, @targetLocation(x: 1.1))
+          @placeSquad Game.Scripts.Stage1BossRocket,
+            options:
+              location: @targetLocation(x: 1.1)
           @wait 200
         )
       )
@@ -189,7 +191,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     )
 
   cameraCrew: ->
-    @async @runScript(Game.Scripts.CameraCrew)
+    @async @placeSquad(Game.Scripts.CameraCrew)
 
   oceanFighting: ->
     @sequence(
@@ -263,7 +265,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @waitForScenery('UnderBridge', event: 'inScreen')
         @sequence(
           @pickTarget('PlayerControlledShip')
-          @runScript(Game.Scripts.Stage1BossRocket, @targetLocation(x: 1.1))
+          @placeSquad Game.Scripts.Stage1BossRocket,
+            options:
+              location: @targetLocation(x: 1.1)
           @wait 200
         )
       )
@@ -380,7 +384,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
       @sequence(
         @pickTarget('PlayerControlledShip')
-        @runScript(Game.Scripts.Stage1BossRocket, @targetLocation(x: 1.1))
+        @placeSquad Game.Scripts.Stage1BossRocket,
+          options:
+            location: @targetLocation(x: 1.1)
         @wait 500
       )
     )

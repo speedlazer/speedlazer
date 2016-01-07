@@ -11,7 +11,6 @@ Game.ScriptModule ?= {}
 # - rotate
 # - synchronizeOn
 # - location
-# - pickTarget
 # - targetLocation
 #
 Game.ScriptModule.Entity =

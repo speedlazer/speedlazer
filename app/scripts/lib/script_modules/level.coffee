@@ -15,6 +15,7 @@ Game.ScriptModule ?= {}
 # - disableWeapons
 # - enableWeapons
 # - explosion
+# - pickTarget
 #
 Game.ScriptModule.Level =
   # Place a set of multiple enemies.
@@ -76,7 +77,7 @@ Game.ScriptModule.Level =
                 lastKilled = killedAt
                 lastLocation = location
 
-          if allKilled
+          if allKilled and lastLocation
             lastLocation.x -= Crafty.viewport.x
             lastLocation.y -= Crafty.viewport.y
             if settings.drop
@@ -285,7 +286,7 @@ Game.ScriptModule.Level =
 
       @target = pickTarget(selection)
 
-      if selection is 'PlayerControlledShip'
+      if selection is 'PlayerControlledShip' and @target
         @target.one 'Destroyed', refreshTarget
 
   targetLocation: (override = {}) ->
@@ -294,6 +295,10 @@ Game.ScriptModule.Level =
         override.x *= Crafty.viewport.width
       if override.y? and (-1 < override.y < 2)
         override.y *= Crafty.viewport.height
+
+      hasX = (override.x or @target?.x)
+      hasY = (override.y or @target?.y)
+      return null unless hasX and hasY
 
       x: (override.x ? (@target.x + Crafty.viewport.x)) + (override.offsetX ? 0)
       y: (override.y ? (@target.y + Crafty.viewport.y)) + (override.offsetY ? 0)
