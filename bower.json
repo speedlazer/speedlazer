@@ -4,7 +4,7 @@
   "appPath": "app",
   "dependencies": {
     "crafty": "craftyjs/Crafty-Distro#nightlies",
-    "crafty-gamepad": "matthijsgroen/crafty-gamepad#fix-disabling-control",
+    "crafty-gamepad": "svenjacobs/crafty-gamepad",
     "jquery": "~1.7.2",
     "jsbezier": "*",
     "modernizr": "~2.6.2",
