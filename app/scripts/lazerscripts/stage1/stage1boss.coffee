@@ -41,7 +41,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     )
 
   execute: ->
-    @bindSequence 'Hit', @fase2, => @entity.health < 165000
+    @bindSequence 'Hit', @fase2, => @entity.health < 170000
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
     @inventoryAdd 'item', 'diagonals', ->
@@ -129,19 +129,49 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       )
     )
 
+  bombRaid: ->
+    @parallel(
+      @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
+        amount: 14
+        delay: 400
+        options:
+          location: @location()
+          grid: new Game.LocationGrid
+            x:
+              start: 0.65
+              steps: 2
+              stepSize: 0.1
+            y:
+              start: 0.125
+              steps: 7
+              stepSize: 0.1
+      )
+      @while(
+        @wait 5000
+        @sequence(
+          @moveTo(y: .41, speed: 5)
+          @wait(200)
+          @moveTo(y: .43, speed: 5)
+          @wait(200)
+        )
+      )
+    )
+
   fase2: ->
-    @bindSequence 'Hit', @fase3, => @entity.health < 157000
+    @bindSequence 'Hit', @fase3, => @entity.health < 160000
 
     @sequence(
       @setSpeed 50
+      @bombRaid()
       @attackCycle(7)
     )
 
   fase3: ->
-    @bindSequence 'Hit', @fase4, => @entity.health < 140000
+    @bindSequence 'Hit', @fase4, => @entity.health < 145000
 
     @sequence(
       @setSpeed 50
+      @bombRaid()
       @attackCycle2(7)
     )
 
@@ -342,4 +372,53 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
         )
       )
     )
+
+class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
+  assets: ->
+    @loadAssets('mine',
+      sprites:
+        'mine.png':
+          tile: 25
+          tileh: 25
+          map:
+            standardMine: [0,0]
+          paddingX: 1
+    )
+
+  spawn: (options) ->
+    location = options.location()
+    @target = options.grid.getLocation()
+    Crafty.e('Mine').mine(
+      health: 200
+      x: location.x
+      y: location.y + 70
+      speed: 400
+      pointsOnHit: 10
+      pointsOnDestroy: 20
+    )
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @moveTo(y: 1.05, speed: 500)
+      @moveTo(x: @target.x)
+      @moveTo(y: @target.y)
+      @parallel(
+        @sequence(
+          @animate('open')
+          @moveTo(x: -50, speed: 200)
+        )
+        @sequence(
+          @wait 6000
+          @animate('blink', -1)
+          @wait 1000
+          @explosion(@location(), damage: 300, radius: 40)
+          @endSequence()
+        )
+      )
+    )
+
+  onKilled: ->
+    @explosion(@location(), damage: 300, radius: 40)
+
 

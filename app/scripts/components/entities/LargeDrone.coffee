@@ -38,9 +38,9 @@ Crafty.c 'LargeDrone',
     sprite = 0
     if @health < 175000
       sprite = 1
-    if @health < 147000
+    if @health < 160000
       sprite = 2
-    if @health < 140200
+    if @health < 145200
       sprite = 3
 
     @sprite(sprite, 0)
