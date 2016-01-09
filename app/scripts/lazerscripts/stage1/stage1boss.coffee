@@ -130,31 +130,31 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     )
 
   bombRaid: ->
-    @parallel(
-      @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
-        amount: 14
-        delay: 400
-        options:
-          location: @location()
-          grid: new Game.LocationGrid
-            x:
-              start: 0.65
-              steps: 2
-              stepSize: 0.1
-            y:
-              start: 0.125
-              steps: 7
-              stepSize: 0.1
-      )
+    @sequence(
+      @moveTo(y: .1)
       @while(
-        @wait 5000
+        @moveTo(x: -100, speed: 200)
         @sequence(
-          @moveTo(y: .41, speed: 5)
-          @wait(200)
-          @moveTo(y: .43, speed: 5)
-          @wait(200)
+          @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
+            options:
+              location: @location()
+          )
+          @wait 500
         )
       )
+      => @entity.flipX()
+      @while(
+        @moveTo(x: 1.2, speed: 200)
+        @sequence(
+          @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
+            options:
+              location: @location()
+          )
+          @wait 500
+        )
+      )
+      => @entity.unflipX()
+      @moveTo(x: .85, y: .41, speed: 200)
     )
 
   fase2: ->
@@ -387,7 +387,6 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
 
   spawn: (options) ->
     location = options.location()
-    @target = options.grid.getLocation()
     Crafty.e('Mine').mine(
       health: 200
       x: location.x
@@ -400,22 +399,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
   execute: ->
     @bindSequence 'Destroyed', @onKilled
     @sequence(
-      @moveTo(y: 1.05, speed: 500)
-      @moveTo(x: @target.x)
-      @moveTo(y: @target.y)
-      @parallel(
-        @sequence(
-          @animate('open')
-          @moveTo(x: -50, speed: 200)
-        )
-        @sequence(
-          @wait 6000
-          @animate('blink', -1)
-          @wait 1000
-          @explosion(@location(), damage: 300, radius: 40)
-          @endSequence()
-        )
-      )
+      @moveTo(y: 1.2)
     )
 
   onKilled: ->
