@@ -11,12 +11,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   assets: ->
     @loadAssets('general',
       sprites:
-        'shadow.png':
-          tile: 35
-          tileh: 20
+        'general.png':
+          tile: 1
+          tileh: 1
           map:
-            shadow: [0,0]
-          paddingX: 1
+            shadow: [1, 18, 35, 20]
+            standardRocket: [1, 1, 45, 15]
     )
 
   execute: ->

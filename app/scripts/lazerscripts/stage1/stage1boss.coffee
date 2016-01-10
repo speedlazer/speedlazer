@@ -228,17 +228,6 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
 
 
 class Game.Scripts.Stage1BossRocket extends Game.EntityScript
-  assets: ->
-    @loadAssets('rocket',
-      sprites:
-        'rocket.png':
-          tile: 46
-          tileh: 16
-          map:
-            standardRocket: [0,0]
-          paddingX: 1
-    )
-
   spawn: (options) ->
     options = _.defaults(options,
       pointsOHit: 125
