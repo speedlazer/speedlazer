@@ -34,7 +34,7 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
       @moveTo x: .22, y: .45
       @repeat @sequence(
         @moveTo x: .36, y: .47, speed: 25, easing: 'easeInOutQuad'
-        @moveTo x: .22, y: .5, speed: 25, easing: 'easeInOutQuad'
+        @moveTo x: .25, y: .5, speed: 25, easing: 'easeInOutQuad'
       )
     )
 
