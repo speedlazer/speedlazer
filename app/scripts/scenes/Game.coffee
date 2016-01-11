@@ -4,7 +4,7 @@ Crafty.defineScene 'Game', (data = {}) ->
   # import from globals
   Game = window.Game
 
-  scriptName = data?.script ? 'Stage1'
+  scriptName = data?.script ? 'Test'
   script = Game.Scripts[scriptName]
   level = Game.levelGenerator.createLevel script::metadata
   level.start()
