@@ -88,7 +88,7 @@ Crafty.c 'RapidWeaponLaser',
       when 2 then w: 14, speed: 560, h: 3
       when 3 then w: 18, speed: 565, h: 3
 
-    Crafty.e('Bullet, IgnoreSun')
+    Crafty.e('Bullet')
       .attr
         x: @x + @w
         y: @y + (@h / 2) - (settings.h / 2) + 1
@@ -113,7 +113,7 @@ Crafty.c 'RapidWeaponLaser',
       when 2 then w: 10, speed: 560, h: 2
       when 3 then w: 14, speed: 565, h: 2
 
-    Crafty.e('Bullet, IgnoreSun')
+    Crafty.e('Bullet')
       .attr
         x: @x + @w
         y: @y + (@h / 2) - (settings.h / 2) - 2

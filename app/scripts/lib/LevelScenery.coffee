@@ -55,7 +55,7 @@ class Game.LevelScenery
 
   _notifyEnterFunction: -> #(index) ->
     block = this
-    Crafty.e('2D, IgnoreSun, Collision')
+    Crafty.e('2D, Collision')
       .attr({ x: @x, y: @y, w: 10, h: 800 })
       #.color('#FF00FF')
       .onHit 'ScrollFront', ->

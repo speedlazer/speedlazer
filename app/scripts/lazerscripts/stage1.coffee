@@ -405,8 +405,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @sunRise(skipTo: sunSkip)
         @setScenery(scenery)
       )
-      @wait 1000
       @dropDiagonalsForEachPlayer()
-      @wait 1000
+      @wait 2000
     )
 
