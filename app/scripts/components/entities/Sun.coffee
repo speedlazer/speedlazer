@@ -72,11 +72,7 @@ Crafty.c 'Sun',
     covered = [0]
     sunArea = @area()
 
-    for o in @hit('2D')
-      continue if o.obj is this
-      continue if o.obj.has 'Glare'
-      continue if o.obj.has 'HUD'
-      continue if o.obj.has 'IgnoreSun'
+    for o in @hit('SunBlock')
       e = o.obj
       if o.type is 'SAT'
         covered.push ((o.overlap * -1) / 50) * sunArea

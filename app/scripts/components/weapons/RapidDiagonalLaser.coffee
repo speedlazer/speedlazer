@@ -88,7 +88,7 @@ Crafty.c 'RapidDiagonalLaser',
       when 2 then w: 8, speed: 460, h: 3
       when 3 then w: 10, speed: 465, h: 3
 
-    Crafty.e('Bullet, IgnoreSun')
+    Crafty.e('Bullet')
       .attr
         x: @x + @w
         y: @y + (@h / 2) - (settings.h / 2) + 1

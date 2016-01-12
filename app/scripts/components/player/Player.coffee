@@ -3,16 +3,20 @@ Crafty.c 'Player',
     @reset()
 
   reset: ->
+    @softReset()
+    @removeComponent('ControlScheme')
+
+  softReset: ->
     @stats =
       shotsFired: 0
       shotsHit: 0
       enemiesKilled: 0
       bonus: 0
-    @removeComponent('ControlScheme')
-      .attr({
-        lives: 2,
-        points: 0
-      })
+
+    @attr({
+      lives: 2,
+      points: 0
+    })
 
   loseLife: ->
     return unless @lives > 0
