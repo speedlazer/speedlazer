@@ -13,7 +13,6 @@ Game =
 
       Crafty.trigger('GamePause', @paused)
     else
-      Crafty.trigger('GamePause', @paused)
       Crafty('Delay').each -> @resumeDelays()
       Crafty('Tween').each -> @resumeTweens()
       Crafty('Particles').each -> @resumeParticles()
@@ -21,6 +20,7 @@ Game =
         if @disabledThroughPause
           @disabledThroughPause = null
           @enableControl()
+      Crafty.trigger('GamePause', @paused)
 
   # Initialize and start our game
   start: ->

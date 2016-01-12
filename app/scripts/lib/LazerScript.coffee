@@ -15,6 +15,9 @@ class Game.LazerScript
 
     loadingAssets.then => @initialize(args...)
 
+  end: ->
+    @currentSequence = null
+
   initialize: (args...) ->
     Crafty.bind 'PlayerDied', @_endScriptOnGameOver
     WhenJS(@execute(args...)(@currentSequence)).finally =>
