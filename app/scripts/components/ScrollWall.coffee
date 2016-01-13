@@ -51,6 +51,10 @@ Crafty.c 'ScrollWall',
       Crafty.viewport.y = -@y if Crafty.viewport.y isnt -@y
       Crafty.viewport.x = -@x if Crafty.viewport.x isnt -@x
 
+      Crafty.trigger('ViewportMove',
+        x: Math.round(@x)
+        y: Math.round(@y)
+      )
     # TODO: Verify correctness of these statements
     #@onHit 'PlayerControlledShip', (el) ->
       ## Push the player forward
