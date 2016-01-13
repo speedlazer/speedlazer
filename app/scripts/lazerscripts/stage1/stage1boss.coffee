@@ -131,6 +131,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   bombRaid: ->
     @sequence(
+      => @entity.invincible = yes
       @moveTo(y: .1)
       @while(
         @moveTo(x: -100, speed: 200)
@@ -155,6 +156,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       )
       => @entity.unflipX()
       @moveTo(x: .85, y: .41, speed: 200)
+      => @entity.invincible = no
     )
 
   fase2: ->

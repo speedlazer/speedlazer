@@ -4,6 +4,7 @@ Crafty.c 'Enemy',
     @attr
       pointsOnHit: 10
       pointsOnDestroy: 50
+    @invincible = no
 
   enemy: ->
     Crafty.trigger('EnemySpawned', this)
@@ -12,17 +13,19 @@ Crafty.c 'Enemy',
       return if @hidden
       data = { @pointsOnHit, @pointsOnDestroy }
       bullet = e[0].obj
-      bullet.trigger 'HitTarget', data
-      @absorbDamage(bullet.damage)
-      if @health <= 0
-        bullet.trigger 'DestroyTarget', data
+      unless @invincible
+        bullet.trigger 'HitTarget', data
+        @absorbDamage(bullet.damage)
+        if @health <= 0
+          bullet.trigger 'DestroyTarget', data
 
-      @trigger('Hit', this)
+        @trigger('Hit', this)
       bullet.destroy()
 
     @onHit 'Explosion', (e) ->
       return if Game.paused
       return if @hidden
+      return if @invincible
       for c in e
         splosion = c.obj
         @trigger('Hit', this)
