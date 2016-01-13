@@ -30,6 +30,7 @@ Crafty.c 'LargeDrone',
       for c in e
         mine = c.obj
         return if mine.hidden
+        return if mine.z < 0
         mine.absorbDamage(300) # Mine collision on LargeDrone triggers explosion of mine
     @updatedHealth()
     this

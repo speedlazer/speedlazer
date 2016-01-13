@@ -203,7 +203,8 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
     Crafty.e('Mine').mine(
       health: 200
       x: location().x
-      y: location().y + 70
+      y: location().y + 10
+      z: -4
       speed: 200
       pointsOnHit: 0
       pointsOnDestroy: 0
@@ -214,6 +215,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
     @sequence(
       @pickTarget('PlayerControlledShip')
       @moveTo(y: 1.1)
+      => @entity.attr(z: 0)
       @moveTo(@targetLocation(), y: 1.01)
       @moveTo(@targetLocation(x: null))
       @animate 'open'
@@ -379,7 +381,8 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
     Crafty.e('Mine').mine(
       health: 200
       x: location.x
-      y: location.y + 70
+      y: location.y + 10
+      z: -4
       speed: 400
       pointsOnHit: 10
       pointsOnDestroy: 20
