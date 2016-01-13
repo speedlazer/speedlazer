@@ -242,18 +242,24 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       @level.setWeaponsEnabled yes
 
-  explosion: (location, options = { damage: 0, radius: 20 }) ->
+  explosion: (location, options = {}) ->
     (sequence) =>
       @_verify(sequence)
       { x, y } = location()
       x -= Crafty.viewport.x
       y -= Crafty.viewport.y
+      options = _.defaults(options,
+        damage: 0
+        radius: 20
+        duration: 160
+      )
 
       e = Crafty.e('Explosion').explode(
         x: x
         y: y
         radius: options.radius
         damage: options.damage
+        duration: options.duration
       )
       if options.damage
         e.addComponent('Enemy')

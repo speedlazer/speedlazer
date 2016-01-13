@@ -8,6 +8,7 @@ Crafty.c 'Explosion',
 
   explode: (attr) ->
     radius = attr.radius ? 20
+    duration = (attr.duration ? 160) / 1000
     @attr attr
 
     options =
@@ -32,7 +33,7 @@ Crafty.c 'Explosion',
       # Random spread from origin
       spread: attr.radius / 2
       # How many frames should this last
-      duration: 400 / Crafty.timer.FPS()
+      duration: duration * Crafty.timer.FPS()
       #duration: -1
       # Will draw squares instead of circle gradients
       #fastMode: false
