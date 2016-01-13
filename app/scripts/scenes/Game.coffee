@@ -3,7 +3,6 @@ Crafty.defineScene 'Game', (data = {}) ->
   #
   # import from globals
   Game = window.Game
-  Crafty.timer.FPS(60)
 
   scriptName = data?.script ? 'Stage1'
   script = Game.Scripts[scriptName]
