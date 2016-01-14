@@ -11,12 +11,12 @@ Crafty.c 'HUD',
       x: x - Crafty.viewport.x
       y: y - Crafty.viewport.y
       z: z
-    @hudFloat = Crafty.bind 'EnterFrame', =>
+    @hudFloat = Crafty.bind 'ViewportMove', (coords) =>
       @attr
-        x: @viewportX - Crafty.viewport.x
-        y: @viewportY - Crafty.viewport.y
+        x: @viewportX + coords.x
+        y: @viewportY + coords.y
     this
 
   remove: ->
-    Crafty.unbind 'EnterFrame', @hudFloat
+    Crafty.unbind 'GameLoop', @hudFloat
 
