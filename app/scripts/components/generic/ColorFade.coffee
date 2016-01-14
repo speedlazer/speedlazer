@@ -22,6 +22,7 @@ Crafty.c 'ColorFade',
 
     color = @_buildColor(pos, @colors)
     if @background
+      Crafty.trigger('BackgroundColor', color)
       Crafty.background color
     else
       @color color

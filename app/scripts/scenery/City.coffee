@@ -9,36 +9,16 @@ generator.defineElement 'cloud', ->
   @addBackground(300, y, Crafty.e('2D, WebGL, Color').color('#FFFFFF').attr(z: -200, w: 70, h: 20, alpha: 0.3), .35)
 
 generator.defineElement 'waterHorizon', ->
-  @addBackground(0, @level.visibleHeight - 175, Crafty.e('2D, WebGL, Image, SunBlock').image('images/water-horizon.png').attr(z: -600), .25)
+  @addBackground(0, @level.visibleHeight - 175, Crafty.e('2D, WebGL, ImageWithEffects, SunBlock, Horizon').image('images/water-horizon.png').attr(z: -600, d: .7), .25)
 
   goldenStripe = Crafty.e('2D, WebGL, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
   @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
 
 generator.defineElement 'water', ->
-  @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, water1').attr(z: -500), .5)
-  water2 = Crafty.e('2D, WebGL, water2').attr(z: -500)
-  @addBackground(400, @level.visibleHeight - 125, water2, .5)
-  water2.originalX = water2.x
-
-  #@level.registerWaveTween 'OceanWavesDistance', 5000, 'easeInOutQuad', (v, forward) ->
-    #distance = 0
-    #width = 200
-    #Crafty('water1').each ->
-      #if forward
-        #@w = width + (v * distance)
-      #else
-        #@w = width + distance - (v * distance)
-    #Crafty('water2').each ->
-      #if forward
-        #@w = width - (v * distance) + 1
-        #dx = @dx
-        #@dx = distance - (v * distance) - 1
-        #@x += (dx - @dx)
-      #else
-        #@w = width - distance + (v * distance) + 1
-        #dx = @dx
-        #@dx = (v * distance) - 1
-        #@x += (dx - @dx)
+  @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, ImageWithEffects, Horizon').image('images/water.png').attr(z: -500, d: .3), .5)
+  #water2 = Crafty.e('2D, WebGL, water2').attr(z: -500)
+  #@addBackground(400, @level.visibleHeight - 125, water2, .5)
+  #water2.originalX = water2.x
 
 generator.defineElement 'waterFront', ->
   height = 65
@@ -83,22 +63,22 @@ generator.defineElement 'waterFront', ->
 generator.defineElement 'cityHorizon', (mode) ->
   @addElement 'waterHorizon'
   if mode is 'start'
-    e = Crafty.e('2D, WebGL, Image, SunBlock').image('images/horizon-city-start.png').attr(z: -598)
+    e = Crafty.e('2D, WebGL, ImageWithEffects, SunBlock, Horizon').image('images/horizon-city-start.png').attr(z: -598, d: .7)
     @addBackground(0, @level.visibleHeight - 177, e, .25)
   else
-    e = Crafty.e('2D, WebGL, Image, SunBlock').image('images/horizon-city.png').attr(z: -598)
+    e = Crafty.e('2D, WebGL, ImageWithEffects, SunBlock, Horizon').image('images/horizon-city.png').attr(z: -598, d: .7)
     @addBackground(0, @level.visibleHeight - 177, e, .25)
 
 generator.defineElement 'city', ->
   #col3 = '#66667D'
   #@addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, WebGL, Color').color(col3).attr(z: -400, w: 297, h: 83), .37)
 
-  bg =Crafty.e('2D, WebGL, Image, Collision, SunBlock')
-    .image('images/city-layer2.png').attr(z: -400)
+  bg = Crafty.e('2D, WebGL, ImageWithEffects, Collision, SunBlock, Horizon')
+    .image('images/city-layer2.png').attr(z: -400, d: .5)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
   @addBackground(0, @level.visibleHeight - 57 - 240, bg, .37)
 
-  e = Crafty.e('2D, WebGL, Image, Collision, SunBlock').image('images/city.png').attr(z: -305)
+  e = Crafty.e('2D, WebGL, ImageWithEffects, Collision, SunBlock, Horizon').image('images/city.png').attr(z: -305, d: .3)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
   c = Crafty.e('2D, Collision, SunBlock')
@@ -109,19 +89,19 @@ generator.defineElement 'city', ->
   @addBackground(400, @level.visibleHeight - 290, c, .5)
 
 generator.defineElement 'city-bridge', ->
-  bg =Crafty.e('2D, WebGL, Image, Collision, SunBlock')
-    .image('images/city-layer2.png').attr(z: -400)
+  bg =Crafty.e('2D, WebGL, ImageWithEffects, Collision, SunBlock, Horizon')
+    .image('images/city-layer2.png').attr(z: -400, d: .3)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
   @addBackground(0, @level.visibleHeight - 57 - 240, bg, .37)
 
   # TODO: Does this need sunblock?
-  e = Crafty.e('2D, WebGL, Image, Collision, SunBlock').image('images/city-bridge.png').attr(z: -305)
+  e = Crafty.e('2D, WebGL, ImageWithEffects, Collision, SunBlock, Horizon').image('images/city-bridge.png').attr(z: -305, d: .3)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
   @addBackground(0, @level.visibleHeight - 290, e, .5)
 
 generator.defineElement 'cityStart', ->
-  e = Crafty.e('2D, WebGL, Image, Collision, SunBlock').image('images/city-start.png').attr(z: -305)
+  e = Crafty.e('2D, WebGL, ImageWithEffects, Collision, SunBlock, Horizon').image('images/city-start.png').attr(z: -305, d: .3)
   e.collision([220, 155, 220, 20, 270, 20, 270, 0, 330, 0, 330, 155])
   @addBackground(0, @level.visibleHeight - 290, e, .5)
 
