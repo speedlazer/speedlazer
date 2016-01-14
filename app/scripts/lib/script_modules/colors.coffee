@@ -28,4 +28,7 @@ Game.ScriptModule.Colors =
       d.promise
 
   _colorHorizon: (c) ->
+    return if Game.backgroundColor is c
+
+    Game.backgroundColor = c
     Crafty('Horizon').each -> @colorDesaturation(c, @d)

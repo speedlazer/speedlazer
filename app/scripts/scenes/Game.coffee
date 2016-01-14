@@ -3,6 +3,7 @@ Crafty.defineScene 'Game', (data = {}) ->
   #
   # import from globals
   Game = window.Game
+  Game.backgroundColor = null
 
   scriptName = data?.script ? 'Stage1'
   script = Game.Scripts[scriptName]

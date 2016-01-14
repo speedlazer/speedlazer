@@ -78,6 +78,7 @@ Crafty.c 'ImageWithEffects',
     @unbind('Draw', @_drawImage)
 
   colorDesaturation: (color) ->
+    return this unless color?
     if arguments.length >=3
       @_red = arguments[0]
       @_green = arguments[1]
