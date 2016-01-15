@@ -36,12 +36,12 @@ class Game.Scripts.SunRise extends Game.EntityScript
     speed = @options.speed ? 1
 
     preColor = (40000 / speed)
-    colorDuration = (500000 / speed)
+    colorDuration = (400000 / speed)
     @sequence(
       @setLocation x: .97, y: .74
-      @backgroundColorFade duration: preColor, skip: @options.skipTo, '#000020', '#402020'
+      @backgroundColorFade duration: preColor, skip: @options.skipTo, '#000020', '#d88442'
       @parallel(
-        @backgroundColorFade duration: colorDuration, skip: (@options.skipTo - preColor), '#402020', '#7070CC', '#8080FF'
+        @backgroundColorFade duration: colorDuration, skip: (@options.skipTo - preColor), '#d88442', '#FFFe82', '#5dade9', '#5dade9', '#5dade9', '#5dade9'
         @movePath [
           [.65, .31]
           [.5, .21]

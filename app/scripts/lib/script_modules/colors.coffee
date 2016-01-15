@@ -31,4 +31,4 @@ Game.ScriptModule.Colors =
     return if Game.backgroundColor is c
 
     Game.backgroundColor = c
-    Crafty('Horizon').each -> @colorDesaturation(c, @d)
+    Crafty('Horizon').each -> @colorDesaturation(c)

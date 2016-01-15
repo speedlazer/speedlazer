@@ -20,6 +20,7 @@ Crafty.c 'PlayerControlledShip',
     @addComponent('Invincible').invincibleDuration(2000)
     @onHit 'Enemy', (collision) ->
       return if Game.paused
+      return
       return if @has('Invincible')
       hit = no
       for e in collision

@@ -5,9 +5,11 @@ IMAGE_EFFECT_VERTEX_SHADER = """
  attribute vec2 aLayer;
  attribute vec2 aTextureCoord;
  attribute vec4 aColor;
+ attribute vec2 aGradient;
 
  varying mediump vec3 vTextureCoord;
  varying lowp vec4 vColor;
+ varying lowp vec2 vGradient;
  varying lowp float vMix;
 
  uniform vec4 uViewport;
@@ -25,6 +27,7 @@ IMAGE_EFFECT_VERTEX_SHADER = """
    gl_Position = viewportScale * (viewportTranslation + vec4(pos, 1.0/(1.0+exp(aLayer.x) ), 1) );
    vTextureCoord = vec3(aTextureCoord, aLayer.y);
    vColor = aColor;
+   vGradient = aGradient;
  }
 """
 
@@ -32,15 +35,17 @@ IMAGE_EFFECT_FRAGMENT_SHADER = """
   precision mediump float;
   varying mediump vec3 vTextureCoord;
   varying mediump vec4 vColor;
+  varying mediump vec2 vGradient;
 
   uniform sampler2D uSampler;
   uniform mediump vec2 uTextureDimensions;
 
   void main(void) {
-    highp vec2 coord =   vTextureCoord.xy / uTextureDimensions;
+    highp vec2 coord = vTextureCoord.xy / uTextureDimensions;
     mediump vec4 texelColor = texture2D(uSampler, coord);
 
-    mediump float mixFactor = vColor.a;
+    mediump float mixFactor = (vGradient.x * (1.0 - coord.y)) + (vGradient.y * coord.y);
+
     mediump float lightness = (0.2126*texelColor.r + 0.7152*texelColor.g + 0.0722*texelColor.b);
     mediump float lightnessBase = (0.2126*vColor.r + 0.7152*vColor.g + 0.0722*vColor.b);
     mediump vec4 baseColor = vec4(vColor.rgb, texelColor.a) * (1.0 + (lightness - lightnessBase));
@@ -61,6 +66,7 @@ IMAGE_EFFECT_ATTRIBUTE_LIST = [
   { name: "aLayer",        width: 2 }
   { name: "aTextureCoord", width: 2 }
   { name: "aColor",        width: 4 }
+  { name: "aGradient",     width: 2 }
 ]
 
 Crafty.c 'ImageWithEffects',
@@ -73,9 +79,15 @@ Crafty.c 'ImageWithEffects',
     @_green = 0
     @_blue = 0
     @_strength = 0
+    @_strength2 = 0
 
   remove: ->
     @unbind('Draw', @_drawImage)
+
+  saturationGradient: (start, end) ->
+    @_strength = start
+    @_strength2 = end
+    this
 
   colorDesaturation: (color) ->
     return this unless color?
@@ -84,12 +96,14 @@ Crafty.c 'ImageWithEffects',
       @_green = arguments[1]
       @_blue = arguments[2]
       @_strength = arguments[3] if typeof arguments[3] is "number"
+      @_strength2 = arguments[4] if typeof arguments[4] is "number"
     else
       # First argument is color name
       Crafty.assignColor(color, this)
       # Second argument, if present, is strength of color
       # Note that assignColor will give a default strength of 1.0 if none exists.
       @_strength = arguments[1] if typeof arguments[1] is "number"
+      @_strength2 = arguments[2] if typeof arguments[2] is "number"
 
     @trigger("Invalidate")
     this
@@ -134,6 +148,10 @@ Crafty.c 'ImageWithEffects',
         @_red/255,
         @_green/255,
         @_blue/255,
-        @_strength
+        1.0
+      )
+      e.program.writeVector("aGradient",
+        @_strength,
+        @_strength2
       )
 
