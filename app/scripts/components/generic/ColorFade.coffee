@@ -1,9 +1,6 @@
 Crafty.c 'ColorFade',
-  init: ->
-    @requires('Color')
-
-  colorFade: (options, @colors...) ->
-    { @duration, @background, skip } = options
+  colorFade: (options, @bottomColors, @topColors) ->
+    { @duration, skip } = options
     @v = 0
     @v += Math.max(skip, 0) ? 0
     @bind 'GameLoop', @_recolor
@@ -20,12 +17,13 @@ Crafty.c 'ColorFade',
       @trigger 'ColorFadeFinished'
       pos = 1
 
-    color = @_buildColor(pos, @colors)
-    if @background
-      Crafty.trigger('BackgroundColor', color)
-      Crafty.background color
-    else
-      @color color
+    bcolor = @_buildColor(pos, @bottomColors)
+    tcolor = @_buildColor(pos, @topColors)
+    Crafty.trigger('BackgroundColor', bcolor)
+    Crafty.background bcolor
+
+    @bottomColor bcolor
+    @topColor tcolor
 
   _buildColor: (v, colors) ->
     parts = (1 / (colors.length - 1))

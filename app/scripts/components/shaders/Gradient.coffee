@@ -17,6 +17,7 @@ GRADIENT_VERTEX_SHADER = """
 
     pos = entityRotationMatrix * (pos - entityOrigin) + entityOrigin;
     gl_Position = viewportScale * (viewportTranslation + vec4(pos, 1.0/(1.0+exp(aLayer.x) ), 1) );
+
     vColor = vec4(aColor.rgb*aColor.a*aLayer.y, aColor.a*aLayer.y);
   }
 """
@@ -30,22 +31,28 @@ GRADIENT_FRAGMENT_SHADER = """
 """
 
 GRADIENT_ATTRIBUTE_LIST = [
-    {name:"aPosition", width: 2},
-    {name:"aOrientation", width: 3},
-    {name:"aLayer", width:2},
-    {name:"aColor",  width: 4}
+    {name:"aPosition", width: 2}
+    {name:"aOrientation", width: 3}
+    {name:"aLayer", width:2}
+    {name:"aColor", width: 4}
 ]
 
 Crafty.c 'Gradient',
-  _red: 0
-  _green: 0
-  _blue: 0
-  _strength: 1.0
+  _topColor:
+    _red: 0
+    _green: 0
+    _blue: 0
+    _strength: 1.0
+  _bottomColor:
+    _red: 0
+    _green: 0
+    _blue: 0
+    _strength: 1.0
   _color: ""
   ready: yes
 
   init: ->
-    @bind 'Draw', @_drawColor
+    @bind 'Draw', @_drawGradient
     if @has 'WebGL'
       @_establishShader 'Gradient',
         GRADIENT_FRAGMENT_SHADER,
@@ -54,72 +61,46 @@ Crafty.c 'Gradient',
     @trigger 'Invalidate'
 
   remove: ->
-    @unbind 'Draw', @_drawColor
+    @unbind 'Draw', @_drawGradient
     if @has 'DOM'
       @_element.style.backgroundColor = 'transparent'
     @trigger 'Invalidate'
 
-  # draw function for "Color"
-  _drawColor: (e) ->
-    return unless @_color
+  _drawGradient: (e) ->
     if e.type is 'webgl'
       e.program.writeVector('aColor',
-          @_red/255,
-          @_green/255,
-          @_blue/255,
-          @_strength
+          @_topColor._red/255,
+          @_topColor._green/255,
+          @_topColor._blue/255,
+          @_topColor._strength,
+
+          @_bottomColor._red/255,
+          @_bottomColor._green/255,
+          @_bottomColor._blue/255,
+          @_bottomColor._strength
       )
 
-  ###@
-   * #.color
-   * @comp Color
-   * @trigger Invalidate - when the color changes
-   *
-   * Will assign the color and opacity, either through a string shorthand, or through explicit rgb values.
-   * @sign public this .color(String color[, Float strength])
-   * @param color - Color of the rectangle
-   * @param strength - the opacity of the rectangle
-   *
-   * @sign public this .color(r, g, b[, strength])
-   * @param r - value for the red channel
-   * @param g - value for the green channel
-   * @param b - value for the blue channel
-   * @param strength - the opacity of the rectangle
-   *
-   * @sign public String .color()
-   * @return A string representing the current color as a CSS property.
-   *
-   * @example
-   * ```
-   * var c = Crafty.e("2D, DOM, Color");
-   * c.color("#FF0000");
-   * c.color("red");
-   * c.color(255, 0, 0);
-   * c.color("rgb(255, 0, 0")
-   * ```
-   * Three different ways of assign the color red.
-   * ```
-   * var c = Crafty.e("2D, DOM, Color");
-   * c.color("#00FF00", 0.5);
-   * c.color("rgba(0, 255, 0, 0.5)");
-   * ```
-   * Two ways of assigning a transparent green color.
-  ###
-  color: (color) ->
-    return this._color if arguments.length is 0
+  topColor: (color) ->
+    return @_topColor if arguments.length is 0
+    @_setColor(@_topColor, arguments...)
+
+  bottomColor: (color) ->
+    return @_bottomColor if arguments.length is 0
+    @_setColor(@_bottomColor, arguments...)
+
+  _setColor: (varColor, color) ->
     if arguments.length >= 3
-      @_red = arguments[0]
-      @_green = arguments[1]
-      @_blue = arguments[2]
-      @_strength = arguments[3] if typeof arguments[3] is 'number'
+      varColor._red = arguments[0]
+      varColor._green = arguments[1]
+      varColor._blue = arguments[2]
+      varColor._strength = arguments[3] if typeof arguments[3] is 'number'
     else
       # First argument is color name
-      Crafty.assignColor(color, this)
+      Crafty.assignColor(color, varColor)
       # Second argument, if present, is strength of color
       # Note that assignColor will give a default strength of 1.0 if none exists.
-      @_strength = arguments[1] if typeof arguments[1] is 'number'
+      varColor._strength = arguments[1] if typeof arguments[1] is 'number'
 
-    @_color = "rgba(#{@_red}, #{@_green}, #{@_blue}, #{@_strength})"
     @trigger 'Invalidate'
     this
 

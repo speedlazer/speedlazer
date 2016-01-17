@@ -119,7 +119,7 @@ Crafty.c 'Sun',
     Crafty('GoldenStripe').each ->
       if horizonDistance <= 0
         @attr
-          alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 10.0) / 10.0)
+          alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 5.1) / 5.1)
           h: 1
       else if 0 < horizonDistance < 1
         @attr
@@ -128,9 +128,9 @@ Crafty.c 'Sun',
       else if horizonDistance < 60
         @attr
           alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 60.0) / 60.0)
-          h: Math.abs(Math.min(horizonDistance / 2.0, 40.0))
+          h: Math.abs(Math.max(Math.min(horizonDistance / 5.0, 10.0), 1))
       else
         @attr
           alpha: 0
-          h: 20.0
+          h: 10.0
 

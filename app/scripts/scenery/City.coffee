@@ -14,7 +14,7 @@ generator.defineElement 'waterHorizon', ->
     .image('images/water-horizon.png')
     .attr(z: -600)
     .colorDesaturation(Game.backgroundColor)
-    .saturationGradient(.8, .0)
+    .saturationGradient(1.0, .0)
   @addBackground(0, @level.visibleHeight - 175, h, .25)
 
   goldenStripe = Crafty.e('2D, WebGL, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
@@ -25,7 +25,7 @@ generator.defineElement 'water', ->
     .image('images/water.png')
     .attr(z: -500)
     .colorDesaturation(Game.backgroundColor)
-    .saturationGradient(.5, .0)
+    .saturationGradient(.7, .0)
   @addBackground(0, @level.visibleHeight - 125, h, .5)
 
 generator.defineElement 'waterFront', ->
@@ -76,7 +76,7 @@ generator.defineElement 'cityHorizon', (mode) ->
     Crafty.e('2D, WebGL, ImageWithEffects, SunBlock, Horizon').image('images/horizon-city.png')
   e.attr(z: -598)
     .colorDesaturation(Game.backgroundColor)
-    .saturationGradient(.7, .6)
+    .saturationGradient(.9, .8)
   @addBackground(0, @level.visibleHeight - 177, e, .25)
 
 generator.defineElement 'city', ->
@@ -87,13 +87,13 @@ generator.defineElement 'city', ->
     .image('images/city-layer2.png').attr(z: -505)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
     .colorDesaturation(Game.backgroundColor)
-    .saturationGradient(.4, .4)
+    .saturationGradient(.6, .6)
   @addBackground(0, @level.visibleHeight - 57 - 240, bg, .37)
 
   e = Crafty.e('2D, WebGL, ImageWithEffects, Collision, SunBlock, Horizon')
     .image('images/city.png').attr(z: -305)
     .colorDesaturation(Game.backgroundColor)
-    .saturationGradient(.2, .2)
+    .saturationGradient(.4, .4)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
   c = Crafty.e('2D, Collision, SunBlock')
@@ -108,14 +108,14 @@ generator.defineElement 'city-bridge', ->
     .image('images/city-layer2.png').attr(z: -505)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
     .colorDesaturation(Game.backgroundColor)
-    .saturationGradient(.4, .4)
+    .saturationGradient(.6, .6)
   @addBackground(0, @level.visibleHeight - 57 - 240, bg, .37)
 
   # TODO: Does this need sunblock?
   e = Crafty.e('2D, WebGL, ImageWithEffects, Collision, SunBlock, Horizon')
     .image('images/city-bridge.png').attr(z: -305)
     .colorDesaturation(Game.backgroundColor)
-    .saturationGradient(.2, .2)
+    .saturationGradient(.4, .4)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
   @addBackground(0, @level.visibleHeight - 290, e, .5)
@@ -124,7 +124,7 @@ generator.defineElement 'cityStart', ->
   e = Crafty.e('2D, WebGL, ImageWithEffects, Collision, SunBlock, Horizon')
     .image('images/city-start.png').attr(z: -305)
     .colorDesaturation(Game.backgroundColor)
-    .saturationGradient(.2, .2)
+    .saturationGradient(.4, .4)
   e.collision([220, 155, 220, 20, 270, 20, 270, 0, 330, 0, 330, 155])
   @addBackground(0, @level.visibleHeight - 290, e, .5)
 

@@ -19,6 +19,15 @@ class Game.Scripts.SunRise extends Game.EntityScript
 
   spawn: (options) ->
     sun = Crafty('Sun')
+    sky = Crafty('Sky').get(0) || Crafty.e('2D, WebGL, Gradient, Sky, HUD, ColorFade').attr(
+      w: Crafty.viewport.width
+      h: Crafty.viewport.height * .7
+    ).positionHud(
+      x: 0
+      y: 0
+      z: -1000
+    )
+
     if sun.length > 0
       sun.attr(
         x: sun.x + Crafty.viewport.x
@@ -39,9 +48,19 @@ class Game.Scripts.SunRise extends Game.EntityScript
     colorDuration = (400000 / speed)
     @sequence(
       @setLocation x: .97, y: .74
-      @backgroundColorFade duration: preColor, skip: @options.skipTo, '#000020', '#d88442'
+      @backgroundColorFade(
+        duration: preColor,
+        skip: @options.skipTo,
+        ['#000020', '#000020', '#ca4331'],
+        ['#000000', '#222c50']
+      )
       @parallel(
-        @backgroundColorFade duration: colorDuration, skip: (@options.skipTo - preColor), '#d88442', '#FFFe82', '#5dade9', '#5dade9', '#5dade9', '#5dade9'
+        @backgroundColorFade(
+          duration: colorDuration,
+          skip: (@options.skipTo - preColor),
+          ['#ca4331', '#fcaf01', '#FFFe82', '#5dade9', '#5ba5ec'],
+          ['#222c50', '#7a86a2', '#5dade9']
+        )
         @movePath [
           [.65, .31]
           [.5, .21]
