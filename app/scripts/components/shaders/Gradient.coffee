@@ -5,6 +5,7 @@ GRADIENT_VERTEX_SHADER = """
   attribute vec4 aColor;
 
   varying lowp vec4 vColor;
+  varying lowp vec2 vLayer;
   uniform  vec4 uViewport;
 
   mat4 viewportScale = mat4(2.0 / uViewport.z, 0, 0, 0,    0, -2.0 / uViewport.w, 0,0,    0, 0,1,0,    -1,+1,0,1);
@@ -18,15 +19,17 @@ GRADIENT_VERTEX_SHADER = """
     pos = entityRotationMatrix * (pos - entityOrigin) + entityOrigin;
     gl_Position = viewportScale * (viewportTranslation + vec4(pos, 1.0/(1.0+exp(aLayer.x) ), 1) );
 
-    vColor = vec4(aColor.rgb*aColor.a*aLayer.y, aColor.a*aLayer.y);
+    vColor = aColor;
+    vLayer = aLayer;
   }
 """
 
 GRADIENT_FRAGMENT_SHADER = """
   precision mediump float;
   varying lowp vec4 vColor;
+  varying lowp vec2 vLayer;
   void main(void) {
-    gl_FragColor = vColor;
+    gl_FragColor = vec4(vColor.rgb*vColor.a*vLayer.y, vColor.a*vLayer.y);
   }
 """
 
@@ -54,7 +57,7 @@ Crafty.c 'Gradient',
   init: ->
     @bind 'Draw', @_drawGradient
     if @has 'WebGL'
-      @_establishShader 'Gradient',
+      @_establishShader "Gradient",
         GRADIENT_FRAGMENT_SHADER,
         GRADIENT_VERTEX_SHADER,
         GRADIENT_ATTRIBUTE_LIST
@@ -69,15 +72,15 @@ Crafty.c 'Gradient',
   _drawGradient: (e) ->
     if e.type is 'webgl'
       e.program.writeVector('aColor',
-          @_topColor._red/255,
-          @_topColor._green/255,
-          @_topColor._blue/255,
-          @_topColor._strength,
+        @_topColor._red/255,
+        @_topColor._green/255,
+        @_topColor._blue/255,
+        @_topColor._strength,
 
-          @_bottomColor._red/255,
-          @_bottomColor._green/255,
-          @_bottomColor._blue/255,
-          @_bottomColor._strength
+        @_bottomColor._red/255,
+        @_bottomColor._green/255,
+        @_bottomColor._blue/255,
+        @_bottomColor._strength
       )
 
   topColor: (color) ->
@@ -89,17 +92,17 @@ Crafty.c 'Gradient',
     @_setColor(@_bottomColor, arguments...)
 
   _setColor: (varColor, color) ->
-    if arguments.length >= 3
-      varColor._red = arguments[0]
-      varColor._green = arguments[1]
-      varColor._blue = arguments[2]
-      varColor._strength = arguments[3] if typeof arguments[3] is 'number'
+    if arguments.length >= 4
+      varColor._red = arguments[1]
+      varColor._green = arguments[2]
+      varColor._blue = arguments[3]
+      varColor._strength = arguments[4] if typeof arguments[4] is 'number'
     else
       # First argument is color name
       Crafty.assignColor(color, varColor)
       # Second argument, if present, is strength of color
       # Note that assignColor will give a default strength of 1.0 if none exists.
-      varColor._strength = arguments[1] if typeof arguments[1] is 'number'
+      varColor._strength = arguments[2] if typeof arguments[2] is 'number'
 
     @trigger 'Invalidate'
     this
