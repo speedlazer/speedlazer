@@ -41,20 +41,21 @@ GRADIENT_ATTRIBUTE_LIST = [
 ]
 
 Crafty.c 'Gradient',
-  _topColor:
-    _red: 0
-    _green: 0
-    _blue: 0
-    _strength: 1.0
-  _bottomColor:
-    _red: 0
-    _green: 0
-    _blue: 0
-    _strength: 1.0
-  _color: ""
-  ready: yes
-
   init: ->
+    # Declaring the vars here instead as class attributes
+    # make them unique for each instance
+    @_topColor =
+      _red: 0
+      _green: 0
+      _blue: 0
+      _strength: 1.0
+    @_bottomColor =
+      _red: 0
+      _green: 0
+      _blue: 0
+      _strength: 1.0
+    @ready = yes
+
     @bind 'Draw', @_drawGradient
     if @has 'WebGL'
       @_establishShader "Gradient",
