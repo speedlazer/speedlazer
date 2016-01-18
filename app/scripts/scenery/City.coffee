@@ -17,7 +17,10 @@ generator.defineElement 'waterHorizon', ->
     .saturationGradient(1.0, .0)
   @addBackground(0, @level.visibleHeight - 175, h, .25)
 
-  goldenStripe = Crafty.e('2D, WebGL, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
+  goldenStripe = Crafty.e('2D, WebGL, Gradient, GoldenStripe')
+    .topColor('#DDDD00')
+    .bottomColor('#DDDD00', 0)
+    .attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
   @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
 
 generator.defineElement 'water', ->
@@ -269,10 +272,10 @@ generator.defineBlock class extends @Game.LevelScenery
   generate: ->
     super
 
-    @addElement 'waterFront'
-    @addElement 'waterHorizon'
     @addElement 'cloud'
+    @addElement 'waterHorizon'
     @addElement 'water'
+    @addElement 'waterFront'
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.CoastStart'
@@ -287,10 +290,10 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-    @addElement 'waterFront'
-    @addElement 'water'
-    @addElement 'cityHorizon', 'start'
     @addElement 'cloud'
+    @addElement 'cityHorizon', 'start'
+    @addElement 'water'
+    @addElement 'waterFront'
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Coast'
@@ -317,8 +320,8 @@ generator.defineBlock class extends @Game.LevelScenery
   generate: ->
     super
     @addElement 'waterFront'
-    @addElement 'water'
     @addElement 'cityHorizon'
+    @addElement 'water'
     @addElement 'cloud'
 
 generator.defineBlock class extends @Game.LevelScenery
@@ -333,9 +336,9 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-    @addElement 'waterFront'
-    @addElement 'water'
     @addElement 'cityHorizon'
+    @addElement 'water'
+    @addElement 'waterFront'
     @addElement 'cityStart'
 
 generator.defineBlock class extends @Game.LevelScenery

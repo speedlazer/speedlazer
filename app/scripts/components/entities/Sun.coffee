@@ -110,7 +110,7 @@ Crafty.c 'Sun',
           y: @y - (2 * @h)
 
     # For sunrise / set on water
-    horizonDistance = (Crafty.viewport.height - 155) - (Crafty.viewport._y) - @y
+    horizonDistance = (Crafty.viewport.height - 175) - (Crafty.viewport._y) - @y
 
     size = 20.0 + (15.0 * (Math.min(Math.max(horizonDistance, 0), 150.0) / 150.0))
     @w = size
@@ -119,16 +119,20 @@ Crafty.c 'Sun',
     Crafty('GoldenStripe').each ->
       if horizonDistance <= 0
         @attr
-          alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 5.1) / 5.1)
-          h: 1
+          alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 20) / 20)
+          h: 3
       else if 0 < horizonDistance < 1
         @attr
           alpha: 1.0
-          h: 1
+          h: 3
       else if horizonDistance < 60
         @attr
-          alpha: 1.0 - (Math.min(Math.abs(horizonDistance), 60.0) / 60.0)
-          h: Math.abs(Math.max(Math.min(horizonDistance / 5.0, 10.0), 1))
+          alpha: 1.0
+          h: Math.abs(Math.max(Math.min(horizonDistance / 2.0, 40.0), 3))
+      else if horizonDistance < 120
+        @attr
+          alpha: 1.0 - (Math.min(Math.abs(horizonDistance - 60), 60.0) / 60.0)
+          h: Math.abs(Math.max(Math.min(horizonDistance / 2.0, 40.0), 1))
       else
         @attr
           alpha: 0

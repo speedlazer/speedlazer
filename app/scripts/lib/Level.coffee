@@ -139,18 +139,18 @@ class Game.Level
         @lastUpdate = Crafty.viewport._x
     )
 
-    Crafty.bind 'LeaveBlock', (block) => #(index) =>
+    Crafty.uniqueBind 'LeaveBlock', (block) => #(index) =>
       index = _.indexOf(@blocks, block)
       @_handleSceneryEvents(@blocks[index - 1], 'leave') if index > 0
       @_handleSceneryEvents(block, 'inScreen')
       @_cleanupBuildBlocks()
 
-    Crafty.bind 'EnterBlock', (block) => #(index) =>
+    Crafty.uniqueBind 'EnterBlock', (block) => #(index) =>
       index = _.indexOf(@blocks, block)
       @_handleSceneryEvents(@blocks[index - 1], 'outScreen') if index > 0
       @_handleSceneryEvents(block, 'enter')
 
-    Crafty.bind 'PlayerEnterBlock', (block) => #(index) =>
+    Crafty.uniqueBind 'PlayerEnterBlock', (block) => #(index) =>
       index = _.indexOf(@blocks, block)
       @_handleSceneryEvents(@blocks[index - 1], 'playerLeave') if index > 0
       @_handleSceneryEvents(block, 'playerEnter')
@@ -300,7 +300,6 @@ class Game.Level
   loadAssets: (name, assetObject) ->
     @entityAssets ?= {}
     return @entityAssets[name].promise if @entityAssets[name]
-    #console.log 'loading', name
     d = WhenJS.defer()
     @entityAssets[name] =
       assets: assetObject

@@ -58,11 +58,11 @@ class Game.Scripts.SunRise extends Game.EntityScript
         @backgroundColorFade(
           duration: colorDuration,
           skip: (@options.skipTo - preColor),
-          ['#ca4331', '#fcaf01', '#FFFe82', '#5dade9', '#5ba5ec'],
-          ['#222c50', '#7a86a2', '#5dade9']
+          ['#ca4331', '#fcaf01', '#FFFe82', '#5dade9', '#5ba5ec', '#5ba5ec', '#5ba5ec'],
+          ['#222c50', '#7a86a2', '#5dade9', '#366eab']
         )
         @movePath [
-          [.65, .31]
+          [.75, .31]
           [.5, .21]
         ], rotate: no, skip: @options.skipTo - preColor
       )
