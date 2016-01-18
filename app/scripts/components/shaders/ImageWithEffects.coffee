@@ -69,6 +69,19 @@ IMAGE_EFFECT_ATTRIBUTE_LIST = [
   { name: "aGradient",     width: 2 }
 ]
 
+Crafty.extend
+  defaultImageWithEffectsShader: (shader) ->
+    if arguments.length is 0
+      if @_defaultImageEffectsShader is undefined
+        @_defaultImageEffectsShader = new Crafty.WebGLShader(
+          IMAGE_EFFECT_VERTEX_SHADER,
+          IMAGE_EFFECT_FRAGMENT_SHADER,
+          IMAGE_EFFECT_ATTRIBUTE_LIST,
+          (e) ->
+        )
+      return @_defaultImageEffectsShader
+    @_defaultImageEffectsShader = shader
+
 Crafty.c 'ImageWithEffects',
   _repeat: 'repeat'
   ready: no
@@ -124,7 +137,7 @@ Crafty.c 'ImageWithEffects',
 
   _onImageLoad: ->
     if @has 'WebGL'
-      @_establishShader("imageFx:#{@__image}", IMAGE_EFFECT_FRAGMENT_SHADER, IMAGE_EFFECT_VERTEX_SHADER, IMAGE_EFFECT_ATTRIBUTE_LIST)
+      @_establishShader("imageFx:#{@__image}", Crafty.defaultImageWithEffectsShader())
       @program.setTexture(@webgl.makeTexture(@__image, @img, (@_repeat isnt 'no-repeat')))
 
     if @_repeat is 'no-repeat'

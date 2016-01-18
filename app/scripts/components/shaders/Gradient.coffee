@@ -40,6 +40,20 @@ GRADIENT_ATTRIBUTE_LIST = [
     {name:"aColor", width: 4}
 ]
 
+Crafty.extend
+  defaultGradientShader: (shader) ->
+    if arguments.length is 0
+      if @_defaultGradientShader is undefined
+        @_defaultGradientShader = new Crafty.WebGLShader(
+          GRADIENT_VERTEX_SHADER,
+          GRADIENT_FRAGMENT_SHADER,
+          GRADIENT_ATTRIBUTE_LIST,
+          (e) ->
+        )
+      return @_defaultGradientShader
+    @_defaultGradientShader = shader
+
+
 Crafty.c 'Gradient',
   init: ->
     # Declaring the vars here instead as class attributes
@@ -58,10 +72,7 @@ Crafty.c 'Gradient',
 
     @bind 'Draw', @_drawGradient
     if @has 'WebGL'
-      @_establishShader "Gradient",
-        GRADIENT_FRAGMENT_SHADER,
-        GRADIENT_VERTEX_SHADER,
-        GRADIENT_ATTRIBUTE_LIST
+      @_establishShader "Gradient", Crafty.defaultGradientShader()
     @trigger 'Invalidate'
 
   remove: ->
