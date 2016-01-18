@@ -11,6 +11,11 @@ Crafty.c 'Hideable',
       z: z
     @hidden = yes
 
+  colorDesaturation: (color) ->
+    c = {}
+    Crafty.assignColor(color, c)
+    @attr desaturationColor: c
+
   hide: (@hideMarker) ->
     @hidden = yes
     @attr alpha: 0.0

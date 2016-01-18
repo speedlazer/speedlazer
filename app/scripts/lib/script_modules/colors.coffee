@@ -14,6 +14,9 @@ Game.ScriptModule.Colors =
         bottomColors,
         topColors
       ).bind('ColorFadeFinished', ->
+        c = bottomColors[bottomColors.length - 1]
+        Game.backgroundColor = c
+        Crafty('Horizon').each -> @colorDesaturation(c)
         Crafty.unbind('BackgroundColor', @_colorHorizon)
         d.resolve()
       )

@@ -15,7 +15,7 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
     )
 
   spawn: (options) ->
-    Crafty.e('CameraCrew')
+    Crafty.e('CameraCrew, Horizon')
       .attr(
         x: (Crafty.viewport.width * .2) - Crafty.viewport.x
         y: Crafty.viewport.height * .2
@@ -23,6 +23,7 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
       ).cameraCrew()
 
   execute: ->
+    @entity.colorDesaturation Game.backgroundColor
     @bindSequence 'Hit', @crash
     @sequence(
       @sendToBackground(0.85, -100)

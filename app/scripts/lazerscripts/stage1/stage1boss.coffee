@@ -312,7 +312,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
 
 class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
   spawn: ->
-    Crafty.e('LargeDrone').drone(
+    Crafty.e('LargeDrone, Horizon').drone(
       health: 134000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
@@ -322,6 +322,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
+    @entity.colorDesaturation Game.backgroundColor
 
     @sequence(
       @animate 'slow', -1, 'eye'
