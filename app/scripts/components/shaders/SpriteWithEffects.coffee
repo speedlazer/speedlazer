@@ -87,9 +87,12 @@ Crafty.defaultSpriteShader new Crafty.WebGLShader(
       1.0
     )
     s = ent.scale ? 1
+    tds = ent.topDesaturation ? 0
+    bds = ent.bottomDesaturation ? 0
+
     e.program.writeVector("aGradient",
-      (1 - s) * 1.15,
-      (1 - s) * 1.15
+      tds + ((1 - s) * 1.15),
+      bds + ((1 - s) * 1.15)
     )
 )
 

@@ -17,6 +17,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           map:
             shadow: [1, 18, 35, 20]
             standardRocket: [1, 1, 45, 15]
+            cloud: [48, 0, 250, 100]
     )
 
   execute: ->
