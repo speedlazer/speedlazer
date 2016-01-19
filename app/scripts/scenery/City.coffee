@@ -4,7 +4,8 @@ generator = @Game.levelGenerator
 Game = @Game
 
 generator.defineElement 'cloud', ->
-  if Math.random() > .2
+  v = Math.random()
+  if v > .2
     y = (Math.random() * 20) + 100
     w = (Math.random() * 20) + 125
     h = (Math.random() * 10) + 50
@@ -13,14 +14,14 @@ generator.defineElement 'cloud', ->
       c1 = c1.flip('X')
     @addBackground(200, y, c1, .5)
 
-  if Math.random() < .5
-    s = (Math.random() * .30) + .15
+  if v < .6
+    s = (Math.random() * .20) + .25
 
     y = 230 - (s * 50)
     w = ((Math.random() * 10) + 70) - (s * 20)
     h = ((Math.random() * 5) + 20) - (s * 10)
     c2 = Crafty.e('2D, WebGL, cloud, Hideable, Horizon').attr(
-      z: -200,
+      z: -250 + (s * 20),
       w: w,
       h: h,
       topDesaturation: 1.0 - s,
