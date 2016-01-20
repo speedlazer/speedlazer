@@ -1,3 +1,4 @@
+level = null
 Crafty.defineScene 'Game', (data = {}) ->
   # constructor
   #
@@ -143,6 +144,7 @@ Crafty.defineScene 'Game', (data = {}) ->
 
 , ->
   # destructor
+  level.stop()
   Crafty('Player').each -> @removeComponent('ShipSpawnable')
   Crafty.unbind('GameOver')
   Crafty.unbind('GamePause')
