@@ -9,7 +9,14 @@ generator.defineElement 'cloud', ->
     y = (Math.random() * 20) + 100
     w = (Math.random() * 20) + 125
     h = (Math.random() * 10) + 50
-    c1 = Crafty.e('2D, WebGL, cloud, Hideable, Horizon').attr(z: -200, w: w, h: h, topDesaturation: 0.6, bottomDesaturation: 0.6)
+    c1 = Crafty.e('2D, WebGL, cloud, Hideable, Horizon').attr(
+      z: -200,
+      w: w,
+      h: h,
+      topDesaturation: 0.6,
+      bottomDesaturation: 0.6
+      alpha: (Math.random() * 0.8) + 0.2
+    )
     if Math.random() < 0.7
       c1 = c1.flip('X')
     @addBackground(200, y, c1, .5)
@@ -26,6 +33,7 @@ generator.defineElement 'cloud', ->
       h: h,
       topDesaturation: 1.0 - s,
       bottomDesaturation: 1.0 - s
+      alpha: (Math.random() * 0.8) + 0.2
     )
     if Math.random() < 0.2
       c2 = c2.flip('X')
@@ -408,8 +416,8 @@ generator.defineBlock class extends @Game.LevelScenery
 
     # 2 front pillars
     pillarWidth = 80
-    @addBackground(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color').color('#000000').attr({ z: 20, w: pillarWidth * 1.5, h: height, alpha: 0.7 }), 1.5)
-    @addBackground(bridgeWidth - pillarWidth, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color').color('#000000').attr({ z: 20, w: pillarWidth * 1.5, h: height, alpha: 0.7 }), 1.5)
+    @addBackground(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color, SunBlock').color('#000000').attr({ z: 20, w: pillarWidth * 1.5, h: height, alpha: 0.7 }), 1.5)
+    @addBackground(bridgeWidth - pillarWidth, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color, SunBlock').color('#000000').attr({ z: 20, w: pillarWidth * 1.5, h: height, alpha: 0.7 }), 1.5)
 
     # Deck
     for i in [0..11]
