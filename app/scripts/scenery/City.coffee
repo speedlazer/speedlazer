@@ -380,6 +380,12 @@ generator.defineBlock class extends @Game.LevelScenery
   assets: ->
     images: ['horizon-city.png', 'water-horizon.png', 'city.png', 'city-layer2.png']
     sprites:
+      'water.png':
+        tile: 200
+        tileh: 105
+        map:
+          water1: [0, 0]
+          water2: [1, 0]
       'water-front.png':
         tile: 400
         tileh: 90
