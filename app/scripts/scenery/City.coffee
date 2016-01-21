@@ -104,9 +104,9 @@ generator.defineElement 'waterFront', ->
 generator.defineElement 'cityHorizon', (mode) ->
   @addElement 'waterHorizon'
   e = if mode is 'start'
-    Crafty.e('2D, WebGL, ImageWithEffects, SunBlock, Horizon').image('images/horizon-city-start.png')
+    Crafty.e('2D, WebGL, ColorEffects, coastStart, SunBlock, Horizon')
   else
-    Crafty.e('2D, WebGL, ImageWithEffects, SunBlock, Horizon').image('images/horizon-city.png')
+    Crafty.e('2D, WebGL, ColorEffects, coast, SunBlock, Horizon')
   e.attr(z: -598)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.9, .8)
@@ -316,7 +316,14 @@ generator.defineBlock class extends @Game.LevelScenery
   autoPrevious: 'Ocean'
 
   assets: ->
-    images: ['horizon-city-start.png']
+    sprites:
+      'horizon-city.png':
+        tile: 200
+        tileh: 30
+        paddingY: 1
+        map:
+          coastStart: [0, 0]
+          coast: [0, 1]
 
   generate: ->
     super
@@ -332,7 +339,7 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
 
   assets: ->
-    images: ['horizon-city.png', 'water-horizon.png']
+    images: ['water-horizon.png']
     sprites:
       'water.png':
         tile: 200
@@ -346,6 +353,13 @@ generator.defineBlock class extends @Game.LevelScenery
         map:
           waterFront1: [0, 0]
           waterFront2: [1, 0]
+      'horizon-city.png':
+        tile: 200
+        tileh: 30
+        paddingY: 1
+        map:
+          coastStart: [0, 0]
+          coast: [0, 1]
 
   generate: ->
     super
@@ -378,7 +392,7 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
 
   assets: ->
-    images: ['horizon-city.png', 'water-horizon.png', 'city.png', 'city-layer2.png']
+    images: ['water-horizon.png', 'city.png', 'city-layer2.png']
     sprites:
       'water.png':
         tile: 200
@@ -447,7 +461,7 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
 
   assets: ->
-    images: ['water-horizon.png', 'horizon-city.png', 'city.png', 'city-layer2.png']
+    images: ['water-horizon.png', 'city.png', 'city-layer2.png']
 
   generate: ->
     super
@@ -492,7 +506,7 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
 
   assets: ->
-    images: ['water-horizon.png', 'horizon-city.png', 'city.png', 'city-layer2.png']
+    images: ['water-horizon.png', 'city.png', 'city-layer2.png']
 
   generate: ->
     super

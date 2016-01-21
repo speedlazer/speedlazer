@@ -102,3 +102,7 @@ Crafty.c 'ColorEffects',
 
     @trigger("Invalidate")
     this
+
+  saturationGradient: (start, end) ->
+    @attr topDesaturation: start, bottomDesaturation: end
+    this
