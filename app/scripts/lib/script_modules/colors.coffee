@@ -26,4 +26,8 @@ Game.ScriptModule.Colors =
     return if Game.backgroundColor is c
 
     Game.backgroundColor = c
-    Crafty('Horizon').each -> @colorDesaturation(c)
+    Crafty('Horizon').each ->
+      c = {}
+      Crafty.assignColor(color, c)
+      @attr desaturationColor: c
+
