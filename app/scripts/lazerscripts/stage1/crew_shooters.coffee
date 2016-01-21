@@ -4,7 +4,7 @@ Game.Scripts ||= {}
 class Game.Scripts.CrewShooters extends Game.EntityScript
 
   spawn: ->
-    Crafty.e('Drone, ShootOnSight, Horizon').drone(
+    Crafty.e('Drone, ShootOnSight, ColorEffects, Horizon').drone(
       health: 200
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .23
@@ -13,7 +13,7 @@ class Game.Scripts.CrewShooters extends Game.EntityScript
       targetType: 'CameraCrew'
       shootWhenHidden: yes
       projectile: (x, y, angle) =>
-        projectile = Crafty.e('Projectile, Color, BackgroundBullet, Horizon').attr(
+        projectile = Crafty.e('Projectile, Color, BackgroundBullet, ColorEffects, Horizon').attr(
           w: 3
           h: 3
           z: -200

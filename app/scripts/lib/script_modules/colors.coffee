@@ -22,12 +22,10 @@ Game.ScriptModule.Colors =
       )
       d.promise
 
-  _colorHorizon: (c) ->
-    return if Game.backgroundColor is c
+  _colorHorizon: (color) ->
+    return if Game.backgroundColor is color
 
-    Game.backgroundColor = c
+    Game.backgroundColor = color
     Crafty('Horizon').each ->
-      c = {}
-      Crafty.assignColor(color, c)
-      @attr desaturationColor: c
+      @colorDesaturation color
 

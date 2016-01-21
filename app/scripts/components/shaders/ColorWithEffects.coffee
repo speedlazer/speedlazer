@@ -93,4 +93,12 @@ Crafty.defaultColorShader new Crafty.WebGLShader(
     )
 )
 
+Crafty.c 'ColorEffects',
 
+  colorDesaturation: (color) ->
+    c = {}
+    Crafty.assignColor(color, c)
+    @attr desaturationColor: c
+
+    @trigger("Invalidate")
+    this

@@ -1,5 +1,6 @@
 Crafty.c 'Hideable',
   init: ->
+    @requires 'ColorEffects'
     @hidden = no
 
   sendToBackground: (scale, z) ->
@@ -10,11 +11,6 @@ Crafty.c 'Hideable',
       h: (@h / currentScale) * scale
       z: z
     @hidden = yes
-
-  colorDesaturation: (color) ->
-    c = {}
-    Crafty.assignColor(color, c)
-    @attr desaturationColor: c
 
   hide: (@hideMarker) ->
     @hidden = yes
