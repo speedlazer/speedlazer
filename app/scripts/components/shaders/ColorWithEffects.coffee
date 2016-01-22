@@ -96,6 +96,7 @@ Crafty.defaultColorShader new Crafty.WebGLShader(
 Crafty.c 'ColorEffects',
 
   colorDesaturation: (color) ->
+    return this unless color?
     c = {}
     Crafty.assignColor(color, c)
     @attr desaturationColor: c

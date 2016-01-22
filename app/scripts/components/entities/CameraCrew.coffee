@@ -6,7 +6,7 @@
       w: 60
       h: 25
     )
-    @origin 'middle left'
+    @origin 'center'
 
   cameraCrew: ->
     @animate 'fly', -1

@@ -2,6 +2,16 @@ Game = @Game
 Game.Scripts ||= {}
 
 class Game.Scripts.ScraperFlyer extends Game.EntityScript
+  assets: ->
+    @loadAssets('drone',
+      sprites:
+        'drone.png':
+          tile: 80
+          tileh: 80
+          map:
+            standardDrone: [0,0]
+          paddingX: 1
+    )
 
   spawn: ->
     Crafty.e('Drone,ShootOnSight').drone(

@@ -21,11 +21,14 @@ Crafty.c 'ShootOnSight',
     Crafty(@shootConfig.targetType).each ->
       angle = Math.atan2(self.y - @y, self.x - @x)
       angle *= 180 / Math.PI
-      angle = (angle + 180) % 360
+      angle = (angle + 360) % 360
       self._shoot(angle) if Math.abs(angle - self.rotation) < self.shootConfig.sightAngle
 
   _shoot: (angle) ->
     return if @hidden and !@shootConfig.shootWhenHidden
     @lastShotAt = 0
+    wo = @weaponOrigin ? [0, 0]
+    wo[0] *= (@scale ? 1)
+    wo[1] *= (@scale ? 1)
 
-    @shootConfig.projectile(@x, @y, angle)
+    @shootConfig.projectile(wo[0] + @x, wo[1] + @y, angle)

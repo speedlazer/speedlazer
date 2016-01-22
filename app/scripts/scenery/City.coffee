@@ -253,7 +253,7 @@ generator.defineBlock class extends @Game.LevelScenery
 
     @bind 'ShipSpawned', fixOtherShips
     Crafty('PlayerControlledShip').each (index) ->
-      return unless index is 0
+      return fixOtherShips(this) unless index is 0
       leadAnimated = this
       @addComponent 'Choreography'
       @attr x: 360 - (50 * index), y: Crafty.viewport.height - 100
@@ -406,13 +406,20 @@ generator.defineBlock class extends @Game.LevelScenery
         map:
           waterFront1: [0, 0]
           waterFront2: [1, 0]
+      'horizon-city.png':
+        tile: 200
+        tileh: 30
+        paddingY: 1
+        map:
+          coastStart: [0, 0]
+          coast: [0, 1]
 
   generate: ->
     super
     @addElement 'waterFront'
     @addElement 'water'
     @addElement 'cityHorizon'
-    @addElement 'city'
+    #@addElement 'city'
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.UnderBridge'
