@@ -43,6 +43,9 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
 
   crash: ->
     @sequence(
+      =>
+        @entity.flip('Y')
+        @entity.unflip('X')
       @while(
         @movePath [
           [.6, .82]

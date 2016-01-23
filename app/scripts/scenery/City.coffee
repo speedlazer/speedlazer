@@ -419,7 +419,7 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'waterFront'
     @addElement 'water'
     @addElement 'cityHorizon'
-    #@addElement 'city'
+    @addElement 'city'
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.UnderBridge'
