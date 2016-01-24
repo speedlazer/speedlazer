@@ -54,12 +54,24 @@ generator.defineElement 'waterHorizon', ->
   @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
 
 generator.defineElement 'water', ->
-  h = Crafty.e('2D, WebGL, ImageWithEffects, Horizon')
-    .image('images/water.png')
+  h = Crafty.e('2D, WebGL, waterMiddle, Horizon, ColorEffects')
     .attr(z: -500)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.7, .0)
   @addBackground(0, @level.visibleHeight - 125, h, .5)
+  h.originalY = h.y
+
+  @level.registerWaveTween 'OceanWavesMiddle', 5500, 'easeInOutQuad', (v, forward) ->
+    moveh = 5
+    distanceh = 15
+    height = 105
+    Crafty('waterMiddle').each ->
+      if forward
+        @y = @originalY + (v * moveh)
+        @h = height - (v * distanceh)
+      else
+        @y = @originalY + moveh - (v * moveh)
+        @h = height - distanceh + (v * distanceh)
 
 generator.defineElement 'waterFront', ->
   height = 65
@@ -287,11 +299,10 @@ generator.defineBlock class extends @Game.LevelScenery
     images: ['water-horizon.png']
     sprites:
       'water.png':
-        tile: 200
+        tile: 400
         tileh: 105
         map:
-          water1: [0, 0]
-          water2: [1, 0]
+          waterMiddle: [0, 0]
       'water-front.png':
         tile: 400
         tileh: 90
@@ -342,11 +353,10 @@ generator.defineBlock class extends @Game.LevelScenery
     images: ['water-horizon.png']
     sprites:
       'water.png':
-        tile: 200
+        tile: 400
         tileh: 105
         map:
-          water1: [0, 0]
-          water2: [1, 0]
+          waterMiddle: [0, 0]
       'water-front.png':
         tile: 400
         tileh: 90
@@ -395,11 +405,10 @@ generator.defineBlock class extends @Game.LevelScenery
     images: ['water-horizon.png', 'city.png', 'city-layer2.png']
     sprites:
       'water.png':
-        tile: 200
+        tile: 400
         tileh: 105
         map:
-          water1: [0, 0]
-          water2: [1, 0]
+          waterMiddle: [0, 0]
       'water-front.png':
         tile: 400
         tileh: 90

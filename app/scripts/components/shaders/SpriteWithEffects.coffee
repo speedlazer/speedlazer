@@ -66,7 +66,7 @@ SPRITE_EFFECT_ATTRIBUTE_LIST = [
   { name: "aGradient",     width: 2 }
 ]
 
-Crafty.defaultSpriteShader new Crafty.WebGLShader(
+Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
   SPRITE_EFFECT_VERTEX_SHADER,
   SPRITE_EFFECT_FRAGMENT_SHADER,
   SPRITE_EFFECT_ATTRIBUTE_LIST,

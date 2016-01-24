@@ -112,7 +112,7 @@ Crafty.c 'Sun',
     # For sunrise / set on water
     horizonDistance = (Crafty.viewport.height - 175) - (Crafty.viewport._y) - @y
 
-    size = 20.0 + (15.0 * (Math.min(Math.max(horizonDistance, 0), 150.0) / 150.0))
+    size = 45.0 - (10.0 * (Math.min(Math.max(horizonDistance, 0), 200.0) / 200.0))
     @w = size
     @h = size
 

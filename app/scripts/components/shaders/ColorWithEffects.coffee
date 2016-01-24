@@ -65,7 +65,7 @@ COLOR_EFFECTS_ATTRIBUTE_LIST = [
     { name: "aGradient",     width: 2 }
 ]
 
-Crafty.defaultColorShader new Crafty.WebGLShader(
+Crafty.defaultShader 'Color', new Crafty.WebGLShader(
   COLOR_EFFECTS_VERTEX_SHADER,
   COLOR_EFFECTS_FRAGMENT_SHADER,
   COLOR_EFFECTS_ATTRIBUTE_LIST,
