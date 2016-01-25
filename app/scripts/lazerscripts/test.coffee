@@ -15,8 +15,9 @@ class Game.Scripts.Test extends Game.LazerScript
 
   execute: ->
     @sequence(
-      @setScenery 'Bay'
+      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 16)
+      #@setScenery 'Ocean'
+      #@setScenery 'Bay'
       @setScenery 'UnderBridge'
-      @setSpeed 25
-      @async @runScript(Game.Scripts.SunRise, skipTo: 200000, speed: 1)
+      @setSpeed 0
     )

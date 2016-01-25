@@ -439,6 +439,12 @@ generator.defineBlock class extends @Game.LevelScenery
 
   assets: ->
     images: ['city-bridge.png']
+    sprites:
+      'bridge-deck.png':
+        tile: 1024
+        tileh: 180
+        map:
+          bridgeDeck: [0, 0]
 
   generate: ->
     super
@@ -448,26 +454,50 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'city-bridge'
 
     bridgeWidth = Crafty.viewport.width
-    height = Crafty.viewport.height
+    height = Crafty.viewport.height * 1.1
 
     # 2 front pillars
-    pillarWidth = 80
-    @addBackground(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color, SunBlock').color('#000000').attr({ z: 20, w: pillarWidth * 1.5, h: height, alpha: 0.7 }), 1.5)
-    @addBackground(bridgeWidth - pillarWidth, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color, SunBlock').color('#000000').attr({ z: 20, w: pillarWidth * 1.5, h: height, alpha: 0.7 }), 1.5)
+    pillarWidth = 120
 
+    @addBackground(0, 390, @deck(.55, w: 350, h: 50), .55)
+
+    return
     # Deck
     for i in [0..11]
-      c = ['#101010', '#181818', '#202020', '#282828', '#303030',
-           '#383838', '#404040', '#484848', '#505050', '#585858', '#606060', '#686868'][11 - (i // 2)]
-      h = 120 - (8 * i)
-      y = @level.visibleHeight - (height - (i * 40))
+      c = '#505050'
       z = -3 - (1 * i)
-      sp = 1.2 - (0.05 * i)
-      hp = (height - 60 - (6 * i)) - (h + y)
-      @addBackground(0, y, Crafty.e('2D, WebGL, Color, SunBlock').color(c).attr({ z: z, w: bridgeWidth * sp, h: h }), sp)
-      if i % 5 is 0 # Pillars
-        @addBackground(0, h + y, Crafty.e('2D, WebGL, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
-        @addBackground(bridgeWidth - pillarWidth, h + y, Crafty.e('2D, WebGL, Color').color(c).attr({ z: z, w: pillarWidth * sp, h: hp }), sp)
+      y = @level.visibleHeight - 90 - height + (i * 50)
+      sp = 1.0 - (0.04 * i)
+      h = Math.round(180 * sp * sp)
+      hp = (height - 120 - (5 * i)) - (h + y)
+      w = Math.round(bridgeWidth * sp)
+      x = 0 #(bridgeWidth - w) / 2
+
+      deck =  Crafty.e('2D, WebGL, bridgeDeck, ColorEffects, Horizon, SunBlock').attr({
+        z: z,
+        w: w,
+        h: h
+      }).saturationGradient(1 - sp, 1 - sp)
+
+      @addBackground(x, y, deck, sp * sp * 1.5)
+      console.log 'deck', i, w, h
+
+      if i % 5 is 0 and no # pillars
+        c = '#707070'
+        console.log 'pillar', i, (pillarWidth * sp * sp), hp
+        @addBackground(x, h + y, Crafty.e('2D, WebGL, Color, SunBlock, ColorEffects, Horizon').color(c).attr({
+          z: z,
+          w: pillarWidth * sp * sp,
+          h: hp
+        }).saturationGradient(1 - sp, 1 - sp), sp * sp * 1.5)
+        @addBackground(x + (w / sp) - (pillarWidth * sp), h + y, Crafty.e('2D, WebGL, Color, SunBlock, ColorEffects, Horizon').color(c).attr({
+          z: z,
+          w: pillarWidth * sp * sp,
+          h: hp
+        }).saturationGradient(1 - sp, 1 - sp), sp * sp * 1.5)
+
+  deck: (gradient, attr) ->
+    Crafty.e('2D, WebGL, bridgeDeck, ColorEffects, Horizon, SunBlock').attr(attr).saturationGradient(gradient, gradient)
 
 
 generator.defineBlock class extends @Game.LevelScenery
