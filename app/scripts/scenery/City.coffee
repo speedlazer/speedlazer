@@ -459,7 +459,16 @@ generator.defineBlock class extends @Game.LevelScenery
     # 2 front pillars
     pillarWidth = 120
 
-    @addBackground(0, 390, @deck(.55, w: 350, h: 50), .55)
+    @addBackground(0, 380,  @deck(.55, w: 350, z: -80), .55)
+    @addBackground(0, 340,  @deck(.45, w: 400, z: -70), .60)
+    @addBackground(0, 290,  @deck(.35, w: 450, z: -60), .65)
+    @addBackground(0, 240,  @deck(.25, w: 500, z: -50), .70)
+    @addBackground(0, 190,  @deck(.15, w: 550, z: -40), .75)
+    @addBackground(0, 120,  @deck(.05, w: 600, z: -30), .8)
+    @addBackground(0, 45,   @deck(0,   w: 700, z: -20), .9)
+
+    @addBackground(0, -35,  @deck(0,   w: 800, z: -10), 1.0)
+    @addBackground(0, -150, @deck(0,   w: 1024, z: 100, lightness: 0.6), 1.2)
 
     return
     # Deck
@@ -497,7 +506,11 @@ generator.defineBlock class extends @Game.LevelScenery
         }).saturationGradient(1 - sp, 1 - sp), sp * sp * 1.5)
 
   deck: (gradient, attr) ->
-    Crafty.e('2D, WebGL, bridgeDeck, ColorEffects, Horizon, SunBlock').attr(attr).saturationGradient(gradient, gradient)
+    aspectR = 1024 / 180
+    attr.h = attr.w / aspectR
+    Crafty.e('2D, WebGL, bridgeDeck, ColorEffects, Horizon, SunBlock').attr(
+      attr
+    ).saturationGradient(gradient, gradient)
 
 
 generator.defineBlock class extends @Game.LevelScenery
