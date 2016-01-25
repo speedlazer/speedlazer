@@ -156,7 +156,7 @@ Crafty.defineScene 'GameOver', (data) ->
       else
         @delay ->
           Crafty.enterScene('Scores')
-        , 10000
+        , 5000
 
     , 2000, 0
 , ->

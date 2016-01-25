@@ -59,7 +59,6 @@ generator.defineElement 'water', ->
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.7, .0)
   @addBackground(0, @level.visibleHeight - 125, h, .5)
-  h.originalY = h.y
 
   @level.registerWaveTween 'OceanWavesMiddle', 5500, 'easeInOutQuad', (v, forward) ->
     moveh = 5
@@ -67,10 +66,10 @@ generator.defineElement 'water', ->
     height = 105
     Crafty('waterMiddle').each ->
       if forward
-        @y = @originalY + (v * moveh)
+        @dy = (v * moveh)
         @h = height - (v * distanceh)
       else
-        @y = @originalY + moveh - (v * moveh)
+        @dy = moveh - (v * moveh)
         @h = height - distanceh + (v * distanceh)
 
 generator.defineElement 'waterFront', ->
@@ -459,51 +458,17 @@ generator.defineBlock class extends @Game.LevelScenery
     # 2 front pillars
     pillarWidth = 120
 
-    @addBackground(0, 380,  @deck(.55, w: 350, z: -80), .55)
-    @addBackground(0, 340,  @deck(.45, w: 400, z: -70), .60)
-    @addBackground(0, 290,  @deck(.35, w: 450, z: -60), .65)
-    @addBackground(0, 240,  @deck(.25, w: 500, z: -50), .70)
-    @addBackground(0, 190,  @deck(.15, w: 550, z: -40), .75)
-    @addBackground(0, 120,  @deck(.05, w: 600, z: -30), .8)
-    @addBackground(0, 45,   @deck(0,   w: 700, z: -20), .9)
+    @addBackground(0, 345,  @deck(.55, w: 550, z: -80), .55)
+    @addBackground(0, 305,  @deck(.45, w: 600, z: -70), .60)
+    @addBackground(0, 255,  @deck(.35, w: 650, z: -60), .65)
+    @addBackground(0, 205,  @deck(.25, w: 700, z: -50), .70)
+    @addBackground(0, 155,  @deck(.15, w: 750, z: -40), .75)
+    @addBackground(0, 95,  @deck(.05, w: 800, z: -30), .8)
+    @addBackground(0, 20,   @deck(0,   w: 900, z: -20), .9)
 
-    @addBackground(0, -35,  @deck(0,   w: 800, z: -10), 1.0)
-    @addBackground(0, -150, @deck(0,   w: 1024, z: 100, lightness: 0.6), 1.2)
+    @addBackground(0, -60,  @deck(0,   w: 1000, z: -10), 1.0)
+    @addBackground(0, -150, @deck(0,   w: 1200, z: 100, lightness: 0.6), 1.2)
 
-    return
-    # Deck
-    for i in [0..11]
-      c = '#505050'
-      z = -3 - (1 * i)
-      y = @level.visibleHeight - 90 - height + (i * 50)
-      sp = 1.0 - (0.04 * i)
-      h = Math.round(180 * sp * sp)
-      hp = (height - 120 - (5 * i)) - (h + y)
-      w = Math.round(bridgeWidth * sp)
-      x = 0 #(bridgeWidth - w) / 2
-
-      deck =  Crafty.e('2D, WebGL, bridgeDeck, ColorEffects, Horizon, SunBlock').attr({
-        z: z,
-        w: w,
-        h: h
-      }).saturationGradient(1 - sp, 1 - sp)
-
-      @addBackground(x, y, deck, sp * sp * 1.5)
-      console.log 'deck', i, w, h
-
-      if i % 5 is 0 and no # pillars
-        c = '#707070'
-        console.log 'pillar', i, (pillarWidth * sp * sp), hp
-        @addBackground(x, h + y, Crafty.e('2D, WebGL, Color, SunBlock, ColorEffects, Horizon').color(c).attr({
-          z: z,
-          w: pillarWidth * sp * sp,
-          h: hp
-        }).saturationGradient(1 - sp, 1 - sp), sp * sp * 1.5)
-        @addBackground(x + (w / sp) - (pillarWidth * sp), h + y, Crafty.e('2D, WebGL, Color, SunBlock, ColorEffects, Horizon').color(c).attr({
-          z: z,
-          w: pillarWidth * sp * sp,
-          h: hp
-        }).saturationGradient(1 - sp, 1 - sp), sp * sp * 1.5)
 
   deck: (gradient, attr) ->
     aspectR = 1024 / 180
