@@ -154,9 +154,8 @@ generator.defineElement 'city-bridge', ->
     .saturationGradient(.6, .6)
   @addBackground(0, @level.visibleHeight - 57 - 240, bg, .37)
 
-  # TODO: Does this need sunblock?
-  e = Crafty.e('2D, WebGL, ImageWithEffects, Collision, SunBlock, Horizon')
-    .image('images/city-bridge.png').attr(z: -305)
+  e = Crafty.e('2D, WebGL, cityBridge, Collision, Horizon')
+    .attr(z: -305)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.4, .4)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
@@ -391,15 +390,6 @@ generator.defineBlock class extends @Game.LevelScenery
     y: 0
   autoNext: 'Bay'
 
-  assets: ->
-    sprites:
-      'city-start.png':
-        tile: 400
-        tileh: 270
-        paddingY: 1
-        map:
-          cityStart: [0, 0]
-
   generate: ->
     super
     @addElement 'cityHorizon'
@@ -443,7 +433,9 @@ generator.defineBlock class extends @Game.LevelScenery
         tileh: 270
         paddingY: 1
         map:
-          city: [0, 0]
+          cityBridge: [0, 0]
+          cityStart: [0, 1]
+          city: [0, 2]
       'city-layer2.png':
         tile: 297
         tileh: 220
@@ -465,7 +457,6 @@ generator.defineBlock class extends @Game.LevelScenery
   autoNext: 'Bay'
 
   assets: ->
-    images: ['city-bridge.png']
     sprites:
       'bridge-deck.png':
         tile: 1024
