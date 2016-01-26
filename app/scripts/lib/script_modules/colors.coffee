@@ -29,3 +29,8 @@ Game.ScriptModule.Colors =
     Crafty('Horizon').each ->
       @colorDesaturation color
 
+Crafty.c 'Horizon',
+  init: ->
+    @requires 'ColorEffects'
+    @colorDesaturation Game.backgroundColor
+
