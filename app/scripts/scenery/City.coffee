@@ -71,15 +71,15 @@ generator.defineElement 'water', ->
         @dy = moveh - (v * moveh)
         @h = height - distanceh + (v * distanceh)
 
-generator.defineElement 'waterFront', ->
+generator.defineElement 'waterFront', (attrs = {}) ->
   height = 65
   @add(0, @level.visibleHeight - 10, Crafty.e('2D, Solid').attr(w: @delta.x, h: 10))
 
-  water1 = Crafty.e('2D, WebGL, waterFront1, Wave1').attr(z: -300)
+  water1 = Crafty.e('2D, WebGL, waterFront1, Wave1').attr(z: -300).attr(attrs)
   @add(0, @level.visibleHeight - height, water1)
   water1.originalY = water1.y
 
-  water2 = Crafty.e('2D, WebGL, waterFront2, Wave2').attr(z: -300)
+  water2 = Crafty.e('2D, WebGL, waterFront2, Wave2').attr(z: -300).attr(attrs)
   @add(400, @level.visibleHeight - height, water2)
   water2.originalX = water2.x
   water2.originalY = water2.y
@@ -389,6 +389,7 @@ generator.defineBlock class extends @Game.LevelScenery
     x: 800
     y: 0
   autoNext: 'Bay'
+  autoPrev: 'Coast'
 
   generate: ->
     super
@@ -466,7 +467,7 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-    @addElement 'waterFront'
+    @addElement 'waterFront', lightness: 0.8
     @addElement 'water'
     @addElement 'cityHorizon'
     @addElement 'city-bridge'

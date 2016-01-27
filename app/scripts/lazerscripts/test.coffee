@@ -8,19 +8,14 @@ class Game.Scripts.Test extends Game.LazerScript
     speed: 0
     title: 'WebGL-Shaders'
 
-  assets: ->
-    @loadAssets('test',
-      images: ['city.png']
-    )
-
   execute: ->
     @sequence(
-      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 16)
+      @setScenery 'Bay'
+      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 8)
+      @setSpeed 150
       #@setScenery 'Ocean'
-      #@setScenery 'Bay'
-      #@setSpeed 150
       @setScenery 'UnderBridge'
-      #@waitForScenery 'UnderBridge'
-      @setSpeed 0
+      @waitForScenery 'UnderBridge'
+      @setSpeed 25
       #@setSpeed 50
     )
