@@ -18,7 +18,7 @@ Crafty.c 'Sun',
     @attach directGlare
     @glare.push directGlare
 
-    blueGlare = Crafty.e('2D, WebGL, Glare, blueGlare')
+    blueGlare = Crafty.e('2D, WebGL, Glare, blueGlare, Horizon')
       .attr
         mirrored: yes
         w: 80
@@ -27,7 +27,9 @@ Crafty.c 'Sun',
         res: 0.9
         alpha: 0.4
         originalAlpha: 0.4
+        blur: 2.0
       .origin('center')
+      .saturationGradient(1.0, 1.0)
       #.color('#B0B0FF')
     @attach blueGlare
     @glare.push blueGlare
@@ -112,7 +114,9 @@ Crafty.c 'Sun',
     # For sunrise / set on water
     horizonDistance = (Crafty.viewport.height - 175) - (Crafty.viewport._y) - @y
 
-    size = 45.0 - (10.0 * (Math.min(Math.max(horizonDistance, 0), 200.0) / 200.0))
+    size = 65.0 - (30.0 * (Math.min(Math.max(horizonDistance, 0), 200.0) / 200.0))
+    blur = 2 - (2.0 * (Math.min(Math.max(horizonDistance, 0), 200.0) / 200.0))
+    @attr blur: blur
     @w = size
     @h = size
 

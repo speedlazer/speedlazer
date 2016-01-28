@@ -25,7 +25,8 @@ Crafty.defineScene 'Game', (data = {}) ->
   stage.run(options)
     .then =>
       console.log 'end of script!'
-    .catch -> 'Players died'
+    .catch (e) ->
+      console.error e unless e.message is 'sequence mismatch'
 
 
   Crafty.bind 'GameOver', ->

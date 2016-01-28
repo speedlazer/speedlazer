@@ -4,11 +4,11 @@ SPRITE_EFFECT_VERTEX_SHADER = """
   attribute vec2 aLayer;
   attribute vec2 aTextureCoord;
   attribute vec4 aColor;
-  attribute vec2 aGradient;
+  attribute vec3 aGradient;
 
   varying mediump vec3 vTextureCoord;
   varying lowp vec4 vColor;
-  varying lowp vec2 vGradient;
+  varying lowp vec3 vGradient;
 
   uniform vec4 uViewport;
   uniform mediump vec2 uTextureDimensions;
@@ -30,16 +30,46 @@ SPRITE_EFFECT_VERTEX_SHADER = """
 """
 
 SPRITE_EFFECT_FRAGMENT_SHADER = """
+  precision mediump float;
   varying mediump vec3 vTextureCoord;
   varying mediump vec4 vColor;
-  varying mediump vec2 vGradient;
+  varying mediump vec3 vGradient;
 
   uniform sampler2D uSampler;
   uniform mediump vec2 uTextureDimensions;
 
-  void main(void) {
+  float random(vec3 scale, float seed) {
+    // use the fragment position for a different seed per-pixel
+    return fract(sin(dot(gl_FragCoord.xyz + seed, scale)) * 43758.5453 + seed);
+  }
+
+  void main() {
     highp vec2 coord =   vTextureCoord.xy / uTextureDimensions;
+    float blur = vGradient.z;
+
     mediump vec4 texelColor = texture2D(uSampler, coord);
+
+    if (blur > 0.0) {
+      vec4 color = vec4(0.0);
+      float total = 0.0;
+
+      // randomize the lookup values to hide the fixed number of samples
+      float offset = random(vec3(12.9898, 78.233, 151.7182), 0.0);
+
+      for (float t = -30.0; t <= 30.0; t++) {
+        float percent = (t + offset - 0.5) / 30.0;
+        float weight = 1.0 - abs(percent);
+        vec4 sample = texture2D(uSampler, coord + (blur * percent) / uTextureDimensions);
+        // switch to pre-multiplied alpha to correctly blur transparent images
+        sample.rgb *= sample.a;
+
+        color += sample * weight;
+        total += weight;
+      }
+
+      texelColor = color / total;
+      texelColor.rgb /= texelColor.a + 0.00001;
+    }
 
     mediump float mixFactor = (vGradient.x * (1.0 - coord.y)) + (vGradient.y * coord.y);
 
@@ -63,7 +93,7 @@ SPRITE_EFFECT_ATTRIBUTE_LIST = [
   { name: "aLayer",        width: 2 }
   { name: "aTextureCoord", width: 2 }
   { name: "aColor",        width: 4 }
-  { name: "aGradient",     width: 2 }
+  { name: "aGradient",     width: 3 }
 ]
 
 Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
@@ -88,12 +118,14 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
       lightness
     )
     s = ent.scale ? 1
+    blur = ent.blur ? 0
     tds = ent.topDesaturation ? 0
     bds = ent.bottomDesaturation ? 0
 
     e.program.writeVector("aGradient",
       tds + ((1 - s) * 1.15),
-      bds + ((1 - s) * 1.15)
+      bds + ((1 - s) * 1.15),
+      blur
     )
 )
 

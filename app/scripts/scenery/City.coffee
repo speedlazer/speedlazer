@@ -5,6 +5,7 @@ Game = @Game
 
 generator.defineElement 'cloud', ->
   v = Math.random()
+  blur = (Math.random() * 4.0)
   if v > .2
     y = (Math.random() * 20) + 100
     w = (Math.random() * 20) + 125
@@ -16,6 +17,7 @@ generator.defineElement 'cloud', ->
       topDesaturation: 0.6,
       bottomDesaturation: 0.6
       alpha: (Math.random() * 0.8) + 0.2
+      blur: blur
     )
     if Math.random() < 0.7
       c1 = c1.flip('X')
@@ -34,6 +36,7 @@ generator.defineElement 'cloud', ->
       topDesaturation: 1.0 - s,
       bottomDesaturation: 1.0 - s
       alpha: (Math.random() * 0.8) + 0.2
+      blur: blur
     )
     if Math.random() < 0.2
       c2 = c2.flip('X')
@@ -117,7 +120,7 @@ generator.defineElement 'cityHorizon', (mode) ->
     Crafty.e('2D, WebGL, ColorEffects, coastStart, SunBlock, Horizon')
   else
     Crafty.e('2D, WebGL, ColorEffects, coast, SunBlock, Horizon')
-  e.attr(z: -598)
+  e.attr(z: -598, blur: 2.0)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.9, .8)
   @addBackground(0, @level.visibleHeight - 177, e, .25)
@@ -487,7 +490,7 @@ generator.defineBlock class extends @Game.LevelScenery
     @addBackground(0, 20,   @deck(0,   w: 900, z: -20), .9)
 
     @addBackground(0, -60,  @deck(0,   w: 1000, z: -10), 1.0)
-    @addBackground(0, -150, @deck(0,   w: 1200, z: 100, lightness: 0.6), 1.2)
+    @addBackground(0, -180, @deck(0,   w: 1200, z: 100, lightness: 0.6, blur: 6.0), 1.2)
 
 
   deck: (gradient, attr) ->
