@@ -78,11 +78,11 @@ generator.defineElement 'waterFront', (attrs = {}) ->
   height = 65
   @add(0, @level.visibleHeight - 10, Crafty.e('2D, Solid').attr(w: @delta.x, h: 10))
 
-  water1 = Crafty.e('2D, WebGL, waterFront1, Wave1').attr(z: -300).attr(attrs)
+  water1 = Crafty.e('2D, WebGL, waterFront1, Wave1').attr(z: -200).attr(attrs)
   @add(0, @level.visibleHeight - height, water1)
   water1.originalY = water1.y
 
-  water2 = Crafty.e('2D, WebGL, waterFront2, Wave2').attr(z: -300).attr(attrs)
+  water2 = Crafty.e('2D, WebGL, waterFront2, Wave2').attr(z: -200).attr(attrs)
   @add(400, @level.visibleHeight - height, water2)
   water2.originalX = water2.x
   water2.originalY = water2.y
@@ -465,8 +465,10 @@ generator.defineBlock class extends @Game.LevelScenery
       'bridge-deck.png':
         tile: 1024
         tileh: 180
+        paddingY: 1
         map:
           bridgeDeck: [0, 0]
+          bridgePillar: [0, 1]
 
   generate: ->
     super
@@ -479,18 +481,26 @@ generator.defineBlock class extends @Game.LevelScenery
     height = Crafty.viewport.height * 1.1
 
     # 2 front pillars
-    pillarWidth = 120
 
-    @addBackground(0, 345,  @deck(.55, w: 550, z: -80), .55)
-    @addBackground(0, 305,  @deck(.45, w: 600, z: -70), .60)
-    @addBackground(0, 255,  @deck(.35, w: 650, z: -60), .65)
+    @addBackground(0, 345,  @deck(.55, w: 550, z: -280), .55)
+    @addBackground(0, 305,  @deck(.45, w: 600, z: -270), .60)
+    @addBackground(0, 255,  @deck(.35, w: 650, z: -260), .65)
+
+    @addBackground(140, 105,  @pillar(.35, w: 450, z: -261), .65)
+    @addBackground(980, 105,  @pillarX(.35, w: 450, z: -261), .65)
+
     @addBackground(0, 205,  @deck(.25, w: 700, z: -50), .70)
     @addBackground(0, 155,  @deck(.15, w: 750, z: -40), .75)
     @addBackground(0, 95,  @deck(.05, w: 800, z: -30), .8)
+
+    @addBackground(160, -110,  @pillar(0, w: 750, z: -21), .9)
+    @addBackground(980, -110,  @pillarX(0, w: 750, z: -21), .9)
+
     @addBackground(0, 20,   @deck(0,   w: 900, z: -20), .9)
 
     @addBackground(0, -60,  @deck(0,   w: 1000, z: -10), 1.0)
     @addBackground(0, -180, @deck(0,   w: 1200, z: 100, lightness: 0.6, blur: 6.0), 1.2)
+
 
 
   deck: (gradient, attr) ->
@@ -499,6 +509,17 @@ generator.defineBlock class extends @Game.LevelScenery
     Crafty.e('2D, WebGL, bridgeDeck, ColorEffects, Horizon, SunBlock').attr(
       attr
     ).saturationGradient(gradient, gradient)
+
+  pillar: (gradient, attr) ->
+    aspectR = 1024 / 180
+    attr.h = attr.w / aspectR
+    attr.rotation = 90
+    Crafty.e('2D, WebGL, bridgePillar, ColorEffects, Horizon, SunBlock').attr(
+      attr
+    ).saturationGradient(gradient, gradient)
+
+  pillarX: (gradient, attr) ->
+    @pillar(gradient, attr).flip('Y')
 
 
 generator.defineBlock class extends @Game.LevelScenery
