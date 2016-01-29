@@ -130,7 +130,7 @@ generator.defineElement 'city', ->
   #@addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, WebGL, Color').color(col3).attr(z: -400, w: 297, h: 83), .37)
 
   bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon')
-    .attr(z: -505)
+    .attr(z: -505, blur: 1.2)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.6, .6)
@@ -151,7 +151,7 @@ generator.defineElement 'city', ->
 
 generator.defineElement 'city-bridge', ->
   bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon')
-    .attr(z: -505)
+    .attr(z: -505, blur: 1.2)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.6, .6)
