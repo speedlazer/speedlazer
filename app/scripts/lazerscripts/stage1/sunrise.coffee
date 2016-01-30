@@ -45,7 +45,7 @@ class Game.Scripts.SunRise extends Game.EntityScript
     speed = @options.speed ? 1
 
     preColor = (40000 / speed)
-    colorDuration = (400000 / speed)
+    colorDuration = (900000 / speed)
     @sequence(
       @setLocation x: .97, y: .74
       @backgroundColorFade(
