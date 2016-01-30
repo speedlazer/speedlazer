@@ -482,22 +482,22 @@ generator.defineBlock class extends @Game.LevelScenery
     # 2 front pillars
 
     @addBackground(0, 345,  @deck(.55, w: 550, z: -280), .55)
-    @addBackground(0, 305,  @deck(.45, w: 600, z: -270), .60)
+    @addBackground(0, 305,  @deck(.45, w: 600, z: -270).flip('X'), .60)
     @addBackground(0, 255,  @deck(.35, w: 650, z: -260), .65)
 
     @addBackground(140, 260,  @pillar( .35, h: 220, z: -261), .65)
     @addBackground(970, 260,  @pillarX(.35, h: 220, z: -261), .65)
 
-    @addBackground(0, 205,  @deck(.25, w: 700, z: -50), .70)
+    @addBackground(0, 205,  @deck(.25, w: 700, z: -50).flip('X'), .70)
     @addBackground(0, 155,  @deck(.15, w: 750, z: -40), .75)
-    @addBackground(0, 95,  @deck(.05, w: 800, z: -30), .8)
+    @addBackground(0, 95,  @deck(.05, w: 800, z: -30).flip('X'), .8)
 
     @addBackground(180, 10,  @pillar(0, h: 500, z: -21), .9)
     @addBackground(1020, 10,  @pillarX(0, h: 500, z: -21), .9)
 
     @addBackground(0, 20,   @deck(0,   w: 900, z: -20), .9)
 
-    @addBackground(0, -60,  @deck(0,   w: 1000, z: -10), 1.0)
+    @addBackground(0, -60,  @deck(0,   w: 1000, z: -10).flip('X'), 1.0)
     @addBackground(0, -180, @deck(0,   w: 1200, z: 100, lightness: 0.6, blur: 6.0), 1.2)
 
 
