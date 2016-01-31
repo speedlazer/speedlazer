@@ -80,6 +80,10 @@ SPRITE_EFFECT_FRAGMENT_SHADER = """
       (baseColor.rgba * mixFactor) + (texelColor.rgba * (1.0 - mixFactor))
     );
 
+    if (vColor.a > 1.0) {
+      mixColor.rgb = vColor.rgb;
+    }
+
     gl_FragColor = vec4(
       mixColor.rgb * vColor.a * texelColor.a * vTextureCoord.z,
       texelColor.a * vTextureCoord.z
@@ -111,20 +115,29 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
     )
     color = ent.desaturationColor ? { _red: 0, _green: 0, _blue: 0 }
     lightness = ent.lightness ? 1.0
+    s = ent.scale ? 1
+    blur = ent.blur ? 0
+    tds = ent.topDesaturation ? 0
+    bds = ent.bottomDesaturation ? 0
+
+    topSaturation = tds + ((1 - s) * 1.15)
+    bottomSaturation = bds + ((1 - s) * 1.15)
+
+    if ent.hitFlash
+      color = ent.hitFlash
+      topSaturation = 3.0
+      bottomSaturation = 3.0
+
     e.program.writeVector("aColor",
       color._red/255,
       color._green/255,
       color._blue/255,
       lightness
     )
-    s = ent.scale ? 1
-    blur = ent.blur ? 0
-    tds = ent.topDesaturation ? 0
-    bds = ent.bottomDesaturation ? 0
 
     e.program.writeVector("aGradient",
-      tds + ((1 - s) * 1.15),
-      bds + ((1 - s) * 1.15),
+      topSaturation
+      bottomSaturation
       blur
     )
 )

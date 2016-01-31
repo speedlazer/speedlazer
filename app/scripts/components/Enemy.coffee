@@ -8,28 +8,36 @@ Crafty.c 'Enemy',
 
   enemy: ->
     Crafty.trigger('EnemySpawned', this)
-    @onHit 'Bullet', (e) =>
-      return if Game.paused
-      return if @hidden
-      data = { @pointsOnHit, @pointsOnDestroy }
-      bullet = e[0].obj
-      unless @invincible
-        bullet.trigger 'HitTarget', data
-        @absorbDamage(bullet.damage)
-        if @health <= 0
-          bullet.trigger 'DestroyTarget', data
+    @onHit 'Bullet',
+      (e) ->
+        return if Game.paused
+        return if @hidden
+        data = { @pointsOnHit, @pointsOnDestroy }
+        bullet = e[0].obj
+        unless @invincible
+          bullet.trigger 'HitTarget', data
+          @attr hitFlash: { _red: 255, _green: 255, _blue: 0 }
+          @absorbDamage(bullet.damage)
+          if @health <= 0
+            bullet.trigger 'DestroyTarget', data
 
-        @trigger('Hit', this)
-      bullet.destroy()
+          @trigger('Hit', this)
+        bullet.destroy()
+      ->
+        @attr hitFlash: no
 
-    @onHit 'Explosion', (e) ->
-      return if Game.paused
-      return if @hidden
-      return if @invincible
-      for c in e
-        splosion = c.obj
-        @trigger('Hit', this)
-        @absorbDamage(splosion.damage)
+    @onHit 'Explosion',
+      (e) ->
+        return if Game.paused
+        return if @hidden
+        return if @invincible
+        for c in e
+          splosion = c.obj
+          @trigger('Hit', this)
+          @attr hitFlash: { _red: 255, _green: 255, _blue: 128 }
+          @absorbDamage(splosion.damage)
+      ->
+        @attr hitFlash: no
     this
 
   absorbDamage: (damage) ->
