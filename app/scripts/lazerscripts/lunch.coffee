@@ -10,15 +10,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
     weaponsEnabled: no
 
   assets: ->
-    @loadAssets('general',
-      sprites:
-        'general.png':
-          tile: 1
-          tileh: 1
-          map:
-            shadow: [1, 18, 35, 20]
-            standardRocket: [1, 1, 45, 15]
-    )
+    @loadAssets('general')
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->

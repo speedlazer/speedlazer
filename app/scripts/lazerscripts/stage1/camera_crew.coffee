@@ -4,15 +4,7 @@ Game.Scripts ||= {}
 class Game.Scripts.CameraCrew extends Game.EntityScript
 
   assets: ->
-    @loadAssets('helicopter',
-      sprites:
-        'camera-helicopter.png':
-          tile: 120
-          tileh: 50
-          map:
-            cameraHelicopter: [0,0]
-          paddingX: 1
-    )
+    @loadAssets('helicopter')
 
   spawn: (options) ->
     Crafty.e('CameraCrew, Horizon')

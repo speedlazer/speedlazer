@@ -9,16 +9,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     title: 'City'
 
   assets: ->
-    @loadAssets('general',
-      sprites:
-        'general.png':
-          tile: 1
-          tileh: 1
-          map:
-            shadow: [1, 18, 35, 20]
-            standardRocket: [1, 1, 45, 15]
-            cloud: [48, 0, 250, 100]
-    )
+    @loadAssets('shadow')
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->

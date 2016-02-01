@@ -4,15 +4,7 @@ Game.Scripts ||= {}
 class Game.Scripts.JumpMine extends Game.EntityScript
 
   assets: ->
-    @loadAssets('mine',
-      sprites:
-        'mine.png':
-          tile: 25
-          tileh: 25
-          map:
-            standardMine: [0,0]
-          paddingX: 1
-    )
+    @loadAssets('mine')
 
   spawn: (options) ->
     x = if options.direction is 'right' then Crafty.viewport.width + 80 else -80

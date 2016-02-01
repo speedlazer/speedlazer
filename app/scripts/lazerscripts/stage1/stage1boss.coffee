@@ -369,15 +369,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
 
 class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
   assets: ->
-    @loadAssets('mine',
-      sprites:
-        'mine.png':
-          tile: 25
-          tileh: 25
-          map:
-            standardMine: [0,0]
-          paddingX: 1
-    )
+    @loadAssets('mine')
 
   spawn: (options) ->
     location = options.location()

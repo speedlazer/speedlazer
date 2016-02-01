@@ -194,17 +194,13 @@ generator.defineBlock class extends @Game.LevelScenery
     shipHeight = 155
     cabinHeight = 150
 
-    @add(0, @level.visibleHeight - height - shipHeight, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: -1, w: shipLength, h: shipHeight))
-    @add(50, @level.visibleHeight - height - shipHeight - cabinHeight, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: -1, w: 350, h: cabinHeight))
+    @add(0, @level.visibleHeight - height - shipHeight, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: -23, w: shipLength, h: shipHeight))
+    @add(50, @level.visibleHeight - height - shipHeight - cabinHeight, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: -23, w: 350, h: cabinHeight))
 
-    # Shadow on the water
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: 3, w: shipLength, h: 70, alpha: 0.3))
-
-
-    @elevator = Crafty.e('2D, WebGL, Color, Tween').color('#707070').attr(z: 0, w: 100, h: 5)
+    @elevator = Crafty.e('2D, WebGL, Color, Tween').color('#707070').attr(z: -22, w: 100, h: 5)
     @add(140, @level.visibleHeight - 70, @elevator)
 
-    @outside = Crafty.e('2D, WebGL, Color, Tween').color('#303030').attr(z: 0, w: shipLength + 10, h: shipHeight - 5, alpha: 0)
+    @outside = Crafty.e('2D, WebGL, Color, Tween').color('#303030').attr(z: -21, w: shipLength + 10, h: shipHeight - 5, alpha: 0)
     @add(0, @level.visibleHeight - @outside.h - height, @outside)
 
     barrelLocator = Crafty.e('2D, BarrelLocation')
