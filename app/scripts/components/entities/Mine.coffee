@@ -10,7 +10,7 @@ Crafty.c 'Mine',
       @attr rotation: @rotation + delta
 
   mine: (attr = {}) ->
-    @attr _.defaults(attr, h: 25, w: 25, health: 200)
+    @attr _.defaults(attr, h: 25, w: 25, health: 100)
     @origin 'center'
 
     @enemy()
