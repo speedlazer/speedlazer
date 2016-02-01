@@ -203,7 +203,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
 
   spawn: (location) ->
     Crafty.e('Mine').mine(
-      health: 200
+      health: 100
       x: location().x
       y: location().y + 10
       z: -4
