@@ -15,13 +15,13 @@ Crafty.c 'LargeDrone',
     @eye = Crafty.e('2D, WebGL, eyeStart, SpriteAnimation')
     @attach(@eye)
     @eye.attr(x: 2 + @x, y: 18 + @y, z: 1)
-    @eye.reel 'slow', 1500, [[0, 0], [1, 0], [2, 0], [3, 0], [0, 1], [1, 1], [2, 1], [3, 1]]
+    @eye.reel 'slow', 1500, [[0, 3], [1, 3], [2, 3], [3, 3], [0, 4], [1, 4], [2, 4], [3, 4]]
 
     @wing = Crafty.e('2D, WebGL, wingLoaded, SpriteAnimation')
     @attach(@wing)
-    @wing.attr(x: 19 + @x, y: 28 + @y, z: 1)
-    @wing.reel 'emptyWing', 30, [[4, 0]]
-    @wing.reel 'reload', 500, [[0, 0], [1, 0], [2, 0], [3, 0]]
+    @wing.attr(x: 22 + @x, y: 33 + @y, z: 1, h: 21, w: 46)
+    @wing.reel 'emptyWing', 30, [[6, 4]]
+    @wing.reel 'reload', 500, [[2, 4], [3, 4], [4, 4], [5, 4]]
 
     @enemy()
     @onHit 'Mine', (e) ->

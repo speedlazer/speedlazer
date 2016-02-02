@@ -64,3 +64,34 @@ generator.defineAssets(
         cameraHelicopter: [0,0]
       paddingX: 1
 )
+
+generator.defineAssets(
+  'largeDrone'
+  contents: ['largeDrone']
+  spriteMap: 'large-drone.png'
+  sprites:
+    body:
+      tile: 90
+      tileh: 70
+      map:
+        standardLargeDrone: [0,0]
+        damage1LargeDrone: [1,0]
+        damage2LargeDrone: [2,0]
+        damage3LargeDrone: [3,0]
+      paddingX: 1
+    eye:
+      tile: 20
+      tileh: 26
+      map:
+        eyeStart: [0,3]
+      paddingX: 1
+      paddingY: 1
+    wing:
+      tile: 46
+      tileh: 21
+      map:
+        wingLoaded: [5,4]
+      paddingX: 1
+      paddingY: 0
+
+)
