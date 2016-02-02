@@ -11,3 +11,10 @@ Crafty.c 'Drone',
 
     @enemy()
     this
+
+  updatedHealth: ->
+    sprite = 0
+    if @health < 200
+      sprite = 1
+
+    @sprite(sprite, 0)
