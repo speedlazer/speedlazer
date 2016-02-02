@@ -1,9 +1,9 @@
 Crafty.c 'Mine',
   init: ->
     @requires 'Enemy, standardMine, SpriteAnimation'
-    @reel 'open', 200, [[1, 0], [2, 0]]
-    @reel 'close', 200, [[1, 0], [0, 0]]
-    @reel 'blink', 100, [[2, 0], [3, 0]]
+    @reel 'open', 200, [[1, 3], [2, 3]]
+    @reel 'close', 200, [[1, 3], [0, 3]]
+    @reel 'blink', 100, [[2, 3], [3, 3]]
 
     @bind 'GameLoop', (fd) ->
       delta = (360 / 4000) * fd.dt

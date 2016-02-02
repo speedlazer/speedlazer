@@ -3,15 +3,7 @@ Game.Scripts ||= {}
 
 class Game.Scripts.CrewShooters extends Game.EntityScript
   assets: ->
-    @loadAssets('drone',
-      sprites:
-        'drone.png':
-          tile: 80
-          tileh: 80
-          map:
-            standardDrone: [0,0]
-          paddingX: 1
-    )
+    @loadAssets('drone')
 
   spawn: ->
     Crafty.e('Drone, ShootOnSight, ColorEffects, Horizon').drone(

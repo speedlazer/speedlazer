@@ -265,9 +265,9 @@ Game.ScriptModule.Level =
         e.addComponent('Enemy')
 
 
-  loadAssets: (name, assetObject) ->
+  loadAssets: (name) ->
     (sequence) =>
-      @level.loadAssets(name, assetObject)
+      @level.loadAssets(name)
 
   updateTitle: (text) ->
     (sequence) =>
