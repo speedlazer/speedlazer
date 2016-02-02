@@ -467,6 +467,8 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
+    @notifyOffsetX = -100
+
     @addElement 'waterFront', lightness: 0.8
     @addElement 'water'
     @addElement 'cityHorizon'
@@ -481,14 +483,14 @@ generator.defineBlock class extends @Game.LevelScenery
     @addBackground(0, 305,  @deck(.45, w: 600, z: -270).flip('X'), .60)
     @addBackground(0, 255,  @deck(.35, w: 650, z: -260), .65)
 
-    @addBackground(140, 280,  @pillar( .35, h: 200, z: -261), .65)
-    @addBackground(970, 280,  @pillarX(.35, h: 200, z: -261), .65)
+    @addBackground(140, 290,  @pillar( .35, h: 200, z: -261), .65)
+    @addBackground(970, 290,  @pillarX(.35, h: 200, z: -261), .65)
 
     @addBackground(0, 205,  @deck(.25, w: 700, z: -50).flip('X'), .70)
     @addBackground(0, 155,  @deck(.15, w: 750, z: -40), .75)
 
-    @addBackground(160, 150, @pillar( 0, h: 350, z: -31), .8)
-    @addBackground(990, 150, @pillarX(0, h: 350, z: -31), .8)
+    @addBackground(160, 160, @pillar( 0, h: 350, z: -31), .8)
+    @addBackground(990, 160, @pillarX(0, h: 350, z: -31), .8)
     @addBackground(0, 95,  @deck(.05, w: 800, z: -30).flip('X'), .8)
 
     @addBackground(0, 20,   @deck(0,   w: 900, z: -20), .9)
@@ -496,8 +498,8 @@ generator.defineBlock class extends @Game.LevelScenery
     @addBackground(0, -60,  @deck(0,   w: 1000, z: -10).flip('X'), 1.0)
     @addBackground(0, -180, @deck(0,   w: 1200, z: 100, lightness: 0.6, blur: 6.0), 1.2)
 
-    @addBackground(190,  -80, @pillar( 0, h: 750, z: 80, lightness: 0.6, blur: 6.0), 1.2)
-    @addBackground(1025, -80, @pillarX(0, h: 750, z: 80, lightness: 0.6, blur: 6.0), 1.2)
+    @addBackground(190,  -60, @pillar( 0, h: 750, z: 80, lightness: 0.6, blur: 6.0), 1.2)
+    @addBackground(1025, -60, @pillarX(0, h: 750, z: 80, lightness: 0.6, blur: 6.0), 1.2)
 
 
 
@@ -509,7 +511,7 @@ generator.defineBlock class extends @Game.LevelScenery
     ).saturationGradient(gradient, gradient)
 
   pillar: (gradient, attr) ->
-    aspectR = 534 / 180
+    aspectR = 534 / 170
     attr.w = attr.h
     attr.h = attr.w / aspectR
     attr.rotation = 90

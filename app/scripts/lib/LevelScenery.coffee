@@ -44,20 +44,18 @@ class Game.LevelScenery
   # and adds a trigger in the level
   # for notifications for #enter, #inScreen
   # and #leave
-  build: (pos) -> #, index) ->
+  build: (pos) ->
     return if @generated
     @x ?= pos.x
     @y ?= pos.y
-    #@index = index
     @generated = yes
     @generate()
-    @_notifyEnterFunction() # index
+    @_notifyEnterFunction(@notifyOffsetX)
 
-  _notifyEnterFunction: -> #(index) ->
+  _notifyEnterFunction: (offsetX = 0) ->
     block = this
     Crafty.e('2D, Collision')
-      .attr({ x: @x, y: @y, w: 10, h: 800 })
-      #.color('#FF00FF')
+      .attr({ x: @x + offsetX, y: @y, w: 10, h: 800 })
       .onHit 'ScrollFront', ->
         unless @triggeredFront
           Crafty.trigger('EnterBlock', block) #, index)
