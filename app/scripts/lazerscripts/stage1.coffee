@@ -6,7 +6,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     namespace: 'City'
     armedPlayers: 'lasers'
     speed: 50
-    title: 'City'
+    title: 'Hacked'
 
   assets: ->
     @loadAssets('shadow')
@@ -113,6 +113,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   introText: ->
     @sequence(
       @setScenery('Intro')
+      @chapterTitle('Hacked')
       @sunRise()
       @cameraCrew()
       @async @runScript Game.Scripts.IntroBarrel

@@ -274,6 +274,11 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       @level.updateTitle(text)
 
+  chapterTitle: (text) ->
+    (sequence) =>
+      @_verify(sequence)
+      @level.showTitle(text)
+
   pickTarget: (selection) ->
     (sequence) =>
       pickTarget = (selection) ->

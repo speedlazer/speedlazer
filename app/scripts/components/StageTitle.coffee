@@ -4,7 +4,7 @@ Crafty.c 'StageTitle',
     @requires '2D, DOM, Text, Tween, Delay, HUD'
 
   stageTitle: (text) ->
-    this.attr w: 640, z: 1
+    this.attr w: Crafty.viewport.width, z: 1, alpha: 0
       .css 'textAlign', 'center'
       .text text
       .positionHud(
@@ -14,11 +14,16 @@ Crafty.c 'StageTitle',
       )
       .textColor('#FF0000')
       .textFont({
-        size: '30px',
-        weight: 'bold',
-        family: 'Courier new'
-      }).delay( ->
-        @tween({ viewportY: @viewportY + 500, alpha: 0 }, 3000)
-        @bind 'TweenEnd', =>
-          @destroy()
-      , 3000, 0)
+        size: '30px'
+        weight: 'bold'
+        family: 'Press Start 2P'
+      }).tween({ alpha: 1 }, 3000)
+        .bind 'TweenEnd', =>
+          @delay(
+            ->
+              @tween({ viewportY: @viewportY + 100, alpha: 0 }, 1500)
+              @bind 'TweenEnd', =>
+                @destroy()
+            3000
+            0
+          )
