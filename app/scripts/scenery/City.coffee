@@ -113,6 +113,19 @@ generator.defineElement 'waterFront', (attrs = {}) ->
         @x = @originalX + distance - (v * distance)
         @y = @originalY + moveh - (v * moveh)
         @h = height - distanceh + (v * distanceh)
+    Crafty('WaveFront').each ->
+      width = 1200
+      distance = 120
+      height = 200
+      distanceh = 80
+      if forward
+        @w = width + (v * distance)
+        @y = @originalY + (v * moveh)
+        @h = height - (v * distanceh)
+      else
+        @w = width + distance - (v * distance)
+        @y = @originalY + moveh - (v * moveh)
+        @h = height - distanceh + (v * distanceh)
 
 generator.defineElement 'cityHorizon', (mode) ->
   @addElement 'waterHorizon'
@@ -209,7 +222,16 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'water'
     @addElement 'waterHorizon'
 
-    @addBackground(0, @level.visibleHeight + 30, Crafty.e('2D, WebGL, Color').color('#000040').attr(z: 3, w: ((@delta.x + Crafty.viewport.width * .5)) + 1, h: 185), 1.25)
+    frontWave = Crafty.e('2D, WebGL, waterFront1, WaveFront').attr(
+      z: 3
+      w: ((@delta.x + Crafty.viewport.width * .5)) + 1
+      h: 200
+      lightness: 0.5
+      blur: 6.0
+    )
+    @addBackground(0, @level.visibleHeight - 18, frontWave, 1.25)
+    frontWave.originalY = frontWave.y
+
 
     @addElement 'cloud'
 
