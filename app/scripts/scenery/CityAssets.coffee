@@ -95,3 +95,15 @@ generator.defineAssets(
       paddingY: 0
 
 )
+
+generator.defineAssets(
+  'explosion'
+  contents: ['explosion']
+  spriteMap: 'explosion.png'
+  sprites:
+    all:
+      tile: 64
+      tileh: 64
+      map:
+        explosionStart: [0, 0]
+)

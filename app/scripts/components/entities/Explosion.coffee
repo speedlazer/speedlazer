@@ -5,6 +5,8 @@ Crafty.c 'Explosion',
     @explosionMode = window.Game.explosionMode
     if @explosionMode is 'block'
       @requires 'WebGL, Color'
+    else
+      @requires 'WebGL, explosionStart'
 
   explode: (attr) ->
     radius = attr.radius ? 20
@@ -42,26 +44,26 @@ Crafty.c 'Explosion',
       # sensible values are 0-3
       jitter: 0
 
-    @attr
-      w: 1
-      h: 1
+    #@attr
+      #w: 1
+      #h: 1
 
     if @explosionMode is 'block'
       @color '#FF0000'
-    @tween({
-      x: @x - radius
-      y: @y - radius
-      w: @w + (radius * 2)
-      h: @h + (radius * 2)
-      alpha: 0.2
-    }, 500)
-    @bind 'TweenEnd', ->
-      @destroy()
+    #@tween({
+      #x: @x - radius
+      #y: @y - radius
+      #w: @w + (radius * 2)
+      #h: @h + (radius * 2)
+      #alpha: 0.2
+    #}, 500)
+    #@bind 'TweenEnd', ->
+      #@destroy()
 
     if @explosionMode is 'particles'
       options.fastMode = yes
 
-    if @explosionMode isnt 'block'
+    if @explosionMode is 'particles'
       cleanupDelay = (options.lifeSpan + options.lifeSpanRandom) * Crafty.timer.FPS()
       Crafty.e("2D,Particles,Delay").attr(
         x: @x - (attr.radius / 2)
@@ -71,6 +73,10 @@ Crafty.c 'Explosion',
         # This stops new particles from emiting.
         # But the particles are still alive for their lifetime
         @delay((-> @destroy()), cleanupDelay)
+
+    if @explosionMode is undefined
+      @attr w: 64, h: 64
+
 
     this
 

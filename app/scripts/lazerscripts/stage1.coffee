@@ -9,7 +9,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     title: 'Hacked'
 
   assets: ->
-    @loadAssets('shadow')
+    @loadAssets('shadow', 'explosion')
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
