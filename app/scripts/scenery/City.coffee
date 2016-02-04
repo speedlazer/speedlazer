@@ -232,7 +232,6 @@ generator.defineBlock class extends @Game.LevelScenery
     @addBackground(0, @level.visibleHeight - 18, frontWave, 1.25)
     frontWave.originalY = frontWave.y
 
-
     @addElement 'cloud'
 
   enter: ->

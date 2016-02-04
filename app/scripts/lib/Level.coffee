@@ -299,6 +299,6 @@ class Game.Level
   showTitle: (newTitle) ->
     Crafty.e('StageTitle').stageTitle(newTitle)
 
-  loadAssets: (name) ->
-    @generator.loadAssets name
+  loadAssets: (names) ->
+    @generator.loadAssets names
 

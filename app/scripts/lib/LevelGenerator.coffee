@@ -46,7 +46,11 @@ class Game.LevelGenerator
   defineAssets: (name, object) ->
     @assets[name] = object
 
-  loadAssets: (name) ->
+  loadAssets: (names) ->
+    p = (@_loadAssetMap name for name in names)
+    WhenJS.all p
+
+  _loadAssetMap: (name) ->
     @entityAssets ?= {}
 
     assetMap = null
