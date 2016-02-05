@@ -99,11 +99,11 @@ generator.defineAssets(
 generator.defineAssets(
   'explosion'
   contents: ['explosion']
-  spriteMap: 'explosion.png'
+  spriteMap: 'explosion2.png'
   sprites:
     all:
-      tile: 64
-      tileh: 64
+      tile: 96
+      tileh: 96
       map:
         explosionStart: [0, 0]
 )

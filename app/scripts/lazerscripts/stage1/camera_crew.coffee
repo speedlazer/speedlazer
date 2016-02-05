@@ -43,7 +43,13 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
           [.6, .82]
         ], speed: 150
         @sequence(
-          @explosion(@location(), radius: 10, duration: 480)
+          @explosion(@location(),
+            radius: 10,
+            duration: 480,
+            z: -199
+            topDesaturation: 0.3
+            bottomDesaturation: 0.3
+          )
           @wait 100
         )
       )

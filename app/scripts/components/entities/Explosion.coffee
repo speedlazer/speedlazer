@@ -6,7 +6,7 @@ Crafty.c 'Explosion',
     if @explosionMode is 'block'
       @requires 'WebGL, Color'
     else
-      @requires 'WebGL, explosionStart'
+      @requires 'WebGL, explosionStart, SpriteAnimation, Horizon'
 
   explode: (attr) ->
     radius = attr.radius ? 20
@@ -75,7 +75,33 @@ Crafty.c 'Explosion',
         @delay((-> @destroy()), cleanupDelay)
 
     if @explosionMode is undefined
-      @attr w: 64, h: 64
+      @attr w: attr.radius * 4, h: attr.radius * 4
+      @attr x: @x - (@w / 2), y: @y - (@h / 2)
+      @reel 'explode', duration * 3000, [
+        [0, 0]
+        [1, 0]
+        [2, 0]
+        [3, 0]
+        [4, 0]
+
+        [0, 1]
+        [1, 1]
+        [2, 1]
+        [3, 1]
+        [4, 1]
+
+        [0, 2]
+        [1, 2]
+        [2, 2]
+        [3, 2]
+        [4, 2]
+
+        [0, 3]
+        [1, 3]
+      ]
+      @animate 'explode'
+      @bind 'AnimationEnd', =>
+        @destroy()
 
 
     this

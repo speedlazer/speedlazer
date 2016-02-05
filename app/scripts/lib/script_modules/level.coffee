@@ -252,11 +252,17 @@ Game.ScriptModule.Level =
         damage: 0
         radius: 20
         duration: 160
+        z: 5
+        topDesaturation: 0
+        bottomDesaturation: 0
       )
 
       e = Crafty.e('Explosion').explode(
         x: x
         y: y
+        z: options.z
+        topDesaturation: options.topDesaturation
+        bottomDesaturation: options.bottomDesaturation
         radius: options.radius
         damage: options.damage
         duration: options.duration
@@ -277,6 +283,7 @@ Game.ScriptModule.Level =
   chapterTitle: (text) ->
     (sequence) =>
       @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
       @level.showTitle(text)
 
   pickTarget: (selection) ->
