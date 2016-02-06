@@ -164,15 +164,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
 class Game.Scripts.Stage1BossMine extends Game.EntityScript
   assets: ->
-    @loadAssets('mine',
-      sprites:
-        'mine.png':
-          tile: 25
-          tileh: 25
-          map:
-            standardMine: [0,0]
-          paddingX: 1
-    )
+    @loadAssets('mine')
 
   spawn: (location) ->
     Crafty.e('Mine').mine(
@@ -197,7 +189,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       @wait 200
       @animate 'blink', -1
       @wait 1000
-      @explosion(@location(), damage: yes, radius: 40)
+      @explosion(@location(), damage: 200, radius: 40)
     )
 
   onKilled: ->
