@@ -42,10 +42,10 @@ Crafty.c 'RapidWeaponLaser',
 
   _determineCooldown: ->
     @cooldown = switch @level
-      when 0 then 250
-      when 1 then 200
-      when 2 then 150
-      when 3 then 100
+      when 0 then 200
+      when 1 then 150
+      when 2 then 75
+      when 3 then 75
 
   determineLevel: (xp) ->
     levelBoundaries = [150, 600, 2400, 9600]
@@ -83,15 +83,15 @@ Crafty.c 'RapidWeaponLaser',
 
   _createFrontBullet: ->
     settings = switch @level
-      when 0 then w: 6, speed: 550, h: 3
-      when 1 then w: 10, speed: 555, h: 3
-      when 2 then w: 14, speed: 560, h: 3
-      when 3 then w: 18, speed: 565, h: 3
+      when 0 then w: 6, speed: 650, h: 4, o: 0
+      when 1 then w: 10, speed: 655, h: 5, o: 1
+      when 2 then w: 14, speed: 660, h: 6, o: 2
+      when 3 then w: 18, speed: 665, h: 6, o: 3
 
     Crafty.e('Bullet')
       .attr
         x: @x + @w
-        y: @y + (@h / 2) - (settings.h / 2) + 1
+        y: @y + (@h / 2) - (settings.h / 2) + 1 + settings.o
         w: settings.w
         h: settings.h
       .fire
@@ -108,15 +108,15 @@ Crafty.c 'RapidWeaponLaser',
 
   _createBackBullet: ->
     settings = switch @level
-      when 0 then w: 5, speed: 550, h: 2
-      when 1 then w: 8, speed: 555, h: 2
-      when 2 then w: 10, speed: 560, h: 2
-      when 3 then w: 14, speed: 565, h: 2
+      when 0 then w: 5, speed: 650, h: 3, o: 0
+      when 1 then w: 8, speed: 655, h: 4, o: 1
+      when 2 then w: 10, speed: 660, h: 5, o: 2
+      when 3 then w: 14, speed: 665, h: 5, o: 3
 
     Crafty.e('Bullet')
       .attr
         x: @x + @w
-        y: @y + (@h / 2) - (settings.h / 2) - 2
+        y: @y + (@h / 2) - (settings.h / 2) - 2 - settings.o
         w: settings.w
         h: settings.h
       .fire

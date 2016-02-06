@@ -42,10 +42,10 @@ Crafty.c 'RapidDiagonalLaser',
 
   _determineCooldown: ->
     @cooldown = switch @level
-      when 0 then 250
-      when 1 then 200
-      when 2 then 150
-      when 3 then 100
+      when 0 then 200
+      when 1 then 150
+      when 2 then 75
+      when 3 then 75
 
   determineLevel: (xp) ->
     levelBoundaries = [150, 600, 2400, 9600]
@@ -73,9 +73,20 @@ Crafty.c 'RapidDiagonalLaser',
     return unless @ship.weaponsEnabled
     return unless allowBullet
     if @lastShot > @cooldown
-      @_createAngleBullet(0)
-      @_createAngleBullet(12)
-      @_createAngleBullet(-12)
+      angle = switch @level
+        when 0 then 5
+        when 1 then 7
+        when 2 then 12
+        when 3 then 12
+      f = if ((@shotsFired % 2) is 0) then 1 else -1
+      deviation = (Math.random() * 1.5)
+      @_createAngleBullet(0 + (deviation * f))
+
+      deviation = (Math.random() * 1.5)
+      @_createAngleBullet(angle + (deviation * f))
+
+      deviation = (Math.random() * 1.5)
+      @_createAngleBullet(-angle + (deviation * f))
 
       @frontFire = !@frontFire
       @lastShot = 0
@@ -83,10 +94,10 @@ Crafty.c 'RapidDiagonalLaser',
 
   _createAngleBullet: (angle) ->
     settings = switch @level
-      when 0 then w: 5, speed: 450, h: 3
-      when 1 then w: 6, speed: 455, h: 3
-      when 2 then w: 8, speed: 460, h: 3
-      when 3 then w: 10, speed: 465, h: 3
+      when 0 then w: 5, speed: 550, h: 5
+      when 1 then w: 6, speed: 555, h: 5
+      when 2 then w: 8, speed: 560, h: 5
+      when 3 then w: 10, speed: 565, h: 5
 
     Crafty.e('Bullet')
       .attr
