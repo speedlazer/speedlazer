@@ -152,6 +152,8 @@ Crafty.c 'Choreography',
 
     shiftedY = (@_currentPart.viewport.y - Crafty.viewport.y)
     point = bp.pointOnPath(@_currentPart.bPath, v)
+    @shiftedX ?= 0
+    @shiftedX = Math.max(0, @shiftedX - .5)
 
-    @attr x: point.x, y: point.y + shiftedY
+    @attr x: point.x + @shiftedX, y: point.y + shiftedY
 

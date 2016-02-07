@@ -10,6 +10,15 @@ Crafty.c 'Drone',
     @attr weaponOrigin: [2, 25]
 
     @enemy()
+    @bind 'Hit', (data) =>
+      @shiftedX += 10
+      #Crafty.e('Explosion, LaserHit').explode(
+        #x: data.projectile.x
+        #y: data.projectile.y
+        #radius: 4
+        #duration: 50
+      #)
+
     this
 
   updatedHealth: ->
