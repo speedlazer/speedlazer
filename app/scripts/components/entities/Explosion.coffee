@@ -1,12 +1,10 @@
-Crafty.c 'Explosion',
+Crafty.c 'OldExplosion',
   init: ->
     @requires '2D,Tween,Delay'
 
     @explosionMode = window.Game.explosionMode
     if @explosionMode is 'block'
       @requires 'WebGL, Color'
-    else
-      @requires 'WebGL, explosionStart, SpriteAnimation, Horizon'
 
   explode: (attr) ->
     radius = attr.radius ? 20
@@ -44,21 +42,21 @@ Crafty.c 'Explosion',
       # sensible values are 0-3
       jitter: 0
 
-    #@attr
-      #w: 1
-      #h: 1
+    @attr
+      w: 1
+      h: 1
 
     if @explosionMode is 'block'
       @color '#FF0000'
-    #@tween({
-      #x: @x - radius
-      #y: @y - radius
-      #w: @w + (radius * 2)
-      #h: @h + (radius * 2)
-      #alpha: 0.2
-    #}, 500)
-    #@bind 'TweenEnd', ->
-      #@destroy()
+    @tween({
+      x: @x - radius
+      y: @y - radius
+      w: @w + (radius * 2)
+      h: @h + (radius * 2)
+      alpha: 0.2
+    }, 500)
+    @bind 'TweenEnd', ->
+      @destroy()
 
     if @explosionMode is 'particles'
       options.fastMode = yes
@@ -73,36 +71,52 @@ Crafty.c 'Explosion',
         # This stops new particles from emiting.
         # But the particles are still alive for their lifetime
         @delay((-> @destroy()), cleanupDelay)
+    this
 
-    if @explosionMode is undefined
-      @attr w: attr.radius * 4, h: attr.radius * 4
-      @attr x: @x - (@w / 2), y: @y - (@h / 2)
-      @reel 'explode', duration * 3000, [
-        [0, 0]
-        [1, 0]
-        [2, 0]
-        [3, 0]
-        [4, 0]
+Crafty.c 'Explosion',
+  init: ->
+    @requires '2D, WebGL, explosionStart, SpriteAnimation, Horizon, Collision'
 
-        [0, 1]
-        [1, 1]
-        [2, 1]
-        [3, 1]
-        [4, 1]
+  explode: (attr) ->
+    radius = attr.radius ? 20
+    duration = (attr.duration ? 160) / 1000
+    @attr attr
 
-        [0, 2]
-        [1, 2]
-        [2, 2]
-        [3, 2]
-        [4, 2]
+    @attr w: attr.radius * 4, h: attr.radius * 4
+    @attr x: @x - (@w / 2), y: @y - (@h / 2)
 
-        [0, 3]
-        [1, 3]
-      ]
-      @animate 'explode'
-      @bind 'AnimationEnd', =>
-        @destroy()
+    @collision [
+      @w * .2, @h * .2,
+      @w * .8, @h * .2,
+      @w * .8, @h * .8,
+      @w * .2, @h * .8
+    ]
 
+    @reel 'explode', duration * 3000, [
+      [0, 0]
+      [1, 0]
+      [2, 0]
+      [3, 0]
+      [4, 0]
+
+      [0, 1]
+      [1, 1]
+      [2, 1]
+      [3, 1]
+      [4, 1]
+
+      [0, 2]
+      [1, 2]
+      [2, 2]
+      [3, 2]
+      [4, 2]
+
+      [0, 3]
+      [1, 3]
+    ]
+    @bind 'AnimationEnd', =>
+      @destroy()
+    @animate 'explode'
 
     this
 
