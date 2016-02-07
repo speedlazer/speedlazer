@@ -4,7 +4,7 @@ Crafty.c 'Drone',
 
   drone: (attr = {}) ->
     @attr _.defaults(attr,
-      w: 40, h: 40, health: 300)
+      w: 40, h: 40, health: 400)
     @origin 'center'
     @collision [2, 25, 8,18, 20,13, 30, 15, 33, 28, 14, 34, 4, 30]
     @attr weaponOrigin: [2, 25]
@@ -12,13 +12,12 @@ Crafty.c 'Drone',
     @enemy()
     @bind 'Hit', (data) =>
       @shiftedX += 10
-      #Crafty.e('Explosion, LaserHit').explode(
-        #x: data.projectile.x
-        #y: data.projectile.y
-        #radius: 4
-        #duration: 50
-      #)
-
+      Crafty.e('LaserHit').explode(
+        x: data.projectile.x
+        y: data.projectile.y
+        radius: 4
+        duration: 50
+      )
     this
 
   updatedHealth: ->

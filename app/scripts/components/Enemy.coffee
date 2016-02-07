@@ -21,7 +21,7 @@ Crafty.c 'Enemy',
           if @health <= 0
             bullet.trigger 'DestroyTarget', data
 
-          @trigger('Hit', this)
+          @trigger('Hit', entity: this, projectile: bullet)
         bullet.destroy()
       ->
         @attr hitFlash: no
@@ -33,7 +33,7 @@ Crafty.c 'Enemy',
         return if @invincible
         for c in e
           splosion = c.obj
-          @trigger('Hit', this)
+          @trigger('Hit', entity: this, projectile: splosion)
           @attr hitFlash: { _red: 255, _green: 255, _blue: 128 }
           @absorbDamage(splosion.damage)
       ->
