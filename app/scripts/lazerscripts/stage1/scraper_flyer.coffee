@@ -7,7 +7,6 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
 
   spawn: ->
     Crafty.e('Drone, ShootOnSight, ColorEffects, Horizon').drone(
-      health: 200
       x: -50
       y: Crafty.viewport.height * .7
       speed: 300

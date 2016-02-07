@@ -7,7 +7,6 @@ class Game.Scripts.CrewShooters extends Game.EntityScript
 
   spawn: ->
     Crafty.e('Drone, ShootOnSight, ColorEffects, Horizon').drone(
-      health: 200
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .23
       speed: 250

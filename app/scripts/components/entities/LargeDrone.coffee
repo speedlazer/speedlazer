@@ -6,7 +6,7 @@ Crafty.c 'LargeDrone',
     @attr _.defaults(attr,
       w: 90,
       h: 70,
-      health: 180000,
+      health: 360000,
       z: -1
     )
     @origin 'center'
@@ -39,16 +39,16 @@ Crafty.c 'LargeDrone',
         y: data.projectile.y
         radius: 4
         duration: 50
-      )
+      ) if data.projectile.has('Bullet')
     this
 
   updatedHealth: ->
     sprite = 0
-    if @health < 175000
+    if @health < 325000
       sprite = 1
-    if @health < 160000
+    if @health < 285000
       sprite = 2
-    if @health < 145200
+    if @health < 245200
       sprite = 3
 
     @sprite(sprite, 0)

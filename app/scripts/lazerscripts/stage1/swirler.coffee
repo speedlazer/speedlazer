@@ -7,7 +7,6 @@ class Game.Scripts.Swirler extends Game.EntityScript
 
   spawn: (options) ->
     d = Crafty.e('Drone').drone(
-      health: 200
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height / 2
       speed: options.speed ? 200

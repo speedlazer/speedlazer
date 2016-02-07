@@ -7,7 +7,6 @@ class Game.Scripts.Shooter extends Game.EntityScript
 
   spawn: (options) ->
     d = Crafty.e('Drone').drone(
-      health: 200
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .71
       speed: options.speed ? 200

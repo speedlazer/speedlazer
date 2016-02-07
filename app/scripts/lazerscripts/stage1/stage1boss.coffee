@@ -14,7 +14,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     )
 
   execute: ->
-    @bindSequence 'Hit', @fase2, => @entity.health < 170000
+    @bindSequence 'Hit', @fase2, => @entity.health < 320000
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
     @inventoryAdd 'item', 'diagonals', ->
@@ -133,7 +133,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     )
 
   fase2: ->
-    @bindSequence 'Hit', @fase3, => @entity.health < 160000
+    @bindSequence 'Hit', @fase3, => @entity.health < 280000
 
     @sequence(
       @setSpeed 50
@@ -142,7 +142,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     )
 
   fase3: ->
-    @bindSequence 'Hit', @fase4, => @entity.health < 145000
+    @bindSequence 'Hit', @fase4, => @entity.health < 240000
 
     @sequence(
       @setSpeed 50
