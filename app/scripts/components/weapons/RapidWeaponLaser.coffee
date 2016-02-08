@@ -42,9 +42,9 @@ Crafty.c 'RapidWeaponLaser',
 
   _determineCooldown: ->
     @cooldown = switch @level
-      when 0 then 75
-      when 1 then 75
-      when 2 then 75
+      when 0 then 135
+      when 1 then 110
+      when 2 then 95
       when 3 then 75
 
   determineLevel: (xp) ->
