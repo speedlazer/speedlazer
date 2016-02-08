@@ -1,6 +1,7 @@
 Crafty.c 'ScrollWall',
   init: ->
     @requires('2D, Edge, Collision')
+    @shakes = []
     @attr
       x: 0
       y: 0
@@ -48,12 +49,23 @@ Crafty.c 'ScrollWall',
       @x += (speedX / 1000.0) * fd.dt
       @y += (speedY / 1000.0) * fd.dt
 
-      Crafty.viewport.y = -@y if Crafty.viewport.y isnt -@y
-      Crafty.viewport.x = -@x if Crafty.viewport.x isnt -@x
+      x = @x
+      y = @y
+
+      for shake, index in @shakes by -1
+        shake.easing.tick(fd.dt)
+        coords = shake.coords(shake.easing.value())
+        x += coords[0]
+        y += coords[1]
+        @shakes.splice(index, 1) if shake.easing.complete
+
+
+      Crafty.viewport.y = -y if Crafty.viewport.y isnt -y
+      Crafty.viewport.x = -x if Crafty.viewport.x isnt -x
 
       Crafty.trigger('ViewportMove',
-        x: Math.round(@x)
-        y: Math.round(@y)
+        x: Math.round(x)
+        y: Math.round(y)
       )
     # TODO: Verify correctness of these statements
     #@onHit 'PlayerControlledShip', (el) ->
@@ -73,6 +85,23 @@ Crafty.c 'ScrollWall',
       #for e in el
         #p = e.obj
         #p.attr y: @wallBottom.y - p.h
+
+  screenShake: (amount, duration) ->
+    @shakes.push(
+      amount: amount
+      duration: duration
+      shakes: Math.ceil(duration / 100)
+      easing: new Crafty.easing(duration, 'linear')
+      startX: if Math.random() > 0.5 then -1 else 1
+      startY: if Math.random() > 0.5 then -1 else 1
+      coords: (v) ->
+        shake = Math.cos((Math.PI / 2) + (v * @shakes * (Math.PI / 2)))
+        [
+          shake * amount * @startX
+          shake * amount * @startY
+        ]
+    )
+
 
   scrollWall: (speed) ->
     if speed.x? && speed.y?

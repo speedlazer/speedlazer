@@ -35,13 +35,19 @@ class Game.Scripts.JumpMine extends Game.EntityScript
           @wait 4000
           @animate('blink', -1)
           @wait 1000
-          @explosion(@location(), damage: 300, radius: 40)
+          @parallel(
+            @screenShake(10, duration: 200)
+            @explosion(@location(), damage: 300, radius: 40)
+          )
           @endSequence()
         )
       )
     )
 
   onKilled: ->
-    @explosion(@location(), damage: 300, radius: 40)
+    @parallel(
+      @screenShake(10, duration: 200)
+      @explosion(@location(), damage: 300, radius: 40)
+    )
 
 

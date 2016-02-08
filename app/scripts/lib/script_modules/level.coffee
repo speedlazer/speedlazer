@@ -324,3 +324,11 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       @level.sealevelOffset = offsetY
 
+  screenShake: (amount, options = {}) ->
+    (sequence) =>
+      @_verify(sequence)
+      options = _.defaults(options, {
+        duration: 1000
+      })
+      @level.screenShake(amount, options)
+      @wait(options.duration)(sequence)

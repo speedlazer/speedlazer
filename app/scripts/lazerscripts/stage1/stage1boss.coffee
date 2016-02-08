@@ -189,11 +189,17 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       @wait 200
       @animate 'blink', -1
       @wait 1000
-      @explosion(@location(), damage: 200, radius: 40)
+      @parallel(
+        @screenShake(10, duration: 200)
+        @explosion(@location(), damage: 200, radius: 40)
+      )
     )
 
   onKilled: ->
-    @explosion(@location(), damage: 200, radius: 40)
+    @parallel(
+      @screenShake(10, duration: 200)
+      @explosion(@location(), damage: 200, radius: 40)
+    )
 
 
 class Game.Scripts.Stage1BossRocket extends Game.EntityScript
@@ -219,11 +225,13 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-
     @moveTo(x: -205)
 
   onKilled: ->
-    @explosion(@location(), damage: 200, radius: 40)
+    @parallel(
+      @screenShake(10, duration: 200)
+      @explosion(@location(), damage: 200, radius: 40)
+    )
 
 
 class Game.Scripts.Stage1BossPopup extends Game.EntityScript
@@ -361,6 +369,9 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
     )
 
   onKilled: ->
-    @explosion(@location(), damage: 300, radius: 40)
+    @parallel(
+      @screenShake(10, duration: 200)
+      @explosion(@location(), damage: 300, radius: 40)
+    )
 
 
