@@ -105,7 +105,11 @@ Crafty.c 'Choreography',
       @_currentPart.moveOriginX ?= @_currentPart.x + Crafty.viewport.x
       diffX = destinationX - @_currentPart.moveOriginX
       motionX = (diffX * v)
-      @x = @_currentPart.moveOriginX + motionX - Crafty.viewport.x
+
+      @shiftedX ?= 0
+      @shiftedX = Math.max(0, @shiftedX - .5)
+
+      @x = @_currentPart.moveOriginX + motionX - Crafty.viewport.x + @shiftedX
 
     destinationY = @_currentPart.dy
     if destinationY

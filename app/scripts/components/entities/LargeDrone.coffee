@@ -34,6 +34,7 @@ Crafty.c 'LargeDrone',
         mine.absorbDamage(300) # Mine collision on LargeDrone triggers explosion of mine
     @updatedHealth()
     @bind 'Hit', (data) =>
+      @shiftedX += 2
       Crafty.e('LaserHit').explode(
         x: data.projectile.x
         y: data.projectile.y
