@@ -68,7 +68,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           @pickTarget('PlayerControlledShip')
           @placeSquad Game.Scripts.Stage1BossRocket,
             options:
-              location: @targetLocation(x: 1.1)
+              location: @targetLocation(x: 1.3)
           @wait 200
         )
       )
@@ -260,7 +260,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           @pickTarget('PlayerControlledShip')
           @placeSquad Game.Scripts.Stage1BossRocket,
             options:
-              location: @targetLocation(x: 1.1)
+              location: @targetLocation(x: 1.3)
           @wait 200
         )
       )
@@ -378,7 +378,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @pickTarget('PlayerControlledShip')
         @placeSquad Game.Scripts.Stage1BossRocket,
           options:
-            location: @targetLocation(x: 1.1)
+            location: @targetLocation(x: 1.3)
         @wait 500
       )
     )
