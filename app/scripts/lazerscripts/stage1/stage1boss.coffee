@@ -275,7 +275,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
     )
 
   execute: ->
-    @bindSequence 'Hit', @leaveScreen, => @entity.health < 130000
+    @bindSequence 'Hit', @leaveScreen, => @entity.health < 230000
     @inventoryAdd 'item', 'xp', ->
       Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
 
