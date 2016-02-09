@@ -123,7 +123,6 @@ Crafty.defineScene 'Game', (data = {}) ->
 
           if selected is 2
             Crafty('Player').each -> @reset()
-            console.log 'entering intro'
             stage.end()
             Crafty.enterScene 'Intro'
 

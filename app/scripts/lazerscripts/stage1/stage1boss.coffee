@@ -14,7 +14,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     )
 
   execute: ->
-    @bindSequence 'Hit', @fase2, => @entity.health < 320000
+    @bindSequence 'Hit', @fase2, => @entity.health < 345000
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
     @inventoryAdd 'item', 'diagonals', ->
@@ -41,11 +41,11 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @animate 'emptyWing', 0, 'wing'
       @animate 'reload', 0, 'wing'
       @moveTo(y: .43, speed: 5)
-      @attackCycle(5)
+      @repeat @attackCycle(5)
     )
 
   attackCycle: (speed) ->
-    @repeat @sequence(
+    @sequence(
       @async @runScript(Game.Scripts.Stage1BossMine, @location())
       @moveTo(y: .41, speed: speed)
       @wait 200
@@ -70,7 +70,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @animate 'reload', 0, 'wing'
     )
 
-  attackCycle2: (speed) ->
+  attackCycle3: (speed) ->
     @parallel(
       @repeat @sequence(
         @async @runScript(Game.Scripts.Stage1BossMine, @location())
@@ -102,7 +102,15 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       )
     )
 
-  bombRaid: ->
+  droneRaid: ->
+    @async @placeSquad(Game.Scripts.Stage1BossDroneRaid,
+      amount: 8
+      delay: 300
+      options:
+        shootOnSight: yes
+    )
+
+  bombRaid: (armed = no) ->
     @sequence(
       => @entity.invincible = yes
       @moveTo(y: .1)
@@ -112,6 +120,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
           @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
             options:
               location: @location()
+              armed: no
           )
           @wait 500
         )
@@ -123,6 +132,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
           @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
             options:
               location: @location()
+              armed: armed
           )
           @wait 500
         )
@@ -133,21 +143,39 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     )
 
   fase2: ->
-    @bindSequence 'Hit', @fase3, => @entity.health < 280000
+    # start at 345000
+    @bindSequence 'Hit', @fase3, => @entity.health < 320000
 
     @sequence(
       @setSpeed 50
-      @bombRaid()
-      @attackCycle(7)
+      @bombRaid(yes)
+      @repeat @sequence(
+        @repeat 3, @attackCycle(7)
+        @parallel(
+          @laugh()
+          @droneRaid()
+        )
+      )
+    )
+
+  laugh: ->
+    @sequence(
+      => @entity.invincible = yes
+      @repeat 5, @sequence(
+        @rotate(10, 200)
+        @rotate(-10, 200)
+      )
+      @rotate(0, 200)
+      => @entity.invincible = no
     )
 
   fase3: ->
-    @bindSequence 'Hit', @fase4, => @entity.health < 240000
+    @bindSequence 'Hit', @fase4, => @entity.health < 275000
 
     @sequence(
       @setSpeed 50
-      @bombRaid()
-      @attackCycle2(7)
+      @bombRaid(yes)
+      @attackCycle3(7)
     )
 
   fase4: ->
@@ -240,7 +268,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
 
   spawn: ->
     Crafty.e('LargeDrone').drone(
-      health: 134000
+      health: 264000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
       speed: 150
@@ -292,7 +320,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.EntityScript
 
   spawn: ->
     Crafty.e('LargeDrone, Horizon').drone(
-      health: 134000
+      health: 264000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
       speed: 150
@@ -317,14 +345,14 @@ class Game.Scripts.Stage1BossLeaving extends Game.EntityScript
       => @entity.eye.destroy() # TODO: This is buggy when scaling enemy
       @sendToBackground(0.9, -100)
       @parallel(
-        @moveTo(x: -.15, speed: 200)
+        @moveTo(x: -.15, speed: 400)
         @scale(0.7, duration: 3000)
       )
       => @entity.flip('X')
       @sendToBackground(0.7, -550)
       @parallel(
-        @moveTo('MiliBase', speed: 200)
-        @scale(0.3, duration: 3000)
+        @moveTo('MiliBase', speed: 150)
+        @scale(0.3, duration: 4000)
       )
     )
 
@@ -352,6 +380,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
 
   spawn: (options) ->
     location = options.location()
+    @armed = options.armed
     Crafty.e('Mine').mine(
       health: 200
       x: location.x
@@ -364,9 +393,17 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @sequence(
-      @moveTo(y: 1.2)
-    )
+    if @armed
+      @sequence(
+        @animate('blink', -1)
+        @moveTo(y: .3 + (Math.random() * .6))
+        @wait(150)
+        @onKilled()
+      )
+    else
+      @sequence(
+        @moveTo(y: 1.2)
+      )
 
   onKilled: ->
     @parallel(
@@ -374,4 +411,41 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
       @explosion(@location(), damage: 300, radius: 40)
     )
 
+
+class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
+  assets: ->
+    @loadAssets('drone')
+
+  spawn: (options) ->
+    d = Crafty.e('Drone').drone(
+      health: 200
+      x: Crafty.viewport.width + 40
+      y: Crafty.viewport.height * .1
+      speed: 500
+    )
+    if options.shootOnSight
+      d.addComponent('ShootOnSight').shootOnSight
+        cooldown: 1000
+        sightAngle: 8
+        projectile: (x, y, angle) =>
+          projectile = Crafty.e('Projectile, Color, Enemy').attr(
+            w: 6
+            h: 6
+            speed: 650
+          ).color('#FFFF00')
+          projectile.shoot(x, y, angle)
+    d
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @pickTarget('PlayerControlledShip')
+      @movePath [
+        @targetLocation()
+        [-160, .5]
+      ]
+    )
+
+  onKilled: ->
+    @explosion(@location())
 
