@@ -53,7 +53,6 @@ Crafty.c 'Enemy',
     try
       @flip('X')
       for c in @_children
-        console.log c
         relX = c.x - @x
         c.attr?(
           x: @x + @w - c.w - relX
