@@ -85,7 +85,7 @@ Crafty.c 'PlayerControlledShip',
 
   installItem: (item) ->
     if item is 'xp'
-      @primaryWeapon.addXP(100)
+      @primaryWeapon.addXP(1000)
       return true
 
     return if @hasItem item

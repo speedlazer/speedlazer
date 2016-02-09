@@ -48,7 +48,7 @@ Crafty.c 'RapidDiagonalLaser',
       when 3 then 75
 
   determineLevel: (xp) ->
-    levelBoundaries = [150, 600, 2400, 9600]
+    levelBoundaries = [1500, 6000, 24000, 96000]
     neededXP = 0
     level = 0
     for i in levelBoundaries
