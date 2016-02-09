@@ -144,7 +144,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
   fase2: ->
     # start at 345000
-    @bindSequence 'Hit', @fase3, => @entity.health < 320000
+    @bindSequence 'Hit', @fase3, => @entity.health < 330000
 
     @sequence(
       @setSpeed 50
@@ -170,12 +170,12 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     )
 
   fase3: ->
-    @bindSequence 'Hit', @fase4, => @entity.health < 275000
+    @bindSequence 'Hit', @fase4, => @entity.health < 285000
 
     @sequence(
       @setSpeed 50
       @bombRaid(yes)
-      @attackCycle3(7)
+      @attackCycle3(6)
     )
 
   fase4: ->
@@ -275,7 +275,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
     )
 
   execute: ->
-    @bindSequence 'Hit', @leaveScreen, => @entity.health < 230000
+    @bindSequence 'Hit', @leaveScreen, => @entity.health < 255000
     @inventoryAdd 'item', 'xp', ->
       Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
 
