@@ -567,6 +567,13 @@ generator.defineBlock class extends @Game.LevelScenery
         tileh: 155
         map:
           waterHorizon: [0, 0]
+      'horizon-city.png':
+        tile: 200
+        tileh: 30
+        paddingY: 1
+        map:
+          coastStart: [0, 0]
+          coast: [0, 1]
 
   generate: ->
     super
@@ -601,6 +608,13 @@ generator.defineBlock class extends @Game.LevelScenery
         paddingY: 1
         map:
           city: [0, 0]
+      'horizon-city.png':
+        tile: 200
+        tileh: 30
+        paddingY: 1
+        map:
+          coastStart: [0, 0]
+          coast: [0, 1]
 
   generate: ->
     super
@@ -639,6 +653,13 @@ generator.defineBlock class extends @Game.LevelScenery
         tileh: 155
         map:
           waterHorizon: [0, 0]
+      'horizon-city.png':
+        tile: 200
+        tileh: 30
+        paddingY: 1
+        map:
+          coastStart: [0, 0]
+          coast: [0, 1]
 
   generate: ->
     super
