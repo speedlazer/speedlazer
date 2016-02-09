@@ -6,6 +6,7 @@ Game =
       Crafty('Delay').each -> @pauseDelays()
       Crafty('Tween').each -> @pauseTweens()
       Crafty('Particles').each -> @pauseParticles()
+      Crafty('SpriteAnimation').each -> @pauseAnimation()
       Crafty('PlayerControlledShip').each ->
         unless @disableControls
           @disabledThroughPause = yes
@@ -16,6 +17,7 @@ Game =
       Crafty('Delay').each -> @resumeDelays()
       Crafty('Tween').each -> @resumeTweens()
       Crafty('Particles').each -> @resumeParticles()
+      Crafty('SpriteAnimation').each -> @resumeAnimation()
       Crafty('PlayerControlledShip').each ->
         if @disabledThroughPause
           @disabledThroughPause = null
