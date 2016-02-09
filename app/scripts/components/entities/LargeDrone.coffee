@@ -34,22 +34,23 @@ Crafty.c 'LargeDrone',
         mine.absorbDamage(300) # Mine collision on LargeDrone triggers explosion of mine
     @updatedHealth()
     @bind 'Hit', (data) =>
-      @shiftedX += 2
-      Crafty.e('LaserHit').explode(
-        x: data.projectile.x
-        y: data.projectile.y
-        radius: 4
-        duration: 50
-      ) if data.projectile.has('Bullet')
+      if data.projectile.has('Bullet')
+        @shiftedX += 2
+        Crafty.e('LaserHit').explode(
+          x: data.projectile.x
+          y: data.projectile.y
+          radius: 4
+          duration: 50
+        )
     this
 
   updatedHealth: ->
     sprite = 0
-    if @health < 325000
+    if @health < 350000
       sprite = 1
-    if @health < 285000
+    if @health < 325000
       sprite = 2
-    if @health < 245200
+    if @health < 285200
       sprite = 3
 
     @sprite(sprite, 0)
