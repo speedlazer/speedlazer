@@ -77,7 +77,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @repeat 5, @sequence(
         @pickTarget('PlayerControlledShip')
         @while(
-          @moveTo(@targetLocation(offsetY: -20), x: .85)
+          @moveTo(@targetLocation(offsetY: -20, x: .85))
           @sequence(
             @async @runScript(Game.Scripts.Stage1BossMine, @location())
             @wait 800
@@ -194,7 +194,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
   fase3: ->
     # start at 330000
-    @bindSequence 'Hit', @fase4, => @entity.health < 310000
+    @bindSequence 'Hit', @fase4, => @entity.health < 305000
 
     @sequence(
       @setSpeed 50
@@ -360,7 +360,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
 
   attackCycle: ->
     @repeat @sequence(
-      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+      @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
         options:
           location: @location()
       )
