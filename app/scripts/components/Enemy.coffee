@@ -33,9 +33,11 @@ Crafty.c 'Enemy',
         return if @invincible
         for c in e
           splosion = c.obj
-          @trigger('Hit', entity: this, projectile: splosion)
-          @attr hitFlash: { _red: 255, _green: 255, _blue: 128 }
-          @absorbDamage(splosion.damage)
+          if splosion.damage > 0
+            @trigger('Hit', entity: this, projectile: splosion)
+            @attr hitFlash: { _red: 255, _green: 255, _blue: 128 }
+            @absorbDamage(splosion.damage)
+            splosion.damage = 0
       ->
         @attr hitFlash: no
     this
