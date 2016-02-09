@@ -21,6 +21,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
 
     @sequence(
+      => @entity.invincible = yes
       @animate 'slow', -1, 'eye'
       @disableWeapons()
       @parallel(
@@ -31,6 +32,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
           @wait 500
         )
       )
+      => @entity.invincible = no
       @enableWeapons()
       @async @placeSquad(Game.Scripts.Stage1BossRocket,
         options:
@@ -71,39 +73,59 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     )
 
   attackCycle3: (speed) ->
-    @parallel(
-      @repeat @sequence(
-        @async @runScript(Game.Scripts.Stage1BossMine, @location())
-        @wait 800
-        @async @placeSquad(Game.Scripts.Stage1BossRocket,
-          options:
-            delay: 200
-            amount: 2
-            location: @location()
-            pointsOnDestroy: 0
-            pointsOnHit: 0
-        )
-        @animate 'emptyWing', 0, 'wing'
-        @animate 'reload', 0, 'wing'
-        @async @runScript(Game.Scripts.Stage1BossMine, @location())
-        @wait 800
-        @async @placeSquad(Game.Scripts.Stage1BossRocket,
-          options:
-            delay: 200
-            amount: 2
-            location: @location()
-            pointsOnDestroy: 0
-            pointsOnHit: 0
-        )
-        @animate 'emptyWing', 0, 'wing'
-        @wait 800
-        @animate 'reload', 0, 'wing'
-      )
-      @repeat @sequence(
+    @repeat @sequence(
+      @repeat 5, @sequence(
         @pickTarget('PlayerControlledShip')
-        @moveTo(@targetLocation(offsetY: -20), x: .85)
+        @while(
+          @moveTo(@targetLocation(offsetY: -20), x: .85)
+          @sequence(
+            @async @runScript(Game.Scripts.Stage1BossMine, @location())
+            @wait 800
+            @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
+              options:
+                location: @location()
+                pointsOnDestroy: 0
+                pointsOnHit: 0
+            )
+            @animate 'emptyWing', 0, 'wing'
+            @animate 'reload', 0, 'wing'
+            @async @runScript(Game.Scripts.Stage1BossMine, @location())
+            @wait 800
+            @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
+              options:
+                location: @location()
+                pointsOnDestroy: 0
+                pointsOnHit: 0
+            )
+            @animate 'emptyWing', 0, 'wing'
+            @wait 800
+            @animate 'reload', 0, 'wing'
+          )
+        )
         @wait(1000)
       )
+      @rocketRaid()
+    )
+
+  rocketRaid: ->
+    @sequence(
+      => @entity.invincible = yes
+      @moveTo(y: .1)
+      @repeat 10, @sequence(
+        @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
+          options:
+            location: @location()
+            pointsOnDestroy: 0
+            pointsOnHit: 0
+        )
+        @animate 'emptyWing', 0, 'wing'
+        @animate 'reload', 0, 'wing'
+        @wait 300
+      )
+
+      @pickTarget('PlayerControlledShip')
+      @moveTo(@targetLocation(offsetY: -20), x: .85)
+      => @entity.invincible = no
     )
 
   bombRaid: (armed = no) ->
@@ -263,6 +285,42 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
       @explosion(@location(), damage: 200, radius: 40)
     )
 
+class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
+  spawn: (options) ->
+    options = _.defaults(options,
+      pointsOHit: 125
+      pointsOnDestroy: 50
+    )
+    return null unless options.location?
+
+    location = options.location?()
+    return null unless location
+
+    Crafty.e('Rocket').rocket(
+      health: 250
+      x: location.x - 30
+      y: location.y - 8 + Math.round(Math.random() * 15)
+      z: 0
+      speed: 600
+      pointsOnHit: options.pointsOnHit
+      pointsOnDestroy: options.pointsOnDestroy
+    )
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @pickTarget('PlayerControlledShip')
+      @movePath [
+        @targetLocation()
+        [-160, .5]
+      ]
+    )
+
+  onKilled: ->
+    @parallel(
+      @screenShake(10, duration: 200)
+      @explosion(@location(), damage: 200, radius: 40)
+    )
 
 class Game.Scripts.Stage1BossPopup extends Game.EntityScript
   assets: ->
