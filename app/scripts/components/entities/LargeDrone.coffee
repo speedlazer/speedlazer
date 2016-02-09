@@ -39,6 +39,7 @@ Crafty.c 'LargeDrone',
         Crafty.e('LaserHit').explode(
           x: data.projectile.x
           y: data.projectile.y
+          z: @z + 2
           radius: 4
           duration: 50
         )
@@ -50,8 +51,7 @@ Crafty.c 'LargeDrone',
       sprite = 1
     if @health < 325000
       sprite = 2
-    if @health < 285200
+    if @health < 315000
       sprite = 3
-
     @sprite(sprite, 0)
 

@@ -77,6 +77,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
         @wait 800
         @async @placeSquad(Game.Scripts.Stage1BossRocket,
           options:
+            delay: 200
+            amount: 2
             location: @location()
             pointsOnDestroy: 0
             pointsOnHit: 0
@@ -87,6 +89,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
         @wait 800
         @async @placeSquad(Game.Scripts.Stage1BossRocket,
           options:
+            delay: 200
+            amount: 2
             location: @location()
             pointsOnDestroy: 0
             pointsOnHit: 0
@@ -100,14 +104,6 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
         @moveTo(@targetLocation(offsetY: -20), x: .85)
         @wait(1000)
       )
-    )
-
-  droneRaid: ->
-    @async @placeSquad(Game.Scripts.Stage1BossDroneRaid,
-      amount: 8
-      delay: 300
-      options:
-        shootOnSight: yes
     )
 
   bombRaid: (armed = no) ->
@@ -127,7 +123,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       )
       => @entity.flipX()
       @while(
-        @moveTo(x: 1.2, speed: 200)
+        @moveTo(x: 1.0, speed: 200)
         @sequence(
           @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
             options:
@@ -137,6 +133,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
           @wait 500
         )
       )
+      @moveTo(x: 1.2, speed: 200)
       => @entity.unflipX()
       @moveTo(x: .85, y: .41, speed: 200)
       => @entity.invincible = no
@@ -151,10 +148,14 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @bombRaid(yes)
       @repeat @sequence(
         @repeat 3, @attackCycle(7)
-        @parallel(
-          @laugh()
-          @droneRaid()
+        @laugh()
+        @async @placeSquad(Game.Scripts.Stage1BossDroneRaid,
+          amount: 4
+          delay: 300
+          options:
+            shootOnSight: yes
         )
+        @laugh()
       )
     )
 
@@ -170,7 +171,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     )
 
   fase3: ->
-    @bindSequence 'Hit', @fase4, => @entity.health < 285000
+    # start at 330000
+    @bindSequence 'Hit', @fase4, => @entity.health < 310000
 
     @sequence(
       @setSpeed 50
@@ -336,7 +338,19 @@ class Game.Scripts.Stage1BossLeaving extends Game.EntityScript
       @pickTarget('PlayerControlledShip')
       @moveTo(@targetLocation(), x: .845, speed: 200)
       @attackCycle()
+      @laugh()
       @leaveScreen()
+    )
+
+  laugh: ->
+    @sequence(
+      => @entity.invincible = yes
+      @repeat 5, @sequence(
+        @rotate(10, 200)
+        @rotate(-10, 200)
+      )
+      @rotate(0, 200)
+      => @entity.invincible = no
     )
 
   leaveScreen: ->
