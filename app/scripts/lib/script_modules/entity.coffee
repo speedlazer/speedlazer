@@ -128,13 +128,14 @@ Game.ScriptModule.Entity =
         if res = p?()
           x = res.x
           y = res.y
+          console.log x, y
         else
           [x, y] = p
 
-        if @_isFloat(x) or (-1 < x < 2)
+        if (-1 < x < 2)
           x *= Crafty.viewport.width
 
-        if @_isFloat(y) or (-1 < y < 2)
+        if (-1 < y < 2)
           y *= Crafty.viewport.height
 
         pn = [x, y]
