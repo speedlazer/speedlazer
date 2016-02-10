@@ -6,7 +6,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     namespace: 'City'
     armedPlayers: 'lasers'
     speed: 50
-    title: 'Hacked'
+    title: ''
 
   assets: ->
     @loadAssets('shadow', 'explosion')
@@ -113,7 +113,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   introText: ->
     @sequence(
       @setScenery('Intro')
-      @chapterTitle('Hacked')
       @sunRise()
       @cameraCrew()
       @async @runScript Game.Scripts.IntroBarrel
@@ -172,15 +171,14 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     )
 
   droneTakeover: ->
-    @parallel(
+    @sequence(
       @placeSquad Game.Scripts.CrewShooters,
         amount: 4
         delay: 750
         drop: 'xp'
-      @sequence(
-        @say('General', 'What the hell is happening with our drones?')
-        @say('General', 'They do not respond to our commands anymore!\nThe defence AI has been compromised!')
-      )
+      @say('General', 'What the hell is happening with our drones?')
+      @say('General', 'They do not respond to our commands anymore!\nThe defence AI has been hacked!')
+      @chapterTitle('Hacked')
     )
 
   cameraCrew: ->
