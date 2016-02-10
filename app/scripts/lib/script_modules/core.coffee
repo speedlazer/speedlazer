@@ -142,7 +142,7 @@ Game.ScriptModule.Core =
         ->
           d.resolve()
           @destroy()
-        amount
+        amount?() ? amount
       )
       d.promise
 

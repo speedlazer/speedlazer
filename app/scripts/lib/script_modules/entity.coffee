@@ -195,9 +195,9 @@ Game.ScriptModule.Entity =
       seaLevel = @_getSeaLevel()
 
       if @enemy.moveState is 'air'
-        if settings.y? and settings.y > seaLevel + Crafty.viewport.y
+        if settings.y? and settings.y + @entity.h > seaLevel + Crafty.viewport.y
           airSettings = _.clone settings
-          airSettings.y = seaLevel
+          airSettings.y = seaLevel - @entity.h
           return @_moveAir(airSettings)
             .then =>
               @enemy.moveState = 'water'
@@ -209,9 +209,9 @@ Game.ScriptModule.Entity =
           return @_moveAir(settings)
 
       if @enemy.moveState is 'water'
-        if settings.y? and settings.y < seaLevel + Crafty.viewport.y
+        if settings.y? and settings.y + @entity.h < seaLevel + Crafty.viewport.y
           waterSettings = _.clone settings
-          waterSettings.y = seaLevel
+          waterSettings.y = seaLevel - @entity.h
           return @_moveWater(waterSettings)
             .then =>
               @enemy.moveState = 'air'
@@ -229,7 +229,7 @@ Game.ScriptModule.Entity =
         .attr(
           w: @entity.w + 10
           x: @entity.x - 5
-          y: @entity.y
+          y: @entity.y + @entity.h
           h: 20
           alpha: 0.7
           z: @entity.z - 1
@@ -239,7 +239,7 @@ Game.ScriptModule.Entity =
         .attr(
           w: @entity.w + 10
           x: @entity.x - 5
-          y: @entity.y
+          y: @entity.y + @entity.h
           h: 20
           z: @entity.z - 1
         )
