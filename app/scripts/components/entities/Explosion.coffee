@@ -84,14 +84,6 @@ Crafty.c 'Blast',
     radius = attr.radius ? 20
     duration = (attr.duration ? 160) / 1000
     eachFrame = attr.eachFrame
-    if eachFrame
-      for key, value of attr.eachFrame
-        if _.isArray value
-          attr[key] = value[0] if value[0]?
-        else
-          max = Infinity
-          max = -Infinity if value < 0
-          eachFrame[key] = [undefined, value, max]
 
     @attr attr
 
@@ -129,9 +121,8 @@ Crafty.c 'Blast',
     ]
     if eachFrame
       @bind 'GameLoop', =>
-        for key, value of eachFrame
-          if (value[1] > 0 and this[key] < value[2]) or (value[1] < 0 and this[key] > value[2])
-            this[key] += value[1]
+        for key, f of eachFrame
+          this[key] = f(this[key])
 
     @bind 'AnimationEnd', =>
       @destroy()
