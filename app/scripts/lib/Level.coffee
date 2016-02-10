@@ -302,8 +302,8 @@ class Game.Level
   updateTitle: (newTitle) ->
     Crafty('LevelTitle').text newTitle
 
-  showTitle: (newTitle) ->
-    Crafty.e('StageTitle').stageTitle(newTitle)
+  showChapterTitle: (number, newTitle) ->
+    Crafty.e('StageTitle').stageTitle(number, newTitle)
 
   loadAssets: (names) ->
     @generator.loadAssets names

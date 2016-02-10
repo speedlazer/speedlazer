@@ -178,7 +178,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         drop: 'xp'
       @say('General', 'What the hell is happening with our drones?')
       @say('General', 'They do not respond to our commands anymore!\nThe defence AI has been hacked!')
-      @chapterTitle('Hacked')
+      @chapterTitle(1, 'Hacked')
     )
 
   cameraCrew: ->
