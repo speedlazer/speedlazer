@@ -270,6 +270,7 @@ Game.ScriptModule.Level =
         duration: options.duration
         lightness: options.lightness
         alpha: options.alpha
+        eachFrame: options.eachFrame
       )
       if options.damage
         e.addComponent('Enemy')

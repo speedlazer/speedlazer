@@ -77,9 +77,22 @@ Crafty.c 'Blast',
   init: ->
     @requires '2D, WebGL, explosionStart, SpriteAnimation, Horizon, Collision'
 
+  remove: ->
+    @unbind 'GameLoop'
+
   explode: (attr) ->
     radius = attr.radius ? 20
     duration = (attr.duration ? 160) / 1000
+    eachFrame = attr.eachFrame
+    if eachFrame
+      for key, value of attr.eachFrame
+        if _.isArray value
+          attr[key] = value[0] if value[0]?
+        else
+          max = Infinity
+          max = -Infinity if value < 0
+          eachFrame[key] = [undefined, value, max]
+
     @attr attr
 
     @attr w: attr.radius * 4, h: attr.radius * 4
@@ -114,6 +127,12 @@ Crafty.c 'Blast',
       [0, 3]
       [1, 3]
     ]
+    if eachFrame
+      @bind 'GameLoop', =>
+        for key, value of eachFrame
+          if (value[1] > 0 and this[key] < value[2]) or (value[1] < 0 and this[key] > value[2])
+            this[key] += value[1]
+
     @bind 'AnimationEnd', =>
       @destroy()
     @animate 'explode'

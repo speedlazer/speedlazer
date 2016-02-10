@@ -282,10 +282,13 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
       @sequence(
         @explosion(@location(),
           radius: 5
-          duration: 280
+          duration: 180
           z: 1
-          lightness: .2
-          alpha: .5
+          eachFrame:
+            rotation: 1
+            alpha: [.8, -.01, 0]
+            lightness: [1.0, -.05, .2]
+            y: -0.5
         )
         @wait 20
       )
@@ -330,10 +333,13 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
         @sequence(
           @explosion(@location(),
             radius: 5
-            duration: 280
+            duration: 180
             z: 1
-            lightness: .2
-            alpha: .5
+            eachFrame:
+              rotation: 1
+              alpha: [.8, -.02, 0]
+              lightness: [1.0, -.05, .2]
+              y: -1
           )
           @wait 20
         )
