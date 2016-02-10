@@ -277,7 +277,19 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @moveTo(x: -205)
+    @while(
+      @moveTo(x: -205)
+      @sequence(
+        @explosion(@location(),
+          radius: 5
+          duration: 280
+          z: 1
+          lightness: .2
+          alpha: .5
+        )
+        @wait 20
+      )
+    )
 
   onKilled: ->
     @parallel(
@@ -310,10 +322,22 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @pickTarget('PlayerControlledShip')
-      @movePath [
-        @targetLocation()
-        [-160, .5]
-      ]
+      @while(
+        @movePath [
+          @targetLocation()
+          [-160, .5]
+        ]
+        @sequence(
+          @explosion(@location(),
+            radius: 5
+            duration: 280
+            z: 1
+            lightness: .2
+            alpha: .5
+          )
+          @wait 20
+        )
+      )
     )
 
   onKilled: ->

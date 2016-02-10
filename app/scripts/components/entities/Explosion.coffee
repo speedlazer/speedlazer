@@ -117,7 +117,6 @@ Crafty.c 'Explosion',
     @bind 'AnimationEnd', =>
       @destroy()
     @animate 'explode'
-
     this
 
 Crafty.c 'LaserHit',
@@ -164,6 +163,5 @@ Crafty.c 'LaserHit',
     @bind 'AnimationEnd', =>
       @destroy()
     @animate 'explode'
-
     this
 

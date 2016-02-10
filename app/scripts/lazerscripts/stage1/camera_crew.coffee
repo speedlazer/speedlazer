@@ -49,6 +49,15 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
             z: -199
             topDesaturation: 0.3
             bottomDesaturation: 0.3
+            lightness: .2
+            alpha: .5
+          )
+          @explosion(@location(offsetX: 10, offsetY: 5),
+            radius: 5,
+            duration: 180,
+            z: -199
+            topDesaturation: 0.3
+            bottomDesaturation: 0.3
           )
           @wait 100
         )

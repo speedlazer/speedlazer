@@ -255,6 +255,8 @@ Game.ScriptModule.Level =
         z: 5
         topDesaturation: 0
         bottomDesaturation: 0
+        lightness: 1.0
+        alpha: 1.0
       )
 
       e = Crafty.e('Explosion').explode(
@@ -266,6 +268,8 @@ Game.ScriptModule.Level =
         radius: options.radius
         damage: options.damage
         duration: options.duration
+        lightness: options.lightness
+        alpha: options.alpha
       )
       if options.damage
         e.addComponent('Enemy')
