@@ -36,7 +36,7 @@ Crafty.c 'LargeDrone',
     @bind 'Hit', (data) =>
       if data.projectile.has('Bullet')
         @shiftedX += 2
-        Crafty.e('LaserHit').explode(
+        Crafty.e('Blast, LaserHit').explode(
           x: data.projectile.x
           y: data.projectile.y
           z: @z + 2

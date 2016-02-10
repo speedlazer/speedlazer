@@ -259,7 +259,7 @@ Game.ScriptModule.Level =
         alpha: 1.0
       )
 
-      e = Crafty.e('Explosion').explode(
+      e = Crafty.e('Blast, Explosion').explode(
         x: x
         y: y
         z: options.z

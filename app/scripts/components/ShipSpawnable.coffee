@@ -53,7 +53,7 @@ Crafty.c 'ShipSpawnable',
     # reposition it before
     @ship.start()
     @listenTo @ship, 'Hit', ->
-      Crafty.e('Explosion').explode(
+      Crafty.e('Blast, Explosion').explode(
         x: @ship.x + (@ship.w / 2)
         y: @ship.y + (@ship.h / 2)
         radius: @ship.w

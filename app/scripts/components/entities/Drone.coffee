@@ -12,7 +12,7 @@ Crafty.c 'Drone',
     @enemy()
     @bind 'Hit', (data) =>
       @shiftedX += 10
-      Crafty.e('LaserHit').explode(
+      Crafty.e('Blast, LaserHit').explode(
         x: data.projectile.x
         y: data.projectile.y
         radius: 4
