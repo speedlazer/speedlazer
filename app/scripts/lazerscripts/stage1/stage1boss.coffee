@@ -27,8 +27,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @parallel(
         @moveTo(x: .85, y: .41)
         @sequence(
-          @say('Large Drone', 'We have control now! You will suffer!')
-          @say('Large Drone', 'Earths defences are in our hands!')
+          @say('Drone Commander', 'We have control now! You will suffer!')
+          @say('Drone Commander', 'Earths defences are in our hands!')
           @wait 500
         )
       )
@@ -206,10 +206,54 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     @sequence(
       @drop(location: @location(), item: 'diagonals')
       @while(
-        @moveTo(x: 1.15, y: .21, speed: 50)
+        @moveTo(x: .6, y: .91, speed: 150)
         @sequence(
           @explosion(@location())
           @wait 700
+        )
+      )
+      @moveTo(y: 1.0, speed: 100)
+      @moveTo(y: .7, speed: 150)
+      @sendToBackground(0.9, -100)
+      @parallel(
+        @while(
+          @moveTo(x: -.15, speed: 300)
+          @sequence(
+            @explosion(@location(),
+              radius: 10
+              duration: 480
+              z: -100
+              alpha: .8
+              eachFrame:
+                rotation: (r) -> r + 1
+                alpha: (a) -> Math.max(0, a - .003)
+                lightness: (l) -> Math.max(.2, l - .05)
+                y: (y) -> y - (Math.random() * 2)
+            )
+            @wait -> 40 + (Math.random() * 50)
+          )
+        )
+
+        @scale(0.8, duration: 3000)
+      )
+      => @entity.flip('X')
+      @sendToBackground(0.7, -150)
+      @while(
+        @moveTo(x: 1.1, speed: 200)
+        @sequence(
+          @explosion(@location(),
+            radius: 10
+            duration: 480
+            z: -150
+            alpha: .8
+            lightness: 1.0
+            eachFrame:
+              rotation: (r) -> r + 1
+              alpha: (a) -> Math.max(0, a - .003)
+              lightness: (l) -> Math.max(.2, l - .05)
+              y: (y) -> y - (Math.random() * 2)
+          )
+          @wait -> 40 + (Math.random() * 50)
         )
       )
     )
@@ -284,11 +328,13 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
           radius: 5
           duration: 180
           z: 1
+          alpha: .8
+          lightness: 1.0
           eachFrame:
-            rotation: 1
-            alpha: [.8, -.01, 0]
-            lightness: [1.0, -.05, .2]
-            y: -0.5
+            rotation: (r) -> r + 1
+            alpha: (a) -> Math.max(0, a - .01)
+            lightness: (l) -> Math.max(.2, l - .05)
+            y: (y) -> y - .2 - (Math.random() * .7)
         )
         @wait 20
       )
@@ -336,10 +382,10 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
             duration: 180
             z: 1
             eachFrame:
-              rotation: 1
-              alpha: [.8, -.02, 0]
-              lightness: [1.0, -.05, .2]
-              y: -1
+              rotation: (r) -> r + 1
+              alpha: (a) -> Math.max(0, a - .01)
+              lightness: (l) -> Math.max(.2, l - .05)
+              y: (y) -> y - 0.5
           )
           @wait 20
         )
