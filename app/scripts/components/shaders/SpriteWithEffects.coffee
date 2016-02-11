@@ -4,11 +4,11 @@ SPRITE_EFFECT_VERTEX_SHADER = """
   attribute vec2 aLayer;
   attribute vec2 aTextureCoord;
   attribute vec4 aColor;
-  attribute vec3 aGradient;
+  attribute vec4 aGradient;
 
   varying mediump vec3 vTextureCoord;
   varying lowp vec4 vColor;
-  varying lowp vec3 vGradient;
+  varying lowp vec4 vGradient;
 
   uniform vec4 uViewport;
   uniform mediump vec2 uTextureDimensions;
@@ -33,7 +33,7 @@ SPRITE_EFFECT_FRAGMENT_SHADER = """
   precision mediump float;
   varying mediump vec3 vTextureCoord;
   varying mediump vec4 vColor;
-  varying mediump vec3 vGradient;
+  varying mediump vec4 vGradient;
 
   uniform sampler2D uSampler;
   uniform mediump vec2 uTextureDimensions;
@@ -46,6 +46,11 @@ SPRITE_EFFECT_FRAGMENT_SHADER = """
   void main() {
     highp vec2 coord =   vTextureCoord.xy / uTextureDimensions;
     float blur = vGradient.z;
+
+    if (vTextureCoord.y >= vGradient.a) {
+      gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+      return;
+    }
 
     mediump vec4 texelColor = texture2D(uSampler, coord);
 
@@ -97,7 +102,7 @@ SPRITE_EFFECT_ATTRIBUTE_LIST = [
   { name: "aLayer",        width: 2 }
   { name: "aTextureCoord", width: 2 }
   { name: "aColor",        width: 4 }
-  { name: "aGradient",     width: 3 }
+  { name: "aGradient",     width: 4 }
 ]
 
 Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
@@ -134,11 +139,16 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
       color._blue/255,
       lightness
     )
+    if ent.hideAt
+      hideAt = co.y + ((ent.hideAt - ent.y) / ent.h) * co.h
+    else
+      hideAt = co.y + co.h + 1
 
     e.program.writeVector("aGradient",
       topSaturation
       bottomSaturation
       blur
+      hideAt
     )
 )
 

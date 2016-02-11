@@ -17,5 +17,6 @@ class Game.Scripts.Test extends Game.LazerScript
       @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 4)
       @setSpeed 100
       @wait 1000
+      #@placeSquad Game.Scripts.Stalker
       @placeSquad Game.Scripts.Stage1BossStage1
     )

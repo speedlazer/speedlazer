@@ -12,12 +12,17 @@ Crafty.c 'Hideable',
       z: z
     @hidden = yes
 
-  hide: (@hideMarker) ->
+  hide: (@hideMarker, options) ->
     @hidden = yes
-    @attr alpha: 0.0
 
-    for c in @_children
-      c.attr?(alpha: 0.0)
+    if options.below
+      @hideAt = options.below
+      for c in @_children
+        c.attr?(hideAt: options.below)
+    else
+      @attr alpha: .0
+      for c in @_children
+        c.attr?(alpha: .0)
 
   reveal: ->
     @hideMarker?.destroy()

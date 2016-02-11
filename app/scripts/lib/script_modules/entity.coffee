@@ -203,7 +203,7 @@ Game.ScriptModule.Entity =
               @enemy.moveState = 'water'
               if @enemy.alive
                 @_setupWaterSpot()
-                @_waterSplash()
+                #@_waterSplash()
                 @_moveWater(settings)
         else
           return @_moveAir(settings)
@@ -217,7 +217,7 @@ Game.ScriptModule.Entity =
               @enemy.moveState = 'air'
               if @enemy.alive
                 @_removeWaterSpot()
-                @_waterSplash()
+                #@_waterSplash()
                 @_moveAir(settings)
         else
           return @_moveWater(settings)
@@ -239,14 +239,14 @@ Game.ScriptModule.Entity =
         .attr(
           w: @entity.w + 10
           x: @entity.x - 5
-          y: @entity.y + @entity.h
+          y: @_getSeaLevel() - 10
           h: 20
           z: @entity.z - 1
         )
 
     if @entity.has('ViewportFixed')
       waterSpot.addComponent('ViewportFixed')
-    @entity.hide(waterSpot)
+    @entity.hide(waterSpot, below: @_getSeaLevel())
 
   _removeWaterSpot: ->
     @entity.reveal()
@@ -275,14 +275,12 @@ Game.ScriptModule.Entity =
     surfaceSize =
       w: @entity.w + 10
       #x: @entity.x - 5
-      y: seaLevel
       h: 20
-      alpha: 0.7
+      alpha: 1.0
     maxSupportedDepth = 700
     maxDepthSize =
       w: @entity.w * .3
       #x: @entity.x + (@entity.w * .3)
-      y: @entity.hideMarker.y + 15
       h: 5
       alpha: 0.2
 
@@ -303,10 +301,10 @@ Game.ScriptModule.Entity =
       @entity.hideMarker.tween depthProperties, duration
 
     defer = WhenJS.defer()
-    @entity.attr(
-      x: settings.x - Crafty.viewport.x
-      y: settings.y - Crafty.viewport.y
-    )
+    #@entity.attr(
+      #x: settings.x - Crafty.viewport.x
+      #y: settings.y - Crafty.viewport.y
+    #)
 
     type = if @entity.has('ViewportFixed')
       'viewport'
@@ -323,10 +321,10 @@ Game.ScriptModule.Entity =
     ]).one('ChoreographyEnd', ->
       defer.resolve()
     )
-    defer.promise
+    WhenJS.all([defer.promise, @_moveAir(settings)])
 
   _getSeaLevel: ->
-    (Crafty.viewport.height - 260) + (220 * (@entity.scale ? 1.0)) + (@level.sealevelOffset ? 0)
+    (Crafty.viewport.height - 255) + (220 * (@entity.scale ? 1.0)) + (@level.sealevelOffset ? 0)
 
   _moveAir: (settings) ->
     defaults =

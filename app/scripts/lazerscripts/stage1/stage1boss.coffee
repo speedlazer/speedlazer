@@ -18,8 +18,19 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
     @inventoryAdd 'item', 'diagonals', ->
       Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
-    return @fase4()
     @bindSequence 'Hit', @fase2, => @entity.health < 345000
+
+    return @sequence(
+      @moveTo(x: .8, y: .85)
+      @wait 10000
+      @moveTo(x: .7, y: .90)
+      @wait 10000
+      @moveTo(x: .5, y: .90)
+      @wait 10000
+      @moveTo(x: .7, y: .7)
+
+      @wait 100000
+    )
 
     @sequence(
       => @entity.invincible = yes
