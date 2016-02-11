@@ -209,7 +209,23 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
         @moveTo(x: .6, y: .91, speed: 150)
         @sequence(
           @explosion(@location())
-          @wait 700
+          @while(
+            @wait 700
+            @sequence(
+              @explosion(@location(),
+                radius: 10
+                duration: 480
+                z: -100
+                alpha: .8
+                ->
+                  rotation: @rotation + 1
+                  alpha: Math.max(0, @alpha - .003)
+                  lightness: -> Math.max(.2, @lightness - .05)
+                  y: @y - (Math.random() * 2)
+              )
+              @wait -> 40 + (Math.random() * 50)
+            )
+          )
         )
       )
       @moveTo(y: 1.0, speed: 100)
@@ -223,14 +239,14 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
               radius: 10
               duration: 480
               z: -100
-              alpha: .8
-              eachFrame:
-                rotation: (r) -> r + 1
-                alpha: (a) -> Math.max(0, a - .003)
-                lightness: (l) -> Math.max(.2, l - .05)
-                y: (y) -> y - (Math.random() * 2)
+              alpha: .6
+              ->
+                rotation: @rotation + 1
+                alpha: Math.max(0, @alpha - .003)
+                lightness: -> Math.max(.2, @lightness - .05)
+                y: @y - (Math.random() * 2)
             )
-            @wait -> 40 + (Math.random() * 50)
+            @wait -> 80 + (Math.random() * 50)
           )
         )
 
@@ -245,15 +261,15 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
             radius: 10
             duration: 480
             z: -150
-            alpha: .8
+            alpha: .4
             lightness: 1.0
-            eachFrame:
-              rotation: (r) -> r + 1
-              alpha: (a) -> Math.max(0, a - .003)
-              lightness: (l) -> Math.max(.2, l - .05)
-              y: (y) -> y - (Math.random() * 2)
+            ->
+              rotation: @rotation + 1
+              alpha: Math.max(0, @alpha - .003)
+              lightness: Math.max(.2, @lightness - .05)
+              y: @y - (Math.random() * 2)
           )
-          @wait -> 40 + (Math.random() * 50)
+          @wait -> 140 + (Math.random() * 50)
         )
       )
     )
@@ -325,16 +341,20 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
       @moveTo(x: -205)
       @sequence(
         @explosion(@location(),
-          radius: 5
-          duration: 180
-          z: 1
-          alpha: .8
-          lightness: 1.0
-          eachFrame:
-            rotation: (r) -> r + 1
-            alpha: (a) -> Math.max(0, a - .01)
-            lightness: (l) -> Math.max(.2, l - .05)
-            y: (y) -> y - .2 - (Math.random() * .7)
+          ->
+            radius: 5
+            duration: 180
+            z: 1
+            alpha: .8
+            lightness: 1.0
+            gravity: (Math.random() * .2)
+            vertical: 0
+          ->
+            vertical: @vertical + Math.random() * @gravity
+            rotation: @rotation + (Math.random() * 3)
+            alpha: Math.max(0.1, (@alpha - Math.random() * .03))
+            lightness: Math.max(.4, @lightness - .05)
+            y: @y - @vertical
         )
         @wait 20
       )
@@ -378,14 +398,20 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
         ]
         @sequence(
           @explosion(@location(),
-            radius: 5
-            duration: 180
-            z: 1
-            eachFrame:
-              rotation: (r) -> r + 1
-              alpha: (a) -> Math.max(0, a - .01)
-              lightness: (l) -> Math.max(.2, l - .05)
-              y: (y) -> y - 0.5
+            ->
+              radius: 5
+              duration: 180
+              z: 1
+              alpha: .8
+              lightness: 1.0
+              gravity: (Math.random() * .2)
+              vertical: 0
+            ->
+              vertical: @vertical + Math.random() * @gravity
+              rotation: @rotation + (Math.random() * 3)
+              alpha: Math.max(0.1, (@alpha - Math.random() * .03))
+              lightness: Math.max(.4, @lightness - .05)
+              y: @y - @vertical
           )
           @wait 20
         )
