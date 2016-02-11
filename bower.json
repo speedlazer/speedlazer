@@ -1,9 +1,9 @@
 {
-  "name": "game play",
+  "name": "SpeedLazer",
   "version": "0.0.0",
   "appPath": "app",
   "dependencies": {
-    "crafty": "matthijsgroen/Crafty#test-shader-rendering",
+    "crafty": "craftyjs/Crafty-Distro#nightlies",
     "crafty-gamepad": "svenjacobs/crafty-gamepad",
     "jquery": "~1.7.2",
     "jsbezier": "*",
