@@ -47,15 +47,19 @@ Crafty.c 'WaterSplashes',
   init: ->
     @bind 'GameLoop', @_waterSplashes
     @cooldown = 0
+    @detectionOffset = 0
+    @minOffset = -10
 
   remove: ->
     @unbind 'GameLoop', @_waterSplashes
 
   setSealevel: (@sealevel) ->
 
+  setDetectionOffset: (@detectionOffset, @minOffset = -10) ->
+
   _waterSplashes: (fd) ->
     @cooldown -= fd.dt
-    if (@y + @h > @sealevel) and (@y < @sealevel) and (@cooldown <= 0)
+    if (@y + @h + @detectionOffset > @sealevel) and (@y < @sealevel) and (@cooldown <= 0)
       @cooldown = 70
       upwards = 1
       if @_lastWaterY isnt @y
@@ -74,7 +78,7 @@ Crafty.c 'WaterSplashes',
             .explode(
               upwards: if r % 2 is 0 then upwards else 0
               x: @x + (i * coverage) + (pos * coverage)
-              y: @sealevel - 10
+              y: @sealevel + @minOffset
               z: @z + 3
               duration: 210 + (Math.random() * 100)
               radius: 5
