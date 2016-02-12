@@ -59,7 +59,7 @@ Crafty.c 'WaterSplashes',
       @cooldown = 70
       upwards = 1
       if @_lastWaterY isnt @y
-        upwards = (@speed - 40) / 20
+        upwards = (@speed - 20) / 30
 
       coverage = 45
       parts = (@w / coverage)
@@ -76,8 +76,10 @@ Crafty.c 'WaterSplashes',
               x: @x + (i * coverage) + (pos * coverage)
               y: @sealevel - 10
               z: @z + 3
-              duration: 260 + (Math.random() * 200)
+              duration: 210 + (Math.random() * 100)
               radius: 5
+              topDesaturation: @topDesaturation
+              bottomDesaturation: @bottomDesaturation
               alpha: .6
               gravity: 0.2
               ->
