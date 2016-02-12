@@ -383,7 +383,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
       x: location.x - 30
       y: location.y - 8 + Math.round(Math.random() * 15)
       z: 0
-      speed: 600
+      speed: 500
       pointsOnHit: options.pointsOnHit
       pointsOnDestroy: options.pointsOnDestroy
     )

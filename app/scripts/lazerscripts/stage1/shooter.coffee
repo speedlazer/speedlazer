@@ -13,7 +13,7 @@ class Game.Scripts.Shooter extends Game.EntityScript
     )
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 1000
+        cooldown: 2000
         sightAngle: 8
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Projectile, Color, Enemy').attr(
