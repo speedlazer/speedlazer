@@ -23,20 +23,18 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
     return @sequence(
       @moveTo(x: .8, y: .85)
-      @wait 2000
+      @wait 1000
       @moveTo(x: .7, y: .90)
-      @wait 2000
+      @wait 1000
       @moveTo(x: .5, y: .90)
-      @wait 2000
+      @wait 1000
       @moveTo(x: .5, y: 1.0)
-      @wait 2000
+      @wait 1000
       @moveTo(x: .5, y: 1.1)
-      @wait 2000
+      @wait 1000
       @moveTo(x: .5, y: 1.2)
-      @wait 2000
-      @moveTo(x: .8, y: 1.2)
-      @wait 2000
-      @moveTo(x: .8, y: .5)
+      @moveTo(x: .8, y: 1.2, speed: 200)
+      @moveTo(x: .8, y: .5, speed: 400)
 
       @wait 100000
     )

@@ -244,12 +244,16 @@ Game.ScriptModule.Entity =
           z: @entity.z - 1
         )
 
+    @entity.addComponent('WaterSplashes')
+    @entity.setSealevel(@_getSeaLevel())
+
     if @entity.has('ViewportFixed')
       waterSpot.addComponent('ViewportFixed')
     @entity.hide(waterSpot, below: @_getSeaLevel())
 
   _removeWaterSpot: ->
     @entity.reveal()
+    @entity.removeComponent('WaterSplashes')
 
   _waterSplash: ->
     defer = WhenJS.defer()
