@@ -279,8 +279,8 @@ Game.ScriptModule.Entity =
     surfaceSize =
       w: @entity.w * 1.2
       #x: @entity.x - 5
-      h: (@entity.w / 4)
-      alpha: 1.0
+      h: (@entity.w / 3)
+      alpha: 0.6
     maxSupportedDepth = 700
     maxDepthSize =
       w: @entity.w * .3

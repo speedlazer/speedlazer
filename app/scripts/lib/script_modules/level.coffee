@@ -284,9 +284,9 @@ Game.ScriptModule.Level =
   chapterTitle: (number, text) ->
     (sequence) =>
       @_verify(sequence)
+      @level.updateTitle("#{number}: #{text}")
       return WhenJS() if @_skippingToCheckpoint()
       @level.showChapterTitle(number, text)
-      @level.updateTitle("#{number}: #{text}")
 
   pickTarget: (selection) ->
     (sequence) =>

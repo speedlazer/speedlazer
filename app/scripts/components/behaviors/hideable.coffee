@@ -59,9 +59,9 @@ Crafty.c 'WaterSplashes',
       @cooldown = 70
       upwards = 1
       if @_lastWaterY isnt @y
-        upwards = @speed / 15
+        upwards = (@speed - 40) / 20
 
-      coverage = 30
+      coverage = 45
       parts = (@w / coverage)
       r = 0
       for i in [0...parts]

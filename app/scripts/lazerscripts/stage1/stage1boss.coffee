@@ -9,8 +9,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     Crafty.e('LargeDrone').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
-      #speed: 100
-      speed: 50
+      speed: 100
+      #speed: 50
       pointsOnHit: 10
     )
 
@@ -20,24 +20,6 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     @inventoryAdd 'item', 'diagonals', ->
       Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
     @bindSequence 'Hit', @fase2, => @entity.health < 345000
-
-    return @sequence(
-      @moveTo(x: .8, y: .85)
-      @wait 1000
-      @moveTo(x: .7, y: .90)
-      @wait 1000
-      @moveTo(x: .5, y: .90)
-      @wait 1000
-      @moveTo(x: .5, y: 1.0)
-      @wait 1000
-      @moveTo(x: .5, y: 1.1)
-      @wait 1000
-      @moveTo(x: .5, y: 1.2)
-      @moveTo(x: .8, y: 1.2, speed: 200)
-      @moveTo(x: .8, y: .5, speed: 400)
-
-      @wait 100000
-    )
 
     @sequence(
       => @entity.invincible = yes
