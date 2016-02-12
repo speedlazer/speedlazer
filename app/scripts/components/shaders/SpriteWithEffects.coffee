@@ -4,11 +4,13 @@ SPRITE_EFFECT_VERTEX_SHADER = """
   attribute vec2 aLayer;
   attribute vec2 aTextureCoord;
   attribute vec4 aColor;
-  attribute vec3 aGradient;
+  attribute vec4 aOverrideColor;
+  attribute vec4 aGradient;
 
   varying mediump vec3 vTextureCoord;
   varying lowp vec4 vColor;
-  varying lowp vec3 vGradient;
+  varying lowp vec4 vOverrideColor;
+  varying lowp vec4 vGradient;
 
   uniform vec4 uViewport;
   uniform mediump vec2 uTextureDimensions;
@@ -25,6 +27,7 @@ SPRITE_EFFECT_VERTEX_SHADER = """
     gl_Position = viewportScale * (viewportTranslation + vec4(pos, 1.0/(1.0+exp(aLayer.x) ), 1) );
     vTextureCoord = vec3(aTextureCoord, aLayer.y);
     vColor = aColor;
+    vOverrideColor = aOverrideColor;
     vGradient = aGradient;
   }
 """
@@ -33,7 +36,8 @@ SPRITE_EFFECT_FRAGMENT_SHADER = """
   precision mediump float;
   varying mediump vec3 vTextureCoord;
   varying mediump vec4 vColor;
-  varying mediump vec3 vGradient;
+  varying mediump vec4 vOverrideColor;
+  varying mediump vec4 vGradient;
 
   uniform sampler2D uSampler;
   uniform mediump vec2 uTextureDimensions;
@@ -46,6 +50,11 @@ SPRITE_EFFECT_FRAGMENT_SHADER = """
   void main() {
     highp vec2 coord =   vTextureCoord.xy / uTextureDimensions;
     float blur = vGradient.z;
+
+    if ((vGradient.a >= 0.0) && (vTextureCoord.y >= vGradient.a)) {
+      gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+      return;
+    }
 
     mediump vec4 texelColor = texture2D(uSampler, coord);
 
@@ -74,6 +83,10 @@ SPRITE_EFFECT_FRAGMENT_SHADER = """
     mediump float mixFactor = (vGradient.x * (1.0 - coord.y)) + (vGradient.y * coord.y);
 
     mediump float lightness = (0.2126*texelColor.r + 0.7152*texelColor.g + 0.0722*texelColor.b);
+    if (vOverrideColor.a == 1.0) {
+      texelColor = vec4(vOverrideColor.rgb * (lightness * 1.3), texelColor.a);
+    }
+
     mediump float lightnessBase = (0.2126*vColor.r + 0.7152*vColor.g + 0.0722*vColor.b);
     mediump vec4 baseColor = vec4(vColor.rgb, texelColor.a) * (1.0 + (lightness - lightnessBase));
     mediump vec4 mixColor = vec4(
@@ -92,12 +105,13 @@ SPRITE_EFFECT_FRAGMENT_SHADER = """
 """
 
 SPRITE_EFFECT_ATTRIBUTE_LIST = [
-  { name: "aPosition",     width: 2 }
-  { name: "aOrientation",  width: 3 }
-  { name: "aLayer",        width: 2 }
-  { name: "aTextureCoord", width: 2 }
-  { name: "aColor",        width: 4 }
-  { name: "aGradient",     width: 3 }
+  { name: "aPosition",      width: 2 }
+  { name: "aOrientation",   width: 3 }
+  { name: "aLayer",         width: 2 }
+  { name: "aTextureCoord",  width: 2 }
+  { name: "aColor",         width: 4 }
+  { name: "aOverrideColor", width: 4 }
+  { name: "aGradient",      width: 4 }
 ]
 
 Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
@@ -114,6 +128,7 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
       co.x + co.w, co.y + co.h
     )
     color = ent.desaturationColor ? { _red: 0, _green: 0, _blue: 0 }
+    ocolor = ent.overrideColor ? { _red: 0, _green: 0, _blue: 0 }
     lightness = ent.lightness ? 1.0
     s = ent.scale ? 1
     blur = ent.blur ? 0
@@ -135,10 +150,22 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
       lightness
     )
 
+    e.program.writeVector("aOverrideColor",
+      ocolor._red/255,
+      ocolor._green/255,
+      ocolor._blue/255,
+      if ent.overrideColor? then 1.0 else 0.0
+    )
+    if ent.hideAt
+      hideAt = Math.max(0, co.y + ((ent.hideAt - ent.y) / ent.h) * co.h)
+    else
+      hideAt = -1.0
+
     e.program.writeVector("aGradient",
       topSaturation
       bottomSaturation
       blur
+      hideAt
     )
 )
 

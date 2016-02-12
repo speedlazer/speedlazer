@@ -104,6 +104,15 @@ Crafty.c 'ColorEffects',
     @trigger("Invalidate")
     this
 
+  colorOverride: (color) ->
+    return this unless color?
+    c = {}
+    Crafty.assignColor(color, c)
+    @attr overrideColor: c
+
+    @trigger("Invalidate")
+    this
+
   saturationGradient: (start, end) ->
     @attr topDesaturation: start, bottomDesaturation: end
     this

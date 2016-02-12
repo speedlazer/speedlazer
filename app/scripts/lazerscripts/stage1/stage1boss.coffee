@@ -10,15 +10,16 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       speed: 100
+      #speed: 50
       pointsOnHit: 10
     )
 
   execute: ->
-    @bindSequence 'Hit', @fase2, => @entity.health < 345000
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
     @inventoryAdd 'item', 'diagonals', ->
       Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
+    @bindSequence 'Hit', @fase2, => @entity.health < 345000
 
     @sequence(
       => @entity.invincible = yes
@@ -343,7 +344,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
         @explosion(@location(),
           ->
             radius: 5
-            duration: 180
+            duration: 135
             z: 1
             alpha: .8
             lightness: 1.0
@@ -382,7 +383,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
       x: location.x - 30
       y: location.y - 8 + Math.round(Math.random() * 15)
       z: 0
-      speed: 600
+      speed: 500
       pointsOnHit: options.pointsOnHit
       pointsOnDestroy: options.pointsOnDestroy
     )
@@ -400,7 +401,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
           @explosion(@location(),
             ->
               radius: 5
-              duration: 180
+              duration: 135
               z: 1
               alpha: .8
               lightness: 1.0

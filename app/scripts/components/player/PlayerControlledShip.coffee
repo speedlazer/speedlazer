@@ -1,6 +1,6 @@
 Crafty.c 'PlayerControlledShip',
   init: ->
-    @requires '2D, WebGL, Color, Collision, Listener, SunBlock'
+    @requires '2D, WebGL, Color, Collision, Listener, SunBlock, WaterSplashes'
     @attr w: 30, h: 30
     @bind 'Moved', (from) ->
       if @hit('Edge') or @hit('Solid') # Contain player within playfield
@@ -18,6 +18,9 @@ Crafty.c 'PlayerControlledShip',
 
   start: ->
     @addComponent('Invincible').invincibleDuration(2000)
+
+    @setSealevel(Crafty.viewport.height - 20)
+    @setDetectionOffset 40, 0
     @onHit 'Enemy', (collision) ->
       return if Game.paused
       return if @has('Invincible')

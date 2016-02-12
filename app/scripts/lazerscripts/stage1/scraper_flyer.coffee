@@ -11,7 +11,7 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
       y: Crafty.viewport.height * .7
       speed: 300
     ).shootOnSight
-      cooldown: 800
+      cooldown: 1000
       sightAngle: 15
       projectile: (x, y, angle) =>
         projectile = Crafty.e('Projectile, Color, Enemy').attr(
