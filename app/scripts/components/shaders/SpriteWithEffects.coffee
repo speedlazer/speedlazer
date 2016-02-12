@@ -47,7 +47,7 @@ SPRITE_EFFECT_FRAGMENT_SHADER = """
     highp vec2 coord =   vTextureCoord.xy / uTextureDimensions;
     float blur = vGradient.z;
 
-    if (vTextureCoord.y >= vGradient.a) {
+    if ((vGradient.a >= 0.0) && (vTextureCoord.y >= vGradient.a)) {
       gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
       return;
     }
@@ -140,9 +140,9 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
       lightness
     )
     if ent.hideAt
-      hideAt = co.y + ((ent.hideAt - ent.y) / ent.h) * co.h
+      hideAt = Math.max(0, co.y + ((ent.hideAt - ent.y) / ent.h) * co.h)
     else
-      hideAt = co.y + co.h + 1
+      hideAt = -1.0
 
     e.program.writeVector("aGradient",
       topSaturation

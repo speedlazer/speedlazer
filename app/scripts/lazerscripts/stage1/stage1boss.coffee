@@ -9,7 +9,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     Crafty.e('LargeDrone').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
-      speed: 100
+      #speed: 100
+      speed: 50
       pointsOnHit: 10
     )
 
@@ -22,12 +23,20 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
     return @sequence(
       @moveTo(x: .8, y: .85)
-      @wait 10000
+      @wait 2000
       @moveTo(x: .7, y: .90)
-      @wait 10000
+      @wait 2000
       @moveTo(x: .5, y: .90)
-      @wait 10000
-      @moveTo(x: .7, y: .7)
+      @wait 2000
+      @moveTo(x: .5, y: 1.0)
+      @wait 2000
+      @moveTo(x: .5, y: 1.1)
+      @wait 2000
+      @moveTo(x: .5, y: 1.2)
+      @wait 2000
+      @moveTo(x: .8, y: 1.2)
+      @wait 2000
+      @moveTo(x: .8, y: .5)
 
       @wait 100000
     )
@@ -355,7 +364,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
         @explosion(@location(),
           ->
             radius: 5
-            duration: 180
+            duration: 135
             z: 1
             alpha: .8
             lightness: 1.0
@@ -412,7 +421,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
           @explosion(@location(),
             ->
               radius: 5
-              duration: 180
+              duration: 135
               z: 1
               alpha: .8
               lightness: 1.0

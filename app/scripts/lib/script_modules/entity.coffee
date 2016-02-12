@@ -273,9 +273,9 @@ Game.ScriptModule.Entity =
     seaLevel = @_getSeaLevel()
     settings = _.defaults(settings, defaults)
     surfaceSize =
-      w: @entity.w + 10
+      w: @entity.w * 1.2
       #x: @entity.x - 5
-      h: 20
+      h: (@entity.w / 4)
       alpha: 1.0
     maxSupportedDepth = 700
     maxDepthSize =
@@ -290,8 +290,8 @@ Game.ScriptModule.Entity =
     duration = (delta / settings.speed) * 1000
 
     if settings.y?
-      depth = Math.min(settings.y, maxSupportedDepth)
-      v = (depth - seaLevel) / (maxSupportedDepth - seaLevel)
+      depth = Math.max(0, Math.min(settings.y - @entity.h, maxSupportedDepth) - seaLevel)
+      v = depth / (maxSupportedDepth - seaLevel)
 
       depthProperties = {}
 
@@ -301,11 +301,6 @@ Game.ScriptModule.Entity =
       @entity.hideMarker.tween depthProperties, duration
 
     defer = WhenJS.defer()
-    #@entity.attr(
-      #x: settings.x - Crafty.viewport.x
-      #y: settings.y - Crafty.viewport.y
-    #)
-
     type = if @entity.has('ViewportFixed')
       'viewport'
     else
@@ -313,9 +308,11 @@ Game.ScriptModule.Entity =
       settings.y = deltaY
       'linear'
 
+    newH = depthProperties?.h ? @entity.hideMarker.h
     @entity.hideMarker.choreography([
       type: type
-      x: settings.x
+      x: (settings.x + (@entity.w / 2)) - (@entity.hideMarker.w / 2)
+      y: seaLevel - (newH / 2)
       maxSpeed: settings.speed
       duration: duration
     ]).one('ChoreographyEnd', ->
@@ -324,7 +321,7 @@ Game.ScriptModule.Entity =
     WhenJS.all([defer.promise, @_moveAir(settings)])
 
   _getSeaLevel: ->
-    (Crafty.viewport.height - 255) + (220 * (@entity.scale ? 1.0)) + (@level.sealevelOffset ? 0)
+    (Crafty.viewport.height - 240) + (220 * (@entity.scale ? 1.0)) + (@level.sealevelOffset ? 0)
 
   _moveAir: (settings) ->
     defaults =

@@ -35,9 +35,10 @@ Crafty.c 'Hideable',
       h: (@h / currentScale) * scale
       alpha: 1.0,
       z: 0
+      hideAt: null
 
     for c in @_children
-      c.attr?(alpha: 1.0)
+      c.attr?(alpha: 1.0, hideAt: null)
 
   remove: ->
     @hideMarker?.destroy()
