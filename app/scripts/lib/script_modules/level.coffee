@@ -16,6 +16,7 @@ Game.ScriptModule ?= {}
 # - enableWeapons
 # - explosion
 # - pickTarget
+# - targetLocation
 #
 Game.ScriptModule.Level =
   # Place a set of multiple enemies.

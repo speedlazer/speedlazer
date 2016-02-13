@@ -11,7 +11,6 @@ Game.ScriptModule ?= {}
 # - rotate
 # - synchronizeOn
 # - location
-# - targetLocation
 #
 Game.ScriptModule.Entity =
   # Change the execution sequence when the bound entity fires a trigger.
