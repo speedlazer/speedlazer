@@ -147,12 +147,14 @@ generator.defineElement 'city', ->
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.6, .6)
+  bg.flip('X') if (Math.random() > .5)
   @addBackground(0, @level.visibleHeight - 57 - 240, bg, .37)
 
   e = Crafty.e('2D, WebGL, city, Collision, SunBlock, Horizon')
     .attr(z: -305)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.4, .4)
+  e.flip('X') if (Math.random() > .5)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
   c = Crafty.e('2D, Collision, SunBlock')
