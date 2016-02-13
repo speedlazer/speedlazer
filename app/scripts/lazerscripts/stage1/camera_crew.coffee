@@ -35,6 +35,15 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
 
   crash: ->
     @sequence(
+      @parallel(
+        @screenShake(5, duration: 400)
+        @explosion(@location(),
+          duration: 480,
+          z: -199
+          topDesaturation: 0.3
+          bottomDesaturation: 0.3
+        )
+      )
       =>
         @entity.flip('Y')
         @entity.unflip('X')
