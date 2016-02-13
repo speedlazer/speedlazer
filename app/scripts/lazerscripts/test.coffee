@@ -18,5 +18,19 @@ class Game.Scripts.Test extends Game.LazerScript
       @setSpeed 100
       @wait 1000
       #@placeSquad Game.Scripts.Stalker
-      @placeSquad Game.Scripts.Stage1BossStage1
+      @placeSquad Game.Scripts.JumpMine,
+        amount: 14
+        delay: 300
+        options:
+          grid: new Game.LocationGrid
+            x:
+              start: 0.3
+              steps: 12
+              stepSize: 0.05
+            y:
+              start: 0.125
+              steps: 12
+              stepSize: 0.05
+          points: yes
+          direction: 'right'
     )
