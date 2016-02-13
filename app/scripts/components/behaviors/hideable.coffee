@@ -60,10 +60,13 @@ Crafty.c 'WaterSplashes',
   _waterSplashes: (fd) ->
     @cooldown -= fd.dt
     if (@y + @h + @detectionOffset > @sealevel) and (@y < @sealevel) and (@cooldown <= 0)
+      speed = @waterSplashSpeed ? @speed
       @cooldown = 70
       upwards = 1
       if @_lastWaterY isnt @y
-        upwards = (@speed - 20) / 30
+        upwards = (speed - 20) / 30
+
+      upwards *= @scale ? 1
 
       coverage = 45
       parts = (@w / coverage)
