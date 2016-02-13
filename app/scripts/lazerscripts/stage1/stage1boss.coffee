@@ -438,7 +438,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
     )
 
   execute: ->
-    @bindSequence 'Hit', @leaveScreen, => @entity.health < 255000
+    @bindSequence 'Hit', @leaveScreen, => @entity.health < 258000
     @inventoryAdd 'item', 'xp', ->
       Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
 
@@ -609,7 +609,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
       @sequence(
         @animate('blink', -1)
         @moveTo(y: .3 + (Math.random() * .6))
-        @wait(150)
+        @wait(200)
         @onKilled()
       )
     else
