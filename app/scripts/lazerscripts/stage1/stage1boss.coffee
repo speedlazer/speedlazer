@@ -85,8 +85,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
             @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
               options:
                 location: @location()
-                pointsOnDestroy: 0
-                pointsOnHit: 0
+                pointsOnDestroy: 100
+                pointsOnHit: 10
             )
             @animate 'emptyWing', 0, 'wing'
             @animate 'reload', 0, 'wing'
@@ -95,8 +95,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
             @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
               options:
                 location: @location()
-                pointsOnDestroy: 0
-                pointsOnHit: 0
+                pointsOnDestroy: 100
+                pointsOnHit: 10
             )
             @animate 'emptyWing', 0, 'wing'
             @wait 800
@@ -116,12 +116,12 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
         @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
           options:
             location: @location()
-            pointsOnDestroy: 0
-            pointsOnHit: 0
+            pointsOnDestroy: 100
+            pointsOnHit: 10
         )
         @animate 'emptyWing', 0, 'wing'
         @animate 'reload', 0, 'wing'
-        @wait 300
+        @wait 500
       )
 
       @pickTarget('PlayerControlledShip')
@@ -173,7 +173,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
         @repeat 3, @attackCycle(7)
         @laugh()
         @async @placeSquad(Game.Scripts.Stage1BossDroneRaid,
-          amount: 4
+          amount: 6
           delay: 300
           options:
             shootOnSight: yes
@@ -207,11 +207,11 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     @sequence(
       @drop(location: @location(), item: 'diagonals')
       @while(
-        @moveTo(x: .6, y: .91, speed: 150)
+        @moveTo(x: .6, y: .90, speed: 150)
         @sequence(
           @explosion(@location())
           @while(
-            @wait 700
+            @wait 300
             @sequence(
               @explosion(@location(),
                 radius: 10
@@ -229,8 +229,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
           )
         )
       )
-      @moveTo(y: 1.0, speed: 100)
-      @moveTo(y: .7, speed: 150)
+      @moveTo(y: 1.1, x: .4, speed: 50)
+      @moveTo(y: .6, x: .4, speed: 350)
       @sendToBackground(0.9, -100)
       @parallel(
         @while(
@@ -256,7 +256,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       => @entity.flip('X')
       @sendToBackground(0.7, -150)
       @while(
-        @moveTo(x: 1.1, speed: 200)
+        @moveTo(x: 1.1, speed: 300)
         @sequence(
           @explosion(@location(),
             radius: 10
@@ -452,11 +452,48 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
   leaveScreen: ->
     @sequence(
       @drop(location: @location(), item: 'xp')
+      @moveTo(x: 0.95, speed: 100)
       @while(
-        @moveTo(x: 1.15, speed: 100)
+        @moveTo(x: -.15, speed: 500)
         @sequence(
           @explosion(@location())
-          @wait 700
+          @while(
+            @wait 300
+            @sequence(
+              @explosion(@location(),
+                radius: 10
+                duration: 480
+                z: -100
+                alpha: .8
+                ->
+                  rotation: @rotation + 1
+                  alpha: Math.max(0, @alpha - .003)
+                  lightness: -> Math.max(.2, @lightness - .05)
+                  y: @y - (Math.random() * 2)
+              )
+              @wait -> 40 + (Math.random() * 50)
+            )
+          )
+        )
+      )
+      => @entity.flip('X')
+      @sendToBackground(0.7, -150)
+      @while(
+        @moveTo(x: 1.1, speed: 300)
+        @sequence(
+          @explosion(@location(),
+            radius: 10
+            duration: 480
+            z: -150
+            alpha: .4
+            lightness: 1.0
+            ->
+              rotation: @rotation + 1
+              alpha: Math.max(0, @alpha - .003)
+              lightness: Math.max(.2, @lightness - .05)
+              y: @y - (Math.random() * 2)
+          )
+          @wait -> 140 + (Math.random() * 50)
         )
       )
     )
@@ -616,7 +653,7 @@ class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
     @sequence(
       @pickTarget('PlayerControlledShip')
       @movePath [
-        @targetLocation()
+        @targetLocation(offsetX: -20, offsetY: 30)
         [-160, .5]
       ]
     )
