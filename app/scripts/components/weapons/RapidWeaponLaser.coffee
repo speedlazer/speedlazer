@@ -77,6 +77,7 @@ Crafty.c 'RapidWeaponLaser',
         @_createFrontBullet()
       else
         @_createBackBullet()
+      Crafty.audio.play('shoot', 1, .05)
       @frontFire = !@frontFire
       @lastShot = 0
       @shotsFired += 1

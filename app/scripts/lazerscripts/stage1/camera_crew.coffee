@@ -43,6 +43,7 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
           topDesaturation: 0.3
           bottomDesaturation: 0.3
         )
+        => Crafty.audio.play("explosion")
       )
       =>
         @entity.flip('Y')

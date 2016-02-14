@@ -12,6 +12,7 @@ Crafty.c 'Drone',
     @enemy()
     @bind 'Hit', (data) =>
       @shiftedX += 10
+      Crafty.audio.play('hit', 1, .5)
       Crafty.e('Blast, LaserHit').explode(
         x: data.projectile.x
         y: data.projectile.y

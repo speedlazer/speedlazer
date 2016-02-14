@@ -47,7 +47,10 @@ class Game.Scripts.CrewShooters extends Game.EntityScript
     )
 
   onKilled: ->
-    @explosion(@location())
+    @parallel(
+      @explosion(@location())
+      => Crafty.audio.play("explosion", 1, .25)
+    )
 
   shootPlayer: ->
     =>

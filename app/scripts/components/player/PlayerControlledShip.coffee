@@ -84,6 +84,7 @@ Crafty.c 'PlayerControlledShip',
   pickUp: (powerUp) ->
     contents =  powerUp.settings.contains
     if @installItem contents
+      Crafty.audio.play('powerup')
       powerUp.destroy()
 
   installItem: (item) ->

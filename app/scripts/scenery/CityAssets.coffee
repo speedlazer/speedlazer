@@ -106,4 +106,10 @@ generator.defineAssets(
       tileh: 96
       map:
         explosionStart: [0, 0]
+  audio:
+    explosion: ['explosion.ogg']
+    shoot: ['laser-shot.ogg']
+    hit: ['laser-hit.ogg']
+    laugh: ['laugh.ogg']
+    powerup: ['powerup.ogg']
 )

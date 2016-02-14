@@ -33,6 +33,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
           @wait 500
         )
       )
+      @laugh()
       => @entity.invincible = no
       @enableWeapons()
       @async @placeSquad(Game.Scripts.Stage1BossRocket,
@@ -184,6 +185,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
   laugh: ->
     @sequence(
+      => Crafty.audio.play('laugh')
       => @entity.invincible = yes
       @repeat 5, @sequence(
         @rotate(10, 200)
@@ -305,6 +307,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       @parallel(
         @screenShake(10, duration: 200)
         @explosion(@location(), damage: 200, radius: 40)
+        => Crafty.audio.play("explosion", 1)
       )
     )
 
@@ -312,6 +315,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
     @parallel(
       @screenShake(10, duration: 200)
       @explosion(@location(), damage: 200, radius: 40)
+      => Crafty.audio.play("explosion", 1)
     )
 
 
@@ -365,6 +369,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
     @parallel(
       @screenShake(10, duration: 200)
       @explosion(@location(), damage: 200, radius: 40)
+      => Crafty.audio.play("explosion", 1)
     )
 
 class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
@@ -423,6 +428,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
     @parallel(
       @screenShake(10, duration: 200)
       @explosion(@location(), damage: 200, radius: 40)
+      => Crafty.audio.play("explosion", 1)
     )
 
 class Game.Scripts.Stage1BossPopup extends Game.EntityScript
@@ -463,7 +469,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
               @explosion(@location(),
                 radius: 10
                 duration: 480
-                z: -100
+                z: -10
                 alpha: .8
                 ->
                   rotation: @rotation + 1
@@ -542,6 +548,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.EntityScript
 
   laugh: ->
     @sequence(
+      => Crafty.audio.play('laugh')
       => @entity.invincible = yes
       @repeat 5, @sequence(
         @rotate(10, 200)
@@ -621,6 +628,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
     @parallel(
       @screenShake(10, duration: 200)
       @explosion(@location(), damage: 300, radius: 40)
+      => Crafty.audio.play("explosion")
     )
 
 
@@ -659,5 +667,8 @@ class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
     )
 
   onKilled: ->
-    @explosion(@location())
+    @parallel(
+      @explosion(@location())
+      => Crafty.audio.play("explosion", 1, .25)
+    )
 
