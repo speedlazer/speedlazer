@@ -6,7 +6,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
     @loadAssets('largeDrone')
 
   spawn: ->
-    Crafty.e('LargeDrone').drone(
+    Crafty.e('LargeDrone, Horizon').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       speed: 100
@@ -211,7 +211,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @while(
         @moveTo(x: .6, y: .90, speed: 150)
         @sequence(
-          @blast(@location())
+          @smallExplosion()
           @while(
             @wait 300
             @sequence(
@@ -304,19 +304,12 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       @wait 200
       @animate 'blink', -1
       @wait 1000
-      @parallel(
-        @screenShake(10, duration: 200)
-        @blast(@location(), damage: 200, radius: 40)
-        => Crafty.audio.play("explosion", 1)
-      )
+      @bigExplosion()
+      @endSequence()
     )
 
   onKilled: ->
-    @parallel(
-      @screenShake(10, duration: 200)
-      @blast(@location(), damage: 200, radius: 40)
-      => Crafty.audio.play("explosion", 1)
-    )
+    @bigExplosion()
 
 
 class Game.Scripts.Stage1BossRocket extends Game.EntityScript
@@ -366,11 +359,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
     )
 
   onKilled: ->
-    @parallel(
-      @screenShake(10, duration: 200)
-      @blast(@location(), damage: 200, radius: 40)
-      => Crafty.audio.play("explosion", 1)
-    )
+    @bigExplosion()
 
 class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
   spawn: (options) ->
@@ -425,18 +414,14 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
     )
 
   onKilled: ->
-    @parallel(
-      @screenShake(10, duration: 200)
-      @blast(@location(), damage: 200, radius: 40)
-      => Crafty.audio.play("explosion", 1)
-    )
+    @bigExplosion()
 
 class Game.Scripts.Stage1BossPopup extends Game.EntityScript
   assets: ->
     @loadAssets('largeDrone')
 
   spawn: ->
-    Crafty.e('LargeDrone').drone(
+    Crafty.e('LargeDrone, Horizon').drone(
       health: 264000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
@@ -462,7 +447,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
       @while(
         @moveTo(x: -.15, speed: 500)
         @sequence(
-          @blast(@location())
+          @smallExplosion()
           @while(
             @wait 300
             @sequence(
@@ -625,11 +610,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
       )
 
   onKilled: ->
-    @parallel(
-      @screenShake(10, duration: 200)
-      @blast(@location(), damage: 300, radius: 40)
-      => Crafty.audio.play("explosion")
-    )
+    @bigExplosion()
 
 
 class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
@@ -667,8 +648,5 @@ class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
     )
 
   onKilled: ->
-    @parallel(
-      @blast(@location())
-      => Crafty.audio.play("explosion", 1, .25)
-    )
+    @smallExplosion()
 

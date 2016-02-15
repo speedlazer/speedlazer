@@ -35,8 +35,5 @@ class Game.Scripts.Shooter extends Game.EntityScript
     ]
 
   onKilled: ->
-    @parallel(
-      @blast(@location())
-      => Crafty.audio.play("explosion", 1, .25)
-    )
+    @smallExplosion()
 

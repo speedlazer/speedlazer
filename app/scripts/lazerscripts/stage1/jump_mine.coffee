@@ -35,21 +35,13 @@ class Game.Scripts.JumpMine extends Game.EntityScript
           @wait 4000
           @animate('blink', -1)
           @wait 1000
-          @parallel(
-            @screenShake(10, duration: 200)
-            @blast(@location(), damage: 300, radius: 40)
-            => Crafty.audio.play("explosion")
-          )
+          @onKilled()
           @endSequence()
         )
       )
     )
 
   onKilled: ->
-    @parallel(
-      @screenShake(10, duration: 200)
-      @blast(@location(), damage: 300, radius: 40)
-      => Crafty.audio.play("explosion")
-    )
+    @bigExplosion()
 
 

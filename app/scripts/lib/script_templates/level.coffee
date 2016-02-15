@@ -6,10 +6,17 @@ Game.ScriptTemplate ?= {}
 # They generally call lower level lazerScript
 # methods.
 Game.ScriptTemplate.Level =
-  explosion2: (location, options = {}, frameOptions) ->
+  smallExplosion: ->
     @parallel(
-      @blast(location, options, frameOptions)
+      @blast(@location())
       => Crafty.audio.play("explosion", 1, .25)
       @screenShake(2, duration: 200)
+    )
+
+  bigExplosion: ->
+    @parallel(
+      @screenShake(10, duration: 200)
+      => Crafty.audio.play("explosion")
+      @blast(@location(), damage: 300, radius: 40)
     )
 
