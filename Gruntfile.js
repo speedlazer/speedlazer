@@ -44,7 +44,11 @@ module.exports = function (grunt) {
     coffee: {
       compile: {
         files: {
-          '<%= yeoman.app %>/scripts/compiled/lib.js': ['<%= yeoman.app %>/scripts/lib/script_modules/*.*coffee', '<%= yeoman.app %>/scripts/lib/*.*coffee'],
+          '<%= yeoman.app %>/scripts/compiled/lib.js': [
+            '<%= yeoman.app %>/scripts/lib/script_modules/*.*coffee',
+            '<%= yeoman.app %>/scripts/lib/script_templates/*.*coffee',
+            '<%= yeoman.app %>/scripts/lib/*.*coffee'
+          ],
           '<%= yeoman.app %>/scripts/compiled/components.js': '<%= yeoman.app %>/scripts/components/**/*.*coffee',
           '<%= yeoman.app %>/scripts/compiled/lazerscripts.js': '<%= yeoman.app %>/scripts/lazerscripts/**/*.*coffee',
           '<%= yeoman.app %>/scripts/compiled/scenery.js': '<%= yeoman.app %>/scripts/scenery/**/*.*coffee',

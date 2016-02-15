@@ -35,8 +35,5 @@ class Game.Scripts.Swirler extends Game.EntityScript
     ]
 
   onKilled: ->
-    @parallel(
-      @explosion(@location())
-      => Crafty.audio.play("explosion", 1, .25)
-    )
+    @explosion2(@location())
 

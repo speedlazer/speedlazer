@@ -37,7 +37,7 @@ class Game.Scripts.JumpMine extends Game.EntityScript
           @wait 1000
           @parallel(
             @screenShake(10, duration: 200)
-            @explosion(@location(), damage: 300, radius: 40)
+            @blast(@location(), damage: 300, radius: 40)
             => Crafty.audio.play("explosion")
           )
           @endSequence()
@@ -48,7 +48,7 @@ class Game.Scripts.JumpMine extends Game.EntityScript
   onKilled: ->
     @parallel(
       @screenShake(10, duration: 200)
-      @explosion(@location(), damage: 300, radius: 40)
+      @blast(@location(), damage: 300, radius: 40)
       => Crafty.audio.play("explosion")
     )
 

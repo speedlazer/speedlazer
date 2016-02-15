@@ -46,6 +46,6 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
 
   onKilled: ->
     @parallel(
-      @explosion(@location())
+      @blast(@location())
       => Crafty.audio.play("explosion", 1, .25)
     )

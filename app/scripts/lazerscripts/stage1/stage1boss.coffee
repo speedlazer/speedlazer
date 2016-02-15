@@ -211,11 +211,11 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @while(
         @moveTo(x: .6, y: .90, speed: 150)
         @sequence(
-          @explosion(@location())
+          @blast(@location())
           @while(
             @wait 300
             @sequence(
-              @explosion(@location(),
+              @blast(@location(),
                 radius: 10
                 duration: 480
                 z: -100
@@ -238,7 +238,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
         @while(
           @moveTo(x: -.15, speed: 300)
           @sequence(
-            @explosion(@location(),
+            @blast(@location(),
               radius: 10
               duration: 480
               z: -100
@@ -260,7 +260,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @while(
         @moveTo(x: 1.1, speed: 300)
         @sequence(
-          @explosion(@location(),
+          @blast(@location(),
             radius: 10
             duration: 480
             z: -150
@@ -306,7 +306,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       @wait 1000
       @parallel(
         @screenShake(10, duration: 200)
-        @explosion(@location(), damage: 200, radius: 40)
+        @blast(@location(), damage: 200, radius: 40)
         => Crafty.audio.play("explosion", 1)
       )
     )
@@ -314,7 +314,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
   onKilled: ->
     @parallel(
       @screenShake(10, duration: 200)
-      @explosion(@location(), damage: 200, radius: 40)
+      @blast(@location(), damage: 200, radius: 40)
       => Crafty.audio.play("explosion", 1)
     )
 
@@ -345,7 +345,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
     @while(
       @moveTo(x: -205)
       @sequence(
-        @explosion(@location(),
+        @blast(@location(),
           ->
             radius: 5
             duration: 135
@@ -368,7 +368,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
   onKilled: ->
     @parallel(
       @screenShake(10, duration: 200)
-      @explosion(@location(), damage: 200, radius: 40)
+      @blast(@location(), damage: 200, radius: 40)
       => Crafty.audio.play("explosion", 1)
     )
 
@@ -403,7 +403,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
           [-160, .5]
         ]
         @sequence(
-          @explosion(@location(),
+          @blast(@location(),
             ->
               radius: 5
               duration: 135
@@ -427,7 +427,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
   onKilled: ->
     @parallel(
       @screenShake(10, duration: 200)
-      @explosion(@location(), damage: 200, radius: 40)
+      @blast(@location(), damage: 200, radius: 40)
       => Crafty.audio.play("explosion", 1)
     )
 
@@ -462,11 +462,11 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
       @while(
         @moveTo(x: -.15, speed: 500)
         @sequence(
-          @explosion(@location())
+          @blast(@location())
           @while(
             @wait 300
             @sequence(
-              @explosion(@location(),
+              @blast(@location(),
                 radius: 10
                 duration: 480
                 z: -10
@@ -487,7 +487,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
       @while(
         @moveTo(x: 1.1, speed: 300)
         @sequence(
-          @explosion(@location(),
+          @blast(@location(),
             radius: 10
             duration: 480
             z: -150
@@ -627,7 +627,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
   onKilled: ->
     @parallel(
       @screenShake(10, duration: 200)
-      @explosion(@location(), damage: 300, radius: 40)
+      @blast(@location(), damage: 300, radius: 40)
       => Crafty.audio.play("explosion")
     )
 
@@ -668,7 +668,7 @@ class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
 
   onKilled: ->
     @parallel(
-      @explosion(@location())
+      @blast(@location())
       => Crafty.audio.play("explosion", 1, .25)
     )
 
