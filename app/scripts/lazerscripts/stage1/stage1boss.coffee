@@ -1,10 +1,39 @@
 Game = @Game
 Game.Scripts ||= {}
 
-class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
+class Game.Scripts.Stage1Boss extends Game.EntityScript
   assets: ->
     @loadAssets('largeDrone')
 
+  smoke: (version = 'heavy') ->
+    options = {
+      heavy:
+        alpha: .8
+        wait: 40
+      medium:
+        alpha: .6
+        wait: 80
+      light:
+        alpha: .4
+        wait: 140
+    }[version]
+    @sequence(
+      @blast(@location(),
+        radius: 10
+        duration: 480
+        z: @entity.z
+        alpha: options.alpha
+        lightness: 1.0
+        ->
+          rotation: @rotation + 1
+          alpha: Math.max(0, @alpha - .003)
+          lightness: -> Math.max(.2, @lightness - .05)
+          y: @y - (Math.random() * 2)
+      )
+      @wait -> options.wait + (Math.random() * 50)
+    )
+
+class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
   spawn: ->
     Crafty.e('LargeDrone, Horizon').drone(
       x: Crafty.viewport.width + 40
@@ -214,20 +243,21 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
           @smallExplosion()
           @while(
             @wait 300
-            @sequence(
-              @blast(@location(),
-                radius: 10
-                duration: 480
-                z: -100
-                alpha: .8
-                ->
-                  rotation: @rotation + 1
-                  alpha: Math.max(0, @alpha - .003)
-                  lightness: -> Math.max(.2, @lightness - .05)
-                  y: @y - (Math.random() * 2)
-              )
-              @wait -> 40 + (Math.random() * 50)
-            )
+            @smoke()
+            #@sequence(
+              #@blast(@location(),
+                #radius: 10
+                #duration: 480
+                #z: -100
+                #alpha: .8
+                #->
+                  #rotation: @rotation + 1
+                  #alpha: Math.max(0, @alpha - .003)
+                  #lightness: -> Math.max(.2, @lightness - .05)
+                  #y: @y - (Math.random() * 2)
+              #)
+              #@wait -> 40 + (Math.random() * 50)
+            #)
           )
         )
       )
@@ -237,20 +267,21 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @parallel(
         @while(
           @moveTo(x: -.15, speed: 300)
-          @sequence(
-            @blast(@location(),
-              radius: 10
-              duration: 480
-              z: -100
-              alpha: .6
-              ->
-                rotation: @rotation + 1
-                alpha: Math.max(0, @alpha - .003)
-                lightness: -> Math.max(.2, @lightness - .05)
-                y: @y - (Math.random() * 2)
-            )
-            @wait -> 80 + (Math.random() * 50)
-          )
+          @smoke('medium')
+          #@sequence(
+            #@blast(@location(),
+              #radius: 10
+              #duration: 480
+              #z: -100
+              #alpha: .6
+              #->
+                #rotation: @rotation + 1
+                #alpha: Math.max(0, @alpha - .003)
+                #lightness: -> Math.max(.2, @lightness - .05)
+                #y: @y - (Math.random() * 2)
+            #)
+            #@wait -> 80 + (Math.random() * 50)
+          #)
         )
 
         @scale(0.8, duration: 3000)
@@ -259,21 +290,22 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @sendToBackground(0.7, -150)
       @while(
         @moveTo(x: 1.1, speed: 300)
-        @sequence(
-          @blast(@location(),
-            radius: 10
-            duration: 480
-            z: -150
-            alpha: .4
-            lightness: 1.0
-            ->
-              rotation: @rotation + 1
-              alpha: Math.max(0, @alpha - .003)
-              lightness: Math.max(.2, @lightness - .05)
-              y: @y - (Math.random() * 2)
-          )
-          @wait -> 140 + (Math.random() * 50)
-        )
+        @smoke('light')
+        #@sequence(
+          #@blast(@location(),
+            #radius: 10
+            #duration: 480
+            #z: -150
+            #alpha: .4
+            #lightness: 1.0
+            #->
+              #rotation: @rotation + 1
+              #alpha: Math.max(0, @alpha - .003)
+              #lightness: Math.max(.2, @lightness - .05)
+              #y: @y - (Math.random() * 2)
+          #)
+          #@wait -> 140 + (Math.random() * 50)
+        #)
       )
     )
 
@@ -416,10 +448,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
   onKilled: ->
     @bigExplosion()
 
-class Game.Scripts.Stage1BossPopup extends Game.EntityScript
-  assets: ->
-    @loadAssets('largeDrone')
-
+class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
   spawn: ->
     Crafty.e('LargeDrone, Horizon').drone(
       health: 264000
@@ -450,20 +479,21 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
           @smallExplosion()
           @while(
             @wait 300
-            @sequence(
-              @blast(@location(),
-                radius: 10
-                duration: 480
-                z: -10
-                alpha: .8
-                ->
-                  rotation: @rotation + 1
-                  alpha: Math.max(0, @alpha - .003)
-                  lightness: -> Math.max(.2, @lightness - .05)
-                  y: @y - (Math.random() * 2)
-              )
-              @wait -> 40 + (Math.random() * 50)
-            )
+            @smoke()
+            #@sequence(
+              #@blast(@location(),
+                #radius: 10
+                #duration: 480
+                #z: -10
+                #alpha: .8
+                #->
+                  #rotation: @rotation + 1
+                  #alpha: Math.max(0, @alpha - .003)
+                  #lightness: -> Math.max(.2, @lightness - .05)
+                  #y: @y - (Math.random() * 2)
+              #)
+              #@wait -> 40 + (Math.random() * 50)
+            #)
           )
         )
       )
@@ -471,21 +501,22 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
       @sendToBackground(0.7, -150)
       @while(
         @moveTo(x: 1.1, speed: 300)
-        @sequence(
-          @blast(@location(),
-            radius: 10
-            duration: 480
-            z: -150
-            alpha: .4
-            lightness: 1.0
-            ->
-              rotation: @rotation + 1
-              alpha: Math.max(0, @alpha - .003)
-              lightness: Math.max(.2, @lightness - .05)
-              y: @y - (Math.random() * 2)
-          )
-          @wait -> 140 + (Math.random() * 50)
-        )
+        @smoke('light')
+        #@sequence(
+          #@blast(@location(),
+            #radius: 10
+            #duration: 480
+            #z: -150
+            #alpha: .4
+            #lightness: 1.0
+            #->
+              #rotation: @rotation + 1
+              #alpha: Math.max(0, @alpha - .003)
+              #lightness: Math.max(.2, @lightness - .05)
+              #y: @y - (Math.random() * 2)
+          #)
+          #@wait -> 140 + (Math.random() * 50)
+        #)
       )
     )
 
@@ -505,9 +536,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
       )
     )
 
-class Game.Scripts.Stage1BossLeaving extends Game.EntityScript
-  assets: ->
-    @loadAssets 'largeDrone'
+class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
 
   spawn: ->
     Crafty.e('LargeDrone, Horizon').drone(
@@ -549,13 +578,25 @@ class Game.Scripts.Stage1BossLeaving extends Game.EntityScript
       => @entity.eye.destroy() # TODO: This is buggy when scaling enemy
       @sendToBackground(0.9, -100)
       @parallel(
-        @moveTo(x: -.15, speed: 400)
+        @while(
+          @moveTo(x: -.15, speed: 400)
+          @sequence(
+            @smallExplosion()
+            @while(
+              @wait 300
+              @smoke()
+            )
+          )
+        )
         @scale(0.7, duration: 3000)
       )
       => @entity.flip('X')
       @sendToBackground(0.7, -550)
       @parallel(
-        @moveTo('MiliBase', speed: 150)
+        @while(
+          @moveTo('MiliBase', speed: 150)
+          @smoke('light')
+        )
         @scale(0.3, duration: 4000)
       )
     )

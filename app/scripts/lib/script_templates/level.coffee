@@ -19,4 +19,3 @@ Game.ScriptTemplate.Level =
       => Crafty.audio.play("explosion")
       @blast(@location(), damage: 300, radius: 40)
     )
-
