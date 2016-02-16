@@ -44,4 +44,3 @@ class Game.Scripts.JumpMine extends Game.EntityScript
   onKilled: ->
     @bigExplosion()
 
-
