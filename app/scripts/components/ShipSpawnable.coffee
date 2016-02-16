@@ -56,8 +56,11 @@ Crafty.c 'ShipSpawnable',
       Crafty.e('Blast, Explosion').explode(
         x: @ship.x + (@ship.w / 2)
         y: @ship.y + (@ship.h / 2)
-        radius: @ship.w
+        radius: @ship.w * 2
       )
+      Crafty.audio.play("explosion")
+      Crafty('ScrollWall').get(0).screenShake(20, 1000)
+
       @ship.trigger('Destroyed', @ship)
       @ship.destroy()
       armed = @ship.items
