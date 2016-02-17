@@ -6,8 +6,6 @@ Crafty.defineScene 'Game', (data = {}) ->
   Game = window.Game
   Game.backgroundColor = null
 
-  scriptName = data?.script ? 'Stage1'
-  script = Game.Scripts[scriptName]
   level = Game.levelGenerator.createLevel()
   level.start()
 
@@ -21,20 +19,34 @@ Crafty.defineScene 'Game', (data = {}) ->
     window.ga('send', 'event', 'Game', 'Start', label)
     label = 'Begin'
 
-  stage = new script(level)
-  stage.run(options)
-    .then =>
-      console.log 'end of script!'
-    .catch (e) ->
-      console.error e unless e.message is 'sequence mismatch'
+  script = null
+  scriptName = null
 
+  executeScript = (name, options) ->
+    scriptName = name
+    scriptClass = Game.Scripts[name]
+    unless scriptClass?
+      console.error "Script #{name} is not defined"
+      Crafty.trigger 'GameOver'
+      return
+    script = new scriptClass(level)
+    script.run(options)
+      .then -> Crafty.trigger('ScriptFinished', script)
+      .catch (e) ->
+        console.error e unless e.message is 'sequence mismatch'
+
+  Crafty.bind 'ScriptFinished', (script) ->
+    checkpoint = Math.max(0, script.startAtCheckpoint - script.currentCheckpoint)
+    executeScript(script.nextScript, startAtCheckpoint: checkpoint)
+
+  executeScript((data?.script ? 'Stage1'), options)
 
   Crafty.bind 'GameOver', ->
-    window.ga('send', 'event', 'Game', 'End', "Checkpoint #{stage.currentCheckpoint}")
-    stage.end()
+    window.ga('send', 'event', 'Game', 'End', "Checkpoint #{script.currentCheckpoint}")
+    script.end()
 
     Crafty.enterScene('GameOver',
-      checkpoint: stage.currentCheckpoint
+      checkpoint: script.currentCheckpoint
       script: scriptName
     )
 
@@ -129,12 +141,12 @@ Crafty.defineScene 'Game', (data = {}) ->
             Game.togglePause()
             Game.resetCredits()
             Crafty('Player').each -> @softReset()
-            stage.end()
+            script.end()
             Crafty.enterScene Game.firstLevel
           if selected is 3
             Game.togglePause()
             Crafty('Player').each -> @reset()
-            stage.end()
+            script.end()
             Crafty.enterScene 'Intro'
 
       Crafty('Player').each ->
@@ -158,4 +170,5 @@ Crafty.defineScene 'Game', (data = {}) ->
   level.stop()
   Crafty('Player').each -> @removeComponent('ShipSpawnable')
   Crafty.unbind('GameOver')
+  Crafty.unbind('ScriptFinished')
   Crafty.unbind('GamePause')

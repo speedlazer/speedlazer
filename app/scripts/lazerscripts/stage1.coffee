@@ -2,6 +2,8 @@ Game = @Game
 Game.Scripts ||= {}
 
 class Game.Scripts.Stage1 extends Game.LazerScript
+  nextScript: 'Stage2'
+
   assets: ->
     @loadAssets('shadow', 'explosion')
 
@@ -91,17 +93,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             'that\'s classified info!'
         )
       )
-      @changeSeaLevel 500
-      @gainHeight(-580, duration: 6000)
-      #@say 'DesignNote', 'Add some enemies and setting here!'
-      #@wait 3000
-      #@gainHeight(-580, duration: 6000)
-
-      #@gainHeight(-580, duration: 4000)
-
-
-      @say 'Game', 'End of gameplay for now... \nStarting endless enemies'
-      @repeat @mineSwarm(points: no)
     )
 
   introText: ->
