@@ -21,7 +21,7 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
       @blast(@location(),
         radius: 10
         duration: 480
-        z: @entity.z
+        z: @entity.z - 3
         alpha: options.alpha
         lightness: 1.0
         ->
@@ -554,7 +554,10 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
     @sequence(
       @animate 'slow', -1, 'eye'
       @pickTarget('PlayerControlledShip')
-      @moveTo(@targetLocation(), x: .845, speed: 200)
+      @while(
+        @moveTo(@targetLocation(), x: .845, speed: 200)
+        @smoke('medium')
+      )
       @attackCycle()
       @laugh()
       @leaveScreen()
@@ -580,13 +583,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
       @parallel(
         @while(
           @moveTo(x: -.15, speed: 400)
-          @sequence(
-            @smallExplosion()
-            @while(
-              @wait 300
-              @smoke()
-            )
-          )
+          @smoke()
         )
         @scale(0.7, duration: 3000)
       )
@@ -611,7 +608,10 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
       )
       @animate 'emptyWing', 0, 'wing'
       @parallel(
-        @moveTo(@targetLocation(offsetY: -20), x: .845)
+        @while(
+          @moveTo(@targetLocation(offsetY: -20), x: .845)
+          @smoke('medium')
+        )
         @sequence(
           @animate 'reload', 0, 'wing'
           @wait 1000
