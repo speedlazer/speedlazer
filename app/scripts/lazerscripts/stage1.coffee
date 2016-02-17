@@ -397,6 +397,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @setScenery(scenery)
       )
       @dropDiagonalsForEachPlayer()
-      @wait 2000
+      @wait 6000
     )
 
