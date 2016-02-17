@@ -2,12 +2,6 @@ Game = @Game
 Game.Scripts ||= {}
 
 class Game.Scripts.Stage1 extends Game.LazerScript
-  metadata:
-    namespace: 'City'
-    armedPlayers: 'lasers'
-    speed: 50
-    title: ''
-
   assets: ->
     @loadAssets('shadow', 'explosion')
 
@@ -112,6 +106,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   introText: ->
     @sequence(
+      @setSpeed 50
       @setScenery('Intro')
       @sunRise()
       @cameraCrew()

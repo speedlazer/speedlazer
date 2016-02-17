@@ -8,11 +8,11 @@ Crafty.defineScene 'Game', (data = {}) ->
 
   scriptName = data?.script ? 'Stage1'
   script = Game.Scripts[scriptName]
-  level = Game.levelGenerator.createLevel script::metadata
+  level = Game.levelGenerator.createLevel()
   level.start()
 
   options =
-    startAtCheckpoint: data.checkpoint ? 6
+    startAtCheckpoint: data.checkpoint ? 0
 
   if data.checkpoint
     label = "Checkpoint #{data.checkpoint}"

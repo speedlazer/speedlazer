@@ -92,7 +92,7 @@ class Game.LevelGenerator
   ##
   # Create a new level
   # @param {data} meta data that all pieces in the level can access
-  createLevel: (data) ->
+  createLevel: (data = { namespace: 'City' }) ->
     new Game.Level(this, data)
 
 Game.levelGenerator = new Game.LevelGenerator
