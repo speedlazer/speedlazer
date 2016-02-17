@@ -74,6 +74,8 @@ class Game.LevelGenerator
       obj.sprites[sprite] = items
       obj
 
+    queue[0].audio = assetObject.audio
+
     Crafty.load(
       queue.pop()
       ->

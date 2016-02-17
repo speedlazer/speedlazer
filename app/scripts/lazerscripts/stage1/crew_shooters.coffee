@@ -47,7 +47,7 @@ class Game.Scripts.CrewShooters extends Game.EntityScript
     )
 
   onKilled: ->
-    @explosion(@location())
+    @smallExplosion()
 
   shootPlayer: ->
     =>

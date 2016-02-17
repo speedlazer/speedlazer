@@ -243,7 +243,7 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       @level.setWeaponsEnabled yes
 
-  explosion: (location, options = {}, frameOptions) ->
+  blast: (location, options = {}, frameOptions) ->
     (sequence) =>
       @_verify(sequence)
       { x, y } = location()
@@ -277,7 +277,6 @@ Game.ScriptModule.Level =
 
       if options.damage
         e.addComponent('Enemy')
-
 
   loadAssets: (names...) ->
     (sequence) =>

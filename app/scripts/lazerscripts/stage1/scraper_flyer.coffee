@@ -45,4 +45,4 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
     )
 
   onKilled: ->
-    @explosion(@location())
+    @smallExplosion()

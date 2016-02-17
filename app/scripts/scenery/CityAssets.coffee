@@ -93,7 +93,8 @@ generator.defineAssets(
         wingLoaded: [5,4]
       paddingX: 1
       paddingY: 0
-
+  audio:
+    laugh: ['laugh.ogg']
 )
 
 generator.defineAssets(
@@ -106,4 +107,9 @@ generator.defineAssets(
       tileh: 96
       map:
         explosionStart: [0, 0]
+  audio:
+    explosion: ['explosion.ogg']
+    shoot: ['laser-shot.ogg']
+    hit: ['laser-hit.ogg']
+    powerup: ['powerup.ogg']
 )

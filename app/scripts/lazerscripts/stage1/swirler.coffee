@@ -35,5 +35,5 @@ class Game.Scripts.Swirler extends Game.EntityScript
     ]
 
   onKilled: ->
-    @explosion(@location())
+    @smallExplosion()
 

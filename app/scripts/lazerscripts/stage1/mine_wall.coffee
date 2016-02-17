@@ -31,7 +31,7 @@ class Game.Scripts.MineWall extends Game.EntityScript
     @moveTo @targetLocation()
 
   onKilled: ->
-    @explosion(@location(), damage: 300, radius: 40)
+    @blast(@location(), damage: 300, radius: 40)
 
 
 
