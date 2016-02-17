@@ -12,7 +12,7 @@ Crafty.defineScene 'Game', (data = {}) ->
   level.start()
 
   options =
-    startAtCheckpoint: data.checkpoint ? 0
+    startAtCheckpoint: data.checkpoint ? 6
 
   if data.checkpoint
     label = "Checkpoint #{data.checkpoint}"
@@ -40,12 +40,19 @@ Crafty.defineScene 'Game', (data = {}) ->
 
   Crafty.bind 'GamePause', (state) ->
     if state
+      soundText = ->
+        if Crafty.audio.muted
+          'Sound [off]'
+        else
+          'Sound [on]'
+      options = ['Resume', soundText(), 'Restart', 'Quit']
+
       menu = Crafty.e('2D, DOM, Color, PauseMenu')
         .attr(
           x: - Crafty.viewport.x + (.35 * Crafty.viewport.width),
           y: (Crafty.viewport.height * .3) - Crafty.viewport.y,
           w: (.3 * Crafty.viewport.width)
-          h: (.3 * Crafty.viewport.height)
+          h: (options.length + 2) * 32
           z: 100
           alpha: .3
         )
@@ -68,7 +75,6 @@ Crafty.defineScene 'Game', (data = {}) ->
         )
       menu.attach title
 
-      options = ['Resume', 'Restart', 'Quit']
       optionEntities = for o, i in options
         menuItem = Crafty.e('2D, DOM, Text')
           .attr(
@@ -113,15 +119,20 @@ Crafty.defineScene 'Game', (data = {}) ->
 
       updateSelection()
       executeSelection = ->
-        Game.togglePause()
         setTimeout ->
+          if selected is 0
+            Game.togglePause()
           if selected is 1
+            Crafty.audio.toggleMute()
+            optionEntities[selected].text soundText()
+          if selected is 2
+            Game.togglePause()
             Game.resetCredits()
             Crafty('Player').each -> @softReset()
             stage.end()
             Crafty.enterScene Game.firstLevel
-
-          if selected is 2
+          if selected is 3
+            Game.togglePause()
             Crafty('Player').each -> @reset()
             stage.end()
             Crafty.enterScene 'Intro'
