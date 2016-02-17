@@ -10,7 +10,7 @@ Crafty.defineScene 'Game', (data = {}) ->
   level.start()
 
   options =
-    startAtCheckpoint: data.checkpoint ? 0
+    startAtCheckpoint: data.checkpoint ? 6
 
   if data.checkpoint
     label = "Checkpoint #{data.checkpoint}"
@@ -27,7 +27,6 @@ Crafty.defineScene 'Game', (data = {}) ->
     scriptClass = Game.Scripts[name]
     unless scriptClass?
       console.error "Script #{name} is not defined"
-      Crafty.trigger 'GameOver'
       return
     script = new scriptClass(level)
     script.run(options)
