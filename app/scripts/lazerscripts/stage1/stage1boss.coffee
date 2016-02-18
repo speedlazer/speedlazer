@@ -19,11 +19,12 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
     }[version]
     @sequence(
       @blast(@location(),
-        radius: 10
-        duration: 480
-        z: @entity.z - 3
-        alpha: options.alpha
-        lightness: 1.0
+        =>
+          radius: 10
+          duration: 480
+          z: @entity.z - 3
+          alpha: options.alpha
+          lightness: 1.0
         ->
           rotation: @rotation + 1
           alpha: Math.max(0, @alpha - .003)
@@ -480,20 +481,6 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
           @while(
             @wait 300
             @smoke()
-            #@sequence(
-              #@blast(@location(),
-                #radius: 10
-                #duration: 480
-                #z: -10
-                #alpha: .8
-                #->
-                  #rotation: @rotation + 1
-                  #alpha: Math.max(0, @alpha - .003)
-                  #lightness: -> Math.max(.2, @lightness - .05)
-                  #y: @y - (Math.random() * 2)
-              #)
-              #@wait -> 40 + (Math.random() * 50)
-            #)
           )
         )
       )
@@ -502,21 +489,6 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
       @while(
         @moveTo(x: 1.1, speed: 300)
         @smoke('light')
-        #@sequence(
-          #@blast(@location(),
-            #radius: 10
-            #duration: 480
-            #z: -150
-            #alpha: .4
-            #lightness: 1.0
-            #->
-              #rotation: @rotation + 1
-              #alpha: Math.max(0, @alpha - .003)
-              #lightness: Math.max(.2, @lightness - .05)
-              #y: @y - (Math.random() * 2)
-          #)
-          #@wait -> 140 + (Math.random() * 50)
-        #)
       )
     )
 
@@ -582,7 +554,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
       @sendToBackground(0.9, -100)
       @parallel(
         @while(
-          @moveTo(x: -.15, speed: 400)
+          @moveTo(x: -.15, y: .5, speed: 400)
           @smoke()
         )
         @scale(0.7, duration: 3000)
