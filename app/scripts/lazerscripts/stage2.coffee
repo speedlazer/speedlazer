@@ -2,7 +2,6 @@ Game = @Game
 Game.Scripts ||= {}
 
 class Game.Scripts.Stage2 extends Game.LazerScript
-  nextScript: 'Stage3'
 
   assets: ->
     @loadAssets('shadow', 'explosion')

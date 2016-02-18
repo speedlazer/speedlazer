@@ -35,7 +35,10 @@ Crafty.defineScene 'Game', (data = {}) ->
 
   Crafty.bind 'ScriptFinished', (script) ->
     checkpoint = Math.max(0, script.startAtCheckpoint - script.currentCheckpoint)
-    executeScript(script.nextScript, startAtCheckpoint: checkpoint)
+    if script.nextScript
+      executeScript(script.nextScript, startAtCheckpoint: checkpoint)
+    else
+      console.log 'End of content!'
 
   executeScript((data?.script ? 'Stage1'), options)
 
