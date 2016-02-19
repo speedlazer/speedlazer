@@ -12,7 +12,7 @@ Crafty.defineScene 'Game', (data = {}) ->
   level.start()
 
   options =
-    startAtCheckpoint: data.checkpoint ? 6
+    startAtCheckpoint: data.checkpoint ? 0
 
   if data.checkpoint
     label = "Checkpoint #{data.checkpoint}"
