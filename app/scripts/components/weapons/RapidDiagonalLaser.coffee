@@ -88,6 +88,7 @@ Crafty.c 'RapidDiagonalLaser',
       deviation = (Math.random() * 1.5)
       @_createAngleBullet(-angle + (deviation * f))
 
+      Crafty.audio.play('shoot', 1, .10)
       @frontFire = !@frontFire
       @lastShot = 0
       @shotsFired += 1

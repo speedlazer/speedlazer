@@ -43,42 +43,22 @@ class Game.Level
       if nextLoading.length > 0
         WhenJS.sequence(nextLoading)
 
-  start: (settings = {}) ->
-    defaults =
-      armedPlayers: 'lasers'
-      speed: 1
-      controlsEnabled: yes
-      weaponsEnabled: yes
-      spawnPosition:
-        x: 100
-        y: 200
-      spawnOffset:
-        x: -50
-        y: 0
-      viewport:
-        x: 0
-        y: 0
-      title: ''
-
-    settings = _.defaults(settings, @data, defaults)
-
+  start: ->
     Crafty.viewport.x = 0
     Crafty.viewport.y = 0
-    @_controlsEnabled = settings.controlsEnabled
-    @setForcedSpeed settings.speed
-    @setWeaponsEnabled settings.weaponsEnabled
+    @_controlsEnabled = yes
+    @setForcedSpeed 1
+    @setWeaponsEnabled yes
 
     @_scrollWall = Crafty.e('ScrollWall').attr
-      x: settings.viewport.x
-      y: settings.viewport.y
+      x: 0
+      y: 0
 
     @_playersActive = no
 
     Crafty.bind 'EnemySpawned', =>
       @data.enemiesSpawned ?= 0
       @data.enemiesSpawned += 1
-
-    @_placePlayerShips settings
 
     Crafty.e('2D, DOM, Text, HUD, LevelTitle')
       .attr(w: 150, h: 20)
@@ -88,7 +68,7 @@ class Game.Level
         family: 'Press Start 2P'
       )
       .textColor '#A0A0A0'
-      .text settings.title
+      .text ''
 
     @_setupLevelScenery()
 
@@ -126,6 +106,9 @@ class Game.Level
   _setupLevelScenery: ->
     return unless @currentScenery?
     return unless @blocks.length is 0
+
+    @_placePlayerShips()
+
     @_seedPreceedingGeometry()
     @_update()
     @lastUpdate = Crafty.viewport._x + 200
@@ -167,7 +150,19 @@ class Game.Level
   notifyScenery: (eventType, sceneryType, callback) ->
     @sceneryEvents.push { eventType, sceneryType, callback }
 
-  _placePlayerShips: (settings) ->
+  _placePlayerShips: ->
+    defaults =
+      armedPlayers: 'lasers'
+      spawnPosition:
+        x: 100
+        y: 200
+      spawnOffset:
+        x: -50
+        y: 0
+      title: ''
+
+    settings = _.defaults(@data, defaults)
+
     Crafty.one 'ShipSpawned', =>
       @_playersActive = yes
       @_scrollWall.scrollWall(@_forcedSpeed)

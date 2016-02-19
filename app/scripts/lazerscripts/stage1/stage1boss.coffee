@@ -1,12 +1,42 @@
 Game = @Game
 Game.Scripts ||= {}
 
-class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
+class Game.Scripts.Stage1Boss extends Game.EntityScript
   assets: ->
     @loadAssets('largeDrone')
 
+  smoke: (version = 'heavy') ->
+    options = {
+      heavy:
+        alpha: .8
+        wait: 40
+      medium:
+        alpha: .6
+        wait: 80
+      light:
+        alpha: .4
+        wait: 140
+    }[version]
+    @sequence(
+      @blast(@location(),
+        =>
+          radius: 10
+          duration: 480
+          z: @entity.z - 3
+          alpha: options.alpha
+          lightness: 1.0
+        ->
+          rotation: @rotation + 1
+          alpha: Math.max(0, @alpha - .003)
+          lightness: -> Math.max(.2, @lightness - .05)
+          y: @y - (Math.random() * 2)
+      )
+      @wait -> options.wait + (Math.random() * 50)
+    )
+
+class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
   spawn: ->
-    Crafty.e('LargeDrone').drone(
+    Crafty.e('LargeDrone, Horizon').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       speed: 100
@@ -33,6 +63,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
           @wait 500
         )
       )
+      @laugh()
       => @entity.invincible = no
       @enableWeapons()
       @async @placeSquad(Game.Scripts.Stage1BossRocket,
@@ -184,6 +215,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
 
   laugh: ->
     @sequence(
+      => Crafty.audio.play('laugh')
       => @entity.invincible = yes
       @repeat 5, @sequence(
         @rotate(10, 200)
@@ -209,23 +241,24 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @while(
         @moveTo(x: .6, y: .90, speed: 150)
         @sequence(
-          @explosion(@location())
+          @smallExplosion()
           @while(
             @wait 300
-            @sequence(
-              @explosion(@location(),
-                radius: 10
-                duration: 480
-                z: -100
-                alpha: .8
-                ->
-                  rotation: @rotation + 1
-                  alpha: Math.max(0, @alpha - .003)
-                  lightness: -> Math.max(.2, @lightness - .05)
-                  y: @y - (Math.random() * 2)
-              )
-              @wait -> 40 + (Math.random() * 50)
-            )
+            @smoke()
+            #@sequence(
+              #@blast(@location(),
+                #radius: 10
+                #duration: 480
+                #z: -100
+                #alpha: .8
+                #->
+                  #rotation: @rotation + 1
+                  #alpha: Math.max(0, @alpha - .003)
+                  #lightness: -> Math.max(.2, @lightness - .05)
+                  #y: @y - (Math.random() * 2)
+              #)
+              #@wait -> 40 + (Math.random() * 50)
+            #)
           )
         )
       )
@@ -235,20 +268,21 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @parallel(
         @while(
           @moveTo(x: -.15, speed: 300)
-          @sequence(
-            @explosion(@location(),
-              radius: 10
-              duration: 480
-              z: -100
-              alpha: .6
-              ->
-                rotation: @rotation + 1
-                alpha: Math.max(0, @alpha - .003)
-                lightness: -> Math.max(.2, @lightness - .05)
-                y: @y - (Math.random() * 2)
-            )
-            @wait -> 80 + (Math.random() * 50)
-          )
+          @smoke('medium')
+          #@sequence(
+            #@blast(@location(),
+              #radius: 10
+              #duration: 480
+              #z: -100
+              #alpha: .6
+              #->
+                #rotation: @rotation + 1
+                #alpha: Math.max(0, @alpha - .003)
+                #lightness: -> Math.max(.2, @lightness - .05)
+                #y: @y - (Math.random() * 2)
+            #)
+            #@wait -> 80 + (Math.random() * 50)
+          #)
         )
 
         @scale(0.8, duration: 3000)
@@ -257,21 +291,22 @@ class Game.Scripts.Stage1BossStage1 extends Game.EntityScript
       @sendToBackground(0.7, -150)
       @while(
         @moveTo(x: 1.1, speed: 300)
-        @sequence(
-          @explosion(@location(),
-            radius: 10
-            duration: 480
-            z: -150
-            alpha: .4
-            lightness: 1.0
-            ->
-              rotation: @rotation + 1
-              alpha: Math.max(0, @alpha - .003)
-              lightness: Math.max(.2, @lightness - .05)
-              y: @y - (Math.random() * 2)
-          )
-          @wait -> 140 + (Math.random() * 50)
-        )
+        @smoke('light')
+        #@sequence(
+          #@blast(@location(),
+            #radius: 10
+            #duration: 480
+            #z: -150
+            #alpha: .4
+            #lightness: 1.0
+            #->
+              #rotation: @rotation + 1
+              #alpha: Math.max(0, @alpha - .003)
+              #lightness: Math.max(.2, @lightness - .05)
+              #y: @y - (Math.random() * 2)
+          #)
+          #@wait -> 140 + (Math.random() * 50)
+        #)
       )
     )
 
@@ -302,17 +337,12 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       @wait 200
       @animate 'blink', -1
       @wait 1000
-      @parallel(
-        @screenShake(10, duration: 200)
-        @explosion(@location(), damage: 200, radius: 40)
-      )
+      @bigExplosion()
+      @endSequence()
     )
 
   onKilled: ->
-    @parallel(
-      @screenShake(10, duration: 200)
-      @explosion(@location(), damage: 200, radius: 40)
-    )
+    @bigExplosion()
 
 
 class Game.Scripts.Stage1BossRocket extends Game.EntityScript
@@ -341,7 +371,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
     @while(
       @moveTo(x: -205)
       @sequence(
-        @explosion(@location(),
+        @blast(@location(),
           ->
             radius: 5
             duration: 135
@@ -362,10 +392,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
     )
 
   onKilled: ->
-    @parallel(
-      @screenShake(10, duration: 200)
-      @explosion(@location(), damage: 200, radius: 40)
-    )
+    @bigExplosion()
 
 class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
   spawn: (options) ->
@@ -398,7 +425,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
           [-160, .5]
         ]
         @sequence(
-          @explosion(@location(),
+          @blast(@location(),
             ->
               radius: 5
               duration: 135
@@ -420,17 +447,11 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
     )
 
   onKilled: ->
-    @parallel(
-      @screenShake(10, duration: 200)
-      @explosion(@location(), damage: 200, radius: 40)
-    )
+    @bigExplosion()
 
-class Game.Scripts.Stage1BossPopup extends Game.EntityScript
-  assets: ->
-    @loadAssets('largeDrone')
-
+class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
   spawn: ->
-    Crafty.e('LargeDrone').drone(
+    Crafty.e('LargeDrone, Horizon').drone(
       health: 264000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
@@ -456,23 +477,10 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
       @while(
         @moveTo(x: -.15, speed: 500)
         @sequence(
-          @explosion(@location())
+          @smallExplosion()
           @while(
             @wait 300
-            @sequence(
-              @explosion(@location(),
-                radius: 10
-                duration: 480
-                z: -100
-                alpha: .8
-                ->
-                  rotation: @rotation + 1
-                  alpha: Math.max(0, @alpha - .003)
-                  lightness: -> Math.max(.2, @lightness - .05)
-                  y: @y - (Math.random() * 2)
-              )
-              @wait -> 40 + (Math.random() * 50)
-            )
+            @smoke()
           )
         )
       )
@@ -480,21 +488,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
       @sendToBackground(0.7, -150)
       @while(
         @moveTo(x: 1.1, speed: 300)
-        @sequence(
-          @explosion(@location(),
-            radius: 10
-            duration: 480
-            z: -150
-            alpha: .4
-            lightness: 1.0
-            ->
-              rotation: @rotation + 1
-              alpha: Math.max(0, @alpha - .003)
-              lightness: Math.max(.2, @lightness - .05)
-              y: @y - (Math.random() * 2)
-          )
-          @wait -> 140 + (Math.random() * 50)
-        )
+        @smoke('light')
       )
     )
 
@@ -514,9 +508,7 @@ class Game.Scripts.Stage1BossPopup extends Game.EntityScript
       )
     )
 
-class Game.Scripts.Stage1BossLeaving extends Game.EntityScript
-  assets: ->
-    @loadAssets 'largeDrone'
+class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
 
   spawn: ->
     Crafty.e('LargeDrone, Horizon').drone(
@@ -534,7 +526,10 @@ class Game.Scripts.Stage1BossLeaving extends Game.EntityScript
     @sequence(
       @animate 'slow', -1, 'eye'
       @pickTarget('PlayerControlledShip')
-      @moveTo(@targetLocation(), x: .845, speed: 200)
+      @while(
+        @moveTo(@targetLocation(), x: .845, speed: 200)
+        @smoke('medium')
+      )
       @attackCycle()
       @laugh()
       @leaveScreen()
@@ -542,6 +537,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.EntityScript
 
   laugh: ->
     @sequence(
+      => Crafty.audio.play('laugh')
       => @entity.invincible = yes
       @repeat 5, @sequence(
         @rotate(10, 200)
@@ -557,13 +553,19 @@ class Game.Scripts.Stage1BossLeaving extends Game.EntityScript
       => @entity.eye.destroy() # TODO: This is buggy when scaling enemy
       @sendToBackground(0.9, -100)
       @parallel(
-        @moveTo(x: -.15, speed: 400)
+        @while(
+          @moveTo(x: -.15, y: .5, speed: 400)
+          @smoke()
+        )
         @scale(0.7, duration: 3000)
       )
       => @entity.flip('X')
       @sendToBackground(0.7, -550)
       @parallel(
-        @moveTo('MiliBase', speed: 150)
+        @while(
+          @moveTo('MiliBase', speed: 150)
+          @smoke('light')
+        )
         @scale(0.3, duration: 4000)
       )
     )
@@ -578,7 +580,10 @@ class Game.Scripts.Stage1BossLeaving extends Game.EntityScript
       )
       @animate 'emptyWing', 0, 'wing'
       @parallel(
-        @moveTo(@targetLocation(offsetY: -20), x: .845)
+        @while(
+          @moveTo(@targetLocation(offsetY: -20), x: .845)
+          @smoke('medium')
+        )
         @sequence(
           @animate 'reload', 0, 'wing'
           @wait 1000
@@ -618,10 +623,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
       )
 
   onKilled: ->
-    @parallel(
-      @screenShake(10, duration: 200)
-      @explosion(@location(), damage: 300, radius: 40)
-    )
+    @bigExplosion()
 
 
 class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
@@ -659,5 +661,5 @@ class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
     )
 
   onKilled: ->
-    @explosion(@location())
+    @smallExplosion()
 

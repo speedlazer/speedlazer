@@ -37,12 +37,13 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
     @sequence(
       @parallel(
         @screenShake(5, duration: 400)
-        @explosion(@location(),
+        @blast(@location(),
           duration: 480,
           z: -199
           topDesaturation: 0.3
           bottomDesaturation: 0.3
         )
+        => Crafty.audio.play("explosion")
       )
       =>
         @entity.flip('Y')
@@ -52,7 +53,7 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
           [.6, .82]
         ], speed: 150
         @sequence(
-          @explosion(@location(),
+          @blast(@location(),
             radius: 10,
             duration: 480,
             z: -199
@@ -61,7 +62,7 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
             lightness: .2
             alpha: .5
           )
-          @explosion(@location(offsetX: 10, offsetY: 5),
+          @blast(@location(offsetX: 10, offsetY: 5),
             radius: 5,
             duration: 180,
             z: -199

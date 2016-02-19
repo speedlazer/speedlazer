@@ -102,7 +102,6 @@ Crafty.c 'ScrollWall',
         ]
     )
 
-
   scrollWall: (speed) ->
     if speed.x? && speed.y?
       @_speed.x = speed.x

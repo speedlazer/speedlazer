@@ -35,5 +35,5 @@ class Game.Scripts.Shooter extends Game.EntityScript
     ]
 
   onKilled: ->
-    @explosion(@location())
+    @smallExplosion()
 

@@ -191,6 +191,8 @@ Game.ScriptModule.Entity =
       if settings.y? and (-1 < settings.y < 2)
         settings.y *= Crafty.viewport.height
 
+      throw new Error('location invalid') unless _.isObject(location)
+
       seaLevel = @_getSeaLevel()
 
       if @enemy.moveState is 'air'

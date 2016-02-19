@@ -2,11 +2,7 @@ Game = @Game
 Game.Scripts ||= {}
 
 class Game.Scripts.Stage1 extends Game.LazerScript
-  metadata:
-    namespace: 'City'
-    armedPlayers: 'lasers'
-    speed: 50
-    title: ''
+  nextScript: 'Stage2'
 
   assets: ->
     @loadAssets('shadow', 'explosion')
@@ -30,7 +26,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @checkpoint @checkpointMidStage('Bay', 355000)
       @say('General', 'Hunt him down!')
-      @setSpeed 100
+      @setSpeed 150
       @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 1000
@@ -38,6 +34,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         options:
           shootOnSight: yes
 
+      # Warming up of new weapon
       @repeat 3, @stalkerShootout()
 
       @parallel(
@@ -53,14 +50,31 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         )
         @placeSquad Game.Scripts.Stage1BossPopup
       )
+      @setSpeed 100
 
+      @parallel(
+        @placeSquad Game.Scripts.ScraperFlyer,
+          amount: 8
+          delay: 750
+          drop: 'xp'
+        @cloneEncounter()
+      )
       @cityFighting()
+      @parallel(
+        @placeSquad Game.Scripts.Stage1BossPopup
+        @cloneEncounter()
+      )
 
-      @repeat 2, @dummyFights()
       @gainHeight(280, duration: 4000)
 
       @checkpoint @checkpointMidStage('Skyline', 400000)
-      @dummyFights()
+      @repeat 2, @parallel(
+        @cloneEncounter()
+        @placeSquad Game.Scripts.PlayerClone,
+          options:
+            from: 'middle'
+          drop: 'xp'
+      )
       @setScenery 'SkylineBase'
       @while(
         @wait 4000
@@ -97,21 +111,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             'that\'s classified info!'
         )
       )
-      @changeSeaLevel 500
-      @gainHeight(-580, duration: 6000)
-      #@say 'DesignNote', 'Add some enemies and setting here!'
-      #@wait 3000
-      #@gainHeight(-580, duration: 6000)
-
-      #@gainHeight(-580, duration: 4000)
-
-
-      @say 'Game', 'End of gameplay for now... \nStarting endless enemies'
-      @repeat @mineSwarm(points: no)
     )
 
   introText: ->
     @sequence(
+      @setSpeed 50
       @setScenery('Intro')
       @sunRise()
       @cameraCrew()
@@ -333,15 +337,18 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @parallel(
         @sequence(
           @placeSquad Game.Scripts.ScraperFlyer,
-            amount: 8
+            amount: 4
             delay: 750
             drop: 'xp'
-          @placeSquad Game.Scripts.Stage1BossPopup
+          @placeSquad Game.Scripts.ScraperFlyer,
+            amount: 6
+            delay: 750
+            drop: 'xp'
         )
         @sequence(
           @wait 3000
           @placeSquad Game.Scripts.Swirler,
-            amount: 8
+            amount: 4
             delay: 750
             drop: 'xp'
             options:
@@ -350,36 +357,21 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
     )
 
-  dummyFights: ->
-    @while(
-      @parallel(
-        @placeSquad Game.Scripts.ScraperFlyer,
-          amount: 8
-          delay: 750
-          drop: 'xp'
-        @placeSquad Game.Scripts.Swirler,
-          amount: 8
-          delay: 500
-          drop: 'xp'
-          options:
-            shootOnSight: yes
-            speed: 300
-        @placeSquad Game.Scripts.Shooter,
-          amount: 8
-          delay: 1000
-          drop: 'xp'
-          options:
-            shootOnSight: yes
-            speed: 300
-      )
+  cloneEncounter: ->
+    @parallel(
       @sequence(
-        @pickTarget('PlayerControlledShip')
-        @placeSquad Game.Scripts.Stage1BossRocket,
+        @wait 2000
+        @placeSquad Game.Scripts.PlayerClone,
           options:
-            location: @targetLocation(x: 1.3)
-        @wait 500
+            from: 'top'
+          drop: 'xp'
       )
+      @placeSquad Game.Scripts.PlayerClone,
+        options:
+          from: 'bottom'
+        drop: 'xp'
     )
+
 
   checkpointStart: (scenery, sunSkip) ->
     @sequence(
@@ -397,6 +389,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @setScenery(scenery)
       )
       @dropDiagonalsForEachPlayer()
-      @wait 2000
+      @wait 6000
     )
 

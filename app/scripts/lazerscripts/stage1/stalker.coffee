@@ -35,4 +35,4 @@ class Game.Scripts.Stalker extends Game.EntityScript
     )
 
   onKilled: ->
-    @explosion(@location())
+    @smallExplosion()

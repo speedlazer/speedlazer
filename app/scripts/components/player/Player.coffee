@@ -14,7 +14,7 @@ Crafty.c 'Player',
       bonus: 0
 
     @attr({
-      lives: 2,
+      lives: 3,
       points: 0
     })
 

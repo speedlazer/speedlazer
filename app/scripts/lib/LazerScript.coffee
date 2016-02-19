@@ -46,7 +46,13 @@ class Game.LazerScript
     @invItems[type] ||= {}
     @invItems[type][name] = constructor
 
-_.extend Game.LazerScript::, Game.ScriptModule.Core, Game.ScriptModule.Level, Game.ScriptModule.Colors
+_.extend(
+  Game.LazerScript::
+  Game.ScriptModule.Core
+  Game.ScriptModule.Level
+  Game.ScriptModule.Colors
+  Game.ScriptTemplate.Level
+)
 
 # Could these be merged? V ^
 
@@ -95,4 +101,7 @@ class Game.EntityScript extends Game.LazerScript
 
   spawn: ->
 
-_.extend Game.EntityScript::, Game.ScriptModule.Core, Game.ScriptModule.Entity
+_.extend(
+  Game.EntityScript::
+  Game.ScriptModule.Entity
+)
