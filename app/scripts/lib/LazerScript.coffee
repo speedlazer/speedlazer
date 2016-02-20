@@ -62,6 +62,8 @@ class Game.EntityScript extends Game.LazerScript
     @boundEvents = []
 
     @entity = @spawn(args...)
+    if _.isObject(args[0]) and args[0].identifier?
+      @entity.addComponent(args[0].identifier + args[0].index)
     return WhenJS({ alive: no, killedAt: (new Date), location: null }) unless @entity?
 
     @synchronizer = @options.synchronizer ? new Game.Synchronizer

@@ -62,7 +62,9 @@ Game.ScriptModule.Level =
           do (script, i) =>
             @wait(i * settings.delay)(sequence).then =>
               @_verify(sequence)
-              script.run(settings.options)
+              s = _.clone(settings.options)
+              s.index = i
+              script.run(s)
         )
         WhenJS.all(promises).then (results) =>
           allKilled = yes
