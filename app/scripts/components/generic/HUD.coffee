@@ -18,5 +18,5 @@ Crafty.c 'HUD',
     this
 
   remove: ->
-    Crafty.unbind 'GameLoop', @hudFloat
+    Crafty.unbind 'ViewportMove', @hudFloat
 

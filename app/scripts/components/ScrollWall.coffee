@@ -49,19 +49,22 @@ Crafty.c 'ScrollWall',
       @x += (speedX / 1000.0) * fd.dt
       @y += (speedY / 1000.0) * fd.dt
 
-      x = @x
-      y = @y
+      xShift = 0
+      yShift = 0
 
       for shake, index in @shakes by -1
         shake.easing.tick(fd.dt)
         coords = shake.coords(shake.easing.value())
-        x += coords[0]
-        y += coords[1]
+        xShift += coords[0]
+        yShift += coords[1]
         @shakes.splice(index, 1) if shake.easing.complete
-
+      x = @x + xShift
+      y = @y + yShift
 
       Crafty.viewport.y = -y if Crafty.viewport.y isnt -y
       Crafty.viewport.x = -x if Crafty.viewport.x isnt -x
+      Crafty.viewport.xShift = xShift
+      Crafty.viewport.yShift = yShift
 
       Crafty.trigger('ViewportMove',
         x: Math.round(x)

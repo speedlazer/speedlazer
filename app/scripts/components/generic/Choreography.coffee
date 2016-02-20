@@ -102,22 +102,22 @@ Crafty.c 'Choreography',
     # the goal are current coordinates on screen
     destinationX = @_currentPart.dx
     if destinationX
-      @_currentPart.moveOriginX ?= @_currentPart.x + Crafty.viewport.x
+      @_currentPart.moveOriginX ?= @_currentPart.x + Crafty.viewport.x - Crafty.viewport.xShift
       diffX = destinationX - @_currentPart.moveOriginX
       motionX = (diffX * v)
 
       @shiftedX ?= 0
       @shiftedX = Math.max(0, @shiftedX - .5)
 
-      @x = @_currentPart.moveOriginX + motionX - Crafty.viewport.x + @shiftedX
+      @x = @_currentPart.moveOriginX + motionX - Crafty.viewport.x + @shiftedX - Crafty.viewport.xShift
 
     destinationY = @_currentPart.dy
     if destinationY
-      @_currentPart.moveOriginY ?= @_currentPart.y + Crafty.viewport.y
+      @_currentPart.moveOriginY ?= @_currentPart.y + Crafty.viewport.y - Crafty.viewport.yShift
       diffY = destinationY - @_currentPart.moveOriginY
 
       motionY = (diffY * v)
-      @y = @_currentPart.moveOriginY + motionY - Crafty.viewport.y
+      @y = @_currentPart.moveOriginY + motionY - Crafty.viewport.y - Crafty.viewport.yShift
 
   _executeTween: (v) ->
     for k, p of @_currentPart.properties
@@ -159,5 +159,5 @@ Crafty.c 'Choreography',
     @shiftedX ?= 0
     @shiftedX = Math.max(0, @shiftedX - .5)
 
-    @attr x: point.x + @shiftedX, y: point.y + shiftedY
+    @attr x: point.x + @shiftedX - Crafty.viewport.xShift, y: point.y + shiftedY - Crafty.viewport.yShift
 
