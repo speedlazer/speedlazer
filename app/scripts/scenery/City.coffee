@@ -673,6 +673,27 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'cityHorizon'
     @addElement 'city'
 
-    h = 400 + 300
+    h = 150
     @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h, z: -10).color('#505050'))
+    h2 = 400
+    @add(0, @level.visibleHeight - 100 + h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h2, z: -10).color('#202020'))
+    h = 150
+    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h + h2, z: -10).color('#505050'))
+
+
+generator.defineBlock class extends @Game.LevelScenery
+  name: 'City.TrainTunnel'
+  delta:
+    x: 800
+    y: 0
+
+  generate: ->
+    super
+
+    h = 150
+    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h, z: -10).color('#505050'))
+    h2 = 400
+    @add(0, @level.visibleHeight - 100 + h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h2, z: -10).color('#202020'))
+    h = 150
+    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h + h2, z: -10).color('#505050'))
 

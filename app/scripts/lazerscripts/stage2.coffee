@@ -7,15 +7,25 @@ class Game.Scripts.Stage2 extends Game.LazerScript
     @loadAssets('shadow', 'explosion')
 
   execute: ->
+    @inventoryAdd 'item', 'lasers', ->
+      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#2020FF')
+    @inventoryAdd 'item', 'xp', ->
+      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
+    @inventoryAdd 'item', 'diagonals', ->
+      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
+
     @sequence(
+      @setScenery 'Skyline2'
       @changeSeaLevel 500
       @parallel(
         @gainHeight(-580, duration: 6000)
         @chapterTitle(2, 'Underground')
       )
-      #@say 'DesignNote', 'Add some enemies and setting here!'
-      #@wait 3000
-      #@gainHeight(-580, duration: 4000)
+      @say 'DesignNote', 'Add some enemies and setting here!'
+      @wait 8000
+      @setScenery('TrainTunnel')
+      @gainHeight(-580, duration: 4000)
+      @checkpoint @checkpointUnderground('TrainTunnel')
 
       @say 'Game', 'End of gameplay for now... \nStarting endless enemies'
       @repeat @mineSwarm(points: no)
@@ -36,4 +46,17 @@ class Game.Scripts.Stage2 extends Game.LazerScript
             steps: 12
             stepSize: 0.05
         points: options.points ? yes
-        direction: options.direction
+        direction: options.direction ? 'right'
+
+  dropDiagonalsForEachPlayer: ->
+    @parallel(
+      @if((-> @player(1).active and !@player(1).has('diagonals')), @drop(item: 'diagonals', inFrontOf: @player(1)))
+      @if((-> @player(2).active and !@player(2).has('diagonals')), @drop(item: 'diagonals', inFrontOf: @player(2)))
+    )
+
+  checkpointUnderground: (scenery) ->
+    @sequence(
+      @setScenery(scenery)
+      @dropDiagonalsForEachPlayer()
+      @wait 6000
+    )
