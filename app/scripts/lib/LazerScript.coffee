@@ -93,7 +93,8 @@ class Game.EntityScript extends Game.LazerScript
         location: {}
 
     super
-      .catch =>
+      .catch (e) =>
+        console.log e
         @alternatePath
       .finally =>
         if @enemy.alive and !@entity.has('KeepAlive')

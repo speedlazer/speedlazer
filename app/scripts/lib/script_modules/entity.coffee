@@ -67,6 +67,7 @@ Game.ScriptModule.Entity =
   scale: (scale, options = {}) ->
     (sequence) =>
       @_verify(sequence)
+      oscale = @entity.scale ? 1.0
       options = _.defaults(options,
         duration: Math.abs(scale - oscale) * 1000
       )

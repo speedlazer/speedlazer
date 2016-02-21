@@ -28,8 +28,6 @@ Crafty.c 'Hideable',
     scale = 1.0
     @attr
       scale: scale
-      w: (@w / currentScale) * scale
-      h: (@h / currentScale) * scale
       alpha: 1.0,
       z: 0
       hideAt: null

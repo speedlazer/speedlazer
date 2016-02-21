@@ -287,7 +287,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
         @scale(0.8, duration: 3000)
       )
-      => @entity.flip('X')
+      => @entity.flipX()
       @sendToBackground(0.7, -150)
       @while(
         @moveTo(x: 1.1, speed: 300)
@@ -484,7 +484,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
           )
         )
       )
-      => @entity.flip('X')
+      => @entity.flipX()
       @sendToBackground(0.7, -150)
       @while(
         @moveTo(x: 1.1, speed: 300)
@@ -550,7 +550,6 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
   leaveScreen: ->
     @sequence(
       @animate 'emptyWing', 0, 'wing'
-      => @entity.eye.destroy() # TODO: This is buggy when scaling enemy
       @sendToBackground(0.9, -100)
       @parallel(
         @while(
@@ -559,7 +558,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
         )
         @scale(0.7, duration: 3000)
       )
-      => @entity.flip('X')
+      => @entity.flipX()
       @sendToBackground(0.7, -550)
       @parallel(
         @while(
