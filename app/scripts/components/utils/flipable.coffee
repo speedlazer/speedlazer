@@ -1,7 +1,7 @@
 Crafty.c 'Flipable',
   flipX: ->
     try
-      @flip('X')
+      @flip?('X')
       for c in @_children
         relX = c.x - @x
         c.attr?(
@@ -11,9 +11,12 @@ Crafty.c 'Flipable',
     catch e
       console.log e
 
+    @_mirrorCollision()
+    this
+
   unflipX: ->
     try
-      @unflip('X')
+      @unflip?('X')
       for c in @_children
         relX = (@x + @w - (c.x + c.w))
         c.attr?(
@@ -22,3 +25,12 @@ Crafty.c 'Flipable',
         c.unflip?('X')
     catch e
       console.log e
+    @_mirrorCollision()
+    this
+
+  _mirrorCollision: ->
+    return unless @map.points
+    for p, i in @map.points
+      if i % 2 is 0
+        dx = (p - @x)
+        @map.points[i] = @x + (@w - dx)

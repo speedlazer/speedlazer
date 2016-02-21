@@ -139,30 +139,31 @@ generator.defineElement 'cityHorizon', (mode) ->
   @addBackground(0, @level.visibleHeight - 177, e, .25)
 
 generator.defineElement 'city', ->
-  #col3 = '#66667D'
-  #@addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, WebGL, Color').color(col3).attr(z: -400, w: 297, h: 83), .37)
-
-  bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon')
+  bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon, Flipable')
     .attr(z: -505) #, blur: 1.2)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.6, .6)
-  bg.flip('X') if (Math.random() > .5)
   @addBackground(0, @level.visibleHeight - 57 - 240, bg, .37)
 
-  e = Crafty.e('2D, WebGL, city, Collision, SunBlock, Horizon')
+  bg.flipX() if (Math.random() > .5)
+
+  e = Crafty.e('2D, WebGL, city, Collision, SunBlock, Horizon, Flipable')
     .attr(z: -305)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.4, .4)
-  e.flip('X') if (Math.random() > .5)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
-  c = Crafty.e('2D, Collision, SunBlock')
+  c = Crafty.e('2D, Collision, SunBlock, Flipable')
   c.attr(w: e.w, h: e.h)
-  c.collision([20, 155, 0, 80, 20, 20, 70, 20, 70, 155])
+  c.collision([220, 155, 200, 80, 220, 20, 270, 20, 270, 155])
 
   @addBackground(0, @level.visibleHeight - 290, e, .5)
-  @addBackground(400, @level.visibleHeight - 290, c, .5)
+  @addBackground(0, @level.visibleHeight - 290, c, .5)
+
+  if (Math.random() > .5)
+    e.flipX()
+    c.flipX()
 
 generator.defineElement 'city-bridge', ->
   bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon')
