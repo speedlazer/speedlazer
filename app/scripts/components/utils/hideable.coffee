@@ -4,11 +4,8 @@ Crafty.c 'Hideable',
     @hidden = no
 
   sendToBackground: (scale, z) ->
-    currentScale = @scale ? 1.0
     @attr
       scale: scale
-      w: (@w / currentScale) * scale
-      h: (@h / currentScale) * scale
       z: z
     @hidden = yes
 
