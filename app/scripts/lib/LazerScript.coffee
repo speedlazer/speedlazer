@@ -10,7 +10,7 @@ class Game.LazerScript
     @currentCheckpoint = 0
 
     loadingAssets = WhenJS(true)
-    if this?.assets?
+    if @assets?
       loadingAssets = @assets()(@currentSequence)
 
     loadingAssets.then => @initialize(args...)
