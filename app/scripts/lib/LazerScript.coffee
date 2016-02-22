@@ -94,7 +94,7 @@ class Game.EntityScript extends Game.LazerScript
 
     super
       .catch (e) =>
-        console.log e
+        console.error e unless e.message is 'sequence mismatch'
         @alternatePath
       .finally =>
         if @enemy.alive and !@entity.has('KeepAlive')
