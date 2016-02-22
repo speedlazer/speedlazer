@@ -26,9 +26,16 @@ class Game.Scripts.Stage2 extends Game.LazerScript
       @setScenery('TrainTunnel')
       @gainHeight(-580, duration: 4000)
       @checkpoint @checkpointUnderground('TrainTunnel')
-      @placeSquad Game.Scripts.Train,
+      @setScenery('SmallerTrainTunnel')
+      @async @placeSquad Game.Scripts.Train,
         options:
           identifier: 'Train'
+
+      #@wait 5000
+      #@say 'Game', 'Train attack!'
+      #@wait 5000
+      #@say 'Game', 'Train attack!'
+      #@wait 5000
 
 
       @say 'Game', 'End of gameplay for now... \nStarting endless enemies'

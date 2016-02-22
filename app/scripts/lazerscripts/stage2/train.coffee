@@ -3,15 +3,13 @@ Game.Scripts ||= {}
 
 class Game.Scripts.Train extends Game.EntityScript
   spawn: ->
-    console.log 'spawning train'
-
     p = Crafty.e('Enemy, Color').attr(
       x: -1200
-      y: 60
+      y: 160
       speed: 20
       health: 900
       w: 1100
-      h: 370
+      h: 270
     ).enemy().color('#808080')
     p
 
@@ -19,9 +17,11 @@ class Game.Scripts.Train extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
 
     @sequence(
-      => console.log 'Moving!'
-      @moveTo x: .1
-      @wait 20000
+      @moveTo x: -1050
+      @repeat @sequence(
+        @moveTo y: 165, speed: 10
+        @moveTo y: 155, speed: 10
+      )
       @bigExplosion()
     )
 
