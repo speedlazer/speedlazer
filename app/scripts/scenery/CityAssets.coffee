@@ -93,8 +93,6 @@ generator.defineAssets(
         wingLoaded: [5,4]
       paddingX: 1
       paddingY: 0
-  audio:
-    laugh: ['laugh.ogg']
 )
 
 generator.defineAssets(
@@ -112,4 +110,5 @@ generator.defineAssets(
     shoot: ['laser-shot.ogg']
     hit: ['laser-hit.ogg']
     powerup: ['powerup.ogg']
+    laugh: ['laugh.ogg']
 )
