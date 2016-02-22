@@ -32,7 +32,7 @@ Crafty.defineScene 'Game', (data = {}) ->
     script.run(options)
       .then -> Crafty.trigger('ScriptFinished', script)
       .catch (e) ->
-        console.error e unless e.message is 'sequence mismatch'
+        throw e unless e.message is 'sequence mismatch'
 
   Crafty.bind 'ScriptFinished', (script) ->
     checkpoint = Math.max(0, script.startAtCheckpoint - script.currentCheckpoint)
