@@ -6,9 +6,12 @@ Crafty.c 'Enemy',
       pointsOnDestroy: 50
     @invincible = no
 
-  enemy: ->
+  enemy: (options = {}) ->
+    options = _.defaults(options,
+      projectile: 'Bullet'
+    )
     Crafty.trigger('EnemySpawned', this)
-    @onHit 'Bullet',
+    @onHit options.projectile,
       (e) ->
         return if Game.paused
         return if @hidden

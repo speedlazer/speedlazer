@@ -10,24 +10,33 @@ class Game.Scripts.Train extends Game.EntityScript
       health: 900
       w: 1100
       h: 270
-    ).enemy().color('#808080')
+    ).enemy(
+      projectile: 'TrainBullet'
+    ).color('#808080')
     p
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @bindSequence 'Stage2', @stage2
+    @bindSequence 'Progress', @progress
+    @point = -1050
 
     @sequence(
-      @moveTo x: -1050
+      @moveTo x: @point
       @repeat @sequence(
         @moveTo y: 165, speed: 10
         @moveTo y: 155, speed: 10
       )
     )
 
-  stage2: ->
+  progress: ->
+    @bindSequence 'Progress', @progress
+
+    p = @point
+    @point += 200
     @sequence(
-      @moveTo x: -850
+      @moveTo x: p - 40, speed: 50
+      @wait 500
+      @moveTo x: @point, speed: 150
       @repeat @sequence(
         @moveTo y: 165, speed: 10
         @moveTo y: 155, speed: 10

@@ -31,12 +31,29 @@ class Game.Scripts.Stage2 extends Game.LazerScript
         options:
           identifier: 'Train'
 
-      @wait 15000
-      @say 'Game', 'Train attack!'
-      => Crafty('Train0').trigger 'Stage2'
-      @wait 15000
-      @say 'Game', 'Train attack!'
-      @wait 5000
+      @placeSquad Game.Scripts.TrainAssaulter,
+        amount: 3
+        delay: 5000
+        options:
+          from: 'top'
+      => Crafty('Train').trigger 'Progress'
+      @placeSquad Game.Scripts.TrainAssaulter,
+        amount: 3
+        delay: 5000
+        options:
+          from: 'bottom'
+      @placeSquad Game.Scripts.TrainAssaulter,
+        amount: 3
+        delay: 5000
+        options:
+          from: 'top'
+      => Crafty('Train').trigger 'Progress'
+      @placeSquad Game.Scripts.TrainAssaulter,
+        amount: 4
+        delay: 3000
+        options:
+          from: 'top'
+      => Crafty('Train').trigger 'Progress'
 
 
       @say 'Game', 'End of gameplay for now... \nStarting endless enemies'
