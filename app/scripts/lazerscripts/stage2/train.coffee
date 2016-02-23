@@ -15,6 +15,7 @@ class Game.Scripts.Train extends Game.EntityScript
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
+    @bindSequence 'Stage2', @stage2
 
     @sequence(
       @moveTo x: -1050
@@ -22,7 +23,15 @@ class Game.Scripts.Train extends Game.EntityScript
         @moveTo y: 165, speed: 10
         @moveTo y: 155, speed: 10
       )
-      @bigExplosion()
+    )
+
+  stage2: ->
+    @sequence(
+      @moveTo x: -850
+      @repeat @sequence(
+        @moveTo y: 165, speed: 10
+        @moveTo y: 155, speed: 10
+      )
     )
 
   onKilled: ->

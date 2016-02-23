@@ -31,11 +31,12 @@ class Game.Scripts.Stage2 extends Game.LazerScript
         options:
           identifier: 'Train'
 
-      #@wait 5000
-      #@say 'Game', 'Train attack!'
-      #@wait 5000
-      #@say 'Game', 'Train attack!'
-      #@wait 5000
+      @wait 15000
+      @say 'Game', 'Train attack!'
+      => Crafty('Train0').trigger 'Stage2'
+      @wait 15000
+      @say 'Game', 'Train attack!'
+      @wait 5000
 
 
       @say 'Game', 'End of gameplay for now... \nStarting endless enemies'
