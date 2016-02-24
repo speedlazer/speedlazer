@@ -11,36 +11,38 @@ generator.defineElement 'cloud', ->
     w = (Math.random() * 20) + 125
     h = (Math.random() * 10) + 50
     c1 = Crafty.e('2D, WebGL, cloud, Hideable, Horizon').attr(
-      z: -200,
-      w: w,
-      h: h,
-      topDesaturation: 0.6,
+      z: -300
+      w: w
+      h: h
+      topDesaturation: 0.6
       bottomDesaturation: 0.6
       alpha: (Math.random() * 0.8) + 0.2
+      lightness: .4
       blur: blur
     )
     if Math.random() < 0.7
       c1 = c1.flip('X')
-    @addBackground(200, y, c1, .5)
+    @addBackground(20 + (Math.random() * 400), y, c1, .5)
 
   if v < .6
     s = (Math.random() * .20) + .25
 
-    y = 230 - (s * 50)
+    y = 330 - (s * 150)
     w = ((Math.random() * 10) + 70) - (s * 20)
     h = ((Math.random() * 5) + 20) - (s * 10)
     c2 = Crafty.e('2D, WebGL, cloud, Hideable, Horizon').attr(
-      z: -250 + (s * 20),
-      w: w,
-      h: h,
-      topDesaturation: 1.0 - s,
+      z: -570
+      w: w
+      h: h
+      topDesaturation: 1.0 - s
       bottomDesaturation: 1.0 - s
       alpha: (Math.random() * 0.8) + 0.2
+      lightness: .4
       blur: blur
     )
     if Math.random() < 0.2
       c2 = c2.flip('X')
-    @addBackground(300, y, c2, s)
+    @addBackground(30 + Math.random() * 400, y, c2, s)
 
 generator.defineElement 'waterHorizon', ->
   h = Crafty.e('2D, WebGL, waterHorizon, SunBlock, Horizon')
@@ -338,6 +340,7 @@ generator.defineBlock class extends @Game.LevelScenery
     super
 
     @addElement 'cloud'
+    @addElement 'cloud'
     @addElement 'waterHorizon'
     @addElement 'water'
     @addElement 'waterFront'
@@ -416,6 +419,7 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
+    @addElement 'cloud'
     @addElement 'cityHorizon'
     @addElement 'water'
     @addElement 'waterFront'
@@ -468,6 +472,7 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
+    @addElement 'cloud'
     @addElement 'waterFront'
     @addElement 'water'
     @addElement 'cityHorizon'
