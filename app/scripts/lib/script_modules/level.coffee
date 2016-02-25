@@ -342,3 +342,15 @@ Game.ScriptModule.Level =
       })
       @level.screenShake(amount, options)
       @wait(options.duration)(sequence)
+
+   moveCamera: (settings = {}) ->
+     (sequence) =>
+       # TODO: Figure out skipping
+       console.log 'moveCamera'
+       options = _.defaults(options, {
+         y: 0
+         x: 0
+         duration: 1000
+       })
+
+

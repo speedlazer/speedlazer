@@ -17,8 +17,8 @@ class Game.Scripts.TrainAssaulter extends Game.EntityScript
     p = Crafty.e('Enemy, Color').attr(
       x: Crafty.viewport.width + 40
       y: startY * Crafty.viewport.height
-      speed: options.speed ? 100
-      health: 900
+      speed: options.speed ? 50
+      health: 500
       w: 30
       h: 30
       weaponOrigin: [0, 15]

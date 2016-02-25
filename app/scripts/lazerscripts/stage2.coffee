@@ -54,7 +54,10 @@ class Game.Scripts.Stage2 extends Game.LazerScript
         options:
           from: 'top'
       => Crafty('Train').trigger 'Progress'
+      @wait 1000
+      @moveCamera y: -100, duration: 3000
 
+      @wait 100000
 
       @say 'Game', 'End of gameplay for now... \nStarting endless enemies'
       @repeat @mineSwarm(points: no)

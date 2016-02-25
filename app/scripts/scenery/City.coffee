@@ -711,11 +711,10 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-
     h = 250
     @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock, Solid').attr(w: @delta.x, h: h, z: -10).color('#505050'))
     h2 = 300
     @add(0, @level.visibleHeight - 100 + h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h2, z: -10).color('#202020'))
-    h3 = 150
+    h3 = 350
     @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h3, z: -10).color('#505050'))
 

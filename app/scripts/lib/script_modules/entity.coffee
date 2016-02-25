@@ -186,6 +186,9 @@ Game.ScriptModule.Entity =
       if settings.y? and (-1 < settings.y < 2)
         settings.y *= Crafty.viewport.height
 
+      if settings.positionType is 'absoluteY'
+        settings.y += Crafty.viewport.y
+
       throw new Error('location invalid') unless _.isObject(location)
 
       seaLevel = @_getSeaLevel()
