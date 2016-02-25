@@ -3,7 +3,9 @@
 Development repo of a side scrolling shooter (SHMUP) made with Crafty.js and making use of the
 HTML5 Gamepad API.
 
-To try it out: http://matthijsgroen.github.io/game-play/dist/index.html
+# Play
+
+[Click here to play!](http://matthijsgroen.github.io/game-play/dist/index.html)
 
 To test if your gamepad is succesfully connected/working, use:
 http://html5gamepad.com/
