@@ -11,36 +11,38 @@ generator.defineElement 'cloud', ->
     w = (Math.random() * 20) + 125
     h = (Math.random() * 10) + 50
     c1 = Crafty.e('2D, WebGL, cloud, Hideable, Horizon').attr(
-      z: -200,
-      w: w,
-      h: h,
-      topDesaturation: 0.6,
+      z: -300
+      w: w
+      h: h
+      topDesaturation: 0.6
       bottomDesaturation: 0.6
       alpha: (Math.random() * 0.8) + 0.2
+      lightness: .4
       blur: blur
     )
     if Math.random() < 0.7
       c1 = c1.flip('X')
-    @addBackground(200, y, c1, .5)
+    @addBackground(20 + (Math.random() * 400), y, c1, .5)
 
   if v < .6
     s = (Math.random() * .20) + .25
 
-    y = 230 - (s * 50)
+    y = 330 - (s * 150)
     w = ((Math.random() * 10) + 70) - (s * 20)
     h = ((Math.random() * 5) + 20) - (s * 10)
     c2 = Crafty.e('2D, WebGL, cloud, Hideable, Horizon').attr(
-      z: -250 + (s * 20),
-      w: w,
-      h: h,
-      topDesaturation: 1.0 - s,
+      z: -570
+      w: w
+      h: h
+      topDesaturation: 1.0 - s
       bottomDesaturation: 1.0 - s
       alpha: (Math.random() * 0.8) + 0.2
+      lightness: .4
       blur: blur
     )
     if Math.random() < 0.2
       c2 = c2.flip('X')
-    @addBackground(300, y, c2, s)
+    @addBackground(30 + Math.random() * 400, y, c2, s)
 
 generator.defineElement 'waterHorizon', ->
   h = Crafty.e('2D, WebGL, waterHorizon, SunBlock, Horizon')
@@ -139,30 +141,31 @@ generator.defineElement 'cityHorizon', (mode) ->
   @addBackground(0, @level.visibleHeight - 177, e, .25)
 
 generator.defineElement 'city', ->
-  #col3 = '#66667D'
-  #@addBackground(0, @level.visibleHeight - 140, Crafty.e('2D, WebGL, Color').color(col3).attr(z: -400, w: 297, h: 83), .37)
-
-  bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon')
+  bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon, Flipable')
     .attr(z: -505) #, blur: 1.2)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.6, .6)
-  bg.flip('X') if (Math.random() > .5)
   @addBackground(0, @level.visibleHeight - 57 - 240, bg, .37)
 
-  e = Crafty.e('2D, WebGL, city, Collision, SunBlock, Horizon')
+  bg.flipX() if (Math.random() > .5)
+
+  e = Crafty.e('2D, WebGL, city, Collision, SunBlock, Horizon, Flipable')
     .attr(z: -305)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.4, .4)
-  e.flip('X') if (Math.random() > .5)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
-  c = Crafty.e('2D, Collision, SunBlock')
+  c = Crafty.e('2D, Collision, SunBlock, Flipable')
   c.attr(w: e.w, h: e.h)
-  c.collision([20, 155, 0, 80, 20, 20, 70, 20, 70, 155])
+  c.collision([220, 155, 200, 80, 220, 20, 270, 20, 270, 155])
 
   @addBackground(0, @level.visibleHeight - 290, e, .5)
-  @addBackground(400, @level.visibleHeight - 290, c, .5)
+  @addBackground(0, @level.visibleHeight - 290, c, .5)
+
+  if (Math.random() > .5)
+    e.flipX()
+    c.flipX()
 
 generator.defineElement 'city-bridge', ->
   bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon')
@@ -337,6 +340,7 @@ generator.defineBlock class extends @Game.LevelScenery
     super
 
     @addElement 'cloud'
+    @addElement 'cloud'
     @addElement 'waterHorizon'
     @addElement 'water'
     @addElement 'waterFront'
@@ -415,6 +419,7 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
+    @addElement 'cloud'
     @addElement 'cityHorizon'
     @addElement 'water'
     @addElement 'waterFront'
@@ -467,6 +472,7 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
+    @addElement 'cloud'
     @addElement 'waterFront'
     @addElement 'water'
     @addElement 'cityHorizon'
@@ -673,6 +679,42 @@ generator.defineBlock class extends @Game.LevelScenery
     @addElement 'cityHorizon'
     @addElement 'city'
 
-    h = 400 + 300
+    h = 150
     @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h, z: -10).color('#505050'))
+    h2 = 400
+    @add(0, @level.visibleHeight - 100 + h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h2, z: -10).color('#202020'))
+    h = 150
+    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h + h2, z: -10).color('#505050'))
+
+
+generator.defineBlock class extends @Game.LevelScenery
+  name: 'City.TrainTunnel'
+  delta:
+    x: 800
+    y: 0
+
+  generate: ->
+    super
+
+    h = 150
+    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock, Solid').attr(w: @delta.x, h: h, z: -10).color('#505050'))
+    h2 = 400
+    @add(0, @level.visibleHeight - 100 + h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h2, z: -10).color('#202020'))
+    h = 150
+    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h + h2, z: -10).color('#505050'))
+
+generator.defineBlock class extends @Game.LevelScenery
+  name: 'City.SmallerTrainTunnel'
+  delta:
+    x: 800
+    y: 0
+
+  generate: ->
+    super
+    h = 250
+    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock, Solid').attr(w: @delta.x, h: h, z: -10).color('#505050'))
+    h2 = 300
+    @add(0, @level.visibleHeight - 100 + h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h2, z: -10).color('#202020'))
+    h3 = 350
+    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h3, z: -10).color('#505050'))
 

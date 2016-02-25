@@ -24,7 +24,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @cityBay()
       @midstageBossfight()
 
-      @checkpoint @checkpointMidStage('Bay', 355000)
+      @checkpoint @checkpointMidStage('Bay', 400000)
       @say('General', 'Hunt him down!')
       @setSpeed 150
       @placeSquad Game.Scripts.Shooter,
@@ -67,7 +67,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @gainHeight(280, duration: 4000)
 
-      @checkpoint @checkpointMidStage('Skyline', 400000)
+      @checkpoint @checkpointMidStage('Skyline', 450000)
       @repeat 2, @parallel(
         @cloneEncounter()
         @placeSquad Game.Scripts.PlayerClone,

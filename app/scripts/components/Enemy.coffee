@@ -1,14 +1,17 @@
 Crafty.c 'Enemy',
   init: ->
-    @requires '2D, WebGL, Collision, Tween, Choreography, ViewportFixed, Hideable, SunBlock'
+    @requires '2D, WebGL, Collision, Tween, Choreography, ViewportFixed, Hideable, Flipable, Scalable, SunBlock'
     @attr
       pointsOnHit: 10
       pointsOnDestroy: 50
     @invincible = no
 
-  enemy: ->
+  enemy: (options = {}) ->
+    options = _.defaults(options,
+      projectile: 'Bullet'
+    )
     Crafty.trigger('EnemySpawned', this)
-    @onHit 'Bullet',
+    @onHit options.projectile,
       (e) ->
         return if Game.paused
         return if @hidden
@@ -50,27 +53,3 @@ Crafty.c 'Enemy',
       Crafty.trigger('EnemyDestroyed', this)
       @trigger('Destroyed', this)
       @destroy()
-
-  flipX: ->
-    try
-      @flip('X')
-      for c in @_children
-        relX = c.x - @x
-        c.attr?(
-          x: @x + @w - c.w - relX
-        )
-        c.flip?('X')
-    catch e
-      console.log e
-
-  unflipX: ->
-    try
-      @unflip('X')
-      for c in @_children
-        relX = (@x + @w - (c.x + c.w))
-        c.attr?(
-          x: @x + relX
-        )
-        c.unflip?('X')
-    catch e
-      console.log e

@@ -67,21 +67,16 @@ Game.ScriptModule.Entity =
   scale: (scale, options = {}) ->
     (sequence) =>
       @_verify(sequence)
-      oscale = @entity.scale
+      oscale = @entity.scale ? 1.0
       options = _.defaults(options,
         duration: Math.abs(scale - oscale) * 1000
       )
       d = WhenJS.defer()
 
-      targetW = (@entity.w / oscale) * scale
-      targetH = (@entity.h / oscale) * scale
-
       cleanup = ->
         defer.resolve()
 
       @entity.tween({
-        w: targetW
-        h: targetH
         scale: scale
       }, options.duration).one 'TweenEnd', ->
         @unbind 'Remove', cleanup
@@ -190,6 +185,9 @@ Game.ScriptModule.Entity =
 
       if settings.y? and (-1 < settings.y < 2)
         settings.y *= Crafty.viewport.height
+
+      if settings.positionType is 'absoluteY'
+        settings.y += Crafty.viewport.y
 
       throw new Error('location invalid') unless _.isObject(location)
 
