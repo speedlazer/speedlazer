@@ -122,7 +122,6 @@ Crafty.c 'Sun',
 
     l = .4 + (Math.max(horizonDistance - 150, 0) / 200)
     cloudLightness = Math.min(Math.max(.4, l), 1.0)
-    console.log { l, cloudLightness, horizonDistance }
 
     Crafty('cloud').each -> @attr lightness: cloudLightness
 
