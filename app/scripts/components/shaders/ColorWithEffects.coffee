@@ -104,11 +104,11 @@ Crafty.c 'ColorEffects',
     @trigger("Invalidate")
     this
 
-  colorOverride: (color) ->
+  colorOverride: (color, mode = 'all') ->
     return this unless color?
     c = {}
     Crafty.assignColor(color, c)
-    @attr overrideColor: c
+    @attr overrideColor: c, overrideColorMode: mode
 
     @trigger("Invalidate")
     this
