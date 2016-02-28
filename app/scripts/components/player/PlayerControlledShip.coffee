@@ -1,7 +1,15 @@
 Crafty.c 'PlayerControlledShip',
   init: ->
-    @requires '2D, WebGL, Color, Collision, Listener, SunBlock, WaterSplashes'
-    @attr w: 30, h: 30
+    @requires '2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, WaterSplashes'
+    @attr w: 71, h: 45
+    #@addComponent 'SolidHitBox'
+    @collision [
+      21, 13
+      56, 13
+      66, 32
+      35, 32
+    ]
+
     @bind 'Moved', (from) ->
       if @hit('Edge') or @hit('Solid') # Contain player within playfield
         setBack = {}

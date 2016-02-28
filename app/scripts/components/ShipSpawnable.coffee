@@ -26,7 +26,7 @@ Crafty.c 'ShipSpawnable',
         y: pos.y - Crafty.viewport.y
         z: @z
 
-    @ship.color(@color()) if @has('Color')
+    @ship.colorOverride(@color(), 'partial') if @has('Color')
     @assignControls(@ship) if @has('ControlScheme')
 
     @ship.installItem(item) for item in armed
@@ -56,10 +56,10 @@ Crafty.c 'ShipSpawnable',
       Crafty.e('Blast, Explosion').explode(
         x: @ship.x + (@ship.w / 2)
         y: @ship.y + (@ship.h / 2)
-        radius: @ship.w * 2
+        radius: @ship.w
       )
       Crafty.audio.play("explosion")
-      Crafty('ScrollWall').get(0).screenShake(20, 1000)
+      Crafty('ScrollWall').get(0).screenShake(10, 1000)
 
       @ship.trigger('Destroyed', @ship)
       @ship.destroy()

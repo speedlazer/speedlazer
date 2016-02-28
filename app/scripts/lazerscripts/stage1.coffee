@@ -5,7 +5,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   nextScript: 'Stage2'
 
   assets: ->
-    @loadAssets('shadow', 'explosion')
+    @loadAssets('shadow', 'explosion', 'playerShip')
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->

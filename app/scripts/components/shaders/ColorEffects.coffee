@@ -9,6 +9,7 @@ Crafty.c 'ColorEffects',
     @trigger("Invalidate")
     this
 
+  # mode: 'all', 'partial'
   colorOverride: (color, mode = 'all') ->
     return this unless color?
     c = {}
