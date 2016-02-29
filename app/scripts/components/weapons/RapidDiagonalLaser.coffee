@@ -17,10 +17,10 @@ Crafty.c 'RapidDiagonalLaser',
   install: (@ship) ->
     @level = @determineLevel @xp
     @attr
-      x: @ship.x + 10
-      y: @ship.y + 15
+      x: @ship.x + 20
+      y: @ship.y + 30
       z: @ship.z + 1
-      alpha: 1
+      alpha: 0
     @ship.attach this
 
     @shooting = no

@@ -17,10 +17,10 @@ Crafty.c 'RapidWeaponLaser',
   install: (@ship) ->
     @level = @determineLevel @xp
     @attr
-      x: @ship.x + 10
-      y: @ship.y + 15
+      x: @ship.x + 20
+      y: @ship.y + 30
       z: @ship.z + 1
-      alpha: 1
+      alpha: 0
     @ship.attach this
 
     @shooting = no
@@ -95,6 +95,7 @@ Crafty.c 'RapidWeaponLaser',
         y: @y + (@h / 2) - (settings.h / 2) + 1 + settings.o
         w: settings.w
         h: settings.h
+        z: 1
       .fire
         origin: this
         damage: 100
@@ -120,6 +121,7 @@ Crafty.c 'RapidWeaponLaser',
         y: @y + (@h / 2) - (settings.h / 2) - 2 - settings.o
         w: settings.w
         h: settings.h
+        z: -1
       .fire
         origin: this
         damage: 100

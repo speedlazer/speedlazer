@@ -92,27 +92,3 @@ Crafty.defaultShader 'Color', new Crafty.WebGLShader(
       bds + ((1 - s) * 1.15)
     )
 )
-
-Crafty.c 'ColorEffects',
-
-  colorDesaturation: (color) ->
-    return this unless color?
-    c = {}
-    Crafty.assignColor(color, c)
-    @attr desaturationColor: c
-
-    @trigger("Invalidate")
-    this
-
-  colorOverride: (color) ->
-    return this unless color?
-    c = {}
-    Crafty.assignColor(color, c)
-    @attr overrideColor: c
-
-    @trigger("Invalidate")
-    this
-
-  saturationGradient: (start, end) ->
-    @attr topDesaturation: start, bottomDesaturation: end
-    this

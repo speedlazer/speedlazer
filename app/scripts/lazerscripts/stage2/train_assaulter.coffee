@@ -2,6 +2,9 @@ Game = @Game
 Game.Scripts ||= {}
 
 class Game.Scripts.TrainAssaulter extends Game.EntityScript
+  assets: ->
+    @loadAssets('playerShip')
+
   spawn: (options) ->
     dir = options.from ? 'top'
     switch dir
@@ -14,15 +17,12 @@ class Game.Scripts.TrainAssaulter extends Game.EntityScript
       else
         startY = .6
         @endY = .3
-    p = Crafty.e('Enemy, Color').attr(
+    p = Crafty.e('PlayerClone').attr(
       x: Crafty.viewport.width + 40
       y: startY * Crafty.viewport.height
       speed: options.speed ? 50
       health: 500
-      w: 30
-      h: 30
-      weaponOrigin: [0, 15]
-    ).enemy().color('#FF0000')
+    ).playerClone()
     p.addComponent('BurstShot').burstShot
       projectile: (x, y, angle) =>
         projectile = Crafty.e('Projectile, Color, Enemy, TrainBullet').attr(

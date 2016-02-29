@@ -215,8 +215,8 @@ generator.defineBlock class extends @Game.LevelScenery
     @add(0, @level.visibleHeight - height - shipHeight, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: -23, w: shipLength, h: shipHeight))
     @add(50, @level.visibleHeight - height - shipHeight - cabinHeight, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: -23, w: 350, h: cabinHeight))
 
-    @elevator = Crafty.e('2D, WebGL, Color, Tween').color('#707070').attr(z: -22, w: 100, h: 5)
-    @add(140, @level.visibleHeight - 70, @elevator)
+    @elevator = Crafty.e('2D, WebGL, Color, Tween').color('#707070').attr(z: -22, w: 160, h: 5)
+    @add(110, @level.visibleHeight - 70, @elevator)
 
     @outside = Crafty.e('2D, WebGL, Color, Tween').color('#303030').attr(z: -21, w: shipLength + 10, h: shipHeight - 5, alpha: 0)
     @add(0, @level.visibleHeight - @outside.h - height, @outside)
@@ -274,7 +274,7 @@ generator.defineBlock class extends @Game.LevelScenery
     fixOtherShips = (newShip) ->
       return unless leadAnimated
       return unless leadAnimated.has 'Choreography'
-      newShip.attr(x: leadAnimated.x - 50, y: leadAnimated.y)
+      newShip.attr(x: leadAnimated.x - newShip.w - 10, y: leadAnimated.y)
       newShip.disableControl() if leadAnimated.disableControls
       newShip.addComponent 'Choreography'
       newShip.synchChoreography leadAnimated
@@ -290,7 +290,7 @@ generator.defineBlock class extends @Game.LevelScenery
       return fixOtherShips(this) unless index is 0
       leadAnimated = this
       @addComponent 'Choreography'
-      @attr x: 360 - (50 * index), y: Crafty.viewport.height - 100
+      @attr x: 360 - (50 * index), y: Crafty.viewport.height - 70 - @h
       @disableControl()
       @weaponsEnabled = no
       @choreography c

@@ -112,3 +112,14 @@ generator.defineAssets(
     powerup: ['powerup.ogg']
     laugh: ['laugh.ogg']
 )
+generator.defineAssets(
+  'player'
+  contents: ['playerShip']
+  spriteMap: 'playership.png'
+  sprites:
+    all:
+      tile: 94
+      tileh: 60
+      map:
+        playerShip: [0, 0]
+)

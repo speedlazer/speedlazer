@@ -1,8 +1,7 @@
 Crafty.c 'Invincible',
   init: ->
-    @requires 'Delay, Color'
+    @requires 'Delay'
 
-    @rawColor = @color()
     @delay(@_blink, 250, -1)
 
   _blink: ->
@@ -10,12 +9,11 @@ Crafty.c 'Invincible',
 
     @blinkOn = !@blinkOn
     if @blinkOn
-      @color(@rawColor, 0.5)
+      @alpha = .5
     else
-      @color(@rawColor, 100.0)
+      @alpha = 1.0
 
   remove: ->
-    @color @rawColor
     @cancelDelay @_blink
 
   invincibleDuration: (duration) ->

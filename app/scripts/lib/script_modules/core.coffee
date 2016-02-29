@@ -150,7 +150,7 @@ Game.ScriptModule.Core =
   endSequence: ->
     (sequence) =>
       @_verify(sequence)
-      throw new Error('sequence aborted')
+      throw new Error('sequence mismatch')
 
   # Define a checkpoint.
   # When the user starts at this checkpoint,
