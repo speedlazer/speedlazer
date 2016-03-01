@@ -66,6 +66,10 @@ Crafty.c 'ScrollWall',
       Crafty.viewport.xShift = xShift
       Crafty.viewport.yShift = yShift
 
+      Crafty.trigger('CameraMove',
+        x: Math.round(@x)
+        y: Math.round(@y)
+      )
       Crafty.trigger('ViewportMove',
         x: Math.round(x)
         y: Math.round(y)
