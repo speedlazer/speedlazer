@@ -159,5 +159,7 @@ Crafty.c 'Choreography',
     @shiftedX ?= 0
     @shiftedX = Math.max(0, @shiftedX - .5)
 
-    @attr x: point.x + @shiftedX - Crafty.viewport.xShift, y: point.y + shiftedY - Crafty.viewport.yShift
+    @attr
+      x: point.x + @shiftedX - Crafty.viewport.xShift
+      y: point.y + shiftedY - Crafty.viewport.yShift
 

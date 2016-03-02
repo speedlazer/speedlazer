@@ -97,17 +97,35 @@ Crafty.c 'ScrollWall',
     @shakes.push(
       amount: amount
       duration: duration
-      shakes: Math.ceil(duration / 100)
+      shakeX: Math.ceil(duration / 100)
+      shakeY: Math.ceil(duration / 200)
       easing: new Crafty.easing(duration, 'linear')
       startX: if Math.random() > 0.5 then -1 else 1
       startY: if Math.random() > 0.5 then -1 else 1
       coords: (v) ->
-        shake = Math.cos((Math.PI / 2) + (v * @shakes * (Math.PI / 2)))
+        shakeX = Math.cos((Math.PI / 2) + (v * @shakeX * (Math.PI / 2)))
+        shakeY = Math.cos((Math.PI / 2) + (v * @shakeY * (Math.PI / 2)))
         [
-          shake * amount * @startX
-          shake * amount * @startY
+          shakeX * amount * @startX
+          shakeY * amount * @startY
         ]
     )
+
+  cameraPan: (options) ->
+    #@shakes.push(
+      #amount: amount
+      #duration: duration
+      #shakes: Math.ceil(duration / 100)
+      #easing: new Crafty.easing(duration, 'linear')
+      #startX: if Math.random() > 0.5 then -1 else 1
+      #startY: if Math.random() > 0.5 then -1 else 1
+      #coords: (v) ->
+        #shake = Math.cos((Math.PI / 2) + (v * @shakes * (Math.PI / 2)))
+        #[
+          #shake * amount * @startX
+          #shake * amount * @startY
+        #]
+    #)
 
   scrollWall: (speed) ->
     if speed.x? && speed.y?

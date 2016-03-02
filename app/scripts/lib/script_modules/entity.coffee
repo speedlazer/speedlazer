@@ -122,7 +122,6 @@ Game.ScriptModule.Entity =
         if res = p?()
           x = res.x
           y = res.y
-          console.log x, y
         else
           [x, y] = p
 

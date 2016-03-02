@@ -346,11 +346,8 @@ Game.ScriptModule.Level =
    moveCamera: (settings = {}) ->
      (sequence) =>
        # TODO: Figure out skipping
-       console.log 'moveCamera'
-       options = _.defaults(options, {
-         y: 0
-         x: 0
-         duration: 1000
-       })
+       @level.cameraPan(settings)
+       @wait(settings.duration)(sequence)
+
 
 

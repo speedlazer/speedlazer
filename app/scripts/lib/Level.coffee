@@ -200,6 +200,14 @@ class Game.Level
     })
     @_scrollWall.screenShake(amount, options.duration)
 
+  cameraPan: (options = {}) ->
+    options = _.defaults(options, {
+      y: 0
+      x: 0
+      duration: 1000
+    })
+    @_scrollWall.cameraPan(options)
+
   setHeight: (deltaY) ->
     @_scrollWall.setHeight deltaY
     Crafty('PlayerControlledShip').each ->
