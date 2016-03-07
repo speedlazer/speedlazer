@@ -24,7 +24,45 @@ Crafty.c 'PlayerControlledShip',
     @superUsed = 0
     @weaponsEnabled = yes
 
+  _updateFlyingSpeed: (newSpeed, dt) ->
+    if newSpeed <= 0
+      @backFire.attr(alpha: 0)
+    else
+      if newSpeed < 50
+        correction = newSpeed / 2
+      else
+        correction = 25 + ((newSpeed / 700) * 100)
+
+      w = correction
+
+      @backFire.timing += (newSpeed / dt)
+      if @backFire.timing > 200
+        @backFire.attr(alpha: 0.6, timing: -40)
+        w = correction - 10
+      else if @backFire.timing > 0
+        @backFire.attr(alpha: 0.9)
+
+
+      h = w / 3
+      @backFire.attr(
+        x: @x - w + 9
+        y: @y + 20 - (h // 2)
+        w: w
+        h: h
+      )
+
   start: ->
+    @backFire = Crafty.e('2D, WebGL, shipEngineFire')
+    @backFire.timing = 0
+    @backFire.attr(
+      x: @x - 49
+      y: @y + 10
+      w: 60
+      h: 20
+      z: @z - 1
+    )
+    @attach @backFire
+
     @addComponent('Invincible').invincibleDuration(2000)
 
     @setSealevel(Crafty.viewport.height - 20)
@@ -46,6 +84,10 @@ Crafty.c 'PlayerControlledShip',
     @bind 'GameLoop', (fd) ->
       motionX = (@_forcedSpeed.x / 1000.0) * fd.dt
       motionY = (@_forcedSpeed.y / 1000.0) * fd.dt
+
+      shipSpeed = @_forcedSpeed.x + @vx
+      @_updateFlyingSpeed shipSpeed, fd.dt
+
       @x += motionX
       @y += motionY
       # Move player back if flying into an object

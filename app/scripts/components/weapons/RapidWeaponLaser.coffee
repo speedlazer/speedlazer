@@ -17,8 +17,8 @@ Crafty.c 'RapidWeaponLaser',
   install: (@ship) ->
     @level = @determineLevel @xp
     @attr
-      x: @ship.x + 20
-      y: @ship.y + 30
+      x: @ship.x + 15
+      y: @ship.y + 26
       z: @ship.z + 1
       alpha: 0
     @ship.attach this
