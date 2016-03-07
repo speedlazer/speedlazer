@@ -23,33 +23,30 @@ Crafty.c 'PlayerControlledShip',
     @secondaryWeapon = undefined
     @superUsed = 0
     @weaponsEnabled = yes
+    @currentRenderedSpeed = 0
 
   _updateFlyingSpeed: (newSpeed, dt) ->
-    if newSpeed <= 0
-      @backFire.attr(alpha: 0)
+    if newSpeed < 50
+      correction = newSpeed / 2
     else
-      if newSpeed < 50
-        correction = newSpeed / 2
-      else
-        correction = 25 + ((newSpeed / 700) * 100)
+      correction = 25 + ((newSpeed / 700) * 100)
 
-      w = correction
+    if @currentRenderedSpeed > correction
+      @currentRenderedSpeed -= 4
+    else if @currentRenderedSpeed < correction
+      @currentRenderedSpeed += 4
+    if @currentRenderedSpeed < 0
+      @currentRenderedSpeed = 0
 
-      @backFire.timing += (newSpeed / dt)
-      if @backFire.timing > 200
-        @backFire.attr(alpha: 0.6, timing: -40)
-        w = correction - 10
-      else if @backFire.timing > 0
-        @backFire.attr(alpha: 0.9)
+    w = @currentRenderedSpeed
 
-
-      h = w / 3
-      @backFire.attr(
-        x: @x - w + 9
-        y: @y + 20 - (h // 2)
-        w: w
-        h: h
-      )
+    h = w / 3
+    @backFire.attr(
+      x: @x - w + 9
+      y: @y + 20 - (h // 2)
+      w: w
+      h: h
+    )
 
   start: ->
     @backFire = Crafty.e('2D, WebGL, shipEngineFire')
@@ -85,8 +82,16 @@ Crafty.c 'PlayerControlledShip',
       motionX = (@_forcedSpeed.x / 1000.0) * fd.dt
       motionY = (@_forcedSpeed.y / 1000.0) * fd.dt
 
-      shipSpeed = @_forcedSpeed.x + @vx
-      @_updateFlyingSpeed shipSpeed, fd.dt
+      shipSpeedX = @_forcedSpeed.x + @vx
+      shipSpeedY = @_forcedSpeed.y + @vy
+      @_updateFlyingSpeed shipSpeedX, fd.dt
+
+      r = @rotation
+      newR = shipSpeedY / 20
+      if r < newR
+        @rotation += 1
+      else if r > newR
+        @rotation -= 1
 
       @x += motionX
       @y += motionY
@@ -94,6 +99,7 @@ Crafty.c 'PlayerControlledShip',
       if @hit('Edge') or @hit('Solid')
         @x -= motionX
         @y -= motionY
+        @rotation = r
 
       # still hitting an object? then we where forced in
       # and are crashed (squashed probably)
