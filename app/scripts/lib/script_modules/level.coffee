@@ -43,7 +43,8 @@ Game.ScriptModule.Level =
 
       options = _.defaults({}, settings.options,
         synchronizer: synchronizer,
-        choreography: 'swirl'
+        choreography:
+          swirl: .21
       )
       settings = _.defaults(settings,
         amount: 1

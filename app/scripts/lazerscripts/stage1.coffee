@@ -16,7 +16,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
 
     @sequence(
-      @introText()
+      #@introText()
       @tutorial()
       @droneTakeover()
       @oceanFighting()
@@ -160,7 +160,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           delay: 500
           drop: 'xp',
           options:
-            choreography: 'linear'
+            choreography:
+              swirl: .21
       )
       @sequence(
         @dropWeaponsForEachPlayer()
@@ -170,7 +171,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           delay: 500
           drop: 'xp',
           options:
-            choreography: 'swirl'
+            choreography:
+              swirl: 1 - .21
       )
     )
 

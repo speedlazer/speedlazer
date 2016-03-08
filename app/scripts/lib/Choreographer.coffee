@@ -1,19 +1,20 @@
 class Game.Choreographer
   constructor: ->
-    @_choreographies =
+    @_types =
       linear: @_getLinearChoreography
       swirl: @_getSwirlChoreography
 
   getPathForChoreography: (choreography) ->
-    @_choreographies[choreography]()
+    type = Object.keys(choreography)[0]
+    @_types[type] choreography[type]
 
-  _getLinearChoreography: ->
-    [[.5, .5]
-    [-20, .5]]
+  _getLinearChoreography: (height) ->
+    [[.5, height]
+    [-20, height]]
 
-  _getSwirlChoreography: ->
-    [[.5, .21]
+  _getSwirlChoreography: (height) ->
+    [[.5, height]
      [.156, .5]
-     [.5, .833]
-     [.86, .52]
-     [-20, .21]]
+     [.5, 1 - height]
+     [.86, .5]
+     [-20, height]]
