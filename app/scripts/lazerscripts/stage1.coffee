@@ -152,14 +152,26 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @sequence(
       @setScenery('Ocean')
       @say('General', 'We send some drones for some last manual target practice')
-      @repeat(2, @sequence(
+      @sequence(
         @dropWeaponsForEachPlayer()
         @wait(2000)
         @placeSquad Game.Scripts.Swirler,
           amount: 4
           delay: 500
-          drop: 'xp'
-      ))
+          drop: 'xp',
+          options:
+            choreography: 'linear'
+      )
+      @sequence(
+        @dropWeaponsForEachPlayer()
+        @wait(2000)
+        @placeSquad Game.Scripts.Swirler,
+          amount: 4
+          delay: 500
+          drop: 'xp',
+          options:
+            choreography: 'swirl'
+      )
     )
 
   dropWeaponsForEachPlayer: ->
@@ -391,4 +403,3 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @dropDiagonalsForEachPlayer()
       @wait 6000
     )
-

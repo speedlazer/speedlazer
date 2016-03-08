@@ -42,7 +42,8 @@ Game.ScriptModule.Level =
       synchronizer = new Game.Synchronizer
 
       options = _.defaults({}, settings.options,
-        synchronizer: synchronizer
+        synchronizer: synchronizer,
+        choreography: 'swirl'
       )
       settings = _.defaults(settings,
         amount: 1
@@ -348,6 +349,3 @@ Game.ScriptModule.Level =
        # TODO: Figure out skipping
        @level.cameraPan(settings)
        @wait(settings.duration)(sequence)
-
-
-

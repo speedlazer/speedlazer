@@ -2,6 +2,10 @@ Game = @Game
 Game.Scripts ||= {}
 
 class Game.Scripts.Swirler extends Game.EntityScript
+  constructor: (level) ->
+    super(level)
+    @choreographer = new Game.Choreographer()
+
   assets: ->
     @loadAssets('drone')
 
@@ -11,6 +15,7 @@ class Game.Scripts.Swirler extends Game.EntityScript
       y: Crafty.viewport.height / 2
       speed: options.speed ? 200
     )
+    @choreography = options.choreography
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
         cooldown: 2000
@@ -26,14 +31,7 @@ class Game.Scripts.Swirler extends Game.EntityScript
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @movePath [
-      [.5, .21]
-      [.156, .5]
-      [.5, .833]
-      [.86, .52]
-      [-20, .21]
-    ]
+    @movePath @choreographer.getPathForChoreography(@choreography)
 
   onKilled: ->
     @smallExplosion()
-
