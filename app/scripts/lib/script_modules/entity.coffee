@@ -110,10 +110,20 @@ Game.ScriptModule.Entity =
         skip: 0
         speed: @entity.speed
       )
+      console.log(settings)
       path.unshift [
         Math.round(@entity.x + Crafty.viewport.x)
         Math.round(@entity.y + Crafty.viewport.y)
       ]
+
+      if settings.origin?
+        path.unshift settings.origin
+        console.log("origin")
+      else
+        path.unshift [
+          Math.round(@entity.x + Crafty.viewport.x)
+          Math.round(@entity.y + Crafty.viewport.y)
+        ]
 
       pp = path[0]
 

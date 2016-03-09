@@ -34,7 +34,7 @@ class Game.Scripts.JoeryMissile extends Game.EntityScript
     location = options.location?()
     return null unless location
 
-    @location = [location.x, location.y]
+    @startLocation = [location.x, location.y]
 
     Crafty.e('Rocket').rocket(
       health: 250
@@ -53,7 +53,7 @@ class Game.Scripts.JoeryMissile extends Game.EntityScript
       
       @repeat @sequence(
         (sequence) =>
-          previousPoint = @location 
+          previousPoint = @startLocation 
           point = @targetLocation()()
           @point = [point.x, point.y]
    
@@ -61,7 +61,7 @@ class Game.Scripts.JoeryMissile extends Game.EntityScript
             @point
           ], origin: previousPoint)(sequence)
 
-          @location = [
+          @startLocation = [
             Math.round(@entity.x + Crafty.viewport.x)
             Math.round(@entity.y + Crafty.viewport.y)
           ]

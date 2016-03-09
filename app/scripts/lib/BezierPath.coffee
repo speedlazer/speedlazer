@@ -11,7 +11,7 @@ class Game.BezierPath
       x: (p.x * scale.x) - o.x
       y: (p.y * scale.y) - o.y
 
-  buildPathFrom: (points) ->
+  buildPathFrom: (points, skip = 0) ->
     result = {
       distance: 0
       curves: []
@@ -34,31 +34,37 @@ class Game.BezierPath
       dy = Math.abs(a.y - b.y)
       curveDistance = Math.sqrt((dx ** 2) + (dy ** 2))
       curvePoints = [b, c2, c1, a]
-      result.distance += curveDistance
+      result.distance += curveDistance if i >= skip
       result.curves.push {
         distance: curveDistance
         points: curvePoints
       }
     result
 
-  pointOnPath: (path, location) ->
-    [curve, v, ci] = @getCurveAndLocation(path, location)
+  pointOnPath: (path, location, skip = 0) ->
+
+    [curve, v, ci] = @getCurveAndLocation(path, location, skip)
     p = jsBezier.pointOnCurve(curve.points, v)
     p.c = ci
     p
 
-  angleOnPath: (path, location) ->
-    p1 = @pointOnPath(path, Math.min(location, 0.99))
-    p2 = @pointOnPath(path, Math.min(location + 0.01, 1.0))
+  angleOnPath: (path, location, skip = 0) ->
+    p1 = @pointOnPath(path, Math.min(location, 0.99), skip)
+    p2 = @pointOnPath(path, Math.min(location + 0.01, 1.0), skip)
     angle = Math.atan2(p1.y - p2.y, p1.x - p2.x)
     angle *= (180 / Math.PI)
     (angle + 360) % 360
 
-  getCurveAndLocation: (path, location) ->
+  getCurveAndLocation: (path, location, skip = 0) ->
     distance = 0.0
     currentCurve = 0
 
+    for i in [0...skip]
+      curve = path.curves[i]
+      distance -= curve.distance 
+
     curve = path.curves[currentCurve]
+
     relDistance = (distance + curve.distance) / path.distance
     while location > relDistance
       currentCurve += 1
