@@ -35,7 +35,7 @@ Crafty.c 'LargeDrone',
     @updatedHealth()
     @bind 'Hit', (data) =>
       if data.projectile.has('Bullet')
-        @shiftedX += 2
+        @shiftedX += 1
         Crafty.audio.play('hit', 1, .5)
         Crafty.e('Blast, LaserHit').explode(
           x: data.projectile.x
