@@ -54,8 +54,8 @@ class Game.Scripts.Stage2 extends Game.LazerScript
         options:
           from: 'top'
       => Crafty('Train').trigger 'Progress'
-      @wait 1000
-      @moveCamera y: -100, duration: 3000
+      @moveCamera y: 100, duration: 6000
+      @wait 3000
 
       @wait 100000
 
