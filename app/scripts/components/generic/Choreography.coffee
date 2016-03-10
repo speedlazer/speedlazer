@@ -4,12 +4,10 @@ Crafty.c 'Choreography',
     @bind('GameLoop', @_choreographyTick)
 
     @_ctypes =
-      #bezier: @_executeBezier
       delay: @_executeDelay
       linear: @_executeLinear
       viewport: @_executeMoveIntoViewport
       viewportBezier: @_executeViewportBezier
-      tween: @_executeTween
 
   remove: ->
     return unless @_currentPart?
@@ -95,9 +93,12 @@ Crafty.c 'Choreography',
         currentProperties[k] = @[k]
       @_currentPart.currentProperties = currentProperties
 
-  _executeLinear: (v) ->
-    @x = @_currentPart.x + (v * (@_currentPart.dx ? 0))
-    @y = @_currentPart.y + (v * (@_currentPart.dy ? 0))
+  _executeLinear: (v, prevv) ->
+    dx = (v * (@_currentPart.dx ? 0)) - (prevv * (@_currentPart.dx ? 0))
+    dy = (v * (@_currentPart.dy ? 0)) - (prevv * (@_currentPart.dy ? 0))
+
+    @x += dx
+    @y += dy
 
   _executeDelay: (v) ->
 
@@ -110,10 +111,6 @@ Crafty.c 'Choreography',
       motionX = (diffX * v)
       pmotionX = (diffX * prevv)
 
-      #@shiftedX ?= 0
-      #@shiftedX = Math.max(0, @shiftedX - .5)
-
-      #@x = @_currentPart.moveOriginX + motionX - Crafty.viewport.x + @shiftedX - Crafty.viewport.xShift
       @x += motionX - pmotionX #+ @shiftedX - Crafty.viewport.xShift
 
     destinationY = @_currentPart.dy
@@ -124,32 +121,7 @@ Crafty.c 'Choreography',
       motionY = (diffY * v)
       pmotionY = (diffY * prevv)
 
-      #@y = @_currentPart.moveOriginY + motionY - Crafty.viewport.y - Crafty.viewport.yShift
       @y += motionY - pmotionY
-
-  _executeTween: (v) ->
-    for k, p of @_currentPart.properties
-      @[k] = (1 - v) * @_currentPart.currentProperties[k] + (v * p)
-
-  #_executeBezier: (v) ->
-    #bp = new Game.BezierPath
-    #unless @_currentPart.bPath?
-      #scaled = bp.scalePoints(@_currentPart.path,
-        #origin:
-          #x: @x
-          #y: @y
-        #scale:
-          #x: Crafty.viewport.width
-          #y: Crafty.viewport.height
-      #)
-      #@_currentPart.bPath = bp.buildPathFrom scaled
-    #point = bp.pointOnPath(@_currentPart.bPath, v)
-
-    #if @_currentPart.rotation
-      #@rotation = bp.angleOnPath(@_currentPart.bPath, v)
-
-    #@x = point.x
-    #@y = point.y
 
   _executeViewportBezier: (v, prevv) ->
     bp = new Game.BezierPath
