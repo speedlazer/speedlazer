@@ -150,7 +150,7 @@ Game.ScriptModule.Entity =
           rotation: settings.rotate
           path: bezierPath
           duration: duration
-        ], compensateCameraSpeed: yes, skip: settings.skip
+        ], skip: settings.skip
       ).one('ChoreographyEnd', ->
         defer.resolve()
       )
