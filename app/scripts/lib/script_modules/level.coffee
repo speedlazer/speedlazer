@@ -350,4 +350,3 @@ Game.ScriptModule.Level =
        @wait(settings.duration)(sequence)
 
 
-

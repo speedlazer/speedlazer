@@ -150,7 +150,7 @@ Game.ScriptModule.Entity =
           rotation: settings.rotate
           path: bezierPath
           duration: duration
-        ], compensateCameraSpeed: yes, skip: settings.skip
+        ], skip: settings.skip
       ).one('ChoreographyEnd', ->
         defer.resolve()
       )
@@ -276,13 +276,11 @@ Game.ScriptModule.Entity =
     settings = _.defaults(settings, defaults)
     surfaceSize =
       w: @entity.w * 1.2
-      #x: @entity.x - 5
       h: (@entity.w / 3)
       alpha: 0.6
     maxSupportedDepth = 700
     maxDepthSize =
       w: @entity.w * .3
-      #x: @entity.x + (@entity.w * .3)
       h: 5
       alpha: 0.2
 
@@ -303,16 +301,10 @@ Game.ScriptModule.Entity =
       @entity.hideMarker.tween depthProperties, duration
 
     defer = WhenJS.defer()
-    type = if @entity.has('ViewportFixed')
-      'viewport'
-    else
-      settings.x = deltaX
-      settings.y = deltaY
-      'linear'
 
     newH = depthProperties?.h ? @entity.hideMarker.h
     @entity.hideMarker.choreography([
-      type: type
+      type: 'viewport'
       x: (settings.x + (@entity.w / 2)) - (@entity.hideMarker.w / 2)
       y: seaLevel - (newH / 2)
       maxSpeed: settings.speed
@@ -340,18 +332,11 @@ Game.ScriptModule.Entity =
     delta = Math.sqrt((deltaX ** 2) + (deltaY ** 2))
 
     defer = WhenJS.defer()
-    type = if @entity.has('ViewportFixed')
-      'viewport'
-    else
-      settings.x = deltaX
-      settings.y = deltaY
-      'linear'
-
     easing = settings.easing ? 'linear'
 
     @entity.choreography(
       [
-        type: type
+        type: 'viewport'
         x: settings.x
         y: settings.y
         easingFn: easing

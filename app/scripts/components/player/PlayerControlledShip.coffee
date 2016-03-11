@@ -92,6 +92,8 @@ Crafty.c 'PlayerControlledShip',
         @rotation += 1
       else if r > newR
         @rotation -= 1
+      if @hit('Edge') or @hit('Solid')
+        @rotation = r
 
       @x += motionX
       @y += motionY
@@ -99,7 +101,6 @@ Crafty.c 'PlayerControlledShip',
       if @hit('Edge') or @hit('Solid')
         @x -= motionX
         @y -= motionY
-        @rotation = r
 
       # still hitting an object? then we where forced in
       # and are crashed (squashed probably)
