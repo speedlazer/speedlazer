@@ -4,12 +4,10 @@ Crafty.c 'Choreography',
     @bind('GameLoop', @_choreographyTick)
 
     @_ctypes =
-      bezier: @_executeBezier
       delay: @_executeDelay
       linear: @_executeLinear
       viewport: @_executeMoveIntoViewport
       viewportBezier: @_executeViewportBezier
-      tween: @_executeTween
 
   remove: ->
     return unless @_currentPart?
@@ -32,12 +30,13 @@ Crafty.c 'Choreography',
     part = 0
     @_setupCPart(part)
     toSkip = options.skip
+    @_toSkip = 0
     if toSkip > 0
       while toSkip > @_currentPart.duration
         toSkip -= @_currentPart.duration
         part += 1
         @_setupCPart(part)
-      @_currentPart.easing.tick(toSkip)
+      @_toSkip = toSkip
     this
 
   synchChoreography: (otherComponent) ->
@@ -66,9 +65,11 @@ Crafty.c 'Choreography',
 
   _choreographyTick: (frameData) ->
     return unless @_currentPart?
-    @_currentPart.easing.tick(frameData.dt)
+    prevv = @_currentPart.easing.value()
+    @_currentPart.easing.tick(frameData.dt + @_toSkip)
+    @_toSkip = 0
     v = @_currentPart.easing.value()
-    @_ctypes[@_currentPart.type].apply(this, [v])
+    @_ctypes[@_currentPart.type].apply(this, [v, prevv])
 
     if @_options.compensateCameraSpeed
       @x += ((@camera.x - @_options.cameraLock.x))
@@ -92,24 +93,25 @@ Crafty.c 'Choreography',
         currentProperties[k] = @[k]
       @_currentPart.currentProperties = currentProperties
 
-  _executeLinear: (v) ->
-    @x = @_currentPart.x + (v * (@_currentPart.dx ? 0))
-    @y = @_currentPart.y + (v * (@_currentPart.dy ? 0))
+  _executeLinear: (v, prevv) ->
+    dx = (v * (@_currentPart.dx ? 0)) - (prevv * (@_currentPart.dx ? 0))
+    dy = (v * (@_currentPart.dy ? 0)) - (prevv * (@_currentPart.dy ? 0))
+
+    @x += dx
+    @y += dy
 
   _executeDelay: (v) ->
 
-  _executeMoveIntoViewport: (v) ->
+  _executeMoveIntoViewport: (v, prevv) ->
     # the goal are current coordinates on screen
     destinationX = @_currentPart.dx
     if destinationX
       @_currentPart.moveOriginX ?= @_currentPart.x + Crafty.viewport.x - Crafty.viewport.xShift
       diffX = destinationX - @_currentPart.moveOriginX
       motionX = (diffX * v)
+      pmotionX = (diffX * prevv)
 
-      @shiftedX ?= 0
-      @shiftedX = Math.max(0, @shiftedX - .5)
-
-      @x = @_currentPart.moveOriginX + motionX - Crafty.viewport.x + @shiftedX - Crafty.viewport.xShift
+      @x += motionX - pmotionX #+ @shiftedX - Crafty.viewport.xShift
 
     destinationY = @_currentPart.dy
     if destinationY
@@ -117,49 +119,28 @@ Crafty.c 'Choreography',
       diffY = destinationY - @_currentPart.moveOriginY
 
       motionY = (diffY * v)
-      @y = @_currentPart.moveOriginY + motionY - Crafty.viewport.y - Crafty.viewport.yShift
+      pmotionY = (diffY * prevv)
 
-  _executeTween: (v) ->
-    for k, p of @_currentPart.properties
-      @[k] = (1 - v) * @_currentPart.currentProperties[k] + (v * p)
+      @y += motionY - pmotionY
 
-  _executeBezier: (v) ->
+  _executeViewportBezier: (v, prevv) ->
     bp = new Game.BezierPath
     unless @_currentPart.bPath?
-      scaled = bp.scalePoints(@_currentPart.path,
-        origin:
-          x: @x
-          y: @y
-        scale:
-          x: Crafty.viewport.width
-          y: Crafty.viewport.height
-      )
-      @_currentPart.bPath = bp.buildPathFrom scaled
-    point = bp.pointOnPath(@_currentPart.bPath, v)
-
-    if @_currentPart.rotation
-      @rotation = bp.angleOnPath(@_currentPart.bPath, v)
-
-    @x = point.x
-    @y = point.y
-
-  _executeViewportBezier: (v) ->
-    bp = new Game.BezierPath
-    unless @_currentPart.bPath?
-      @_currentPart.bPath = bp.buildPathFrom @_currentPart.path, 1
+      @_currentPart.bPath = bp.buildPathFrom @_currentPart.path
     unless @_currentPart.viewport?
       @_currentPart.viewport =
         y: Crafty.viewport.y
 
     if @_currentPart.rotation
-      @rotation = bp.angleOnPath(@_currentPart.bPath, v, 1)
+      @rotation = bp.angleOnPath(@_currentPart.bPath, v)
 
     shiftedY = (@_currentPart.viewport.y - Crafty.viewport.y)
-    point = bp.pointOnPath(@_currentPart.bPath, v, 1)
+    point = bp.pointOnPath(@_currentPart.bPath, v)
+    ppoint = bp.pointOnPath(@_currentPart.bPath, prevv)
     @shiftedX ?= 0
+    dShiftX = @shiftedX
     @shiftedX = Math.max(0, @shiftedX - .5)
 
-    @attr
-      x: point.x + @shiftedX - Crafty.viewport.xShift
-      y: point.y + shiftedY - Crafty.viewport.yShift
+    @x += point.x - ppoint.x + (@shiftedX - dShiftX)
+    @y += point.y - ppoint.y
 

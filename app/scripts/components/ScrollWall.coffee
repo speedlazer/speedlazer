@@ -2,6 +2,7 @@ Crafty.c 'ScrollWall',
   init: ->
     @requires('2D, Edge, Collision')
     @shakes = []
+    @motions = []
     @attr
       x: 0
       y: 0
@@ -58,6 +59,21 @@ Crafty.c 'ScrollWall',
         xShift += coords[0]
         yShift += coords[1]
         @shakes.splice(index, 1) if shake.easing.complete
+
+      cameraPan =
+        x: 0
+        y: 0
+      for motion, index in @motions by -1
+        coordsBefore = motion.coords(motion.easing.value())
+        motion.easing.tick(fd.dt)
+        coordsAfter = motion.coords(motion.easing.value())
+        deltaX = coordsAfter[0] - coordsBefore[0]
+        deltaY = coordsAfter[1] - coordsBefore[1]
+        cameraPan.x += deltaX
+        cameraPan.y += deltaY
+        @x += deltaX
+        @y += deltaY
+        @motions.splice(index, 1) if motion.easing.complete
       x = @x + xShift
       y = @y + yShift
 
@@ -69,6 +85,7 @@ Crafty.c 'ScrollWall',
       Crafty.trigger('CameraMove',
         x: Math.round(@x)
         y: Math.round(@y)
+        panning: cameraPan
       )
       Crafty.trigger('ViewportMove',
         x: Math.round(x)
@@ -112,20 +129,13 @@ Crafty.c 'ScrollWall',
     )
 
   cameraPan: (options) ->
-    #@shakes.push(
-      #amount: amount
-      #duration: duration
-      #shakes: Math.ceil(duration / 100)
-      #easing: new Crafty.easing(duration, 'linear')
-      #startX: if Math.random() > 0.5 then -1 else 1
-      #startY: if Math.random() > 0.5 then -1 else 1
-      #coords: (v) ->
-        #shake = Math.cos((Math.PI / 2) + (v * @shakes * (Math.PI / 2)))
-        #[
-          #shake * amount * @startX
-          #shake * amount * @startY
-        #]
-    #)
+    @motions.push(
+      easing: new Crafty.easing(options.duration, 'easeInOutQuad')
+      x: options.x ? 0
+      y: options.y ? 0
+      coords: (v) ->
+        [@x * v, @y * v]
+    )
 
   scrollWall: (speed) ->
     if speed.x? && speed.y?
