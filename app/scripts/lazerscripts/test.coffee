@@ -20,15 +20,12 @@ class Game.Scripts.Test extends Game.LazerScript
       )
     )
 
-
-
 class Game.Scripts.JoeryMissile extends Game.EntityScript
   spawn: (options) ->
     options = _.defaults(options,
       pointsOHit: 125
       pointsOnDestroy: 50
     )
-
     return null unless options.location?
 
     location = options.location?()
