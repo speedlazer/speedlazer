@@ -48,26 +48,9 @@ class Game.Scripts.JoeryMissile extends Game.EntityScript
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @sequence( 
+    @sequence(
       @pickTarget('PlayerControlledShip')
-      
-      @repeat @sequence(
-        (sequence) =>
-          previousPoint = @startLocation 
-          point = @targetLocation()()
-          @point = [point.x, point.y]
-   
-          r = @movePath([
-            @point
-          ], origin: previousPoint)(sequence)
-
-          @startLocation = [
-            Math.round(@entity.x + Crafty.viewport.x)
-            Math.round(@entity.y + Crafty.viewport.y)
-          ]
-
-          r  
-      )
+      @repeat @movePath([@targetLocation()], continuePath: yes)
     )
 
   onKilled: ->
