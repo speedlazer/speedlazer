@@ -101,7 +101,7 @@ Game.ScriptModule.Entity =
   # - speed: override the speed of the entity (in px/sec)
   # - rotate: yes/no should the entity rotate along the path?
   # - skip: amount of milliseconds to skip in this animation
-  movePath: (path, settings = {}) ->
+  movePath: (inputPath, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
       return unless @enemy.alive
@@ -109,7 +109,10 @@ Game.ScriptModule.Entity =
         rotate: yes
         skip: 0
         speed: @entity.speed
+        continuePath: no
       )
+      path = [].concat inputPath
+
       path.unshift [
         Math.round(@entity.x + Crafty.viewport.x)
         Math.round(@entity.y + Crafty.viewport.y)
@@ -139,7 +142,9 @@ Game.ScriptModule.Entity =
         c = Math.sqrt(a**2 + b**2)
         d += c
         pp = pn
-        { x: x - Crafty.viewport.x, y: y - Crafty.viewport.y }
+        x -= Crafty.viewport.x
+        y -= Crafty.viewport.y
+        { x, y }
       )
       duration = (d / settings.speed) * 1000
 
@@ -148,6 +153,7 @@ Game.ScriptModule.Entity =
         [
           type: 'viewportBezier'
           rotation: settings.rotate
+          continuePath: settings.continuePath
           path: bezierPath
           duration: duration
         ], skip: settings.skip
