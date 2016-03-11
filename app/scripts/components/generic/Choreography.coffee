@@ -126,7 +126,28 @@ Crafty.c 'Choreography',
   _executeViewportBezier: (v, prevv) ->
     bp = new Game.BezierPath
     unless @_currentPart.bPath?
-      @_currentPart.bPath = bp.buildPathFrom @_currentPart.path
+      p = @_currentPart.path
+      if @_lastBezierPathPoint? and @_currentPart.continuePath
+        p.unshift {
+          x: @_lastBezierPathPoint.x
+          y: @_lastBezierPathPoint.y
+        }
+      @_currentPart.bPath = bp.buildPathFrom p
+
+      if @_lastBezierPathPoint? and @_currentPart.continuePath
+        firstCurve = @_currentPart.bPath.curves.shift()
+        # We need to recalculate the distance. If we would just
+        # subtract the distance of the first curve of the total,
+        # somehow JS manages to be off at 10 decimals at the fragment.
+        # ... Which breaks the determining of points at the curve
+        recalcDist = 0.0
+        recalcDist += c.distance for c in @_currentPart.bPath.curves
+        @_currentPart.bPath.distance = recalcDist
+        @_lastBezierPathPoint = null
+
+      if @_currentPart.continuePath
+        @_lastBezierPathPoint = @_currentPart.path[@_currentPart.path.length - 2]
+
     unless @_currentPart.viewport?
       @_currentPart.viewport =
         y: Crafty.viewport.y
