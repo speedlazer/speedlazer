@@ -10,7 +10,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
     weaponsEnabled: no
 
   assets: ->
-    @loadAssets('general')
+    @loadAssets('shadow', 'explosion', 'playerShip')
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
@@ -198,19 +198,20 @@ class Game.Scripts.Lunch extends Game.LazerScript
       => @player(1).ship().superUsed = 0
     )
 
-  @_waitForSuperWeapon: ->
-    d = WhenJS.defer()
-    used = no
-    i = setInterval(
-      =>
-        if @player(1).ship()?
-          used = @player(1).ship().superUsed isnt 0
-        if used
-          clearInterval i
-          d.resolve()
-      300
-    )
-    d.promise
+  _waitForSuperWeapon: ->
+    =>
+      d = WhenJS.defer()
+      used = no
+      i = setInterval(
+        =>
+          if @player(1).ship()?
+            used = @player(1).ship().superUsed isnt 0
+          if used
+            clearInterval i
+            d.resolve()
+        300
+      )
+      d.promise
 
   mineSwarm: (options = { direction: 'right' })->
     @placeSquad Game.Scripts.JumpMine,
