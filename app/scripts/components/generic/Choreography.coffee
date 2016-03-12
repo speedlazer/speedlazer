@@ -149,14 +149,17 @@ Crafty.c 'Choreography',
       # if the next curve has `continuePath` enabled.
       #
       #     ,--B-,.
-      #   .`       `';.
+      #   ,`       `';.
       #  :             `C
       # A
       #
       # In the path from A to B, B is the last point. The new path is
       # a continuation, so B is its starting point. To have the line
       # from B to C bend in a natural manner, Point A must be evaluated
-      # as well for the bending of B towards C
+      # as well for the bending of B towards C. So for the proper curve for
+      # B to C, we do not need the last point of the previous path (since it
+      # is the same as the first of the new path, but we actually need the
+      # single-last one. (length - 2)
       @_lastBezierPathPoint = @_currentPart.path[@_currentPart.path.length - 2]
 
     unless @_currentPart.viewport?
