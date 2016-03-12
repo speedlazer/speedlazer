@@ -145,8 +145,19 @@ Crafty.c 'Choreography',
         @_currentPart.bPath.distance = recalcDist
         @_lastBezierPathPoint = null
 
-      if @_currentPart.continuePath
-        @_lastBezierPathPoint = @_currentPart.path[@_currentPart.path.length - 2]
+      # We always remember the single-last point for bending of the next curve,
+      # if the next curve has `continuePath` enabled.
+      #
+      #     ,--B-,.
+      #   .`       `';.
+      #  :             `C
+      # A
+      #
+      # In the path from A to B, B is the last point. The new path is
+      # a continuation, so B is its starting point. To have the line
+      # from B to C bend in a natural manner, Point A must be evaluated
+      # as well for the bending of B towards C
+      @_lastBezierPathPoint = @_currentPart.path[@_currentPart.path.length - 2]
 
     unless @_currentPart.viewport?
       @_currentPart.viewport =
