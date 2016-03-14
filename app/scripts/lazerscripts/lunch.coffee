@@ -28,9 +28,9 @@ class Game.Scripts.Lunch extends Game.LazerScript
         options:
           grid: new Game.LocationGrid
             x:
-              start: 680
+              start: 1.1
             y:
-              start: 250
+              start: .5
 
       @nextSlide()
       @updateTitle 'More enemies'
@@ -42,13 +42,13 @@ class Game.Scripts.Lunch extends Game.LazerScript
           options:
             grid: new Game.LocationGrid
               x:
-                start: 680
+                start: 1.2
                 steps: 4
-                stepSize: 40
+                stepSize: .2
               y:
-                start: 100
+                start: .2
                 steps: 5
-                stepSize: 50
+                stepSize: .1
         @sequence(
           @waitForScenery 'OpenSpace'
           @setSpeed 0
