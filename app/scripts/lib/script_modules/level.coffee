@@ -349,4 +349,11 @@ Game.ScriptModule.Level =
        @level.cameraPan(settings)
        @wait(settings.duration)(sequence)
 
+  setWeapons: (newWeapons) ->
+    (sequence) =>
+      @_verify(sequence)
+
+      Crafty('PlayerControlledShip').each ->
+        @clearItems()
+        @installItem item for item in newWeapons
 

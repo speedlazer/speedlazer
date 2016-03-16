@@ -2,13 +2,6 @@ Game = @Game
 Game.Scripts ||= {}
 
 class Game.Scripts.Lunch extends Game.LazerScript
-  metadata:
-    namespace: 'City'
-    speed: 0
-    armedPlayers: 'oldlasers'
-    title: 'In the beginning...'
-    weaponsEnabled: no
-
   assets: ->
     @loadAssets('shadow', 'explosion', 'playerShip')
 
@@ -20,7 +13,10 @@ class Game.Scripts.Lunch extends Game.LazerScript
 
     @sequence(
       @setScenery('Blackness')
+      @setWeapons([])
       @enableWeapons()
+      @nextSlide()
+      @setWeapons(['oldlasers'])
       @nextSlide()
 
       @updateTitle 'First enemy'
