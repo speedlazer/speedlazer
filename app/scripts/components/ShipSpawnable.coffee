@@ -20,13 +20,14 @@ Crafty.c 'ShipSpawnable',
     pos = @spawnPosition()
     pos.x = 10 if pos.x < 10
 
-    @ship = Crafty.e('PlayerControlledShip')
+    @ship = Crafty.e('PlayerControlledCube')
       .attr
         x: pos.x - Crafty.viewport.x
         y: pos.y - Crafty.viewport.y
         z: @z
 
-    @ship.colorOverride(@color(), 'partial') if @has('Color')
+    @ship.colorOverride?(@color(), 'partial') if @has('ColorEffects')
+    @ship.color?(@color()) if @has('Color')
     @assignControls(@ship) if @has('ControlScheme')
 
     @ship.installItem(item) for item in armed
