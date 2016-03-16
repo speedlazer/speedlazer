@@ -81,13 +81,13 @@ class Game.Scripts.Lunch extends Game.LazerScript
           options:
             grid: new Game.LocationGrid
               x:
-                start: 680
+                start: 1.2
                 steps: 4
-                stepSize: 40
+                stepSize: .2
               y:
-                start: 100
+                start: .3
                 steps: 5
-                stepSize: 50
+                stepSize: .15
         @wait 3000
       )
 
