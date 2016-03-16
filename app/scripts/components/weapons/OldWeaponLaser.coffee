@@ -57,10 +57,10 @@ Crafty.c 'OldWeaponLaser',
         damage: 100
         speed: @ship._forcedSpeed.x + settings.speed
         direction: 0
-      .bind 'HitTarget', =>
+      .bind 'HitTarget', (target) =>
         @addXP(1)
-        @ship.trigger('BulletHit')
-      .bind 'DestroyTarget', =>
+        @ship.trigger('BulletHit', target)
+      .bind 'DestroyTarget', (target) =>
         @addXP(5)
-        @ship.trigger('BulletDestroyedTarget')
+        @ship.trigger('BulletDestroyedTarget', target)
 
