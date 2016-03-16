@@ -13,13 +13,15 @@ class Game.Scripts.Lunch extends Game.LazerScript
 
     @sequence(
       @setScenery('Blackness')
+      @hideHud(duration: 0)
       @setWeapons([])
       @enableWeapons()
       @nextSlide()
       @setWeapons(['oldlasers'])
       @nextSlide()
-
       @updateTitle 'First enemy'
+      @showHud()
+
       @placeSquad Game.Scripts.Slider,
         options:
           grid: new Game.LocationGrid

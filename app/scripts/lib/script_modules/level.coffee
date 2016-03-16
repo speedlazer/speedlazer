@@ -357,3 +357,28 @@ Game.ScriptModule.Level =
         @clearItems()
         @installItem item for item in newWeapons
 
+  hideHud: (settings = {}) ->
+    settings = _.defaults(settings,
+      visible: no
+    )
+    @toggleHud(settings)
+
+  showHud: (settings = {}) ->
+    settings = _.defaults(settings,
+      visible: yes
+    )
+    @toggleHud(settings)
+
+  toggleHud: (settings = {}) ->
+    (sequence) =>
+      @_verify(sequence)
+      settings = _.defaults(settings,
+        duration: 1000
+      )
+      Crafty('HUD').each ->
+        @addComponent('Tween')
+        @tween(
+          alpha: if settings.visible then 1.0 else 0.0
+          settings.duration
+        )
+      @wait(settings.duration)(sequence)
