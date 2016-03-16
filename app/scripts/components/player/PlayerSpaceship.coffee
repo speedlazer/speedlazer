@@ -1,6 +1,6 @@
-Crafty.c 'PlayerControlledShip',
+Crafty.c 'PlayerSpaceship',
   init: ->
-    @requires '2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, WaterSplashes'
+    @requires '2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, WaterSplashes, PlayerControlledShip'
     @attr w: 71, h: 45
     #@addComponent 'SolidHitBox'
     @collision [
@@ -166,6 +166,11 @@ Crafty.c 'PlayerControlledShip',
     if item is 'diagonals'
       @_installPrimary 'RapidDiagonalLaser'
       return true
+
+  clearItems: ->
+    @primaryWeapon?.uninstall()
+    for w in @primaryWeapons
+      w.destroy()
 
   _installPrimary: (componentName) ->
     weapon = Crafty.e(componentName)
