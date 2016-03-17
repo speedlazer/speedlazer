@@ -4,21 +4,21 @@ Game.Scripts ||= {}
 class Game.Scripts.Sine extends Game.EntityScript
 
   spawn: ->
-    Crafty.e('Drone').drone(
+    Crafty.e('OldDrone').drone(
       health: 200
-      x: 680
+      x: Crafty.viewport.width + 40
       y: 200
       speed: 250
     )
 
   execute: ->
     @movePath [
-      [500, 150]
-      [400, 225]
-      [300, 300]
-      [200, 225]
-      [100, 150]
-      [0, 225]
-      [-100, 300]
+      [.78,  .315]
+      [.625, .468]
+      [.468, .625]
+      [.312, .468]
+      [.156, .315]
+      [0,    .468]
+      [-.3,  .625]
     ], rotate: no
 

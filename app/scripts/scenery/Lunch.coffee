@@ -110,7 +110,7 @@ generator.defineBlock class extends @Game.LevelScenery
     super
     @addBackground(380, @level.visibleHeight - 360, Crafty.e('2D, WebGL, Color').color('#303030').attr({ z: 22, w: 40, h: 360 }), 1.5)
     @addBackground(380, @level.visibleHeight - 180, Crafty.e('2D, WebGL, Color').color('#505050').attr({ z: -110, w: 40, h: 180 }), .5)
-    @addBackground(380, @level.visibleHeight - 90, Crafty.e('2D, WebGL, Color').color('#606060').attr({ z: -200, w: 40, h: 90 }), .25)
+    @addBackground(380, @level.visibleHeight - 90, Crafty.e('2D, WebGL, Color').color('#606060').attr({ z: -800, w: 40, h: 90 }), .25)
 
     h = 15
     @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 350, h: h }))

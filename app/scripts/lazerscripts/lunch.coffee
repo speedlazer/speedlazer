@@ -87,7 +87,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
               y:
                 start: .3
                 steps: 5
-                stepSize: .15
+                stepSize: .1
         @wait 3000
       )
 
