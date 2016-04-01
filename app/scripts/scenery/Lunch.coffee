@@ -1,5 +1,39 @@
 generator = @Game.levelGenerator
 
+generator.defineElement 'blockcloud', ->
+  v = Math.random()
+  blur = (Math.random() * 4.0)
+  if v > .2
+    y = (Math.random() * 20) + 100
+    w = (Math.random() * 20) + 125
+    h = (Math.random() * 10) + 50
+    c1 = Crafty.e('2D, WebGL, Color').attr(
+      z: -300
+      w: w
+      h: h
+      alpha: (Math.random() * 0.8) + 0.2
+    ).color '#FFFFFF'
+    if Math.random() < 0.7
+      c1 = c1.flip('X')
+    @addBackground(20 + (Math.random() * 400), y, c1, .5)
+
+  if v < .6
+    s = (Math.random() * .20) + .25
+
+    y = 330 - (s * 150)
+    w = ((Math.random() * 10) + 70) - (s * 20)
+    h = ((Math.random() * 5) + 20) - (s * 10)
+    c2 = Crafty.e('2D, WebGL, Color').attr(
+      z: -570
+      w: w
+      h: h
+      alpha: (Math.random() * 0.8) + 0.2
+    ).color('#FFFFFF')
+    if Math.random() < 0.2
+      c2 = c2.flip('X')
+    @addBackground(30 + Math.random() * 400, y, c2, s)
+
+
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.Blackness'
   delta:
@@ -25,7 +59,7 @@ generator.defineBlock class extends @Game.LevelScenery
 
     goldenStripe = Crafty.e('2D, WebGL, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
     @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
-    @addElement 'cloud'
+    @addElement 'blockcloud'
     @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
     @addBackground(0, @level.visibleHeight - 90, Crafty.e('2D, WebGL, Color').color('#3030B0').attr({ z: -301, w: (@delta.x * .5) + 1, h: 70 }), .5)
 

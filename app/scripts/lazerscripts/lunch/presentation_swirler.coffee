@@ -34,6 +34,8 @@ class Game.Scripts.PresentationSwirler extends Game.EntityScript
     ]
 
   onKilled: ->
-    #@smallExplosion()
-    @oldExplosion()
+    @oldExplosion(@location(
+      offsetX: 20
+      offsetY: 20
+    ))
 
