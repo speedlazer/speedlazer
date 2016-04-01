@@ -35,6 +35,9 @@ Crafty.c 'PlayerControlledCube',
         @pickUp(pu.obj)
         @trigger('PowerUp', pu.obj)
 
+    @bind 'Hit', ->
+      @trigger 'Destroyed', this
+
     @bind 'GameLoop', (fd) ->
       motionX = (@_forcedSpeed.x / 1000.0) * fd.dt
       motionY = (@_forcedSpeed.y / 1000.0) * fd.dt

@@ -78,6 +78,16 @@ Crafty.c 'PlayerSpaceship',
         @pickUp(pu.obj)
         @trigger('PowerUp', pu.obj)
 
+    @bind 'Hit', ->
+      Crafty.e('Blast, Explosion').explode(
+        x: @ship.x + (@ship.w / 2)
+        y: @ship.y + (@ship.h / 2)
+        radius: @ship.w
+      )
+      Crafty.audio.play("explosion")
+      Crafty('ScrollWall').get(0).screenShake(10, 1000)
+      @trigger 'Destroyed', this
+
     @bind 'GameLoop', (fd) ->
       motionX = (@_forcedSpeed.x / 1000.0) * fd.dt
       motionY = (@_forcedSpeed.y / 1000.0) * fd.dt
