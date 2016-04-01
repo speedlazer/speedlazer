@@ -12,6 +12,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
     Game.explosionMode = 'block'
 
     @sequence(
+      @setShipType('PlayerControlledCube')
       @setScenery('Blackness')
       @hideHud(duration: 0)
       @setWeapons([])

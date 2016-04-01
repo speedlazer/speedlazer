@@ -382,3 +382,9 @@ Game.ScriptModule.Level =
           settings.duration
         )
       @wait(settings.duration)(sequence)
+
+  setShipType: (newType) ->
+    (sequence) =>
+      @_verify(sequence)
+      @level.setShipType newType
+
