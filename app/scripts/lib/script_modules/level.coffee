@@ -352,10 +352,10 @@ Game.ScriptModule.Level =
   setWeapons: (newWeapons) ->
     (sequence) =>
       @_verify(sequence)
-
       Crafty('PlayerControlledShip').each ->
         @clearItems()
         @installItem item for item in newWeapons
+      @level.setStartWeapons newWeapons
 
   hideHud: (settings = {}) ->
     settings = _.defaults(settings,

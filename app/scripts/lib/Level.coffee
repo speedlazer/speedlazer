@@ -185,6 +185,9 @@ class Game.Level
       ship.weaponsEnabled =  @_weaponsEnabled
       ship.disableControl() unless @_controlsEnabled
 
+      if @playerStartWeapons?
+        ship.installItem item for item in @playerStartWeapons
+
     Crafty('Player ControlScheme').each ->
       @spawnShip()
 
@@ -314,4 +317,6 @@ class Game.Level
 
   loadAssets: (names) ->
     @generator.loadAssets names
+
+  setStartWeapons: (@playerStartWeapons) ->
 
