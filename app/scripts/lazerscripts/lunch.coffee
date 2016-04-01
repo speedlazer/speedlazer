@@ -8,6 +8,8 @@ class Game.Scripts.Lunch extends Game.LazerScript
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
+    @inventoryAdd 'item', 'xp', ->
+      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
 
     Game.explosionMode = 'block'
 
@@ -120,8 +122,8 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @parallel(
         @gainHeight -600, duration: 15000
         @nextSlide @sequence(
-          @placeSquad Game.Scripts.Swirler,
-            drop: 'lasers'
+          @placeSquad Game.Scripts.PresentationSwirler,
+            drop: 'xp'
             amount: 4
             delay: 500
           @waitForScenery 'OceanOld'
@@ -131,8 +133,8 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide(
         @sequence(
           @updateTitle 'Lazerscript environment'
-          @placeSquad Game.Scripts.Swirler,
-            drop: 'lasers'
+          @placeSquad Game.Scripts.PresentationSwirler,
+            drop: 'xp'
             amount: 4
             delay: 500
         )
@@ -194,7 +196,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
         @_waitForSuperWeapon()
         task ? @wait(1000)
       )
-      => @player(1).ship().superUsed = 0
+      => @player(1).ship()?.superUsed = 0
     )
 
   _waitForSuperWeapon: ->
