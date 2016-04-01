@@ -1,7 +1,7 @@
 Crafty.c 'ShipSpawnable',
   init: ->
     @requires('Listener')
-    @bind('Activated', @spawnShip)
+    @bind 'Activated', @spawnShip
 
   remove: ->
     @unbind('Activated', @spawnShip)
@@ -20,13 +20,13 @@ Crafty.c 'ShipSpawnable',
     pos = @spawnPosition()
     pos.x = 10 if pos.x < 10
 
-    @ship = Crafty.e('PlayerControlledCube')
+    @ship = Crafty.e(@level.getShipType())
       .attr
         x: pos.x - Crafty.viewport.x
         y: pos.y - Crafty.viewport.y
         z: @z
 
-    @ship.colorOverride?(@color(), 'partial') if @has('ColorEffects')
+    @ship.colorOverride?(@color(), 'partial') #if @has('ColorEffects')
     @ship.color?(@color()) if @has('Color')
     @assignControls(@ship) if @has('ControlScheme')
 

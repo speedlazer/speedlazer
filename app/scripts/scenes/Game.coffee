@@ -10,10 +10,11 @@ Crafty.defineScene 'Game', (data = {}) ->
   Game.backgroundColor = null
   level = Game.levelGenerator.createLevel()
   level.start()
+  Crafty('Player').each -> @level = level
 
   options =
     startAtCheckpoint: data.checkpoint ? 0
-  startScript = data?.script ? 'Lunch'
+  startScript = data?.script ? 'Stage1' #'Lunch'
 
   if data.checkpoint
     label = "Checkpoint #{data.checkpoint}"

@@ -22,6 +22,7 @@ class Game.Level
     @generationPosition = x: 0, y: 40
     @sceneryEvents = []
     @visibleHeight = Crafty.viewport.height - @generationPosition.y
+    @shipType = 'PlayerSpaceship'
 
     { @namespace } = @data
     @currentScenery = @data.startScenery
@@ -186,6 +187,9 @@ class Game.Level
 
     Crafty('Player ControlScheme').each ->
       @spawnShip()
+
+  getShipType: -> @shipType
+  setShipType: (@shipType) ->
 
   setForcedSpeed: (speed) ->
     @_forcedSpeed = speed

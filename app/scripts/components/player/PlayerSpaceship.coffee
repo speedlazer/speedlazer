@@ -80,9 +80,9 @@ Crafty.c 'PlayerSpaceship',
 
     @bind 'Hit', ->
       Crafty.e('Blast, Explosion').explode(
-        x: @ship.x + (@ship.w / 2)
-        y: @ship.y + (@ship.h / 2)
-        radius: @ship.w
+        x: @x + (@w / 2)
+        y: @y + (@h / 2)
+        radius: @w
       )
       Crafty.audio.play("explosion")
       Crafty('ScrollWall').get(0).screenShake(10, 1000)

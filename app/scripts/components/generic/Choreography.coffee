@@ -43,9 +43,8 @@ Crafty.c 'Choreography',
     @_choreography = _.clone otherComponent._choreography
     @_options = otherComponent._options
     @_repeated = otherComponent._repeated
+    @_toSkip = otherComponent._toSkip
     @_currentPart = _.clone otherComponent._currentPart
-    @_currentPart.x += (@x - otherComponent.x)
-    @_currentPart.y += (@y - otherComponent.y)
     @_currentPart.easing = _.clone otherComponent._currentPart.easing
 
   _setupCPart: (number) ->
