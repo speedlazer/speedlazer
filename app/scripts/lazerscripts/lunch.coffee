@@ -148,7 +148,6 @@ class Game.Scripts.Lunch extends Game.LazerScript
             amount: 3
             delay: 600
           @placeSquad Game.Scripts.PresentationSwirler,
-            drop: 'xp'
             amount: 3
             delay: 500
         )
