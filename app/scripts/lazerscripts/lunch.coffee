@@ -191,17 +191,18 @@ class Game.Scripts.Lunch extends Game.LazerScript
 
       @updateTitle 'Particle effects'
       => Game.explosionMode = 'particles'
+      => Game.webGLMode = off
 
       @checkpoint @setScenery('OceanOld')
-      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 4)
+      @async @runScript(Game.Scripts.PresentationSunRise, skipTo: 0, speed: 4)
       @setScenery('OceanToNew')
       @repeat 3, @sequence(
-        @placeSquad Game.Scripts.Swirler,
-          drop: 'lasers'
+        @placeSquad Game.Scripts.PresentationSwirler,
+          drop: 'xp'
           amount: 4
           delay: 500
         @placeSquad Game.Scripts.Stalker,
-          drop: 'lasers'
+          drop: 'xp'
       )
       @setScenery('CoastStart')
       => Game.explosionMode = null
@@ -266,16 +267,16 @@ class Game.Scripts.Lunch extends Game.LazerScript
 
   swirlAttacks: ->
     @parallel(
-      @repeat 2, @placeSquad Game.Scripts.Swirler,
+      @repeat 2, @placeSquad Game.Scripts.PresentationSwirler,
         amount: 4
         delay: 500
-        drop: 'lasers'
+        drop: 'xp'
         options:
           shootOnSight: yes
-      @repeat 2, @placeSquad Game.Scripts.Shooter,
+      @repeat 2, @placeSquad Game.Scripts.PresentationShooter,
         amount: 4
         delay: 500
-        drop: 'lasers'
+        drop: 'xp'
         options:
           shootOnSight: yes
     )

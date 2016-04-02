@@ -54,14 +54,14 @@ generator.defineBlock class extends @Game.LevelScenery
 
     height = 65
     @add(0, @level.visibleHeight - 10, Crafty.e('2D, Solid').attr(w: @delta.x, h: 10))
-    @add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color').attr(w: @delta.x, h: height, z: -300).color('#000080'))
-    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, WebGL, Color').color('#6060E0').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
+    @add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: height, z: -300).color('#000080'))
+    @addBackground(0, @level.visibleHeight - 175, Crafty.e('2D, WebGL, Color, SunBlock').color('#6060E0').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
     goldenStripe = Crafty.e('2D, WebGL, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
-    @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
+    @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
     @addElement 'blockcloud'
-    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, Color').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
-    @addBackground(0, @level.visibleHeight - 90, Crafty.e('2D, WebGL, Color').color('#3030B0').attr({ z: -301, w: (@delta.x * .5) + 1, h: 70 }), .5)
+    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, Color, SunBlock').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
+    @addBackground(0, @level.visibleHeight - 90, Crafty.e('2D, WebGL, Color, SunBlock').color('#3030B0').attr({ z: -301, w: (@delta.x * .5) + 1, h: 70 }), .5)
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.OceanToNew'
@@ -82,20 +82,20 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-    @addBackground(0, @level.visibleHeight - 155, Crafty.e('2D, WebGL, Image').image('images/water-horizon-old.png').attr(z: -600), .25)
+    @addBackground(0, @level.visibleHeight - 175, Crafty.e('2D, WebGL, Image, SunBlock').image('images/water-horizon-old.png').attr(z: -600), .25)
     goldenStripe = Crafty.e('2D, WebGL, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
-    @addBackground(0, @level.visibleHeight - 155, goldenStripe, .25)
-    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, Image').image('images/water-old.png').attr(z: -500), .5)
+    @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
+    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, Image, SunBlock').image('images/water-old.png').attr(z: -500), .5)
 
     height = 65
     @add(0, @level.visibleHeight - 10, Crafty.e('2D, Solid').attr(w: @delta.x, h: 10))
     #@add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Image').image('images/water-front-old.png').attr(z: -300))
 
-    water1 = Crafty.e('2D, WebGL, waterFront1Old, Wave1').attr(z: -300)
+    water1 = Crafty.e('2D, WebGL, waterFront1Old, Wave1, SunBlock').attr(z: -300)
     @add(0, @level.visibleHeight - height, water1)
     water1.originalY = water1.y
 
-    water2 = Crafty.e('2D, WebGL, waterFront2Old, Wave2').attr(z: -300)
+    water2 = Crafty.e('2D, WebGL, waterFront2Old, Wave2, SunBlock').attr(z: -300)
     @add(400, @level.visibleHeight - height, water2)
     water2.originalX = water2.x
     water2.originalY = water2.y

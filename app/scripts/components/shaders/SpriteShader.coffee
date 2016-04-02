@@ -172,6 +172,11 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
       topSaturation = 3.0
       bottomSaturation = 3.0
 
+    if window.Game.webGLMode is off
+      topSaturation = 0.0
+      bottomSaturation = 0.0
+      lightness = 1.0
+
     e.program.writeVector("aColor",
       color._red/255,
       color._green/255,
