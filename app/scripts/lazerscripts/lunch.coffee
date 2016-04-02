@@ -23,7 +23,6 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @setWeapons(['oldlasers'])
       @nextSlide()
       @updateTitle 'First enemy'
-      @showHud()
 
       @placeSquad Game.Scripts.Slider,
         options:
@@ -32,6 +31,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
               start: 1.1
             y:
               start: .5
+      @showHud()
 
       @nextSlide()
       @updateTitle 'More enemies'
@@ -76,22 +76,26 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @say 'SpeedLazer', 'Hello World!'
       @say 'SpeedLazer', 'Flavor text can add to story telling'
       @nextSlide()
-      @say 'Enemies', 'Get him!'
-
-      @nextSlide @sequence(
-        @placeSquad Game.Scripts.Slider,
-          amount: 5
-          options:
-            grid: new Game.LocationGrid
-              x:
-                start: 1.2
-                steps: 4
-                stepSize: .2
-              y:
-                start: .3
-                steps: 5
-                stepSize: .1
-        @wait 3000
+      @parallel(
+        @sequence(
+          @wait 3000
+          @say 'Enemies', 'Get him!'
+        )
+        @nextSlide @sequence(
+          @placeSquad Game.Scripts.Slider,
+            amount: 5
+            options:
+              grid: new Game.LocationGrid
+                x:
+                  start: 1.2
+                  steps: 4
+                  stepSize: .2
+                y:
+                  start: .3
+                  steps: 5
+                  stepSize: .1
+          @wait 3000
+        )
       )
 
       @updateTitle 'Enemy choreo start'
@@ -220,10 +224,30 @@ class Game.Scripts.Lunch extends Game.LazerScript
       # While now works with 2 promises.
       @while(
         @_waitForSuperWeapon()
-        task ? @wait(1000)
+        @sequence(
+          task ? @wait(1000)
+          @_addVisibleMarker()
+        )
       )
       => @player(1).ship()?.superUsed = 0
     )
+
+  _addVisibleMarker: ->
+    =>
+      text = ''
+      Crafty('LevelTitle').each ->
+        text = @_text
+      if text[text.length - 1] is '-'
+        text = text.slice(0, text.length - 2)
+      unless text[text.length - 1] is '*'
+        Crafty('LevelTitle').text text + ' *'
+
+  _clearVisibleMarker: ->
+    text = ''
+    Crafty('LevelTitle').each ->
+      text = @_text
+    if text[text.length - 1] is '*'
+      Crafty('LevelTitle').text(text.slice(0, text.length - 2) + ' -')
 
   _waitForSuperWeapon: ->
     =>
@@ -235,6 +259,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
             used = @player(1).ship().superUsed isnt 0
           if used
             clearInterval i
+            @_clearVisibleMarker()
             d.resolve()
         300
       )
