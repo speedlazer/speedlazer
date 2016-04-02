@@ -112,7 +112,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide()
       @updateTitle 'Vertical motion'
       @parallel(
-        @gainHeight 600, duration: 15000
+        @gainHeight 600, duration: 10000
         @placeSquad Game.Scripts.Sine,
           amount: 8
           delay: 1000
@@ -120,7 +120,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide()
       @updateTitle 'Bezier, powerups'
       @parallel(
-        @gainHeight -600, duration: 15000
+        @gainHeight -600, duration: 10000
         @nextSlide @sequence(
           @placeSquad Game.Scripts.PresentationSwirler,
             drop: 'xp'
