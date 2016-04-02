@@ -149,30 +149,6 @@ class Game.Scripts.Lunch extends Game.LazerScript
             delay: 500
         )
       )
-      @nextSlide(
-        @parallel(
-          @sequence(
-            @placeSquad Game.Scripts.PresentationShooter,
-              drop: 'xp'
-              amount: 3
-              delay: 600
-            @placeSquad Game.Scripts.PresentationSwirler,
-              drop: 'xp'
-              amount: 3
-              delay: 500
-          )
-          @sequence(
-            @placeSquad Game.Scripts.PresentationSwirler,
-              drop: 'xp'
-              amount: 3
-              delay: 500
-            @placeSquad Game.Scripts.PresentationShooter,
-              drop: 'xp'
-              amount: 3
-              delay: 600
-          )
-        )
-      )
       @checkpoint @setScenery 'OceanOld'
       @updateTitle 'Lazerscript enemies'
       @disableWeapons()
@@ -194,24 +170,40 @@ class Game.Scripts.Lunch extends Game.LazerScript
       => Game.webGLMode = off
 
       @checkpoint @setScenery('OceanOld')
-      @async @runScript(Game.Scripts.PresentationSunRise, skipTo: 0, speed: 4)
       @setScenery('OceanToNew')
-      @repeat 3, @sequence(
+      @async @runScript(Game.Scripts.PresentationSunRise, skipTo: 0, speed: 10)
+      @repeat 4, @sequence(
         @placeSquad Game.Scripts.PresentationSwirler,
           drop: 'xp'
-          amount: 4
-          delay: 500
-        @placeSquad Game.Scripts.Stalker,
-          drop: 'xp'
+          amount: 6
+          delay: 700
       )
-      @setScenery('CoastStart')
       => Game.explosionMode = null
       @updateTitle 'Graphics!'
       @swirlAttacks()
       @swirlAttacks()
+      @setScenery('CoastStart')
+
+      @setWeapons(['lasers'])
+      @setShipType('PlayerSpaceship')
+
+      @nextSlide @sequence(
+        @mineSwarm()
+        @mineSwarm(direction: 'left')
+      )
       @setScenery('BayStart')
-      @mineSwarm()
-      @mineSwarm(direction: 'left')
+      @async @runScript(Game.Scripts.PresentationSunSet, skipTo: 0, speed: 50)
+
+      @nextSlide @sequence(
+        @swirlAttacks()
+      )
+      @checkpoint @setScenery('BayStart')
+      =>
+        Game.webGLMode = on
+        Crafty('GoldenStripe').each -> @bottomColor('#DDDD00', 0)
+      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 5)
+      @wait 20000
+
       @placeSquad Game.Scripts.Stage1BossStage1
       @gainHeight 200, duration: 5000
       @showScore(1, 'Lunch and learn')

@@ -201,7 +201,6 @@ Game.ScriptModule.Entity =
               @enemy.moveState = 'water'
               if @enemy.alive
                 @_setupWaterSpot()
-                #@_waterSplash()
                 @_moveWater(settings)
         else
           return @_moveAir(settings)
@@ -215,7 +214,6 @@ Game.ScriptModule.Entity =
               @enemy.moveState = 'air'
               if @enemy.alive
                 @_removeWaterSpot()
-                #@_waterSplash()
                 @_moveAir(settings)
         else
           return @_moveWater(settings)
@@ -242,6 +240,8 @@ Game.ScriptModule.Entity =
           z: @entity.z - 1
         )
 
+    if Game.explosionMode?
+      @_waterSplash()
     @entity.addComponent('WaterSplashes')
     @entity.setSealevel(@_getSeaLevel())
 
@@ -251,13 +251,16 @@ Game.ScriptModule.Entity =
 
   _removeWaterSpot: ->
     @entity.reveal()
-    @entity.removeComponent('WaterSplashes')
+    if Game.explosionMode?
+      @_waterSplash()
+    else
+      @entity.removeComponent('WaterSplashes')
 
   _waterSplash: ->
     defer = WhenJS.defer()
     Crafty.e('WaterSplash').waterSplash(
       x: @entity.x
-      y: @entity.y
+      y: @_getSeaLevel()
       size: @entity.w
     ).one 'ParticleEnd', ->
       defer.resolve()

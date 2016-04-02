@@ -57,7 +57,10 @@ generator.defineBlock class extends @Game.LevelScenery
     @add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: height, z: -300).color('#000080'))
     @addBackground(0, @level.visibleHeight - 175, Crafty.e('2D, WebGL, Color, SunBlock').color('#6060E0').attr({ z: -600, w: (@delta.x * .25) + 1, h: 155 }), .25)
 
-    goldenStripe = Crafty.e('2D, WebGL, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
+    goldenStripe = Crafty.e('2D, WebGL, Gradient, GoldenStripe')
+      .topColor('#DDDD00')
+      .bottomColor('#DDDD00', if Game.webGLMode then 0 else 1)
+      .attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
     @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
     @addElement 'blockcloud'
     @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, Color, SunBlock').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
@@ -71,8 +74,17 @@ generator.defineBlock class extends @Game.LevelScenery
   autoNext: 'Ocean'
 
   assets: ->
-    images: ['water-horizon-old.png', 'water-old.png']
     sprites:
+      'water-horizon-old.png':
+        tile: 201
+        tileh: 155
+        map:
+          waterHorizonOld: [0, 0]
+      'water-old.png':
+        tile: 400
+        tileh: 105
+        map:
+          waterMiddleOld: [0, 0]
       'water-front-old.png':
         tile: 400
         tileh: 90
@@ -82,10 +94,13 @@ generator.defineBlock class extends @Game.LevelScenery
 
   generate: ->
     super
-    @addBackground(0, @level.visibleHeight - 175, Crafty.e('2D, WebGL, Image, SunBlock').image('images/water-horizon-old.png').attr(z: -600), .25)
-    goldenStripe = Crafty.e('2D, WebGL, Color, GoldenStripe').color('#DDDD00').attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
+    @addBackground(0, @level.visibleHeight - 175, Crafty.e('2D, WebGL, waterHorizonOld, SunBlock').attr(z: -600), .25)
+    goldenStripe = Crafty.e('2D, WebGL, Gradient, GoldenStripe')
+      .topColor('#DDDD00')
+      .bottomColor('#DDDD00', if Game.webGLMode then 0 else 1)
+      .attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
     @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
-    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, Image, SunBlock').image('images/water-old.png').attr(z: -500), .5)
+    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, waterMiddleOld, SunBlock').attr(z: -500), .5)
 
     height = 65
     @add(0, @level.visibleHeight - 10, Crafty.e('2D, Solid').attr(w: @delta.x, h: 10))

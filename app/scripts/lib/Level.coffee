@@ -193,6 +193,7 @@ class Game.Level
 
   getShipType: -> @shipType
   setShipType: (@shipType) ->
+    Crafty('Player ControlScheme').each -> @spawnShip() if @ship?
 
   setForcedSpeed: (speed) ->
     @_forcedSpeed = speed

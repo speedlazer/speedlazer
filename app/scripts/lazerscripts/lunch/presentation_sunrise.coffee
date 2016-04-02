@@ -19,14 +19,11 @@ class Game.Scripts.PresentationSunRise extends Game.EntityScript
 
     if sun.length > 0
       sun.attr(
-        x: sun.x + Crafty.viewport.x
-        y: sun.y + Crafty.viewport.y
+        speed: options.speed ? 1
       )
     else
       Crafty.e('Sun, KeepAlive')
         .sun(
-          x: Crafty.viewport.width * .97
-          y: Crafty.viewport.height * .85
           speed: options.speed ? 1
         )
 
@@ -34,9 +31,10 @@ class Game.Scripts.PresentationSunRise extends Game.EntityScript
     speed = @options.speed ? 1
 
     preColor = (40000 / speed)
-    colorDuration = (900000 / speed)
+    colorDuration = (500000 / speed)
     @sequence(
       @setLocation x: .97, y: .74
+      @wait 15000
       @backgroundColorFade(
         duration: preColor,
         skip: @options.skipTo,
@@ -45,17 +43,24 @@ class Game.Scripts.PresentationSunRise extends Game.EntityScript
         ['#000000', '#222c50']
       )
       @parallel(
-        @backgroundColorFade(
-          duration: colorDuration,
-          skip: (@options.skipTo - preColor),
-          #['#ca4331', '#fcaf01', '#f7e459', '#5dade9', '#5ba5ec', '#5ba5ec', '#5ba5ec']
-          ['#222c50', '#7a86a2', '#5dade9', '#366eab'],
-          ['#222c50', '#7a86a2', '#5dade9', '#366eab']
+        @sequence(
+          @backgroundColorFade(
+            duration: colorDuration,
+            skip: (@options.skipTo - preColor),
+            #['#ca4331', '#fcaf01', '#f7e459', '#5dade9', '#5ba5ec', '#5ba5ec', '#5ba5ec']
+            ['#222c50', '#7a86a2', '#5dade9'],
+            ['#222c50', '#7a86a2', '#5dade9']
+          )
+          => console.log 'Coloring done'
         )
-        @movePath [
-          [.75, .31]
-          [.5, .21]
-        ], rotate: no, skip: @options.skipTo - preColor
+        @sequence(
+          @movePath [
+            [.75, .51]
+            [.5, .31]
+          ], rotate: no, skip: @options.skipTo - preColor
+          => console.log 'movement done'
+        )
       )
+      => console.log 'Complete!'
     )
 
