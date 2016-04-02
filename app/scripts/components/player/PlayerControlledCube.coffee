@@ -93,11 +93,10 @@ Crafty.c 'PlayerControlledCube',
 
   installItem: (item) ->
     if item is 'xp'
-      @primaryWeapon.addXP(1000)
+      @primaryWeapon?.addXP(1000)
       return true
 
     return if @hasItem item
-
     @items.push item
 
     # TODO: Add multiple primary weapons, which can be swapped
@@ -116,8 +115,10 @@ Crafty.c 'PlayerControlledCube',
 
   clearItems: ->
     @primaryWeapon?.uninstall()
-    for w in @primaryWeapons
-      w.destroy()
+    @primaryWeapon = null
+    w.destroy() for w in @primaryWeapons
+    @primaryWeapons = []
+    @items = []
 
   _installPrimary: (componentName) ->
     weapon = Crafty.e(componentName)
