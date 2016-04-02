@@ -4,8 +4,11 @@ Crafty.c 'Bullet',
     @color '#FFFF00'
 
   fire: (properties) ->
-    @attr(damage: properties.damage).bind('GameLoop', (fd) =>
-      dist = fd.dt * (properties.speed / 1000)
+    @attr(
+      damage: properties.damage
+      speed: properties.speed
+    ).bind('GameLoop', (fd) =>
+      dist = fd.dt * (@speed / 1000)
 
       @x += Math.cos(properties.direction / 180 * Math.PI) * dist
       @y += Math.sin(properties.direction / 180 * Math.PI) * dist
