@@ -17,7 +17,7 @@ function scaleGame() {
     viewportWidth = $(window).width();
 
   if (!$('body').is('.fullscreen')) {
-    viewportWidth = viewportWidth - 210;
+    viewportWidth = viewportWidth; // - 210;
   }
 
   var ratioY = viewportHeight / stageHeight;
