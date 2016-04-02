@@ -12,7 +12,7 @@ Crafty.c 'Hideable',
   hide: (@hideMarker, options) ->
     @hidden = yes
 
-    if options.below
+    if options.below and @has('Sprite')
       @hideAt = options.below
       for c in @_children
         c.attr?(hideAt: options.below)
