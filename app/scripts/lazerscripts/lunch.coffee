@@ -219,16 +219,14 @@ class Game.Scripts.Lunch extends Game.LazerScript
 
   nextSlide: (task) ->
     @sequence(
-      => @player(1).ship()?.superUsed = 0
       # While now works with 2 promises.
       @while(
-        @_waitForSuperWeapon()
+        @_waitForKeyPress(Crafty.keys.N)
         @sequence(
           task ? @wait(1000)
           @_addVisibleMarker()
         )
       )
-      => @player(1).ship()?.superUsed = 0
     )
 
   _addVisibleMarker: ->
@@ -248,20 +246,15 @@ class Game.Scripts.Lunch extends Game.LazerScript
     if text[text.length - 1] is '*'
       Crafty('LevelTitle').text(text.slice(0, text.length - 2) + ' -')
 
-  _waitForSuperWeapon: ->
+  _waitForKeyPress: (key) ->
     =>
       d = WhenJS.defer()
-      used = no
-      i = setInterval(
-        =>
-          if @player(1).ship()?
-            used = @player(1).ship().superUsed isnt 0
-          if used
-            clearInterval i
-            @_clearVisibleMarker()
-            d.resolve()
-        300
-      )
+      handler = (e) ->
+        if e.key == key
+          Crafty.unbind('KeyDown', handler)
+          d.resolve()
+
+      Crafty.bind('KeyDown', handler)
       d.promise
 
   mineSwarm: (options = { direction: 'right' })->
