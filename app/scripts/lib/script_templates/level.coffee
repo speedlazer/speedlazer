@@ -6,13 +6,12 @@ Game.ScriptTemplate ?= {}
 # They generally call lower level lazerScript
 # methods.
 Game.ScriptTemplate.Level =
-  oldExplosion: (location) ->
+  oldExplosion: (location, options = {}) ->
     (sequence) =>
       @_verify(sequence)
       { x, y } = location()
       x -= Crafty.viewport.x
       y -= Crafty.viewport.y
-      options = {}
       options = _.defaults(
         { x, y }
         options

@@ -130,13 +130,47 @@ class Game.Scripts.Lunch extends Game.LazerScript
         )
       )
 
+      @updateTitle 'Lazerscript environment'
       @nextSlide(
-        @sequence(
-          @updateTitle 'Lazerscript environment'
+        @placeSquad Game.Scripts.PresentationSwirler,
+          drop: 'xp'
+          amount: 3
+          delay: 500
+      )
+      @nextSlide(
+        @parallel(
+          @placeSquad Game.Scripts.PresentationShooter,
+            drop: 'xp'
+            amount: 3
+            delay: 600
           @placeSquad Game.Scripts.PresentationSwirler,
             drop: 'xp'
-            amount: 4
+            amount: 3
             delay: 500
+        )
+      )
+      @nextSlide(
+        @parallel(
+          @sequence(
+            @placeSquad Game.Scripts.PresentationShooter,
+              drop: 'xp'
+              amount: 3
+              delay: 600
+            @placeSquad Game.Scripts.PresentationSwirler,
+              drop: 'xp'
+              amount: 3
+              delay: 500
+          )
+          @sequence(
+            @placeSquad Game.Scripts.PresentationSwirler,
+              drop: 'xp'
+              amount: 3
+              delay: 500
+            @placeSquad Game.Scripts.PresentationShooter,
+              drop: 'xp'
+              amount: 3
+              delay: 600
+          )
         )
       )
       @checkpoint @setScenery 'OceanOld'
@@ -144,18 +178,17 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @disableWeapons()
 
       @placeSquad Game.Scripts.LittleDancer,
-        amount: 4
+        amount: 5
         delay: 2000
         options:
           grid: new Game.LocationGrid
             x:
-              start: 150
-              steps: 4
-              stepSize: 100
+              start: .25
+              steps: 5
+              stepSize: .1
 
       @enableWeapons()
 
-      @nextSlide()
       @updateTitle 'Particle effects'
       => Game.explosionMode = 'particles'
 

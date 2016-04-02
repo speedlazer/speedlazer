@@ -5,13 +5,13 @@ class Game.Scripts.LittleDancer extends Game.EntityScript
 
   spawn: (options) ->
     @wallTarget = options.grid.getLocation()
-    @index = (@wallTarget.x - 150) / 100
+    @index = Math.round((@wallTarget.x - .25) / .1)
 
-    Crafty.e('Drone').drone(
+    Crafty.e('OldDrone').drone(
       health: 1900
-      x: 680
-      y: 270
-      speed: 100
+      x: Crafty.viewport.width + 40
+      y: Crafty.viewport.height * .56
+      speed: 200
     )
 
   execute: ->
@@ -19,29 +19,49 @@ class Game.Scripts.LittleDancer extends Game.EntityScript
       @if((=> @index is 0),
         @say('Enemy squad', 'Welcome to our little dance!')
       )
-      @moveTo(x: @wallTarget.x)
+      @moveTo(x: @wallTarget.x, speed: 400)
       @synchronizeOn 'placed'
 
-      @moveTo(x: @wallTarget.x + 20)
+      @moveTo(x: @wallTarget.x + .05)
       @moveTo(y: 305)
       @repeat 2, @sequence(
-        @moveTo(x: @wallTarget.x + 30)
+        @moveTo(x: @wallTarget.x + .1)
         @wait 500
-        @moveTo(x: @wallTarget.x + 20)
+        @moveTo(x: @wallTarget.x + .05)
         @wait 500
       )
       @wait (@index * 500)
-      @moveTo(y: 290)
+      @moveTo(y: .4)
       @wait 100
-      @moveTo(y: 500)
+      @moveTo(y: 1.1)
       @wait 100
-      @moveTo(y: 310)
+      @moveTo(y: .65)
       @synchronizeOn 'afterJump'
-      @moveTo(x: 100)
+      @moveTo(x: .45)
       @movePath([
-        [30, 240]
-        [450, 210]
+        [.3, .5]
+        [.7, .43]
+        [.3, .2]
       ], speed: 200)
-      @explosion(@location())
+      @rotate 0, 100
+
+      @if((=> @index is 0),
+        @moveTo(x: .25, y: .25, speed: 400)
+      )
+      @if((=> @index is 1),
+        @moveTo(x: .75, y: .25, speed: 400)
+      )
+      @if((=> @index is 2),
+        @moveTo(x: .75, y: .75, speed: 400)
+      )
+      @if((=> @index is 3),
+        @moveTo(x: .25, y: .75, speed: 400)
+      )
+      @if((=> @index is 4),
+        @moveTo(x: .5, y: .5, speed: 400)
+      )
+      @synchronizeOn 'detonation'
+      @wait 1000
+      @oldExplosion(@location(offsetX: 20, offsetY: 20), radius: 40)
     )
 
