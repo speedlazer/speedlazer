@@ -249,8 +249,9 @@ class Game.Scripts.Lunch extends Game.LazerScript
   _waitForKeyPress: (key) ->
     =>
       d = WhenJS.defer()
-      handler = (e) ->
+      handler = (e) =>
         if e.key == key
+          @_clearVisibleMarker()
           Crafty.unbind('KeyDown', handler)
           d.resolve()
 
