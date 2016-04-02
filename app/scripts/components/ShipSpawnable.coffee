@@ -19,6 +19,14 @@ Crafty.c 'ShipSpawnable',
 
     pos = @spawnPosition()
     pos.x = 10 if pos.x < 10
+    if @ship?
+      pos = {
+        x: @ship.x + Crafty.viewport.x
+        y: @ship.y + Crafty.viewport.y
+      }
+      armed = @ship.items
+      @ship.destroy()
+      @ship = null
 
     @ship = Crafty.e(@level.getShipType())
       .attr
