@@ -18,6 +18,9 @@ Crafty.c 'OldWeaponLaser',
       alpha: 0
     @ship.attach this
 
+  uninstall: ->
+    @attr alpha: 0
+
   addXP: (amount) ->
     @xp += amount
     level = @level

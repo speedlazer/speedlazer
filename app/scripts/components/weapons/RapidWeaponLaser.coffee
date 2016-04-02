@@ -15,6 +15,7 @@ Crafty.c 'RapidWeaponLaser',
     @unbind 'GameLoop', @_autoFire
 
   install: (@ship) ->
+    @xp = 0
     @level = @determineLevel @xp
     @attr
       x: @ship.x + 15
