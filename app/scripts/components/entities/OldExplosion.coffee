@@ -12,8 +12,8 @@ Crafty.c 'OldExplosion',
     @attr attr
 
     options =
-      maxParticles: 3 * attr.radius
-      size: attr.radius
+      maxParticles: 13 * attr.radius
+      size: attr.radius * 2
       sizeRandom: 8
       speed: (attr.radius / 13)
       speedRandom: 0.5
@@ -60,8 +60,10 @@ Crafty.c 'OldExplosion',
 
     if @explosionMode is 'particles'
       options.fastMode = yes
+      options.maxParticles = 3 * attr.radius
+      options.size = attr.radius
 
-    if @explosionMode is 'particles'
+    if @explosionMode is 'particles' or @explosionMode is null
       cleanupDelay = (options.lifeSpan + options.lifeSpanRandom) * Crafty.timer.FPS()
       Crafty.e("2D,Particles,Delay").attr(
         x: @x - (attr.radius / 2)
@@ -72,58 +74,3 @@ Crafty.c 'OldExplosion',
         # But the particles are still alive for their lifetime
         @delay((-> @destroy()), cleanupDelay)
     this
-
-Crafty.c 'Blast',
-  init: ->
-    @requires '2D, WebGL, explosionStart, SpriteAnimation, Horizon, Collision'
-
-  remove: ->
-    @unbind 'GameLoop'
-
-  explode: (attr, frameOptions) ->
-    radius = attr.radius ? 20
-    duration = (attr.duration ? 160) / 1000
-
-    @attr attr
-    @attr w: attr.radius * 4, h: attr.radius * 4
-    @attr x: @x - (@w / 2), y: @y - (@h / 2)
-
-    @collision [
-      @w * .2, @h * .2,
-      @w * .8, @h * .2,
-      @w * .8, @h * .8,
-      @w * .2, @h * .8
-    ]
-
-    @reel 'explode', duration * 3000, [
-      [0, 0]
-      [1, 0]
-      [2, 0]
-      [3, 0]
-      [4, 0]
-
-      [0, 1]
-      [1, 1]
-      [2, 1]
-      [3, 1]
-      [4, 1]
-
-      [0, 2]
-      [1, 2]
-      [2, 2]
-      [3, 2]
-      [4, 2]
-
-      [0, 3]
-      [1, 3]
-    ]
-    if frameOptions
-      @bind 'GameLoop', =>
-        a = frameOptions.call(this)
-        @attr a
-
-    @bind 'AnimationEnd', =>
-      @destroy()
-    @animate 'explode'
-    this
-
