@@ -43,24 +43,17 @@ class Game.Scripts.PresentationSunRise extends Game.EntityScript
         ['#000000', '#222c50']
       )
       @parallel(
-        @sequence(
-          @backgroundColorFade(
-            duration: colorDuration,
-            skip: (@options.skipTo - preColor),
-            #['#ca4331', '#fcaf01', '#f7e459', '#5dade9', '#5ba5ec', '#5ba5ec', '#5ba5ec']
-            ['#222c50', '#7a86a2', '#5dade9'],
-            ['#222c50', '#7a86a2', '#5dade9']
-          )
-          => console.log 'Coloring done'
+        @backgroundColorFade(
+          duration: colorDuration,
+          skip: (@options.skipTo - preColor),
+          #['#ca4331', '#fcaf01', '#f7e459', '#5dade9', '#5ba5ec', '#5ba5ec', '#5ba5ec']
+          ['#222c50', '#7a86a2', '#5dade9'],
+          ['#222c50', '#7a86a2', '#5dade9']
         )
-        @sequence(
-          @movePath [
-            [.75, .51]
-            [.5, .31]
-          ], rotate: no, skip: @options.skipTo - preColor
-          => console.log 'movement done'
-        )
+        @movePath [
+          [.75, .51]
+          [.5, .31]
+        ], rotate: no, skip: @options.skipTo - preColor
       )
-      => console.log 'Complete!'
     )
 
