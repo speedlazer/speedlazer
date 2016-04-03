@@ -7,22 +7,56 @@ class Game.Scripts.Test extends Game.LazerScript
 
   execute: ->
     @sequence(
-      @setScenery 'Bay'
-      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 12)
+      @setShipType('PlayerControlledCube')
+      @setScenery 'OceanOld'
       @setSpeed 50
-      @wait 1000
-      @parallel(
-        @placeSquad Game.Scripts.Swirler,
-          amount: 4
-          delay: 500
-          drop: 'xp'
-
-        @sequence(
-          @wait 13000
-          @screenShake(10, duration: 3000)
-          @wait 3000
-          @screenShake(10, duration: 3000)
-        )
-      )
+      @wait 3000
+      @testEnemy(1)
+      @testEnemy(3)
     )
+
+  testEnemy: (amount) ->
+    @placeSquad Game.Scripts.EnemyTestScript,
+      amount: amount
+      delay: 500
+      options:
+        entityName: 'NewEnemyNameHere'
+        #assetsName: 'newEnemyNameHere'
+
+
+class Game.Scripts.EnemyTestScript extends Game.EntityScript
+  assets: (options) ->
+    @loadAssets(options.assetsName ? 'shadow')
+
+  spawn: (options) ->
+    enemy = Crafty.e(options.entityName).initEnemy(
+      x: Crafty.viewport.width + 40
+      y: Crafty.viewport.height / 2
+    )
+
+  execute: ->
+    @movePath [
+      [.5, .21]
+      [.156, .5]
+      [.5, .833]
+      [.86, .52]
+      [-20, .21]
+    ]
+
+Crafty.c 'NewEnemyNameHere',
+  init: ->
+    @requires 'Enemy, Color'
+
+  initEnemy: (attr = {}) ->
+    @color '#FF00FF'
+    @attr _.defaults(attr,
+      w: 40,
+      h: 40,
+      health: 200
+      speed: 200
+    )
+    @origin 'center'
+    @attr weaponOrigin: [2, 25]
+    @enemy()
+    this
 

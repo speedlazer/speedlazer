@@ -15,7 +15,7 @@ Crafty.defineScene 'Game', (data = {}) ->
   options =
     startAtCheckpoint: data.checkpoint ? 0
   startScript = data?.script ? 'Stage1'
-  startScript = 'Lunch'
+  startScript = 'Test'
 
   if data.checkpoint
     label = "Checkpoint #{data.checkpoint}"

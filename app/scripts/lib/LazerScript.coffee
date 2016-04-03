@@ -11,7 +11,7 @@ class Game.LazerScript
 
     loadingAssets = WhenJS(true)
     if @assets?
-      loadingAssets = @assets()(@currentSequence)
+      loadingAssets = @assets(@options)(@currentSequence)
 
     loadingAssets.then => @initialize(args...)
 

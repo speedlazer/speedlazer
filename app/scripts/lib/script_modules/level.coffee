@@ -55,7 +55,7 @@ Game.ScriptModule.Level =
       loadingAssets = WhenJS(true)
 
       if scripts[0]?.assets?
-        loadingAssets = scripts[0].assets()(sequence)
+        loadingAssets = scripts[0].assets(_.clone(settings.options))(sequence)
 
       loadingAssets.then =>
         promises = (for script, i in scripts
