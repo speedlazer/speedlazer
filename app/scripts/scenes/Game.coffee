@@ -14,12 +14,16 @@ Crafty.defineScene 'Game', (data = {}) ->
   # This is a dirty fix to prevent
   # 'glDrawElements: attempt to render with no buffer attached to enabled attribute 6'
   # to happen mid-stage
-  Game.levelGenerator.loadAssets(['shadow', 'explosion']).then =>
+  wait = Game.levelGenerator.loadAssets(['shadow', 'explosion']).then =>
+    d = WhenJS.defer()
     e = Crafty.e('WebGL, shadow')
     setTimeout(
-      -> e.destroy()
+      ->
+        e.destroy()
+        d.resolve()
       100
     )
+    d.promise
 
   level.start()
   Crafty('Player').each -> @level = level
@@ -55,7 +59,7 @@ Crafty.defineScene 'Game', (data = {}) ->
     else
       console.log 'End of content!'
 
-  executeScript(startScript, options)
+  wait.then -> executeScript(startScript, options)
 
   Crafty.bind 'GameOver', ->
     window.ga('send', 'event', 'Game', 'End', "Checkpoint #{script.currentCheckpoint}")
