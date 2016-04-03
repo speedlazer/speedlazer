@@ -3,7 +3,7 @@ Game.Scripts ||= {}
 
 class Game.Scripts.Test extends Game.LazerScript
   assets: ->
-    @loadAssets('shadow', 'explosion', 'playerShip')
+    @loadAssets('playerShip')
 
   execute: ->
     @sequence(
@@ -21,8 +21,7 @@ class Game.Scripts.Test extends Game.LazerScript
       delay: 500
       options:
         entityName: 'NewEnemyNameHere'
-        #assetsName: 'newEnemyNameHere'
-
+        assetsName: 'newEnemyNameHere'
 
 class Game.Scripts.EnemyTestScript extends Game.EntityScript
   assets: (options) ->
@@ -35,22 +34,31 @@ class Game.Scripts.EnemyTestScript extends Game.EntityScript
     )
 
   execute: ->
-    @movePath [
-      [.5, .21]
-      [.156, .5]
-      [.5, .833]
-      [.86, .52]
-      [-20, .21]
-    ]
+    console.log {
+      x: @entity.x
+      y: @entity.y
+      w: @entity.w
+      h: @entity.h
+      r: @entity.rotation
+    }
+    @sequence(
+      @wait 2000
+      @movePath [
+        [.5, .21]
+        [.156, .5]
+        [.5, .833]
+        [.86, .52]
+        [-20, .21]
+      ]
+    )
 
 Crafty.c 'NewEnemyNameHere',
   init: ->
-    @requires 'Enemy, Color'
+    @requires 'Enemy, droneBody'
 
   initEnemy: (attr = {}) ->
-    @color '#FF00FF'
     @attr _.defaults(attr,
-      w: 40,
+      w: 60,
       h: 40,
       health: 200
       speed: 200
@@ -59,4 +67,16 @@ Crafty.c 'NewEnemyNameHere',
     @attr weaponOrigin: [2, 25]
     @enemy()
     this
+
+Game.levelGenerator.defineAssets(
+  'newAwesomeSpriteSheet'
+  contents: ['newEnemyNameHere']
+  spriteMap: 'high-drone.png'
+  sprites:
+    newEnemyNameHere:
+      tile: 64
+      tileh: 64
+      map:
+        droneBody: [0,0,3,2]
+)
 
