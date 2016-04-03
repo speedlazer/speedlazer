@@ -9,6 +9,18 @@ Crafty.defineScene 'Game', (data = {}) ->
   # import from globals
   Game.backgroundColor = null
   level = Game.levelGenerator.createLevel()
+
+  # Load default sprites
+  # This is a dirty fix to prevent
+  # 'glDrawElements: attempt to render with no buffer attached to enabled attribute 6'
+  # to happen mid-stage
+  Game.levelGenerator.loadAssets(['shadow', 'explosion']).then =>
+    e = Crafty.e('WebGL, shadow')
+    setTimeout(
+      -> e.destroy()
+      100
+    )
+
   level.start()
   Crafty('Player').each -> @level = level
 
