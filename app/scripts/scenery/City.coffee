@@ -53,7 +53,7 @@ generator.defineElement 'waterHorizon', ->
 
   goldenStripe = Crafty.e('2D, WebGL, Gradient, GoldenStripe')
     .topColor('#DDDD00')
-    .bottomColor('#DDDD00', if Game.webGLMode then 0 else 1)
+    .bottomColor('#DDDD00', if Game.webGLMode isnt off then 0 else 1)
     .attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
   @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
 
