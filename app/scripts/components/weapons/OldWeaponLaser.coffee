@@ -29,7 +29,7 @@ Crafty.c 'OldWeaponLaser',
       @trigger 'levelUp', @level
 
   determineLevel: (xp) ->
-    levelBoundaries = [1500, 6000, 24000, 96000]
+    levelBoundaries = [1000, 3000, 12000, 96000]
     neededXP = 0
     level = 0
     for i in levelBoundaries
@@ -43,8 +43,8 @@ Crafty.c 'OldWeaponLaser',
     return unless onOff
     settings = switch @level
       when 0 then w: 4, speed: 270, h: 4
-      when 1 then w: 5, speed: 320, h: 5
-      when 2 then w: 6, speed: 320, h: 5
+      when 1 then w: 8, speed: 320, h: 6
+      when 2 then w: 8, speed: 320, h: 6
       when 3 then w: 8, speed: 320, h: 6
       when 4 then w: 10, speed: 320, h: 6
 
