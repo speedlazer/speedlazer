@@ -32,6 +32,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
             y:
               start: .5
       @showHud()
+      @updateTitle '2 Players'
 
       @nextSlide()
       @updateTitle 'More enemies'
@@ -108,9 +109,9 @@ class Game.Scripts.Lunch extends Game.LazerScript
 
       @updateTitle 'Start stage 1'
       @setScenery('TunnelEnd')
-      @setSpeed 350
+      @setSpeed 450
 
-      @waitForScenery 'OceanOld', event: 'inScreen'
+      @waitForScenery 'OceanOld', event: 'leave'
       @setSpeed 50
       @checkpoint @setScenery 'OceanOld'
       @nextSlide()
@@ -192,18 +193,21 @@ class Game.Scripts.Lunch extends Game.LazerScript
 
       @nextSlide @sequence(
         @mineSwarm()
-        @mineSwarm(direction: 'left')
       )
       @setScenery('BayStart')
       @async @runScript(Game.Scripts.PresentationSunSet, skipTo: 0, speed: 50)
+      @say 'Graphics', 'Ok lets do the sunrise again'
+      @say 'Graphics', 'And now use WebGL Shaders'
 
       @nextSlide @sequence(
-        @swirlAttacks()
+        @swirlAttacks2()
       )
       @checkpoint @setScenery('BayStart')
       =>
         Game.webGLMode = on
         Crafty('GoldenStripe').each -> @bottomColor('#DDDD00', 0)
+      @chapterTitle(1, 'WebGL Shaders')
+
       @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 5)
       @wait 20000
 
@@ -284,6 +288,22 @@ class Game.Scripts.Lunch extends Game.LazerScript
         options:
           shootOnSight: yes
       @repeat 2, @placeSquad Game.Scripts.PresentationShooter,
+        amount: 4
+        delay: 500
+        drop: 'xp'
+        options:
+          shootOnSight: yes
+    )
+
+  swirlAttacks2: ->
+    @parallel(
+      @repeat 2, @placeSquad Game.Scripts.Swirler,
+        amount: 4
+        delay: 500
+        drop: 'xp'
+        options:
+          shootOnSight: yes
+      @repeat 2, @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 500
         drop: 'xp'
