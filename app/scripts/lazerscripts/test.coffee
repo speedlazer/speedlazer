@@ -34,13 +34,6 @@ class Game.Scripts.EnemyTestScript extends Game.EntityScript
     )
 
   execute: ->
-    console.log {
-      x: @entity.x
-      y: @entity.y
-      w: @entity.w
-      h: @entity.h
-      r: @entity.rotation
-    }
     @sequence(
       @wait 2000
       @movePath [
