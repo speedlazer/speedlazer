@@ -26,7 +26,6 @@ Game =
 
   # Initialize and start our game
   start: ->
-    @firstLevel = 'Game'
     @resetCredits()
 
     Crafty.bind 'EnterFrame', ->
@@ -100,8 +99,14 @@ Game =
         right: 15
 
     # Simply start splashscreen
-    #Crafty.enterScene('Game', script: 'Lunch')
-    Crafty.enterScene('Intro')
+    handler = (e) =>
+      if e.key == Crafty.keys.N
+        Crafty.unbind('KeyDown', handler)
+        Crafty.enterScene('Game', script: 'Lunch')
+
+    Crafty.bind('KeyDown', handler)
+    Crafty.enterScene('New')
+    #Crafty.enterScene('Intro')
 
   resetCredits: ->
     @credits = 2 # This is actually 'Extra' credits, so in total 3

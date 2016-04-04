@@ -186,6 +186,7 @@ class Game.Level
       ship.disableControl() unless @_controlsEnabled
 
       if @playerStartWeapons?
+        ship.clearItems()
         ship.installItem item for item in @playerStartWeapons
 
     Crafty('Player ControlScheme').each ->

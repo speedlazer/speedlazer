@@ -31,14 +31,14 @@ Crafty.defineScene 'Game', (data = {}) ->
   options =
     startAtCheckpoint: data.checkpoint ? 0
   startScript = data?.script ? 'Stage1'
-  startScript = 'Test'
+  #startScript = 'Lunch'
 
   if data.checkpoint
     label = "Checkpoint #{data.checkpoint}"
-    window.ga('send', 'event', 'Game', 'CheckpointStart', label)
+    window.ga?('send', 'event', 'Game', 'CheckpointStart', label)
   else
     label = 'Begin'
-    window.ga('send', 'event', 'Game', 'Start', label)
+    window.ga?('send', 'event', 'Game', 'Start', label)
 
   executeScript = (name, options) ->
     scriptName = name
