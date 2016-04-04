@@ -24,16 +24,27 @@ class Game.BezierPath
     # Draw-a-Smooth-Curve-through-a-Set-of-2D-Points-wit
     [firstControlPoints, secondControlPoints] = @getCurveControlPoints(points)
 
+    # Increase this for a preciser, but slower calculation of curve length
+    samplePoints = 3
+
     for i in [0...points.length - 1]
       a = points[i]
       b = points[i + 1]
       c1 = firstControlPoints[i]
       c2 = secondControlPoints[i]
 
-      dx = Math.abs(a.x - b.x)
-      dy = Math.abs(a.y - b.y)
-      curveDistance = Math.sqrt((dx ** 2) + (dy ** 2))
       curvePoints = [b, c2, c1, a]
+
+      curveDistance = 0
+      pc = jsBezier.pointOnCurve(curvePoints, 0)
+      step = 1 / samplePoints
+      for i in [step..1] by step
+        pn = jsBezier.pointOnCurve(curvePoints, i)
+        dx = Math.abs(pc.x - pn.x)
+        dy = Math.abs(pc.y - pn.y)
+        curveDistance += Math.sqrt((dx ** 2) + (dy ** 2))
+        pc = pn
+
       result.distance += curveDistance
       result.curves.push {
         distance: curveDistance
