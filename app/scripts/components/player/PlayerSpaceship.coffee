@@ -179,8 +179,9 @@ Crafty.c 'PlayerSpaceship',
 
   clearItems: ->
     @primaryWeapon?.uninstall()
-    for w in @primaryWeapons
-      w.destroy()
+    w.destroy() for w in @primaryWeapons
+    @primaryWeapons = []
+    @items = []
 
   _installPrimary: (componentName) ->
     weapon = Crafty.e(componentName)
