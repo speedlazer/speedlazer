@@ -65,10 +65,11 @@ Crafty.c 'Choreography',
   _choreographyTick: (frameData) ->
     return unless @_currentPart?
     prevv = @_currentPart.easing.value()
-    @_currentPart.easing.tick(frameData.dt + @_toSkip)
+    dt = frameData.dt + @_toSkip
+    @_currentPart.easing.tick(dt)
     @_toSkip = 0
     v = @_currentPart.easing.value()
-    @_ctypes[@_currentPart.type].apply(this, [v, prevv])
+    @_ctypes[@_currentPart.type].apply(this, [v, prevv, dt])
 
     if @_options.compensateCameraSpeed
       @x += ((@camera.x - @_options.cameraLock.x))
@@ -122,7 +123,7 @@ Crafty.c 'Choreography',
 
       @y += motionY - pmotionY
 
-  _executeViewportBezier: (v, prevv) ->
+  _executeViewportBezier: (v, prevv, dt) ->
     bp = new Game.BezierPath
     unless @_currentPart.bPath?
       @_currentPart.bPath = bp.buildPathFrom @_currentPart.path
@@ -130,8 +131,6 @@ Crafty.c 'Choreography',
       @_currentPart.viewport =
         y: Crafty.viewport.y
 
-    if @_currentPart.rotation
-      @rotation = bp.angleOnPath(@_currentPart.bPath, v)
 
     shiftedY = (@_currentPart.viewport.y - Crafty.viewport.y)
     point = bp.pointOnPath(@_currentPart.bPath, v)
@@ -140,6 +139,17 @@ Crafty.c 'Choreography',
     dShiftX = @shiftedX
     @shiftedX = Math.max(0, @shiftedX - .5)
 
-    @x += point.x - ppoint.x + (@shiftedX - dShiftX)
-    @y += point.y - ppoint.y
+    dx = point.x - ppoint.x + (@shiftedX - dShiftX)
+    dy = point.y - ppoint.y
+
+    if @_currentPart.rotation
+      rotation = bp.angleOnPath(@_currentPart.bPath, v)
+
+    if @updateMovementVisuals?
+      @updateMovementVisuals(rotation, dx, dy, dt)
+    else
+      @rotation = rotation
+
+    @x += dx
+    @y += dy
 
