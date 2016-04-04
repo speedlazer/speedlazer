@@ -81,7 +81,6 @@ Crafty.c 'GamepadControls',
 
   assignControls: (ship) ->
     ship.addComponent('GamepadMultiway')
-      .gamepad(@controlMap.gamepadIndex)
       .gamepadMultiway
         speed: { y: 250, x: 250 }
         gamepadIndex: @controlMap.gamepadIndex
