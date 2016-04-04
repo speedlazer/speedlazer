@@ -126,7 +126,42 @@ Crafty.c 'Choreography',
   _executeViewportBezier: (v, prevv, dt) ->
     bp = new Game.BezierPath
     unless @_currentPart.bPath?
-      @_currentPart.bPath = bp.buildPathFrom @_currentPart.path
+      p = @_currentPart.path
+      if @_lastBezierPathPoint? and @_currentPart.continuePath
+        p.unshift {
+          x: @_lastBezierPathPoint.x
+          y: @_lastBezierPathPoint.y
+        }
+      @_currentPart.bPath = bp.buildPathFrom p
+
+      if @_lastBezierPathPoint? and @_currentPart.continuePath
+        firstCurve = @_currentPart.bPath.curves.shift()
+        # We need to recalculate the distance. If we would just
+        # subtract the distance of the first curve of the total,
+        # somehow JS manages to be off at 10 decimals at the fragment.
+        # ... Which breaks the determining of points at the curve
+        recalcDist = 0.0
+        recalcDist += c.distance for c in @_currentPart.bPath.curves
+        @_currentPart.bPath.distance = recalcDist
+        @_lastBezierPathPoint = null
+
+      # We always remember the single-last point for bending of the next curve,
+      # if the next curve has `continuePath` enabled.
+      #
+      #     ,--B-,.
+      #   ,`       `';.
+      #  :             `C
+      # A
+      #
+      # In the path from A to B, B is the last point. The new path is
+      # a continuation, so B is its starting point. To have the line
+      # from B to C bend in a natural manner, Point A must be evaluated
+      # as well for the bending of B towards C. So for the proper curve for
+      # B to C, we do not need the last point of the previous path (since it
+      # is the same as the first of the new path, but we actually need the
+      # single-last one. (length - 2)
+      @_lastBezierPathPoint = @_currentPart.path[@_currentPart.path.length - 2]
+
     unless @_currentPart.viewport?
       @_currentPart.viewport =
         y: Crafty.viewport.y

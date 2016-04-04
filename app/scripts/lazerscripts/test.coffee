@@ -10,7 +10,6 @@ class Game.Scripts.Test extends Game.LazerScript
       @setShipType('PlayerControlledCube')
       @setScenery 'OceanOld'
       @setSpeed 50
-      @wait 3000
       @testEnemy(1)
       @testEnemy(3)
     )
