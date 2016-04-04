@@ -45,4 +45,4 @@ Crafty.c 'Flipable',
     @_origin.x = @w - @_origin.x
     for c in @_children
       c._origin.x = c.w - c._origin.x if c.origin?
-
+      c.rotation = (360 + (360 - c.rotation)) % 360
