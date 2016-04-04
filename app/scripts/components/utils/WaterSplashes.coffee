@@ -16,7 +16,7 @@ Crafty.c 'WaterSplashes',
     return if window.Game.explosionMode?
     @cooldown -= fd.dt
     if (@y + @h + @detectionOffset > @sealevel) and (@y < @sealevel) and (@cooldown <= 0)
-      speed = @waterSplashSpeed ? @speed
+      speed = @waterSplashSpeed ? @defaultSpeed
       @cooldown = 70
       upwards = 1
       if @_lastWaterY isnt @y
