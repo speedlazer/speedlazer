@@ -1,8 +1,30 @@
 # TODO: Document
+#
+# I need to rethinkt the intentions of this component.
+# It was setup as a sort of tweening chain, but promises in lazerscript work better
+#
+# The chaining is currently used in 1 part: The intro animation.
+# So, step 1: Check if the intro animation can be done differently.
+#
+# 1. Synching of animation with other entities
+#
+# The intro animation uses the following:
+# - linear (chained)
+# - delay (chained)
+#
+# So, we could potentially remove the following:
+#
+# - viewport
+# - viewportBezier
+#
+# The rest of the app uses the following: (entity script)
+# - viewportBezier (non-chained)
+# - viewport (non-chained)
+#
+#
+#
 Crafty.c 'Choreography',
   init: ->
-    @bind('GameLoop', @_choreographyTick)
-
     @_ctypes =
       delay: @_executeDelay
       linear: @_executeLinear
@@ -10,11 +32,13 @@ Crafty.c 'Choreography',
       viewportBezier: @_executeViewportBezier
 
   remove: ->
+    @unbind('GameLoop', @_choreographyTick)
     return unless @_currentPart?
     @_currentPart = null
     @trigger('ChoreographyEnd')
 
   choreography: (c, options = {}) ->
+    @uniqueBind('GameLoop', @_choreographyTick)
     @_options = _.defaults(options, {
       repeat: 0
       compensateCameraSpeed: no
@@ -54,6 +78,7 @@ Crafty.c 'Choreography',
         @_repeated += 1
         number = 0
       else
+        @unbind('GameLoop', @_choreographyTick)
         @trigger 'ChoreographyEnd'
         return
 
@@ -171,7 +196,6 @@ Crafty.c 'Choreography',
       @_currentPart.viewport =
         y: Crafty.viewport.y
 
-
     shiftedY = (@_currentPart.viewport.y - Crafty.viewport.y)
     point = bp.pointOnPath(@_currentPart.bPath, v)
     ppoint = bp.pointOnPath(@_currentPart.bPath, prevv)
@@ -188,7 +212,7 @@ Crafty.c 'Choreography',
     if @updateMovementVisuals?
       @updateMovementVisuals(rotation, dx, dy, dt)
     else
-      @rotation = rotation
+      @rotation = rotation if rotation?
 
     @x += dx
     @y += dy

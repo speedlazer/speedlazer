@@ -64,7 +64,7 @@ Crafty.c 'Sun',
 
   sun: (settings) ->
     @attr settings
-    @bind 'GameLoop', @_updateGlare
+    @uniqueBind 'GameLoop', @_updateGlare
     this
 
   remove: ->
