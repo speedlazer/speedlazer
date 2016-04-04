@@ -41,5 +41,14 @@ Crafty.defineScene 'New', ->
     #)
   #)
 
+  # TODO: Test this!
+
+  #Crafty.e('2D,Canvas,Color,GamepadMultiway').attr(
+    #x: 100
+    #y: 100
+    #w: 40
+    #h: 40
+  #).color('#FF0000').gamepadMultiway()
+
 ->
 
