@@ -22,32 +22,43 @@ class Game.Scripts.Test extends Game.LazerScript
         entityName: 'NewEnemyNameHere'
         assetsName: 'newEnemyNameHere'
 
+  oldEnemy: (amount) ->
+    @placeSquad Game.Scripts.Swirler,
+      amount: amount
+      delay: 2500
+
 class Game.Scripts.EnemyTestScript extends Game.EntityScript
   assets: (options) ->
     @loadAssets(options.assetsName ? 'shadow')
 
   spawn: (options) ->
-    enemy = Crafty.e(options.entityName).initEnemy(
+    Crafty.e(options.entityName).initEnemy(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height / 2
     )
 
   execute: ->
     @sequence(
+      #@setLocation x: 1.1, y: .5
       @setLocation x: .5, y: .5
       @wait 2000
       => @entity.flipX()
       @wait 2000
-      @moveTo x: 1.1, y: .5
+      @moveTo
+        x: 1.1
+        y: .5
+        easing: 'easeInQuad'
 
-      => @entity.unflipX()
+      #=> @entity.unflipX()
       @movePath [
         [.5, .21]
         [.156, .5]
         [.5, .833]
+      ]
+      @movePath [
         [.86, .52]
         [-100, .21]
-      ]
+      ], continuePath: yes, speed: 400
     )
 
 
@@ -67,7 +78,7 @@ Crafty.c 'NewEnemyNameHere',
   initEnemy: (attr = {}) ->
     @attr _.defaults(attr,
       health: 200
-      speed: 100
+      defaultSpeed: 200
     )
     @autoAdjustSize()
 
@@ -75,9 +86,15 @@ Crafty.c 'NewEnemyNameHere',
     @parts['tfWing'].origin 5, 10
 
     @definePart 'tbWing', 'droneTopBackWing', 15, -1, -1
+    @parts['tbWing'].origin 5, 10
+
     @definePart 'bfWing', 'droneBottomFrontWing', 30, 15, 1
+    @parts['bfWing'].origin 5, 5
+
     @definePart 'bbWing', 'droneBottomBackWing', 20, 15, -1
-    @definePart 'blades', 'droneRotorBlades', 20, 3, 2
+    @parts['bbWing'].origin 5, 5
+
+    @definePart 'blades', 'droneRotorBlades', 15, 6, 2
     @parts['blades'].origin 'center'
 
     @origin 'center'
@@ -104,7 +121,7 @@ Crafty.c 'NewEnemyNameHere',
     else
       @unflipX()
 
-    @updateBladeRotation rotation, dx
+    @updateBladeRotation rotation, dx if rotation?
     @updateWingRotation speed, dx
 
   updateBladeRotation: (rotation, dx) ->
@@ -122,14 +139,27 @@ Crafty.c 'NewEnemyNameHere',
   updateWingRotation: (speed, dx) ->
     m = if dx > 0 then -1 else 1
     # Range -20 .. 0 .. 25
-    @parts['tfWing'].rotation = @wingRotation(speed, -20, 25) * m
+    @rotatePart('tfWing', speed, -20, 25, m)
+    @rotatePart('tbWing', speed, -20, 25, m)
+    @rotatePart('bfWing', speed, 25, -20, m * -1)
+    @rotatePart('bbWing', speed, 25, -20, m * -1)
+
+  rotatePart: (part, speed, min, max, m) ->
+    target = @wingRotation(speed, min, max) * m
+    target = ((360 + target + 180) % 360)
+    current = (@parts[part].rotation + 180) % 360
+
+    if current > target
+      @parts[part].rotation -= 1
+    else if current < target
+      @parts[part].rotation += 1
 
   wingRotation: (speed, min, max) ->
-    if speed < @speed
-      ((@speed - speed) / @speed) * -20
+    if speed < @defaultSpeed
+      ((@defaultSpeed - speed) / @defaultSpeed) * -20
     else
-      maxSpeed = @speed * 2
-      ((maxSpeed - @speed) / maxSpeed) * 25
+      maxSpeed = @defaultSpeed * 2
+      ((maxSpeed - @defaultSpeed) / maxSpeed) * 25
 
 Game.levelGenerator.defineAssets(
   'newAwesomeSpriteSheet'
