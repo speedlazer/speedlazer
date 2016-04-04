@@ -329,9 +329,9 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @pickTarget('PlayerControlledShip')
-      @moveTo(y: 1.1)
+      @moveTo(y: 1.1, easing: 'easeInQuad')
       => @entity.attr(z: 0)
-      @moveTo(@targetLocation(), y: 1.01)
+      @moveTo(@targetLocation(), y: 1.01, easing: 'easeInOutQuad')
       @moveTo(@targetLocation(x: null))
       @animate 'open'
       @wait 200
@@ -369,7 +369,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
   execute: ->
     @bindSequence 'Destroyed', @onKilled
     @while(
-      @moveTo(x: -205)
+      @moveTo(x: -205, easing: 'easeInQuad')
       @sequence(
         @blast(@location(),
           ->
@@ -612,13 +612,13 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
     if @armed
       @sequence(
         @animate('blink', -1)
-        @moveTo(y: .3 + (Math.random() * .6))
+        @moveTo(y: .3 + (Math.random() * .6), easing: 'easeInOutQuad')
         @wait(200)
         @onKilled()
       )
     else
       @sequence(
-        @moveTo(y: 1.2)
+        @moveTo(y: 1.2, easing: 'easeInQuad')
       )
 
   onKilled: ->

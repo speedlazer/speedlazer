@@ -22,8 +22,8 @@ class Game.Scripts.JumpMine extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @moveTo(y: 1.05, speed: 400)
-      @moveTo(x: @target.x)
-      @moveTo(y: @target.y)
+      @moveTo(x: @target.x, easing: 'easeOutQuad')
+      @moveTo(y: @target.y, easing: 'easeOutQuad')
       @parallel(
         @sequence(
           @synchronizeOn 'placed'
