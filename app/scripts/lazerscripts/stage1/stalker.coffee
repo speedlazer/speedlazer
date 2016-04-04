@@ -10,7 +10,7 @@ class Game.Scripts.Stalker extends Game.EntityScript
       health: 100
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .83
-      speed: 600
+      defaultSpeed: 600
       pointsOnHit: 125
     )
 

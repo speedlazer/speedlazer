@@ -9,7 +9,7 @@ class Game.Scripts.Slider extends Game.EntityScript
       health: 200
       x: target.x * Crafty.viewport.width
       y: target.y * Crafty.viewport.height
-      speed: 100
+      defaultSpeed: 100
     )
 
   execute: ->

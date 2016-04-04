@@ -9,7 +9,7 @@ class Game.Scripts.CrewShooters extends Game.EntityScript
     Crafty.e('Drone, ShootOnSight, ColorEffects, Horizon').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .23
-      speed: 250
+      defaultSpeed: 250
     ).shootOnSight
       targetType: 'CameraCrew'
       shootWhenHidden: yes

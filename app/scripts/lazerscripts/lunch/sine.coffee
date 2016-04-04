@@ -8,7 +8,7 @@ class Game.Scripts.Sine extends Game.EntityScript
       health: 200
       x: Crafty.viewport.width + 40
       y: 200
-      speed: 250
+      defaultSpeed: 250
     )
 
   execute: ->

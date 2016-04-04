@@ -15,7 +15,7 @@ class Game.Scripts.SunSet extends Game.EntityScript
         .sun(
           x: 620
           y: 340
-          speed: 2
+          defaultSpeed: 2
         )
 
   execute: ->

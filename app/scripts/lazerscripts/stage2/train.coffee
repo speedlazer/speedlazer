@@ -6,7 +6,7 @@ class Game.Scripts.Train extends Game.EntityScript
     p = Crafty.e('Enemy, Color').attr(
       x: -1200
       y: 160
-      speed: 20
+      defaultSpeed: 20
       health: 900
       w: 1100
       h: 270

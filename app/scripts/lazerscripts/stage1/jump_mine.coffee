@@ -13,7 +13,7 @@ class Game.Scripts.JumpMine extends Game.EntityScript
     Crafty.e('Mine').mine(
       x: x
       y: 340
-      speed: options.speed ? 200
+      defaultSpeed: options.speed ? 200
       pointsOnHit: if options.points then 10 else 0
       pointsOnDestroy: if options.points then 50 else 0
     )

@@ -19,12 +19,12 @@ class Game.Scripts.PresentationSunRise extends Game.EntityScript
 
     if sun.length > 0
       sun.attr(
-        speed: options.speed ? 1
+        defaultSpeed: options.speed ? 1
       )
     else
       Crafty.e('Sun, KeepAlive')
         .sun(
-          speed: options.speed ? 1
+          defaultSpeed: options.speed ? 1
         )
 
   execute: ->

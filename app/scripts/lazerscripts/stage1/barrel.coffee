@@ -6,7 +6,7 @@ class Game.Scripts.IntroBarrel extends Game.EntityScript
   spawn: ->
     Crafty.e('2D, WebGL, Tween, Color, Collision, Choreography, Hideable')
       .color('#606000')
-      .attr({ z: 3, w: 10, h: 15, speed: 150 })
+      .attr({ z: 3, w: 10, h: 15, defaultSpeed: 150 })
       .onHit 'PlayerControlledShip', (c) ->
         return if Game.paused
         @trigger('Knock', c[0].obj)

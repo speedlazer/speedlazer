@@ -11,7 +11,7 @@ class Game.Scripts.LittleDancer extends Game.EntityScript
       health: 1900
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .56
-      speed: 200
+      defaultSpeed: 200
     )
 
   execute: ->

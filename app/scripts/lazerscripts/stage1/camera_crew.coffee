@@ -11,7 +11,7 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
       .attr(
         x: (Crafty.viewport.width * .2) - Crafty.viewport.x
         y: Crafty.viewport.height * .2
-        speed: 100
+        defaultSpeed: 100
         topDesaturation: 0.3
         bottomDesaturation: 0.3
       ).cameraCrew()

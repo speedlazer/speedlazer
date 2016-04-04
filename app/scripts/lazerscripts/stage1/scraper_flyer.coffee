@@ -9,7 +9,7 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
     Crafty.e('Drone, ShootOnSight, ColorEffects, Horizon').drone(
       x: -50
       y: Crafty.viewport.height * .7
-      speed: 300
+      defaultSpeed: 300
     ).shootOnSight
       cooldown: 1000
       sightAngle: 15

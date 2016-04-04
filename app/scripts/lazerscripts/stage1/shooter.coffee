@@ -9,7 +9,7 @@ class Game.Scripts.Shooter extends Game.EntityScript
     d = Crafty.e('Drone').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .71
-      speed: options.speed ? 200
+      defaultSpeed: options.speed ? 200
     )
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight

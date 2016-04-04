@@ -8,7 +8,7 @@ class Game.Scripts.SplashJumper extends Game.EntityScript
       health: 200
       x: 680
       y: 200
-      speed: 300
+      defaultSpeed: 300
     )
 
   execute: ->

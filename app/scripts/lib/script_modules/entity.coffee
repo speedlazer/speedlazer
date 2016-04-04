@@ -84,8 +84,8 @@ Game.ScriptModule.Entity =
       d.promise
 
   # Move an entity through a set of coordinates (relative to the viewport)
-  # in a bezier path. By default the entity moves with its own 'speed' property
-  # but can be overridden with settings.
+  # in a bezier path. By default the entity moves with its own 'defaultSpeed'
+  # property, but it can be overridden with settings.
   #
   # example:
   #
@@ -98,9 +98,16 @@ Game.ScriptModule.Entity =
   # ]
   #
   # extra settings supported:
-  # - speed: override the speed of the entity (in px/sec)
+  # - speed: override the defaultSpeed of the entity (in px/sec)
   # - rotate: yes/no should the entity rotate along the path?
   # - skip: amount of milliseconds to skip in this animation
+  # - easing: one of the following:
+  #   - "linear" (default)
+  #   - "smoothStep"
+  #   - "smootherStep"
+  #   - "easeInQuad"
+  #   - "easeOutQuad"
+  #   - "easeInOutQuad".
   movePath: (inputPath, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
@@ -108,8 +115,10 @@ Game.ScriptModule.Entity =
       settings = _.defaults(settings,
         rotate: yes
         skip: 0
-        speed: @entity.speed
+        speed: @entity.defaultSpeed
         continuePath: no
+        easing: 'linear'
+        autoAccellerate: yes
       )
       path = [].concat inputPath
 
@@ -156,6 +165,7 @@ Game.ScriptModule.Entity =
           continuePath: settings.continuePath
           path: bezierPath
           duration: duration
+          easingFn: settings.easing
         ], skip: settings.skip
       ).one('ChoreographyEnd', ->
         defer.resolve()
@@ -173,6 +183,13 @@ Game.ScriptModule.Entity =
   #
   # extra settings can be provided:
   # - speed: override the default speed of the entity (in px/sec)
+  # - easing: one of the following:
+  #   - "linear" (default)
+  #   - "smoothStep"
+  #   - "smootherStep"
+  #   - "easeInQuad"
+  #   - "easeOutQuad"
+  #   - "easeInOutQuad".
   moveTo: (location, extraSettings = {}) ->
     (sequence) =>
       @_verify(sequence)
@@ -275,7 +292,7 @@ Game.ScriptModule.Entity =
 
   _moveWater: (settings) ->
     defaults =
-      speed: @entity.speed
+      speed: @entity.defaultSpeed
 
     if @entity.has('ViewportFixed')
       defaults.x = @entity.x + Crafty.viewport.x
@@ -328,7 +345,7 @@ Game.ScriptModule.Entity =
 
   _moveAir: (settings) ->
     defaults =
-      speed: @entity.speed
+      speed: @entity.defaultSpeed
 
     if @entity.has('ViewportFixed')
       defaults.x = @entity.x + Crafty.viewport.x

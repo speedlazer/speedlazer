@@ -102,26 +102,31 @@ Crafty.c 'Choreography',
 
   _executeDelay: (v) ->
 
-  _executeMoveIntoViewport: (v, prevv) ->
+  _executeMoveIntoViewport: (v, prevv, dt) ->
     # the goal are current coordinates on screen
     destinationX = @_currentPart.dx
+    dx = 0
     if destinationX
       @_currentPart.moveOriginX ?= @_currentPart.x + Crafty.viewport.x - Crafty.viewport.xShift
       diffX = destinationX - @_currentPart.moveOriginX
       motionX = (diffX * v)
       pmotionX = (diffX * prevv)
-
-      @x += motionX - pmotionX #+ @shiftedX - Crafty.viewport.xShift
+      dx = motionX - pmotionX #+ @shiftedX - Crafty.viewport.xShift
 
     destinationY = @_currentPart.dy
+    dy = 0
     if destinationY
       @_currentPart.moveOriginY ?= @_currentPart.y + Crafty.viewport.y - Crafty.viewport.yShift
       diffY = destinationY - @_currentPart.moveOriginY
-
       motionY = (diffY * v)
       pmotionY = (diffY * prevv)
+      dy = motionY - pmotionY
 
-      @y += motionY - pmotionY
+    if @updateMovementVisuals?
+      @updateMovementVisuals(undefined, dx, dy, dt)
+
+    @x += dx
+    @y += dy
 
   _executeViewportBezier: (v, prevv, dt) ->
     bp = new Game.BezierPath

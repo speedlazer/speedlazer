@@ -21,14 +21,14 @@ class Game.Scripts.SunRise extends Game.EntityScript
       sun.attr(
         x: sun.x + Crafty.viewport.x
         y: sun.y + Crafty.viewport.y
-        speed: options.speed ? 1
+        defaultSpeed: options.speed ? 1
       )
     else
       Crafty.e('Sun, KeepAlive')
         .sun(
           x: Crafty.viewport.width * .97
           y: Crafty.viewport.height * .85
-          speed: options.speed ? 1
+          defaultSpeed: options.speed ? 1
         )
 
   execute: ->

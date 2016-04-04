@@ -39,8 +39,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     Crafty.e('LargeDrone, Horizon').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
-      speed: 100
-      #speed: 50
+      defaultSpeed: 100
+      #defaultSpeed: 50
       pointsOnHit: 10
     )
 
@@ -320,7 +320,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       x: location().x
       y: location().y + 10
       z: -4
-      speed: 200
+      defaultSpeed: 200
       pointsOnHit: 0
       pointsOnDestroy: 0
     )
@@ -361,7 +361,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
       x: location.x - 30
       y: location.y - 8 + Math.round(Math.random() * 15)
       z: 0
-      speed: 600
+      defaultSpeed: 600
       pointsOnHit: options.pointsOnHit
       pointsOnDestroy: options.pointsOnDestroy
     )
@@ -410,7 +410,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
       x: location.x - 30
       y: location.y - 8 + Math.round(Math.random() * 15)
       z: 0
-      speed: 500
+      defaultSpeed: 500
       pointsOnHit: options.pointsOnHit
       pointsOnDestroy: options.pointsOnDestroy
     )
@@ -455,7 +455,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
       health: 264000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
-      speed: 150
+      defaultSpeed: 150
     )
 
   execute: ->
@@ -515,7 +515,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
       health: 264000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
-      speed: 150
+      defaultSpeed: 150
     )
 
   execute: ->
@@ -602,7 +602,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
       x: location.x
       y: location.y + 10
       z: -4
-      speed: 400
+      defaultSpeed: 400
       pointsOnHit: 10
       pointsOnDestroy: 20
     )
@@ -634,7 +634,7 @@ class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
       health: 200
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .1
-      speed: 500
+      defaultSpeed: 500
     )
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
