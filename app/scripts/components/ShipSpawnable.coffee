@@ -57,6 +57,7 @@ Crafty.c 'ShipSpawnable',
     @listenTo @ship, 'Shoot', ->
       @stats.shotsFired += 1
 
+    @trigger('ShipSpawned', @ship)
     Crafty.trigger('ShipSpawned', @ship)
     # We start it after the spawned event, so that listeners can
     # reposition it before

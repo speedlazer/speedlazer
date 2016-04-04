@@ -119,7 +119,16 @@ Game.ScriptModule.Level =
       return WhenJS() if @_skippingToCheckpoint()
       item = @inventory('item', options.item)
       if player = options.inFrontOf
-        @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: player.ship().y + Crafty.viewport.y
+        ship = player.ship()
+        if ship
+          @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: player.ship().y + Crafty.viewport.y
+        else
+          unless player.gameOver
+            d = WhenJS.defer()
+            player.entity.one 'ShipSpawned', (ship) =>
+              @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: ship.y + Crafty.viewport.y
+              d.resolve()
+            return d.promise
 
       if pos = options.location
         coords = pos?()
@@ -146,6 +155,7 @@ Game.ScriptModule.Level =
     Crafty('Player').each ->
       players[@name] =
         name: @name
+        entity: this
         active: no
         gameOver: no
         has: (item) ->
