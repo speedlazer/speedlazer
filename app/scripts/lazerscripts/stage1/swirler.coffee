@@ -10,7 +10,9 @@ class Game.Scripts.Swirler extends Game.EntityScript
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height / 2
       defaultSpeed: options.speed ? 200
+      juice: options.juice
     )
+    @juice = options.juice
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
         cooldown: 2000
@@ -35,5 +37,5 @@ class Game.Scripts.Swirler extends Game.EntityScript
     ]
 
   onKilled: ->
-    @smallExplosion()
+    @smallExplosion(juice: @juice)
 

@@ -11,7 +11,7 @@ class Game.Scripts.Test extends Game.LazerScript
       @setScenery 'OceanOld'
       @setSpeed 50
       @testEnemy(1)
-      @testEnemy(3)
+      #@testEnemy(3)
     )
 
   testEnemy: (amount) ->

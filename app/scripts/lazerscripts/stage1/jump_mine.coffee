@@ -9,6 +9,7 @@ class Game.Scripts.JumpMine extends Game.EntityScript
   spawn: (options) ->
     x = if options.direction is 'right' then Crafty.viewport.width + 80 else -80
     @target = options.grid.getLocation()
+    @juice = options.juice ? yes
 
     Crafty.e('Mine').mine(
       x: x
@@ -22,8 +23,8 @@ class Game.Scripts.JumpMine extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @moveTo(y: 1.05, speed: 400)
-      @moveTo(x: @target.x, easing: 'easeOutQuad')
-      @moveTo(y: @target.y, easing: 'easeOutQuad')
+      @moveTo(x: @target.x, easing: if @juice then 'easeOutQuad' else 'linear')
+      @moveTo(y: @target.y, easing: if @juice then 'easeOutQuad' else 'linear')
       @parallel(
         @sequence(
           @synchronizeOn 'placed'
@@ -42,5 +43,5 @@ class Game.Scripts.JumpMine extends Game.EntityScript
     )
 
   onKilled: ->
-    @bigExplosion()
+    @bigExplosion(juice: @juice)
 

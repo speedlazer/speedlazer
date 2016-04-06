@@ -14,6 +14,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
     Game.explosionMode = 'block'
 
     @sequence(
+      => Crafty.audio.mute()
       @setShipType('PlayerControlledCube')
       @setScenery('Blackness')
       @hideHud(duration: 0)
@@ -188,32 +189,67 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @swirlAttacks()
       @setScenery('CoastStart')
 
-      @setWeapons(['lasers'])
-      @setShipType('PlayerSpaceship')
-
       @nextSlide @sequence(
-        @mineSwarm()
+        @mineSwarm(juice: no)
       )
       @setScenery('BayStart')
       @async @runScript(Game.Scripts.PresentationSunSet, skipTo: 0, speed: 50)
       @say 'Graphics', 'Ok lets do the sunrise again'
       @say 'Graphics', 'And now use WebGL Shaders'
 
+      @checkpoint @setScenery('BayStart')
       @nextSlide @sequence(
         @swirlAttacks2()
       )
-      @checkpoint @setScenery('BayStart')
       =>
         Game.webGLMode = on
         Crafty('GoldenStripe').each -> @bottomColor('#DDDD00', 0)
+        Crafty('waterMiddle').each -> @attr lightness: 1.0
+        Crafty('waterHorizon').each -> @attr lightness: 1.0
       @chapterTitle(1, 'WebGL Shaders')
 
       @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 5)
-      @wait 20000
+      @nextSlide()
+      @updateTitle 'Juice'
+      @disableWeapons()
+      @nextSlide(
+        @mineSwarm(juice: no)
+      )
+      @nextSlide(
+        @mineSwarm(juice: yes)
+      )
+      @enableWeapons()
+      @chapterTitle(2, 'Minimal viable audio')
+      @wait 1000
+      @setWeapons(['lasers'])
+      => Crafty.audio.unmute()
+      @nextSlide(
+        @mineSwarm(juice: yes)
+      )
+      @nextSlide(
+        @placeSquad Game.Scripts.Swirler,
+          amount: 4
+          delay: 500
+          options:
+            juice: yes
+      )
+      @setScenery 'UnderBridge'
+      @updateTitle 'Player ship'
+      @setWeapons(['lasers'])
+      @setShipType('PlayerSpaceship')
+      @setWeapons(['lasers'])
+      @while(
+        @waitForScenery('UnderBridge', event: 'inScreen')
+        @placeSquad Game.Scripts.Swirler,
+          amount: 4
+          delay: 500
+          options:
+            juice: yes
+      )
 
       @placeSquad Game.Scripts.Stage1BossStage1
+
       @gainHeight 200, duration: 5000
-      @showScore(1, 'Lunch and learn')
       @repeat @sequence(
         @placeSquad Game.Scripts.Stage1BossPopup
         @wait 2000
@@ -262,11 +298,17 @@ class Game.Scripts.Lunch extends Game.LazerScript
       Crafty.bind('KeyDown', handler)
       d.promise
 
-  mineSwarm: (options = { direction: 'right' })->
+  mineSwarm: (options = {}) ->
+    options = _.defaults(options,
+      direction: 'right'
+      juice: yes
+    )
+
     @placeSquad Game.Scripts.JumpMine,
       amount: 8
       delay: 300
       options:
+        juice: options.juice
         grid: new Game.LocationGrid
           x:
             start: 200
@@ -285,14 +327,10 @@ class Game.Scripts.Lunch extends Game.LazerScript
         amount: 4
         delay: 500
         drop: 'xp'
-        options:
-          shootOnSight: yes
       @repeat 2, @placeSquad Game.Scripts.PresentationShooter,
         amount: 4
         delay: 500
         drop: 'xp'
-        options:
-          shootOnSight: yes
     )
 
   swirlAttacks2: ->
@@ -302,12 +340,14 @@ class Game.Scripts.Lunch extends Game.LazerScript
         delay: 500
         drop: 'xp'
         options:
-          shootOnSight: yes
+          #shootOnSight: yes
+          juice: no
       @repeat 2, @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 500
         drop: 'xp'
         options:
-          shootOnSight: yes
+          #shootOnSight: yes
+          juice: no
     )
 

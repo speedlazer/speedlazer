@@ -49,6 +49,8 @@ generator.defineElement 'waterHorizon', ->
     .attr(z: -600)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(1.0, .0)
+  if Game.webGLMode is off
+    h.attr lightness: .6
   @addBackground(0, @level.visibleHeight - 175, h, .25)
 
   goldenStripe = Crafty.e('2D, WebGL, Gradient, GoldenStripe')
@@ -62,6 +64,8 @@ generator.defineElement 'water', ->
     .attr(z: -500)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.7, .0)
+  if Game.webGLMode is off
+    h.attr lightness: .8
   @addBackground(0, @level.visibleHeight - 125, h, .5)
 
   @level.registerWaveTween 'OceanWavesMiddle', 5500, 'easeInOutQuad', (v, forward) ->

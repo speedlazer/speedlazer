@@ -175,7 +175,7 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
     if window.Game.webGLMode is off
       topSaturation = 0.0
       bottomSaturation = 0.0
-      lightness = 1.0
+      lightness = 1.0 if ent.has('cloud')
 
     e.program.writeVector("aColor",
       color._red/255,
