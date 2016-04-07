@@ -360,7 +360,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
       health: 250
       x: location.x - 30
       y: location.y - 8 + Math.round(Math.random() * 15)
-      z: 0
+      z: 5
       defaultSpeed: 600
       pointsOnHit: options.pointsOnHit
       pointsOnDestroy: options.pointsOnDestroy
@@ -399,17 +399,20 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
     options = _.defaults(options,
       pointsOHit: 125
       pointsOnDestroy: 50
+      z: 5
+      offsetY: 0
     )
     return null unless options.location?
 
     location = options.location?()
     return null unless location
+    @offsetY = options.offsetY
 
     Crafty.e('Rocket').rocket(
       health: 250
       x: location.x - 30
       y: location.y - 8 + Math.round(Math.random() * 15)
-      z: 0
+      z: options.z
       defaultSpeed: 500
       pointsOnHit: options.pointsOnHit
       pointsOnDestroy: options.pointsOnDestroy
@@ -419,6 +422,8 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @pickTarget('PlayerControlledShip')
+      @moveTo @location(offsetY: @offsetY)
+      @wait 500
       @while(
         @movePath [
           @targetLocation()

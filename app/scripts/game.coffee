@@ -1,5 +1,6 @@
 Game =
   paused: no
+  firstLevel: 'Game'
   togglePause: ->
     @paused = !@paused
     if @paused
@@ -102,7 +103,7 @@ Game =
     handler = (e) =>
       if e.key == Crafty.keys.N
         Crafty.unbind('KeyDown', handler)
-        Crafty.enterScene('Game', script: 'Lunch', checkpoint: 5)
+        Crafty.enterScene('Game', script: 'Lunch', checkpoint: 6)
 
     Crafty.bind('KeyDown', handler)
     Crafty.enterScene('New')

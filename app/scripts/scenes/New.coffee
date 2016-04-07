@@ -14,12 +14,12 @@ Crafty.defineScene 'New', ->
     #h: 40
   #).color('#FF0000').fourway()
 
-  #Crafty.e('2D,WebGL,Color,Fourway,Player').attr(
-    #x: 10
-    #y: 10
-    #w: 20
-    #h: 20
-  #).color('#FF0000').fourway()
+  Crafty.e('2D,WebGL,Color,Fourway,Player').attr(
+    x: 100
+    y: 100
+    w: 40
+    h: 40
+  ).color('#FF0000').fourway(250)
 
   #Crafty.e('2D,WebGL,Color,FooBar,Collision').attr(
     #x: 300
@@ -41,17 +41,15 @@ Crafty.defineScene 'New', ->
     #)
   #)
 
-  # TODO: Test this!
-
-  Crafty.e('2D,Canvas,Color,GamepadMultiway')
-    .attr(
-      x: 100
-      y: 100
-      w: 40
-      h: 40
-    )
-    .color('#FF0000')
-    .gamepadMultiway(speed: 200)
+  #Crafty.e('2D,Canvas,Color,GamepadMultiway')
+    #.attr(
+      #x: 100
+      #y: 100
+      #w: 40
+      #h: 40
+    #)
+    #.color('#FF0000')
+    #.gamepadMultiway(speed: 250)
 
 ->
 

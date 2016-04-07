@@ -38,7 +38,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide()
       @updateTitle 'More enemies'
       @setScenery('OpenSpace')
-      @setSpeed 150
+      @setSpeed 150, accellerate: no
       @parallel(
         @placeSquad Game.Scripts.Slider,
           amount: 15
@@ -54,24 +54,24 @@ class Game.Scripts.Lunch extends Game.LazerScript
                 stepSize: .1
         @sequence(
           @waitForScenery 'OpenSpace'
-          @setSpeed 0
+          @setSpeed 0, accellerate: no
         )
       )
 
       @nextSlide()
       @updateTitle 'Level geometry'
-      @setSpeed 50
+      @setSpeed 50, accellerate: no
 
       @nextSlide()
       @updateTitle 'Speed and collision'
-      @setSpeed 250
+      @setSpeed 250, accellerate: no
 
       @nextSlide()
       @updateTitle 'Backgrounds'
       @checkpoint @setScenery 'OpenSpace'
       @setScenery('TunnelStart')
       @waitForScenery 'TunnelStart'
-      @setSpeed 50
+      @setSpeed 50, accellerate: no
       @nextSlide()
 
       @updateTitle 'Dialog'
@@ -110,30 +110,19 @@ class Game.Scripts.Lunch extends Game.LazerScript
 
       @updateTitle 'Start stage 1'
       @setScenery('TunnelEnd')
-      @setSpeed 450
+      @setSpeed 450, accellerate: no
 
       @waitForScenery 'OceanOld', event: 'leave'
-      @setSpeed 50
+      @setSpeed 50, accellerate: no
       @checkpoint @setScenery 'OceanOld'
       @nextSlide()
-      @updateTitle 'Vertical motion'
-      @parallel(
-        @gainHeight 800, duration: 10000
-        @placeSquad Game.Scripts.Sine,
-          amount: 8
-          delay: 1000
-      )
-      @nextSlide()
       @updateTitle 'Bezier, powerups'
-      @parallel(
-        @gainHeight -800, duration: 10000
-        @nextSlide @sequence(
-          @placeSquad Game.Scripts.PresentationSwirler,
-            drop: 'xp'
-            amount: 4
-            delay: 500
-          @waitForScenery 'OceanOld'
-        )
+      @nextSlide @sequence(
+        @placeSquad Game.Scripts.PresentationSwirler,
+          drop: 'xp'
+          amount: 4
+          delay: 500
+        @waitForScenery 'OceanOld'
       )
 
       @updateTitle 'Lazerscript environment'
@@ -215,6 +204,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide(
         @mineSwarm(juice: no)
       )
+      @setSpeed 100, accellerate: yes
       @nextSlide(
         @mineSwarm(juice: yes)
       )
@@ -233,6 +223,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
           options:
             juice: yes
       )
+      @checkpoint @setScenery 'Bay'
       @setScenery 'UnderBridge'
       @updateTitle 'Player ship'
       @setWeapons(['lasers'])
@@ -247,7 +238,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
             juice: yes
       )
 
-      @placeSquad Game.Scripts.Stage1BossStage1
+      @placeSquad Game.Scripts.LunchBossStage1
 
       @gainHeight 200, duration: 5000
       @repeat @sequence(
