@@ -196,14 +196,17 @@ class Game.Level
   setShipType: (@shipType) ->
     Crafty('Player ControlScheme').each -> @spawnShip() if @ship?
 
-  setForcedSpeed: (speed) ->
+  setForcedSpeed: (speed, options) ->
+    options = _.defaults(options,
+      accellerate: yes
+    )
     if @_forcedSpeed
       delta = (speed.x ? speed) - (@_forcedSpeed.x ? @_forcedSpeed)
     else
       delta = 0
     @_forcedSpeed = speed
     if @_playersActive
-      @_scrollWall.scrollWall(@_forcedSpeed)
+      @_scrollWall.scrollWall(@_forcedSpeed, options)
     Crafty('Bullet').each -> @attr speed: @speed + delta
     Crafty('PlayerControlledShip').each ->
       @forcedSpeed speed

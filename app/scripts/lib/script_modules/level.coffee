@@ -231,10 +231,13 @@ Game.ScriptModule.Level =
   # Change the speed of the camera and the playerships.
   #
   # speed: the speed in px/sec
-  setSpeed: (speed) ->
+  setSpeed: (speed, options = {}) ->
     (sequence) =>
       @_verify(sequence)
-      @level.setForcedSpeed speed
+      options = _.defaults(options,
+        accellerate: yes
+      )
+      @level.setForcedSpeed speed, options
 
   # Show the scores of the players active in the game
   # This is used to end a stage in the game
