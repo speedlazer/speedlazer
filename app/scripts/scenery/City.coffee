@@ -157,7 +157,7 @@ generator.defineElement 'city', ->
     .saturationGradient(.6, .6)
   @addBackground(0, @level.visibleHeight - 320, bg, .375)
 
-  bg.flipX() if (Math.random() > .5)
+  #bg.flipX() if (Math.random() > .5)
 
   e = Crafty.e('2D, WebGL, city, Collision, SunBlock, Horizon, Flipable')
     .attr(z: -305)
@@ -172,9 +172,9 @@ generator.defineElement 'city', ->
   @addBackground(0, @level.visibleHeight - 300, e, .5)
   @addBackground(0, @level.visibleHeight - 300, c, .5)
 
-  if (Math.random() > .5)
-    e.flipX()
-    c.flipX()
+  #if (Math.random() > .5)
+    #e.flipX()
+    #c.flipX()
 
 generator.defineElement 'city-bridge', ->
   bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon')
@@ -501,7 +501,7 @@ generator.defineBlock class extends Game.CityScenery
   generate: ->
     super
     h = 400 + 200
-    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 600, h: h, z: -10).color('#909090'))
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 600, h: h, z: -20).color('#909090'))
 
     h = 300 + 200
     @addBackground(200, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 700, h: h, z: 5).color('#000000'), 1.5)

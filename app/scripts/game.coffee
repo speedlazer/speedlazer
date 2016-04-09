@@ -103,7 +103,7 @@ Game =
     handler = (e) =>
       if e.key == Crafty.keys.N
         Crafty.unbind('KeyDown', handler)
-        Crafty.enterScene('Game', script: 'Lunch', checkpoint: 6)
+        Crafty.enterScene('Game', script: 'Lunch', checkpoint: 0)
 
     Crafty.bind('KeyDown', handler)
     Crafty.enterScene('New')

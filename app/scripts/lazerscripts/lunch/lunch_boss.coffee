@@ -266,7 +266,6 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @sendToBackground(0.7, -150)
       @moveTo(x: 1.1, speed: 500)
       => @entity.unflipX()
-      @sendToBackground(0.7, -150)
       @scale(1.0, duration: 0)
       @reveal()
       @moveTo(x: .85, y: .41, speed: 200)

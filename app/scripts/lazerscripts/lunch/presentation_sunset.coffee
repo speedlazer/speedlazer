@@ -21,7 +21,7 @@ class Game.Scripts.PresentationSunSet extends Game.EntityScript
     preColor = (40000 / speed)
     colorDuration = (400000 / speed)
     @sequence(
-      @setLocation x: .5, y: .31
+      @setLocation x: .5, y: .11
       @parallel(
         @backgroundColorFade(
           duration: colorDuration,

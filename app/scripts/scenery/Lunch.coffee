@@ -66,58 +66,62 @@ generator.defineBlock class extends @Game.LevelScenery
     @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, Color, SunBlock').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
     @addBackground(0, @level.visibleHeight - 90, Crafty.e('2D, WebGL, Color, SunBlock').color('#3030B0').attr({ z: -301, w: (@delta.x * .5) + 1, h: 70 }), .5)
 
-generator.defineBlock class extends @Game.LevelScenery
+generator.defineBlock class extends Game.CityScenery
   name: 'City.OceanToNew'
   delta:
-    x: 800
+    x: 1024
     y: 0
   autoNext: 'Ocean'
 
-  assets: ->
-    sprites:
-      'water-horizon-old.png':
-        tile: 201
-        tileh: 155
-        map:
-          waterHorizonOld: [0, 0]
-      'water-old.png':
-        tile: 400
-        tileh: 105
-        map:
-          waterMiddleOld: [0, 0]
-      'water-front-old.png':
-        tile: 400
-        tileh: 90
-        map:
-          waterFront1Old: [0, 0]
-          waterFront2Old: [1, 0]
-
   generate: ->
     super
-    wh = Crafty.e('2D, WebGL, waterHorizonOld, SunBlock, Horizon').attr(z: -600)
+    wh = Crafty.e('2D, WebGL, waterHorizon, SunBlock, Horizon').attr(z: -601)
       .colorDesaturation(Game.backgroundColor)
       .saturationGradient(1.0, .0)
+    if Game.webGLMode is off
+      wh.attr lightness: .6
     @addBackground(0, @level.visibleHeight - 175, wh, .25)
+    whg = Crafty.e('2D, WebGL, Gradient, SunBlock')
+      .topColor('#33337e')
+      .bottomColor('#33337e', 0)
+      .attr(z: -600, rotation: -90, h: (@delta.x * .25) + 1, w: 200)
+    @addBackground(0, @level.visibleHeight + 25, whg, .25)
 
     goldenStripe = Crafty.e('2D, WebGL, Gradient, GoldenStripe')
       .topColor('#DDDD00')
       .bottomColor('#DDDD00', if Game.webGLMode then 0 else 1)
       .attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
     @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
-    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, waterMiddleOld, SunBlock').attr(z: -500), .5)
+
+    ws = Crafty.e('2D, WebGL, waterMiddle, SunBlock').attr(z: -501)
+    if Game.webGLMode is off
+      ws.attr lightness: .8
+    @addBackground(0, @level.visibleHeight - 125, ws, .5)
+
+    wg = Crafty.e('2D, WebGL, Gradient, SunBlock')
+      .topColor('#3030B0')
+      .bottomColor('#3030B0', 0)
+      .attr(z: -500, rotation: -90, h: (@delta.x * .5) + 1, w: 200)
+    @addBackground(0, @level.visibleHeight + 75, wg, .5)
 
     height = 65
     @add(0, @level.visibleHeight - 45, Crafty.e('2D, Solid').attr(w: @delta.x, h: 45))
     #@add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Image').image('images/water-front-old.png').attr(z: -300))
 
-    water1 = Crafty.e('2D, WebGL, waterFront1Old, Wave1, SunBlock').attr(z: -300)
+    water1 = Crafty.e('2D, WebGL, waterFront1, Wave1, SunBlock').attr(z: -300)
     @add(0, @level.visibleHeight - height, water1)
     water1.originalY = water1.y
 
-    water2 = Crafty.e('2D, WebGL, waterFront2Old, Wave2, SunBlock').attr(z: -300)
-    @add(400, @level.visibleHeight - height, water2)
+    water2 = Crafty.e('2D, WebGL, waterFront2, Wave2, SunBlock').attr(z: -300)
+    @add(512, @level.visibleHeight - height, water2)
     water2.originalX = water2.x
     water2.originalY = water2.y
+
+    wfg = Crafty.e('2D, WebGL, Gradient, SunBlock')
+      .topColor('#6262d2')
+      .bottomColor('#6262d2', 0)
+      .attr(z: -299, rotation: -90, h: @delta.x, w: 200)
+    @add(0, @level.visibleHeight - height + 200, wfg)
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.OpenSpace'

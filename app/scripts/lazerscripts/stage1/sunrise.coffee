@@ -53,7 +53,7 @@ class Game.Scripts.SunRise extends Game.EntityScript
         )
         @movePath [
           [.75, .31]
-          [.5, .21]
+          [.5, .11]
         ], rotate: no, skip: @options.skipTo - preColor
       )
     )

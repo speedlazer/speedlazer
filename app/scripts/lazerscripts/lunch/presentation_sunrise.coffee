@@ -51,8 +51,8 @@ class Game.Scripts.PresentationSunRise extends Game.EntityScript
           ['#222c50', '#7a86a2', '#5dade9']
         )
         @movePath [
-          [.75, .51]
-          [.5, .31]
+          [.75, .31]
+          [.5, .11]
         ], rotate: no, skip: @options.skipTo - preColor
       )
     )
