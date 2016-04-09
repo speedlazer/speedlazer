@@ -1,5 +1,6 @@
 SPRITE_EFFECT_VERTEX_SHADER = """
   attribute vec2 aPosition;
+  attribute vec4 aSpriteDimensions;
   attribute vec3 aOrientation;
   attribute vec2 aLayer;
   attribute vec2 aTextureCoord;
@@ -11,6 +12,7 @@ SPRITE_EFFECT_VERTEX_SHADER = """
   varying lowp vec4 vColor;
   varying lowp vec4 vOverrideColor;
   varying lowp vec4 vGradient;
+  varying lowp vec4 vSpriteDimensions;
 
   uniform vec4 uViewport;
   uniform mediump vec2 uTextureDimensions;
@@ -29,6 +31,7 @@ SPRITE_EFFECT_VERTEX_SHADER = """
     vColor = aColor;
     vOverrideColor = aOverrideColor;
     vGradient = aGradient;
+    vSpriteDimensions = aSpriteDimensions;
   }
 """
 
@@ -38,6 +41,7 @@ SPRITE_EFFECT_FRAGMENT_SHADER = """
   varying mediump vec4 vColor;
   varying mediump vec4 vOverrideColor;
   varying mediump vec4 vGradient;
+  varying mediump vec4 vSpriteDimensions;
 
   uniform sampler2D uSampler;
   uniform mediump vec2 uTextureDimensions;
@@ -98,7 +102,8 @@ SPRITE_EFFECT_FRAGMENT_SHADER = """
       texelColor.rgb /= texelColor.a + 0.00001;
     }
 
-    mediump float mixFactor = (vGradient.x * (1.0 - coord.y)) + (vGradient.y * coord.y);
+    mediump float yCoord = (vTextureCoord.y - vSpriteDimensions.y) / vSpriteDimensions.a;
+    mediump float mixFactor = (vGradient.x * (1.0 - yCoord)) + (vGradient.y * yCoord);
 
     mediump float lightness = (0.2126*texelColor.r + 0.7152*texelColor.g + 0.0722*texelColor.b);
     if (vOverrideColor.a == 1.0) {
@@ -134,13 +139,14 @@ SPRITE_EFFECT_FRAGMENT_SHADER = """
 """
 
 SPRITE_EFFECT_ATTRIBUTE_LIST = [
-  { name: "aPosition",      width: 2 }
-  { name: "aOrientation",   width: 3 }
-  { name: "aLayer",         width: 2 }
-  { name: "aTextureCoord",  width: 2 }
-  { name: "aColor",         width: 4 }
-  { name: "aOverrideColor", width: 4 }
-  { name: "aGradient",      width: 4 }
+  { name: "aPosition",         width: 2 }
+  { name: "aOrientation",      width: 3 }
+  { name: "aLayer",            width: 2 }
+  { name: "aTextureCoord",     width: 2 }
+  { name: "aColor",            width: 4 }
+  { name: "aOverrideColor",    width: 4 }
+  { name: "aGradient",         width: 4 }
+  { name: "aSpriteDimensions", width: 4 }
 ]
 
 Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
@@ -155,6 +161,10 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
       co.x, co.y + co.h,
       co.x + co.w, co.y,
       co.x + co.w, co.y + co.h
+    )
+    e.program.writeVector("aSpriteDimensions",
+      co.x, co.y,
+      co.w, co.h
     )
     color = ent.desaturationColor ? { _red: 0, _green: 0, _blue: 0 }
     ocolor = ent.overrideColor ? { _red: 0, _green: 0, _blue: 0 }
