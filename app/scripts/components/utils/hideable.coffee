@@ -10,7 +10,7 @@ Crafty.c 'Hideable',
       z: z
     for c in @_children
       if c.attr?
-        zOff = c.z - originalZ
+        zOff = c.z - @_originalZ
         c.attr z: z + zOff
     @hidden = yes
 
