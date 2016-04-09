@@ -190,7 +190,7 @@ generator.defineElement 'city-bridge', ->
     .saturationGradient(.4, .4)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
-  @addBackground(0, @level.visibleHeight - 300, e, .5)
+  @addBackground(0, @level.visibleHeight - 236, e, .5)
 
 generator.defineElement 'cityStart', ->
   e = Crafty.e('2D, WebGL, cityStart, Collision, SunBlock, Horizon')
@@ -209,16 +209,16 @@ class Game.CityScenery extends Game.LevelScenery
         map:
           waterHorizon: [0, 17, 8, 5]
           waterMiddle: [16, 9, 16, 4]
-          waterFront1: [0, 22, 16, 3]
-          waterFront2: [16, 22, 16, 3]
+          waterFront1: [0, 29, 16, 3]
+          waterFront2: [16, 29, 16, 3]
           coastStart: [8, 18, 8, 1]
           coast: [8, 17, 8, 1]
 
-          cityBridge: [16, 13, 16, 9]
+          cityBridge: [0, 22, 16, 7]
           cityStart: [0, 0, 16, 9]
           city: [16, 0, 16, 9]
           cityLayer2: [0, 9, 12, 8]
-
+          bigBuilding: [16, 13, 16, 16]
 
 generator.defineBlock class extends Game.LevelScenery
   name: 'City.Intro'
@@ -500,11 +500,19 @@ generator.defineBlock class extends Game.CityScenery
 
   generate: ->
     super
-    h = 400 + 200
-    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 600, h: h, z: -20).color('#909090'))
+    bb = Crafty.e('2D, WebGL, bigBuilding, ColorEffects').attr(z: -20).crop(1, 1, 510, 510)
+    bb.colorOverride('#001fff', 'partial')
+    @add(0, @level.visibleHeight - 700, bb)
+    bb.bind('BigExplosion', ->
+      return if @buildingExploded
+      if @x + @w > -Crafty.viewport.x and @x < -Crafty.viewport.x + Crafty.viewport.width
+        # test if in screen
+        @colorOverride('#000000', 'partial')
+        @buildingExploded = yes
+    )
 
-    h = 300 + 200
-    @addBackground(200, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').attr(w: 700, h: h, z: 5).color('#000000'), 1.5)
+    h = 768
+    @addBackground(200, @level.visibleHeight - 550, Crafty.e('2D, WebGL, bigBuilding').crop(1, 1, 510, 510).attr(w: 768, h: h, z: 50, lightness: .4), 1.5)
 
     @addElement 'water'
 

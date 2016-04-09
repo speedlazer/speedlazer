@@ -302,6 +302,7 @@ class Game.Scripts.LunchBossMineField extends Game.EntityScript
   spawn: (options) ->
     location = options.location()
     @target = options.grid.getLocation()
+    @index = options.index
 
     Crafty.e('Mine').mine(
       health: 700
@@ -323,6 +324,8 @@ class Game.Scripts.LunchBossMineField extends Game.EntityScript
         @animate('blink', -1)
         @wait 1000
         @onKilled()
+        =>
+          Crafty('bigBuilding').trigger('BigExplosion') if @index == 0
         @endSequence()
       )
     )
