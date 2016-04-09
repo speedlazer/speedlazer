@@ -4,9 +4,14 @@ Crafty.c 'Hideable',
     @hidden = no
 
   sendToBackground: (scale, z) ->
+    @_originalZ = @z
     @attr
       scale: scale
       z: z
+    for c in @_children
+      if c.attr?
+        zOff = c.z - originalZ
+        c.attr z: z + zOff
     @hidden = yes
 
   hide: (@hideMarker, options) ->
@@ -26,10 +31,15 @@ Crafty.c 'Hideable',
     @hidden = no
     currentScale = @scale ? 1.0
     scale = 1.0
+
+    for c in @_children
+      if c.attr?
+        zOff = c.z - @z
+        c.attr z: @_originalZ + zOff
     @attr
       scale: scale
       alpha: 1.0,
-      z: 0
+      z: @_originalZ
       hideAt: null
 
     for c in @_children

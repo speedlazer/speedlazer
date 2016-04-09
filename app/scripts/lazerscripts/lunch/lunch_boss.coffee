@@ -67,6 +67,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @laugh()
       => @entity.invincible = no
       @enableWeapons()
+      @setSpeed 100
       @async @placeSquad(Game.Scripts.Stage1BossRocket,
         options:
           location: @location()
@@ -214,9 +215,12 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @setSpeed 150
       @bombRaid(yes)
       @parallel(
-        @gainHeight(300, duration: 4000)
+        @sequence(
+          @gainHeight(300, duration: 4000)
+          @setScenery 'Skyline'
+        )
         @repeat @sequence(
-          @repeat 3, @attackCycleAir()
+          @repeat 2, @attackCycleAir()
           @airBashAttack()
         )
       )
@@ -224,24 +228,43 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
 
   airBashAttack: ->
     @sequence(
-      @pickTarget('PlayerControlledShip')
-      @moveTo(@targetLocation(), x: 0.95, speed: 100, 'easeInOutQuad')
-      @while(
-        @moveTo(x: -.15, speed: 500, easing: 'easeInQuad')
-        # TODO: Create large in-air Minefield
-        @sequence(
-          @while(
-            @wait 300
-            @smoke()
-          )
-        )
+      @moveTo(y: .5, x: 0.95, speed: 100, 'easeInOutQuad')
+
+      @async @placeSquad(Game.Scripts.LunchBossMineField,
+        amount: 20
+        delay: 100
+        options:
+          location: @location()
+          grid: new Game.LocationGrid
+            x:
+              start: 0.1
+              steps: 12
+              stepSize: 0.075
+            y:
+              start: 0.1
+              steps: 5
+              stepSize: 0.075
       )
+      @async @placeSquad(Game.Scripts.LunchBossMineField,
+        amount: 20
+        delay: 100
+        options:
+          location: @location()
+          grid: new Game.LocationGrid
+            x:
+              start: 0.1
+              steps: 12
+              stepSize: 0.075
+            y:
+              start: 0.7
+              steps: 5
+              stepSize: 0.075
+      )
+      @wait(3000)
+      @moveTo(x: -.15, speed: 500, easing: 'easeInQuad')
       => @entity.flipX()
       @sendToBackground(0.7, -150)
-      @while(
-        @moveTo(x: 1.1, speed: 500)
-        @smoke('light')
-      )
+      @moveTo(x: 1.1, speed: 500)
       => @entity.unflipX()
       @sendToBackground(0.7, -150)
       @scale(1.0, duration: 0)
@@ -272,4 +295,39 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
         )
       )
     )
+
+class Game.Scripts.LunchBossMineField extends Game.EntityScript
+  assets: ->
+    @loadAssets('mine')
+
+  spawn: (options) ->
+    location = options.location()
+    @target = options.grid.getLocation()
+
+    Crafty.e('Mine').mine(
+      health: 700
+      x: location.x
+      y: location.y + 10
+      z: -4
+      defaultSpeed: options.speed ? 200
+      pointsOnHit: if options.points then 10 else 0
+      pointsOnDestroy: if options.points then 50 else 0
+    )
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @moveTo(x: @target.x, y: @target.y, easing: 'easeOutQuad')
+      @synchronizeOn 'placed'
+      @sequence(
+        @wait 2500
+        @animate('blink', -1)
+        @wait 1000
+        @onKilled()
+        @endSequence()
+      )
+    )
+
+  onKilled: ->
+    @bigExplosion(juice: @juice)
 

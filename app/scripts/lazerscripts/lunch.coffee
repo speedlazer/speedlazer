@@ -230,14 +230,15 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @setShipType('PlayerSpaceship')
       @setWeapons(['lasers'])
       @while(
-        @waitForScenery('UnderBridge', event: 'inScreen')
+        @waitForScenery('UnderBridge', event: 'enter')
         @placeSquad Game.Scripts.Swirler,
           amount: 4
           delay: 500
           options:
             juice: yes
       )
-
+      @waitForScenery('UnderBridge', event: 'inScreen')
+      @setSpeed 0
       @placeSquad Game.Scripts.LunchBossStage1
 
       @gainHeight 200, duration: 5000
