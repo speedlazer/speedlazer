@@ -232,7 +232,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
 
       @async @placeSquad(Game.Scripts.LunchBossMineField,
         amount: 20
-        delay: 100
+        delay: 50
         options:
           location: @location()
           gridConfig:
@@ -247,7 +247,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       )
       @async @placeSquad(Game.Scripts.LunchBossMineField,
         amount: 20
-        delay: 100
+        delay: 50
         options:
           location: @location()
           gridConfig:
@@ -309,7 +309,7 @@ class Game.Scripts.LunchBossMineField extends Game.EntityScript
       x: location.x
       y: location.y + 10
       z: -4
-      defaultSpeed: options.speed ? 200
+      defaultSpeed: options.speed ? 300
       pointsOnHit: if options.points then 10 else 0
       pointsOnDestroy: if options.points then 50 else 0
     )
@@ -320,7 +320,7 @@ class Game.Scripts.LunchBossMineField extends Game.EntityScript
       @moveTo(x: @target.x, y: @target.y, easing: 'easeOutQuad')
       @synchronizeOn 'placed'
       @sequence(
-        @wait 2500
+        @wait (1 - @target.xPerc) * 1000
         @animate('blink', -1)
         @wait 1000
         @onKilled()

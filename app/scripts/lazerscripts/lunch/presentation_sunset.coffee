@@ -4,14 +4,26 @@ Game.Scripts ||= {}
 class Game.Scripts.PresentationSunSet extends Game.EntityScript
 
   spawn: (options) ->
+    sky = Crafty('Sky').get(0) || Crafty.e('2D, WebGL, Gradient, Sky, HUD, ColorFade').attr(
+      w: Crafty.viewport.width
+      h: Crafty.viewport.height * .7
+    ).positionHud(
+      x: 0
+      y: 0
+      z: -1000
+    )
     sun = Crafty('Sun')
     if sun.length > 0
       sun.attr(
+        x: (Crafty.viewport.width * .5) - Crafty.viewport.x
+        y: (Crafty.viewport.height * .11) - Crafty.viewport.y
         defaultSpeed: options.speed ? 1
       )
     else
       Crafty.e('Sun, KeepAlive')
         .sun(
+          x: Crafty.viewport.width * .5
+          y: Crafty.viewport.height * .11
           defaultSpeed: options.speed ? 1
         )
 

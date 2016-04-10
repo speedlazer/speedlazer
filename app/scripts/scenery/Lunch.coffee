@@ -20,7 +20,7 @@ generator.defineElement 'blockcloud', ->
   if v < .6
     s = (Math.random() * .20) + .25
 
-    y = 330 - (s * 150)
+    y = 280 - (s * 150)
     w = ((Math.random() * 10) + 70) - (s * 20)
     h = ((Math.random() * 5) + 20) - (s * 10)
     c2 = Crafty.e('2D, WebGL, Color').attr(
@@ -55,15 +55,15 @@ generator.defineBlock class extends @Game.LevelScenery
     height = 65
     @add(0, @level.visibleHeight - 45, Crafty.e('2D, Solid').attr(w: @delta.x, h: 45))
     @add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: height, z: -300).color('#6262d2'))
-    @addBackground(0, @level.visibleHeight - 175, Crafty.e('2D, WebGL, Color, SunBlock').color('#33337e').attr({ z: -600, w: (@delta.x * .25) + 1, h: 200 }), .25)
+    @addBackground(0, @level.visibleHeight - 225, Crafty.e('2D, WebGL, Color, SunBlock').color('#33337e').attr({ z: -600, w: (@delta.x * .25) + 1, h: 200 }), .25)
 
     goldenStripe = Crafty.e('2D, WebGL, Gradient, GoldenStripe')
       .topColor('#DDDD00')
       .bottomColor('#DDDD00', if Game.webGLMode then 0 else 1)
       .attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
-    @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
+    @addBackground(0, @level.visibleHeight - 225, goldenStripe, .25)
     @addElement 'blockcloud'
-    @addBackground(0, @level.visibleHeight - 125, Crafty.e('2D, WebGL, Color, SunBlock').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
+    @addBackground(0, @level.visibleHeight - 150, Crafty.e('2D, WebGL, Color, SunBlock').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
     @addBackground(0, @level.visibleHeight - 90, Crafty.e('2D, WebGL, Color, SunBlock').color('#3030B0').attr({ z: -301, w: (@delta.x * .5) + 1, h: 70 }), .5)
 
 generator.defineBlock class extends Game.CityScenery
@@ -77,32 +77,35 @@ generator.defineBlock class extends Game.CityScenery
     super
     wh = Crafty.e('2D, WebGL, waterHorizon, SunBlock, Horizon').attr(z: -601)
       .colorDesaturation(Game.backgroundColor)
-      .saturationGradient(1.0, .0)
+      .saturationGradient(1.0, .5)
     if Game.webGLMode is off
       wh.attr lightness: .6
-    @addBackground(0, @level.visibleHeight - 175, wh, .25)
+    @addBackground(0, @level.visibleHeight - 225, wh, .25)
     whg = Crafty.e('2D, WebGL, Gradient, SunBlock')
       .topColor('#33337e')
       .bottomColor('#33337e', 0)
       .attr(z: -600, rotation: -90, h: (@delta.x * .25) + 1, w: 200)
-    @addBackground(0, @level.visibleHeight + 25, whg, .25)
+    @addBackground(0, @level.visibleHeight - 25, whg, .25)
 
     goldenStripe = Crafty.e('2D, WebGL, Gradient, GoldenStripe')
       .topColor('#DDDD00')
       .bottomColor('#DDDD00', if Game.webGLMode then 0 else 1)
       .attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
-    @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
+    @addBackground(0, @level.visibleHeight - 225, goldenStripe, .25)
 
-    ws = Crafty.e('2D, WebGL, waterMiddle, SunBlock').attr(z: -501)
+    ws = Crafty.e('2D, WebGL, waterMiddle, SunBlock, Horizon')
+      .crop(1, 0, 511, 192)
+      .saturationGradient(.7, .0)
+      .attr(z: -501, w: 513)
     if Game.webGLMode is off
       ws.attr lightness: .8
-    @addBackground(0, @level.visibleHeight - 125, ws, .5)
+    @addBackground(0, @level.visibleHeight - 150, ws, .5)
 
     wg = Crafty.e('2D, WebGL, Gradient, SunBlock')
       .topColor('#3030B0')
       .bottomColor('#3030B0', 0)
       .attr(z: -500, rotation: -90, h: (@delta.x * .5) + 1, w: 200)
-    @addBackground(0, @level.visibleHeight + 75, wg, .5)
+    @addBackground(0, @level.visibleHeight + 50, wg, .5)
 
     height = 65
     @add(0, @level.visibleHeight - 45, Crafty.e('2D, Solid').attr(w: @delta.x, h: 45))

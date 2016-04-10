@@ -112,7 +112,7 @@ Crafty.c 'Sun',
           y: @y - (2 * @h)
 
     # For sunrise / set on water
-    horizonDistance = (Crafty.viewport.height - 175) - (Crafty.viewport._y) - @y
+    horizonDistance = (Crafty.viewport.height - 225) - (Crafty.viewport._y) - @y
 
     size = 65.0 - (30.0 * (Math.min(Math.max(horizonDistance, 0), 200.0) / 200.0))
     blur = 2 - (2.0 * (Math.min(Math.max(horizonDistance, 0), 200.0) / 200.0))

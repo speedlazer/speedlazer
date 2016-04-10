@@ -7,7 +7,6 @@ class Game.Scripts.PresentationSunRise extends Game.EntityScript
     @loadAssets('sun')
 
   spawn: (options) ->
-    sun = Crafty('Sun')
     sky = Crafty('Sky').get(0) || Crafty.e('2D, WebGL, Gradient, Sky, HUD, ColorFade').attr(
       w: Crafty.viewport.width
       h: Crafty.viewport.height * .7
@@ -17,14 +16,19 @@ class Game.Scripts.PresentationSunRise extends Game.EntityScript
       z: -1000
     )
 
+    sun = Crafty('Sun')
     if sun.length > 0
       sun.attr(
+        x: (Crafty.viewport.width * .97) - Crafty.viewport.x
+        y: (Crafty.viewport.height * .74) - Crafty.viewport.y
         defaultSpeed: options.speed ? 1
       )
     else
       Crafty.e('Sun, KeepAlive')
         .sun(
           defaultSpeed: options.speed ? 1
+          x: Crafty.viewport.width * .97
+          y: Crafty.viewport.height * .74
         )
 
   execute: ->

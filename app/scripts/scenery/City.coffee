@@ -27,7 +27,7 @@ generator.defineElement 'cloud', ->
   if v < .6
     s = (Math.random() * .20) + .25
 
-    y = 330 - (s * 150)
+    y = 280 - (s * 150)
     w = ((Math.random() * 10) + 70) - (s * 20)
     h = ((Math.random() * 5) + 20) - (s * 10)
     c2 = Crafty.e('2D, WebGL, cloud, Hideable, Horizon').attr(
@@ -48,31 +48,31 @@ generator.defineElement 'waterHorizon', ->
   h = Crafty.e('2D, WebGL, waterHorizon, SunBlock, Horizon')
     .attr(z: -600, w: 257)
     .colorDesaturation(Game.backgroundColor)
-    .saturationGradient(1.0, .0)
+    .saturationGradient(1.0, .5)
   if Game.webGLMode is off
     h.attr lightness: .6
-  @addBackground(0, @level.visibleHeight - 175, h, .25)
+  @addBackground(0, @level.visibleHeight - 225, h, .25)
 
   goldenStripe = Crafty.e('2D, WebGL, Gradient, GoldenStripe')
     .topColor('#DDDD00')
     .bottomColor('#DDDD00', if Game.webGLMode isnt off then 0 else 1)
     .attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
-  @addBackground(0, @level.visibleHeight - 175, goldenStripe, .25)
+  @addBackground(0, @level.visibleHeight - 225, goldenStripe, .25)
 
 generator.defineElement 'water', ->
   h = Crafty.e('2D, WebGL, waterMiddle, Horizon, ColorEffects')
-    .crop(1, 0, 511, 128)
+    .crop(1, 0, 511, 192)
     .attr(z: -500, w: 513)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.7, .0)
   if Game.webGLMode is off
     h.attr lightness: .8
-  @addBackground(0, @level.visibleHeight - 125, h, .5)
+  @addBackground(0, @level.visibleHeight - 150, h, .5)
 
   @level.registerWaveTween 'OceanWavesMiddle', 5500, 'easeInOutQuad', (v, forward) ->
     moveh = 5
-    distanceh = 15
-    height = 105
+    distanceh = 20
+    height = 192
     Crafty('waterMiddle').each ->
       if forward
         @dy = (v * moveh)
@@ -147,7 +147,7 @@ generator.defineElement 'cityHorizon', (mode) ->
   e.attr(z: -598)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.9, .8)
-  @addBackground(0, @level.visibleHeight - 177, e, .25)
+  @addBackground(0, @level.visibleHeight - 227, e, .25)
 
 generator.defineElement 'city', ->
   bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon, Flipable')
@@ -155,7 +155,7 @@ generator.defineElement 'city', ->
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.6, .6)
-  @addBackground(0, @level.visibleHeight - 320, bg, .375)
+  @addBackground(0, @level.visibleHeight - 350, bg, .375)
 
   #bg.flipX() if (Math.random() > .5)
 
@@ -163,14 +163,14 @@ generator.defineElement 'city', ->
     .attr(z: -305)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.4, .4)
-  e.collision([35, 155, 35, 0, 130, 0, 130, 155])
+  #e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
-  c = Crafty.e('2D, Collision, SunBlock, Flipable')
-  c.attr(w: e.w, h: e.h)
-  c.collision([220, 155, 200, 80, 220, 20, 270, 20, 270, 155])
+  #c = Crafty.e('2D, Collision, SunBlock, Flipable')
+  #c.attr(w: e.w, h: e.h)
+  #c.collision([220, 155, 200, 80, 220, 20, 270, 20, 270, 155])
 
-  @addBackground(0, @level.visibleHeight - 300, e, .5)
-  @addBackground(0, @level.visibleHeight - 300, c, .5)
+  @addBackground(0, @level.visibleHeight - 310, e, .5)
+  #@addBackground(0, @level.visibleHeight - 310, c, .5)
 
   #if (Math.random() > .5)
     #e.flipX()
@@ -182,7 +182,7 @@ generator.defineElement 'city-bridge', ->
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.6, .6)
-  @addBackground(0, @level.visibleHeight - 320, bg, .375)
+  @addBackground(0, @level.visibleHeight - 350, bg, .375)
 
   e = Crafty.e('2D, WebGL, cityBridge, Collision, Horizon')
     .attr(z: -305)
@@ -190,15 +190,15 @@ generator.defineElement 'city-bridge', ->
     .saturationGradient(.4, .4)
   e.collision([35, 155, 35, 0, 130, 0, 130, 155])
 
-  @addBackground(0, @level.visibleHeight - 236, e, .5)
+  @addBackground(0, @level.visibleHeight - 246, e, .5)
 
 generator.defineElement 'cityStart', ->
   e = Crafty.e('2D, WebGL, cityStart, Collision, SunBlock, Horizon')
     .attr(z: -305)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.4, .4)
-  e.collision([220, 155, 220, 20, 270, 20, 270, 0, 330, 0, 330, 155])
-  @addBackground(0, @level.visibleHeight - 300, e, .5)
+  #e.collision([220, 155, 220, 20, 270, 20, 270, 0, 330, 0, 330, 155])
+  @addBackground(0, @level.visibleHeight - 310, e, .5)
 
 class Game.CityScenery extends Game.LevelScenery
   assets: ->
@@ -208,7 +208,7 @@ class Game.CityScenery extends Game.LevelScenery
         tileh: 32
         map:
           waterHorizon: [0, 17, 8, 5]
-          waterMiddle: [16, 9, 16, 4]
+          waterMiddle: [32, 0, 16, 6]
           waterFront1: [0, 29, 16, 3]
           waterFront2: [16, 29, 16, 3]
           coastStart: [8, 18, 8, 1]

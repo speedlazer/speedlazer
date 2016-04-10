@@ -181,24 +181,26 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide @sequence(
         @mineSwarm(juice: no)
       )
-      @setScenery('BayStart')
-      @async @runScript(Game.Scripts.PresentationSunSet, skipTo: 0, speed: 50)
-      @say 'Graphics', 'Ok lets do the sunrise again'
-      @say 'Graphics', 'And now use WebGL Shaders'
-
-      @checkpoint @setScenery('BayStart')
-      @nextSlide @sequence(
-        @swirlAttacks2()
+      @checkpoint @setScenery('CoastStart')
+      @parallel(
+        @runScript(Game.Scripts.PresentationSunSet, skipTo: 0, speed: 50)
+        @sequence(
+          @say 'Graphics', 'Ok lets do the sunrise again'
+          @say 'Graphics', 'And now use WebGL Shaders'
+        )
       )
+
       =>
         Game.webGLMode = on
         Crafty('GoldenStripe').each -> @bottomColor('#DDDD00', 0)
         Crafty('waterMiddle').each -> @attr lightness: 1.0
         Crafty('waterHorizon').each -> @attr lightness: 1.0
       @chapterTitle(1, 'WebGL Shaders')
-
       @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 5)
-      @nextSlide()
+      @setScenery('BayStart')
+      @nextSlide @sequence(
+        @swirlAttacks2()
+      )
       @updateTitle 'Juice'
       @disableWeapons()
       @nextSlide(
@@ -220,6 +222,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
         @placeSquad Game.Scripts.Swirler,
           amount: 4
           delay: 500
+          drop: 'xp'
           options:
             juice: yes
       )
@@ -234,6 +237,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
         @placeSquad Game.Scripts.Swirler,
           amount: 4
           delay: 500
+          drop: 'xp'
           options:
             juice: yes
       )
