@@ -40,14 +40,17 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
       synchronizer = new Game.Synchronizer
+      settings = _.clone settings
 
-      options = _.defaults({}, settings.options,
+      options = _.defaults({
         synchronizer: synchronizer
-      )
-      settings = _.defaults(settings,
+      }, settings.options)
+      settings = _.defaults({}, settings,
         amount: 1
         delay: 1000
       )
+      if options.gridConfig?
+        options.grid = new Game.LocationGrid(options.gridConfig)
       settings.options = options
       scripts = (for i in [0...settings.amount]
         synchronizer.registerEntity(new scriptClass(@level))

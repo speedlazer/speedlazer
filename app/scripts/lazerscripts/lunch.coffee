@@ -27,7 +27,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
 
       @placeSquad Game.Scripts.Slider,
         options:
-          grid: new Game.LocationGrid
+          gridConfig:
             x:
               start: 1.1
             y:
@@ -43,7 +43,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
         @placeSquad Game.Scripts.Slider,
           amount: 15
           options:
-            grid: new Game.LocationGrid
+            gridConfig:
               x:
                 start: 1.2
                 steps: 4
@@ -87,7 +87,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
           @placeSquad Game.Scripts.Slider,
             amount: 5
             options:
-              grid: new Game.LocationGrid
+              gridConfig:
                 x:
                   start: 1.2
                   steps: 4
@@ -151,7 +151,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
         amount: 5
         delay: 2000
         options:
-          grid: new Game.LocationGrid
+          gridConfig:
             x:
               start: .25
               steps: 5
@@ -301,7 +301,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       delay: 300
       options:
         juice: options.juice
-        grid: new Game.LocationGrid
+        gridConfig:
           x:
             start: 200
             steps: 10

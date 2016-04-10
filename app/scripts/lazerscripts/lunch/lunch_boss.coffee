@@ -235,7 +235,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
         delay: 100
         options:
           location: @location()
-          grid: new Game.LocationGrid
+          gridConfig:
             x:
               start: 0.1
               steps: 12
@@ -250,7 +250,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
         delay: 100
         options:
           location: @location()
-          grid: new Game.LocationGrid
+          gridConfig:
             x:
               start: 0.1
               steps: 12

@@ -68,7 +68,7 @@ class Game.Scripts.Stage2 extends Game.LazerScript
       amount: 14
       delay: 300
       options:
-        grid: new Game.LocationGrid
+        gridConfig:
           x:
             start: 0.3
             steps: 12
