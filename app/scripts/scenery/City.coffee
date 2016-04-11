@@ -219,6 +219,7 @@ class Game.CityScenery extends Game.LevelScenery
           cityLayer2: [0, 9, 12, 8]
           bigBuilding: [16, 13, 16, 14]
           bigBuildingBroken: [30, 13, 16, 14]
+          glass: [12, 9, 4, 3]
 
 generator.defineBlock class extends Game.LevelScenery
   name: 'City.Intro'
@@ -506,6 +507,27 @@ generator.defineBlock class extends Game.CityScenery
     bb.bind('BigExplosion', ->
       return if @buildingExploded
       if @x + @w > -Crafty.viewport.x and @x < -Crafty.viewport.x + Crafty.viewport.width
+
+        Crafty.e('2D, WebGL, glass, Tween')
+          .attr(x: @x, y: @y + 40, z: @z + 5)
+          .bind('TweenEnd', -> @destroy())
+          .tween({ y: @y + 500}, 3000, 'easeInQuad')
+
+        Crafty.e('2D, WebGL, glass, Tween')
+          .attr(x: @x + 200, y: @y + 60, z: @z + 5)
+          .bind('TweenEnd', -> @destroy())
+          .tween({ y: @y + 500}, 3000, 'easeInQuad')
+
+        Crafty.e('2D, WebGL, glass, Tween')
+          .attr(x: @x, y: @y + 180, z: @z + 5)
+          .bind('TweenEnd', -> @destroy())
+          .tween({ y: @y + 500}, 3000, 'easeInQuad')
+
+        Crafty.e('2D, WebGL, glass, Tween')
+          .attr(x: @x + 180, y: @y + 200, z: @z + 5)
+          .bind('TweenEnd', -> @destroy())
+          .tween({ y: @y + 500}, 3000, 'easeInQuad')
+
         @sprite(30, 13)
         @buildingExploded = yes
     )

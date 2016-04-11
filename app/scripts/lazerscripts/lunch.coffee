@@ -248,8 +248,11 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @placeSquad Game.Scripts.LunchBossStage1
       @checkpoint @sequence(
         @setScenery 'Skyline'
-        @gainHeight(600, duration: 0)
+        @gainHeight(300, duration: 0)
         @setSpeed 150
+        @wait 4000
+        => Crafty('RiggedExplosion').trigger('BigExplosion')
+
       )
       @chapterTitle(4, 'Game Over')
     )
