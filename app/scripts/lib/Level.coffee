@@ -181,7 +181,7 @@ class Game.Level
       Crafty.e('PlayerInfo').playerInfo(30 + (index * (Crafty.viewport.width * .3)), this)
 
     Crafty.bind 'ShipSpawned', (ship) =>
-      ship.forcedSpeed @_forcedSpeed
+      ship.forcedSpeed @_forcedSpeed, accellerate: no
       ship.weaponsEnabled =  @_weaponsEnabled
       ship.disableControl() unless @_controlsEnabled
 
@@ -209,7 +209,7 @@ class Game.Level
       @_scrollWall.scrollWall(@_forcedSpeed, options)
     Crafty('Bullet').each -> @attr speed: @speed + delta
     Crafty('PlayerControlledShip').each ->
-      @forcedSpeed speed
+      @forcedSpeed speed, options
 
   screenShake: (amount, options = {}) ->
     options = _.defaults(options, {

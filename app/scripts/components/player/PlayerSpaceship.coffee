@@ -1,6 +1,6 @@
 Crafty.c 'PlayerSpaceship',
   init: ->
-    @requires '2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, WaterSplashes, PlayerControlledShip'
+    @requires '2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, WaterSplashes, PlayerControlledShip, Accelleration'
     @attr w: 71, h: 45
     #@addComponent 'SolidHitBox'
     @collision [
@@ -15,9 +15,6 @@ Crafty.c 'PlayerSpaceship',
         setBack = {}
         setBack[from.axis] = from.oldValue
         @attr setBack
-    @_forcedSpeed =
-      x: 0
-      y: 0
     @primaryWeapon = undefined
     @primaryWeapons = []
     @secondaryWeapon = undefined
@@ -89,12 +86,13 @@ Crafty.c 'PlayerSpaceship',
       @trigger 'Destroyed', this
 
     @bind 'GameLoop', (fd) ->
-      motionX = (@_forcedSpeed.x / 1000.0) * fd.dt
-      motionY = (@_forcedSpeed.y / 1000.0) * fd.dt
+      motionX = (@_currentSpeed.x / 1000.0) * fd.dt
+      motionY = (@_currentSpeed.y / 1000.0) * fd.dt
 
-      shipSpeedX = @_forcedSpeed.x + @vx
-      shipSpeedY = @_forcedSpeed.y + @vy
+      shipSpeedX = @_currentSpeed.x + @vx
+      shipSpeedY = @_currentSpeed.y + @vy
       @_updateFlyingSpeed shipSpeedX, fd.dt
+      @updateAcceleration()
 
       r = @rotation
       newR = shipSpeedY / 20
@@ -118,14 +116,8 @@ Crafty.c 'PlayerSpaceship',
 
     this
 
-  forcedSpeed: (speed) ->
-    if speed.x? && speed.y?
-      @_forcedSpeed.x = speed.x
-      @_forcedSpeed.y = speed.y
-    else
-      @_forcedSpeed.x = speed
-      @_forcedSpeed.y = 0
-    this
+  forcedSpeed: (speed, options = {}) ->
+    @targetSpeed(speed, options)
 
   shoot: (onOff) ->
     return unless @weaponsEnabled
