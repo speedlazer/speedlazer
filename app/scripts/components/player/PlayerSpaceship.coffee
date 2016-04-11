@@ -111,7 +111,6 @@ Crafty.c 'PlayerSpaceship',
       @updateAcceleration()
 
       r = @rotation
-      @rotation = 0
       newR = shipSpeedY / 20
       nr = r
       if r < newR
@@ -119,8 +118,10 @@ Crafty.c 'PlayerSpaceship',
       else if r > newR
         nr -= 1
 
+      @rotation = nr
       nr = r if @hit('Edge') or @hit('Solid')
 
+      @rotation = 0
       @_updateFlyingSpeed shipSpeedX, fd.dt
       @rotation = nr
 
