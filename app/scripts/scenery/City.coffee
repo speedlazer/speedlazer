@@ -157,24 +157,23 @@ generator.defineElement 'city', ->
     .saturationGradient(.6, .6)
   @addBackground(0, @level.visibleHeight - 350, bg, .375)
 
-  #bg.flipX() if (Math.random() > .5)
-
-  e = Crafty.e('2D, WebGL, city, Collision, SunBlock, Horizon, Flipable')
+  e = Crafty.e('2D, WebGL, city, Collision, SunBlock, Horizon')
     .attr(z: -305)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.4, .4)
-  #e.collision([35, 155, 35, 0, 130, 0, 130, 155])
+  e.collision([35, 155, 35, 10, 130, 10, 160, 155])
 
-  #c = Crafty.e('2D, Collision, SunBlock, Flipable')
-  #c.attr(w: e.w, h: e.h)
-  #c.collision([220, 155, 200, 80, 220, 20, 270, 20, 270, 155])
+  c = Crafty.e('2D, Collision, SunBlock')
+  c.attr(w: e.w, h: e.h)
+  c.collision([190, 155, 170, 80, 210, 10, 280, 10, 280, 155])
+
+  d = Crafty.e('2D, Collision, SunBlock')
+  d.attr(w: e.w, h: e.h)
+  d.collision([370, 155, 370, 40, 505, 40, 505, 155])
 
   @addBackground(0, @level.visibleHeight - 310, e, .5)
-  #@addBackground(0, @level.visibleHeight - 310, c, .5)
-
-  #if (Math.random() > .5)
-    #e.flipX()
-    #c.flipX()
+  @addBackground(0, @level.visibleHeight - 310, c, .5)
+  @addBackground(0, @level.visibleHeight - 310, d, .5)
 
 generator.defineElement 'city-bridge', ->
   bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon')
@@ -197,7 +196,7 @@ generator.defineElement 'cityStart', ->
     .attr(z: -305)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.4, .4)
-  #e.collision([220, 155, 220, 20, 270, 20, 270, 0, 330, 0, 330, 155])
+  e.collision([215, 155, 215, 60, 300, 60, 300, 10, 500, 10, 500, 155])
   @addBackground(0, @level.visibleHeight - 310, e, .5)
 
 class Game.CityScenery extends Game.LevelScenery
@@ -219,6 +218,7 @@ class Game.CityScenery extends Game.LevelScenery
           city: [16, 0, 16, 9]
           cityLayer2: [0, 9, 12, 8]
           bigBuilding: [16, 13, 16, 14]
+          bigBuildingBroken: [30, 13, 16, 14]
 
 generator.defineBlock class extends Game.LevelScenery
   name: 'City.Intro'
@@ -500,14 +500,13 @@ generator.defineBlock class extends Game.CityScenery
 
   generate: ->
     super
-    bb = Crafty.e('2D, WebGL, bigBuilding, ColorEffects').attr(z: -20).crop(1, 1, 446, 510)
+    bb = Crafty.e('2D, WebGL, bigBuilding, ColorEffects, RiggedExplosion').attr(z: -20).crop(1, 1, 446, 510)
     bb.colorOverride('#001fff', 'partial')
     @add(0, @level.visibleHeight - 700, bb)
     bb.bind('BigExplosion', ->
       return if @buildingExploded
       if @x + @w > -Crafty.viewport.x and @x < -Crafty.viewport.x + Crafty.viewport.width
-        # test if in screen
-        @colorOverride('#000000', 'partial')
+        @sprite(30, 13)
         @buildingExploded = yes
     )
 

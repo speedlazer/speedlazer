@@ -101,6 +101,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @bigExplosion()
       @bigExplosion()
       @wait 500
+      => Crafty('RiggedExplosion').trigger('BigExplosion') if @index == 0
       @explosionBurst(100)
       @bigExplosion()
       @explosionBurst(200)
@@ -398,8 +399,7 @@ class Game.Scripts.LunchBossMineField extends Game.EntityScript
         @animate('blink', -1)
         @wait 1000
         @onKilled()
-        =>
-          Crafty('bigBuilding').trigger('BigExplosion') if @index == 0
+        => Crafty('RiggedExplosion').trigger('BigExplosion') if @index == 0
         @endSequence()
       )
     )
