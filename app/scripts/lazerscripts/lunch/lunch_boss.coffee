@@ -40,7 +40,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       defaultSpeed: 100
-      health: 40000
+      health: 45000
       pointsOnHit: 10
     )
 
@@ -50,7 +50,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
     @inventoryAdd 'item', 'diagonals', ->
       Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
 
-    @bindSequence 'Hit', @fase2, => (@entity.health / @entity.maxHealth) < .7
+    @bindSequence 'Hit', @fase2, => (@entity.health / @entity.maxHealth) < .8
 
     @sequence(
       @setScenery('UnderBridge')
@@ -101,7 +101,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @bigExplosion()
       @bigExplosion()
       @wait 500
-      => Crafty('RiggedExplosion').trigger('BigExplosion') if @index == 0
+      => Crafty('RiggedExplosion').trigger('BigExplosion')
       @explosionBurst(100)
       @bigExplosion()
       @explosionBurst(200)
@@ -126,13 +126,13 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
   laugh: ->
     @sequence(
       => Crafty.audio.play('laugh')
-      => @entity.invincible = yes
+      #=> @entity.invincible = yes
       @repeat 5, @sequence(
         @rotate(10, 200)
         @rotate(-10, 200)
       )
       @rotate(0, 200)
-      => @entity.invincible = no
+      #=> @entity.invincible = no
     )
 
   attackCycle: (speed) ->
@@ -251,7 +251,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
     )
 
   fase2: ->
-    @bindSequence 'Hit', @fase3, => (@entity.health / @entity.maxHealth) < .4
+    @bindSequence 'Hit', @fase3, => (@entity.health / @entity.maxHealth) < .5
 
     @sequence(
       @setSpeed 75
