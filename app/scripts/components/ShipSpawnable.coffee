@@ -34,6 +34,7 @@ Crafty.c 'ShipSpawnable',
         y: pos.y - Crafty.viewport.y
         z: @z
 
+    @ship.playerColor = @color()
     @ship.colorOverride?(@color(), 'partial') #if @has('ColorEffects')
     @ship.color?(@color()) if @has('Color')
     @assignControls(@ship) if @has('ControlScheme')

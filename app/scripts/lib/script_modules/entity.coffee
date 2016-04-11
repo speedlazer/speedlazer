@@ -108,6 +108,7 @@ Game.ScriptModule.Entity =
   #   - "easeInQuad"
   #   - "easeOutQuad"
   #   - "easeInOutQuad".
+  # - continuePath: should this path continue the previous one
   movePath: (inputPath, settings = {}) ->
     (sequence) =>
       @_verify(sequence)

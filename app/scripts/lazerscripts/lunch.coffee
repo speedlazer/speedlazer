@@ -242,14 +242,12 @@ class Game.Scripts.Lunch extends Game.LazerScript
             juice: yes
       )
       @waitForScenery('UnderBridge', event: 'inScreen')
+      @checkpoint @setScenery 'UnderBridge'
       @setSpeed 0
+      @chapterTitle(3, 'Bossfight!')
       @placeSquad Game.Scripts.LunchBossStage1
 
-      @gainHeight 200, duration: 5000
-      @repeat @sequence(
-        @placeSquad Game.Scripts.Stage1BossPopup
-        @wait 2000
-      )
+      @chapterTitle(4, 'Game Over')
     )
 
 

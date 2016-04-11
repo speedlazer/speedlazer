@@ -40,7 +40,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       defaultSpeed: 100
-      #defaultSpeed: 50
+      health: 60000
       pointsOnHit: 10
     )
 
@@ -49,25 +49,22 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
     @inventoryAdd 'item', 'diagonals', ->
       Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
-    @bindSequence 'Hit', @fase2, => @entity.health < 345000
+
+    @bindSequence 'Hit', @fase2, => (@entity.health / @entity.maxHealth) < .7
 
     @sequence(
       @setScenery('UnderBridge')
       => @entity.invincible = yes
       @animate 'slow', -1, 'eye'
       @disableWeapons()
-      @parallel(
-        @moveTo(x: .85, y: .41)
-        @sequence(
-          @say('Drone Commander', 'We have control now! You will suffer!')
-          @say('Drone Commander', 'Earths defences are in our hands!')
-          @wait 500
-        )
-      )
+
+      @moveTo(x: .75, y: .41)
+
+      @say('Drone Commander', 'We have control now! You will suffer!')
+      @say('Drone Commander', 'Earths defences are in our hands!')
       @laugh()
       => @entity.invincible = no
       @enableWeapons()
-      @setSpeed 100
       @async @placeSquad(Game.Scripts.Stage1BossRocket,
         options:
           location: @location()
@@ -76,8 +73,48 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       )
       @animate 'emptyWing', 0, 'wing'
       @animate 'reload', 0, 'wing'
-      @moveTo(y: .43, speed: 5)
-      @repeat @attackCycle(7)
+      @moveTo(y: .43, speed: 50)
+      @repeat @attackCycle(25)
+    )
+
+  dramaDeath: ->
+    # TODO: Make something nice of this!
+    @sequence(
+      => @entity.colorOverride '#FF8080'
+      => @entity.invincible = yes
+      @parallel(
+        @gainHeight(300, duration: 4000)
+        @say 'Drone Commander', 'You will never stop us!!'
+        @while(
+          @moveTo(x: .5, y: .4, speed: 100)
+          @sequence(
+            @smallExplosion()
+            @while(
+              @wait 300
+              @smoke()
+            )
+          )
+        )
+      )
+      @bigExplosion()
+      @wait 50
+      @bigExplosion()
+      @bigExplosion()
+      @wait 500
+      @explosionBurst(100)
+      @bigExplosion()
+      @explosionBurst(200)
+      @bigExplosion()
+      @explosionBurst(300)
+      @explosionBurst(30)
+    )
+
+  explosionBurst: (offset) ->
+    @parallel(
+      @bigExplosion(offsetX: offset, offsetY: offset)
+      @bigExplosion(offsetX: -offset, offsetY: offset)
+      @bigExplosion(offsetX: offset, offsetY: -offset)
+      @bigExplosion(offsetX: -offset, offsetY: -offset)
     )
 
   laugh: ->
@@ -95,7 +132,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
   attackCycle: (speed) ->
     @sequence(
       @async @runScript(Game.Scripts.Stage1BossMine, @location())
-      @moveTo(y: .41, speed: speed)
+      @moveTo(y: .36, easing: 'easeInOutQuad', speed: speed)
       @wait 200
       @async @placeSquad(Game.Scripts.Stage1BossRocket,
         options:
@@ -106,7 +143,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @animate 'emptyWing', 0, 'wing'
       @animate 'reload', 0, 'wing'
       @async @runScript(Game.Scripts.Stage1BossMine, @location())
-      @moveTo(y: .43, speed: speed)
+      @moveTo(y: .58, easing: 'easeInOutQuad', speed: speed)
       @async @placeSquad(Game.Scripts.Stage1BossRocket,
         options:
           location: @location()
@@ -208,8 +245,26 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
     )
 
   fase2: ->
-    # start at 345000
-    @bindSequence 'Hit', @fase3, => @entity.health < 330000
+    @bindSequence 'Hit', @fase3, => (@entity.health / @entity.maxHealth) < .4
+
+    @sequence(
+      @setSpeed 75
+      @bombRaid(yes)
+      @repeat @sequence(
+        @repeat 3, @attackCycle(50)
+        @laugh()
+        @async @placeSquad(Game.Scripts.Stage1BossDroneRaid,
+          amount: 6
+          delay: 300
+          options:
+            shootOnSight: yes
+        )
+        @laugh()
+      )
+    )
+
+  fase3: ->
+    @bindSequence 'Hit', @dramaDeath, => (@entity.health / @entity.maxHealth) < .2
 
     @sequence(
       @setSpeed 150
@@ -261,10 +316,24 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
               stepSize: 0.075
       )
       @wait(3000)
-      @moveTo(x: -.15, speed: 500, easing: 'easeInQuad')
+      => @entity.invincible = yes
+      @while(
+        @moveTo(x: -.15, speed: 500, easing: 'easeInOutQuad')
+        @sequence(
+          @smallExplosion()
+          @while(
+            @wait 300
+            @smoke()
+          )
+        )
+      )
       => @entity.flipX()
       @sendToBackground(0.7, -150)
-      @moveTo(x: 1.1, speed: 500)
+      @while(
+        @moveTo(x: 1.1, speed: 300)
+        @smoke('light')
+      )
+      => @entity.invincible = no
       => @entity.unflipX()
       @scale(1.0, duration: 0)
       @reveal()

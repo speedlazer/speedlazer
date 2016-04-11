@@ -26,7 +26,7 @@ Crafty.c 'PlayerSpaceship',
     if newSpeed < 50
       correction = newSpeed / 2
     else
-      correction = 25 + ((newSpeed / 700) * 100)
+      correction = 25 + ((newSpeed / 400) * 100)
 
     if @currentRenderedSpeed > correction
       @currentRenderedSpeed -= 4
@@ -37,7 +37,7 @@ Crafty.c 'PlayerSpaceship',
 
     w = @currentRenderedSpeed
 
-    h = w / 3
+    h = Math.min(w / 3, 15)
     @backFire.attr(
       x: @x - w + 9
       y: @y + 20 - (h // 2)
@@ -46,16 +46,33 @@ Crafty.c 'PlayerSpaceship',
     )
 
   start: ->
-    @backFire = Crafty.e('2D, WebGL, shipEngineFire')
+    @backFire = Crafty.e('2D, WebGL, shipEngineFire, ColorEffects')
     @backFire.timing = 0
+    w = 60
+    h = 10
+
     @backFire.attr(
-      x: @x - 49
-      y: @y + 10
-      w: 60
-      h: 20
+      x: @x - w + 9
+      y: @y + 20 - (h // 2)
+      w: w
+      h: h
+      alpha: .8
       z: @z - 1
     )
     @attach @backFire
+
+    c = {}
+    basicC = {
+      _red: 255
+      _green: 255
+      _blue: 255
+    }
+    Crafty.assignColor(@playerColor, c)
+    for comp in ['_red', '_green', '_blue']
+      newC = (c[comp] + basicC[comp] + basicC[comp]) / 3
+      c[comp] = newC
+
+    @backFire.colorOverride(c)
 
     @addComponent('Invincible').invincibleDuration(2000)
 
@@ -91,17 +108,21 @@ Crafty.c 'PlayerSpaceship',
 
       shipSpeedX = @_currentSpeed.x + @vx
       shipSpeedY = @_currentSpeed.y + @vy
-      @_updateFlyingSpeed shipSpeedX, fd.dt
       @updateAcceleration()
 
       r = @rotation
+      @rotation = 0
       newR = shipSpeedY / 20
+      nr = r
       if r < newR
-        @rotation += 1
+        nr += 1
       else if r > newR
-        @rotation -= 1
-      if @hit('Edge') or @hit('Solid')
-        @rotation = r
+        nr -= 1
+
+      nr = r if @hit('Edge') or @hit('Solid')
+
+      @_updateFlyingSpeed shipSpeedX, fd.dt
+      @rotation = nr
 
       @x += motionX
       @y += motionY

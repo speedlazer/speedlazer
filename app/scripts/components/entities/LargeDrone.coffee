@@ -3,10 +3,12 @@ Crafty.c 'LargeDrone',
     @requires 'Enemy, standardLargeDrone, SpriteAnimation'
 
   drone: (attr = {}) ->
+    defaultHealth = 360000
     @attr _.defaults(attr,
-      w: 90,
-      h: 70,
-      health: 360000,
+      w: 90
+      h: 70
+      health: defaultHealth
+      maxHealth: attr.health ? defaultHealth
       z: -1
     )
     @origin 'center'
@@ -48,11 +50,9 @@ Crafty.c 'LargeDrone',
 
   updatedHealth: ->
     sprite = 0
-    if @health < 350000
-      sprite = 1
-    if @health < 325000
-      sprite = 2
-    if @health < 315000
-      sprite = 3
+    healthPerc = @health / @maxHealth
+    sprite = 1 if healthPerc < .9
+    sprite = 2 if healthPerc < .6
+    sprite = 3 if healthPerc < .3
     @sprite(sprite, 0)
 
