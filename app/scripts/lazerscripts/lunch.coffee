@@ -246,7 +246,11 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @setSpeed 0
       @chapterTitle(3, 'Bossfight!')
       @placeSquad Game.Scripts.LunchBossStage1
-
+      @checkpoint @sequence(
+        @setScenery 'Skyline'
+        @gainHeight(600, duration: 0)
+        @setSpeed 150
+      )
       @chapterTitle(4, 'Game Over')
     )
 

@@ -218,7 +218,7 @@ class Game.CityScenery extends Game.LevelScenery
           cityStart: [0, 0, 16, 9]
           city: [16, 0, 16, 9]
           cityLayer2: [0, 9, 12, 8]
-          bigBuilding: [16, 13, 16, 16]
+          bigBuilding: [16, 13, 16, 14]
 
 generator.defineBlock class extends Game.LevelScenery
   name: 'City.Intro'
@@ -500,7 +500,7 @@ generator.defineBlock class extends Game.CityScenery
 
   generate: ->
     super
-    bb = Crafty.e('2D, WebGL, bigBuilding, ColorEffects').attr(z: -20).crop(1, 1, 510, 510)
+    bb = Crafty.e('2D, WebGL, bigBuilding, ColorEffects').attr(z: -20).crop(1, 1, 446, 510)
     bb.colorOverride('#001fff', 'partial')
     @add(0, @level.visibleHeight - 700, bb)
     bb.bind('BigExplosion', ->
@@ -512,7 +512,7 @@ generator.defineBlock class extends Game.CityScenery
     )
 
     h = 768
-    @addBackground(200, @level.visibleHeight - 550, Crafty.e('2D, WebGL, bigBuilding').crop(1, 1, 510, 510).attr(w: 768, h: h, z: 50, lightness: .4), 1.5)
+    @addBackground(200, @level.visibleHeight - 550, Crafty.e('2D, WebGL, bigBuilding').crop(1, 1, 446, 510).attr(w: 768, h: h, z: 50, lightness: .4), 1.5)
 
     @addElement 'water'
 

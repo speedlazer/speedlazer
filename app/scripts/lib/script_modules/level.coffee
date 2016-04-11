@@ -216,7 +216,7 @@ Game.ScriptModule.Level =
 
       currentSpeed = @level._forcedSpeed?.x || @level._forcedSpeed
       { duration } = options
-      if @_skippingToCheckpoint()
+      if @_skippingToCheckpoint() or duration is 0
         @level.setHeight -height
       else
         speedY = (height / duration) * 1000
