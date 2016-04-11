@@ -334,14 +334,12 @@ class Game.Scripts.Lunch extends Game.LazerScript
         delay: 500
         drop: 'xp'
         options:
-          #shootOnSight: yes
           juice: no
       @repeat 2, @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 500
         drop: 'xp'
         options:
-          #shootOnSight: yes
           juice: no
     )
 

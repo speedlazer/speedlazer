@@ -40,7 +40,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       defaultSpeed: 100
-      health: 60000
+      health: 40000
       pointsOnHit: 10
     )
 
@@ -107,6 +107,11 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @bigExplosion()
       @explosionBurst(300)
       @explosionBurst(30)
+      => @entity.colorOverride '#000000'
+      @parallel(
+        @moveTo(y: 1.1, speed: 300, easing: 'easeInOutQuad')
+        @rotate 180, 1000
+      )
     )
 
   explosionBurst: (offset) ->
