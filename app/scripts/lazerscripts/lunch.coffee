@@ -253,8 +253,8 @@ class Game.Scripts.Lunch extends Game.LazerScript
         @setScenery 'Skyline'
         @gainHeight(600, duration: 0)
         @setSpeed 150
-        @wait 3000
       )
+      @wait 3000
       @parallel(
         @sequence(
           @disableControls()
