@@ -2,7 +2,6 @@ Crafty.c 'PlayerSpaceship',
   init: ->
     @requires '2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, WaterSplashes, PlayerControlledShip, Accelleration'
     @attr w: 71, h: 45
-    #@addComponent 'SolidHitBox'
     @collision [
       21, 13
       56, 13
@@ -21,6 +20,10 @@ Crafty.c 'PlayerSpaceship',
     @superUsed = 0
     @weaponsEnabled = yes
     @currentRenderedSpeed = 0
+
+  updateMovementVisuals: (rotation, dx, dy, dt) ->
+    velocity = Math.max(dx * (1000 / dt), 0)
+    @_updateFlyingSpeed velocity, dt
 
   _updateFlyingSpeed: (newSpeed, dt) ->
     if newSpeed < 50
@@ -103,6 +106,11 @@ Crafty.c 'PlayerSpaceship',
       @trigger 'Destroyed', this
 
     @bind 'GameLoop', (fd) ->
+      if @has 'AnimationMode'
+        if @_choreography?.length is 0
+          @_updateFlyingSpeed @_currentSpeed.x, fd.dt
+        return
+
       motionX = (@_currentSpeed.x / 1000.0) * fd.dt
       motionY = (@_currentSpeed.y / 1000.0) * fd.dt
 

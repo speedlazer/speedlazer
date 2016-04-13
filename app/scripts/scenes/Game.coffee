@@ -56,6 +56,10 @@ Crafty.defineScene 'Game', (data = {}) ->
     if script.nextScript
       executeScript(script.nextScript, startAtCheckpoint: checkpoint)
     else
+      if script.gotoGameOver
+        Crafty.enterScene('GameOver',
+          gameCompleted: yes
+        )
       console.log 'End of content!'
 
   wait.then -> executeScript(startScript, options)

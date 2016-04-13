@@ -51,5 +51,6 @@ class Game.Scripts.PresentationSunSet extends Game.EntityScript
         ['#222c50', '#000000'],
         ['#222c50', '#000000']
       )
+      @setLocation x: .38, y: .8
     )
 

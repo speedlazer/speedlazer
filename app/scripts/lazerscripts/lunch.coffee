@@ -181,7 +181,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @nextSlide @sequence(
         @mineSwarm(juice: no)
       )
-      @checkpoint @setScenery('CoastStart')
+      @checkpoint @sunriseCheckpoint(Game.Scripts.PresentationSunRise, 90000, 10, 'CoastStart')
       @parallel(
         @runScript(Game.Scripts.PresentationSunSet, skipTo: 0, speed: 50)
         @sequence(
@@ -228,7 +228,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
           options:
             juice: yes
       )
-      @checkpoint @setScenery 'Bay'
+      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 120000, 5, 'Bay')
       @setScenery 'UnderBridge'
       @updateTitle 'Player ship'
       @setWeapons(['lasers'])
@@ -244,18 +244,35 @@ class Game.Scripts.Lunch extends Game.LazerScript
             juice: yes
       )
       @waitForScenery('UnderBridge', event: 'inScreen')
-      @checkpoint @setScenery 'UnderBridge'
+      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 140000, 5, 'UnderBridge')
       @setSpeed 0
       @chapterTitle(3, 'Bossfight!')
       @placeSquad Game.Scripts.LunchBossStage1
-      @checkpoint @sequence(
+      @checkpoint @parallel(
+        @async @runScript(Game.Scripts.SunRise, skipTo: 150000, speed: 5)
         @setScenery 'Skyline'
         @gainHeight(600, duration: 0)
         @setSpeed 150
+        @wait 3000
       )
-      @chapterTitle(4, 'Congratulations!')
+      @parallel(
+        @sequence(
+          @disableControls()
+          @disableWeapons()
+          @placeSquad(Game.Scripts.PresentationLeaveScreen,
+            amount: 2
+            delay: 1000
+          )
+        )
+        @sequence(
+          @say 'With the evil boss destroyed\nMankind was saved again!'
+          @say 'And our heroes where off to another adventure!'
+          @say 'Thanks for playing!'
+        )
+      )
+      @screenFadeOut()
+      @endGame()
     )
-
 
   nextSlide: (task) ->
     @sequence(
@@ -347,5 +364,12 @@ class Game.Scripts.Lunch extends Game.LazerScript
         drop: 'xp'
         options:
           juice: no
+    )
+
+  sunriseCheckpoint: (script, skip, speed, scenery) ->
+    @sequence(
+      @async @runScript(script, skipTo: skip, speed: speed)
+      @setScenery(scenery)
+      @wait 2000
     )
 

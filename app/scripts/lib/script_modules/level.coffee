@@ -100,6 +100,9 @@ Game.ScriptModule.Level =
     (sequence) =>
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
+      unless text?
+        text = speaker
+        speaker = undefined
       Game.say(speaker, text, bottom: @level.visibleHeight)
 
   # Drop an item in the screen at a given location,
@@ -403,4 +406,72 @@ Game.ScriptModule.Level =
     (sequence) =>
       @_verify(sequence)
       @level.setShipType newType
+
+  endGame: ->
+    (sequence) =>
+      @_verify(sequence)
+      @gotoGameOver = yes
+
+  disableControls: ->
+    (sequence) =>
+      @_verify(sequence)
+      Crafty('PlayerControlledShip').each -> @disableControl()
+
+  screenFadeOut: ->
+    (sequence) =>
+      @_verify(sequence)
+      fader = Crafty('ScreenFader').get(0)
+      unless fader?
+        fader = Crafty.e('2D, DOM, Color, HUD, Tween, ScreenFader')
+
+      defer = WhenJS.defer()
+
+      fader.positionHud(
+        x: 0,
+        y: 0,
+        z: 1000
+      ).attr(
+        w: Crafty.viewport.width
+        h: Crafty.viewport.height
+        alpha: 0
+      ).color(
+        '#000000'
+      ).tween(
+        alpha: 1
+        4000
+      ).bind('TweenEnd', ->
+        defer.resolve()
+      )
+
+      defer.promise
+
+  screenFadeIn: ->
+    (sequence) =>
+      @_verify(sequence)
+      fader = Crafty('ScreenFader').get(0)
+      unless fader?
+        fader = Crafty.e('2D, DOM, Color, HUD, Tween, ScreenFader')
+
+      defer = WhenJS.defer()
+
+      fader.positionHud(
+        x: 0,
+        y: 0,
+        z: 1000
+      ).attr(
+        w: Crafty.viewport.width
+        h: Crafty.viewport.height
+        alpha: 1
+      ).color(
+        '#000000'
+      ).tween(
+        alpha: 0
+        4000
+      ).bind('TweenEnd', ->
+        @destroy()
+        defer.resolve()
+      )
+
+      defer.promise
+
 

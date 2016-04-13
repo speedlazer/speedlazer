@@ -65,33 +65,35 @@ class Game.EntityScript extends Game.LazerScript
     if _.isObject(args[0]) and args[0].identifier?
       identifier = args[0].identifier# + args[0].index
       @entity.addComponent(identifier)
-    return WhenJS({ alive: no, killedAt: (new Date), location: null }) unless @entity?
-
     @synchronizer = @options.synchronizer ? new Game.Synchronizer
-    @synchronizer.registerEntity(this)
+    @synchronizer.registerEntity this
 
-    if @entity?
+    unless @entity?
+      @synchronizer.unregisterEntity this
+      return WhenJS({ alive: no, killedAt: (new Date), location: null })
+
+    unless @entity.has('PlayerControlledShip')
       @entity.attr
         x: @entity.x - Crafty.viewport.x
         y: @entity.y - Crafty.viewport.y
 
-      @entity.bind 'Destroyed', =>
-        @currentSequence = null
-        @synchronizer.unregisterEntity(this)
-        @enemy.location.x = (@entity.x + Crafty.viewport.x)
-        @enemy.location.y = (@entity.y + Crafty.viewport.y)
-        @enemy.alive = no
-        @enemy.killedAt = new Date
+    @entity.bind 'Destroyed', =>
+      @currentSequence = null
+      @synchronizer.unregisterEntity(this)
+      @enemy.location.x = (@entity.x + Crafty.viewport.x)
+      @enemy.location.y = (@entity.y + Crafty.viewport.y)
+      @enemy.alive = no
+      @enemy.killedAt = new Date
 
-      @enemy =
-        moveState: 'air'
-        alive: yes
-        location: {}
-    else
-      @enemy =
-        moveState: 'air'
-        alive: no
-        location: {}
+    @enemy =
+      moveState: 'air'
+      alive: yes
+      location: {}
+    #else
+      #@enemy =
+        #moveState: 'air'
+        #alive: no
+        #location: {}
 
     super
       .catch (e) =>

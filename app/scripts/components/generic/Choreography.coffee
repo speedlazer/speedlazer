@@ -35,6 +35,7 @@ Crafty.c 'Choreography',
     @unbind('GameLoop', @_choreographyTick)
     return unless @_currentPart?
     @_currentPart = null
+    @_choreography = []
     @trigger('ChoreographyEnd')
 
   choreography: (c, options = {}) ->
@@ -56,7 +57,7 @@ Crafty.c 'Choreography',
     toSkip = options.skip
     @_toSkip = 0
     if toSkip > 0
-      while toSkip > @_currentPart.duration
+      while (part < @_choreography.length - 1) and toSkip > @_currentPart.duration
         toSkip -= @_currentPart.duration
         part += 1
         @_setupCPart(part)
@@ -78,6 +79,7 @@ Crafty.c 'Choreography',
         @_repeated += 1
         number = 0
       else
+        @_choreography = []
         @unbind('GameLoop', @_choreographyTick)
         @trigger 'ChoreographyEnd'
         return

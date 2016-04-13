@@ -142,7 +142,7 @@ Game.ScriptModule.Core =
         ->
           d.resolve()
           @destroy()
-        amount?() ? amount
+        Math.max(amount?() ? amount, 0)
       )
       d.promise
 
