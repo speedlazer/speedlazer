@@ -254,7 +254,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
         @gainHeight(600, duration: 0)
         @setSpeed 150
       )
-      @wait 3000
+      @wait 5000
       @parallel(
         @sequence(
           @disableControls()
