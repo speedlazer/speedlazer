@@ -190,6 +190,8 @@ class Game.Scripts.Lunch extends Game.LazerScript
         )
       )
 
+      @say 'WebGL', 'Ready?'
+      @say 'WebGL', 'Really ready?'
       =>
         Game.webGLMode = on
         Crafty('GoldenStripe').each -> @bottomColor('#DDDD00', 0)
