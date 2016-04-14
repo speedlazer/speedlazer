@@ -45,16 +45,11 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
     )
 
   execute: ->
-    @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
-    @inventoryAdd 'item', 'diagonals', ->
-      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
-
     @bindSequence 'Hit', @fase2, => (@entity.health / @entity.maxHealth) < .8
 
     @sequence(
       @setScenery('UnderBridge')
-      => @entity.invincible = yes
+      @invincible yes
       @animate 'slow', -1, 'eye'
       @disableWeapons()
 
@@ -63,7 +58,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @say('Drone Commander', 'We have control now! You will suffer!')
       @say('Drone Commander', 'Earths defences are in our hands!')
       @laugh()
-      => @entity.invincible = no
+      @invincible no
       @enableWeapons()
       @async @placeSquad(Game.Scripts.Stage1BossRocket,
         options:
@@ -77,11 +72,156 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @repeat @attackCycle(25)
     )
 
+  attackCycle: (speed) ->
+    @sequence(
+      @async @runScript(Game.Scripts.Stage1BossMine, @location())
+      @moveTo(y: .36, easing: 'easeInOutQuad', speed: speed)
+      @wait 200
+      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+        options:
+          location: @location()
+          pointsOnDestroy: 0
+          pointsOnHit: 0
+      )
+      @animate 'emptyWing', 0, 'wing'
+      @animate 'reload', 0, 'wing'
+      @async @runScript(Game.Scripts.Stage1BossMine, @location())
+      @moveTo(y: .58, easing: 'easeInOutQuad', speed: speed)
+      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+        options:
+          location: @location()
+          pointsOnDestroy: 0
+          pointsOnHit: 0
+      )
+      @animate 'emptyWing', 0, 'wing'
+      @wait 200
+      @animate 'reload', 0, 'wing'
+    )
+
+  fase2: ->
+    @bindSequence 'Hit', @fase3, => (@entity.health / @entity.maxHealth) < .5
+
+    @sequence(
+      @setSpeed 75
+      @bombRaid(yes)
+      @repeat @sequence(
+        @repeat 3, @attackCycle(50)
+        @laugh()
+        @async @placeSquad(Game.Scripts.Stage1BossDroneRaid,
+          amount: 6
+          delay: 300
+          options:
+            shootOnSight: yes
+        )
+        @laugh()
+      )
+    )
+
+  fase3: ->
+    @bindSequence 'Hit', @dramaDeath, => (@entity.health / @entity.maxHealth) < .2
+
+    @sequence(
+      @setSpeed 150
+      @bombRaid(yes)
+      @parallel(
+        @sequence(
+          @setScenery 'Skyline'
+          @gainHeight(300, duration: 4000)
+        )
+        @repeat @sequence(
+          @repeat 2, @attackCycleAir()
+          @airBashAttack()
+        )
+      )
+    )
+
+  attackCycleAir: ->
+    @repeat 5, @sequence(
+      @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
+        options:
+          z: 5
+          offsetY: 100
+          location: @location()
+      )
+      @animate 'emptyWing', 0, 'wing'
+      @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
+        options:
+          z: -5
+          offsetY: -100
+          location: @location()
+      )
+      @parallel(
+        @moveTo(@targetLocation(offsetY: -20), x: .845)
+        @sequence(
+          @animate 'reload', 0, 'wing'
+          @wait 1000
+        )
+      )
+    )
+
+  airBashAttack: ->
+    @sequence(
+      @moveTo(y: .5, x: 0.95, speed: 100, 'easeInOutQuad')
+
+      @async @placeSquad(Game.Scripts.LunchBossMineField,
+        amount: 20
+        delay: 50
+        options:
+          location: @location()
+          gridConfig:
+            x:
+              start: 0.1
+              steps: 12
+              stepSize: 0.075
+            y:
+              start: 0.1
+              steps: 5
+              stepSize: 0.075
+      )
+      @async @placeSquad(Game.Scripts.LunchBossMineField,
+        amount: 20
+        delay: 50
+        options:
+          location: @location()
+          gridConfig:
+            x:
+              start: 0.1
+              steps: 12
+              stepSize: 0.075
+            y:
+              start: 0.7
+              steps: 5
+              stepSize: 0.075
+      )
+      @wait(3000)
+      @invincible yes
+      @while(
+        @moveTo(x: -.15, speed: 500, easing: 'easeInOutQuad')
+        @sequence(
+          @smallExplosion()
+          @while(
+            @wait 300
+            @smoke()
+          )
+        )
+      )
+      @turnAround()
+      @sendToBackground(0.7, -150)
+      @while(
+        @moveTo(x: 1.1, speed: 300)
+        @smoke('light')
+      )
+      @invincible no
+      @turnAround()
+      @scale(1.0, duration: 0)
+      @reveal()
+      @moveTo(x: .85, y: .41, speed: 200)
+    )
+
   dramaDeath: ->
-    # TODO: Make something nice of this!
     @sequence(
       => @entity.colorOverride '#FF8080'
-      => @entity.invincible = yes
+      @invincible yes
       @parallel(
         @gainHeight(300, duration: 4000)
         @say 'Drone Commander', 'You will never stop us!!'
@@ -126,100 +266,16 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
   laugh: ->
     @sequence(
       => Crafty.audio.play('laugh')
-      #=> @entity.invincible = yes
       @repeat 5, @sequence(
         @rotate(10, 200)
         @rotate(-10, 200)
       )
       @rotate(0, 200)
-      #=> @entity.invincible = no
-    )
-
-  attackCycle: (speed) ->
-    @sequence(
-      @async @runScript(Game.Scripts.Stage1BossMine, @location())
-      @moveTo(y: .36, easing: 'easeInOutQuad', speed: speed)
-      @wait 200
-      @async @placeSquad(Game.Scripts.Stage1BossRocket,
-        options:
-          location: @location()
-          pointsOnDestroy: 0
-          pointsOnHit: 0
-      )
-      @animate 'emptyWing', 0, 'wing'
-      @animate 'reload', 0, 'wing'
-      @async @runScript(Game.Scripts.Stage1BossMine, @location())
-      @moveTo(y: .58, easing: 'easeInOutQuad', speed: speed)
-      @async @placeSquad(Game.Scripts.Stage1BossRocket,
-        options:
-          location: @location()
-          pointsOnDestroy: 0
-          pointsOnHit: 0
-      )
-      @animate 'emptyWing', 0, 'wing'
-      @wait 200
-      @animate 'reload', 0, 'wing'
-    )
-
-  attackCycle3: (speed) ->
-    @repeat @sequence(
-      @repeat 5, @sequence(
-        @pickTarget('PlayerControlledShip')
-        @while(
-          @moveTo(@targetLocation(offsetY: -20, x: .85))
-          @sequence(
-            @async @runScript(Game.Scripts.Stage1BossMine, @location())
-            @wait 800
-            @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
-              options:
-                location: @location()
-                pointsOnDestroy: 100
-                pointsOnHit: 10
-            )
-            @animate 'emptyWing', 0, 'wing'
-            @animate 'reload', 0, 'wing'
-            @async @runScript(Game.Scripts.Stage1BossMine, @location())
-            @wait 800
-            @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
-              options:
-                location: @location()
-                pointsOnDestroy: 100
-                pointsOnHit: 10
-            )
-            @animate 'emptyWing', 0, 'wing'
-            @wait 800
-            @animate 'reload', 0, 'wing'
-          )
-        )
-        @wait(1000)
-      )
-      @rocketRaid()
-    )
-
-  rocketRaid: ->
-    @sequence(
-      => @entity.invincible = yes
-      @moveTo(y: .1)
-      @repeat 10, @sequence(
-        @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
-          options:
-            location: @location()
-            pointsOnDestroy: 100
-            pointsOnHit: 10
-        )
-        @animate 'emptyWing', 0, 'wing'
-        @animate 'reload', 0, 'wing'
-        @wait 500
-      )
-
-      @pickTarget('PlayerControlledShip')
-      @moveTo(@targetLocation(offsetY: -20), x: .85)
-      => @entity.invincible = no
     )
 
   bombRaid: (armed = no) ->
     @sequence(
-      => @entity.invincible = yes
+      @invincible yes
       @moveTo(y: .1)
       @while(
         @moveTo(x: -100, speed: 200)
@@ -232,7 +288,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
           @wait 500
         )
       )
-      => @entity.flipX()
+      @turnAround()
       @while(
         @moveTo(x: 1.0, speed: 200)
         @sequence(
@@ -245,130 +301,11 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
         )
       )
       @moveTo(x: 1.2, speed: 200)
-      => @entity.unflipX()
+      @turnAround()
       @moveTo(x: .85, y: .41, speed: 200)
-      => @entity.invincible = no
+      @invincible no
     )
 
-  fase2: ->
-    @bindSequence 'Hit', @fase3, => (@entity.health / @entity.maxHealth) < .5
-
-    @sequence(
-      @setSpeed 75
-      @bombRaid(yes)
-      @repeat @sequence(
-        @repeat 3, @attackCycle(50)
-        @laugh()
-        @async @placeSquad(Game.Scripts.Stage1BossDroneRaid,
-          amount: 6
-          delay: 300
-          options:
-            shootOnSight: yes
-        )
-        @laugh()
-      )
-    )
-
-  fase3: ->
-    @bindSequence 'Hit', @dramaDeath, => (@entity.health / @entity.maxHealth) < .2
-
-    @sequence(
-      @setSpeed 150
-      @bombRaid(yes)
-      @parallel(
-        @sequence(
-          @gainHeight(300, duration: 4000)
-          @setScenery 'Skyline'
-        )
-        @repeat @sequence(
-          @repeat 2, @attackCycleAir()
-          @airBashAttack()
-        )
-      )
-    )
-
-  airBashAttack: ->
-    @sequence(
-      @moveTo(y: .5, x: 0.95, speed: 100, 'easeInOutQuad')
-
-      @async @placeSquad(Game.Scripts.LunchBossMineField,
-        amount: 20
-        delay: 50
-        options:
-          location: @location()
-          gridConfig:
-            x:
-              start: 0.1
-              steps: 12
-              stepSize: 0.075
-            y:
-              start: 0.1
-              steps: 5
-              stepSize: 0.075
-      )
-      @async @placeSquad(Game.Scripts.LunchBossMineField,
-        amount: 20
-        delay: 50
-        options:
-          location: @location()
-          gridConfig:
-            x:
-              start: 0.1
-              steps: 12
-              stepSize: 0.075
-            y:
-              start: 0.7
-              steps: 5
-              stepSize: 0.075
-      )
-      @wait(3000)
-      => @entity.invincible = yes
-      @while(
-        @moveTo(x: -.15, speed: 500, easing: 'easeInOutQuad')
-        @sequence(
-          @smallExplosion()
-          @while(
-            @wait 300
-            @smoke()
-          )
-        )
-      )
-      => @entity.flipX()
-      @sendToBackground(0.7, -150)
-      @while(
-        @moveTo(x: 1.1, speed: 300)
-        @smoke('light')
-      )
-      => @entity.invincible = no
-      => @entity.unflipX()
-      @scale(1.0, duration: 0)
-      @reveal()
-      @moveTo(x: .85, y: .41, speed: 200)
-    )
-
-  attackCycleAir: ->
-    @repeat 5, @sequence(
-      @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
-        options:
-          z: 5
-          offsetY: 100
-          location: @location()
-      )
-      @animate 'emptyWing', 0, 'wing'
-      @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
-        options:
-          z: -5
-          offsetY: -100
-          location: @location()
-      )
-      @parallel(
-        @moveTo(@targetLocation(offsetY: -20), x: .845)
-        @sequence(
-          @animate 'reload', 0, 'wing'
-          @wait 1000
-        )
-      )
-    )
 
 class Game.Scripts.LunchBossMineField extends Game.EntityScript
   assets: ->

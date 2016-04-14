@@ -421,3 +421,19 @@ Game.ScriptModule.Entity =
       x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2)) + (settings.offsetX ? 0)
       y: (@enemy.location.y ? (@entity.y + Crafty.viewport.y) + (@entity.h / 2)) + (settings.offsetY ? 0)
 
+  invincible: (yesNo) ->
+    (sequence) =>
+      @_verify(sequence)
+      @entity.invincible = yesNo
+
+  turnAround: ->
+    (sequence) =>
+      @_verify(sequence)
+      @turned ?= no
+      @turned = !@turned
+      if @turned
+        @entity.flipX()
+      else
+        @entity.unflipX()
+
+
