@@ -198,7 +198,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
         Crafty('waterMiddle').each -> @attr lightness: 1.0
         Crafty('waterHorizon').each -> @attr lightness: 1.0
       @chapterTitle(1, 'WebGL Shaders')
-      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 3)
+      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 2)
       @setScenery('BayStart')
       @nextSlide @sequence(
         @swirlAttacks2()
@@ -219,9 +219,6 @@ class Game.Scripts.Lunch extends Game.LazerScript
         'wrong button all this time!'
       @say 'Player 2', 'Sigh...'
       @setSpeed 150, accellerate: yes
-      @nextSlide @sequence(
-        @swirlAttacks2(juice: yes)
-      )
       @nextSlide(
         @mineSwarm(juice: yes)
       )
@@ -239,7 +236,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
           options:
             juice: yes
       )
-      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 120000, 3, 'Bay')
+      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 120000, 2, 'Bay')
       @setScenery 'UnderBridge'
       @updateTitle 'Player ship'
       @setWeapons(['lasers'])
@@ -256,13 +253,13 @@ class Game.Scripts.Lunch extends Game.LazerScript
       )
       @setSpeed 50, accellerate: yes
       @waitForScenery('UnderBridge', event: 'inScreen')
-      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 140000, 3, 'UnderBridge')
+      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 140000, 2, 'UnderBridge')
       @setSpeed 0
       @nextSlide()
       @chapterTitle(4, 'Bossfight!')
       @placeSquad Game.Scripts.LunchBossStage1
       @checkpoint @parallel(
-        @async @runScript(Game.Scripts.SunRise, skipTo: 150000, speed: 3)
+        @async @runScript(Game.Scripts.SunRise, skipTo: 450000, speed: 2)
         @setScenery 'Skyline'
         @gainHeight(600, duration: 0)
         @setSpeed 150
