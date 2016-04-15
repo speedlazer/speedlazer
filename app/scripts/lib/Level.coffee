@@ -182,7 +182,7 @@ class Game.Level
 
     Crafty.bind 'ShipSpawned', (ship) =>
       ship.forcedSpeed @_forcedSpeed, accellerate: no
-      ship.weaponsEnabled =  @_weaponsEnabled
+      ship.weaponsEnabled =  @_weaponsEnabled[ship.playerNumber]
       ship.disableControl() unless @_controlsEnabled
 
       if @playerStartWeapons?
@@ -230,10 +230,12 @@ class Game.Level
     Crafty('PlayerControlledShip').each ->
       @y += deltaY
 
-  setWeaponsEnabled: (onOff) ->
-    @_weaponsEnabled = onOff
+  setWeaponsEnabled: (onOff, players) ->
+    players = [1, 2] unless players? and !_.isEmpty(players)
+    @_weaponsEnabled ?= {}
+    @_weaponsEnabled[player] = onOff for player in players
     Crafty('PlayerControlledShip').each ->
-      @weaponsEnabled = onOff
+      @weaponsEnabled = onOff if @playerNumber in players
 
   getComponentOffset: ->
     x: @_scrollWall.x

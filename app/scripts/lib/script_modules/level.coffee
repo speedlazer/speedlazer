@@ -254,15 +254,15 @@ Game.ScriptModule.Level =
       @wait(15 * 2000)(sequence).then =>
         score.destroy()
 
-  disableWeapons: ->
+  disableWeapons: (players...) ->
     (sequence) =>
       @_verify(sequence)
-      @level.setWeaponsEnabled no
+      @level.setWeaponsEnabled no, players
 
-  enableWeapons: ->
+  enableWeapons: (players...) ->
     (sequence) =>
       @_verify(sequence)
-      @level.setWeaponsEnabled yes
+      @level.setWeaponsEnabled yes, players
 
   blast: (location, options = {}, frameOptions) ->
     (sequence) =>

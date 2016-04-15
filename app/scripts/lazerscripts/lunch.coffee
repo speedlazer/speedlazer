@@ -198,24 +198,35 @@ class Game.Scripts.Lunch extends Game.LazerScript
         Crafty('waterMiddle').each -> @attr lightness: 1.0
         Crafty('waterHorizon').each -> @attr lightness: 1.0
       @chapterTitle(1, 'WebGL Shaders')
-      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 5)
+      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 3)
       @setScenery('BayStart')
       @nextSlide @sequence(
         @swirlAttacks2()
       )
-      @updateTitle 'Juice'
-      @disableWeapons()
-      @nextSlide(
-        @mineSwarm(juice: no)
+      @disableWeapons(1)
+      @say 'Player 1', 'Help I have a weapon malfunction!!'
+      @say 'Player 2', 'No worries, I will fight for you!'
+      @chapterTitle(2, 'Juice')
+      @nextSlide @sequence(
+        @swirlAttacks2()
       )
+      @setWeapons(['lasers'])
+      @say 'Player 2', 'Woohoo Autofire! I will save you buddy!'
       @setSpeed 100, accellerate: yes
+      @swirlAttacks2(juice: yes)
+      @enableWeapons()
+      @say 'Player 1', 'My weapon works again! I seemed I was pressing the\n' +
+        'wrong button all this time!'
+      @say 'Player 2', 'Sigh...'
+      @setSpeed 150, accellerate: yes
+      @nextSlide @sequence(
+        @swirlAttacks2(juice: yes)
+      )
       @nextSlide(
         @mineSwarm(juice: yes)
       )
-      @enableWeapons()
-      @chapterTitle(2, 'Minimal viable audio')
+      @chapterTitle(3, 'Minimal viable audio')
       @wait 1000
-      @setWeapons(['lasers'])
       => Crafty.audio.unmute()
       @nextSlide(
         @mineSwarm(juice: yes)
@@ -228,7 +239,7 @@ class Game.Scripts.Lunch extends Game.LazerScript
           options:
             juice: yes
       )
-      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 120000, 5, 'Bay')
+      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 120000, 3, 'Bay')
       @setScenery 'UnderBridge'
       @updateTitle 'Player ship'
       @setWeapons(['lasers'])
@@ -243,13 +254,15 @@ class Game.Scripts.Lunch extends Game.LazerScript
           options:
             juice: yes
       )
+      @setSpeed 50, accellerate: yes
       @waitForScenery('UnderBridge', event: 'inScreen')
-      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 140000, 5, 'UnderBridge')
+      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 140000, 3, 'UnderBridge')
       @setSpeed 0
-      @chapterTitle(3, 'Bossfight!')
+      @nextSlide()
+      @chapterTitle(4, 'Bossfight!')
       @placeSquad Game.Scripts.LunchBossStage1
       @checkpoint @parallel(
-        @async @runScript(Game.Scripts.SunRise, skipTo: 150000, speed: 5)
+        @async @runScript(Game.Scripts.SunRise, skipTo: 150000, speed: 3)
         @setScenery 'Skyline'
         @gainHeight(600, duration: 0)
         @setSpeed 150
@@ -350,20 +363,18 @@ class Game.Scripts.Lunch extends Game.LazerScript
         drop: 'xp'
     )
 
-  swirlAttacks2: ->
+  swirlAttacks2: (options = { juice: no }) ->
     @parallel(
       @repeat 2, @placeSquad Game.Scripts.Swirler,
         amount: 4
         delay: 500
         drop: 'xp'
-        options:
-          juice: no
+        options: options
       @repeat 2, @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 500
         drop: 'xp'
-        options:
-          juice: no
+        options: options
     )
 
   sunriseCheckpoint: (script, skip, speed, scenery) ->
