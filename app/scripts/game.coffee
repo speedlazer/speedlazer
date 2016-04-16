@@ -136,7 +136,7 @@ Game =
       { initials: defInit, score: 10000 }
       { initials: defInit, score: 50000 }
       { initials: defInit, score: 20000 }
-      { initials: defInit, score: 10000 }
+      { initials: defInit, score: 15000 }
     ].concat loadedList
     _.sortBy(list, 'score').reverse()
 
