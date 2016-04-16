@@ -127,16 +127,16 @@ Game =
 
     defInit = 'SPL'
     list = [
+      { initials: defInit, score: 150000 }
+      { initials: defInit, score: 100000 }
+      { initials: defInit, score: 50000 }
+      { initials: defInit, score: 30000 }
+      { initials: defInit, score: 20000 }
       { initials: defInit, score: 15000 }
       { initials: defInit, score: 10000 }
-      { initials: defInit, score: 5000 }
-      { initials: defInit, score: 3000 }
-      { initials: defInit, score: 2000 }
-      { initials: defInit, score: 1500 }
-      { initials: defInit, score: 1000 }
-      { initials: defInit, score: 500 }
-      { initials: defInit, score: 200 }
-      { initials: defInit, score: 100 }
+      { initials: defInit, score: 50000 }
+      { initials: defInit, score: 20000 }
+      { initials: defInit, score: 10000 }
     ].concat loadedList
     _.sortBy(list, 'score').reverse()
 
