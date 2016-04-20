@@ -33,6 +33,7 @@ class Game.Scripts.SunRise extends Game.EntityScript
 
   execute: ->
     speed = @options.speed ? 1
+    @options.skipTo ?= 0
 
     preColor = (40000 / speed)
     colorDuration = (600000 / speed)

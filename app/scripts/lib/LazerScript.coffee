@@ -60,6 +60,7 @@ class Game.EntityScript extends Game.LazerScript
 
   initialize: (args...) ->
     @boundEvents = []
+    args.push {} if _.isEmpty args
 
     @entity = @spawn(args...)
     if _.isObject(args[0]) and args[0].identifier?
