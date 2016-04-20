@@ -201,6 +201,12 @@ Game.ScriptModule.Entity =
         location = { x: target.x + Crafty.viewport.x, y: target.y + Crafty.viewport.y }
 
       settings = location?() ? location
+
+      # When the location function returns null,
+      # settings becomes the function, which is
+      # invalid. So we need to safeguard against it.
+      return WhenJS() if _.isFunction settings
+
       _.extend(settings, extraSettings)
 
       if settings.x? and (-1 < settings.x < 2)
