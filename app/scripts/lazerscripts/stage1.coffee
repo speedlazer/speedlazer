@@ -24,7 +24,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @cityBay()
       @midstageBossfight()
 
-      @checkpoint @checkpointMidStage('Bay', 400000)
+      @checkpoint @checkpointMidStage('BayFull', 400000)
       @say('General', 'Hunt him down!')
       @setSpeed 150
       @placeSquad Game.Scripts.Shooter,
@@ -239,7 +239,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   midstageBossfight: ->
     @sequence(
-      @checkpoint @checkpointStart('Bay', 226000)
+      @checkpoint @checkpointStart('BayFull', 226000)
       @setScenery('UnderBridge')
       @parallel(
         @if((-> @player(1).active), @drop(item: 'xp', inFrontOf: @player(1)))
