@@ -45,7 +45,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
     )
 
   execute: ->
-    @bindSequence 'Hit', @fase2, => (@entity.health / @entity.maxHealth) < .8
+    @bindSequence 'Hit', @fase2, => @entity.healthBelow .8
 
     @sequence(
       @setScenery('UnderBridge')
@@ -99,7 +99,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
     )
 
   fase2: ->
-    @bindSequence 'Hit', @fase3, => (@entity.health / @entity.maxHealth) < .5
+    @bindSequence 'Hit', @fase3, => @entity.healthBelow .5
 
     @sequence(
       @setSpeed 75
@@ -118,7 +118,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
     )
 
   fase3: ->
-    @bindSequence 'Hit', @dramaDeath, => (@entity.health / @entity.maxHealth) < .2
+    @bindSequence 'Hit', @dramaDeath, => @entity.healthBelow .2
 
     @sequence(
       @setSpeed 150

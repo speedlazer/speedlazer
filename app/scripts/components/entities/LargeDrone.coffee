@@ -48,6 +48,9 @@ Crafty.c 'LargeDrone',
         )
     this
 
+  healthBelow: (perc) ->
+    (@health / @maxHealth) < perc
+
   updatedHealth: ->
     sprite = 0
     healthPerc = @health / @maxHealth

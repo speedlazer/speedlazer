@@ -40,12 +40,15 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       defaultSpeed: 100
+      health: 45000
       #defaultSpeed: 50
       pointsOnHit: 10
     )
 
   execute: ->
-    @bindSequence 'Hit', @fase2, => @entity.health < 345000
+    @inventoryAdd 'item', 'diagonals', ->
+      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
+    @bindSequence 'Hit', @fase2, => @entity.healthBelow .8
 
     @sequence(
       => @entity.invincible = yes
@@ -190,8 +193,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     )
 
   fase2: ->
-    # start at 345000
-    @bindSequence 'Hit', @fase3, => @entity.health < 330000
+    # start at .8
+    @bindSequence 'Hit', @fase3, => @entity.healthBelow .5
 
     @sequence(
       @setSpeed 50
@@ -222,8 +225,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     )
 
   fase3: ->
-    # start at 330000
-    @bindSequence 'Hit', @fase4, => @entity.health < 305000
+    # start at .5
+    @bindSequence 'Hit', @fase4, => @entity.healthBelow .2
 
     @sequence(
       @setSpeed 50
@@ -241,20 +244,6 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
           @while(
             @wait 300
             @smoke()
-            #@sequence(
-              #@blast(@location(),
-                #radius: 10
-                #duration: 480
-                #z: -100
-                #alpha: .8
-                #->
-                  #rotation: @rotation + 1
-                  #alpha: Math.max(0, @alpha - .003)
-                  #lightness: -> Math.max(.2, @lightness - .05)
-                  #y: @y - (Math.random() * 2)
-              #)
-              #@wait -> 40 + (Math.random() * 50)
-            #)
           )
         )
       )
@@ -265,20 +254,6 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
         @while(
           @moveTo(x: -.15, speed: 300)
           @smoke('medium')
-          #@sequence(
-            #@blast(@location(),
-              #radius: 10
-              #duration: 480
-              #z: -100
-              #alpha: .6
-              #->
-                #rotation: @rotation + 1
-                #alpha: Math.max(0, @alpha - .003)
-                #lightness: -> Math.max(.2, @lightness - .05)
-                #y: @y - (Math.random() * 2)
-            #)
-            #@wait -> 80 + (Math.random() * 50)
-          #)
         )
 
         @scale(0.8, duration: 3000)
@@ -288,21 +263,6 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @while(
         @moveTo(x: 1.1, speed: 300)
         @smoke('light')
-        #@sequence(
-          #@blast(@location(),
-            #radius: 10
-            #duration: 480
-            #z: -150
-            #alpha: .4
-            #lightness: 1.0
-            #->
-              #rotation: @rotation + 1
-              #alpha: Math.max(0, @alpha - .003)
-              #lightness: Math.max(.2, @lightness - .05)
-              #y: @y - (Math.random() * 2)
-          #)
-          #@wait -> 140 + (Math.random() * 50)
-        #)
       )
     )
 
