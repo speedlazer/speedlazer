@@ -335,7 +335,7 @@ class Game.Scripts.LunchBossMineField extends Game.EntityScript
         @wait (1 - @target.xPerc) * 1000
         @animate('blink', -1)
         @wait 1000
-        @onKilled()
+        => @entity.absorbDamage @entity.health
         => Crafty('RiggedExplosion').trigger('BigExplosion') if @index == 0
         @endSequence()
       )

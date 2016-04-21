@@ -36,7 +36,7 @@ class Game.Scripts.JumpMine extends Game.EntityScript
           @wait 4000
           @animate('blink', -1)
           @wait 1000
-          @onKilled()
+          => @entity.absorbDamage @entity.health
           @endSequence()
         )
       )

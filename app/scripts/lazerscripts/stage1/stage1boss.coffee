@@ -293,7 +293,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       @wait 200
       @animate 'blink', -1
       @wait 1000
-      @bigExplosion()
+      => @entity.absorbDamage @entity.health
       @endSequence()
     )
 
@@ -575,7 +575,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
         @animate('blink', -1)
         @moveTo(y: .3 + (Math.random() * .6), easing: 'easeInOutQuad')
         @wait(200)
-        @onKilled()
+        => @entity.absorbDamage @entity.health
       )
     else
       @sequence(
