@@ -321,12 +321,6 @@ class Game.Level
     @_insertBlockToLevel(blockType, {})
     @generationPosition = p
 
-  updateTitle: (newTitle) ->
-    Crafty('LevelTitle').text newTitle
-
-  showChapterTitle: (number, newTitle) ->
-    Crafty.e('StageTitle').stageTitle(number, newTitle)
-
   loadAssets: (names) ->
     @generator.loadAssets names
 

@@ -199,9 +199,12 @@ Game.ScriptModule.Level =
   # - outScreen       -- The scenery's end is at the right side of the screen (about to move out)
   # - playerLeave     -- The player is leaving the scenery
   # - playerEnter     -- The player is entering the scenery
-  waitForScenery: (sceneryType, options = { event: 'enter' }) ->
+  waitForScenery: (sceneryType, options = {}) ->
     (sequence) =>
       @_verify(sequence)
+      options = _.defaults(options,
+        event: 'enter'
+      )
       return WhenJS() if @_skippingToCheckpoint()
       d = WhenJS.defer()
       @level.notifyScenery options.event, sceneryType, -> d.resolve()
@@ -306,14 +309,20 @@ Game.ScriptModule.Level =
   updateTitle: (text) ->
     (sequence) =>
       @_verify(sequence)
-      @level.updateTitle(text)
+      Crafty('LevelTitle').text text
 
   chapterTitle: (number, text) ->
     (sequence) =>
       @_verify(sequence)
-      @level.updateTitle("#{number}: #{text}")
+      Crafty('LevelTitle').text "#{number}: #{text}"
       return WhenJS() if @_skippingToCheckpoint()
-      @level.showChapterTitle(number, text)
+      Crafty.e('BigText').bigText(text, super: "Chapter #{number}:")
+
+  showText: (text, options = {}) ->
+    (sequence) =>
+      @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
+      Crafty.e('BigText').bigText(text, options)
 
   pickTarget: (selection) ->
     (sequence) =>
@@ -473,5 +482,6 @@ Game.ScriptModule.Level =
       )
 
       defer.promise
+
 
 

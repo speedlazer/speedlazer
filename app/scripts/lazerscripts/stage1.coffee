@@ -256,6 +256,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @if((-> @player(2).active), @drop(item: 'xp', inFrontOf: @player(2)))
       )
       @mineSwarm()
+      @showText 'Warning!', color: '#FF0000', mode: 'blink'
       @while(
         @waitForScenery('UnderBridge', event: 'inScreen')
         @sequence(
