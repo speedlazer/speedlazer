@@ -186,6 +186,42 @@ generator.defineElement 'city', ->
   @addBackground(0, @level.visibleHeight - 310, c, .5)
   @addBackground(0, @level.visibleHeight - 310, d, .5)
 
+generator.defineElement 'cityFront', ->
+  bb = Crafty.e('2D, WebGL, bigBuilding, ColorEffects, RiggedExplosion').attr(z: -20).crop(1, 1, 446, 510)
+  bb.colorOverride('#001fff', 'partial')
+  @add(0, @level.visibleHeight - 700, bb)
+  bb.bind('BigExplosion', ->
+    return if @buildingExploded
+    if @x + @w > -Crafty.viewport.x and @x < -Crafty.viewport.x + Crafty.viewport.width
+
+      Crafty.e('2D, WebGL, glass, Tween')
+        .attr(x: @x, y: @y + 40, z: @z + 5)
+        .bind('TweenEnd', -> @destroy())
+        .tween({ y: @y + 500}, 3000, 'easeInQuad')
+
+      Crafty.e('2D, WebGL, glass, Tween')
+        .attr(x: @x + 200, y: @y + 60, z: @z + 5)
+        .bind('TweenEnd', -> @destroy())
+        .tween({ y: @y + 500}, 3000, 'easeInQuad')
+
+      Crafty.e('2D, WebGL, glass, Tween')
+        .attr(x: @x, y: @y + 180, z: @z + 5)
+        .bind('TweenEnd', -> @destroy())
+        .tween({ y: @y + 500}, 3000, 'easeInQuad')
+
+      Crafty.e('2D, WebGL, glass, Tween')
+        .attr(x: @x + 180, y: @y + 200, z: @z + 5)
+        .bind('TweenEnd', -> @destroy())
+        .tween({ y: @y + 500}, 3000, 'easeInQuad')
+
+      @sprite(30, 13)
+      @buildingExploded = yes
+  )
+
+generator.defineElement 'cityFrontBlur', ->
+  h = 768
+  @addBackground(200, @level.visibleHeight - 550, Crafty.e('2D, WebGL, bigBuilding').crop(1, 1, 446, 510).attr(w: 768, h: h, z: 50, lightness: .4), 1.5)
+
 generator.defineElement 'city-bridge', ->
   bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon')
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
@@ -528,40 +564,9 @@ generator.defineBlock class extends Game.CityScenery
 
   generate: ->
     super
-    bb = Crafty.e('2D, WebGL, bigBuilding, ColorEffects, RiggedExplosion').attr(z: -20).crop(1, 1, 446, 510)
-    bb.colorOverride('#001fff', 'partial')
-    @add(0, @level.visibleHeight - 700, bb)
-    bb.bind('BigExplosion', ->
-      return if @buildingExploded
-      if @x + @w > -Crafty.viewport.x and @x < -Crafty.viewport.x + Crafty.viewport.width
 
-        Crafty.e('2D, WebGL, glass, Tween')
-          .attr(x: @x, y: @y + 40, z: @z + 5)
-          .bind('TweenEnd', -> @destroy())
-          .tween({ y: @y + 500}, 3000, 'easeInQuad')
-
-        Crafty.e('2D, WebGL, glass, Tween')
-          .attr(x: @x + 200, y: @y + 60, z: @z + 5)
-          .bind('TweenEnd', -> @destroy())
-          .tween({ y: @y + 500}, 3000, 'easeInQuad')
-
-        Crafty.e('2D, WebGL, glass, Tween')
-          .attr(x: @x, y: @y + 180, z: @z + 5)
-          .bind('TweenEnd', -> @destroy())
-          .tween({ y: @y + 500}, 3000, 'easeInQuad')
-
-        Crafty.e('2D, WebGL, glass, Tween')
-          .attr(x: @x + 180, y: @y + 200, z: @z + 5)
-          .bind('TweenEnd', -> @destroy())
-          .tween({ y: @y + 500}, 3000, 'easeInQuad')
-
-        @sprite(30, 13)
-        @buildingExploded = yes
-    )
-
-    h = 768
-    @addBackground(200, @level.visibleHeight - 550, Crafty.e('2D, WebGL, bigBuilding').crop(1, 1, 446, 510).attr(w: 768, h: h, z: 50, lightness: .4), 1.5)
-
+    @addElement 'cityFront'
+    @addElement 'cityFrontBlur'
     @addElement 'water'
 
     @addElement 'cityDistance'
@@ -574,27 +579,14 @@ generator.defineBlock class extends Game.CityScenery
     y: 0
   autoNext: 'Skyline2'
 
-  assets: ->
-    sprites:
-      'city-layer2.png':
-        tile: 297
-        tileh: 220
-        map:
-          cityLayer2: [0, 0]
-      'city.png':
-        tile: 402
-        tileh: 270
-        paddingY: 1
-        map:
-          city: [0, 0]
-
   generate: ->
     super
+    @addElement 'cityFront'
     h = 400 + 200
     @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: 600, h: h, z: -10).color('#909090'))
 
-    e = Crafty.e('2D, WebGL, MiliBase, Color').color('#805050').attr(w: 200, h: 400, z: -598)
-    @addBackground(0, @level.visibleHeight - 177, e, .25)
+    e = Crafty.e('2D, WebGL, MiliBase, Color').color('#805050').attr(w: 256, h: 512, z: -598)
+    @addBackground(0, @level.visibleHeight - 225, e, .25)
 
     @addElement 'city'
 
@@ -609,12 +601,13 @@ generator.defineBlock class extends Game.CityScenery
 
   generate: ->
     super
-    h = 400 + 200
-    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: 600, h: h, z: -10).color('#909090'))
+    @addElement 'cityFront'
+    #h = 400 + 200
+    #@add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: 600, h: h, z: -10).color('#909090'))
 
     @addElement 'water'
+    @addElement 'cityDistance'
 
-    @addElement 'cityHorizon'
     @addElement 'city'
 
     h = 150
