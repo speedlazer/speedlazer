@@ -40,7 +40,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @parallel(
         @sequence(
           @wait 3000
-          @gainHeight(350, duration: 4000)
+          @gainHeight(300, duration: 4000)
           @placeSquad Game.Scripts.Shooter,
             amount: 4
             delay: 1000
@@ -65,7 +65,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @cloneEncounter()
       )
 
-      @gainHeight(280, duration: 4000)
+      @gainHeight(300, duration: 4000)
 
       @checkpoint @checkpointMidStage('Skyline', 450000)
       @repeat 2, @parallel(

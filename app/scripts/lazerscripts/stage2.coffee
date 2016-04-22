@@ -18,7 +18,7 @@ class Game.Scripts.Stage2 extends Game.LazerScript
       @setScenery 'Skyline2'
       @changeSeaLevel 500
       @parallel(
-        @gainHeight(-580, duration: 6000)
+        @gainHeight(-600, duration: 6000)
         @chapterTitle(2, 'Underground')
       )
       @say 'DesignNote', 'Add some enemies and setting here!'
