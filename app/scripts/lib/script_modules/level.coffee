@@ -70,6 +70,8 @@ Game.ScriptModule.Level =
               script.run(s)
         )
         WhenJS.all(promises).then (results) =>
+          @attackWaveResults = (@attackWaveResults || []).concat(results)
+
           allKilled = yes
           lastLocation = null
           lastKilled = null
@@ -88,6 +90,33 @@ Game.ScriptModule.Level =
             lastLocation.y -= Crafty.viewport.y
             if settings.drop
               @drop(item: settings.drop, location: lastLocation)(sequence)
+
+  attackWaves: (promise, settings = {}) ->
+    (sequence) =>
+      @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
+      @attackWaveResults = []
+
+      promise(sequence).then =>
+
+        allKilled = yes
+        lastLocation = null
+        lastKilled = null
+        for { alive, killedAt, location } in @attackWaveResults
+          if alive
+            allKilled = no
+          else
+            lastKilled ?= killedAt
+            lastLocation ?= location
+            if killedAt.getTime() > lastKilled.getTime()
+              lastKilled = killedAt
+              lastLocation = location
+
+        if allKilled and lastLocation
+          lastLocation.x += Crafty.viewport.x
+          lastLocation.y += Crafty.viewport.y
+          if settings.drop
+            @drop(item: settings.drop, location: -> lastLocation)(sequence)
 
   # Show dialog at the bottom of the screen
   # The duration in screen depends on the amount of lines in the

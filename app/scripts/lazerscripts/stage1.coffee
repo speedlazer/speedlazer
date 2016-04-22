@@ -152,14 +152,16 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @sequence(
       @setScenery('Ocean')
       @say('General', 'We send some drones for some last manual target practice')
-      @repeat(2, @sequence(
-        @dropWeaponsForEachPlayer()
-        @wait(2000)
-        @placeSquad Game.Scripts.Swirler,
-          amount: 4
-          delay: 500
-          drop: 'xp'
-      ))
+      @attackWaves(
+        @repeat(2, @sequence(
+          @dropWeaponsForEachPlayer()
+          @wait(2000)
+          @placeSquad Game.Scripts.Swirler,
+            amount: 4
+            delay: 500
+        ))
+        drop: 'xp'
+      )
     )
 
   dropWeaponsForEachPlayer: ->
