@@ -106,8 +106,8 @@ Game =
         Crafty.enterScene('Game', script: 'Lunch', checkpoint: 0)
 
     Crafty.bind('KeyDown', handler)
-    Crafty.enterScene('New')
-    #Crafty.enterScene('Intro')
+    #Crafty.enterScene('New')
+    Crafty.enterScene('Intro')
 
   resetCredits: ->
     @credits = 2 # This is actually 'Extra' credits, so in total 3
@@ -127,16 +127,16 @@ Game =
 
     defInit = 'SPL'
     list = [
-      { initials: defInit, score: 150000 }
-      { initials: defInit, score: 100000 }
-      { initials: defInit, score: 50000 }
-      { initials: defInit, score: 30000 }
-      { initials: defInit, score: 20000 }
       { initials: defInit, score: 15000 }
       { initials: defInit, score: 10000 }
-      { initials: defInit, score: 50000 }
-      { initials: defInit, score: 20000 }
-      { initials: defInit, score: 15000 }
+      { initials: defInit, score: 5000 }
+      { initials: defInit, score: 3000 }
+      { initials: defInit, score: 2000 }
+      { initials: defInit, score: 1500 }
+      { initials: defInit, score: 1000 }
+      { initials: defInit, score: 5000 }
+      { initials: defInit, score: 2000 }
+      { initials: defInit, score: 1500 }
     ].concat loadedList
     _.sortBy(list, 'score').reverse()
 
