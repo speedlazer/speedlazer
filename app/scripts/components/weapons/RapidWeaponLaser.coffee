@@ -6,8 +6,9 @@ Crafty.c 'RapidWeaponLaser',
       w: 30
       h: 5
 
-    @rapidLevel = 0
-    @damageLevel = 0
+    @stats =
+      rapid: 0
+      damage: 0
 
     @lastShot = 0
     @shotsFired = 0
@@ -35,15 +36,14 @@ Crafty.c 'RapidWeaponLaser',
     @unbind 'GameLoop', @_autoFire
 
   upgrade: (aspect) ->
-    switch aspect
-      when 'rapid' then @rapidLevel += 1
-      when 'damage' then @damageLevel += 1
+    @stats[aspect] += 1
 
     @_determineWeaponSettings()
+    @trigger('levelUp', aspect: aspect, level: @stats[aspect])
 
   _determineWeaponSettings: ->
-    @cooldown = 200 - (@rapidLevel * 10)
-    @damage = 100 + (@damageLevel * 25)
+    @cooldown = 200 - (@stats.rapid * 10)
+    @damage = 100 + (@stats.damage * 25)
 
   shoot: (onOff) ->
     if onOff
@@ -71,7 +71,7 @@ Crafty.c 'RapidWeaponLaser',
 
   _createFrontBullet: ->
     settings =
-      w: 6, speed: 650, h: 3 + @damageLevel, o: @damageLevel
+      w: 6, speed: 650, h: 3 + @stats.damage, o: @stats.damage
 
     Crafty.e('Bullet')
       .attr
@@ -92,7 +92,7 @@ Crafty.c 'RapidWeaponLaser',
 
   _createBackBullet: ->
     settings =
-      w: 5, speed: 650, h: 2 + @damageLevel, o: @damageLevel
+      w: 5, speed: 650, h: 2 + @stats.damage, o: @stats.damage
 
     Crafty.e('Bullet')
       .attr

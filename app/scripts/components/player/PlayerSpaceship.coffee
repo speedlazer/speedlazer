@@ -166,6 +166,16 @@ Crafty.c 'PlayerSpaceship',
     @primaryWeapon.install(this)
     @currentPrimary = nextWeapon
 
+  stats: (newStats = {}) ->
+    if newStats.primary?
+      @primaryWeapon.stats = newStats.primary
+      @primaryWeapon._determineWeaponSettings()
+
+    stats = {}
+    stats['primary'] = @primaryWeapon?.stats ? {}
+
+    return stats
+
   superWeapon: (onOff) ->
     return unless onOff
     @superUsed += 1
@@ -177,10 +187,10 @@ Crafty.c 'PlayerSpaceship',
       powerUp.destroy()
 
   installItem: (item) ->
+    return unless item?
     if item.type is 'weapon'
       return if @hasItem item.contains
-
-      @items.push item.contains
+      @items.push item
 
       if item.contains is 'lasers'
         @_installPrimary 'RapidWeaponLaser'
@@ -188,26 +198,6 @@ Crafty.c 'PlayerSpaceship',
 
     if item.type is 'weaponUpgrade'
       @primaryWeapon.upgrade item.contains
-
-    #if item is 'xp'
-      #@primaryWeapon.addXP(1000)
-      #return true
-
-    #return if @hasItem item
-
-    #@items.push item
-
-    #if item is 'lasers'
-      #@_installPrimary 'RapidWeaponLaser'
-      #return true
-
-    #if item is 'oldlasers'
-      #@_installPrimary 'OldWeaponLaser'
-      #return true
-
-    #if item is 'diagonals'
-      #@_installPrimary 'RapidDiagonalLaser'
-      #return true
 
   clearItems: ->
     @primaryWeapon?.uninstall()
@@ -220,14 +210,18 @@ Crafty.c 'PlayerSpaceship',
     weapon.install(this)
     @primaryWeapon?.uninstall()
     @primaryWeapon = weapon
-    @listenTo weapon, 'levelUp', (level) =>
-      @scoreText "L +#{level}"
+    @listenTo weapon, 'levelUp', (info) =>
+      t =
+        damage: 'Damage'
+        rapid: 'RapidFire'
+      @scoreText "#{t[info.aspect]} +#{info.level}"
     @primaryWeapons.push weapon
     @currentPrimary = @primaryWeapons.length - 1
 
   hasItem: (item) ->
     @items ?= []
-    return ~@items.indexOf item
+    return yes for i in @items when i.contains is item
+    no
 
   scoreText: (text) ->
     Crafty.e('Text, DOM, 2D, Tween')

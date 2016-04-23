@@ -153,7 +153,6 @@ class Game.Level
 
   _placePlayerShips: ->
     defaults =
-      armedPlayers: 'lasers'
       spawnPosition:
         x: 100
         y: 200
@@ -176,7 +175,7 @@ class Game.Level
           pos.y = @y + settings.spawnOffset.y + Crafty.viewport.y
         pos
 
-      @addComponent('ShipSpawnable').spawnPosition(spawnPosition, settings.armedPlayers)
+      @addComponent('ShipSpawnable').spawnPosition(spawnPosition)
 
       Crafty.e('PlayerInfo').playerInfo(30 + (index * (Crafty.viewport.width * .3)), this)
 
