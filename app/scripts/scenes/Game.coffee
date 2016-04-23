@@ -9,7 +9,24 @@ Crafty.defineScene 'Game', (data = {}) ->
   # import from globals
   Game.backgroundColor = null
   level = Game.levelGenerator.createLevel()
+
+  # Load default sprites
+  # This is a dirty fix to prevent
+  # 'glDrawElements: attempt to render with no buffer attached to enabled attribute 6'
+  # to happen mid-stage
+  wait = Game.levelGenerator.loadAssets(['shadow', 'explosion']).then =>
+    d = WhenJS.defer()
+    e = Crafty.e('WebGL, shadow')
+    setTimeout(
+      ->
+        e.destroy()
+        d.resolve()
+      100
+    )
+    d.promise
+
   level.start()
+  Crafty('Player').each -> @level = level
 
   options =
     startAtCheckpoint: data.checkpoint ? 0
@@ -17,10 +34,10 @@ Crafty.defineScene 'Game', (data = {}) ->
 
   if data.checkpoint
     label = "Checkpoint #{data.checkpoint}"
-    window.ga('send', 'event', 'Game', 'CheckpointStart', label)
+    window.ga?('send', 'event', 'Game', 'CheckpointStart', label)
   else
     label = 'Begin'
-    window.ga('send', 'event', 'Game', 'Start', label)
+    window.ga?('send', 'event', 'Game', 'Start', label)
 
   executeScript = (name, options) ->
     scriptName = name
@@ -39,9 +56,13 @@ Crafty.defineScene 'Game', (data = {}) ->
     if script.nextScript
       executeScript(script.nextScript, startAtCheckpoint: checkpoint)
     else
+      if script.gotoGameOver
+        Crafty.enterScene('GameOver',
+          gameCompleted: yes
+        )
       console.log 'End of content!'
 
-  executeScript(startScript, options)
+  wait.then -> executeScript(startScript, options)
 
   Crafty.bind 'GameOver', ->
     window.ga('send', 'event', 'Game', 'End', "Checkpoint #{script.currentCheckpoint}")

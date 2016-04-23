@@ -9,10 +9,13 @@ Crafty.defineScene 'GameOver', (data) ->
 
   w = Crafty.viewport.width
   h = Crafty.viewport.height
+  text = 'Game Over'
+  text = 'Congratulations' if data.gameCompleted
+
 
   Crafty.e('2D, DOM, Text')
     .attr(x: 0, y: h * .2, w: w)
-    .text('Game Over')
+    .text(text)
     .textColor('#FF0000')
     .css('textAlign', 'center')
     .textFont({
@@ -113,7 +116,7 @@ Crafty.defineScene 'GameOver', (data) ->
 
     # After a timeout, be able to replay
     Crafty.e('Delay').delay ->
-      if Game.credits > 0
+      if Game.credits > 0 and not data.gameCompleted
         time = 10
 
         text = if Game.credits is 1

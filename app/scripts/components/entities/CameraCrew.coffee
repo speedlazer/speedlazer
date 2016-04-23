@@ -1,6 +1,6 @@
  Crafty.c 'CameraCrew',
   init: ->
-    @requires '2D, WebGL, Choreography, ViewportFixed, Collision, Hideable, cameraHelicopter, SpriteAnimation'
+    @requires '2D, WebGL, Choreography, ViewportFixed, Collision, Hideable, cameraHelicopter, SpriteAnimation, Flipable'
     @reel 'fly', 200, [[0, 0], [1, 0]]
     @attr(
       w: 60

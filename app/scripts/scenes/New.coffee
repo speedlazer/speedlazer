@@ -1,0 +1,4 @@
+Crafty.defineScene 'New', ->
+
+->
+

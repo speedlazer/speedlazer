@@ -2,95 +2,102 @@ Game = @Game
 Game.Scripts ||= {}
 
 class Game.Scripts.Lunch extends Game.LazerScript
-  metadata:
-    namespace: 'City'
-    speed: 0
-    armedPlayers: 'oldlasers'
-    title: 'In the beginning...'
-    weaponsEnabled: no
-
   assets: ->
-    @loadAssets('general')
+    @loadAssets('shadow', 'explosion', 'playerShip')
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->
       Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
+    @inventoryAdd 'item', 'xp', ->
+      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
 
     Game.explosionMode = 'block'
 
     @sequence(
+      => Crafty.audio.mute()
+      @setShipType('PlayerControlledCube')
       @setScenery('Blackness')
+      @hideHud(duration: 0)
+      @setWeapons([])
       @enableWeapons()
       @nextSlide()
-
+      @setWeapons(['oldlasers'])
+      @nextSlide()
       @updateTitle 'First enemy'
+
       @placeSquad Game.Scripts.Slider,
         options:
-          grid: new Game.LocationGrid
+          gridConfig:
             x:
-              start: 680
+              start: 1.1
             y:
-              start: 250
+              start: .5
+      @showHud()
+      @updateTitle '2 Players'
 
       @nextSlide()
       @updateTitle 'More enemies'
       @setScenery('OpenSpace')
-      @setSpeed 150
+      @setSpeed 150, accellerate: no
       @parallel(
         @placeSquad Game.Scripts.Slider,
           amount: 15
           options:
-            grid: new Game.LocationGrid
+            gridConfig:
               x:
-                start: 680
+                start: 1.2
                 steps: 4
-                stepSize: 40
+                stepSize: .2
               y:
-                start: 100
+                start: .2
                 steps: 5
-                stepSize: 50
+                stepSize: .1
         @sequence(
           @waitForScenery 'OpenSpace'
-          @setSpeed 0
+          @setSpeed 0, accellerate: no
         )
       )
 
       @nextSlide()
       @updateTitle 'Level geometry'
-      @setSpeed 50
+      @setSpeed 50, accellerate: no
 
       @nextSlide()
       @updateTitle 'Speed and collision'
-      @setSpeed 250
+      @setSpeed 250, accellerate: no
 
       @nextSlide()
       @updateTitle 'Backgrounds'
       @checkpoint @setScenery 'OpenSpace'
       @setScenery('TunnelStart')
       @waitForScenery 'TunnelStart'
-      @setSpeed 50
+      @setSpeed 50, accellerate: no
       @nextSlide()
 
       @updateTitle 'Dialog'
       @say 'SpeedLazer', 'Hello World!'
       @say 'SpeedLazer', 'Flavor text can add to story telling'
       @nextSlide()
-      @say 'Enemies', 'Get him!'
-
-      @nextSlide @sequence(
-        @placeSquad Game.Scripts.Slider,
-          amount: 5
-          options:
-            grid: new Game.LocationGrid
-              x:
-                start: 680
-                steps: 4
-                stepSize: 40
-              y:
-                start: 100
-                steps: 5
-                stepSize: 50
-        @wait 3000
+      @parallel(
+        @sequence(
+          @wait 3000
+          @say 'Enemies', 'Get them!'
+        )
+        @nextSlide @sequence(
+          @placeSquad Game.Scripts.Slider,
+            amount: 5
+            options:
+              gridConfig:
+                x:
+                  start: 1.2
+                  steps: 4
+                  stepSize: .2
+                y:
+                  start: .3
+                  steps: 5
+                  stepSize: .1
+          @wait 3000
+        )
       )
 
       @updateTitle 'Enemy choreo start'
@@ -103,38 +110,36 @@ class Game.Scripts.Lunch extends Game.LazerScript
 
       @updateTitle 'Start stage 1'
       @setScenery('TunnelEnd')
-      @setSpeed 350
+      @setSpeed 450, accellerate: no
 
-      @waitForScenery 'OceanOld', event: 'inScreen'
-      @setSpeed 50
+      @waitForScenery 'OceanOld', event: 'leave'
+      @setSpeed 50, accellerate: no
       @checkpoint @setScenery 'OceanOld'
       @nextSlide()
-      @updateTitle 'Vertical motion'
-      @parallel(
-        @gainHeight 600, duration: 15000
-        @placeSquad Game.Scripts.Sine,
-          amount: 8
-          delay: 1000
-      )
-      @nextSlide()
       @updateTitle 'Bezier, powerups'
-      @parallel(
-        @gainHeight -600, duration: 15000
-        @nextSlide @sequence(
-          @placeSquad Game.Scripts.Swirler,
-            drop: 'lasers'
-            amount: 4
-            delay: 500
-          @waitForScenery 'OceanOld'
-        )
+      @nextSlide @sequence(
+        @placeSquad Game.Scripts.PresentationSwirler,
+          drop: 'xp'
+          amount: 4
+          delay: 500
+        @waitForScenery 'OceanOld'
       )
 
+      @updateTitle 'Lazerscript environment'
       @nextSlide(
-        @sequence(
-          @updateTitle 'Lazerscript environment'
-          @placeSquad Game.Scripts.Swirler,
-            drop: 'lasers'
-            amount: 4
+        @placeSquad Game.Scripts.PresentationSwirler,
+          drop: 'xp'
+          amount: 3
+          delay: 500
+      )
+      @nextSlide(
+        @parallel(
+          @placeSquad Game.Scripts.PresentationShooter,
+            drop: 'xp'
+            amount: 3
+            delay: 600
+          @placeSquad Game.Scripts.PresentationSwirler,
+            amount: 3
             delay: 500
         )
       )
@@ -143,81 +148,195 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @disableWeapons()
 
       @placeSquad Game.Scripts.LittleDancer,
-        amount: 4
+        amount: 5
         delay: 2000
         options:
-          grid: new Game.LocationGrid
+          gridConfig:
             x:
-              start: 150
-              steps: 4
-              stepSize: 100
+              start: .25
+              steps: 5
+              stepSize: .1
 
       @enableWeapons()
 
-      @nextSlide()
       @updateTitle 'Particle effects'
       => Game.explosionMode = 'particles'
+      => Game.webGLMode = off
 
       @checkpoint @setScenery('OceanOld')
-      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 4)
       @setScenery('OceanToNew')
-      @repeat 3, @sequence(
-        @placeSquad Game.Scripts.Swirler,
-          drop: 'lasers'
-          amount: 4
-          delay: 500
-        @placeSquad Game.Scripts.Stalker,
-          drop: 'lasers'
+      @async @runScript(Game.Scripts.PresentationSunRise, skipTo: 0, speed: 10)
+      @repeat 4, @sequence(
+        @placeSquad Game.Scripts.PresentationSwirler,
+          drop: 'xp'
+          amount: 6
+          delay: 700
       )
-      @setScenery('CoastStart')
       => Game.explosionMode = null
       @updateTitle 'Graphics!'
       @swirlAttacks()
       @swirlAttacks()
-      @setScenery('BayStart')
-      @mineSwarm()
-      @mineSwarm(direction: 'left')
-      @placeSquad Game.Scripts.Stage1BossStage1
-      @gainHeight 200, duration: 5000
-      @showScore(1, 'Lunch and learn')
-      @repeat @sequence(
-        @placeSquad Game.Scripts.Stage1BossPopup
-        @wait 2000
-      )
-    )
+      @setScenery('CoastStart')
 
+      @nextSlide @sequence(
+        @mineSwarm(juice: no)
+      )
+      @checkpoint @sunriseCheckpoint(Game.Scripts.PresentationSunRise, 90000, 10, 'CoastStart')
+      @parallel(
+        @runScript(Game.Scripts.PresentationSunSet, skipTo: 0, speed: 50)
+        @sequence(
+          @say 'Graphics', 'Ok lets do the sunrise again'
+          @say 'Graphics', 'And now use WebGL Shaders'
+        )
+      )
+
+      @say 'WebGL', 'Ready?'
+      @say 'WebGL', 'Really ready?'
+      =>
+        Game.webGLMode = on
+        Crafty('GoldenStripe').each -> @bottomColor('#DDDD00', 0)
+        Crafty('waterMiddle').each -> @attr lightness: 1.0
+        Crafty('waterHorizon').each -> @attr lightness: 1.0
+      @chapterTitle(1, 'WebGL Shaders')
+      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 2)
+      @setScenery('BayStart')
+      @nextSlide @sequence(
+        @swirlAttacks2()
+      )
+      @disableWeapons(1)
+      @say 'Player 1', 'Help I have a weapon malfunction!!'
+      @say 'Player 2', 'No worries, I will fight for you!'
+      @chapterTitle(2, 'Juice')
+      @nextSlide @sequence(
+        @swirlAttacks2()
+      )
+      @setWeapons(['lasers'])
+      @say 'Player 2', 'Woohoo Autofire! I will save you buddy!'
+      @setSpeed 100, accellerate: yes
+      @swirlAttacks2(juice: yes)
+      @enableWeapons()
+      @say 'Player 1', 'My weapon works again! I seemed I was pressing the\n' +
+        'wrong button all this time!'
+      @say 'Player 2', 'Sigh...'
+      @setSpeed 150, accellerate: yes
+      @nextSlide(
+        @mineSwarm(juice: yes)
+      )
+      @chapterTitle(3, 'Minimal viable audio')
+      @wait 1000
+      => Crafty.audio.unmute()
+      @nextSlide(
+        @mineSwarm(juice: yes)
+      )
+      @nextSlide(
+        @placeSquad Game.Scripts.Swirler,
+          amount: 4
+          delay: 500
+          drop: 'xp'
+          options:
+            juice: yes
+      )
+      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 120000, 2, 'Bay')
+      @setScenery 'UnderBridge'
+      @updateTitle 'Player ship'
+      @setWeapons(['lasers'])
+      @setShipType('PlayerSpaceship')
+      @setWeapons(['lasers'])
+      @while(
+        @waitForScenery('UnderBridge', event: 'enter')
+        @placeSquad Game.Scripts.Swirler,
+          amount: 4
+          delay: 500
+          drop: 'xp'
+          options:
+            juice: yes
+      )
+      @setSpeed 50, accellerate: yes
+      @waitForScenery('UnderBridge', event: 'inScreen')
+      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 140000, 2, 'UnderBridge')
+      @setSpeed 0
+      @nextSlide()
+      @chapterTitle(4, 'Bossfight!')
+      @placeSquad Game.Scripts.LunchBossStage1
+      @checkpoint @parallel(
+        @async @runScript(Game.Scripts.SunRise, skipTo: 450000, speed: 2)
+        @setScenery 'Skyline'
+        @gainHeight(600, duration: 0)
+        @setSpeed 150
+      )
+      @wait 5000
+      @parallel(
+        @sequence(
+          @disableControls()
+          @disableWeapons()
+          @placeSquad(Game.Scripts.PresentationLeaveScreen,
+            amount: 2
+            delay: 1000
+          )
+        )
+        @sequence(
+          @say 'With the evil boss destroyed\nMankind was saved again!'
+          @say 'And our heroes where off to another adventure!'
+          @say 'Thanks for playing!'
+        )
+      )
+      @screenFadeOut()
+      @endGame()
+    )
 
   nextSlide: (task) ->
     @sequence(
-      => @player(1).ship()?.superUsed = 0
       # While now works with 2 promises.
       @while(
-        @_waitForSuperWeapon()
-        task ? @wait(1000)
+        @_waitForKeyPress(Crafty.keys.N)
+        @sequence(
+          task ? @wait(1000)
+          @_addVisibleMarker()
+        )
       )
-      => @player(1).ship().superUsed = 0
     )
 
-  @_waitForSuperWeapon: ->
-    d = WhenJS.defer()
-    used = no
-    i = setInterval(
-      =>
-        if @player(1).ship()?
-          used = @player(1).ship().superUsed isnt 0
-        if used
-          clearInterval i
+  _addVisibleMarker: ->
+    =>
+      text = ''
+      Crafty('LevelTitle').each ->
+        text = @_text
+      if text[text.length - 1] is '-'
+        text = text.slice(0, text.length - 2)
+      unless text[text.length - 1] is '*'
+        Crafty('LevelTitle').text text + ' *'
+
+  _clearVisibleMarker: ->
+    text = ''
+    Crafty('LevelTitle').each ->
+      text = @_text
+    if text[text.length - 1] is '*'
+      Crafty('LevelTitle').text(text.slice(0, text.length - 2) + ' -')
+
+  _waitForKeyPress: (key) ->
+    =>
+      d = WhenJS.defer()
+      handler = (e) =>
+        if e.key == key
+          @_clearVisibleMarker()
+          Crafty.unbind('KeyDown', handler)
           d.resolve()
-      300
-    )
-    d.promise
 
-  mineSwarm: (options = { direction: 'right' })->
+      Crafty.bind('KeyDown', handler)
+      d.promise
+
+  mineSwarm: (options = {}) ->
+    options = _.defaults(options,
+      direction: 'right'
+      juice: yes
+    )
+
     @placeSquad Game.Scripts.JumpMine,
       amount: 8
       delay: 300
       options:
-        grid: new Game.LocationGrid
+        juice: options.juice
+        gridConfig:
           x:
             start: 200
             steps: 10
@@ -231,17 +350,34 @@ class Game.Scripts.Lunch extends Game.LazerScript
 
   swirlAttacks: ->
     @parallel(
+      @repeat 2, @placeSquad Game.Scripts.PresentationSwirler,
+        amount: 4
+        delay: 500
+        drop: 'xp'
+      @repeat 2, @placeSquad Game.Scripts.PresentationShooter,
+        amount: 4
+        delay: 500
+        drop: 'xp'
+    )
+
+  swirlAttacks2: (options = { juice: no }) ->
+    @parallel(
       @repeat 2, @placeSquad Game.Scripts.Swirler,
         amount: 4
         delay: 500
-        drop: 'lasers'
-        options:
-          shootOnSight: yes
+        drop: 'xp'
+        options: options
       @repeat 2, @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 500
-        drop: 'lasers'
-        options:
-          shootOnSight: yes
+        drop: 'xp'
+        options: options
+    )
+
+  sunriseCheckpoint: (script, skip, speed, scenery) ->
+    @sequence(
+      @async @runScript(script, skipTo: skip, speed: speed)
+      @setScenery(scenery)
+      @wait 2000
     )
 

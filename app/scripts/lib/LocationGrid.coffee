@@ -21,7 +21,9 @@ class Game.LocationGrid
     coords = []
     for y in ys
       for x in xs
-        coords.push { x, y }
+        xPerc = (x - settings.x.start) / (settings.x.stepSize * settings.x.steps)
+        yPerc = (y - settings.y.start) / (settings.y.stepSize * settings.y.steps)
+        coords.push { x, y, xPerc, yPerc }
 
     @freeCoords = _.shuffle coords
 

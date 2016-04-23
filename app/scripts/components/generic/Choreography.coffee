@@ -1,8 +1,30 @@
 # TODO: Document
+#
+# I need to rethinkt the intentions of this component.
+# It was setup as a sort of tweening chain, but promises in lazerscript work better
+#
+# The chaining is currently used in 1 part: The intro animation.
+# So, step 1: Check if the intro animation can be done differently.
+#
+# 1. Synching of animation with other entities
+#
+# The intro animation uses the following:
+# - linear (chained)
+# - delay (chained)
+#
+# So, we could potentially remove the following:
+#
+# - viewport
+# - viewportBezier
+#
+# The rest of the app uses the following: (entity script)
+# - viewportBezier (non-chained)
+# - viewport (non-chained)
+#
+#
+#
 Crafty.c 'Choreography',
   init: ->
-    @bind('GameLoop', @_choreographyTick)
-
     @_ctypes =
       delay: @_executeDelay
       linear: @_executeLinear
@@ -10,11 +32,14 @@ Crafty.c 'Choreography',
       viewportBezier: @_executeViewportBezier
 
   remove: ->
+    @unbind('GameLoop', @_choreographyTick)
     return unless @_currentPart?
     @_currentPart = null
+    @_choreography = []
     @trigger('ChoreographyEnd')
 
   choreography: (c, options = {}) ->
+    @uniqueBind('GameLoop', @_choreographyTick)
     @_options = _.defaults(options, {
       repeat: 0
       compensateCameraSpeed: no
@@ -32,7 +57,7 @@ Crafty.c 'Choreography',
     toSkip = options.skip
     @_toSkip = 0
     if toSkip > 0
-      while toSkip > @_currentPart.duration
+      while (part < @_choreography.length - 1) and toSkip > @_currentPart.duration
         toSkip -= @_currentPart.duration
         part += 1
         @_setupCPart(part)
@@ -43,9 +68,8 @@ Crafty.c 'Choreography',
     @_choreography = _.clone otherComponent._choreography
     @_options = otherComponent._options
     @_repeated = otherComponent._repeated
+    @_toSkip = otherComponent._toSkip
     @_currentPart = _.clone otherComponent._currentPart
-    @_currentPart.x += (@x - otherComponent.x)
-    @_currentPart.y += (@y - otherComponent.y)
     @_currentPart.easing = _.clone otherComponent._currentPart.easing
 
   _setupCPart: (number) ->
@@ -55,6 +79,8 @@ Crafty.c 'Choreography',
         @_repeated += 1
         number = 0
       else
+        @_choreography = []
+        @unbind('GameLoop', @_choreographyTick)
         @trigger 'ChoreographyEnd'
         return
 
@@ -66,10 +92,11 @@ Crafty.c 'Choreography',
   _choreographyTick: (frameData) ->
     return unless @_currentPart?
     prevv = @_currentPart.easing.value()
-    @_currentPart.easing.tick(frameData.dt + @_toSkip)
+    dt = frameData.dt + @_toSkip
+    @_currentPart.easing.tick(dt)
     @_toSkip = 0
     v = @_currentPart.easing.value()
-    @_ctypes[@_currentPart.type].apply(this, [v, prevv])
+    @_ctypes[@_currentPart.type].apply(this, [v, prevv, dt])
 
     if @_options.compensateCameraSpeed
       @x += ((@camera.x - @_options.cameraLock.x))
@@ -102,37 +129,74 @@ Crafty.c 'Choreography',
 
   _executeDelay: (v) ->
 
-  _executeMoveIntoViewport: (v, prevv) ->
+  _executeMoveIntoViewport: (v, prevv, dt) ->
     # the goal are current coordinates on screen
     destinationX = @_currentPart.dx
+    dx = 0
     if destinationX
       @_currentPart.moveOriginX ?= @_currentPart.x + Crafty.viewport.x - Crafty.viewport.xShift
       diffX = destinationX - @_currentPart.moveOriginX
       motionX = (diffX * v)
       pmotionX = (diffX * prevv)
-
-      @x += motionX - pmotionX #+ @shiftedX - Crafty.viewport.xShift
+      dx = motionX - pmotionX #+ @shiftedX - Crafty.viewport.xShift
 
     destinationY = @_currentPart.dy
+    dy = 0
     if destinationY
       @_currentPart.moveOriginY ?= @_currentPart.y + Crafty.viewport.y - Crafty.viewport.yShift
       diffY = destinationY - @_currentPart.moveOriginY
-
       motionY = (diffY * v)
       pmotionY = (diffY * prevv)
+      dy = motionY - pmotionY
 
-      @y += motionY - pmotionY
+    if @updateMovementVisuals?
+      @updateMovementVisuals(undefined, dx, dy, dt)
 
-  _executeViewportBezier: (v, prevv) ->
+    @x += dx
+    @y += dy
+
+  _executeViewportBezier: (v, prevv, dt) ->
     bp = new Game.BezierPath
     unless @_currentPart.bPath?
-      @_currentPart.bPath = bp.buildPathFrom @_currentPart.path
+      p = @_currentPart.path
+      if @_lastBezierPathPoint? and @_currentPart.continuePath
+        p.unshift {
+          x: @_lastBezierPathPoint.x
+          y: @_lastBezierPathPoint.y
+        }
+      @_currentPart.bPath = bp.buildPathFrom p
+
+      if @_lastBezierPathPoint? and @_currentPart.continuePath
+        firstCurve = @_currentPart.bPath.curves.shift()
+        # We need to recalculate the distance. If we would just
+        # subtract the distance of the first curve of the total,
+        # somehow JS manages to be off at 10 decimals at the fragment.
+        # ... Which breaks the determining of points at the curve
+        recalcDist = 0.0
+        recalcDist += c.distance for c in @_currentPart.bPath.curves
+        @_currentPart.bPath.distance = recalcDist
+        @_lastBezierPathPoint = null
+
+      # We always remember the single-last point for bending of the next curve,
+      # if the next curve has `continuePath` enabled.
+      #
+      #     ,--B-,.
+      #   ,`       `';.
+      #  :             `C
+      # A
+      #
+      # In the path from A to B, B is the last point. The new path is
+      # a continuation, so B is its starting point. To have the line
+      # from B to C bend in a natural manner, Point A must be evaluated
+      # as well for the bending of B towards C. So for the proper curve for
+      # B to C, we do not need the last point of the previous path (since it
+      # is the same as the first of the new path, but we actually need the
+      # single-last one. (length - 2)
+      @_lastBezierPathPoint = @_currentPart.path[@_currentPart.path.length - 2]
+
     unless @_currentPart.viewport?
       @_currentPart.viewport =
         y: Crafty.viewport.y
-
-    if @_currentPart.rotation
-      @rotation = bp.angleOnPath(@_currentPart.bPath, v)
 
     shiftedY = (@_currentPart.viewport.y - Crafty.viewport.y)
     point = bp.pointOnPath(@_currentPart.bPath, v)
@@ -141,6 +205,17 @@ Crafty.c 'Choreography',
     dShiftX = @shiftedX
     @shiftedX = Math.max(0, @shiftedX - .5)
 
-    @x += point.x - ppoint.x + (@shiftedX - dShiftX)
-    @y += point.y - ppoint.y
+    dx = point.x - ppoint.x + (@shiftedX - dShiftX)
+    dy = point.y - ppoint.y
+
+    if @_currentPart.rotation
+      rotation = bp.angleOnPath(@_currentPart.bPath, v)
+
+    if @updateMovementVisuals?
+      @updateMovementVisuals(rotation, dx, dy, dt)
+    else
+      @rotation = rotation if rotation?
+
+    @x += dx
+    @y += dy
 

@@ -1,7 +1,7 @@
 Crafty.c 'ShipSpawnable',
   init: ->
     @requires('Listener')
-    @bind('Activated', @spawnShip)
+    @bind 'Activated', @spawnShip
 
   remove: ->
     @unbind('Activated', @spawnShip)
@@ -19,14 +19,25 @@ Crafty.c 'ShipSpawnable',
 
     pos = @spawnPosition()
     pos.x = 10 if pos.x < 10
+    if @ship?
+      pos = {
+        x: @ship.x + Crafty.viewport.x
+        y: @ship.y + Crafty.viewport.y
+      }
+      armed = @ship.items
+      @ship.destroy()
+      @ship = null
 
-    @ship = Crafty.e('PlayerControlledShip')
+    @ship = Crafty.e(@level.getShipType())
       .attr
         x: pos.x - Crafty.viewport.x
         y: pos.y - Crafty.viewport.y
         z: @z
+        playerNumber: @playerNumber
 
-    @ship.colorOverride(@color(), 'partial') if @has('Color')
+    @ship.playerColor = @color()
+    @ship.colorOverride?(@color(), 'partial') #if @has('ColorEffects')
+    @ship.color?(@color()) if @has('Color')
     @assignControls(@ship) if @has('ControlScheme')
 
     @ship.installItem(item) for item in armed
@@ -48,20 +59,12 @@ Crafty.c 'ShipSpawnable',
     @listenTo @ship, 'Shoot', ->
       @stats.shotsFired += 1
 
+    @trigger('ShipSpawned', @ship)
     Crafty.trigger('ShipSpawned', @ship)
     # We start it after the spawned event, so that listeners can
     # reposition it before
     @ship.start()
-    @listenTo @ship, 'Hit', ->
-      Crafty.e('Blast, Explosion').explode(
-        x: @ship.x + (@ship.w / 2)
-        y: @ship.y + (@ship.h / 2)
-        radius: @ship.w
-      )
-      Crafty.audio.play("explosion")
-      Crafty('ScrollWall').get(0).screenShake(10, 1000)
-
-      @ship.trigger('Destroyed', @ship)
+    @listenTo @ship, 'Destroyed', ->
       @ship.destroy()
       armed = @ship.items
       @ship = null

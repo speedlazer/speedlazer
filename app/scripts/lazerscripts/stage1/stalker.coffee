@@ -10,7 +10,7 @@ class Game.Scripts.Stalker extends Game.EntityScript
       health: 100
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .83
-      speed: 600
+      defaultSpeed: 600
       pointsOnHit: 125
     )
 
@@ -23,15 +23,15 @@ class Game.Scripts.Stalker extends Game.EntityScript
         @moveTo(@targetLocation(), y: 1.01, speed: 200, easing: 'easeInOutQuad')
         @wait 100
       ))
-      @moveTo(y: .7, speed: 200)
+      @moveTo(y: .7, speed: 200, easing: 'easeOutQuad')
 
       # Wobble once before moving up
       @wait 100
-      @moveTo(y: .73, speed: 100)
+      @moveTo(y: .73, speed: 100, easing: 'easeInOutQuad')
       @wait 100
-      @moveTo(y: .7, speed: 100)
+      @moveTo(y: .7, speed: 100, easing: 'easeInOutQuad')
 
-      @moveTo(y: -50)
+      @moveTo(y: -50, easing: 'easeInQuad')
     )
 
   onKilled: ->

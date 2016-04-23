@@ -1,10 +1,7 @@
 Game = @Game
 Game.Scripts ||= {}
 
-class Game.Scripts.SunRise extends Game.EntityScript
-
-  assets: ->
-    @loadAssets('sun')
+class Game.Scripts.PresentationSunSet extends Game.EntityScript
 
   spawn: (options) ->
     sky = Crafty('Sky').get(0) || Crafty.e('2D, WebGL, Gradient, Sky, HUD, ColorFade').attr(
@@ -15,47 +12,45 @@ class Game.Scripts.SunRise extends Game.EntityScript
       y: 0
       z: -1000
     )
-
     sun = Crafty('Sun')
     if sun.length > 0
       sun.attr(
-        x: (Crafty.viewport.width * .97) - Crafty.viewport.x
-        y: (Crafty.viewport.height * .74) - Crafty.viewport.y
+        x: (Crafty.viewport.width * .5) - Crafty.viewport.x
+        y: (Crafty.viewport.height * .11) - Crafty.viewport.y
         defaultSpeed: options.speed ? 1
       )
     else
       Crafty.e('Sun, KeepAlive')
         .sun(
-          x: Crafty.viewport.width * .97
-          y: Crafty.viewport.height * .74
+          x: Crafty.viewport.width * .5
+          y: Crafty.viewport.height * .11
           defaultSpeed: options.speed ? 1
         )
 
   execute: ->
     speed = @options.speed ? 1
-    @options.skipTo ?= 0
 
     preColor = (40000 / speed)
-    colorDuration = (600000 / speed)
+    colorDuration = (400000 / speed)
     @sequence(
-      @setLocation x: .97, y: .74
-      @backgroundColorFade(
-        duration: preColor,
-        skip: @options.skipTo,
-        ['#000020', '#000020', '#ca4331'],
-        ['#000000', '#222c50']
-      )
+      @setLocation x: .5, y: .11
       @parallel(
         @backgroundColorFade(
           duration: colorDuration,
           skip: (@options.skipTo - preColor),
-          ['#ca4331', '#fcaf01', '#f7e459', '#d6d5d5', '#d6d5d5']
-          ['#222c50', '#7a86a2', '#366eab']
+          ['#5dade9', '#7a86a2', '#222c50'],
+          ['#5dade9', '#7a86a2', '#222c50']
         )
         @movePath [
-          [.75, .31]
-          [.5, .11]
+          [.35, .8]
         ], rotate: no, skip: @options.skipTo - preColor
       )
+      @backgroundColorFade(
+        duration: preColor,
+        skip: @options.skipTo,
+        ['#222c50', '#000000'],
+        ['#222c50', '#000000']
+      )
+      @setLocation x: .38, y: .8
     )
 

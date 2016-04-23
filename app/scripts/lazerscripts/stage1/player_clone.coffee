@@ -20,7 +20,7 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
     p = Crafty.e('PlayerClone').attr(
       x: Crafty.viewport.width + 40
       y: startY * Crafty.viewport.height
-      speed: options.speed ? 100
+      defaultSpeed: options.speed ? 100
       weaponOrigin: [0, 15]
     ).playerClone()
     p.addComponent('BurstShot').burstShot

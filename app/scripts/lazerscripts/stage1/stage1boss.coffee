@@ -39,17 +39,16 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     Crafty.e('LargeDrone, Horizon').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
-      speed: 100
-      #speed: 50
+      defaultSpeed: 100
+      health: 45000
+      #defaultSpeed: 50
       pointsOnHit: 10
     )
 
   execute: ->
-    @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
     @inventoryAdd 'item', 'diagonals', ->
       Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
-    @bindSequence 'Hit', @fase2, => @entity.health < 345000
+    @bindSequence 'Hit', @fase2, => @entity.healthBelow .8
 
     @sequence(
       => @entity.invincible = yes
@@ -194,8 +193,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     )
 
   fase2: ->
-    # start at 345000
-    @bindSequence 'Hit', @fase3, => @entity.health < 330000
+    # start at .8
+    @bindSequence 'Hit', @fase3, => @entity.healthBelow .5
 
     @sequence(
       @setSpeed 50
@@ -226,8 +225,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     )
 
   fase3: ->
-    # start at 330000
-    @bindSequence 'Hit', @fase4, => @entity.health < 305000
+    # start at .5
+    @bindSequence 'Hit', @fase4, => @entity.healthBelow .2
 
     @sequence(
       @setSpeed 50
@@ -245,20 +244,6 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
           @while(
             @wait 300
             @smoke()
-            #@sequence(
-              #@blast(@location(),
-                #radius: 10
-                #duration: 480
-                #z: -100
-                #alpha: .8
-                #->
-                  #rotation: @rotation + 1
-                  #alpha: Math.max(0, @alpha - .003)
-                  #lightness: -> Math.max(.2, @lightness - .05)
-                  #y: @y - (Math.random() * 2)
-              #)
-              #@wait -> 40 + (Math.random() * 50)
-            #)
           )
         )
       )
@@ -269,20 +254,6 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
         @while(
           @moveTo(x: -.15, speed: 300)
           @smoke('medium')
-          #@sequence(
-            #@blast(@location(),
-              #radius: 10
-              #duration: 480
-              #z: -100
-              #alpha: .6
-              #->
-                #rotation: @rotation + 1
-                #alpha: Math.max(0, @alpha - .003)
-                #lightness: -> Math.max(.2, @lightness - .05)
-                #y: @y - (Math.random() * 2)
-            #)
-            #@wait -> 80 + (Math.random() * 50)
-          #)
         )
 
         @scale(0.8, duration: 3000)
@@ -292,21 +263,6 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @while(
         @moveTo(x: 1.1, speed: 300)
         @smoke('light')
-        #@sequence(
-          #@blast(@location(),
-            #radius: 10
-            #duration: 480
-            #z: -150
-            #alpha: .4
-            #lightness: 1.0
-            #->
-              #rotation: @rotation + 1
-              #alpha: Math.max(0, @alpha - .003)
-              #lightness: Math.max(.2, @lightness - .05)
-              #y: @y - (Math.random() * 2)
-          #)
-          #@wait -> 140 + (Math.random() * 50)
-        #)
       )
     )
 
@@ -320,7 +276,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       x: location().x
       y: location().y + 10
       z: -4
-      speed: 200
+      defaultSpeed: 200
       pointsOnHit: 0
       pointsOnDestroy: 0
     )
@@ -329,15 +285,15 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @pickTarget('PlayerControlledShip')
-      @moveTo(y: 1.1)
+      @moveTo(y: 1.1, easing: 'easeInQuad')
       => @entity.attr(z: 0)
-      @moveTo(@targetLocation(), y: 1.01)
+      @moveTo(@targetLocation(), y: 1.01, easing: 'easeInOutQuad')
       @moveTo(@targetLocation(x: null))
       @animate 'open'
       @wait 200
       @animate 'blink', -1
       @wait 1000
-      @bigExplosion()
+      => @entity.absorbDamage @entity.health
       @endSequence()
     )
 
@@ -360,8 +316,8 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
       health: 250
       x: location.x - 30
       y: location.y - 8 + Math.round(Math.random() * 15)
-      z: 0
-      speed: 600
+      z: 5
+      defaultSpeed: 600
       pointsOnHit: options.pointsOnHit
       pointsOnDestroy: options.pointsOnDestroy
     )
@@ -369,7 +325,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
   execute: ->
     @bindSequence 'Destroyed', @onKilled
     @while(
-      @moveTo(x: -205)
+      @moveTo(x: -205, easing: 'easeInQuad')
       @sequence(
         @blast(@location(),
           ->
@@ -399,18 +355,21 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
     options = _.defaults(options,
       pointsOHit: 125
       pointsOnDestroy: 50
+      z: 5
+      offsetY: 0
     )
     return null unless options.location?
 
     location = options.location?()
     return null unless location
+    @offsetY = options.offsetY
 
     Crafty.e('Rocket').rocket(
       health: 250
       x: location.x - 30
       y: location.y - 8 + Math.round(Math.random() * 15)
-      z: 0
-      speed: 500
+      z: options.z
+      defaultSpeed: 500
       pointsOnHit: options.pointsOnHit
       pointsOnDestroy: options.pointsOnDestroy
     )
@@ -419,6 +378,8 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @pickTarget('PlayerControlledShip')
+      @moveTo @location(offsetY: @offsetY)
+      @wait 500
       @while(
         @movePath [
           @targetLocation()
@@ -455,7 +416,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
       health: 264000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
-      speed: 150
+      defaultSpeed: 150
     )
 
   execute: ->
@@ -515,7 +476,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
       health: 264000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
-      speed: 150
+      defaultSpeed: 150
     )
 
   execute: ->
@@ -602,7 +563,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
       x: location.x
       y: location.y + 10
       z: -4
-      speed: 400
+      defaultSpeed: 400
       pointsOnHit: 10
       pointsOnDestroy: 20
     )
@@ -612,13 +573,13 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
     if @armed
       @sequence(
         @animate('blink', -1)
-        @moveTo(y: .3 + (Math.random() * .6))
+        @moveTo(y: .3 + (Math.random() * .6), easing: 'easeInOutQuad')
         @wait(200)
-        @onKilled()
+        => @entity.absorbDamage @entity.health
       )
     else
       @sequence(
-        @moveTo(y: 1.2)
+        @moveTo(y: 1.2, easing: 'easeInQuad')
       )
 
   onKilled: ->
@@ -634,7 +595,7 @@ class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
       health: 200
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .1
-      speed: 500
+      defaultSpeed: 500
     )
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight

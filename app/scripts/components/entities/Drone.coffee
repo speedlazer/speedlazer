@@ -11,17 +11,18 @@ Crafty.c 'Drone',
 
     @enemy()
     @bind 'Hit', (data) =>
-      @shiftedX += 5
-      Crafty.audio.play('hit', 1, .5)
+      @shiftedX += 5 unless @juice is no
+      Crafty.audio.play('hit', 1, .5) unless @juice is no
       Crafty.e('Blast, LaserHit').explode(
         x: data.projectile.x
         y: data.projectile.y
         radius: 4
         duration: 50
-      ) if data.projectile.has('Bullet')
+      ) if data.projectile.has('Bullet') and @juice isnt no
     this
 
   updatedHealth: ->
+    return if @juice is no
     sprite = 0
     if @health < 200
       sprite = 1

@@ -69,6 +69,4 @@ Crafty.c 'WaterSplash',
       }, 500)
       @bind 'TweenEnd', ->
         @destroy()
-
-
     this

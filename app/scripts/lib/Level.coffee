@@ -22,6 +22,7 @@ class Game.Level
     @generationPosition = x: 0, y: 40
     @sceneryEvents = []
     @visibleHeight = Crafty.viewport.height - @generationPosition.y
+    @shipType = 'PlayerSpaceship'
 
     { @namespace } = @data
     @currentScenery = @data.startScenery
@@ -61,8 +62,8 @@ class Game.Level
       @data.enemiesSpawned += 1
 
     Crafty.e('2D, DOM, Text, HUD, LevelTitle')
-      .attr(w: 150, h: 20)
-      .positionHud(x: (Crafty.viewport.width - 150), y: 10, z: 2)
+      .attr(w: 250, h: 20)
+      .positionHud(x: (Crafty.viewport.width - 250), y: 10, z: 2)
       .textFont(
         size: '10px'
         family: 'Press Start 2P'
@@ -180,19 +181,35 @@ class Game.Level
       Crafty.e('PlayerInfo').playerInfo(30 + (index * (Crafty.viewport.width * .3)), this)
 
     Crafty.bind 'ShipSpawned', (ship) =>
-      ship.forcedSpeed @_forcedSpeed
-      ship.weaponsEnabled =  @_weaponsEnabled
+      ship.forcedSpeed @_forcedSpeed, accellerate: no
+      ship.weaponsEnabled =  @_weaponsEnabled[ship.playerNumber]
       ship.disableControl() unless @_controlsEnabled
+
+      if @playerStartWeapons?
+        ship.clearItems()
+        ship.installItem item for item in @playerStartWeapons
 
     Crafty('Player ControlScheme').each ->
       @spawnShip()
 
-  setForcedSpeed: (speed) ->
+  getShipType: -> @shipType
+  setShipType: (@shipType) ->
+    Crafty('Player ControlScheme').each -> @spawnShip() if @ship?
+
+  setForcedSpeed: (speed, options) ->
+    options = _.defaults(options,
+      accellerate: yes
+    )
+    if @_forcedSpeed
+      delta = (speed.x ? speed) - (@_forcedSpeed.x ? @_forcedSpeed)
+    else
+      delta = 0
     @_forcedSpeed = speed
     if @_playersActive
-      @_scrollWall.scrollWall(@_forcedSpeed)
+      @_scrollWall.scrollWall(@_forcedSpeed, options)
+    Crafty('Bullet').each -> @attr speed: @speed + delta
     Crafty('PlayerControlledShip').each ->
-      @forcedSpeed speed
+      @forcedSpeed speed, options
 
   screenShake: (amount, options = {}) ->
     options = _.defaults(options, {
@@ -213,10 +230,12 @@ class Game.Level
     Crafty('PlayerControlledShip').each ->
       @y += deltaY
 
-  setWeaponsEnabled: (onOff) ->
-    @_weaponsEnabled = onOff
+  setWeaponsEnabled: (onOff, players) ->
+    players = [1, 2] unless players? and !_.isEmpty(players)
+    @_weaponsEnabled ?= {}
+    @_weaponsEnabled[player] = onOff for player in players
     Crafty('PlayerControlledShip').each ->
-      @weaponsEnabled = onOff
+      @weaponsEnabled = onOff if @playerNumber in players
 
   getComponentOffset: ->
     x: @_scrollWall.x
@@ -302,12 +321,8 @@ class Game.Level
     @_insertBlockToLevel(blockType, {})
     @generationPosition = p
 
-  updateTitle: (newTitle) ->
-    Crafty('LevelTitle').text newTitle
-
-  showChapterTitle: (number, newTitle) ->
-    Crafty.e('StageTitle').stageTitle(number, newTitle)
-
   loadAssets: (names) ->
     @generator.loadAssets names
+
+  setStartWeapons: (@playerStartWeapons) ->
 

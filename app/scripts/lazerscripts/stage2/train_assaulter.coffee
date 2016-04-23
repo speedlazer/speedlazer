@@ -20,7 +20,7 @@ class Game.Scripts.TrainAssaulter extends Game.EntityScript
     p = Crafty.e('PlayerClone').attr(
       x: Crafty.viewport.width + 40
       y: startY * Crafty.viewport.height
-      speed: options.speed ? 50
+      defaultSpeed: options.speed ? 50
       health: 500
     ).playerClone()
     p.addComponent('BurstShot').burstShot

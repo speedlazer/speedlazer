@@ -11,7 +11,7 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
       .attr(
         x: (Crafty.viewport.width * .2) - Crafty.viewport.x
         y: Crafty.viewport.height * .2
-        speed: 100
+        defaultSpeed: 100
         topDesaturation: 0.3
         bottomDesaturation: 0.3
       ).cameraCrew()
@@ -23,7 +23,7 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
       @sendToBackground(0.85, -100)
       @setLocation x: 0.45, y: .4
       @moveTo x: -.1
-      => @entity.flip('X')
+      @turnAround()
       @wait 200
       @sendToBackground(0.75, -200)
       @moveTo x: .22, y: .45
@@ -45,9 +45,8 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
         )
         => Crafty.audio.play("explosion")
       )
-      =>
-        @entity.flip('Y')
-        @entity.unflip('X')
+      => @entity.flip('Y')
+      @turnAround()
       @while(
         @movePath [
           [.6, .82]

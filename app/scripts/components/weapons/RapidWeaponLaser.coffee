@@ -15,6 +15,7 @@ Crafty.c 'RapidWeaponLaser',
     @unbind 'GameLoop', @_autoFire
 
   install: (@ship) ->
+    @xp = 0
     @level = @determineLevel @xp
     @attr
       x: @ship.x + 15
@@ -99,7 +100,7 @@ Crafty.c 'RapidWeaponLaser',
       .fire
         origin: this
         damage: 100
-        speed: @ship._forcedSpeed.x + settings.speed
+        speed: @ship._currentSpeed.x + settings.speed
         direction: 0
       .bind 'HitTarget', (target) =>
         @addXP(1)
@@ -125,7 +126,7 @@ Crafty.c 'RapidWeaponLaser',
       .fire
         origin: this
         damage: 100
-        speed: @ship._forcedSpeed.x + settings.speed
+        speed: @ship._currentSpeed.x + settings.speed
         direction: 0
       .bind 'HitTarget', (target) =>
         @addXP(1)

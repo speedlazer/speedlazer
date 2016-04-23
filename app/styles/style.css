@@ -29,6 +29,7 @@ h2 {
   font-size: 1.1em;
 }
 section#help {
+  display: none;
   width: 160px;
   position: absolute;
   top: 0;

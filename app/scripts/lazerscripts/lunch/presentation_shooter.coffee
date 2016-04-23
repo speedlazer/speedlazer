@@ -1,18 +1,13 @@
 Game = @Game
 Game.Scripts ||= {}
 
-class Game.Scripts.Shooter extends Game.EntityScript
-  assets: ->
-    @loadAssets('drone')
-
+class Game.Scripts.PresentationShooter extends Game.EntityScript
   spawn: (options) ->
-    d = Crafty.e('Drone').drone(
+    d = Crafty.e('OldDrone').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .71
       defaultSpeed: options.speed ? 200
-      juice: options.juice
     )
-    @juice = options.juice
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
         cooldown: 2000
@@ -37,5 +32,8 @@ class Game.Scripts.Shooter extends Game.EntityScript
     ]
 
   onKilled: ->
-    @smallExplosion(juice: @juice)
+    @oldExplosion(@location(
+      offsetX: 20
+      offsetY: 20
+    ))
 

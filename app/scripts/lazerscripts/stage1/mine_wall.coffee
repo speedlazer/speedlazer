@@ -12,7 +12,7 @@ class Game.Scripts.MineWall extends Game.EntityScript
     Crafty.e('Mine').mine(
       x: @startX
       y: 240
-      speed: 200
+      defaultSpeed: 200
     )
 
   execute: ->

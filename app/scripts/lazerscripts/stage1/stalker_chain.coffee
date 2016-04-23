@@ -9,7 +9,7 @@ class Game.Scripts.StalkerChain extends Game.EntityScript
       health: 100
       x: 680
       y: 400
-      speed: 300
+      defaultSpeed: 300
     )
 
   execute: ->

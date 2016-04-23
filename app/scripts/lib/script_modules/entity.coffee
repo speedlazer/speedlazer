@@ -84,8 +84,8 @@ Game.ScriptModule.Entity =
       d.promise
 
   # Move an entity through a set of coordinates (relative to the viewport)
-  # in a bezier path. By default the entity moves with its own 'speed' property
-  # but can be overridden with settings.
+  # in a bezier path. By default the entity moves with its own 'defaultSpeed'
+  # property, but it can be overridden with settings.
   #
   # example:
   #
@@ -98,18 +98,31 @@ Game.ScriptModule.Entity =
   # ]
   #
   # extra settings supported:
-  # - speed: override the speed of the entity (in px/sec)
+  # - speed: override the defaultSpeed of the entity (in px/sec)
   # - rotate: yes/no should the entity rotate along the path?
   # - skip: amount of milliseconds to skip in this animation
-  movePath: (path, settings = {}) ->
+  # - easing: one of the following:
+  #   - "linear" (default)
+  #   - "smoothStep"
+  #   - "smootherStep"
+  #   - "easeInQuad"
+  #   - "easeOutQuad"
+  #   - "easeInOutQuad".
+  # - continuePath: should this path continue the previous one
+  movePath: (inputPath, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
       return unless @enemy.alive
       settings = _.defaults(settings,
         rotate: yes
         skip: 0
-        speed: @entity.speed
+        speed: @entity.defaultSpeed
+        continuePath: no
+        easing: 'linear'
+        autoAccellerate: yes
       )
+      path = [].concat inputPath
+
       path.unshift [
         Math.round(@entity.x + Crafty.viewport.x)
         Math.round(@entity.y + Crafty.viewport.y)
@@ -139,7 +152,9 @@ Game.ScriptModule.Entity =
         c = Math.sqrt(a**2 + b**2)
         d += c
         pp = pn
-        { x: x - Crafty.viewport.x, y: y - Crafty.viewport.y }
+        x -= Crafty.viewport.x
+        y -= Crafty.viewport.y
+        { x, y }
       )
       duration = (d / settings.speed) * 1000
 
@@ -148,8 +163,10 @@ Game.ScriptModule.Entity =
         [
           type: 'viewportBezier'
           rotation: settings.rotate
+          continuePath: settings.continuePath
           path: bezierPath
           duration: duration
+          easingFn: settings.easing
         ], skip: settings.skip
       ).one('ChoreographyEnd', ->
         defer.resolve()
@@ -167,6 +184,13 @@ Game.ScriptModule.Entity =
   #
   # extra settings can be provided:
   # - speed: override the default speed of the entity (in px/sec)
+  # - easing: one of the following:
+  #   - "linear" (default)
+  #   - "smoothStep"
+  #   - "smootherStep"
+  #   - "easeInQuad"
+  #   - "easeOutQuad"
+  #   - "easeInOutQuad".
   moveTo: (location, extraSettings = {}) ->
     (sequence) =>
       @_verify(sequence)
@@ -177,6 +201,12 @@ Game.ScriptModule.Entity =
         location = { x: target.x + Crafty.viewport.x, y: target.y + Crafty.viewport.y }
 
       settings = location?() ? location
+
+      # When the location function returns null,
+      # settings becomes the function, which is
+      # invalid. So we need to safeguard against it.
+      return WhenJS() if _.isFunction settings
+
       _.extend(settings, extraSettings)
 
       if settings.x? and (-1 < settings.x < 2)
@@ -201,7 +231,6 @@ Game.ScriptModule.Entity =
               @enemy.moveState = 'water'
               if @enemy.alive
                 @_setupWaterSpot()
-                #@_waterSplash()
                 @_moveWater(settings)
         else
           return @_moveAir(settings)
@@ -215,7 +244,6 @@ Game.ScriptModule.Entity =
               @enemy.moveState = 'air'
               if @enemy.alive
                 @_removeWaterSpot()
-                #@_waterSplash()
                 @_moveAir(settings)
         else
           return @_moveWater(settings)
@@ -242,6 +270,8 @@ Game.ScriptModule.Entity =
           z: @entity.z - 1
         )
 
+    if Game.explosionMode?
+      @_waterSplash()
     @entity.addComponent('WaterSplashes')
     @entity.setSealevel(@_getSeaLevel())
 
@@ -251,13 +281,16 @@ Game.ScriptModule.Entity =
 
   _removeWaterSpot: ->
     @entity.reveal()
-    @entity.removeComponent('WaterSplashes')
+    if Game.explosionMode?
+      @_waterSplash()
+    else
+      @entity.removeComponent('WaterSplashes')
 
   _waterSplash: ->
     defer = WhenJS.defer()
     Crafty.e('WaterSplash').waterSplash(
       x: @entity.x
-      y: @entity.y
+      y: @_getSeaLevel()
       size: @entity.w
     ).one 'ParticleEnd', ->
       defer.resolve()
@@ -266,7 +299,7 @@ Game.ScriptModule.Entity =
 
   _moveWater: (settings) ->
     defaults =
-      speed: @entity.speed
+      speed: @entity.defaultSpeed
 
     if @entity.has('ViewportFixed')
       defaults.x = @entity.x + Crafty.viewport.x
@@ -319,7 +352,7 @@ Game.ScriptModule.Entity =
 
   _moveAir: (settings) ->
     defaults =
-      speed: @entity.speed
+      speed: @entity.defaultSpeed
 
     if @entity.has('ViewportFixed')
       defaults.x = @entity.x + Crafty.viewport.x
@@ -393,4 +426,20 @@ Game.ScriptModule.Entity =
     =>
       x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2)) + (settings.offsetX ? 0)
       y: (@enemy.location.y ? (@entity.y + Crafty.viewport.y) + (@entity.h / 2)) + (settings.offsetY ? 0)
+
+  invincible: (yesNo) ->
+    (sequence) =>
+      @_verify(sequence)
+      @entity.invincible = yesNo
+
+  turnAround: ->
+    (sequence) =>
+      @_verify(sequence)
+      @turned ?= no
+      @turned = !@turned
+      if @turned
+        @entity.flipX()
+      else
+        @entity.unflipX()
+
 

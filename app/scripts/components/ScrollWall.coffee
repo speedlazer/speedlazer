@@ -1,6 +1,48 @@
+Crafty.c 'Accelleration',
+  init: ->
+    @_currentSpeed = { x: 0, y: 0 }
+    @_targetSpeed = { x: 0, y: 0 }
+    @_accelerate = { x: .01, y: .01 }
+    @_currentAcceleration = { x: 0, y: 0 }
+
+  updateAcceleration: ->
+    @_handleAcceleration('x')
+    @_handleAcceleration('y')
+
+  targetSpeed: (speed, options = {}) ->
+    options = _.defaults(options,
+      accellerate: yes
+    )
+    if options.accellerate
+      @_accelerate = { x: .01, y: .01 }
+    else
+      @_accelerate = { x: Infinity, y: Infinity }
+
+    if speed.x? && speed.y?
+      @_targetSpeed.x = speed.x
+      @_targetSpeed.y = speed.y
+    else
+      @_targetSpeed.x = speed
+      @_targetSpeed.y = 0
+    this
+
+  _handleAcceleration: (axis) ->
+    return if @_currentSpeed[axis] == @_targetSpeed[axis]
+    a = 1
+    a = -1 if @_currentSpeed[axis] > @_targetSpeed[axis]
+
+    @_currentAcceleration[axis] += @_accelerate[axis] * a
+    @_currentSpeed[axis] += @_currentAcceleration[axis]
+
+    return if @_currentAcceleration[axis] > 0 and @_currentSpeed[axis] < @_targetSpeed[axis]
+    return if @_currentAcceleration[axis] < 0 and @_currentSpeed[axis] > @_targetSpeed[axis]
+
+    @_currentSpeed[axis] = @_targetSpeed[axis]
+    @_currentAcceleration[axis] = 0
+
 Crafty.c 'ScrollWall',
   init: ->
-    @requires('2D, Edge, Collision')
+    @requires('2D, Edge, Collision, Accelleration')
     @shakes = []
     @motions = []
     @attr
@@ -12,7 +54,6 @@ Crafty.c 'ScrollWall',
         x: 0
         y: 0
 
-    @_speed = { x: 0, y: 0 }
     @wallEnd = Crafty.e('2D, ScrollFront, Edge')
       .attr(x: - (Crafty.viewport.x - Crafty.viewport.width) - 3, y: 0, h: Crafty.viewport.height, w: 12)
     @attach @wallEnd
@@ -26,8 +67,9 @@ Crafty.c 'ScrollWall',
     @attach @wallBottom
 
     @bind 'GameLoop', (fd) ->
-      speedX = @_speed.x
-      speedY = @_speed.y
+      speedX = @_currentSpeed.x
+      speedY = @_currentSpeed.y
+      @updateAcceleration()
 
       if @allowPushing
         # When the ships are in the first 30% of the screen,
@@ -137,14 +179,8 @@ Crafty.c 'ScrollWall',
         [@x * v, @y * v]
     )
 
-  scrollWall: (speed) ->
-    if speed.x? && speed.y?
-      @_speed.x = speed.x
-      @_speed.y = speed.y
-    else
-      @_speed.x = speed
-      @_speed.y = 0
-    this
+  scrollWall: (speed, options = {}) ->
+    @targetSpeed(speed, options)
 
   setHeight: (deltaY) ->
     @y += deltaY

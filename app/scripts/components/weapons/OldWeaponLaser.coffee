@@ -18,6 +18,9 @@ Crafty.c 'OldWeaponLaser',
       alpha: 0
     @ship.attach this
 
+  uninstall: ->
+    @attr alpha: 0
+
   addXP: (amount) ->
     @xp += amount
     level = @level
@@ -26,8 +29,7 @@ Crafty.c 'OldWeaponLaser',
       @trigger 'levelUp', @level
 
   determineLevel: (xp) ->
-    levelBoundaries = [150, 400, 1000, 2500]
-    #levelBoundaries = [15, 40, 100, 250]
+    levelBoundaries = [1000, 3000, 12000, 96000]
     neededXP = 0
     level = 0
     for i in levelBoundaries
@@ -40,11 +42,11 @@ Crafty.c 'OldWeaponLaser',
   shoot: (onOff) ->
     return unless onOff
     settings = switch @level
-      when 0 then w: 3, speed: 250, h: 3
-      when 1 then w: 4, speed: 300, h: 2
-      when 2 then w: 6, speed: 300, h: 2
-      when 3 then w: 8, speed: 300, h: 5
-      when 4 then w: 10, speed: 300, h: 6
+      when 0 then w: 4, speed: 270, h: 4
+      when 1 then w: 8, speed: 320, h: 6
+      when 2 then w: 8, speed: 320, h: 6
+      when 3 then w: 8, speed: 320, h: 6
+      when 4 then w: 10, speed: 320, h: 6
 
     Crafty.e('Bullet')
       .attr
@@ -55,12 +57,12 @@ Crafty.c 'OldWeaponLaser',
       .fire
         origin: this
         damage: 100
-        speed: @ship._forcedSpeed.x + settings.speed
+        speed: @ship._currentSpeed.x + settings.speed
         direction: 0
-      .bind 'HitTarget', =>
+      .bind 'HitTarget', (target) =>
         @addXP(1)
-        @ship.trigger('BulletHit')
-      .bind 'DestroyTarget', =>
+        @ship.trigger('BulletHit', target)
+      .bind 'DestroyTarget', (target) =>
         @addXP(5)
-        @ship.trigger('BulletDestroyedTarget')
+        @ship.trigger('BulletDestroyedTarget', target)
 

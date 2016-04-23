@@ -24,7 +24,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @cityBay()
       @midstageBossfight()
 
-      @checkpoint @checkpointMidStage('Bay', 400000)
+      @checkpoint @checkpointMidStage('BayFull', 400000)
       @say('General', 'Hunt him down!')
       @setSpeed 150
       @placeSquad Game.Scripts.Shooter,
@@ -65,7 +65,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @cloneEncounter()
       )
 
-      @gainHeight(280, duration: 4000)
+      @gainHeight(300, duration: 4000)
 
       @checkpoint @checkpointMidStage('Skyline', 450000)
       @repeat 2, @parallel(
@@ -152,14 +152,16 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @sequence(
       @setScenery('Ocean')
       @say('General', 'We send some drones for some last manual target practice')
-      @repeat(2, @sequence(
-        @dropWeaponsForEachPlayer()
-        @wait(2000)
-        @placeSquad Game.Scripts.Swirler,
-          amount: 4
-          delay: 500
-          drop: 'xp'
-      ))
+      @attackWaves(
+        @repeat(2, @sequence(
+          @dropWeaponsForEachPlayer()
+          @wait(2000)
+          @placeSquad Game.Scripts.Swirler,
+            amount: 4
+            delay: 500
+        ))
+        drop: 'xp'
+      )
     )
 
   dropWeaponsForEachPlayer: ->
@@ -239,7 +241,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   midstageBossfight: ->
     @sequence(
-      @checkpoint @checkpointStart('Bay', 226000)
+      @checkpoint @checkpointStart('BayFull', 226000)
       @setScenery('UnderBridge')
       @parallel(
         @if((-> @player(1).active), @drop(item: 'xp', inFrontOf: @player(1)))
@@ -256,6 +258,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @if((-> @player(2).active), @drop(item: 'xp', inFrontOf: @player(2)))
       )
       @mineSwarm()
+      @showText 'Warning!', color: '#FF0000', mode: 'blink'
       @while(
         @waitForScenery('UnderBridge', event: 'inScreen')
         @sequence(
@@ -302,7 +305,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       amount: 14
       delay: 300
       options:
-        grid: new Game.LocationGrid
+        gridConfig:
           x:
             start: 0.3
             steps: 12

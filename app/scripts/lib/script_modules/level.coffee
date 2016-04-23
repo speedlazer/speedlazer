@@ -40,14 +40,17 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
       synchronizer = new Game.Synchronizer
+      settings = _.clone settings
 
-      options = _.defaults({}, settings.options,
+      options = _.defaults({
         synchronizer: synchronizer
-      )
-      settings = _.defaults(settings,
+      }, settings.options)
+      settings = _.defaults({}, settings,
         amount: 1
         delay: 1000
       )
+      if options.gridConfig?
+        options.grid = new Game.LocationGrid(options.gridConfig)
       settings.options = options
       scripts = (for i in [0...settings.amount]
         synchronizer.registerEntity(new scriptClass(@level))
@@ -55,7 +58,7 @@ Game.ScriptModule.Level =
       loadingAssets = WhenJS(true)
 
       if scripts[0]?.assets?
-        loadingAssets = scripts[0].assets()(sequence)
+        loadingAssets = scripts[0].assets(_.clone(settings.options))(sequence)
 
       loadingAssets.then =>
         promises = (for script, i in scripts
@@ -67,6 +70,8 @@ Game.ScriptModule.Level =
               script.run(s)
         )
         WhenJS.all(promises).then (results) =>
+          @attackWaveResults = (@attackWaveResults || []).concat(results)
+
           allKilled = yes
           lastLocation = null
           lastKilled = null
@@ -86,6 +91,33 @@ Game.ScriptModule.Level =
             if settings.drop
               @drop(item: settings.drop, location: lastLocation)(sequence)
 
+  attackWaves: (promise, settings = {}) ->
+    (sequence) =>
+      @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
+      @attackWaveResults = []
+
+      promise(sequence).then =>
+
+        allKilled = yes
+        lastLocation = null
+        lastKilled = null
+        for { alive, killedAt, location } in @attackWaveResults
+          if alive
+            allKilled = no
+          else
+            lastKilled ?= killedAt
+            lastLocation ?= location
+            if killedAt.getTime() > lastKilled.getTime()
+              lastKilled = killedAt
+              lastLocation = location
+
+        if allKilled and lastLocation
+          lastLocation.x += Crafty.viewport.x
+          lastLocation.y += Crafty.viewport.y
+          if settings.drop
+            @drop(item: settings.drop, location: -> lastLocation)(sequence)
+
   # Show dialog at the bottom of the screen
   # The duration in screen depends on the amount of lines in the
   # text param
@@ -97,6 +129,9 @@ Game.ScriptModule.Level =
     (sequence) =>
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
+      unless text?
+        text = speaker
+        speaker = undefined
       Game.say(speaker, text, bottom: @level.visibleHeight)
 
   # Drop an item in the screen at a given location,
@@ -119,7 +154,16 @@ Game.ScriptModule.Level =
       return WhenJS() if @_skippingToCheckpoint()
       item = @inventory('item', options.item)
       if player = options.inFrontOf
-        @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: player.ship().y + Crafty.viewport.y
+        ship = player.ship()
+        if ship
+          @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: player.ship().y + Crafty.viewport.y
+        else
+          unless player.gameOver
+            d = WhenJS.defer()
+            player.entity.one 'ShipSpawned', (ship) =>
+              @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: ship.y + Crafty.viewport.y
+              d.resolve()
+            return d.promise
 
       if pos = options.location
         coords = pos?()
@@ -146,6 +190,7 @@ Game.ScriptModule.Level =
     Crafty('Player').each ->
       players[@name] =
         name: @name
+        entity: this
         active: no
         gameOver: no
         has: (item) ->
@@ -183,9 +228,12 @@ Game.ScriptModule.Level =
   # - outScreen       -- The scenery's end is at the right side of the screen (about to move out)
   # - playerLeave     -- The player is leaving the scenery
   # - playerEnter     -- The player is entering the scenery
-  waitForScenery: (sceneryType, options = { event: 'enter' }) ->
+  waitForScenery: (sceneryType, options = {}) ->
     (sequence) =>
       @_verify(sequence)
+      options = _.defaults(options,
+        event: 'enter'
+      )
       return WhenJS() if @_skippingToCheckpoint()
       d = WhenJS.defer()
       @level.notifyScenery options.event, sceneryType, -> d.resolve()
@@ -203,7 +251,7 @@ Game.ScriptModule.Level =
 
       currentSpeed = @level._forcedSpeed?.x || @level._forcedSpeed
       { duration } = options
-      if @_skippingToCheckpoint()
+      if @_skippingToCheckpoint() or duration is 0
         @level.setHeight -height
       else
         speedY = (height / duration) * 1000
@@ -221,10 +269,13 @@ Game.ScriptModule.Level =
   # Change the speed of the camera and the playerships.
   #
   # speed: the speed in px/sec
-  setSpeed: (speed) ->
+  setSpeed: (speed, options = {}) ->
     (sequence) =>
       @_verify(sequence)
-      @level.setForcedSpeed speed
+      options = _.defaults(options,
+        accellerate: yes
+      )
+      @level.setForcedSpeed speed, options
 
   # Show the scores of the players active in the game
   # This is used to end a stage in the game
@@ -235,15 +286,15 @@ Game.ScriptModule.Level =
       @wait(15 * 2000)(sequence).then =>
         score.destroy()
 
-  disableWeapons: ->
+  disableWeapons: (players...) ->
     (sequence) =>
       @_verify(sequence)
-      @level.setWeaponsEnabled no
+      @level.setWeaponsEnabled no, players
 
-  enableWeapons: ->
+  enableWeapons: (players...) ->
     (sequence) =>
       @_verify(sequence)
-      @level.setWeaponsEnabled yes
+      @level.setWeaponsEnabled yes, players
 
   blast: (location, options = {}, frameOptions) ->
     (sequence) =>
@@ -287,14 +338,20 @@ Game.ScriptModule.Level =
   updateTitle: (text) ->
     (sequence) =>
       @_verify(sequence)
-      @level.updateTitle(text)
+      Crafty('LevelTitle').text text
 
   chapterTitle: (number, text) ->
     (sequence) =>
       @_verify(sequence)
-      @level.updateTitle("#{number}: #{text}")
+      Crafty('LevelTitle').text "#{number}: #{text}"
       return WhenJS() if @_skippingToCheckpoint()
-      @level.showChapterTitle(number, text)
+      Crafty.e('BigText').bigText(text, super: "Chapter #{number}:")
+
+  showText: (text, options = {}) ->
+    (sequence) =>
+      @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
+      Crafty.e('BigText').bigText(text, options)
 
   pickTarget: (selection) ->
     (sequence) =>
@@ -348,5 +405,112 @@ Game.ScriptModule.Level =
        # TODO: Figure out skipping
        @level.cameraPan(settings)
        @wait(settings.duration)(sequence)
+
+  setWeapons: (newWeapons) ->
+    (sequence) =>
+      @_verify(sequence)
+      Crafty('PlayerControlledShip').each ->
+        @clearItems()
+        @installItem item for item in newWeapons
+      @level.setStartWeapons newWeapons
+
+  hideHud: (settings = {}) ->
+    settings = _.defaults(settings,
+      visible: no
+    )
+    @toggleHud(settings)
+
+  showHud: (settings = {}) ->
+    settings = _.defaults(settings,
+      visible: yes
+    )
+    @toggleHud(settings)
+
+  toggleHud: (settings = {}) ->
+    (sequence) =>
+      @_verify(sequence)
+      settings = _.defaults(settings,
+        duration: 1000
+      )
+      Crafty('HUD').each ->
+        @addComponent('Tween')
+        @tween(
+          alpha: if settings.visible then 1.0 else 0.0
+          settings.duration
+        )
+      @wait(settings.duration)(sequence)
+
+  setShipType: (newType) ->
+    (sequence) =>
+      @_verify(sequence)
+      @level.setShipType newType
+
+  endGame: ->
+    (sequence) =>
+      @_verify(sequence)
+      @gotoGameOver = yes
+
+  disableControls: ->
+    (sequence) =>
+      @_verify(sequence)
+      Crafty('PlayerControlledShip').each -> @disableControl()
+
+  screenFadeOut: ->
+    (sequence) =>
+      @_verify(sequence)
+      fader = Crafty('ScreenFader').get(0)
+      unless fader?
+        fader = Crafty.e('2D, DOM, Color, HUD, Tween, ScreenFader')
+
+      defer = WhenJS.defer()
+
+      fader.positionHud(
+        x: 0,
+        y: 0,
+        z: 1000
+      ).attr(
+        w: Crafty.viewport.width
+        h: Crafty.viewport.height
+        alpha: 0
+      ).color(
+        '#000000'
+      ).tween(
+        alpha: 1
+        4000
+      ).bind('TweenEnd', ->
+        defer.resolve()
+      )
+
+      defer.promise
+
+  screenFadeIn: ->
+    (sequence) =>
+      @_verify(sequence)
+      fader = Crafty('ScreenFader').get(0)
+      unless fader?
+        fader = Crafty.e('2D, DOM, Color, HUD, Tween, ScreenFader')
+
+      defer = WhenJS.defer()
+
+      fader.positionHud(
+        x: 0,
+        y: 0,
+        z: 1000
+      ).attr(
+        w: Crafty.viewport.width
+        h: Crafty.viewport.height
+        alpha: 1
+      ).color(
+        '#000000'
+      ).tween(
+        alpha: 0
+        4000
+      ).bind('TweenEnd', ->
+        @destroy()
+        defer.resolve()
+      )
+
+      defer.promise
+
 
 

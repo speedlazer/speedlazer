@@ -1,5 +1,6 @@
 Game =
   paused: no
+  firstLevel: 'Game'
   togglePause: ->
     @paused = !@paused
     if @paused
@@ -26,7 +27,6 @@ Game =
 
   # Initialize and start our game
   start: ->
-    @firstLevel = 'Game'
     @resetCredits()
 
     Crafty.bind 'EnterFrame', ->
@@ -43,12 +43,12 @@ Game =
     Crafty.background('#000000')
 
     Crafty.e('Player, Color')
-      .attr(name: 'Player 1', z: 0)
+      .attr(name: 'Player 1', z: 0, playerNumber: 1)
       .setName('Player 1')
       .color('#FF0000')
 
     Crafty.e('Player, Color')
-      .attr(name: 'Player 2', z: 10)
+      .attr(name: 'Player 2', z: 10, playerNumber: 2)
       .setName('Player 2')
       .color('#00FF00')
 
@@ -100,7 +100,13 @@ Game =
         right: 15
 
     # Simply start splashscreen
-    #Crafty.enterScene('Game', script: 'Lunch')
+    handler = (e) =>
+      if e.key == Crafty.keys.N
+        Crafty.unbind('KeyDown', handler)
+        Crafty.enterScene('Game', script: 'Lunch', checkpoint: 0)
+
+    Crafty.bind('KeyDown', handler)
+    #Crafty.enterScene('New')
     Crafty.enterScene('Intro')
 
   resetCredits: ->
@@ -128,9 +134,9 @@ Game =
       { initials: defInit, score: 2000 }
       { initials: defInit, score: 1500 }
       { initials: defInit, score: 1000 }
-      { initials: defInit, score: 500 }
-      { initials: defInit, score: 200 }
-      { initials: defInit, score: 100 }
+      { initials: defInit, score: 5000 }
+      { initials: defInit, score: 2000 }
+      { initials: defInit, score: 1500 }
     ].concat loadedList
     _.sortBy(list, 'score').reverse()
 

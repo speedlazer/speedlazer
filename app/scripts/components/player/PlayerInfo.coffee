@@ -44,6 +44,9 @@ Crafty.c 'PlayerInfo',
       if @player.lives is 0
         @lives.text('Game Over')
       else
-        @lives.text('Lives: ' + (@player.lives - 1))
+        text = (@player.lives - 1)
+        if text is Infinity
+          text = 'Demo mode'
+        @lives.text('Lives: ' + text)
     else
       @lives.text('Press fire to start!')
