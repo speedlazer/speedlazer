@@ -1,7 +1,6 @@
 Crafty.c 'PowerUp',
   init: ->
     @requires '2D,WebGL,Color'
-    @color '#20FF20'
     @attr
       w: 20
       h: 20
@@ -9,6 +8,14 @@ Crafty.c 'PowerUp',
   remove: ->
 
   powerUp: (@settings) ->
+    if @settings.type
+      typeColors =
+        weapon: '#8080FF'
+        weaponUpgrade: '#20FF20'
+        weaponBoost: '#208020'
+
+      @color typeColors[@settings.type]
+
     if @settings.marking
       marking = Crafty.e('2D,DOM,Text')
         .textColor('#000000')

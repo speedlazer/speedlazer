@@ -34,17 +34,12 @@ class Game.LazerScript
       @currentSequence = null
 
   # Inventory
-  # TODO: Decide how we handle inventory thoughout game
 
-  inventory: (type, name) ->
-    @invItems ||= {}
-    @invItems[type] ||= {}
-    @invItems[type][name || 'default']
+  inventory: (name) ->
+    @level.inventory(name)
 
-  inventoryAdd: (type, name, constructor) ->
-    @invItems ||= {}
-    @invItems[type] ||= {}
-    @invItems[type][name] = constructor
+  inventoryAdd: (type, name, options) ->
+    @level.inventoryAdd(type, name, options)
 
 _.extend(
   Game.LazerScript::

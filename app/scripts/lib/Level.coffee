@@ -187,10 +187,23 @@ class Game.Level
 
       if @playerStartWeapons?
         ship.clearItems()
-        ship.installItem item for item in @playerStartWeapons
+        for item in @playerStartWeapons
+          itemSettings = @inventory(item)
+          ship.installItem itemSettings
 
     Crafty('Player ControlScheme').each ->
       @spawnShip()
+
+  inventory: (name) ->
+    @invItems ||= {}
+    @invItems[name]
+
+  inventoryAdd: (type, name, options) ->
+    @invItems ||= {}
+    @invItems[name] ||= _.defaults(options,
+      type: type
+      contains: name
+    )
 
   getShipType: -> @shipType
   setShipType: (@shipType) ->

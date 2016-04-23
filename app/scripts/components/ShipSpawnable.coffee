@@ -6,7 +6,7 @@ Crafty.c 'ShipSpawnable',
   remove: ->
     @unbind('Activated', @spawnShip)
 
-  spawnPosition: (@spawnPosition, @armed = 'lasers') ->
+  spawnPosition: (@spawnPosition, @armed = null) ->
     @spawnPosition ?= ->
       x: x
       y: y

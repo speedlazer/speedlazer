@@ -152,7 +152,11 @@ Game.ScriptModule.Level =
     (sequence) =>
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
-      item = @inventory('item', options.item)
+      itemSettings = @inventory(options.item)
+      item = -> Crafty.e('PowerUp').powerUp(itemSettings)
+      unless item
+        console.warn 'Item ', options.item, ' is not known'
+        return WhenJS()
       if player = options.inFrontOf
         ship = player.ship()
         if ship
@@ -411,7 +415,9 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       Crafty('PlayerControlledShip').each ->
         @clearItems()
-        @installItem item for item in newWeapons
+        for item in newWeapons
+          itemSettings = @inventory(item)
+          @installItem itemSettings
       @level.setStartWeapons newWeapons
 
   hideHud: (settings = {}) ->

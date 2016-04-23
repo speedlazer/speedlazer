@@ -5,7 +5,10 @@ Crafty.c 'RapidWeaponLaser',
     @attr
       w: 30
       h: 5
-    @xp = 0
+
+    @rapidLevel = 0
+    @damageLevel = 0
+
     @lastShot = 0
     @shotsFired = 0
     @burstCount = Infinity
@@ -15,8 +18,6 @@ Crafty.c 'RapidWeaponLaser',
     @unbind 'GameLoop', @_autoFire
 
   install: (@ship) ->
-    @xp = 0
-    @level = @determineLevel @xp
     @attr
       x: @ship.x + 15
       y: @ship.y + 26
@@ -25,7 +26,7 @@ Crafty.c 'RapidWeaponLaser',
     @ship.attach this
 
     @shooting = no
-    @_determineCooldown()
+    @_determineWeaponSettings()
 
     @bind 'GameLoop', @_autoFire
 
@@ -33,31 +34,16 @@ Crafty.c 'RapidWeaponLaser',
     @attr alpha: 0
     @unbind 'GameLoop', @_autoFire
 
-  addXP: (amount) ->
-    @xp += amount
-    level = @level
-    @level = @determineLevel @xp
-    if level isnt @level
-      @_determineCooldown()
-      @trigger 'levelUp', @level
+  upgrade: (aspect) ->
+    switch aspect
+      when 'rapid' then @rapidLevel += 1
+      when 'damage' then @damageLevel += 1
 
-  _determineCooldown: ->
-    @cooldown = switch @level
-      when 0 then 135
-      when 1 then 110
-      when 2 then 95
-      when 3 then 75
+    @_determineWeaponSettings()
 
-  determineLevel: (xp) ->
-    levelBoundaries = [1500, 6000, 24000, 96000]
-    neededXP = 0
-    level = 0
-    for i in levelBoundaries
-      neededXP += i
-      level += 1 if xp >= neededXP
-
-    progress = (xp - (levelBoundaries[level - 1] ? 0)) / levelBoundaries[level]
-    return level
+  _determineWeaponSettings: ->
+    @cooldown = 200 - (@rapidLevel * 10)
+    @damage = 100 + (@damageLevel * 25)
 
   shoot: (onOff) ->
     if onOff
@@ -84,11 +70,8 @@ Crafty.c 'RapidWeaponLaser',
       @shotsFired += 1
 
   _createFrontBullet: ->
-    settings = switch @level
-      when 0 then w: 6, speed: 650, h: 4, o: 0
-      when 1 then w: 10, speed: 655, h: 5, o: 1
-      when 2 then w: 14, speed: 660, h: 6, o: 2
-      when 3 then w: 18, speed: 665, h: 6, o: 3
+    settings =
+      w: 6, speed: 650, h: 3 + @damageLevel, o: @damageLevel
 
     Crafty.e('Bullet')
       .attr
@@ -99,22 +82,17 @@ Crafty.c 'RapidWeaponLaser',
         z: 1
       .fire
         origin: this
-        damage: 100
+        damage: @damage
         speed: @ship._currentSpeed.x + settings.speed
         direction: 0
       .bind 'HitTarget', (target) =>
-        @addXP(1)
         @ship.trigger('BulletHit', target)
       .bind 'DestroyTarget', (target) =>
-        @addXP(5)
         @ship.trigger('BulletDestroyedTarget', target)
 
   _createBackBullet: ->
-    settings = switch @level
-      when 0 then w: 5, speed: 650, h: 3, o: 0
-      when 1 then w: 8, speed: 655, h: 4, o: 1
-      when 2 then w: 10, speed: 660, h: 5, o: 2
-      when 3 then w: 14, speed: 665, h: 5, o: 3
+    settings =
+      w: 5, speed: 650, h: 2 + @damageLevel, o: @damageLevel
 
     Crafty.e('Bullet')
       .attr
@@ -125,13 +103,11 @@ Crafty.c 'RapidWeaponLaser',
         z: -1
       .fire
         origin: this
-        damage: 100
+        damage: @damage
         speed: @ship._currentSpeed.x + settings.speed
         direction: 0
       .bind 'HitTarget', (target) =>
-        @addXP(1)
         @ship.trigger('BulletHit', target)
       .bind 'DestroyTarget', (target) =>
-        @addXP(5)
         @ship.trigger('BulletDestroyedTarget', target)
 

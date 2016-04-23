@@ -8,12 +8,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @loadAssets('shadow', 'explosion', 'playerShip')
 
   execute: ->
-    @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#2020FF')
-    @inventoryAdd 'item', 'xp', ->
-      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
-    @inventoryAdd 'item', 'diagonals', ->
-      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
+    @inventoryAdd 'weapon', 'lasers', marking: 'L'
+    @inventoryAdd 'weaponUpgrade', 'rapid', marking: 'R'
+    @inventoryAdd 'weaponUpgrade', 'xp', contains: 'damage', marking: 'D'
+
+    #@inventoryAdd 'item', 'diagonals', ->
+      #Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D', color: '#8080FF')
 
     @sequence(
       @introText()
@@ -115,6 +115,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   introText: ->
     @sequence(
+      @setWeapons(['lasers'])
       @setSpeed 50
       @setScenery('Intro')
       @sunRise()

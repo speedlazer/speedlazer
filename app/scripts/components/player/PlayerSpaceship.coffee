@@ -172,32 +172,42 @@ Crafty.c 'PlayerSpaceship',
 
   pickUp: (powerUp) ->
     contents =  powerUp.settings.contains
-    if @installItem contents
+    if @installItem powerUp.settings
       Crafty.audio.play('powerup')
       powerUp.destroy()
 
   installItem: (item) ->
-    if item is 'xp'
-      @primaryWeapon.addXP(1000)
-      return true
+    if item.type is 'weapon'
+      return if @hasItem item.contains
 
-    return if @hasItem item
+      @items.push item.contains
 
-    @items.push item
+      if item.contains is 'lasers'
+        @_installPrimary 'RapidWeaponLaser'
+        return true
 
-    # TODO: Add multiple primary weapons, which can be swapped
-    # Count XP on current weapon only
-    if item is 'lasers'
-      @_installPrimary 'RapidWeaponLaser'
-      return true
+    if item.type is 'weaponUpgrade'
+      @primaryWeapon.upgrade item.contains
 
-    if item is 'oldlasers'
-      @_installPrimary 'OldWeaponLaser'
-      return true
+    #if item is 'xp'
+      #@primaryWeapon.addXP(1000)
+      #return true
 
-    if item is 'diagonals'
-      @_installPrimary 'RapidDiagonalLaser'
-      return true
+    #return if @hasItem item
+
+    #@items.push item
+
+    #if item is 'lasers'
+      #@_installPrimary 'RapidWeaponLaser'
+      #return true
+
+    #if item is 'oldlasers'
+      #@_installPrimary 'OldWeaponLaser'
+      #return true
+
+    #if item is 'diagonals'
+      #@_installPrimary 'RapidDiagonalLaser'
+      #return true
 
   clearItems: ->
     @primaryWeapon?.uninstall()
