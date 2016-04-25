@@ -154,7 +154,7 @@ Game.ScriptModule.Level =
       return WhenJS() if @_skippingToCheckpoint()
       itemSettings = @inventory(options.item)
       item = -> Crafty.e('PowerUp').powerUp(itemSettings)
-      unless item
+      unless itemSettings
         console.warn 'Item ', options.item, ' is not known'
         return WhenJS()
       if player = options.inFrontOf
@@ -419,6 +419,19 @@ Game.ScriptModule.Level =
           itemSettings = @inventory(item)
           @installItem itemSettings
       @level.setStartWeapons newWeapons
+
+  inventory: (name) ->
+    if name is 'pool'
+      name = (@powerupPool || []).pop()
+    @level.inventory(name)
+
+  inventoryAdd: (type, name, options) ->
+    @level.inventoryAdd(type, name, options)
+
+  setPowerupPool: (powerups...) ->
+    (sequence) =>
+      @_verify(sequence)
+      @powerupPool = _.shuffle(powerups)
 
   hideHud: (settings = {}) ->
     settings = _.defaults(settings,

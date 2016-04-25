@@ -93,7 +93,6 @@ Crafty.c 'PlayerSpaceship',
       return if Game.paused
       for pu in e
         @pickUp(pu.obj)
-        @trigger('PowerUp', pu.obj)
 
     @bind 'Hit', ->
       Crafty.e('Blast, Explosion').explode(
@@ -184,6 +183,7 @@ Crafty.c 'PlayerSpaceship',
     contents =  powerUp.settings.contains
     if @installItem powerUp.settings
       Crafty.audio.play('powerup')
+      @trigger('PowerUp', powerUp.settings)
       powerUp.destroy()
 
   installItem: (item) ->
@@ -196,8 +196,14 @@ Crafty.c 'PlayerSpaceship',
         @_installPrimary 'RapidWeaponLaser'
         return true
 
+    if item.type is 'ship'
+      if item.contains is 'life'
+        @scoreText 'Extra life!'
+        return true
+
     if item.type is 'weaponUpgrade'
       @primaryWeapon.upgrade item.contains
+      return true
 
   clearItems: ->
     @primaryWeapon?.uninstall()
@@ -214,6 +220,8 @@ Crafty.c 'PlayerSpaceship',
       t =
         damage: 'Damage'
         rapid: 'RapidFire'
+        aim: 'AimAssist'
+        speed: 'BulletSpeed'
       @scoreText "#{t[info.aspect]} +#{info.level}"
     @primaryWeapons.push weapon
     @currentPrimary = @primaryWeapons.length - 1
@@ -224,21 +232,26 @@ Crafty.c 'PlayerSpaceship',
     no
 
   scoreText: (text) ->
-    Crafty.e('Text, DOM, 2D, Tween')
+    t = Crafty.e('Text, DOM, 2D, Tween, Delay')
       .textColor('#FFFFFF')
       .text(text)
       .attr(
         x: @x
         y: @y - 10
         z: 990
-        w: 100
+        w: 150
       )
       .textFont({
         size: '10px',
         weight: 'bold',
         family: 'Press Start 2P'
       })
-      .tween(y: @y - 40, alpha: 0.5, 1000)
-      .one('TweenEnd', -> @destroy())
-
+    @attach t
+    t.delay(
+      =>
+        @detach t
+        t.tween(rotation: 0, y: t.y - 70, alpha: 0.5, 1000, 'easeInQuad')
+        t.one('TweenEnd', -> t.destroy())
+      400
+    )
 

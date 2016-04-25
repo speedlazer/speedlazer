@@ -9,19 +9,24 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   execute: ->
     @inventoryAdd 'weapon', 'lasers', marking: 'L'
-    @inventoryAdd 'weaponUpgrade', 'rapid', marking: 'R'
-    @inventoryAdd 'weaponUpgrade', 'xp', contains: 'damage', marking: 'D'
-
-    #@inventoryAdd 'item', 'diagonals', ->
-      #Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D', color: '#8080FF')
+    @inventoryAdd 'ship', 'life', marking: '❤'
+    @inventoryAdd 'weaponUpgrade', 'rapid', marking: 'RF'
+    @inventoryAdd 'weaponUpgrade', 'damage', marking: 'D'
+    @inventoryAdd 'weaponUpgrade', 'aim', marking: 'A'
+    @inventoryAdd 'weaponUpgrade', 'speed', marking: 'S'
 
     @sequence(
+      @setPowerupPool 'rapid', 'damage'
+      @setPowerupPool 'life'
       @introText()
       @tutorial()
+      @setPowerupPool 'aim', 'speed', 'rapid', 'speed', 'speed'
       @droneTakeover()
       @oceanFighting()
+      @setPowerupPool 'aim', 'speed', 'rapid', 'damage', 'rapid'
       @enteringLand()
       @cityBay()
+      @setPowerupPool 'speed', 'rapid', 'rapid', 'damage'
       @midstageBossfight()
 
       @checkpoint @checkpointMidStage('BayFull', 400000)
@@ -30,7 +35,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 1000
-        drop: 'xp'
+        drop: 'pool'
         options:
           shootOnSight: yes
 
@@ -44,7 +49,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           @placeSquad Game.Scripts.Shooter,
             amount: 4
             delay: 1000
-            drop: 'xp'
+            drop: 'pool'
             options:
               shootOnSight: yes
         )
@@ -56,7 +61,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @placeSquad Game.Scripts.ScraperFlyer,
           amount: 8
           delay: 750
-          drop: 'xp'
+          drop: 'pool'
         @cloneEncounter()
       )
       @cityFighting()
@@ -73,7 +78,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @placeSquad Game.Scripts.PlayerClone,
           options:
             from: 'middle'
-          drop: 'xp'
+          drop: 'pool'
       )
       @setScenery 'SkylineBase'
       @while(
@@ -161,7 +166,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             amount: 4
             delay: 500
         ))
-        drop: 'xp'
+        drop: 'pool'
       )
     )
 
@@ -182,7 +187,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.CrewShooters,
         amount: 4
         delay: 750
-        drop: 'xp'
+        drop: 'pool'
       @say('General', 'What the hell is happening with our drones?')
       @say('General', 'They do not respond to our commands anymore!\nThe defence AI has been hacked!')
       @chapterTitle(1, 'Hacked')
@@ -245,18 +250,18 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @checkpoint @checkpointStart('BayFull', 226000)
       @setScenery('UnderBridge')
       @parallel(
-        @if((-> @player(1).active), @drop(item: 'xp', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'xp', inFrontOf: @player(2)))
+        @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
       )
       @mineSwarm()
       @parallel(
-        @if((-> @player(1).active), @drop(item: 'xp', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'xp', inFrontOf: @player(2)))
+        @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
       )
       @mineSwarm direction: 'left'
       @parallel(
-        @if((-> @player(1).active), @drop(item: 'xp', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'xp', inFrontOf: @player(2)))
+        @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
       )
       @mineSwarm()
       @showText 'Warning!', color: '#FF0000', mode: 'blink'
@@ -277,19 +282,20 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     )
 
   swirlAttacks: ->
-    @parallel(
-      @repeat 2, @placeSquad Game.Scripts.Swirler,
-        amount: 4
-        delay: 500
-        drop: 'xp'
-        options:
-          shootOnSight: yes
-      @repeat 2, @placeSquad Game.Scripts.Shooter,
-        amount: 4
-        delay: 500
-        drop: 'xp'
-        options:
-          shootOnSight: yes
+    @attackWaves(
+      @parallel(
+        @repeat 2, @placeSquad Game.Scripts.Swirler,
+          amount: 4
+          delay: 500
+          options:
+            shootOnSight: yes
+        @repeat 2, @placeSquad Game.Scripts.Shooter,
+          amount: 4
+          delay: 500
+          options:
+            shootOnSight: yes
+      )
+      drop: 'pool'
     )
 
   underWaterAttacks: ->
@@ -320,41 +326,46 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   stalkerShootout: ->
     @parallel(
-      @placeSquad Game.Scripts.Stalker
-      @placeSquad Game.Scripts.Shooter,
-        amount: 4
-        delay: 1000
-        drop: 'xp'
-        options:
-          shootOnSight: yes
-      @placeSquad Game.Scripts.Swirler,
-        amount: 4
-        delay: 1000
-        drop: 'xp'
-        options:
-          shootOnSight: yes
+      @placeSquad Game.Scripts.Stalker,
+        drop: 'pool'
+      @attackWaves(
+        @parallel(
+          @placeSquad Game.Scripts.Shooter,
+            amount: 4
+            delay: 1000
+            options:
+              shootOnSight: yes
+          @placeSquad Game.Scripts.Swirler,
+            amount: 4
+            delay: 1000
+            options:
+              shootOnSight: yes
+        )
+        drop: 'pool'
+      )
     )
 
   cityFighting: ->
     @sequence(
       @setScenery('Skyline')
       @parallel(
-        @sequence(
-          @placeSquad Game.Scripts.ScraperFlyer,
-            amount: 4
-            delay: 750
-            drop: 'xp'
-          @placeSquad Game.Scripts.ScraperFlyer,
-            amount: 6
-            delay: 750
-            drop: 'xp'
+        @attackWaves(
+          @sequence(
+            @placeSquad Game.Scripts.ScraperFlyer,
+              amount: 4
+              delay: 750
+            @placeSquad Game.Scripts.ScraperFlyer,
+              amount: 6
+              delay: 750
+          )
+          drop: 'pool'
         )
         @sequence(
           @wait 3000
           @placeSquad Game.Scripts.Swirler,
             amount: 4
             delay: 750
-            drop: 'xp'
+            drop: 'pool'
             options:
               shootOnSight: yes
         )
@@ -362,18 +373,19 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     )
 
   cloneEncounter: ->
-    @parallel(
-      @sequence(
-        @wait 2000
+    @attackWaves(
+      @parallel(
+        @sequence(
+          @wait 2000
+          @placeSquad Game.Scripts.PlayerClone,
+            options:
+              from: 'top'
+        )
         @placeSquad Game.Scripts.PlayerClone,
           options:
-            from: 'top'
-          drop: 'xp'
+            from: 'bottom'
       )
-      @placeSquad Game.Scripts.PlayerClone,
-        options:
-          from: 'bottom'
-        drop: 'xp'
+      drop: 'pool'
     )
 
 

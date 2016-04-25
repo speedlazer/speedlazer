@@ -9,6 +9,8 @@ Crafty.c 'RapidWeaponLaser',
     @stats =
       rapid: 0
       damage: 0
+      aim: 0
+      speed: 0
 
     @lastShot = 0
     @shotsFired = 0
@@ -44,6 +46,12 @@ Crafty.c 'RapidWeaponLaser',
   _determineWeaponSettings: ->
     @cooldown = 200 - (@stats.rapid * 10)
     @damage = 100 + (@stats.damage * 25)
+    @aimAngle = 0 + (@stats.aim * 3)
+    @aimDistance = Math.min(40 + (@stats.aim * 20), 500)
+    @speed = 650 + (@stats.speed * 25)
+
+    levels = (value for k, value of @stats)
+    @overallLevel = Math.min(levels...)
 
   shoot: (onOff) ->
     if onOff
@@ -71,20 +79,23 @@ Crafty.c 'RapidWeaponLaser',
 
   _createFrontBullet: ->
     settings =
-      w: 6, speed: 650, h: 3 + @stats.damage, o: @stats.damage
+      w: 6, speed: @speed, h: 3 + @overallLevel, o: @overallLevel
 
+    start =
+      x: @x + @w
+      y: @y + (@h / 2) - (settings.h / 2) + 1 + settings.o
     Crafty.e('Bullet')
       .attr
-        x: @x + @w
-        y: @y + (@h / 2) - (settings.h / 2) + 1 + settings.o
         w: settings.w
         h: settings.h
+        x: start.x
+        y: start.y
         z: 1
       .fire
         origin: this
         damage: @damage
         speed: @ship._currentSpeed.x + settings.speed
-        direction: 0
+        direction: @_bulletDirection(start)
       .bind 'HitTarget', (target) =>
         @ship.trigger('BulletHit', target)
       .bind 'DestroyTarget', (target) =>
@@ -92,22 +103,44 @@ Crafty.c 'RapidWeaponLaser',
 
   _createBackBullet: ->
     settings =
-      w: 5, speed: 650, h: 2 + @stats.damage, o: @stats.damage
+      w: 5, speed: @speed, h: 2 + @overallLevel, o: @overallLevel
 
+    start =
+      x: @x + @w
+      y: @y + (@h / 2) - (settings.h / 2) - 2 - settings.o
     Crafty.e('Bullet')
       .attr
-        x: @x + @w
-        y: @y + (@h / 2) - (settings.h / 2) - 2 - settings.o
         w: settings.w
         h: settings.h
+        x: start.x
+        y: start.y
         z: -1
       .fire
         origin: this
         damage: @damage
         speed: @ship._currentSpeed.x + settings.speed
-        direction: 0
+        direction: @_bulletDirection(start)
       .bind 'HitTarget', (target) =>
         @ship.trigger('BulletHit', target)
       .bind 'DestroyTarget', (target) =>
         @ship.trigger('BulletDestroyedTarget', target)
+
+  _bulletDirection: (start) ->
+    list = []
+    Crafty('Enemy').each ->
+      list.push({ x: @x, y: @y + (@h / 2) }) unless @has('Projectile') or @hidden
+
+    pickedAngle = 0
+    pickedDistance = Infinity
+    for item in list
+      angle = Math.atan2(item.y - start.y, item.x - start.x)
+      angle *= 180 / Math.PI
+      item.angle = angle
+      item.distance = Math.abs(start.x - item.x) + Math.abs(start.y - item.y)
+      if -@aimAngle < angle < @aimAngle
+        if item.distance < pickedDistance
+          pickedDistance = item.distance
+          pickedAngle = angle
+
+    pickedAngle
 

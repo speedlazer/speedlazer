@@ -33,14 +33,6 @@ class Game.LazerScript
     unless playersActive
       @currentSequence = null
 
-  # Inventory
-
-  inventory: (name) ->
-    @level.inventory(name)
-
-  inventoryAdd: (type, name, options) ->
-    @level.inventoryAdd(type, name, options)
-
 _.extend(
   Game.LazerScript::
   Game.ScriptModule.Core

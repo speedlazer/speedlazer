@@ -236,7 +236,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   fase4: ->
     @sequence(
-      @drop(location: @location(), item: 'diagonals')
+      @drop(location: @location(), item: 'life')
       @while(
         @moveTo(x: .6, y: .90, speed: 150)
         @sequence(
