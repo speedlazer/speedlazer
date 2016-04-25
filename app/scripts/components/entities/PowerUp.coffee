@@ -11,8 +11,8 @@ Crafty.c 'PowerUp',
     if @settings.type
       typeColors =
         weapon: '#8080FF'
-        weaponUpgrade: '#20FF20'
-        weaponBoost: '#208020'
+        weaponUpgrade: '#FFFF00'
+        weaponBoost: '#00A000'
         ship: '#802020'
 
       @color typeColors[@settings.type]

@@ -422,6 +422,8 @@ Game.ScriptModule.Level =
 
   inventory: (name) ->
     if name is 'pool'
+      @taken ?= 0
+      console.log 'took from pool', @taken += 1
       name = (@powerupPool || []).pop()
     @level.inventory(name)
 
@@ -431,6 +433,8 @@ Game.ScriptModule.Level =
   setPowerupPool: (powerups...) ->
     (sequence) =>
       @_verify(sequence)
+      console.log 'Setup pool with', powerups.length, 'items'
+      @taken = 0
       @powerupPool = _.shuffle(powerups)
 
   hideHud: (settings = {}) ->

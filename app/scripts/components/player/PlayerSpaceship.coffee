@@ -205,6 +205,10 @@ Crafty.c 'PlayerSpaceship',
       @primaryWeapon.upgrade item.contains
       return true
 
+    if item.type is 'weaponBoost'
+      @primaryWeapon.boost item.contains
+      return true
+
   clearItems: ->
     @primaryWeapon?.uninstall()
     w.destroy() for w in @primaryWeapons
@@ -223,6 +227,21 @@ Crafty.c 'PlayerSpaceship',
         aim: 'AimAssist'
         speed: 'BulletSpeed'
       @scoreText "#{t[info.aspect]} +#{info.level}"
+    @listenTo weapon, 'boost', (info) =>
+      t =
+        damageb: 'Damage'
+        rapidb: 'RapidFire'
+        aimb: 'AimAssist'
+        speedb: 'BulletSpeed'
+      @scoreText "#{t[info.aspect]} Boost!"
+    @listenTo weapon, 'boostExpired', (info) =>
+      t =
+        damageb: 'Damage'
+        rapidb: 'RapidFire'
+        aimb: 'AimAssist'
+        speedb: 'BulletSpeed'
+      @scoreText "#{t[info.aspect]} Boost expired", off
+
     @primaryWeapons.push weapon
     @currentPrimary = @primaryWeapons.length - 1
 
@@ -231,15 +250,15 @@ Crafty.c 'PlayerSpaceship',
     return yes for i in @items when i.contains is item
     no
 
-  scoreText: (text) ->
+  scoreText: (text, positive = yes) ->
     t = Crafty.e('Text, DOM, 2D, Tween, Delay')
-      .textColor('#FFFFFF')
+      .textColor(if positive then '#FFFFFF' else '#FF0000')
       .text(text)
       .attr(
         x: @x
         y: @y - 10
         z: 990
-        w: 150
+        w: 250
       )
       .textFont({
         size: '10px',

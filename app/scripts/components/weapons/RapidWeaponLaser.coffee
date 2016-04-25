@@ -11,6 +11,8 @@ Crafty.c 'RapidWeaponLaser',
       damage: 0
       aim: 0
       speed: 0
+    @boosts = {}
+    @boostTimings = {}
 
     @lastShot = 0
     @shotsFired = 0
@@ -43,12 +45,23 @@ Crafty.c 'RapidWeaponLaser',
     @_determineWeaponSettings()
     @trigger('levelUp', aspect: aspect, level: @stats[aspect])
 
+  boost: (aspect) ->
+    @boosts[aspect] = 20
+    @boostTimings[aspect] = 15 * 1000
+
+    @_determineWeaponSettings()
+    @trigger('boost', aspect: aspect)
+
   _determineWeaponSettings: ->
-    @cooldown = 200 - (@stats.rapid * 10)
-    @damage = 100 + (@stats.damage * 25)
-    @aimAngle = 0 + (@stats.aim * 3)
-    @aimDistance = Math.min(40 + (@stats.aim * 20), 500)
-    @speed = 650 + (@stats.speed * 25)
+    @cooldown = 175 - ((@boosts.rapidb || @stats.rapid) * 5)
+
+    @damage = 75 + ((@boosts.damageb || @stats.damage) * 25)
+
+    @aimAngle = 0 + ((@boosts.aimb || @stats.aim) * 3)
+
+    @aimDistance = Math.min(40 + ((@boosts.aimb || @stats.aim) * 20), 500)
+
+    @speed = 650 + ((@boosts.speedb || @stats.speed) * 35)
 
     levels = (value for k, value of @stats)
     @overallLevel = Math.min(levels...)
@@ -63,6 +76,14 @@ Crafty.c 'RapidWeaponLaser',
 
   _autoFire: (fd) ->
     @lastShot += fd.dt
+    for k, v of @boostTimings
+      @boostTimings[k] -= fd.dt
+      if v < 0
+        delete @boostTimings[k]
+        delete @boosts[k]
+        @_determineWeaponSettings()
+        @trigger('boostExpired', aspect: k)
+
     return unless @shooting
     allowBullet = (@shotsFired < @burstCount)
     return unless @ship.weaponsEnabled
@@ -79,7 +100,7 @@ Crafty.c 'RapidWeaponLaser',
 
   _createFrontBullet: ->
     settings =
-      w: 6, speed: @speed, h: 3 + @overallLevel, o: @overallLevel
+      w: (@speed // 110), speed: @speed, h: 3 + @overallLevel, o: @overallLevel
 
     start =
       x: @x + @w
@@ -103,7 +124,7 @@ Crafty.c 'RapidWeaponLaser',
 
   _createBackBullet: ->
     settings =
-      w: 5, speed: @speed, h: 2 + @overallLevel, o: @overallLevel
+      w: (@speed // 130), speed: @speed, h: 2 + @overallLevel, o: @overallLevel
 
     start =
       x: @x + @w

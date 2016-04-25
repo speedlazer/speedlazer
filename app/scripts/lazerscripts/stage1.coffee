@@ -10,20 +10,25 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   execute: ->
     @inventoryAdd 'weapon', 'lasers', marking: 'L'
     @inventoryAdd 'ship', 'life', marking: '❤'
+
     @inventoryAdd 'weaponUpgrade', 'rapid', marking: 'RF'
     @inventoryAdd 'weaponUpgrade', 'damage', marking: 'D'
     @inventoryAdd 'weaponUpgrade', 'aim', marking: 'A'
     @inventoryAdd 'weaponUpgrade', 'speed', marking: 'S'
 
+    @inventoryAdd 'weaponBoost', 'rapidb', marking: 'RF'
+    @inventoryAdd 'weaponBoost', 'aimb', marking: 'A'
+    @inventoryAdd 'weaponBoost', 'speedb', marking: 'S'
+    @inventoryAdd 'weaponBoost', 'damageb', marking: 'D'
+
     @sequence(
-      @setPowerupPool 'rapid', 'damage'
-      @setPowerupPool 'life'
+      @setPowerupPool 'rapidb', 'speed'
       @introText()
       @tutorial()
-      @setPowerupPool 'aim', 'speed', 'rapid', 'speed', 'speed'
+      @setPowerupPool 'aimb', 'speed', 'rapid', 'speedb', 'speed', 'aim', 'damage', 'rapid'
       @droneTakeover()
       @oceanFighting()
-      @setPowerupPool 'aim', 'speed', 'rapid', 'damage', 'rapid'
+      @setPowerupPool 'aim', 'speed', 'rapidb', 'damage', 'rapid', 'damageb', 'speed', 'rapid'
       @enteringLand()
       @cityBay()
       @setPowerupPool 'speed', 'rapid', 'rapid', 'damage'
@@ -121,7 +126,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   introText: ->
     @sequence(
       @setWeapons(['lasers'])
-      @setSpeed 50
+      @setSpeed 100
       @setScenery('Intro')
       @sunRise()
       @cameraCrew()
@@ -151,23 +156,21 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @say 'General', 'It saves lives when you no longer need soldiers,\n' +
       'AI technology is the future after all.'
 
-      @wait 3000
+      @wait 1500
     )
 
   tutorial: ->
     @sequence(
       @setScenery('Ocean')
       @say('General', 'We send some drones for some last manual target practice')
-      @attackWaves(
-        @repeat(2, @sequence(
-          @dropWeaponsForEachPlayer()
-          @wait(2000)
-          @placeSquad Game.Scripts.Swirler,
-            amount: 4
-            delay: 500
-        ))
-        drop: 'pool'
-      )
+      @repeat(2, @sequence(
+        @dropWeaponsForEachPlayer()
+        @wait(1000)
+        @placeSquad Game.Scripts.Swirler,
+          amount: 4
+          delay: 500
+          drop: 'pool'
+      ))
     )
 
   dropWeaponsForEachPlayer: ->
@@ -190,7 +193,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         drop: 'pool'
       @say('General', 'What the hell is happening with our drones?')
       @say('General', 'They do not respond to our commands anymore!\nThe defence AI has been hacked!')
-      @chapterTitle(1, 'Hacked')
+      @async @chapterTitle(1, 'Hacked')
+      @setSpeed 150
     )
 
   cameraCrew: ->
@@ -229,7 +233,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @checkpoint @checkpointStart('Bay', 173000)
       @setScenery('UnderBridge')
       @parallel(
-        @placeSquad Game.Scripts.Stalker
+        @placeSquad Game.Scripts.Stalker,
+          drop: 'pool'
         @mineSwarm direction: 'left'
       )
 
@@ -237,7 +242,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @sequence(
           @stalkerShootout()
           @parallel(
-            @placeSquad Game.Scripts.Stalker
+            @placeSquad Game.Scripts.Stalker,
+              drop: 'pool'
             @mineSwarm direction: 'left'
           )
           @swirlAttacks()
@@ -248,7 +254,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   midstageBossfight: ->
     @sequence(
       @checkpoint @checkpointStart('BayFull', 226000)
-      @setScenery('UnderBridge')
       @parallel(
         @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
         @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
@@ -259,6 +264,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
       )
       @mineSwarm direction: 'left'
+      @setScenery('UnderBridge')
       @parallel(
         @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
         @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
@@ -285,13 +291,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @attackWaves(
       @parallel(
         @repeat 2, @placeSquad Game.Scripts.Swirler,
-          amount: 4
-          delay: 500
+          amount: 6
+          delay: 1000
           options:
             shootOnSight: yes
         @repeat 2, @placeSquad Game.Scripts.Shooter,
-          amount: 4
-          delay: 500
+          amount: 6
+          delay: 1000
           options:
             shootOnSight: yes
       )
@@ -300,7 +306,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   underWaterAttacks: ->
     @sequence(
-      @placeSquad Game.Scripts.Stalker
+      @placeSquad Game.Scripts.Stalker,
+        drop: 'pool'
       @repeat 2, @stalkerShootout()
     )
 

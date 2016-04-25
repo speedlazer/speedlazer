@@ -15,13 +15,13 @@ class Game.Scripts.Shooter extends Game.EntityScript
     @juice = options.juice
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 2000
-        sightAngle: 8
+        cooldown: 6000
+        sightAngle: 360
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Projectile, Color, Enemy').attr(
             w: 6
             h: 6
-            speed: 350
+            speed: 200
           ).color('#FFFF00')
           projectile.shoot(x, y, angle)
     d
