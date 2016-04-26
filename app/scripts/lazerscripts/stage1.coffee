@@ -9,7 +9,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   execute: ->
     @inventoryAdd 'weapon', 'lasers', marking: 'L'
+
     @inventoryAdd 'ship', 'life', marking: '❤'
+    @inventoryAdd 'ship', 'points', marking: 'P'
 
     @inventoryAdd 'weaponUpgrade', 'rapid', marking: 'RF'
     @inventoryAdd 'weaponUpgrade', 'damage', marking: 'D'
@@ -25,13 +27,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setPowerupPool 'rapidb', 'speed'
       @introText()
       @tutorial()
-      @setPowerupPool 'aimb', 'speed', 'rapid', 'speedb', 'speed', 'aim', 'damage', 'rapid'
+      @setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
       @droneTakeover()
       @oceanFighting()
-      @setPowerupPool 'aim', 'speed', 'rapidb', 'damage', 'rapid', 'damageb', 'speed', 'rapid'
+      @setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb'
       @enteringLand()
       @cityBay()
-      @setPowerupPool 'speed', 'rapid', 'rapid', 'damage'
+      @setPowerupPool 'speed', 'rapid', 'aim'
       @midstageBossfight()
 
       @checkpoint @checkpointMidStage('BayFull', 400000)
@@ -167,8 +169,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @dropWeaponsForEachPlayer()
         @wait(1000)
         @placeSquad Game.Scripts.Swirler,
-          amount: 4
-          delay: 500
+          amount: 6
+          delay: 250
           drop: 'pool'
       ))
     )
@@ -264,13 +266,14 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
       )
       @mineSwarm direction: 'left'
-      @setScenery('UnderBridge')
       @parallel(
         @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
         @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
       )
       @mineSwarm()
-      @showText 'Warning!', color: '#FF0000', mode: 'blink'
+      @setScenery('UnderBridge')
+      @async @showText 'Warning!', color: '#FF0000', mode: 'blink'
+      @setSpeed 100
       @while(
         @waitForScenery('UnderBridge', event: 'inScreen')
         @sequence(
@@ -291,13 +294,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @attackWaves(
       @parallel(
         @repeat 2, @placeSquad Game.Scripts.Swirler,
-          amount: 6
-          delay: 1000
+          amount: 8
+          delay: 500
           options:
             shootOnSight: yes
         @repeat 2, @placeSquad Game.Scripts.Shooter,
-          amount: 6
-          delay: 1000
+          amount: 8
+          delay: 500
           options:
             shootOnSight: yes
       )
@@ -316,8 +319,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   mineSwarm: (options = { direction: 'right' })->
     @placeSquad Game.Scripts.JumpMine,
-      amount: 14
-      delay: 300
+      amount: 20
+      delay: 100
       options:
         gridConfig:
           x:

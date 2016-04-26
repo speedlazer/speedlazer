@@ -166,14 +166,21 @@ Crafty.c 'PlayerSpaceship',
     @currentPrimary = nextWeapon
 
   stats: (newStats = {}) ->
+    # TODO: Needs refactoring
     if newStats.primary?
-      @primaryWeapon.stats = newStats.primary
+      @primaryWeapon.stats = newStats.primary.stats
+      @primaryWeapon.boosts = newStats.primary.boosts
+      @primaryWeapon.boostTimings = newStats.primary.boostTimings
       @primaryWeapon._determineWeaponSettings()
 
     stats = {}
-    stats['primary'] = @primaryWeapon?.stats ? {}
+    stats['primary'] = {
+      stats: @primaryWeapon?.stats ? {}
+      boosts: @primaryWeapon?.boosts ? {}
+      boostTimings: @primaryWeapon?.boostTimings ? {}
+    }
 
-    return stats
+    stats
 
   superWeapon: (onOff) ->
     return unless onOff
@@ -199,6 +206,9 @@ Crafty.c 'PlayerSpaceship',
     if item.type is 'ship'
       if item.contains is 'life'
         @scoreText 'Extra life!'
+        return true
+      if item.contains is 'points'
+        @scoreText 'Bonus points!'
         return true
 
     if item.type is 'weaponUpgrade'

@@ -6,8 +6,8 @@ Crafty.c 'Drone',
     @attr _.defaults(attr,
       w: 40
       h: 40
-      health: 150
-      defaultSpeed: 200
+      health: 100
+      defaultSpeed: 100
     )
     @origin 'center'
     @collision [2, 25, 8,18, 20,13, 30, 15, 33, 28, 14, 34, 4, 30]
@@ -34,6 +34,9 @@ Crafty.c 'Drone',
     @sprite(sprite, 0)
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
+    @vx = dx * (1000 / dt)
+    @vy = dy * (1000 / dt)
+
     if dx > 0
       @flipX()
     else

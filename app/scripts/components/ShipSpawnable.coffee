@@ -52,6 +52,7 @@ Crafty.c 'ShipSpawnable',
     @listenTo @ship, 'PowerUp', (powerUp) ->
       if powerUp.type is 'ship'
         @gainLife() if powerUp.contains is 'life'
+        @addPoints(500) if powerUp.contains is 'points'
       @addPoints(20)
 
     @listenTo @ship, 'Shoot', ->

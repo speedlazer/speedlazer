@@ -46,22 +46,21 @@ Crafty.c 'RapidWeaponLaser',
     @trigger('levelUp', aspect: aspect, level: @stats[aspect])
 
   boost: (aspect) ->
-    @boosts[aspect] = 20
+    @boosts[aspect] = 10
     @boostTimings[aspect] = 15 * 1000
 
     @_determineWeaponSettings()
     @trigger('boost', aspect: aspect)
 
   _determineWeaponSettings: ->
-    @cooldown = 175 - ((@boosts.rapidb || @stats.rapid) * 5)
+    @cooldown = 175 - ((@boosts.rapidb || @stats.rapid) * 10)
 
-    @damage = 75 + ((@boosts.damageb || @stats.damage) * 25)
+    @damage = 100 + ((@boosts.damageb || @stats.damage) * 50)
 
-    @aimAngle = 0 + ((@boosts.aimb || @stats.aim) * 3)
+    @aimAngle = 0 + ((@boosts.aimb || @stats.aim) * 6)
+    @aimDistance = Math.min(40 + ((@boosts.aimb || @stats.aim) * 50), 500)
 
-    @aimDistance = Math.min(40 + ((@boosts.aimb || @stats.aim) * 20), 500)
-
-    @speed = 650 + ((@boosts.speedb || @stats.speed) * 35)
+    @speed = 650 + ((@boosts.speedb || @stats.speed) * 70)
 
     levels = (value for k, value of @stats)
     @overallLevel = Math.min(levels...)
@@ -71,6 +70,7 @@ Crafty.c 'RapidWeaponLaser',
       @shooting = yes
     else
       @shooting = no
+      @_clearPicked()
       @shotsFired = 0
       @lastShot = 500
 
@@ -147,21 +147,73 @@ Crafty.c 'RapidWeaponLaser',
         @ship.trigger('BulletDestroyedTarget', target)
 
   _bulletDirection: (start) ->
+    target = @_targetEnemy(start)
+    unless target
+      @_clearPicked()
+      @currentShot = 0
+      return 0
+
+    distance = Math.sqrt(Math.abs(start.x - target.x) ** 2 + Math.abs(start.y - target.y) ** 2)
+    time = distance / (@speed + @ship._currentSpeed.x)
+
+    projected =
+      x: target.x + (target.w // 2) + (target.vx * time)
+      y: target.y + (target.h // 2) + (target.vy * time)
+
+    angle = Math.atan2(projected.y - start.y, projected.x - start.x)
+    angle *= 180 / Math.PI
+    unless -@aimAngle < angle < @aimAngle
+      @_clearPicked()
+      @currentShot = 0
+      return 0
+
+    @currentShot ?= 0
+    dist = Math.abs(@currentShot - angle)
+    adjust = 2
+    if dist > 10
+      adjust = 4
+    if dist > 15
+      adjust = 8
+    if dist > 40
+      adjust = 25
+    if dist > 90
+      adjust = 50
+
+    if @currentShot < angle
+      @currentShot += adjust
+    else
+      @currentShot -= adjust
+
+    @currentShot
+
+
+  _targetEnemy: (start) ->
+    return @pickedEntity if @pickedEntity
+
     list = []
     Crafty('Enemy').each ->
-      list.push({ x: @x, y: @y + (@h / 2) }) unless @has('Projectile') or @hidden
+      list.push({ x: @x, y: @y + (@h / 2), e: this }) unless @has('Projectile') or @hidden
 
-    pickedAngle = 0
+    @pickedEntity = null
     pickedDistance = Infinity
     for item in list
       angle = Math.atan2(item.y - start.y, item.x - start.x)
       angle *= 180 / Math.PI
-      item.angle = angle
-      item.distance = Math.abs(start.x - item.x) + Math.abs(start.y - item.y)
+      distance = Math.abs(start.x - item.x) + Math.abs(start.y - item.y)
       if -@aimAngle < angle < @aimAngle
-        if item.distance < pickedDistance
-          pickedDistance = item.distance
-          pickedAngle = angle
+        if distance < pickedDistance
+          pickedDistance = distance
+          @pickedEntity = item.e
+    if @pickedEntity
+      @pickedEntity.one 'Remove', => @_clearPicked()
+      @pickedEntity.one 'Hiding', => @_clearPicked()
 
-    pickedAngle
+    @pickedEntity
+
+  _clearPicked: ->
+    if @pickedEntity
+      @pickedEntity.unbind 'Remove', @_clearPicked
+      @pickedEntity.unbind 'Hiding', @_clearPicked
+    @pickedEntity = null
+
 

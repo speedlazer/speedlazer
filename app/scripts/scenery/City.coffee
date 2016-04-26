@@ -501,7 +501,7 @@ generator.defineBlock class extends Game.LevelScenery
 
   generate: ->
     super
-    @notifyOffsetX = -100
+    @notifyOffsetX = -250
 
     @addElement 'waterFront', lightness: 0.8
     @addElement 'water'

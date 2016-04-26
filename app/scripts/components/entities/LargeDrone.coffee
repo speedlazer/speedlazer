@@ -59,3 +59,6 @@ Crafty.c 'LargeDrone',
     sprite = 3 if healthPerc < .3
     @sprite(sprite, 0)
 
+  updateMovementVisuals: (rotation, dx, dy, dt) ->
+    @vx = dx * (1000 / dt)
+    @vy = dy * (1000 / dt)

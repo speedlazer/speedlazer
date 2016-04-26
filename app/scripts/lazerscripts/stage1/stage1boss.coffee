@@ -421,8 +421,6 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
 
   execute: ->
     @bindSequence 'Hit', @leaveScreen, => @entity.health < 258000
-    @inventoryAdd 'item', 'xp', ->
-      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
 
     @sequence(
       @animate 'slow', -1, 'eye'
@@ -433,7 +431,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
 
   leaveScreen: ->
     @sequence(
-      @drop(location: @location(), item: 'xp')
+      @drop(location: @location(), item: 'pool')
       @moveTo(x: 0.95, speed: 100)
       @while(
         @moveTo(x: -.15, speed: 500)
