@@ -53,13 +53,13 @@ class Game.Scripts.CrewShooters extends Game.EntityScript
   shootPlayer: ->
     =>
       @entity.shootOnSight
-        cooldown: 4000
+        cooldown: 3000
         sightAngle: 360
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Projectile, Color, Enemy').attr(
             w: 6
             h: 6
-            speed: 200
+            speed: 400
           ).color('#FFFF00')
           projectile.shoot(x, y, angle)
 

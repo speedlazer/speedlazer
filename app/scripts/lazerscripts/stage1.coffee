@@ -324,8 +324,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       options:
         gridConfig:
           x:
-            start: 0.3
-            steps: 12
+            start: 0.1
+            steps: 16
             stepSize: 0.05
           y:
             start: 0.125
@@ -341,13 +341,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @attackWaves(
         @parallel(
           @placeSquad Game.Scripts.Shooter,
-            amount: 4
-            delay: 1000
+            amount: 8
+            delay: 500
             options:
               shootOnSight: yes
           @placeSquad Game.Scripts.Swirler,
-            amount: 4
-            delay: 1000
+            amount: 8
+            delay: 500
             options:
               shootOnSight: yes
         )
