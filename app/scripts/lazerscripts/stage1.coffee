@@ -30,10 +30,10 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
       @droneTakeover()
       @oceanFighting()
-      @setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb'
+      @setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
       @enteringLand()
       @cityBay()
-      @setPowerupPool 'speed', 'rapid', 'aim'
+      @setPowerupPool 'speed', 'rapid', 'aim', 'speed', 'rapid', 'aim'
       @midstageBossfight()
 
       @checkpoint @checkpointMidStage('BayFull', 400000)
@@ -273,17 +273,27 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @mineSwarm()
       @setScenery('UnderBridge')
       @async @showText 'Warning!', color: '#FF0000', mode: 'blink'
-      @setSpeed 100
       @while(
-        @waitForScenery('UnderBridge', event: 'inScreen')
+        @waitForScenery('UnderBridge', event: 'enter')
         @sequence(
-          @pickTarget('PlayerControlledShip')
-          @placeSquad Game.Scripts.Stage1BossRocket,
+          @placeSquad Game.Scripts.Stage1BossRocketStrike,
+            amount: 6
+            delay: 150
             options:
-              location: @targetLocation(x: 1.3)
+              gridConfig:
+                x:
+                  start: 1.1
+                  steps: 1
+                  stepSize: 0.05
+                y:
+                  start: 0.125
+                  steps: 12
+                  stepSize: 0.05
           @wait 200
         )
       )
+      @setSpeed 50
+      @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
       @placeSquad Game.Scripts.Stage1BossStage1
 

@@ -301,6 +301,52 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
     @bigExplosion()
 
 
+class Game.Scripts.Stage1BossRocketStrike extends Game.EntityScript
+  spawn: (options) ->
+    options = _.defaults(options,
+      pointsOHit: 125
+      pointsOnDestroy: 50
+    )
+    location = options.grid.getLocation()
+
+    Crafty.e('Rocket').rocket(
+      health: 250
+      x: location.x * Crafty.viewport.width
+      y: location.y * Crafty.viewport.height
+      z: 5
+      defaultSpeed: 600
+      pointsOnHit: options.pointsOnHit
+      pointsOnDestroy: options.pointsOnDestroy
+    )
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @while(
+      @moveTo(x: -205, easing: 'easeInQuad')
+      @sequence(
+        @blast(@location(),
+          ->
+            radius: 5
+            duration: 135
+            z: 1
+            alpha: .8
+            lightness: 1.0
+            gravity: (Math.random() * .2)
+            vertical: 0
+          ->
+            vertical: @vertical + Math.random() * @gravity
+            rotation: @rotation + (Math.random() * 3)
+            alpha: Math.max(0.1, (@alpha - Math.random() * .03))
+            lightness: Math.max(.4, @lightness - .05)
+            y: @y - @vertical
+        )
+        @wait 20
+      )
+    )
+
+  onKilled: ->
+    @bigExplosion()
+
 class Game.Scripts.Stage1BossRocket extends Game.EntityScript
   spawn: (options) ->
     options = _.defaults(options,
