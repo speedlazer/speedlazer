@@ -138,11 +138,20 @@ Game.ScriptModule.Core =
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
       d = WhenJS.defer()
+
+      duration = Math.max(amount?() ? amount, 0)
+      parts = duration // 40
       Crafty.e('Delay').delay(
+        =>
+          try
+            @_verify(sequence)
+          catch e
+            d.reject e
+        40
+        parts
         ->
           d.resolve()
           @destroy()
-        Math.max(amount?() ? amount, 0)
       )
       d.promise
 

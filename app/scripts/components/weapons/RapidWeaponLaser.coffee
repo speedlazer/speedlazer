@@ -62,7 +62,7 @@ Crafty.c 'RapidWeaponLaser',
 
     @speed = 650 + ((@boosts.speedb || @stats.speed) * 70)
 
-    levels = (value for k, value of @stats)
+    levels = (value for k, value of @stats when k isnt 'damage')
     @overallLevel = Math.min(levels...)
 
   shoot: (onOff) ->
@@ -100,7 +100,7 @@ Crafty.c 'RapidWeaponLaser',
 
   _createFrontBullet: ->
     settings =
-      w: (@speed // 110), speed: @speed, h: 3 + @overallLevel, o: @overallLevel
+      w: (@speed // 55), speed: @speed, h: 3 + @overallLevel, o: @overallLevel
 
     start =
       x: @x + @w
@@ -124,7 +124,7 @@ Crafty.c 'RapidWeaponLaser',
 
   _createBackBullet: ->
     settings =
-      w: (@speed // 130), speed: @speed, h: 2 + @overallLevel, o: @overallLevel
+      w: (@speed // 65), speed: @speed, h: 2 + @overallLevel, o: @overallLevel
 
     start =
       x: @x + @w

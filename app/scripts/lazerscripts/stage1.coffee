@@ -255,6 +255,10 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   midstageBossfight: ->
     @sequence(
+      # TEMP setup
+      #@setSpeed 0
+      #@checkpoint @checkpointStart('UnderBridge', 226000)
+
       @checkpoint @checkpointStart('BayFull', 226000)
       @parallel(
         @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
@@ -292,7 +296,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           @wait 200
         )
       )
-      @setSpeed 50
+      @setSpeed 75
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
       @placeSquad Game.Scripts.Stage1BossStage1
