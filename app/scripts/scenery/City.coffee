@@ -523,8 +523,8 @@ generator.defineBlock class extends Game.LevelScenery
     @addBackground(0, 205,  @deck(.25, w: 700, z: -50).flip('X'), .70)
     @addBackground(0, 155,  @deck(.15, w: 750, z: -40), .75)
 
-    @addBackground(160, 160, @pillar( 0, h: 350, z: -31), .8)
-    @addBackground(990, 160, @pillarX(0, h: 350, z: -31), .8)
+    @addBackground(160, 180, @pillar( 0, h: 350, z: -31), .8)
+    @addBackground(990, 180, @pillarX(0, h: 350, z: -31), .8)
     @addBackground(0, 95,  @deck(.05, w: 800, z: -30).flip('X'), .8)
 
     @addBackground(0, 20,   @deck(0,   w: 900, z: -20).addComponent('BackDeck'), .9)
