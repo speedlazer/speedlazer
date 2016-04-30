@@ -191,8 +191,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   bombRaid: (armed = no) ->
     @sequence(
-      @invincible yes
-      @moveTo(y: .1)
+      @moveTo(y: .1, speed: 200, easing: 'easeInOutQuad')
       @while(
         @moveTo(x: -100, speed: 400)
         @sequence(
@@ -216,10 +215,9 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
           @wait 300
         )
       )
-      @moveTo(x: 1.2, speed: 200)
+      @moveTo(x: 1.2, speed: 400)
       @turnAround()
-      @moveTo(x: .85, y: .41, speed: 200)
-      @invincible no
+      @moveTo(x: .85, y: .41, speed: 400)
     )
 
   fase2: ->
@@ -265,13 +263,12 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
           )
         )
       )
-      @drop(location: @location(), item: 'life')
       @moveTo(y: 1.1, x: .4, speed: 50)
-      @moveTo(y: .6, x: .4, speed: 350)
+      @moveTo(y: .6, x: .4, speed: 350, easing: 'easeOutQuad')
       @sendToBackground(0.9, -100)
       @parallel(
         @while(
-          @moveTo(x: -.15, speed: 300)
+          @moveTo(x: -.15, speed: 300, easing: 'easeInQuad')
           @smoke('medium')
         )
 

@@ -296,8 +296,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
       @placeSquad Game.Scripts.Stage1BossStage1
-
-      @setSpeed 50
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'life', inFrontOf: @player(2)))
+      )
+      @setSpeed 150
     )
 
   swirlAttacks: ->
