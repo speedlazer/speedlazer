@@ -79,6 +79,8 @@ Crafty.c 'Choreography',
         @_repeated += 1
         number = 0
       else
+        if @updateMovementVisuals?
+          @updateMovementVisuals(undefined, 0, 0, 1)
         @_choreography = []
         @unbind('GameLoop', @_choreographyTick)
         @trigger 'ChoreographyEnd'

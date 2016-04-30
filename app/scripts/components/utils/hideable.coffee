@@ -12,6 +12,8 @@ Crafty.c 'Hideable',
       if c.attr?
         zOff = c.z - @_originalZ
         c.attr z: z + zOff
+
+    @trigger('Hiding', this) unless @hidden
     @hidden = yes
 
   hide: (@hideMarker, options) ->
@@ -25,6 +27,7 @@ Crafty.c 'Hideable',
       @attr alpha: .0
       for c in @_children
         c.attr?(alpha: .0)
+    @trigger 'Hiding', this
 
   reveal: ->
     @hideMarker?.destroy()
@@ -44,6 +47,7 @@ Crafty.c 'Hideable',
 
     for c in @_children
       c.attr?(alpha: 1.0, hideAt: null)
+    @trigger 'Revealing', this
 
   remove: ->
     @hideMarker?.destroy()

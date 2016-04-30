@@ -128,9 +128,16 @@ class Game.LevelScenery
 
   # Helper method to bind to an event in the game
   # and registers the bind for auto unbinding.
-  bind: (event, callback) ->
+  bind: (event, options, callback) ->
+    if _.isFunction(options) and callback is undefined
+      callback = options
+      options = {}
+
     @createdBindings.push { event, callback }
-    Crafty.bind(event, callback)
+    if options.once is yes
+      Crafty.one(event, callback)
+    else
+      Crafty.bind(event, callback)
 
   unbind: (event) ->
     unbound = []

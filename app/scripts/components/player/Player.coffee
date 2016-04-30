@@ -26,6 +26,10 @@ Crafty.c 'Player',
     if @lives <= 0
       Crafty.trigger('PlayerDied', this)
 
+  gainLife: ->
+    @lives += 1
+    @trigger 'UpdateLives', lives: @lives
+
   addPoints: (amount) ->
     # Debatable should you get points for a target
     # that gets destroyed after you self died?

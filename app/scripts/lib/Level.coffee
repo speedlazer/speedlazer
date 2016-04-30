@@ -153,7 +153,6 @@ class Game.Level
 
   _placePlayerShips: ->
     defaults =
-      armedPlayers: 'lasers'
       spawnPosition:
         x: 100
         y: 200
@@ -176,7 +175,7 @@ class Game.Level
           pos.y = @y + settings.spawnOffset.y + Crafty.viewport.y
         pos
 
-      @addComponent('ShipSpawnable').spawnPosition(spawnPosition, settings.armedPlayers)
+      @addComponent('ShipSpawnable').spawnPosition(spawnPosition)
 
       Crafty.e('PlayerInfo').playerInfo(30 + (index * (Crafty.viewport.width * .3)), this)
 
@@ -187,10 +186,23 @@ class Game.Level
 
       if @playerStartWeapons?
         ship.clearItems()
-        ship.installItem item for item in @playerStartWeapons
+        for item in @playerStartWeapons
+          itemSettings = @inventory(item)
+          ship.installItem itemSettings
 
     Crafty('Player ControlScheme').each ->
       @spawnShip()
+
+  inventory: (name) ->
+    @invItems ||= {}
+    @invItems[name]
+
+  inventoryAdd: (type, name, options) ->
+    @invItems ||= {}
+    @invItems[name] ||= _.defaults(options,
+      type: type
+      contains: name
+    )
 
   getShipType: -> @shipType
   setShipType: (@shipType) ->

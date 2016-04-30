@@ -4,7 +4,11 @@ Crafty.c 'Drone',
 
   drone: (attr = {}) ->
     @attr _.defaults(attr,
-      w: 40, h: 40, health: 300)
+      w: 40
+      h: 40
+      health: 100
+      defaultSpeed: 100
+    )
     @origin 'center'
     @collision [2, 25, 8,18, 20,13, 30, 15, 33, 28, 14, 34, 4, 30]
     @attr weaponOrigin: [2, 25]
@@ -28,3 +32,13 @@ Crafty.c 'Drone',
       sprite = 1
 
     @sprite(sprite, 0)
+
+  updateMovementVisuals: (rotation, dx, dy, dt) ->
+    @vx = dx * (1000 / dt)
+    @vy = dy * (1000 / dt)
+
+    if dx > 0
+      @flipX()
+    else
+      @unflipX()
+

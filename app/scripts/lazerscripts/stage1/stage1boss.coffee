@@ -40,22 +40,20 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       defaultSpeed: 100
-      health: 45000
+      health: 30000
       #defaultSpeed: 50
       pointsOnHit: 10
     )
 
   execute: ->
-    @inventoryAdd 'item', 'diagonals', ->
-      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
-    @bindSequence 'Hit', @fase2, => @entity.healthBelow .8
+    @bindSequence 'Hit', @fase2, => @entity.healthBelow .5
 
     @sequence(
-      => @entity.invincible = yes
+      @invincible yes
       @animate 'slow', -1, 'eye'
       @disableWeapons()
       @parallel(
-        @moveTo(x: .85, y: .41)
+        @moveTo(x: .75, y: .41)
         @sequence(
           @say('Drone Commander', 'We have control now! You will suffer!')
           @say('Drone Commander', 'Earths defences are in our hands!')
@@ -63,7 +61,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
         )
       )
       @laugh()
-      => @entity.invincible = no
+      @invincible no
       @enableWeapons()
       @async @placeSquad(Game.Scripts.Stage1BossRocket,
         options:
@@ -74,141 +72,170 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @animate 'emptyWing', 0, 'wing'
       @animate 'reload', 0, 'wing'
       @moveTo(y: .43, speed: 5)
-      @repeat @attackCycle(5)
+
+      # fase 1
+      @repeat @sequence(
+        @repeat 2, @rocketStrikeDance()
+        @mineFieldStrike()
+      )
     )
 
-  attackCycle: (speed) ->
+  mineFieldStrike: ->
     @sequence(
-      @async @runScript(Game.Scripts.Stage1BossMine, @location())
-      @moveTo(y: .41, speed: speed)
-      @wait 200
-      @async @placeSquad(Game.Scripts.Stage1BossRocket,
-        options:
-          location: @location()
-          pointsOnDestroy: 0
-          pointsOnHit: 0
-      )
-      @animate 'emptyWing', 0, 'wing'
-      @animate 'reload', 0, 'wing'
-      @async @runScript(Game.Scripts.Stage1BossMine, @location())
-      @moveTo(y: .43, speed: speed)
-      @async @placeSquad(Game.Scripts.Stage1BossRocket,
-        options:
-          location: @location()
-          pointsOnDestroy: 0
-          pointsOnHit: 0
-      )
-      @animate 'emptyWing', 0, 'wing'
-      @wait 200
-      @animate 'reload', 0, 'wing'
-    )
-
-  attackCycle3: (speed) ->
-    @repeat @sequence(
-      @repeat 5, @sequence(
-        @pickTarget('PlayerControlledShip')
-        @while(
-          @moveTo(@targetLocation(offsetY: -20, x: .85))
-          @sequence(
-            @async @runScript(Game.Scripts.Stage1BossMine, @location())
-            @wait 800
-            @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
-              options:
-                location: @location()
-                pointsOnDestroy: 100
-                pointsOnHit: 10
-            )
-            @animate 'emptyWing', 0, 'wing'
-            @animate 'reload', 0, 'wing'
-            @async @runScript(Game.Scripts.Stage1BossMine, @location())
-            @wait 800
-            @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
-              options:
-                location: @location()
-                pointsOnDestroy: 100
-                pointsOnHit: 10
-            )
-            @animate 'emptyWing', 0, 'wing'
-            @wait 800
-            @animate 'reload', 0, 'wing'
-          )
+      @parallel(
+        @sequence(
+          @moveTo(x: -.2, y: .8, speed: 400, easing: 'easeInQuad')
+          @turnAround()
+          @movePath([
+            [.2, .2]
+            [.9, .6]
+            [1.2, .4]
+          ], speed: 400)
+          @turnAround()
+          @movePath([
+            [.8, .2]
+            [.5, .5]
+            [1.2, .6]
+          ], speed: 400)
         )
-        @wait(1000)
-      )
-      @rocketRaid()
-    )
-
-  rocketRaid: ->
-    @sequence(
-      => @entity.invincible = yes
-      @moveTo(y: .1)
-      @repeat 10, @sequence(
-        @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
+        @placeSquad(Game.Scripts.Stage1BossMineField,
+          amount: 30
+          delay: 300
           options:
             location: @location()
-            pointsOnDestroy: 100
-            pointsOnHit: 10
+            gridConfig:
+              x:
+                start: 0.1
+                steps: 9
+                stepSize: 0.1
+              y:
+                start: 0.125
+                steps: 8
+                stepSize: 0.1
         )
-        @animate 'emptyWing', 0, 'wing'
-        @animate 'reload', 0, 'wing'
-        @wait 500
       )
+      @movePath([
+        [.7, .4]
+      ], speed: 300, 'easeOutQuad')
+    )
 
-      @pickTarget('PlayerControlledShip')
-      @moveTo(@targetLocation(offsetY: -20), x: .85)
-      => @entity.invincible = no
+  rocketStrikeDance: (homing = no) ->
+    @parallel(
+      @movePath([
+          [.7, .4]
+          [.8, .3]
+          [.9, .5]
+          [.7, .6]
+          [.8, .7]
+          [.9, .4]
+          [.7, .1]
+          [.6, .2]
+        ]
+      )
+      @repeat 2, @sequence(
+        @fireRockets(4, homing)
+        @wait 1500
+        @fireRockets(4, homing)
+        @wait 1000
+        @fireRockets(2, homing)
+        @wait 300
+        @fireRockets(2)
+        @wait 300
+        @fireRockets(2, homing)
+        @wait 300
+      )
+    )
+
+  fireRockets: (amount, homing) ->
+    script = Game.Scripts.Stage1BossRocket
+    if homing
+      script = Game.Scripts.Stage1BossHomingRocket
+
+    @sequence(
+      @async @placeSquad(script,
+        options:
+          z: 5
+          offsetX: 0
+          offsetY: 50
+          location: @location()
+      )
+      @animate 'emptyWing', 0, 'wing'
+      @async @placeSquad(script,
+        options:
+          z: -5
+          offsetX: 0
+          offsetY: -50
+          location: @location()
+      )
+      @if(( -> amount > 2)
+        @async @placeSquad(Game.Scripts.Stage1BossRocket,
+          options:
+            z: -5
+            offsetX: 30
+            offsetY: -100
+            location: @location()
+        )
+      )
+      @if(( -> amount > 3)
+        @async @placeSquad(Game.Scripts.Stage1BossRocket,
+          options:
+            z: -5
+            offsetX: 30
+            offsetY: 100
+            location: @location()
+        )
+      )
+      @wait 500
+      @animate 'reload', 0, 'wing'
     )
 
   bombRaid: (armed = no) ->
     @sequence(
-      => @entity.invincible = yes
-      @moveTo(y: .1)
+      @moveTo(y: .1, speed: 200, easing: 'easeInOutQuad')
       @while(
-        @moveTo(x: -100, speed: 200)
+        @moveTo(x: -100, speed: 400)
         @sequence(
           @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
             options:
               location: @location()
               armed: no
           )
-          @wait 500
+          @wait 300
         )
       )
-      => @entity.flipX()
+      @turnAround()
       @while(
-        @moveTo(x: 1.0, speed: 200)
+        @moveTo(x: 1.0, speed: 400)
         @sequence(
           @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
             options:
               location: @location()
               armed: armed
           )
-          @wait 500
+          @wait 300
         )
       )
-      @moveTo(x: 1.2, speed: 200)
-      => @entity.unflipX()
-      @moveTo(x: .85, y: .41, speed: 200)
-      => @entity.invincible = no
+      @moveTo(x: 1.2, speed: 400)
+      @turnAround()
+      @moveTo(x: .85, y: .41, speed: 400)
     )
 
   fase2: ->
-    # start at .8
-    @bindSequence 'Hit', @fase3, => @entity.healthBelow .5
+    # start at .6
+    @bindSequence 'Hit', @endOfFight, => @entity.healthBelow .2
 
     @sequence(
-      @setSpeed 50
-      @bombRaid(yes)
+      @setSpeed 200
       @repeat @sequence(
-        @repeat 3, @attackCycle(7)
-        @laugh()
-        @async @placeSquad(Game.Scripts.Stage1BossDroneRaid,
-          amount: 6
-          delay: 300
-          options:
-            shootOnSight: yes
+        @bombRaid(yes)
+        @while(
+          @rocketStrikeDance(yes)
+          @sequence(
+            @async @runScript(Game.Scripts.Stage1BossMine, @location())
+            @wait 900
+          )
         )
-        @laugh()
+        @wait 500
       )
     )
 
@@ -224,21 +251,10 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       => @entity.invincible = no
     )
 
-  fase3: ->
-    # start at .5
-    @bindSequence 'Hit', @fase4, => @entity.healthBelow .2
-
+  endOfFight: ->
     @sequence(
-      @setSpeed 50
-      @bombRaid(yes)
-      @attackCycle3(6)
-    )
-
-  fase4: ->
-    @sequence(
-      @drop(location: @location(), item: 'diagonals')
       @while(
-        @moveTo(x: .6, y: .90, speed: 150)
+        @moveTo(x: .6, y: .90, speed: 50)
         @sequence(
           @smallExplosion()
           @while(
@@ -248,21 +264,21 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
         )
       )
       @moveTo(y: 1.1, x: .4, speed: 50)
-      @moveTo(y: .6, x: .4, speed: 350)
+      @moveTo(y: .6, x: .4, speed: 350, easing: 'easeOutQuad')
       @sendToBackground(0.9, -100)
       @parallel(
         @while(
-          @moveTo(x: -.15, speed: 300)
+          @moveTo(x: -.15, speed: 300, easing: 'easeInQuad')
           @smoke('medium')
         )
 
         @scale(0.8, duration: 3000)
       )
-      => @entity.flipX()
+      @turnAround()
       @sendToBackground(0.7, -150)
       @while(
-        @moveTo(x: 1.1, speed: 300)
-        @smoke('light')
+        @moveTo(x: 1.1, speed: 500, easing: 'easeInQuad')
+        @smoke('medium')
       )
     )
 
@@ -301,16 +317,67 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
     @bigExplosion()
 
 
-class Game.Scripts.Stage1BossRocket extends Game.EntityScript
+class Game.Scripts.Stage1BossRocketStrike extends Game.EntityScript
   spawn: (options) ->
     options = _.defaults(options,
       pointsOHit: 125
       pointsOnDestroy: 50
     )
+    location = options.grid.getLocation()
+
+    Crafty.e('Rocket').rocket(
+      health: 250
+      x: location.x * Crafty.viewport.width
+      y: location.y * Crafty.viewport.height
+      z: 5
+      defaultSpeed: 600
+      pointsOnHit: options.pointsOnHit
+      pointsOnDestroy: options.pointsOnDestroy
+    )
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @while(
+      @moveTo(x: -205, easing: 'easeInQuad')
+      @sequence(
+        @blast(@location(),
+          ->
+            radius: 5
+            duration: 135
+            z: 1
+            alpha: .8
+            lightness: 1.0
+            gravity: (Math.random() * .2)
+            vertical: 0
+          ->
+            vertical: @vertical + Math.random() * @gravity
+            rotation: @rotation + (Math.random() * 3)
+            alpha: Math.max(0.1, (@alpha - Math.random() * .03))
+            lightness: Math.max(.4, @lightness - .05)
+            y: @y - @vertical
+        )
+        @wait 20
+      )
+    )
+
+  onKilled: ->
+    @bigExplosion()
+
+class Game.Scripts.Stage1BossRocket extends Game.EntityScript
+  spawn: (options) ->
+    options = _.defaults(options,
+      pointsOHit: 125
+      pointsOnDestroy: 50
+      offsetY: 0
+      offsetX: 0
+    )
     return null unless options.location?
 
     location = options.location?()
     return null unless location
+
+    @offsetY = options.offsetY
+    @offsetX = options.offsetX
 
     Crafty.e('Rocket').rocket(
       health: 250
@@ -325,7 +392,13 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
   execute: ->
     @bindSequence 'Destroyed', @onKilled
     @while(
-      @moveTo(x: -205, easing: 'easeInQuad')
+      @sequence(
+        @moveTo @location(offsetY: @offsetY, offsetX: @offsetX)
+        @if((-> @offsetX isnt 0 or @offsetY isnt 0)
+          @wait 500
+        )
+        @moveTo(x: -205, easing: 'easeInQuad')
+      )
       @sequence(
         @blast(@location(),
           ->
@@ -421,8 +494,6 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
 
   execute: ->
     @bindSequence 'Hit', @leaveScreen, => @entity.health < 258000
-    @inventoryAdd 'item', 'xp', ->
-      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
 
     @sequence(
       @animate 'slow', -1, 'eye'
@@ -433,7 +504,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
 
   leaveScreen: ->
     @sequence(
-      @drop(location: @location(), item: 'xp')
+      @drop(location: @location(), item: 'pool')
       @moveTo(x: 0.95, speed: 100)
       @while(
         @moveTo(x: -.15, speed: 500)
@@ -622,4 +693,41 @@ class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
 
   onKilled: ->
     @smallExplosion()
+
+class Game.Scripts.Stage1BossMineField extends Game.EntityScript
+
+  assets: ->
+    @loadAssets('mine')
+
+  spawn: (options) ->
+    location = options.location()
+    @target = options.grid.getLocation()
+
+    Crafty.e('Mine').mine(
+      x: location.x
+      y: location.y + 36
+      defaultSpeed: options.speed ? 200
+      pointsOnHit: if options.points then 10 else 0
+      pointsOnDestroy: if options.points then 50 else 0
+    )
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @moveTo(y: 1.05, speed: 400)
+      @moveTo(x: @target.x, easing: 'easeOutQuad')
+      @synchronizeOn 'dropped'
+      @moveTo(y: @target.y, easing: 'easeOutQuad')
+      @sequence(
+        @wait 1000
+        @animate('blink', -1)
+        @wait 1000
+        => Crafty.trigger('BridgeCollapse', @level)
+        => @entity.absorbDamage @entity.health
+        @endSequence()
+      )
+    )
+
+  onKilled: ->
+    @bigExplosion(juice: @juice)
 

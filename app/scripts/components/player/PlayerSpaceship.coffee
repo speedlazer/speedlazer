@@ -93,7 +93,6 @@ Crafty.c 'PlayerSpaceship',
       return if Game.paused
       for pu in e
         @pickUp(pu.obj)
-        @trigger('PowerUp', pu.obj)
 
     @bind 'Hit', ->
       Crafty.e('Blast, Explosion').explode(
@@ -166,37 +165,58 @@ Crafty.c 'PlayerSpaceship',
     @primaryWeapon.install(this)
     @currentPrimary = nextWeapon
 
+  stats: (newStats = {}) ->
+    # TODO: Needs refactoring
+    if newStats.primary?
+      @primaryWeapon.stats = newStats.primary.stats
+      @primaryWeapon.boosts = newStats.primary.boosts
+      @primaryWeapon.boostTimings = newStats.primary.boostTimings
+      @primaryWeapon._determineWeaponSettings()
+
+    stats = {}
+    stats['primary'] = {
+      stats: @primaryWeapon?.stats ? {}
+      boosts: @primaryWeapon?.boosts ? {}
+      boostTimings: @primaryWeapon?.boostTimings ? {}
+    }
+
+    stats
+
   superWeapon: (onOff) ->
     return unless onOff
     @superUsed += 1
 
   pickUp: (powerUp) ->
     contents =  powerUp.settings.contains
-    if @installItem contents
+    if @installItem powerUp.settings
       Crafty.audio.play('powerup')
+      @trigger('PowerUp', powerUp.settings)
       powerUp.destroy()
 
   installItem: (item) ->
-    if item is 'xp'
-      @primaryWeapon.addXP(1000)
+    return unless item?
+    if item.type is 'weapon'
+      return if @hasItem item.contains
+      @items.push item
+
+      if item.contains is 'lasers'
+        @_installPrimary 'RapidWeaponLaser'
+        return true
+
+    if item.type is 'ship'
+      if item.contains is 'life'
+        @scoreText 'Extra life!'
+        return true
+      if item.contains is 'points'
+        @scoreText 'Bonus points!'
+        return true
+
+    if item.type is 'weaponUpgrade'
+      @primaryWeapon.upgrade item.contains
       return true
 
-    return if @hasItem item
-
-    @items.push item
-
-    # TODO: Add multiple primary weapons, which can be swapped
-    # Count XP on current weapon only
-    if item is 'lasers'
-      @_installPrimary 'RapidWeaponLaser'
-      return true
-
-    if item is 'oldlasers'
-      @_installPrimary 'OldWeaponLaser'
-      return true
-
-    if item is 'diagonals'
-      @_installPrimary 'RapidDiagonalLaser'
+    if item.type is 'weaponBoost'
+      @primaryWeapon.boost item.contains
       return true
 
   clearItems: ->
@@ -210,31 +230,57 @@ Crafty.c 'PlayerSpaceship',
     weapon.install(this)
     @primaryWeapon?.uninstall()
     @primaryWeapon = weapon
-    @listenTo weapon, 'levelUp', (level) =>
-      @scoreText "L +#{level}"
+    @listenTo weapon, 'levelUp', (info) =>
+      t =
+        damage: 'Damage'
+        rapid: 'RapidFire'
+        aim: 'AimAssist'
+        speed: 'BulletSpeed'
+      @scoreText "#{t[info.aspect]} +#{info.level}"
+    @listenTo weapon, 'boost', (info) =>
+      t =
+        damageb: 'Damage'
+        rapidb: 'RapidFire'
+        aimb: 'AimAssist'
+        speedb: 'BulletSpeed'
+      @scoreText "#{t[info.aspect]} Boost!"
+    @listenTo weapon, 'boostExpired', (info) =>
+      t =
+        damageb: 'Damage'
+        rapidb: 'RapidFire'
+        aimb: 'AimAssist'
+        speedb: 'BulletSpeed'
+      @scoreText "#{t[info.aspect]} Boost expired", off
+
     @primaryWeapons.push weapon
     @currentPrimary = @primaryWeapons.length - 1
 
   hasItem: (item) ->
     @items ?= []
-    return ~@items.indexOf item
+    return yes for i in @items when i.contains is item
+    no
 
-  scoreText: (text) ->
-    Crafty.e('Text, DOM, 2D, Tween')
-      .textColor('#FFFFFF')
+  scoreText: (text, positive = yes) ->
+    t = Crafty.e('Text, DOM, 2D, Tween, Delay')
+      .textColor(if positive then '#FFFFFF' else '#FF0000')
       .text(text)
       .attr(
         x: @x
         y: @y - 10
         z: 990
-        w: 100
+        w: 250
       )
       .textFont({
         size: '10px',
         weight: 'bold',
         family: 'Press Start 2P'
       })
-      .tween(y: @y - 40, alpha: 0.5, 1000)
-      .one('TweenEnd', -> @destroy())
-
+    @attach t
+    t.delay(
+      =>
+        @detach t
+        t.tween(rotation: 0, y: t.y - 70, alpha: 0.5, 1000, 'easeInQuad')
+        t.one('TweenEnd', -> t.destroy())
+      400
+    )
 

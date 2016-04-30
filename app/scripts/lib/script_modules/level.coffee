@@ -152,7 +152,11 @@ Game.ScriptModule.Level =
     (sequence) =>
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
-      item = @inventory('item', options.item)
+      itemSettings = @inventory(options.item)
+      item = -> Crafty.e('PowerUp').powerUp(itemSettings)
+      unless itemSettings
+        console.warn 'Item ', options.item, ' is not known'
+        return WhenJS()
       if player = options.inFrontOf
         ship = player.ship()
         if ship
@@ -324,12 +328,13 @@ Game.ScriptModule.Level =
       )
       if y > @_getSeaLevel() - 60 and options.lightness is 1.0
         e.addComponent('WaterSplashes')
-        e.attr waterSplashSpeed: 500
+        e.attr waterSplashSpeed: 500, defaultWaterCooldown: 450
         e.setDetectionOffset 40, 0
         e.setSealevel(@_getSeaLevel())
 
       if options.damage
         e.addComponent('Enemy')
+
 
   loadAssets: (names...) ->
     (sequence) =>
@@ -411,8 +416,23 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       Crafty('PlayerControlledShip').each ->
         @clearItems()
-        @installItem item for item in newWeapons
+        for item in newWeapons
+          itemSettings = @inventory(item)
+          @installItem itemSettings
       @level.setStartWeapons newWeapons
+
+  inventory: (name) ->
+    if name is 'pool'
+      name = (@powerupPool || []).pop() || 'points'
+    @level.inventory(name)
+
+  inventoryAdd: (type, name, options) ->
+    @level.inventoryAdd(type, name, options)
+
+  setPowerupPool: (powerups...) ->
+    (sequence) =>
+      @_verify(sequence)
+      @powerupPool = _.shuffle(powerups)
 
   hideHud: (settings = {}) ->
     settings = _.defaults(settings,

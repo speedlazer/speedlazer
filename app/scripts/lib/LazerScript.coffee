@@ -33,19 +33,6 @@ class Game.LazerScript
     unless playersActive
       @currentSequence = null
 
-  # Inventory
-  # TODO: Decide how we handle inventory thoughout game
-
-  inventory: (type, name) ->
-    @invItems ||= {}
-    @invItems[type] ||= {}
-    @invItems[type][name || 'default']
-
-  inventoryAdd: (type, name, constructor) ->
-    @invItems ||= {}
-    @invItems[type] ||= {}
-    @invItems[type][name] = constructor
-
 _.extend(
   Game.LazerScript::
   Game.ScriptModule.Core

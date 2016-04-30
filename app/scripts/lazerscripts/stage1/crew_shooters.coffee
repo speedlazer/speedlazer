@@ -9,7 +9,7 @@ class Game.Scripts.CrewShooters extends Game.EntityScript
     Crafty.e('Drone, ShootOnSight, ColorEffects, Horizon').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .23
-      defaultSpeed: 250
+      defaultSpeed: 200
     ).shootOnSight
       targetType: 'CameraCrew'
       shootWhenHidden: yes
@@ -39,8 +39,9 @@ class Game.Scripts.CrewShooters extends Game.EntityScript
         ]
         @sequence(
           @wait 2000
-          @scale(1.0, duration: 3000)
+          @scale(1.0, duration: 5000)
           @reveal()
+          @wait 2500
           @shootPlayer()
         )
       )
@@ -52,13 +53,13 @@ class Game.Scripts.CrewShooters extends Game.EntityScript
   shootPlayer: ->
     =>
       @entity.shootOnSight
-        cooldown: 1000
-        sightAngle: 8
+        cooldown: 3000
+        sightAngle: 360
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Projectile, Color, Enemy').attr(
             w: 6
             h: 6
-            speed: 350
+            speed: 400
           ).color('#FFFF00')
           projectile.shoot(x, y, angle)
 
