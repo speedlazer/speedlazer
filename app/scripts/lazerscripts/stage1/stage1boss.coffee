@@ -46,9 +46,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     )
 
   execute: ->
-    #@inventoryAdd 'item', 'diagonals', ->
-      #Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
-    @bindSequence 'Hit', @fase2, => @entity.healthBelow .8
+    @bindSequence 'Hit', @fase2, => @entity.healthBelow .6
 
     @sequence(
       @invincible yes
@@ -62,7 +60,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
           @wait 500
         )
       )
-      #@laugh()
+      @laugh()
       @invincible no
       @enableWeapons()
       @async @placeSquad(Game.Scripts.Stage1BossRocket,
@@ -818,7 +816,7 @@ class Game.Scripts.Stage1BossMineField extends Game.EntityScript
         @wait 1000
         @animate('blink', -1)
         @wait 1000
-        @setSpeed 100
+        => Crafty.trigger('BridgeCollapse', @level)
         => @entity.absorbDamage @entity.health
         @endSequence()
       )

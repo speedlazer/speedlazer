@@ -328,12 +328,13 @@ Game.ScriptModule.Level =
       )
       if y > @_getSeaLevel() - 60 and options.lightness is 1.0
         e.addComponent('WaterSplashes')
-        e.attr waterSplashSpeed: 500
+        e.attr waterSplashSpeed: 500, defaultWaterCooldown: 450
         e.setDetectionOffset 40, 0
         e.setSealevel(@_getSeaLevel())
 
       if options.damage
         e.addComponent('Enemy')
+
 
   loadAssets: (names...) ->
     (sequence) =>

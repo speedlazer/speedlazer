@@ -527,13 +527,52 @@ generator.defineBlock class extends Game.LevelScenery
     @addBackground(990, 160, @pillarX(0, h: 350, z: -31), .8)
     @addBackground(0, 95,  @deck(.05, w: 800, z: -30).flip('X'), .8)
 
-    @addBackground(0, 20,   @deck(0,   w: 900, z: -20), .9)
+    @addBackground(0, 20,   @deck(0,   w: 900, z: -20).addComponent('BackDeck'), .9)
 
-    @addBackground(0, -60,  @deck(0,   w: 1000, z: -10).flip('X'), 1.0)
-    @addBackground(0, -180, @deck(0,   w: 1200, z: 100, lightness: 0.6, blur: 0.0), 1.2)
+    dh = Crafty.e('2D, Solid, Collision, BridgeCeiling').attr(w: 1000, h: 30).origin('middle right')
+    @addBackground(0, -60, dh, 1.0)
 
-    @addBackground(190,  -60, @pillar( 0, h: 750, z: 80, lightness: 0.6, blur: 0.0), 1.2)
-    @addBackground(1025, -60, @pillarX(0, h: 750, z: 80, lightness: 0.6, blur: 0.0), 1.2)
+    d1 = @deck(0,   w: 1000, z: -10).flip('X').addComponent('MainDeck')
+
+    @addBackground(0, -60, d1, 1.0)
+    @addBackground(0, -180, @deck(0,   w: 1200, z: 100, lightness: 0.6, blur: 0.0).addComponent('FrontDeck'), 1.2)
+
+    p1 = @pillar( 0, h: 750, z: 80, lightness: 0.6, blur: 0.0).addComponent('TiltPillarLeft')
+    p2 = @pillarX(0, h: 750, z: 80, lightness: 0.6, blur: 0.0).addComponent('TiltPillarRight')
+
+    @addBackground(190,  -60, p1, 1.2)
+    @addBackground(1025, -60, p2, 1.2)
+
+    @bind 'BridgeCollapse', once: yes, (level) =>
+      d0 = Crafty('FrontDeck').get(0).addComponent('TweenPromise')
+      d1 = Crafty('MainDeck').get(0).addComponent('TweenPromise')
+      d2 = Crafty('BackDeck').get(0).addComponent('TweenPromise')
+      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise')
+      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise')
+      dh = Crafty('BridgeCeiling').get(0).addComponent('TweenPromise')
+      level.setForcedSpeed 200, accelerate: yes
+
+      WhenJS.sequence [
+        ->
+          WhenJS.parallel [
+            -> d0.tweenPromise({ rotation: -12 }, 4000, 'easeInQuad')
+            -> d1.tweenPromise({ rotation: -10 }, 4000, 'easeInQuad')
+            -> dh.tweenPromise({ rotation: -10 }, 4000, 'easeInQuad')
+            -> d2.tweenPromise({ rotation: -7 }, 4000, 'easeInQuad')
+            -> p1.tweenPromise({ rotation: 83, dy: p1.dy + 100 }, 3000, 'easeInQuad')
+            -> p2.tweenPromise({ rotation: 63 }, 3000, 'easeInQuad')
+          ]
+        ->
+          WhenJS.parallel [
+            -> d0.tweenPromise({ dy: d0.dy + 400 }, 4000, 'easeInQuad')
+            -> d1.tweenPromise({ dy: d1.dy + 430 }, 4000, 'easeInQuad')
+            -> dh.tweenPromise({ dy: dh.dy + 430 }, 4000, 'easeInQuad')
+            -> d2.tweenPromise({ dy: d2.dy + 400 }, 4000, 'easeInQuad')
+            -> p1.tweenPromise({ rotation: 43, dy: p1.dy + 300 }, 3000, 'easeInQuad')
+            -> p2.tweenPromise({ rotation: 43, dy: p2.dy + 200 }, 3000, 'easeInQuad')
+          ]
+      ]
+
 
 
   deck: (gradient, attr) ->
@@ -542,6 +581,7 @@ generator.defineBlock class extends Game.LevelScenery
     Crafty.e('2D, WebGL, bridgeDeck, ColorEffects, Horizon, SunBlock').attr(
       attr
     ).saturationGradient(gradient, gradient)
+     .origin('middle right')
 
   pillar: (gradient, attr) ->
     aspectR = 534 / 170

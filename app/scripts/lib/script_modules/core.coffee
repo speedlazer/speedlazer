@@ -129,7 +129,8 @@ Game.ScriptModule.Core =
     (sequence) =>
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
-      task(sequence)
+      task(sequence).catch (e) ->
+        throw e unless e.message is 'sequence mismatch'
       return
 
   # Wait an amount of milliseconds.

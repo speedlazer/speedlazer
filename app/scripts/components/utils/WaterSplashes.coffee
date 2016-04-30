@@ -2,6 +2,7 @@ Crafty.c 'WaterSplashes',
   init: ->
     @bind 'GameLoop', @_waterSplashes
     @cooldown = 0
+    @defaultWaterCooldown ?= 70
     @detectionOffset = 0
     @minOffset = -10
 
@@ -17,7 +18,7 @@ Crafty.c 'WaterSplashes',
     @cooldown -= fd.dt
     if (@y + @h + @detectionOffset > @sealevel) and (@y < @sealevel) and (@cooldown <= 0)
       speed = @waterSplashSpeed ? @defaultSpeed
-      @cooldown = 70
+      @cooldown = @defaultWaterCooldown
       upwards = 1
       if @_lastWaterY isnt @y
         upwards = (speed - 20) / 30
