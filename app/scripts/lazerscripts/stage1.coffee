@@ -39,6 +39,14 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @checkpoint @checkpointMidStage('BayFull', 400000)
       @say('General', 'Hunt him down!')
       @setSpeed 150
+
+      # TODO:
+      #
+      # - Setup new pools of powerups
+      # - Give fighter jets mini boss like behaviour (and strength)
+      # - Update shooting behaviour of mines
+      # - Let boss drop mines from background
+
       @placeSquad Game.Scripts.Shooter,
         amount: 4
         delay: 1000
@@ -49,6 +57,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       # Warming up of new weapon
       @repeat 3, @stalkerShootout()
 
+      @setScenery('Skyline')
       @parallel(
         @sequence(
           @wait 3000
