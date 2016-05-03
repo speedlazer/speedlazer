@@ -169,7 +169,10 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
     color = ent.desaturationColor ? { _red: 0, _green: 0, _blue: 0 }
     ocolor = ent.overrideColor ? { _red: 0, _green: 0, _blue: 0 }
     lightness = ent.lightness ? 1.0
-    s = ent.scale ? 1
+    if ent.hidden
+      s = ent.scale ? 1
+    else
+      s = 1
     blur = ent.blur ? 0
     tds = ent.topDesaturation ? 0
     bds = ent.bottomDesaturation ? 0

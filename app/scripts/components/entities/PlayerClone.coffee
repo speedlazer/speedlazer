@@ -6,7 +6,7 @@ Crafty.c 'PlayerClone',
     @attr _.defaults(attr,
       h: 45,
       w: 71,
-      health: 900,
+      health: 4000,
       weaponOrigin: [5, 30]
     )
     @origin 'center'
@@ -15,4 +15,8 @@ Crafty.c 'PlayerClone',
 
     @enemy()
     this
+
+  updateMovementVisuals: (rotation, dx, dy, dt) ->
+    @vx = dx * (1000 / dt)
+    @vy = dy * (1000 / dt)
 

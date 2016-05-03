@@ -125,9 +125,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @parallel(
         @moveTo(x: .75, y: .41)
         @sequence(
-          @say('Drone Commander', 'We have control now! You will suffer!')
-          @say('Drone Commander', 'Earths defences are in our hands!')
           @wait 500
+          @say 'Drone Commander', 'We have control now! You will suffer!\nEarths defences are in our hands!'
         )
       )
       @laugh()
@@ -370,6 +369,8 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
       pointsOnDestroy: 50
       offsetY: 0
       offsetX: 0
+      scale: 1.0
+      health: 250
     )
     return null unless options.location?
 
@@ -380,10 +381,11 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
     @offsetX = options.offsetX
 
     Crafty.e('Rocket').rocket(
-      health: 250
+      health: options.health
       x: location.x - 30
       y: location.y - 8 + Math.round(Math.random() * 15)
       z: 5
+      scale: options.scale
       defaultSpeed: 600
       pointsOnHit: options.pointsOnHit
       pointsOnDestroy: options.pointsOnDestroy
@@ -429,6 +431,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
       pointsOHit: 125
       pointsOnDestroy: 50
       z: 5
+      scale: 1.0
       offsetY: 0
     )
     return null unless options.location?
@@ -443,6 +446,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
       y: location.y - 8 + Math.round(Math.random() * 15)
       z: options.z
       defaultSpeed: 500
+      scale: options.scale
       pointsOnHit: options.pointsOnHit
       pointsOnDestroy: options.pointsOnDestroy
     )
@@ -486,18 +490,19 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
 class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
   spawn: ->
     Crafty.e('LargeDrone, Horizon').drone(
-      maxHealth: 30000
-      health: 6000
+      maxHealth: 60000
+      health: 12000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
       defaultSpeed: 150
     )
 
   execute: ->
-    @bindSequence 'Hit', @leaveScreen, => @entity.healthBelow .1
+    @bindSequence 'Hit', @leaveScreen, => @entity.healthBelow .15
 
     @sequence(
       @animate 'slow', -1, 'eye'
+      @moveTo(x: .9, y: .45)
       @while(
         @repeat @rocketStrikeDance()
         @smoke('light')
@@ -540,6 +545,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
       )
       @wait(3000)
       @invincible yes
+      @drop item: 'pool', location: @location()
       @while(
         @moveTo(x: -.15, speed: 500, easing: 'easeInOutQuad')
         @sequence(
