@@ -442,4 +442,3 @@ Game.ScriptModule.Entity =
       else
         @entity.unflipX()
 
-

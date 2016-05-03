@@ -568,39 +568,60 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
 
   spawn: ->
     Crafty.e('LargeDrone, Horizon').drone(
-      health: 264000
+      maxHealth: 60000
+      health: 12000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
       defaultSpeed: 150
     )
 
   execute: ->
-    @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#8080FF')
     @entity.colorDesaturation Game.backgroundColor
 
     @sequence(
       @animate 'slow', -1, 'eye'
-      @pickTarget('PlayerControlledShip')
-      @while(
-        @moveTo(@targetLocation(), x: .845, speed: 200)
-        @smoke('medium')
-      )
-      @attackCycle()
+      @shortRocketStrikeDance()
       @laugh()
       @leaveScreen()
+    )
+
+  shortRocketStrikeDance: (homing = no) ->
+    @parallel(
+      @movePath([
+          [.7, .4]
+          [.8, .3]
+          [.9, .5]
+          [.7, .6]
+          [.8, .7]
+          [.9, .4]
+          [.7, .1]
+          [.6, .2]
+        ]
+      )
+      @repeat 2, @sequence(
+        @fireRockets(4, homing)
+        @wait 1500
+        @fireRockets(4, homing)
+        @wait 1000
+        @fireRockets(2, homing)
+        @wait 300
+        @fireRockets(2)
+        @wait 300
+        @fireRockets(2, homing)
+        @wait 300
+      )
     )
 
   laugh: ->
     @sequence(
       => Crafty.audio.play('laugh')
-      => @entity.invincible = yes
+      @invincible yes
       @repeat 5, @sequence(
         @rotate(10, 200)
         @rotate(-10, 200)
       )
       @rotate(0, 200)
-      => @entity.invincible = no
+      @invincible no
     )
 
   leaveScreen: ->
@@ -612,16 +633,16 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
           @moveTo(x: -.15, y: .5, speed: 400)
           @smoke()
         )
-        @scale(0.7, duration: 3000)
+        @scale(0.5, duration: 3000)
       )
       => @entity.flipX()
-      @sendToBackground(0.7, -550)
+      @sendToBackground(0.5, -550)
       @parallel(
         @while(
           @moveTo('MiliBase', speed: 150)
           @smoke('light')
         )
-        @scale(0.3, duration: 4000)
+        @scale(0.2, duration: 4000)
       )
     )
 

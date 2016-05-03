@@ -73,7 +73,13 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
       ]
 
   onKilled: ->
-    @bigExplosion()
+    @sequence(
+      @smallExplosion(offsetX: -20, offsetY: 30)
+      @wait 20
+      @smallExplosion(offsetX: 30, offsetY: -20)
+      @wait 20
+      @bigExplosion()
+    )
 
   fireRockets: (amount) ->
     script = Game.Scripts.Stage1BossRocket
