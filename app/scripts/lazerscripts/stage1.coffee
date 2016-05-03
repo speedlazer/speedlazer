@@ -2,7 +2,7 @@ Game = @Game
 Game.Scripts ||= {}
 
 class Game.Scripts.Stage1 extends Game.LazerScript
-  nextScript: 'Stage2'
+  nextScript: 'Stage1End'
 
   assets: ->
     @loadAssets('shadow', 'explosion', 'playerShip')
@@ -40,22 +40,16 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @say('General', 'Hunt him down!')
       @setSpeed 150
 
-      # TODO:
-      #
-      # - Setup new pools of powerups
-      # - Give fighter jets mini boss like behaviour (and strength)
-      # - Update shooting behaviour of mines
-      # - Let boss drop mines from background
+      @setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
 
       @placeSquad Game.Scripts.Shooter,
-        amount: 4
-        delay: 1000
+        amount: 8
+        delay: 500
         drop: 'pool'
         options:
           shootOnSight: yes
 
-      # Warming up of new weapon
-      @repeat 3, @stalkerShootout()
+      @repeat 2, @stalkerShootout()
 
       @setScenery('Skyline')
       @parallel(
@@ -63,8 +57,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           @wait 3000
           @gainHeight(300, duration: 4000)
           @placeSquad Game.Scripts.Shooter,
-            amount: 4
-            delay: 1000
+            amount: 8
+            delay: 500
             drop: 'pool'
             options:
               shootOnSight: yes
@@ -73,10 +67,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
       @setSpeed 100
 
+      @setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
+      @cloneEncounter()
       @parallel(
         @placeSquad Game.Scripts.ScraperFlyer,
           amount: 8
-          delay: 750
+          delay: 500
           drop: 'pool'
         @cloneEncounter()
       )
@@ -89,13 +85,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @gainHeight(300, duration: 4000)
 
       @checkpoint @checkpointMidStage('Skyline', 450000)
-      @repeat 2, @parallel(
-        @cloneEncounter()
-        @placeSquad Game.Scripts.PlayerClone,
-          options:
-            from: 'middle'
-          drop: 'pool'
-      )
+
+      # TODO: Mix this up with helicopters and jet fighters when
+      # graphics are in
+
+      @repeat 2, @cloneEncounter()
+
       @setScenery 'SkylineBase'
       @while(
         @wait 4000
@@ -110,28 +105,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.Stage1BossLeaving
       @say 'General', 'He went to the military complex!\nBut we cant get through those shields now...'
       @wait 3000
-      @if((-> @player(1).active and !@player(2).active)
-        @sequence(
-          @say 'John', 'I\'ll try to find another way in!'
-          @say 'General', 'There are rumours about an underground entrance'
-          @say 'John', 'Ok I\'ll check it out'
-        )
-      )
-      @if((-> !@player(1).active and @player(2).active)
-        @sequence(
-          @say 'Jim', 'I\'ll use the underground tunnels!'
-          @say 'General', 'How do you know about those...\n' +
-            'that\'s classified info!'
-        )
-      )
-      @if((-> @player(1).active and @player(2).active)
-        @sequence(
-          @say 'John', 'We\'ll try to find another way in!'
-          @say 'Jim', 'We can use the underground tunnels!'
-          @say 'General', 'How do you know about those...\n' +
-            'that\'s classified info!'
-        )
-      )
     )
 
   introText: ->
@@ -188,12 +161,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @parallel(
       @if((-> @player(1).active and !@player(1).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(1)))
       @if((-> @player(2).active and !@player(2).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(2)))
-    )
-
-  dropDiagonalsForEachPlayer: ->
-    @parallel(
-      @if((-> @player(1).active and !@player(1).has('diagonals')), @drop(item: 'diagonals', inFrontOf: @player(1)))
-      @if((-> @player(2).active and !@player(2).has('diagonals')), @drop(item: 'diagonals', inFrontOf: @player(2)))
     )
 
   droneTakeover: ->
@@ -384,11 +351,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @attackWaves(
           @sequence(
             @placeSquad Game.Scripts.ScraperFlyer,
-              amount: 4
-              delay: 750
-            @placeSquad Game.Scripts.ScraperFlyer,
               amount: 6
-              delay: 750
+              delay: 500
+            @placeSquad Game.Scripts.ScraperFlyer,
+              amount: 8
+              delay: 500
           )
           drop: 'pool'
         )
@@ -408,7 +375,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @attackWaves(
       @parallel(
         @sequence(
-          @wait 2000
+          @wait 4000
           @placeSquad Game.Scripts.PlayerClone,
             options:
               from: 'top'
@@ -436,7 +403,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @sunRise(skipTo: sunSkip)
         @setScenery(scenery)
       )
-      @dropDiagonalsForEachPlayer()
       @wait 6000
     )
 
