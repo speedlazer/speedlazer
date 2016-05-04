@@ -498,7 +498,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
     )
 
   execute: ->
-    @bindSequence 'Hit', @leaveScreen, => @entity.healthBelow .15
+    @bindSequence 'Hit', @leaveScreen, => @entity.healthBelow .10
 
     @sequence(
       @animate 'slow', -1, 'eye'
