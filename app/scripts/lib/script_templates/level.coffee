@@ -30,11 +30,19 @@ Game.ScriptTemplate.Level =
         e.addComponent('Enemy')
 
   smallExplosion: (options = {}) ->
+    options = _.defaults(options,
+      juice: yes
+      offsetX: 0
+      offsetY: 0
+    )
     if options.juice is no
       @blast(@location())
     else
       @parallel(
-        @blast(@location())
+        @blast(@location({
+          offsetX: options.offsetX
+          offsetY: options.offsetY
+        }))
         => Crafty.audio.play("explosion", 1, .25)
         @screenShake(2, duration: 200)
       )

@@ -9,15 +9,15 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
     Crafty.e('Drone, ShootOnSight, ColorEffects, Horizon').drone(
       x: -50
       y: Crafty.viewport.height * .7
-      defaultSpeed: 300
+      defaultSpeed: 250
     ).shootOnSight
-      cooldown: 1000
-      sightAngle: 15
+      cooldown: 12000 + (Math.random() * 4000)
+      sightAngle: 250
       projectile: (x, y, angle) =>
         projectile = Crafty.e('Projectile, Color, Enemy').attr(
           w: 6
           h: 6
-          speed: 450
+          speed: 300
         ).color('#FFFF00')
         projectile.shoot(x, y, angle)
 
@@ -27,13 +27,16 @@ class Game.Scripts.ScraperFlyer extends Game.EntityScript
       @sendToBackground(0.5, -400)
       @parallel(
         @movePath [
-          [.6, .8]
+          [.6, .7]
           [.8, .3]
           [.5, .1]
           [.2, .25]
           [.5, .7]
           [.8, .4]
-          [.4, .2]
+          [.5, .21]
+          [.156, .5]
+          [.5, .833]
+          [.86, .52]
           [-.1, .4]
         ]
         @sequence(

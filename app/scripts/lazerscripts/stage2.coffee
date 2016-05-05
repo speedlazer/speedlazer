@@ -7,14 +7,30 @@ class Game.Scripts.Stage2 extends Game.LazerScript
     @loadAssets('shadow', 'explosion')
 
   execute: ->
-    @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L').color('#2020FF')
-    @inventoryAdd 'item', 'xp', ->
-      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
-    @inventoryAdd 'item', 'diagonals', ->
-      Crafty.e('PowerUp').powerUp(contains: 'diagonals', marking: 'D').color('#8080FF')
 
     @sequence(
+      @if((-> @player(1).active and !@player(2).active)
+        @sequence(
+          @say 'John', 'I\'ll try to find another way in!'
+          @say 'General', 'There are rumours about an underground entrance'
+          @say 'John', 'Ok I\'ll check it out'
+        )
+      )
+      @if((-> !@player(1).active and @player(2).active)
+        @sequence(
+          @say 'Jim', 'I\'ll use the underground tunnels!'
+          @say 'General', 'How do you know about those...\n' +
+            'that\'s classified info!'
+        )
+      )
+      @if((-> @player(1).active and @player(2).active)
+        @sequence(
+          @say 'John', 'We\'ll try to find another way in!'
+          @say 'Jim', 'We can use the underground tunnels!'
+          @say 'General', 'How do you know about those...\n' +
+            'that\'s classified info!'
+        )
+      )
       @setScenery 'Skyline2'
       @changeSeaLevel 500
       @parallel(
