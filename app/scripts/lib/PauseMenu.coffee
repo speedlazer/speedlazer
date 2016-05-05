@@ -7,6 +7,7 @@ class Game.PauseMenu
     Crafty.bind 'GamePause', (state) =>
       if state
         @createMenu()
+        @showPlayers()
       else
         @remove()
 
@@ -115,6 +116,59 @@ class Game.PauseMenu
         updateSelection()
       @bind 'Fire', ->
         executeSelection()
+
+  showPlayers: ->
+    Crafty('Player').each ->
+      return unless @ship
+      xOff = .05
+      xOff = .70 if @playerNumber is 2
+
+      Crafty.e('2D, WebGL, playerShip, ColorEffects, PauseMenu')
+        .attr(
+          w: 71
+          h: 45
+          x: - Crafty.viewport.x + ((xOff + .07) * Crafty.viewport.width)
+          y: (Crafty.viewport.height * .3) - Crafty.viewport.y + 20
+          z: 101
+        )
+        .colorOverride?(@color(), 'partial')
+      statList = [
+        "Score: #{@points}"
+        "Lives: #{@lives - 1}"
+        ""
+        "Speed: &nbsp;&nbsp;&nbsp;&nbsp;+#{@ship.primaryWeapon.stats.speed}"
+        "RapidFire: +#{@ship.primaryWeapon.stats.rapid}"
+        "AimAssist: +#{@ship.primaryWeapon.stats.aim}"
+        "Damage: &nbsp;&nbsp;&nbsp;+#{@ship.primaryWeapon.stats.damage}"
+      ]
+      stats = Crafty.e('2D, WebGL, Color, PauseMenu')
+        .attr(
+          x: - Crafty.viewport.x + (xOff * Crafty.viewport.width)
+          y: (Crafty.viewport.height * .3) - Crafty.viewport.y
+          w: (.25 * Crafty.viewport.width)
+          h: (statList.length + 5) * 20
+          z: 100
+          alpha: .3
+        )
+        .color('#000')
+      for o, i in statList
+        stat= Crafty.e('2D, DOM, Text')
+          .attr(
+            x: stats.x + 20
+            y: stats.y + 85 + (20 * i)
+            w: stats.w - 60
+            z: 110
+          )
+          .text(o)
+          .textColor('#D0D0D0')
+          .css("textAlign", "left")
+          .textFont(
+            size: '8px'
+            weight: 'bold'
+            family: 'Press Start 2P'
+          )
+        stats.attach stat
+
 
   remove: ->
     Crafty('Player').each ->
