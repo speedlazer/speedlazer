@@ -71,6 +71,7 @@ Crafty.c 'Choreography',
     @_toSkip = otherComponent._toSkip
     @_currentPart = _.clone otherComponent._currentPart
     @_currentPart.easing = _.clone otherComponent._currentPart.easing
+    @uniqueBind('GameLoop', @_choreographyTick)
 
   _setupCPart: (number) ->
     @_currentPart = null
