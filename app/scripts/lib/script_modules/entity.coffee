@@ -442,3 +442,23 @@ Game.ScriptModule.Entity =
       else
         @entity.unflipX()
 
+  deathDecoy: ->
+    (sequence) =>
+      @_verify(sequence)
+      @decoy = @spawn(@options)
+      { x, y } = @location()()
+      @decoy.removeComponent('BurstShot')
+      @decoy.attr(
+        x: x - Crafty.viewport.x
+        y: y - Crafty.viewport.y
+        invincible: yes
+        health: 1
+      )
+      @decoy.updatedHealth()
+
+  endDecoy: ->
+    (sequence) =>
+      @decoy?.destroy()
+      @decoy = null
+
+

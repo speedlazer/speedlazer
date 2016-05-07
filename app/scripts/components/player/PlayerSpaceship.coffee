@@ -50,12 +50,13 @@ Crafty.c 'PlayerSpaceship',
 
   start: ->
     @backFire = Crafty.e('2D, WebGL, shipEngineFire, ColorEffects')
+      .crop(28, 0, 68, 29)
     @backFire.timing = 0
-    w = 60
+    w = 68
     h = 10
 
     @backFire.attr(
-      x: @x - w + 9
+      x: @x - w
       y: @y + 20 - (h // 2)
       w: w
       h: h

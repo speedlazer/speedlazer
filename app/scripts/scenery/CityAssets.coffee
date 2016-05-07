@@ -115,16 +115,13 @@ generator.defineAssets(
 generator.defineAssets(
   'player'
   contents: ['playerShip', 'shipEngineFire']
-  spriteMap: 'playership.png'
+  spriteMap: 'city-enemies.png'
   sprites:
-    body:
-      tile: 94
-      tileh: 60
+    all:
+      tile: 32
+      tileh: 32
       map:
-        playerShip: [0, 0]
-    fire:
-      tile: 94
-      tileh: 36
-      map:
-        shipEngineFire: [1, 0]
+        playerShip: [0, 0, 3, 2]
+        playerShipDamaged: [0, 2, 3, 2]
+        shipEngineFire: [3, 0, 3, 1]
 )

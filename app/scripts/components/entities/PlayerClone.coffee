@@ -3,10 +3,12 @@ Crafty.c 'PlayerClone',
     @requires 'Enemy, playerShip'
 
   playerClone: (attr = {}) ->
+    defaultHealth = 4000
     @attr _.defaults(attr,
       h: 45,
       w: 71,
-      health: 4000,
+      health: defaultHealth
+      maxHealth: attr.health ? defaultHealth
       weaponOrigin: [5, 30]
     )
     @origin 'center'
@@ -26,6 +28,12 @@ Crafty.c 'PlayerClone',
         )
 
     this
+
+  updatedHealth: ->
+    sprite = 0
+    healthPerc = @health / @maxHealth
+    sprite = 2 if healthPerc < .3
+    @sprite(0, sprite)
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
     @vx = dx * (1000 / dt)

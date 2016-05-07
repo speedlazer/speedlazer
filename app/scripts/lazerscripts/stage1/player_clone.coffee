@@ -5,14 +5,6 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
   assets: ->
     @loadAssets('playerShip')
 
-  # TODO:
-  # - Stay longer in screen
-  # - Move slow
-  # - Take a lot of hits
-  # - Add rocket fire
-  # - mix up attack patterns
-  # - work great with multiple at same time
-
   spawn: (options) ->
     @dir = options.from ? 'top'
 
@@ -74,10 +66,14 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
 
   onKilled: ->
     @sequence(
-      @smallExplosion(offsetX: -20, offsetY: 30)
+      @deathDecoy()
+      @smallExplosion(offsetX: 20, offsetY: 30)
+      @wait 50
+      @smallExplosion(offsetX: 40, offsetY: 20)
+      @wait 50
+      @smallExplosion(offsetX: -50, offsetY: -10)
       @wait 20
-      @smallExplosion(offsetX: 30, offsetY: -20)
-      @wait 20
+      @endDecoy()
       @bigExplosion()
     )
 
