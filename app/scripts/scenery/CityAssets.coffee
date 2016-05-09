@@ -124,4 +124,5 @@ generator.defineAssets(
         playerShip: [0, 0, 3, 2]
         playerShipDamaged: [0, 2, 3, 2]
         shipEngineFire: [3, 0, 3, 1]
+        freddie: [3, 1, 3, 2]
 )
