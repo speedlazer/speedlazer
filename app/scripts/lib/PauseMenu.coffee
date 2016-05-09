@@ -11,20 +11,21 @@ class Game.PauseMenu
       else
         @remove()
 
+  soundText: ->
+    if Crafty.audio.muted
+      'Sound [off]'
+    else
+      'Sound [on]'
+
   createMenu: ->
-    soundText = ->
-      if Crafty.audio.muted
-        'Sound [off]'
-      else
-        'Sound [on]'
-    options = ['Resume', soundText(), 'Restart', 'Quit']
+    @options = ['Resume', @soundText(), 'Restart', 'Quit']
 
     menu = Crafty.e('2D, DOM, Color, PauseMenu')
       .attr(
         x: - Crafty.viewport.x + (.35 * Crafty.viewport.width),
         y: (Crafty.viewport.height * .3) - Crafty.viewport.y,
         w: (.3 * Crafty.viewport.width)
-        h: (options.length + 2) * 32
+        h: (@options.length + 2) * 32
         z: 100
         alpha: .3
       )
@@ -47,7 +48,7 @@ class Game.PauseMenu
       )
     menu.attach title
 
-    optionEntities = for o, i in options
+    @optionEntities = for o, i in @options
       menuItem = Crafty.e('2D, DOM, Text')
         .attr(
           x: menu.x + 60
@@ -66,9 +67,9 @@ class Game.PauseMenu
       menu.attach menuItem
       menuItem
 
-    selected = 0
+    @selected = 0
 
-    selectionChar = Crafty.e('2D, DOM, Text')
+    @selectionChar = Crafty.e('2D, DOM, Text')
       .attr(
         x: menu.x + 20
         w: 40
@@ -82,40 +83,44 @@ class Game.PauseMenu
         weight: 'bold'
         family: 'Press Start 2P'
       )
-    menu.attach selectionChar
+    menu.attach @selectionChar
+    @updateSelection()
 
-    updateSelection = ->
-      selectionChar.attr(
-        y: optionEntities[selected].y
-      )
-
-    updateSelection()
-    executeSelection = ->
-      setTimeout ->
-        if selected is 0
-          Game.togglePause()
-        if selected is 1
-          Crafty.audio.toggleMute()
-          optionEntities[selected].text soundText()
-        if selected is 2
-          Game.togglePause()
-          Game.resetCredits()
-          Crafty('Player').each -> @softReset()
-          Crafty.enterScene Game.firstLevel
-        if selected is 3
-          Game.togglePause()
-          Crafty('Player').each -> @reset()
-          Crafty.enterScene 'Intro'
-
+    self = this
     Crafty('Player').each ->
-      @bind 'Up', ->
-        selected = (options.length + selected - 1) % options.length
-        updateSelection()
-      @bind 'Down', ->
-        selected = (options.length + selected + 1) % options.length
-        updateSelection()
-      @bind 'Fire', ->
-        executeSelection()
+      @bind 'Up', self._handleUp
+      @bind 'Down', self._handleDown
+      @bind 'Fire', self._handleFire
+
+  _handleUp: =>
+    @selected = (@options.length + @selected - 1) % @options.length
+    @updateSelection()
+
+  _handleDown: =>
+    @selected = (@options.length + @selected + 1) % @options.length
+    @updateSelection()
+
+  updateSelection: ->
+    @selectionChar.attr(
+      y: @optionEntities[@selected].y
+    )
+
+  _handleFire: =>
+    setTimeout =>
+      if @selected is 0
+        Game.togglePause()
+      if @selected is 1
+        Crafty.audio.toggleMute()
+        @optionEntities[@selected].text @soundText()
+      if @selected is 2
+        Game.togglePause()
+        Game.resetCredits()
+        Crafty('Player').each -> @softReset()
+        Crafty.enterScene Game.firstLevel
+      if @selected is 3
+        Game.togglePause()
+        Crafty('Player').each -> @reset()
+        Crafty.enterScene 'Intro'
 
   showPlayers: ->
     Crafty('Player').each ->
@@ -171,8 +176,11 @@ class Game.PauseMenu
 
 
   remove: ->
+    self = this
+
     Crafty('Player').each ->
-      @unbind 'Up'
-      @unbind 'Down'
-      @unbind 'Fire'
+      @unbind 'Up', self._handleUp
+      @unbind 'Down', self._handleDown
+      @unbind 'Fire', self._handleFire
+
     Crafty('PauseMenu').each -> @destroy()
