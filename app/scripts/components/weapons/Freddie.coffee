@@ -95,7 +95,7 @@ Crafty.c 'Freddy',
           @attr hitFlash: { _red: 255, _green: 255, _blue: 0 }
           @hFlash = 5
           if enemy.absorbDamage?
-            enemy.absorbDamage(100)
+            enemy.absorbDamage(500)
           if enemy.has('Projectile')
             enemy.destroy()
           @eaten += 1
