@@ -252,6 +252,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   endOfFight: ->
     @sequence(
+      @invincible yes
       @while(
         @moveTo(x: .6, y: .90, speed: 50)
         @sequence(

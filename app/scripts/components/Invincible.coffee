@@ -2,8 +2,6 @@ Crafty.c 'Invincible',
   init: ->
     @requires 'Delay'
 
-    @delay(@_blink, 250, -1)
-
   _blink: ->
     @blinkOn = true unless @blinkOn?
 
@@ -17,7 +15,10 @@ Crafty.c 'Invincible',
     @cancelDelay @_blink
 
   invincibleDuration: (duration) ->
+    @delay(@_blink, 250, -1)
+    return this if duration is -1
     @delay(->
       @removeComponent('Invincible')
     , duration, 0)
+    this
 

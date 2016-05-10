@@ -45,63 +45,69 @@ Crafty.c 'Cheats',
 
 Crafty.c 'Freddy',
   init: ->
-    @requires '2D, WebGL, freddie, Collision, Scalable, ColorEffects'
+    @requires '2D, WebGL, freddie, Scalable, ColorEffects, Collision'
 
   remove: ->
     @unbind 'GameLoop', @_move
 
   freddy: (options) ->
     @ship = options.protect
-    @ship.scoreText 'Freddy activated'
+    @ship.scoreText 'Help me Freddie!'
     @colorOverride?(@ship.playerColor, 'partial')
     @attr
       scale: .5
       z: @ship.z + 5
     midX = (@w // 2)
     midY = (@h // 2)
-    fy = 20
-    fx = 40
+    fy = 15
+    fx = 15
     @collision [-fx, -fy, midX, -(2*fy), @w + fx, -fy,
       @w + (2*fx), midY, @w + fx, @h + fy,
       midX, @h + (2*fy), -fx, @h + fy, -(2*fx), midY]
+    @ship.addComponent('Invincible').invincibleDuration(-1)
 
     @attr(
       x: -Crafty.viewport.x - 100
       y: -Crafty.viewport.y + (Crafty.viewport.height * .5)
     )
-    @circlePos = 0
+    @circlePos = 180
     @eaten = 0
     @hFlash = 0
     @shooting = 0
+    @ship.bind 'Remove', => @destroy()
 
     @bind 'GameLoop', @_move
-    @onHit 'Blast', (collision) ->
-      return if Game.paused
-      for b in collision
-        blast = b.obj
-        blast.damage = 0
 
-    @onHit 'Enemy', (collision) ->
-      return if Game.paused
-      enemy = collision[0].obj
-      return if enemy.hidden
-      @attr hitFlash: { _red: 255, _green: 255, _blue: 0 }
-      @hFlash = 5
-      if enemy.absorbDamage?
-        enemy.absorbDamage(5000)
-      if enemy.has('Projectile')
-        enemy.destroy()
-      @eaten += 1
+    @onHit 'Enemy',
+      (collision) =>
+        return if Game.paused
 
-      @scale = Math.min(.5 + (.01 * @eaten), 1.0)
+        # Only count collisions once
+        ids = (e.obj[0] for e in collision)
+        @previousCols ?= []
+        newCols = (i for i in ids when i not in @previousCols)
+        @previousCols = ids
+
+        for e in collision when e.obj[0] in newCols
+          enemy = e.obj
+          continue if enemy.hidden
+          continue if enemy.invincible
+          @attr hitFlash: { _red: 255, _green: 255, _blue: 0 }
+          @hFlash = 5
+          if enemy.absorbDamage?
+            enemy.absorbDamage(100)
+          if enemy.has('Projectile')
+            enemy.destroy()
+          @eaten += 1
+          @scale = Math.min(.5 + ((.5 / 50) * @eaten), 1.0)
 
   _move: (fd) ->
     circleSpeed = 8000
     speed = @ship._targetSpeed.x + 300
-    rx = 60
-    ry = 30
+    rx = 80
+    ry = 55
 
-    circleSpeed -= Math.min((Crafty('Enemy').length * 800), 7000)
+    circleSpeed -= Math.min((Crafty('Enemy').length * 800), circleSpeed - 1000)
 
     rot = (360 / circleSpeed) * fd.dt
     @circlePos = (@circlePos + rot + 360) % 360
@@ -142,7 +148,7 @@ Crafty.c 'Freddy',
             direction: angle
           )
 
-      if @shooting > 100
+      if @shooting > 200
         @eaten = 0
         @scale = .5
         @shooting = 0
