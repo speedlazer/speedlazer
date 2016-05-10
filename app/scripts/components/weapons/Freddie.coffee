@@ -100,6 +100,8 @@ Crafty.c 'Freddy',
             enemy.destroy()
           @eaten += 1
           @scale = Math.min(.5 + ((.5 / 50) * @eaten), 1.0)
+      =>
+        @previousCols = []
 
   _move: (fd) ->
     circleSpeed = 8000
