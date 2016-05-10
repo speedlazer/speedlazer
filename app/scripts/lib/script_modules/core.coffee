@@ -150,6 +150,7 @@ Game.ScriptModule.Core =
             @_verify(sequence)
           catch e
             d.reject e
+          return
         40
         parts
         ->
