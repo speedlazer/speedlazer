@@ -11,15 +11,37 @@ class Game.PauseMenu
       else
         @remove()
 
-  soundText: ->
-    if Crafty.audio.muted
-      'Sound [off]'
-    else
-      'Sound [on]'
-
   createMenu: ->
-    @options = ['Resume', @soundText(), 'Restart', 'Quit']
+    @_buildMenu([
+      {
+        text: 'Resume'
+        execute: ->
+          Game.togglePause()
+      }
+      {
+        text: ->
+          if Crafty.audio.muted then 'Sound [off]' else 'Sound [on]'
+        execute: ->
+          Crafty.audio.toggleMute()
+      }
+      {
+        text: 'Restart'
+        execute: ->
+          Game.togglePause()
+          Game.resetCredits()
+          Crafty('Player').each -> @softReset()
+          Crafty.enterScene Game.firstLevel
+      }
+      {
+        text: 'Quit'
+        execute: ->
+          Game.togglePause()
+          Crafty('Player').each -> @reset()
+          Crafty.enterScene 'Intro'
+      }
+    ])
 
+  _buildMenu: (@options) ->
     menu = Crafty.e('2D, DOM, Color, PauseMenu')
       .attr(
         x: - Crafty.viewport.x + (.35 * Crafty.viewport.width),
@@ -48,7 +70,7 @@ class Game.PauseMenu
       )
     menu.attach title
 
-    @optionEntities = for o, i in @options
+    for o, i in @options
       menuItem = Crafty.e('2D, DOM, Text')
         .attr(
           x: menu.x + 60
@@ -56,7 +78,7 @@ class Game.PauseMenu
           w: menu.w - 60
           z: 110
         )
-        .text(o)
+        .text(o.text?() ? o.text)
         .textColor('#D0D0D0')
         .css("textAlign", "left")
         .textFont(
@@ -65,7 +87,7 @@ class Game.PauseMenu
           family: 'Press Start 2P'
         )
       menu.attach menuItem
-      menuItem
+      o.entity = menuItem
 
     @selected = 0
 
@@ -102,25 +124,14 @@ class Game.PauseMenu
 
   updateSelection: ->
     @selectionChar.attr(
-      y: @optionEntities[@selected].y
+      y: @options[@selected].entity.y
     )
 
   _handleFire: =>
     setTimeout =>
-      if @selected is 0
-        Game.togglePause()
-      if @selected is 1
-        Crafty.audio.toggleMute()
-        @optionEntities[@selected].text @soundText()
-      if @selected is 2
-        Game.togglePause()
-        Game.resetCredits()
-        Crafty('Player').each -> @softReset()
-        Crafty.enterScene Game.firstLevel
-      if @selected is 3
-        Game.togglePause()
-        Crafty('Player').each -> @reset()
-        Crafty.enterScene 'Intro'
+      selected = @options[@selected]
+      selected.execute()
+      selected.entity.text(selected.text?() ? selected.text)
 
   showPlayers: ->
     Crafty('Player').each ->
