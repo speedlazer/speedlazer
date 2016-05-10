@@ -81,7 +81,10 @@ Game.ScriptModule.Core =
           d.promise
 
       whileResolved = no
-      condition(sequence).finally -> whileResolved = yes
+      condition(sequence)
+        .catch (e) ->
+          throw e unless e.message is 'sequence mismatch'
+        .finally -> whileResolved = yes
       WhenJS.iterate(
         -> 1
         -> whileResolved
@@ -129,8 +132,7 @@ Game.ScriptModule.Core =
     (sequence) =>
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
-      task(sequence).catch (e) ->
-        throw e unless e.message is 'sequence mismatch'
+      task(sequence)
       return
 
   # Wait an amount of milliseconds.
