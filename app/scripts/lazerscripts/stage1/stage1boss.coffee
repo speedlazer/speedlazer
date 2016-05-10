@@ -512,6 +512,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
 
   leaveScreen: ->
     @sequence(
+      @invincible yes
       @moveTo(y: .5, x: 0.95, speed: 100, 'easeInOutQuad')
 
       @async @placeSquad(Game.Scripts.Stage1BossPopupMineField,
@@ -545,7 +546,6 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
               stepSize: 0.075
       )
       @wait(3000)
-      @invincible yes
       @drop item: 'pool', location: @location()
       @while(
         @moveTo(x: -.15, speed: 500, easing: 'easeInOutQuad')
@@ -578,6 +578,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
 
   execute: ->
     @entity.colorDesaturation Game.backgroundColor
+    @bindSequence 'Hit', @leaveScreen, => @entity.healthBelow .10
 
     @sequence(
       @animate 'slow', -1, 'eye'
