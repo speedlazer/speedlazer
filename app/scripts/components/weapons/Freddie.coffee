@@ -53,10 +53,13 @@ Crafty.c 'Freddy',
   freddy: (options) ->
     @ship = options.protect
     @ship.scoreText 'Help me Freddie!'
+
+    # Colors the cape towards the ship its protecting
     @colorOverride?(@ship.playerColor, 'partial')
     @attr
       scale: .5
       z: @ship.z + 5
+
     midX = (@w // 2)
     midY = (@h // 2)
     fy = 15
@@ -64,6 +67,7 @@ Crafty.c 'Freddy',
     @collision [-fx, -fy, midX, -(2*fy), @w + fx, -fy,
       @w + (2*fx), midY, @w + fx, @h + fy,
       midX, @h + (2*fy), -fx, @h + fy, -(2*fx), midY]
+
     @ship.addComponent('Invincible').invincibleDuration(-1)
 
     @attr(
@@ -114,6 +118,7 @@ Crafty.c 'Freddy',
     rot = (360 / circleSpeed) * fd.dt
     @circlePos = (@circlePos + rot + 360) % 360
 
+    # (2 * PI) / 360 = 0.0174532925
     rad = @circlePos * 0.0174532925
 
     targetX =
