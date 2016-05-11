@@ -3,40 +3,6 @@
 generator = @Game.levelGenerator
 
 generator.defineAssets(
-  'drone-mine'
-  contents: ['drone', 'mine']
-  spriteMap: 'drone.png'
-  sprites:
-    drone:
-      tile: 80
-      tileh: 80
-      map:
-        standardDrone: [0,0]
-      paddingX: 1
-    mine:
-      tile: 25
-      tileh: 25
-      map:
-        standardMine: [0,3]
-      paddingY: 2
-      paddingX: 1
-)
-
-generator.defineAssets(
-  'general'
-  contents: ['cloud', 'shadow', 'rocket']
-  spriteMap: 'general.png'
-  sprites:
-    all:
-      tile: 1
-      tileh: 1
-      map:
-        shadow: [1, 18, 35, 20]
-        standardRocket: [1, 1, 45, 15]
-        cloud: [48, 0, 250, 100]
-)
-
-generator.defineAssets(
   'sun'
   contents: ['sun']
   spriteMap: 'sun.png'
@@ -114,7 +80,13 @@ generator.defineAssets(
 )
 generator.defineAssets(
   'player'
-  contents: ['playerShip', 'shipEngineFire']
+  contents: [
+    'playerShip',
+    'shipEngineFire',
+    'mine',
+    'drone',
+    'rocket'
+  ]
   spriteMap: 'city-enemies.png'
   sprites:
     all:
@@ -125,4 +97,7 @@ generator.defineAssets(
         playerShipDamaged: [0, 2, 3, 2]
         shipEngineFire: [3, 0, 3, 1]
         freddie: [3, 1, 3, 2]
+        standardMine: [3, 3, 1, 1]
+        standardDrone: [0, 4, 2, 2]
+        standardRocket: [4, 4, 2, 1]
 )

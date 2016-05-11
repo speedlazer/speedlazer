@@ -27,11 +27,8 @@ Crafty.c 'Drone',
 
   updatedHealth: ->
     return if @juice is no
-    sprite = 0
-    if @health < 200
-      sprite = 1
-
-    @sprite(sprite, 0)
+    return @sprite(2, 4, 2, 2) if @health < 200
+    @sprite(0, 4, 2, 2)
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
     @vx = dx * (1000 / dt)

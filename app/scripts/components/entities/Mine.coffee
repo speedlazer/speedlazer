@@ -1,15 +1,16 @@
 Crafty.c 'Mine',
   init: ->
     @requires 'Enemy, standardMine, SpriteAnimation'
-    @reel 'open', 200, [[1, 3], [2, 3]]
-    @reel 'close', 200, [[1, 3], [0, 3]]
-    @reel 'blink', 100, [[2, 3], [3, 3]]
+    @reel 'open', 200, [[4, 3], [5, 3]]
+    @reel 'close', 200, [[4, 3], [3, 3]]
+    @reel 'blink', 100, [[5, 3], [6, 3]]
 
     @bind 'GameLoop', (fd) ->
       delta = (360 / 4000) * fd.dt
       @attr rotation: @rotation + delta
 
   mine: (attr = {}) ->
+    @crop 4, 4, 25, 25
     @attr _.defaults(attr, h: 25, w: 25, health: 100)
     @origin 'center'
 

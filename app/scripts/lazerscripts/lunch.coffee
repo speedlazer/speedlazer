@@ -3,7 +3,7 @@ Game.Scripts ||= {}
 
 class Game.Scripts.Lunch extends Game.LazerScript
   assets: ->
-    @loadAssets('shadow', 'explosion', 'playerShip')
+    @loadAssets('explosion', 'playerShip')
 
   execute: ->
     @inventoryAdd 'item', 'lasers', ->

@@ -270,6 +270,8 @@ class Game.CityScenery extends Game.LevelScenery
           bigBuilding: [16, 13, 16, 14]
           bigBuildingBroken: [30, 13, 16, 14]
           glass: [12, 9, 4, 3]
+          cloud: [16, 9, 8, 3]
+          shadow: [16, 12, 2, 1]
 
 generator.defineBlock class extends Game.LevelScenery
   name: 'City.Intro'

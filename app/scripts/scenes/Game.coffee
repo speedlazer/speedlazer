@@ -14,9 +14,9 @@ Crafty.defineScene 'Game', (data = {}) ->
   # This is a dirty fix to prevent
   # 'glDrawElements: attempt to render with no buffer attached to enabled attribute 6'
   # to happen mid-stage
-  wait = Game.levelGenerator.loadAssets(['shadow', 'explosion']).then =>
+  wait = Game.levelGenerator.loadAssets(['explosion']).then =>
     d = WhenJS.defer()
-    e = Crafty.e('WebGL, shadow')
+    e = Crafty.e('WebGL, explosion')
     setTimeout(
       ->
         e.destroy()
