@@ -448,6 +448,7 @@ Game.ScriptModule.Entity =
       @decoy = @spawn(@options)
       { x, y } = @location()()
       @decoy.removeComponent('BurstShot')
+      #@decoy.removeComponent('ViewportFixed')
       @decoy.attr(
         x: x - Crafty.viewport.x
         y: y - Crafty.viewport.y
@@ -455,10 +456,15 @@ Game.ScriptModule.Entity =
         health: 1
       )
       @decoy.updatedHealth()
+      if @entity.xFlipped
+        @decoy.flipX()
+      @decoyingEntity = @entity
+      @entity = @decoy
 
   endDecoy: ->
     (sequence) =>
       @decoy?.destroy()
       @decoy = null
+      @entity = @decoyingEntity
 
 

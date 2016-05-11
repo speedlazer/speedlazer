@@ -42,7 +42,7 @@ Game.ScriptTemplate.Level =
         @blast(@location({
           offsetX: options.offsetX
           offsetY: options.offsetY
-        }))
+        }), alpha: .85)
         => Crafty.audio.play("explosion", 1, .25)
         @screenShake(2, duration: 200)
       )
