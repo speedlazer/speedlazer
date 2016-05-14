@@ -272,6 +272,8 @@ class Game.CityScenery extends Game.LevelScenery
           glass: [12, 9, 4, 3]
           cloud: [16, 9, 8, 3]
           shadow: [16, 12, 2, 1]
+          bridgeDeck: [0, 32, 32, 6]
+          bridgePillar: [32, 29, 6, 17]
 
 generator.defineBlock class extends Game.LevelScenery
   name: 'City.Intro'
@@ -486,21 +488,12 @@ generator.defineBlock class extends Game.CityScenery
     @addElement 'cityDistance'
     @addElement 'city'
 
-generator.defineBlock class extends Game.LevelScenery
+generator.defineBlock class extends Game.CityScenery
   name: 'City.UnderBridge'
   delta:
     x: 1024
     y: 0
   autoNext: 'BayFull'
-
-  assets: ->
-    sprites:
-      'bridge-deck.png':
-        tile: 1
-        tileh: 1
-        map:
-          bridgeDeck: [0, 0, 1024, 180]
-          bridgePillar: [0, 181, 534, 180]
 
   generate: ->
     super
@@ -520,14 +513,14 @@ generator.defineBlock class extends Game.LevelScenery
     @addBackground(0, 295,  @deck(.45, w: 600, z: -270).flip('X'), .60)
     @addBackground(0, 255,  @deck(.35, w: 650, z: -260), .65)
 
-    @addBackground(140, 290,  @pillar( .35, h: 200, z: -261), .65)
-    @addBackground(970, 290,  @pillarX(.35, h: 200, z: -261), .65)
+    @addBackground(40, 290,  @pillar( .35, h: 200, z: -261), .65)
+    @addBackground(870, 290,  @pillarX(.35, h: 200, z: -261), .65)
 
     @addBackground(0, 205,  @deck(.25, w: 700, z: -50).flip('X'), .70)
     @addBackground(0, 155,  @deck(.15, w: 750, z: -40), .75)
 
-    @addBackground(160, 180, @pillar( 0, h: 350, z: -31), .8)
-    @addBackground(990, 180, @pillarX(0, h: 350, z: -31), .8)
+    @addBackground(10, 180, @pillar( 0, h: 350, z: -31), .8)
+    @addBackground(830, 180, @pillarX(0, h: 350, z: -31), .8)
     @addBackground(0, 95,  @deck(.05, w: 800, z: -30).flip('X'), .8)
 
     @addBackground(0, 20,   @deck(0,   w: 900, z: -20).addComponent('BackDeck'), .9)
@@ -543,8 +536,8 @@ generator.defineBlock class extends Game.LevelScenery
     p1 = @pillar( 0, h: 750, z: 80, lightness: 0.6, blur: 0.0).addComponent('TiltPillarLeft')
     p2 = @pillarX(0, h: 750, z: 80, lightness: 0.6, blur: 0.0).addComponent('TiltPillarRight')
 
-    @addBackground(190,  -60, p1, 1.2)
-    @addBackground(1025, -60, p2, 1.2)
+    @addBackground(-20,  -60, p1, 1.2)
+    @addBackground(834, -60, p2, 1.2)
 
     @bind 'BridgeCollapse', once: yes, (level) =>
       d0 = Crafty('FrontDeck').get(0).addComponent('TweenPromise')
@@ -562,8 +555,8 @@ generator.defineBlock class extends Game.LevelScenery
             -> d1.tweenPromise({ rotation: -10 }, 4000, 'easeInQuad')
             -> dh.tweenPromise({ rotation: -10 }, 4000, 'easeInQuad')
             -> d2.tweenPromise({ rotation: -7 }, 4000, 'easeInQuad')
-            -> p1.tweenPromise({ rotation: 83, dy: p1.dy + 100 }, 3000, 'easeInQuad')
-            -> p2.tweenPromise({ rotation: 63 }, 3000, 'easeInQuad')
+            -> p1.tweenPromise({ rotation: -7, dy: p1.dy + 100 }, 3000, 'easeInQuad')
+            -> p2.tweenPromise({ rotation: 7 }, 3000, 'easeInQuad')
           ]
         ->
           WhenJS.parallel [
@@ -571,8 +564,8 @@ generator.defineBlock class extends Game.LevelScenery
             -> d1.tweenPromise({ dy: d1.dy + 430 }, 4000, 'easeInQuad')
             -> dh.tweenPromise({ dy: dh.dy + 430 }, 4000, 'easeInQuad')
             -> d2.tweenPromise({ dy: d2.dy + 400 }, 4000, 'easeInQuad')
-            -> p1.tweenPromise({ rotation: 43, dy: p1.dy + 300 }, 3000, 'easeInQuad')
-            -> p2.tweenPromise({ rotation: 43, dy: p2.dy + 200 }, 3000, 'easeInQuad')
+            -> p1.tweenPromise({ rotation: -27, dy: p1.dy + 300 }, 3000, 'easeInQuad')
+            -> p2.tweenPromise({ rotation: 27, dy: p2.dy + 200 }, 3000, 'easeInQuad')
           ]
       ]
 
@@ -581,22 +574,23 @@ generator.defineBlock class extends Game.LevelScenery
   deck: (gradient, attr) ->
     aspectR = 1024 / 180
     attr.h = attr.w / aspectR
-    Crafty.e('2D, WebGL, bridgeDeck, ColorEffects, Horizon, SunBlock').attr(
-      attr
-    ).saturationGradient(gradient, gradient)
-     .origin('middle right')
+    Crafty.e('2D, WebGL, bridgeDeck, ColorEffects, Horizon, SunBlock')
+      .crop(0, 2, 1024, 180)
+      .attr(attr)
+      .saturationGradient(gradient, gradient)
+      .origin('middle right')
 
   pillar: (gradient, attr) ->
-    aspectR = 534 / 170
-    attr.w = attr.h
-    attr.h = attr.w / aspectR
-    attr.rotation = 90
-    Crafty.e('2D, WebGL, bridgePillar, ColorEffects, Horizon, SunBlock').attr(
-      attr
-    ).saturationGradient(gradient, gradient)
+    aspectR = 180 / 534
+    attr.w = attr.h * aspectR
+    attr.h = attr.h
+    Crafty.e('2D, WebGL, bridgePillar, ColorEffects, Horizon, SunBlock')
+      .crop(2, 0, 180, 534)
+      .attr(attr)
+      .saturationGradient(gradient, gradient)
 
   pillarX: (gradient, attr) ->
-    @pillar(gradient, attr).flip('Y')
+    @pillar(gradient, attr).flip('X')
 
 
 generator.defineBlock class extends Game.CityScenery

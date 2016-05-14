@@ -61,9 +61,9 @@ Crafty.c 'LargeDrone',
   updatedHealth: ->
     healthPerc = @health / @maxHealth
 
-    return @sprite(3, 8, 3, 3) if healthPerc < .3
+    return @sprite(9, 8, 3, 3) if healthPerc < .3
     return @sprite(6, 8, 3, 3) if healthPerc < .6
-    return @sprite(9, 8, 3, 3) if healthPerc < .9
+    return @sprite(3, 8, 3, 3) if healthPerc < .9
     @sprite(0, 8, 3, 3)
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
