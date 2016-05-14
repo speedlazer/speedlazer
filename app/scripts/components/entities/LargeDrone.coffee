@@ -4,9 +4,8 @@ Crafty.c 'LargeDrone',
 
   drone: (attr = {}) ->
     defaultHealth = 360000
+    @crop 0, 0, 90, 70
     @attr _.defaults(attr,
-      w: 90
-      h: 70
       health: defaultHealth
       maxHealth: attr.health ? defaultHealth
       z: -1
@@ -15,15 +14,23 @@ Crafty.c 'LargeDrone',
     @collision [2, 36, 16,15, 86,2, 88,4, 62,15, 57,46, 46, 66, 18, 66, 3, 47]
 
     @eye = Crafty.e('2D, WebGL, eyeStart, SpriteAnimation')
+    @eye.crop(0, 0, 20, 26)
     @attach(@eye)
     @eye.attr(x: 2 + @x, y: 18 + @y, z: 1)
-    @eye.reel 'slow', 1500, [[0, 3], [1, 3], [2, 3], [3, 3], [0, 4], [1, 4], [2, 4], [3, 4]]
+    @eye.reel 'slow', 1500, [
+      [6, 0], [7, 0], [8, 0], [9, 0],
+      [6, 1], [7, 1], [8, 1], [9, 1]
+    ]
 
     @wing = Crafty.e('2D, WebGL, wingLoaded, SpriteAnimation')
+    @wing.crop(0, 0, 46, 21)
     @attach(@wing)
-    @wing.attr(x: 22 + @x, y: 33 + @y, z: 1, h: 21, w: 46)
-    @wing.reel 'emptyWing', 30, [[6, 4]]
-    @wing.reel 'reload', 500, [[2, 4], [3, 4], [4, 4], [5, 4]]
+    @wing.attr(x: 19 + @x, y: 28 + @y, z: 1, h: 21, w: 46)
+    @wing.reel 'emptyWing', 30, [[14, 2, 2, 1]]
+    @wing.reel 'reload', 500, [
+      [6, 2, 2, 1], [8, 2, 2, 1],
+      [10, 2, 2, 1], [12, 2, 2, 1]
+    ]
 
     @enemy()
     @onHit 'Mine', (e) ->
@@ -52,12 +59,12 @@ Crafty.c 'LargeDrone',
     (@health / @maxHealth) < perc
 
   updatedHealth: ->
-    sprite = 0
     healthPerc = @health / @maxHealth
-    sprite = 1 if healthPerc < .9
-    sprite = 2 if healthPerc < .6
-    sprite = 3 if healthPerc < .3
-    @sprite(sprite, 0)
+
+    return @sprite(3, 8, 3, 3) if healthPerc < .3
+    return @sprite(6, 8, 3, 3) if healthPerc < .6
+    return @sprite(9, 8, 3, 3) if healthPerc < .9
+    @sprite(0, 8, 3, 3)
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
     @vx = dx * (1000 / dt)
