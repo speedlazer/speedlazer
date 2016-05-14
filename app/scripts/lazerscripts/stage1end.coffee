@@ -4,7 +4,7 @@ Game.Scripts ||= {}
 class Game.Scripts.Stage1End extends Game.LazerScript
 
   assets: ->
-    @loadAssets('shadow', 'explosion')
+    @loadAssets('explosion')
 
   execute: ->
     @sequence(
