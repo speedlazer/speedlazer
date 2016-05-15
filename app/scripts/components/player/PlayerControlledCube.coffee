@@ -1,6 +1,6 @@
 Crafty.c 'PlayerControlledCube',
   init: ->
-    @requires '2D, WebGL, Color, Listener, Collision, SunBlock, PlayerControlledShip, Accelleration'
+    @requires '2D, WebGL, Color, Listener, Collision, SunBlock, PlayerControlledShip, Acceleration'
     @attr w: 40, h: 40
 
     @bind 'Moved', (from) ->

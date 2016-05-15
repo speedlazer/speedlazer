@@ -1,48 +1,6 @@
-Crafty.c 'Accelleration',
-  init: ->
-    @_currentSpeed = { x: 0, y: 0 }
-    @_targetSpeed = { x: 0, y: 0 }
-    @_accelerate = { x: .01, y: .01 }
-    @_currentAcceleration = { x: 0, y: 0 }
-
-  updateAcceleration: ->
-    @_handleAcceleration('x')
-    @_handleAcceleration('y')
-
-  targetSpeed: (speed, options = {}) ->
-    options = _.defaults(options,
-      accellerate: yes
-    )
-    if options.accellerate
-      @_accelerate = { x: .01, y: .01 }
-    else
-      @_accelerate = { x: Infinity, y: Infinity }
-
-    if speed.x? && speed.y?
-      @_targetSpeed.x = speed.x
-      @_targetSpeed.y = speed.y
-    else
-      @_targetSpeed.x = speed
-      @_targetSpeed.y = 0
-    this
-
-  _handleAcceleration: (axis) ->
-    return if @_currentSpeed[axis] == @_targetSpeed[axis]
-    a = 1
-    a = -1 if @_currentSpeed[axis] > @_targetSpeed[axis]
-
-    @_currentAcceleration[axis] += @_accelerate[axis] * a
-    @_currentSpeed[axis] += @_currentAcceleration[axis]
-
-    return if @_currentAcceleration[axis] > 0 and @_currentSpeed[axis] < @_targetSpeed[axis]
-    return if @_currentAcceleration[axis] < 0 and @_currentSpeed[axis] > @_targetSpeed[axis]
-
-    @_currentSpeed[axis] = @_targetSpeed[axis]
-    @_currentAcceleration[axis] = 0
-
 Crafty.c 'ScrollWall',
   init: ->
-    @requires('2D, Edge, Collision, Accelleration')
+    @requires('2D, Edge, Collision, Acceleration')
     @shakes = []
     @motions = []
     @attr
@@ -71,21 +29,26 @@ Crafty.c 'ScrollWall',
       speedY = @_currentSpeed.y
       @updateAcceleration()
 
-      if @allowPushing
-        # When the ships are in the first 30% of the screen,
-        # speed up the camera.
-        Crafty('PlayerControlledShip').each ->
-          threshold = Crafty.viewport.width * (2.0 / 3.0)
-          relOffset = @x + Crafty.viewport.x
-          if relOffset > threshold
-            percentageOutOfBounds = (relOffset - threshold) / (Crafty.viewport.width - threshold)
-            increase = (5 + @_forcedSpeed.x) * percentageOutOfBounds
+      # TODO: While this is currently not in use,
+      # It would be awesome if the player could move the camera vertically. (If allowed)
+      # Or horizontally (when allowed)
+      # This could allow gameplay through mazes where the player has to find the way on their own
+      #
+      #if @allowPushing
+        ## When the ships are in the first 30% of the screen,
+        ## speed up the camera.
+        #Crafty('PlayerControlledShip').each ->
+          #threshold = Crafty.viewport.width * (2.0 / 3.0)
+          #relOffset = @x + Crafty.viewport.x
+          #if relOffset > threshold
+            #percentageOutOfBounds = (relOffset - threshold) / (Crafty.viewport.width - threshold)
+            #increase = (5 + @_forcedSpeed.x) * percentageOutOfBounds
 
-            if speedX > 0 # Prevend division by zero
-              percentage = (speedX + increase) / speedX
-              speedY *= percentage
+            #if speedX > 0 # Prevend division by zero
+              #percentage = (speedX + increase) / speedX
+              #speedY *= percentage
 
-            speedX += increase
+            #speedX += increase
 
       # the speed is px / sec
       # the time passed is fd.dt in milliseconds
@@ -133,6 +96,7 @@ Crafty.c 'ScrollWall',
         x: Math.round(x)
         y: Math.round(y)
       )
+
     # TODO: Verify correctness of these statements
     #@onHit 'PlayerControlledShip', (el) ->
       ## Push the player forward
