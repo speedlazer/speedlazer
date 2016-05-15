@@ -274,6 +274,9 @@ class Game.CityScenery extends Game.LevelScenery
           shadow: [16, 12, 2, 1]
           bridgeDeck: [0, 32, 32, 6]
           bridgePillar: [32, 29, 6, 17]
+          bigGlare: [0, 38, 7, 7]
+          sun: [13, 38, 2, 2]
+          directGlare: [7, 38, 6, 6]
 
 generator.defineBlock class extends Game.LevelScenery
   name: 'City.Intro'

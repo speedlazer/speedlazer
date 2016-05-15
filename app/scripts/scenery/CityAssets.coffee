@@ -3,23 +3,6 @@
 generator = @Game.levelGenerator
 
 generator.defineAssets(
-  'sun'
-  contents: ['sun']
-  spriteMap: 'sun.png'
-  sprites:
-    all:
-      tile: 1
-      tileh: 1
-      map:
-        sun: [0,0,35,35]
-        directGlare: [0,81,175,175]
-        redGlare: [0,36,10,10]
-        blueGlare: [120, 0, 80, 80]
-        bigGlare: [0, 256, 200, 200]
-)
-
-
-generator.defineAssets(
   'explosion'
   contents: ['explosion']
   spriteMap: 'explosion.png'

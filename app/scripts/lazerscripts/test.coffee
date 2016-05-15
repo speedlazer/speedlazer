@@ -7,10 +7,11 @@ class Game.Scripts.Test extends Game.LazerScript
 
   execute: ->
     @sequence(
-      @setShipType('PlayerControlledCube')
-      @setScenery 'OceanOld'
+      #@setShipType('PlayerControlledCube')
+      @setScenery 'Ocean'
+      @async @runScript(Game.Scripts.SunRise, skipTo: 200000)
       @setSpeed 50
-      @testEnemy(1)
+      #@testEnemy(1)
       #@testEnemy(3)
     )
 

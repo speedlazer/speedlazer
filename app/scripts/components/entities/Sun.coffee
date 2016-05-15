@@ -1,12 +1,14 @@
 Crafty.c 'Sun',
   init: ->
     @requires '2D, WebGL, Collision, Choreography, ViewportFixed, sun'
+    @crop(0, 0, 64, 64)
 
     @attr(w: 20, h: 20, z: -1000)
 
     @origin 'center'
     @glare = []
     directGlare = Crafty.e('2D, WebGL, Glare, directGlare')
+      .crop(0, 0, 175, 175)
       .attr
         w: @w * 3
         h: @h * 3
@@ -18,7 +20,8 @@ Crafty.c 'Sun',
     @attach directGlare
     @glare.push directGlare
 
-    blueGlare = Crafty.e('2D, WebGL, Glare, blueGlare, Horizon')
+    blueGlare = Crafty.e('2D, WebGL, Glare, bigGlare, Horizon')
+      .crop(0, 0, 200, 200)
       .attr
         mirrored: yes
         w: 80
@@ -34,7 +37,9 @@ Crafty.c 'Sun',
     @attach blueGlare
     @glare.push blueGlare
 
-    redGlare = Crafty.e('2D, WebGL, Glare, redGlare')
+    redGlare = Crafty.e('2D, WebGL, Glare, bigGlare, ColorEffects')
+      .crop(0, 0, 200, 200)
+      .colorOverride('#fd6565')
       .attr
         mirrored: yes
         w: 10
@@ -49,6 +54,7 @@ Crafty.c 'Sun',
     @glare.push redGlare
 
     bigGlare = Crafty.e('2D, WebGL, Glare, bigGlare')
+      .crop(0, 0, 200, 200)
       .attr
         mirrored: yes
         w: 200
