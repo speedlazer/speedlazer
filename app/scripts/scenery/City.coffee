@@ -48,7 +48,7 @@ generator.defineElement 'waterHorizon', ->
   h = Crafty.e('2D, WebGL, waterHorizon, SunBlock, Horizon')
     .attr(z: -600, w: 257)
     .colorDesaturation(Game.backgroundColor)
-    .saturationGradient(1.0, .5)
+    .saturationGradient(1.0, .2)
   if Game.webGLMode is off
     h.attr lightness: .6
   @addBackground(0, @level.visibleHeight - 225, h, .25)
@@ -64,7 +64,7 @@ generator.defineElement 'water', ->
     .crop(1, 0, 511, 192)
     .attr(z: -500, w: 513)
     .colorDesaturation(Game.backgroundColor)
-    .saturationGradient(.7, .0)
+    .saturationGradient(.7, -.4)
   if Game.webGLMode is off
     h.attr lightness: .8
   @addBackground(0, @level.visibleHeight - 150, h, .5)
@@ -321,7 +321,7 @@ generator.defineBlock class extends Game.LevelScenery
       lightness: 0.5
       #blur: 6.0
     ).crop(0, 1, 512, 95)
-    @addBackground(0, @level.visibleHeight - 18, frontWave, 1.25)
+    @addBackground(0, @level.visibleHeight - 8, frontWave, 1.25)
     frontWave.originalY = frontWave.y
 
     @addElement 'cloud'

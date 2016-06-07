@@ -17,7 +17,7 @@ Crafty.c 'Cheats',
         ship = @ship
         Crafty('Freddy').each ->
           alreadyProtected = yes if @ship is ship
-        Crafty.e('Freddy').freddy(protect: @ship)
+        Crafty.e('Freddy').freddy(protect: @ship) unless alreadyProtected
     )
     @_listenInput()
 

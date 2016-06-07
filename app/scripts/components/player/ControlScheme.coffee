@@ -1,6 +1,6 @@
 Crafty.c 'ControlScheme',
   init: ->
-    @addComponent('Cheats')
+    @addComponent('Cheats') unless @has('Cheats')
     @trigger('Activated')
     Crafty.trigger('PlayerActivated')
 
