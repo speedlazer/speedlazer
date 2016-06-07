@@ -134,7 +134,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @sequence(
           @say 'General', 'Time to get the last 2 ships to the factory\n' +
             'to install the automated defence systems'
-          @say 'John', 'I hate that we pilots will be without jobs soon'
+          @say 'John', 'I have a feeling that we will be without jobs soon'
         )
       )
       @say 'General', 'It saves lives when you no longer need soldiers,\n' +
@@ -148,7 +148,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setScenery('Ocean')
       @say('General', 'We send some drones for some last manual target practice')
       @repeat(2, @sequence(
-        @dropWeaponsForEachPlayer()
         @wait(1000)
         @placeSquad Game.Scripts.Swirler,
           amount: 6
@@ -157,19 +156,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       ))
     )
 
-  dropWeaponsForEachPlayer: ->
-    @parallel(
-      @if((-> @player(1).active and !@player(1).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(1)))
-      @if((-> @player(2).active and !@player(2).has('lasers')), @drop(item: 'lasers', inFrontOf: @player(2)))
-    )
-
   droneTakeover: ->
     @sequence(
       @placeSquad Game.Scripts.CrewShooters,
         amount: 4
         delay: 750
         drop: 'pool'
-      @say('General', 'What the hell is happening with our drones?')
+      @say('General', 'What is going on with our drones?')
       @say('General', 'They do not respond to our commands anymore!\nThe defence AI has been hacked!')
       @async @chapterTitle(1, 'Hacked')
       @setSpeed 150
@@ -185,7 +178,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @parallel(
         @sequence(
           @wait 2000
-          @say 'General', 'We\'re under attack!'
+          @say 'General', 'We\'re under attack!?!'
         )
         @swirlAttacks()
       )
