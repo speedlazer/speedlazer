@@ -45,6 +45,7 @@ class Game.Level
         WhenJS.sequence(nextLoading)
 
   start: ->
+    @active = yes
     Crafty.viewport.x = 0
     Crafty.viewport.y = 0
     @_controlsEnabled = yes
@@ -268,12 +269,16 @@ class Game.Level
   # Stop the level, clean up event handlers and
   # blocks
   stop: ->
+    @active = no
     Crafty.unbind('LeaveBlock')
     Crafty.unbind('EnterBlock')
     Crafty.unbind('ShipSpawned')
     Crafty.unbind('ViewportScroll')
     Crafty.unbind('GameLoop', @_waveTicks)
     b?.clean() for b in @blocks
+
+  verify: ->
+    throw new Error('sequence mismatch') unless @active
 
   _update: ->
     startX = - Crafty.viewport._x

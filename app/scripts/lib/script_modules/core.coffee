@@ -16,6 +16,7 @@ Game.ScriptModule ?= {}
 Game.ScriptModule.Core =
   _verify: (sequence) ->
     throw new Error('sequence mismatch') unless sequence is @currentSequence
+    @level.verify()
 
   _skippingToCheckpoint: ->
     @startAtCheckpoint? and @currentCheckpoint < @startAtCheckpoint
