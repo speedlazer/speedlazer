@@ -186,10 +186,16 @@ generator.defineElement 'city', ->
   @addBackground(0, @level.visibleHeight - 310, c, .5)
   @addBackground(0, @level.visibleHeight - 310, d, .5)
 
-generator.defineElement 'cityFront', ->
-  bb = Crafty.e('2D, WebGL, bigBuilding, ColorEffects, RiggedExplosion').attr(z: -20).crop(1, 1, 446, 510)
+generator.defineElement 'cityFrontTop', ->
+  bb = Crafty.e('2D, WebGL, bigBuildingTop, ColorEffects, RiggedExplosion').attr(z: -20).crop(1, 1, 446, 8 * 32)
   bb.colorOverride('#001fff', 'partial')
   @add(0, @level.visibleHeight - 700, bb)
+
+  for i in [0...3]
+    floor = Crafty.e('2D, WebGL, bigBuildingLayer, ColorEffects').attr(z: -20).crop(1, 1, 446, 2 * 32)
+    floor.attr(x: bb.x, y: bb.y + bb.h + (i * 64))
+    bb.attach(floor)
+
   bb.bind('BigExplosion', ->
     return if @buildingExploded
     if @x + @w > -Crafty.viewport.x and @x < -Crafty.viewport.x + Crafty.viewport.width
@@ -215,12 +221,28 @@ generator.defineElement 'cityFront', ->
         .tween({ y: @y + 500}, 3000, 'easeInQuad')
 
       @sprite(30, 13)
+      for e in @_children
+        e.sprite(30, 21) if e.has('bigBuildingLayer')
       @buildingExploded = yes
   )
 
+generator.defineElement 'cityFront', ->
+  bb = Crafty.e('2D, WebGL, bigBuildingTop, ColorEffects').attr(z: -20).crop(1, 1, 446, 8 * 32)
+  bb.colorOverride('#001fff', 'partial')
+  @add(0, @level.visibleHeight - 700, bb)
+
+  height = 5
+  for i in [0...height]
+    floor = Crafty.e('2D, WebGL, bigBuildingLayer, ColorEffects').attr(z: -20).crop(1, 1, 446, 2 * 32)
+    floor.attr(x: bb.x, y: bb.y + bb.h + (i * 64))
+    bb.attach(floor)
+
+  bottom = Crafty.e('2D, WebGL, bigBuildingBottom, ColorEffects').attr(z: -20).crop(1, 1, 446, 120)
+  bottom.attr(x: bb.x, y: bb.y + bb.h + (height * 64))
+  bb.attach(bottom)
+
 generator.defineElement 'cityFrontBlur', ->
-  h = 768
-  @addBackground(200, @level.visibleHeight - 550, Crafty.e('2D, WebGL, bigBuilding').crop(1, 1, 446, 510).attr(w: 768, h: h, z: 50, lightness: .4), 1.5)
+  @addBackground(200, @level.visibleHeight - 550, Crafty.e('2D, WebGL, bigBuildingTop').crop(1, 1, 446, 8 * 32).attr(w: 768, h: 384, z: 50, lightness: .4), 1.5)
 
 generator.defineElement 'city-bridge', ->
   bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon')
@@ -267,8 +289,13 @@ class Game.CityScenery extends Game.LevelScenery
           cityLayer2: [0, 9, 12, 8]
           cityDistance: [32, 6, 8, 7]
           cityDistanceBase: [38, 6, 8, 7]
-          bigBuilding: [16, 13, 16, 14]
-          bigBuildingBroken: [30, 13, 16, 14]
+
+          bigBuildingTop: [16, 13, 16, 8]
+          bigBuildingBrokenTop: [30, 13, 16, 8]
+
+          bigBuildingLayer: [16, 21, 16, 2]
+          bigBuildingBottom: [16, 25, 16, 4]
+
           glass: [12, 9, 4, 3]
           cloud: [16, 9, 8, 3]
           shadow: [16, 12, 2, 1]
@@ -321,7 +348,7 @@ generator.defineBlock class extends Game.LevelScenery
       lightness: 0.5
       #blur: 6.0
     ).crop(0, 1, 512, 95)
-    @addBackground(0, @level.visibleHeight - 8, frontWave, 1.25)
+    @addBackground(0, @level.visibleHeight - 18, frontWave, 1.25)
     frontWave.originalY = frontWave.y
 
     @addElement 'cloud'
@@ -605,7 +632,7 @@ generator.defineBlock class extends Game.CityScenery
   generate: ->
     super
 
-    @addElement 'cityFront'
+    @addElement 'cityFrontTop'
     @addElement 'cityFrontBlur'
     @addElement 'water'
 
@@ -656,11 +683,11 @@ generator.defineBlock class extends Game.CityScenery
     @addElement 'city'
 
     h = 150
-    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h, z: -10).color('#505050'))
+    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h, z: -25).color('#505050'))
     h2 = 400
-    @add(0, @level.visibleHeight - 100 + h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h2, z: -10).color('#202020'))
+    @add(0, @level.visibleHeight - 100 + h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h2, z: -25).color('#202020'))
     h = 150
-    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h + h2, z: -10).color('#505050'))
+    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h + h2, z: -25).color('#505050'))
 
 
 generator.defineBlock class extends @Game.LevelScenery
