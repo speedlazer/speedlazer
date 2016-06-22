@@ -11,7 +11,7 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
     p = Crafty.e('PlayerClone').attr(
       x: Crafty.viewport.width + 40
       y: .6 * Crafty.viewport.height
-      defaultSpeed: options.speed ? 40
+      defaultSpeed: options.speed ? 80
       weaponOrigin: [0, 15]
     ).playerClone()
     p.addComponent('BurstShot').burstShot
@@ -34,7 +34,7 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
       @flightPath()
       @sequence(
         @fireRockets()
-        @wait 5000
+        @wait 2000
       )
     )
 
@@ -78,7 +78,7 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
     )
 
   fireRockets: (amount) ->
-    script = Game.Scripts.Stage1BossRocket
+    script = Game.Scripts.Stage1BossHomingRocket
 
     @sequence(
       @async @placeSquad(script,

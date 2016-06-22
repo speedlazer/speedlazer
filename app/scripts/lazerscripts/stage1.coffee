@@ -67,6 +67,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
       @setSpeed 100
       @checkpoint @checkpointMidStage('Skyline', 450000)
+      @placeSquad Game.Scripts.HeliAttack
 
       @setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
       @cloneEncounter()
@@ -85,10 +86,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @gainHeight(300, duration: 4000)
 
+
       # TODO: Mix this up with helicopters and jet fighters when
       # graphics are in
-
-      @repeat 2, @cloneEncounter()
+      @parallel(
+        @repeat 2, @cloneEncounter()
+        @placeSquad Game.Scripts.HeliAttack
+      )
 
       @setScenery 'SkylineBase'
       @while(

@@ -34,10 +34,10 @@ Crafty.c 'Helicopter',
     this
 
   updatedHealth: ->
-    sprite = 0
-    healthPerc = @health / @maxHealth
-    sprite = 2 if healthPerc < .3
-    @sprite(0, sprite)
+    #sprite = 0
+    #healthPerc = @health / @maxHealth
+    #sprite = 2 if healthPerc < .3
+    #@sprite(0, sprite)
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
     @vx = dx * (1000 / dt)

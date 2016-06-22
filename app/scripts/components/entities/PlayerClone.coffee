@@ -3,7 +3,7 @@ Crafty.c 'PlayerClone',
     @requires 'Enemy, playerShip'
 
   playerClone: (attr = {}) ->
-    defaultHealth = 4000
+    defaultHealth = 2000
     @attr _.defaults(attr,
       h: 45,
       w: 71,

@@ -12,19 +12,22 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
       x: Crafty.viewport.width + 40
       y: .6 * Crafty.viewport.height
       defaultSpeed: options.speed ? 40
-      weaponOrigin: [0, 15]
+      weaponOrigin: [0, 25]
     ).helicopter()
-    #p.addComponent('BurstShot').burstShot
-      #burstCooldown: 3000
-      #burstAmount: 4
-      #cooldown: 100
-      #projectile: (x, y, angle) =>
-        #projectile = Crafty.e('Projectile, Color, Enemy').attr(
-          #w: 12
-          #h: 4
-          #speed: 550
-        #).color('#FFFF00')
-        #projectile.shoot(x, y, angle)
+    p.addComponent('BurstShot').burstShot
+      burstCooldown: 1000
+      burstAmount: 14
+      angle: -15
+      angleDeviation: 10
+      aim: 45
+      cooldown: 50
+      projectile: (x, y, angle) =>
+        projectile = Crafty.e('Projectile, Color, Enemy').attr(
+          w: 12
+          h: 4
+          speed: 550
+        ).color('#FFFF00')
+        projectile.shoot(x, y, angle)
     p
 
   execute: ->
