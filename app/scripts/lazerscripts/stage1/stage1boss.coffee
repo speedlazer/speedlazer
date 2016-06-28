@@ -426,6 +426,66 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
   onKilled: ->
     @bigExplosion()
 
+class Game.Scripts.Stage1BossAimedRocket extends Game.EntityScript
+  spawn: (options) ->
+    options = _.defaults(options,
+      pointsOHit: 125
+      pointsOnDestroy: 50
+      z: 5
+      scale: 1.0
+      offsetY: 0
+    )
+    return null unless options.location?
+
+    location = options.location?()
+    return null unless location
+    @offsetY = options.offsetY
+    @cooldown = options.cooldown ? 500
+
+    Crafty.e('Rocket').rocket(
+      health: 250
+      x: location.x - 30
+      y: location.y - 8 + Math.round(Math.random() * 15)
+      z: options.z
+      defaultSpeed: 500
+      scale: options.scale
+      pointsOnHit: options.pointsOnHit
+      pointsOnDestroy: options.pointsOnDestroy
+    )
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @pickTarget('PlayerControlledShip')
+      @moveTo @location(offsetY: @offsetY)
+      @wait @cooldown
+      @while(
+        @moveThrough @targetLocation()
+        @sequence(
+          @blast(@location(),
+            ->
+              radius: 5
+              duration: 135
+              z: 1
+              alpha: .8
+              lightness: 1.0
+              gravity: (Math.random() * .2)
+              vertical: 0
+            ->
+              vertical: @vertical + Math.random() * @gravity
+              rotation: @rotation + (Math.random() * 3)
+              alpha: Math.max(0.1, (@alpha - Math.random() * .03))
+              lightness: Math.max(.4, @lightness - .05)
+              y: @y - @vertical
+          )
+          @wait 20
+        )
+      )
+    )
+
+  onKilled: ->
+    @bigExplosion()
+
 class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
   spawn: (options) ->
     options = _.defaults(options,
