@@ -115,6 +115,7 @@ Crafty.c 'Choreography',
       y: @y
       dx: part.x
       dy: part.y
+      rotation: part.rotation
       easing: new Crafty.easing(part.duration ? 0, easingFn)
     )
     if part.properties
@@ -153,7 +154,14 @@ Crafty.c 'Choreography',
       dy = motionY - pmotionY
 
     if @updateMovementVisuals?
-      @updateMovementVisuals(undefined, dx, dy, dt)
+      if @_currentPart.rotation
+        angle = Math.atan2(dy, dx)
+        angle *= (180 / Math.PI)
+        angle = (angle + 360 + 180) % 360
+      else
+        angle = undefined
+
+      @updateMovementVisuals(angle, dx, dy, dt)
 
     @x += dx
     @y += dy

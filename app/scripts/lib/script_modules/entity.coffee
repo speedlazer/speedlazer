@@ -248,6 +248,32 @@ Game.ScriptModule.Entity =
         else
           return @_moveWater(settings)
 
+  moveThrough: (location) ->
+    (sequence) =>
+      @_verify(sequence)
+
+      x = Math.round(@entity.x + Crafty.viewport.x)
+      y = Math.round(@entity.y + Crafty.viewport.y)
+
+      if res = location?()
+        tx = res.x
+        ty = res.y
+      else
+        [tx, ty] = location
+
+      if tx? and ty?
+        dx = tx - x
+        dy = ty - y
+      else
+        dx = -1
+        dy = 0
+
+      rad = Math.atan2(dy, dx)
+      fx = (Math.cos(rad) * 1000) + x
+      fy = (Math.sin(rad) * 1000) + y
+
+      @moveTo(x: fx, y: fy, rotation: yes)(sequence)
+
   _setupWaterSpot: ->
     if Game.explosionMode?
       waterSpot = Crafty.e('2D, WebGL, Color, Choreography, Tween')
@@ -372,6 +398,7 @@ Game.ScriptModule.Entity =
         type: 'viewport'
         x: settings.x
         y: settings.y
+        rotation: settings.rotation
         easingFn: easing
         maxSpeed: settings.speed
         duration: (delta / settings.speed) * 1000
@@ -435,7 +462,7 @@ Game.ScriptModule.Entity =
   turnAround: ->
     (sequence) =>
       @_verify(sequence)
-      @turned ?= no
+      @turned ?= @entity.xFlipped
       @turned = !@turned
       if @turned
         @entity.flipX()
