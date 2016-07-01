@@ -20,6 +20,7 @@ Crafty.c 'PlayerSpaceship',
     @superUsed = 0
     @weaponsEnabled = yes
     @currentRenderedSpeed = 0
+    @flip('X')
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
     velocity = Math.max(dx * (1000 / dt), 0)

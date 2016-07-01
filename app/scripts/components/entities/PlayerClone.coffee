@@ -3,7 +3,7 @@ Crafty.c 'PlayerClone',
     @requires 'Enemy, playerShip'
 
   playerClone: (attr = {}) ->
-    defaultHealth = 2000
+    defaultHealth = 300
     @attr _.defaults(attr,
       h: 45,
       w: 71,
@@ -12,7 +12,6 @@ Crafty.c 'PlayerClone',
       weaponOrigin: [5, 30]
     )
     @origin 'center'
-    @flipX()
     @colorOverride '#808080', 'partial'
 
     @enemy()
