@@ -35,7 +35,7 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
   fireRockets: (amount, homing) ->
     script = Game.Scripts.Stage1BossRocket
     if homing
-      script = Game.Scripts.Stage1BossHomingRocket
+      script = Game.Scripts.Stage1BossAimedRocket
 
     @sequence(
       @async @placeSquad(script,
@@ -110,7 +110,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       defaultSpeed: 100
-      health: 30000
+      health: 23000
       #defaultSpeed: 50
       pointsOnHit: 10
     )
@@ -175,8 +175,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
             gridConfig:
               x:
                 start: 0.1
-                steps: 9
-                stepSize: 0.1
+                steps: 6
+                stepSize: 0.15
               y:
                 start: 0.125
                 steps: 8
@@ -500,6 +500,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
     location = options.location?()
     return null unless location
     @offsetY = options.offsetY
+    @cooldown = options.cooldown ? 500
 
     Crafty.e('Rocket').rocket(
       health: 250
@@ -517,7 +518,7 @@ class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
     @sequence(
       @pickTarget('PlayerControlledShip')
       @moveTo @location(offsetY: @offsetY)
-      @wait 500
+      @wait @cooldown
       @while(
         @movePath [
           @targetLocation()
@@ -573,7 +574,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
   leaveScreen: ->
     @sequence(
       @invincible yes
-      @moveTo(y: .5, x: 0.95, speed: 100, 'easeInOutQuad')
+      @moveTo(y: .5, x: 0.95, speed: 200, easing: 'easeInOutQuad')
 
       @async @placeSquad(Game.Scripts.Stage1BossPopupMineField,
         amount: 20
@@ -744,6 +745,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
       defaultSpeed: 400
       pointsOnHit: 10
       pointsOnDestroy: 20
+      scale: options.scale ? 1.0
     )
 
   execute: ->

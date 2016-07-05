@@ -272,7 +272,17 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
         @if((-> @player(2).active), @drop(item: 'life', inFrontOf: @player(2)))
       )
-      @setSpeed 150
+      @setSpeed 200
+      @wait 500
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'rapidb', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'rapidb', inFrontOf: @player(2)))
+      )
+      @wait 500
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'speedb', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'speedb', inFrontOf: @player(2)))
+      )
     )
 
   swirlAttacks: ->
