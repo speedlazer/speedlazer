@@ -462,7 +462,7 @@ Game.ScriptModule.Entity =
   turnAround: ->
     (sequence) =>
       @_verify(sequence)
-      @turned ?= @entity.xFlipped
+      @turned ?= @entity.xFlipped ? no
       @turned = !@turned
       if @turned
         @entity.flipX()
@@ -485,6 +485,8 @@ Game.ScriptModule.Entity =
       @decoy.updatedHealth()
       if @entity.xFlipped
         @decoy.flipX()
+      else
+        @decoy.unflipX()
       @decoyingEntity = @entity
       @entity = @decoy
 
