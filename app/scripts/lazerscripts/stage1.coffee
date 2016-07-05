@@ -67,10 +67,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
       @setSpeed 100
       @checkpoint @checkpointMidStage('Skyline', 450000)
-      @placeSquad Game.Scripts.HeliAttack
 
       @setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
-      @cloneEncounter()
+      @placeSquad Game.Scripts.ScraperFlyer,
+        amount: 8
+        delay: 500
+        drop: 'pool'
       @parallel(
         @placeSquad Game.Scripts.ScraperFlyer,
           amount: 8
@@ -85,10 +87,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
 
       @gainHeight(300, duration: 4000)
+      @checkpoint @checkpointMidStage('Skyline', 500000)
 
-
-      # TODO: Mix this up with helicopters and jet fighters when
-      # graphics are in
       @parallel(
         @repeat 2, @cloneEncounter()
         @placeSquad Game.Scripts.HeliAttack
@@ -363,24 +363,24 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             drop: 'pool'
             options:
               shootOnSight: yes
+          @placeSquad Game.Scripts.HeliAttack
         )
       )
     )
 
   cloneEncounter: ->
-    @attackWaves(
-      @parallel(
-        @sequence(
-          @wait 4000
-          @placeSquad Game.Scripts.PlayerClone,
-            options:
-              from: 'top'
-        )
+    @parallel(
+      @sequence(
+        @wait 4000
         @placeSquad Game.Scripts.PlayerClone,
+          drop: 'pool'
           options:
-            from: 'bottom'
+            from: 'top'
       )
-      drop: 'pool'
+      @placeSquad Game.Scripts.PlayerClone,
+        drop: 'pool'
+        options:
+          from: 'bottom'
     )
 
 

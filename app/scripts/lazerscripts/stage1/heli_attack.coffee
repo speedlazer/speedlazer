@@ -15,7 +15,7 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
       weaponOrigin: [0, 25]
     ).helicopter()
     p.addComponent('BurstShot').burstShot
-      burstCooldown: 1000
+      burstCooldown: 1500
       burstAmount: 14
       angle: -15
       angleDeviation: 10

@@ -12,7 +12,7 @@ Crafty.c 'Helicopter',
       h: 50,
       health: defaultHealth
       maxHealth: attr.health ? defaultHealth
-      weaponOrigin: [5, 30]
+      weaponOrigin: [5, 46]
     )
     @origin 'center'
     @flip('x')
