@@ -288,7 +288,8 @@ class Game.CityScenery extends Game.LevelScenery
           city: [16, 0, 16, 9]
           cityLayer2: [0, 9, 12, 8]
           cityDistance: [32, 6, 8, 7]
-          cityDistanceBase: [38, 6, 8, 7]
+          cityDistanceBaseBottom: [32, 9, 8, 4]
+          cityDistanceBaseTop: [40, 6, 8, 7]
 
           bigBuildingTop: [16, 13, 16, 8]
           bigBuildingBrokenTop: [30, 13, 16, 8]
@@ -652,13 +653,21 @@ generator.defineBlock class extends Game.CityScenery
     h = 400 + 200
     @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: 600, h: h, z: -10).color('#909090'))
 
-    e = Crafty.e('2D, WebGL, ColorEffects, cityDistanceBase, MiliBase, SunBlock, Horizon')
+    e = Crafty.e('2D, WebGL, ColorEffects, cityDistanceBaseTop, SunBlock, Horizon')
       .colorDesaturation(Game.backgroundColor)
       .saturationGradient(.9, .6)
       .crop(1, 1, 255, 223)
       .attr(z: -598, w: 256)
 
-    @addBackground(0, @level.visibleHeight - 225 - 16, e, .25)
+    @addBackground(0, @level.visibleHeight - 225 - 16 - 127, e, .25)
+
+    eb = Crafty.e('2D, WebGL, ColorEffects, cityDistanceBaseBottom, MiliBase, SunBlock, Horizon')
+      .colorDesaturation(Game.backgroundColor)
+      .saturationGradient(.9, .6)
+      .crop(1, 1, 255, 127)
+      .attr(z: -598, w: 256)
+
+    @addBackground(0, @level.visibleHeight - 225 - 16 + 96, eb, .25)
 
     @addElement 'city'
 
