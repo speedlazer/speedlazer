@@ -309,7 +309,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
       @wait 200
       @animate 'blink', -1
       @wait 1000
-      => @entity.absorbDamage @entity.health
+      => @entity.absorbDamage damage: @entity.health
       @endSequence()
     )
 
@@ -755,7 +755,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
         @animate('blink', -1)
         @moveTo(y: .3 + (Math.random() * .6), easing: 'easeInOutQuad')
         @wait(200)
-        => @entity.absorbDamage @entity.health
+        => @entity.absorbDamage damage: @entity.health
       )
     else
       @sequence(
@@ -832,7 +832,7 @@ class Game.Scripts.Stage1BossMineField extends Game.EntityScript
         @animate('blink', -1)
         @wait 1000
         => Crafty.trigger('BridgeCollapse', @level)
-        => @entity.absorbDamage @entity.health
+        => @entity.absorbDamage damage: @entity.health
         @endSequence()
       )
     )
@@ -868,7 +868,7 @@ class Game.Scripts.Stage1BossPopupMineField extends Game.EntityScript
         @wait (1 - @target.xPerc) * 1000
         @animate('blink', -1)
         @wait 1000
-        => @entity.absorbDamage @entity.health
+        => @entity.absorbDamage damage: @entity.health
         => Crafty('RiggedExplosion').trigger('BigExplosion') if @index == 0
         @endSequence()
       )

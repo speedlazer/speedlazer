@@ -113,14 +113,10 @@ Crafty.c 'RapidWeaponLaser',
         y: start.y
         z: 1
       .fire
-        origin: this
+        ship: @ship
         damage: @damage
         speed: @ship._currentSpeed.x + settings.speed
         direction: @_bulletDirection(start)
-      .bind 'HitTarget', (target) =>
-        @ship.trigger('BulletHit', target)
-      .bind 'DestroyTarget', (target) =>
-        @ship.trigger('BulletDestroyedTarget', target)
 
   _createBackBullet: ->
     settings =
@@ -137,14 +133,10 @@ Crafty.c 'RapidWeaponLaser',
         y: start.y
         z: -1
       .fire
-        origin: this
+        ship: @ship
         damage: @damage
         speed: @ship._currentSpeed.x + settings.speed
         direction: @_bulletDirection(start)
-      .bind 'HitTarget', (target) =>
-        @ship.trigger('BulletHit', target)
-      .bind 'DestroyTarget', (target) =>
-        @ship.trigger('BulletDestroyedTarget', target)
 
   _bulletDirection: (start) ->
     target = @_targetEnemy(start)

@@ -15,15 +15,11 @@ Crafty.c 'Enemy',
       (e) ->
         return if Game.paused
         return if @hidden
-        data = { @pointsOnHit, @pointsOnDestroy }
         bullet = e[0].obj
         unless @invincible
-          bullet.trigger 'HitTarget', data
           unless @juice is no
             @attr hitFlash: { _red: 255, _green: 255, _blue: 0 }
-          @absorbDamage(bullet.damage)
-          if @health <= 0
-            bullet.trigger 'DestroyTarget', data
+          @absorbDamage(bullet)
 
           @trigger('Hit', entity: this, projectile: bullet)
         bullet.destroy()
@@ -41,17 +37,29 @@ Crafty.c 'Enemy',
             @trigger('Hit', entity: this, projectile: splosion)
             unless @juice is no
               @attr hitFlash: { _red: 255, _green: 255, _blue: 128 }
-            @absorbDamage(splosion.damage)
+            @absorbDamage(splosion)
+            #if splosion.ship?
+              #console.log 'explosion by indirect hit caused by player!'
+            #else
+              #console.log 'explosion by indirect hit'
             splosion.damage = 0
       ->
         @attr hitFlash: no
     this
 
-  absorbDamage: (damage) ->
-    return unless damage?
-    @health -= damage
+  absorbDamage: (cause) ->
+    return unless cause?
+    data = { @pointsOnHit, @pointsOnDestroy }
+    cause.ship?.trigger 'HitTarget', data
+    @health -= cause.damage
     @updatedHealth?()
+
     if @health <= 0
       Crafty.trigger('EnemyDestroyed', this)
       @trigger('Destroyed', this)
       @destroy()
+
+      cause.ship?.trigger 'DestroyTarget', data
+      @deathCause = cause.ship
+      #console.log 'explosion by direct hit'
+

@@ -38,11 +38,11 @@ Crafty.c 'ShipSpawnable',
     @ship.color?(@color()) if @has('Color')
     @assignControls(@ship) if @has('ControlScheme')
 
-    @listenTo @ship, 'BulletHit', (data) ->
+    @listenTo @ship, 'HitTarget', (data) ->
       @stats.shotsHit += 1
       @addPoints(data?.pointsOnHit ? 0)
 
-    @listenTo @ship, 'BulletDestroyedTarget', (data) ->
+    @listenTo @ship, 'DestroyTarget', (data) ->
       @stats.enemiesKilled += 1
       @addPoints(data?.pointsOnDestroy ? 0)
 

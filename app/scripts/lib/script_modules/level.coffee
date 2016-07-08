@@ -333,8 +333,8 @@ Game.ScriptModule.Level =
         e.setSealevel(@_getSeaLevel())
 
       if options.damage
+        e.ship = @entity.deathCause
         e.addComponent('Enemy')
-
 
   loadAssets: (names...) ->
     (sequence) =>
