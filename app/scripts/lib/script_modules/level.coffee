@@ -423,6 +423,11 @@ Game.ScriptModule.Level =
 
   inventory: (name) ->
     if name is 'pool'
+      Crafty('Player').each ->
+        if @eligibleForExtraLife() and name is 'pool'
+          name = 'life'
+          @rewardExtraLife()
+    if name is 'pool'
       name = (@powerupPool || []).pop() || 'points'
     @level.inventory(name)
 
