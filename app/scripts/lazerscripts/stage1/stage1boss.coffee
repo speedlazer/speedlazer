@@ -27,7 +27,7 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
         @wait 300
         @fireRockets(2)
         @wait 300
-        @fireRockets(2, homing)
+        @fireRockets(2)
         @wait 300
       )
     )
@@ -227,14 +227,14 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @setSpeed 200
       @repeat @sequence(
         @bombRaid(yes)
-        @while(
+        @repeat 2, @while(
           @rocketStrikeDance(yes)
           @sequence(
             @async @runScript(Game.Scripts.Stage1BossMine, @location())
-            @wait 900
+            @wait 1500
           )
         )
-        @wait 500
+        @wait 1000
       )
     )
 

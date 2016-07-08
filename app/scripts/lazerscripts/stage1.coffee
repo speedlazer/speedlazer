@@ -96,7 +96,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @setScenery 'SkylineBase'
       @while(
-        @wait 4000
+        @wait 3000
         @sequence(
           @pickTarget('PlayerControlledShip')
           @placeSquad Game.Scripts.Stage1BossRocket,

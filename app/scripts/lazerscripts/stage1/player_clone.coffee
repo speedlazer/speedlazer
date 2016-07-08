@@ -20,7 +20,7 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
         projectile = Crafty.e('Projectile, Color, Enemy').attr(
           w: 8
           h: 4
-          speed: 800
+          speed: 600
         ).color('#FFFF00')
         projectile.shoot(x, y, angle)
     p
