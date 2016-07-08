@@ -15,6 +15,7 @@ Crafty.c 'Flipable',
 
     @_mirrorCollision()
     @_mirrorRotationPoints()
+    @_mirrorWeaponOrigin()
     this
 
   unflipX: ->
@@ -32,6 +33,7 @@ Crafty.c 'Flipable',
       console.log e
     @_mirrorCollision()
     @_mirrorRotationPoints()
+    @_mirrorWeaponOrigin()
     this
 
   _mirrorCollision: ->
@@ -46,3 +48,8 @@ Crafty.c 'Flipable',
     for c in @_children
       c._origin.x = c.w - c._origin.x if c.origin?
       c.rotation = (360 + (360 - c.rotation)) % 360
+
+  _mirrorWeaponOrigin: ->
+    return unless @weaponOrigin?
+    @weaponOrigin = [@w - @weaponOrigin[0], @weaponOrigin[1]]
+

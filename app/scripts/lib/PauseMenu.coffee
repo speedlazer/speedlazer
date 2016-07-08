@@ -147,6 +147,7 @@ class Game.PauseMenu
           y: (Crafty.viewport.height * .3) - Crafty.viewport.y + 20
           z: 101
         )
+        .flip('X')
         .colorOverride?(@color(), 'partial')
       statList = [
         "Score: #{@points}"

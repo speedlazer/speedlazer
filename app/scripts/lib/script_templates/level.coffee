@@ -52,10 +52,11 @@ Game.ScriptTemplate.Level =
       juice: yes
       offsetX: 0
       offsetY: 0
+      damage: 300
     )
 
     if options.juice is no
-      @blast(@location(), damage: 300, radius: 40)
+      @blast(@location(), damage: options.damage, radius: 40)
     else
       @parallel(
         @screenShake(10, duration: 200)
@@ -63,5 +64,5 @@ Game.ScriptTemplate.Level =
         @blast(@location({
           offsetX: options.offsetX
           offsetY: options.offsetY
-        }), damage: 300, radius: 40)
+        }), damage: options.damage, radius: 40)
       )

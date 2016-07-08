@@ -30,6 +30,14 @@ Crafty.c 'Player',
     @lives += 1
     @trigger 'UpdateLives', lives: @lives
 
+  eligibleForExtraLife: ->
+    @lastExtraLifeThreshold ||= 0
+    if @points - @lastExtraLifeThreshold >= 10000
+      yes
+
+  rewardExtraLife: ->
+    @lastExtraLifeThreshold = @points
+
   addPoints: (amount) ->
     # Debatable should you get points for a target
     # that gets destroyed after you self died?

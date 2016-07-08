@@ -21,8 +21,13 @@ Crafty.c 'ShootOnSight',
     Crafty(@shootConfig.targetType).each ->
       angle = Math.atan2(self.y - @y, self.x - @x)
       angle *= 180 / Math.PI
+      angle += 180 if self.xFlipped
       angle = (angle + 360) % 360
-      self._shoot(angle) if Math.abs(angle - self.rotation) < self.shootConfig.sightAngle
+
+      if Math.abs(angle - self.rotation) < self.shootConfig.sightAngle
+        angle += 180 if self.xFlipped
+        angle = (angle + 360) % 360
+        self._shoot(angle)
 
   _shoot: (angle) ->
     return if @hidden and !@shootConfig.shootWhenHidden

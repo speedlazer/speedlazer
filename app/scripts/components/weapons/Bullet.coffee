@@ -8,6 +8,7 @@ Crafty.c 'Bullet',
       damage: properties.damage
       speed: properties.speed
       rotation: properties.direction
+      ship: properties.ship
     ).bind('GameLoop', (fd) =>
       dist = fd.dt * (@speed / 1000)
 

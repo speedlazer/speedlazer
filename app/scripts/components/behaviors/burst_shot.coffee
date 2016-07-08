@@ -8,6 +8,9 @@ Crafty.c 'BurstShot',
       burstCooldown: 800
       cooldown: 200
       burstAmount: 10
+      aim: 0
+      angle: 0
+      angleDeviation: 0
     )
     @currentBurst = 0
     @bind('GameLoop', @_checkForShot)
@@ -20,7 +23,23 @@ Crafty.c 'BurstShot',
         @currentBurst = 0
       else
         return if @lastShotAt < @shootConfig.cooldown
-    angle = 0
+
+    self = this
+    aimAngle = 0
+    Crafty(@shootConfig.targetType).each ->
+      aimAngle = Math.atan2(self.y - @y, self.x - @x)
+      aimAngle *= 180 / Math.PI
+
+    angle = aimAngle
+    if angle > (@shootConfig.angle + @shootConfig.aim)
+      angle = @shootConfig.angle + @shootConfig.aim
+    else if angle < (@shootConfig.angle - @shootConfig.aim)
+      angle = @shootConfig.angle - @shootConfig.aim
+
+    # Add random deviation
+    angle = angle - (@shootConfig.angleDeviation // 2) + (Math.random() * @shootConfig.angleDeviation)
+
+    angle = (angle + 360) % 360
     @_shoot(angle) if @currentBurst < @shootConfig.burstAmount
 
   _shoot: (angle) ->

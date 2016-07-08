@@ -43,7 +43,7 @@ generator.defineAssets(
         standardMine: [3, 3, 1, 1]
         standardDrone: [0, 4, 2, 2]
         standardRocket: [4, 4, 2, 1]
-        cameraHelicopter: [0, 6, 4, 2]
+        helicopter: [0, 6, 4, 2]
         standardLargeDrone: [0, 8, 3, 3]
         eyeStart: [6, 0, 1, 1]
         wingLoaded: [12, 2, 2, 1]

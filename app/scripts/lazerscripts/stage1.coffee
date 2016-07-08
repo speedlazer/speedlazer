@@ -69,7 +69,10 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @checkpoint @checkpointMidStage('Skyline', 450000)
 
       @setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
-      @cloneEncounter()
+      @placeSquad Game.Scripts.ScraperFlyer,
+        amount: 8
+        delay: 500
+        drop: 'pool'
       @parallel(
         @placeSquad Game.Scripts.ScraperFlyer,
           amount: 8
@@ -84,15 +87,16 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
 
       @gainHeight(300, duration: 4000)
+      @checkpoint @checkpointMidStage('Skyline', 500000)
 
-      # TODO: Mix this up with helicopters and jet fighters when
-      # graphics are in
-
-      @repeat 2, @cloneEncounter()
+      @parallel(
+        @repeat 2, @cloneEncounter()
+        @placeSquad Game.Scripts.HeliAttack
+      )
 
       @setScenery 'SkylineBase'
       @while(
-        @wait 4000
+        @wait 3000
         @sequence(
           @pickTarget('PlayerControlledShip')
           @placeSquad Game.Scripts.Stage1BossRocket,
@@ -268,7 +272,17 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
         @if((-> @player(2).active), @drop(item: 'life', inFrontOf: @player(2)))
       )
-      @setSpeed 150
+      @setSpeed 200
+      @wait 500
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'rapidb', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'rapidb', inFrontOf: @player(2)))
+      )
+      @wait 500
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'speedb', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'speedb', inFrontOf: @player(2)))
+      )
     )
 
   swirlAttacks: ->
@@ -359,24 +373,24 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             drop: 'pool'
             options:
               shootOnSight: yes
+          @placeSquad Game.Scripts.HeliAttack
         )
       )
     )
 
   cloneEncounter: ->
-    @attackWaves(
-      @parallel(
-        @sequence(
-          @wait 4000
-          @placeSquad Game.Scripts.PlayerClone,
-            options:
-              from: 'top'
-        )
+    @parallel(
+      @sequence(
+        @wait 4000
         @placeSquad Game.Scripts.PlayerClone,
+          drop: 'pool'
           options:
-            from: 'bottom'
+            from: 'top'
       )
-      drop: 'pool'
+      @placeSquad Game.Scripts.PlayerClone,
+        drop: 'pool'
+        options:
+          from: 'bottom'
     )
 
 

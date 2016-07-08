@@ -333,8 +333,8 @@ Game.ScriptModule.Level =
         e.setSealevel(@_getSeaLevel())
 
       if options.damage
+        e.ship = @entity.deathCause
         e.addComponent('Enemy')
-
 
   loadAssets: (names...) ->
     (sequence) =>
@@ -422,6 +422,11 @@ Game.ScriptModule.Level =
       @level.setStartWeapons newWeapons
 
   inventory: (name) ->
+    if name is 'pool'
+      Crafty('Player').each ->
+        if @eligibleForExtraLife() and name is 'pool'
+          name = 'life'
+          @rewardExtraLife()
     if name is 'pool'
       name = (@powerupPool || []).pop() || 'points'
     @level.inventory(name)

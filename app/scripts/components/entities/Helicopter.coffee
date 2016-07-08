@@ -1,18 +1,23 @@
-Crafty.c 'PlayerClone',
+Crafty.c 'Helicopter',
   init: ->
-    @requires 'Enemy, playerShip'
+    @requires 'Enemy, helicopter, SpriteAnimation'
+    @reel 'fly', 200, [[0, 6, 4, 2], [4, 6, 4, 2]]
+    @crop 0, 0, 120, 50
+    @origin 'center'
 
-  playerClone: (attr = {}) ->
-    defaultHealth = 300
+  helicopter: (attr = {}) ->
+    defaultHealth = 2000
     @attr _.defaults(attr,
-      h: 45,
-      w: 71,
+      w: 120,
+      h: 50,
       health: defaultHealth
       maxHealth: attr.health ? defaultHealth
-      weaponOrigin: [5, 30]
+      weaponOrigin: [5, 46]
     )
     @origin 'center'
-    @colorOverride '#808080', 'partial'
+    @flip('x')
+    @animate 'fly', -1
+    #@colorOverride '#808080', 'partial'
 
     @enemy()
     @bind 'Hit', (data) =>
@@ -29,10 +34,10 @@ Crafty.c 'PlayerClone',
     this
 
   updatedHealth: ->
-    sprite = 0
-    healthPerc = @health / @maxHealth
-    sprite = 2 if healthPerc < .3
-    @sprite(0, sprite)
+    #sprite = 0
+    #healthPerc = @health / @maxHealth
+    #sprite = 2 if healthPerc < .3
+    #@sprite(0, sprite)
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
     @vx = dx * (1000 / dt)
