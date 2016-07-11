@@ -10,7 +10,7 @@ git checkout master
 grunt
 git checkout gh-pages
 git add dist/
-git commit --amend -m 'game update'
+git commit --amend
 
 echo 'ready to be pushed!'
 
