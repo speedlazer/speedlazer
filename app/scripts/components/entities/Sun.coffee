@@ -80,18 +80,19 @@ Crafty.c 'Sun',
     covered = [0]
     sunArea = @area()
 
-    for o in @hit('SunBlock')
-      e = o.obj
-      if o.type is 'SAT'
-        covered.push ((o.overlap * -1) / 50) * sunArea
-      else
-        xMin = Math.max(@x, e.x)
-        xMax = Math.min(@x + @w, e.x + e.w)
-        w = xMax - xMin
-        yMin = Math.max(@y, e.y)
-        yMax = Math.min(@y + @h, e.y + e.h)
-        h = yMax - yMin
-        covered.push(w * h)
+    if collisions = @hit('SunBlock')
+      for o in collisions
+        e = o.obj
+        if o.type is 'SAT'
+          covered.push ((o.overlap * -1) / 50) * sunArea
+        else
+          xMin = Math.max(@x, e.x)
+          xMax = Math.min(@x + @w, e.x + e.w)
+          w = xMax - xMin
+          yMin = Math.max(@y, e.y)
+          yMax = Math.min(@y + @h, e.y + e.h)
+          h = yMax - yMin
+          covered.push(w * h)
 
     maxCoverage = Math.max(covered...) * 1.7
     perc = maxCoverage / sunArea
