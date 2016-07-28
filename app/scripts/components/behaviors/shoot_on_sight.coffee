@@ -1,4 +1,7 @@
 Crafty.c 'ShootOnSight',
+  init: ->
+    @requires 'Delay'
+
   remove: ->
     @unbind('GameLoop', @_checkForShot)
 
@@ -10,30 +13,61 @@ Crafty.c 'ShootOnSight',
       cooldown: 800
     )
 
+    wo = @weaponOrigin ? [0, 0]
+    wo[0] *= (@scale ? 1)
+    wo[1] *= (@scale ? 1)
+    unless @muzzleFlash?
+      @muzzleFlash = Crafty.e('2D, WebGL, Color')
+        .color('#FF9')
+        .attr(
+          x: @x + wo[0]
+          y: @y + wo[1]
+          w: 5
+          h: 5
+          alpha: 0
+        )
+      @attach @muzzleFlash
+    @muzzleFlash.attr alpha: 0
+
+    @lastShotAt = 0
     @bind('GameLoop', @_checkForShot)
 
   _checkForShot: (fd) ->
+    return if @shooting
     if @lastShotAt?
       @lastShotAt += fd.dt
       return if @lastShotAt < @shootConfig.cooldown
 
     self = this
     Crafty(@shootConfig.targetType).each ->
-      angle = Math.atan2(self.y - @y, self.x - @x)
-      angle *= 180 / Math.PI
-      angle += 180 if self.xFlipped
-      angle = (angle + 360) % 360
-
+      angle = self._determineAngle(this)
       if Math.abs(angle - self.rotation) < self.shootConfig.sightAngle
-        angle += 180 if self.xFlipped
-        angle = (angle + 360) % 360
-        self._shoot(angle)
+        self._shoot(this)
 
-  _shoot: (angle) ->
+  _determineAngle: (entity) ->
+    angle = Math.atan2(@y - entity.y, @x - entity.x)
+    angle *= 180 / Math.PI
+    angle += 180 if @xFlipped
+    (angle + 360) % 360
+
+  _shoot: (target) ->
     return if @hidden and !@shootConfig.shootWhenHidden
-    @lastShotAt = 0
-    wo = @weaponOrigin ? [0, 0]
-    wo[0] *= (@scale ? 1)
-    wo[1] *= (@scale ? 1)
+    @shooting = yes
 
-    @shootConfig.projectile(wo[0] + @x, wo[1] + @y, angle)
+    @muzzleFlash.attr alpha: 1
+    @delay(
+      =>
+        @lastShotAt = 0
+        wo = @weaponOrigin ? [0, 0]
+        wo[0] *= (@scale ? 1)
+        wo[1] *= (@scale ? 1)
+
+        angle = @_determineAngle(target)
+        angle += 180 if @xFlipped
+        angle = (angle + 360) % 360
+
+        @shootConfig.projectile(wo[0] + @x, wo[1] + @y, angle)
+        @muzzleFlash.attr alpha: 0
+        @shooting = no
+      300
+    )
