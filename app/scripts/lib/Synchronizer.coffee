@@ -12,6 +12,7 @@ class Game.Synchronizer
   unregisterEntity: (entity) ->
     index = _.indexOf(@entities, entity)
     @entities.splice(index, 1) if index >= 0
+    @_verifyActiveSynchronisations()
     entity
 
   synchronizeOn: (name, entity) ->
@@ -27,4 +28,11 @@ class Game.Synchronizer
       synchronization.defer.resolve()
 
     synchronization.defer.promise
+
+  _verifyActiveSynchronisations: ->
+    for name, sync of @synchronizations
+      if _.difference(@entities, sync.registered).length is 0
+        sync.defer.resolve()
+
+
 
