@@ -1,10 +1,10 @@
 Crafty.c 'RapidWeaponLaser',
   init: ->
     @requires '2D,WebGL,Color'
-    @color '#808080'
+    @color '#FF9'
     @attr
-      w: 30
-      h: 5
+      w: 20
+      h: 8
 
     @stats =
       rapid: 0
@@ -24,7 +24,7 @@ Crafty.c 'RapidWeaponLaser',
 
   install: (@ship) ->
     @attr
-      x: @ship.x + 15
+      x: @ship.x + 38
       y: @ship.y + 26
       z: @ship.z + 1
       alpha: 0
@@ -68,6 +68,7 @@ Crafty.c 'RapidWeaponLaser',
   shoot: (onOff) ->
     if onOff
       @shooting = yes
+      @attr alpha: 0
     else
       @shooting = no
       @_clearPicked()
@@ -84,6 +85,7 @@ Crafty.c 'RapidWeaponLaser',
         @_determineWeaponSettings()
         @trigger('boostExpired', aspect: k)
 
+    @attr alpha: 0 if @lastShot >= 20
     return unless @shooting
     allowBullet = (@shotsFired < @burstCount)
     return unless @ship.weaponsEnabled
@@ -91,9 +93,12 @@ Crafty.c 'RapidWeaponLaser',
     if @lastShot > @cooldown
       if @frontFire
         @_createFrontBullet()
+        # Show muzzle flash
+        @attr alpha: 1
       else
         @_createBackBullet()
       Crafty.audio.play('shoot', 1, .05)
+
       @frontFire = !@frontFire
       @lastShot = 0
       @shotsFired += 1
