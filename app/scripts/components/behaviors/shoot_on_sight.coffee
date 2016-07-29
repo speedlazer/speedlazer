@@ -31,6 +31,9 @@ Crafty.c 'ShootOnSight',
 
     @lastShotAt = 0
     @bind('GameLoop', @_checkForShot)
+    @bind('Revealing', =>
+      @muzzleFlash.attr alpha: 0
+    )
 
   _checkForShot: (fd) ->
     return if @shooting
