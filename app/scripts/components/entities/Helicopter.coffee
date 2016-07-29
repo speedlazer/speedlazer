@@ -2,7 +2,7 @@ Crafty.c 'Helicopter',
   init: ->
     @requires 'Enemy, helicopter, SpriteAnimation'
     @reel 'fly', 200, [[0, 6, 4, 2], [4, 6, 4, 2]]
-    @crop 0, 0, 120, 50
+    @crop 0, 0, 128, 57
     @origin 'center'
 
   helicopter: (attr = {}) ->
