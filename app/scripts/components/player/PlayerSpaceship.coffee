@@ -33,9 +33,9 @@ Crafty.c 'PlayerSpaceship',
       correction = 25 + ((newSpeed / 400) * 100)
 
     if @currentRenderedSpeed > correction
-      @currentRenderedSpeed -= 4
+      @currentRenderedSpeed -= 12
     else if @currentRenderedSpeed < correction
-      @currentRenderedSpeed += 4
+      @currentRenderedSpeed += 12
     if @currentRenderedSpeed < 0
       @currentRenderedSpeed = 0
 

@@ -1,10 +1,9 @@
 Crafty.c 'RapidWeaponLaser',
   init: ->
-    @requires '2D,WebGL,Color'
-    @color '#FF9'
+    @requires '2D,WebGL,muzzleFlash'
     @attr
-      w: 20
-      h: 8
+      w: 30
+      h: 16
 
     @stats =
       rapid: 0
@@ -25,7 +24,7 @@ Crafty.c 'RapidWeaponLaser',
   install: (@ship) ->
     @attr
       x: @ship.x + 38
-      y: @ship.y + 26
+      y: @ship.y + 22
       z: @ship.z + 1
       alpha: 0
     @ship.attach this
@@ -85,7 +84,7 @@ Crafty.c 'RapidWeaponLaser',
         @_determineWeaponSettings()
         @trigger('boostExpired', aspect: k)
 
-    @attr alpha: 0 if @lastShot >= 20
+    @attr alpha: 0 if @lastShot >= 60
     return unless @shooting
     allowBullet = (@shotsFired < @burstCount)
     return unless @ship.weaponsEnabled
