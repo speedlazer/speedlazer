@@ -6,7 +6,7 @@ Crafty.c 'Helicopter',
     @origin 'center'
 
   helicopter: (attr = {}) ->
-    defaultHealth = 2000
+    defaultHealth = 3000
     @attr _.defaults(attr,
       w: 120,
       h: 50,
