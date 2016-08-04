@@ -91,7 +91,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @parallel(
         @repeat 2, @cloneEncounter()
-        @placeSquad Game.Scripts.HeliAttack
+        @placeSquad Game.Scripts.HeliAttack,
+          amount: 2
+          delay: 5000
       )
 
       @setScenery 'SkylineBase'
