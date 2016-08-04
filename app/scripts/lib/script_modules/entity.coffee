@@ -198,7 +198,14 @@ Game.ScriptModule.Entity =
 
       if typeof location is 'string'
         target = Crafty(location).get 0
-        location = { x: target.x + Crafty.viewport.x, y: target.y + Crafty.viewport.y }
+        offsets = _.defaults(extraSettings,
+          offsetX: 0
+          offsetY: 0
+        )
+        location = {
+          x: target.x + Crafty.viewport.x + offsets.offsetX
+          y: target.y + Crafty.viewport.y + offsets.offsetY
+        }
 
       settings = location?() ? location
 
