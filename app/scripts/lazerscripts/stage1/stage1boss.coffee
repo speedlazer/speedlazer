@@ -831,7 +831,10 @@ class Game.Scripts.Stage1BossMineField extends Game.EntityScript
         @wait 1000
         @animate('blink', -1)
         @wait 1000
-        => Crafty.trigger('BridgeCollapse', @level)
+        @squadOnce('bridge', @sequence(
+          => Crafty.trigger('BridgeCollapse', @level)
+          @screenFlash 2, color: '#FFFF80', alpha: .8
+        ))
         => @entity.absorbDamage damage: @entity.health
         @endSequence()
       )

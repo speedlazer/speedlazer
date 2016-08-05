@@ -4,6 +4,7 @@ class Game.Synchronizer
   constructor: ->
     @entities = []
     @synchronizations = {}
+    @onceTriggers = []
 
   registerEntity: (entity) ->
     @entities.push entity if entity not in @entities
@@ -28,6 +29,13 @@ class Game.Synchronizer
       synchronization.defer.resolve()
 
     synchronization.defer.promise
+
+  allowOnce: (name) ->
+    if @onceTriggers.indexOf(name) is -1
+      @onceTriggers.push name
+      yes
+    else
+      no
 
   _verifyActiveSynchronisations: ->
     for name, sync of @synchronizations

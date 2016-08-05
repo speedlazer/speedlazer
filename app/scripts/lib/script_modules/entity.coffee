@@ -440,6 +440,12 @@ Game.ScriptModule.Entity =
       # will freeze others
       @synchronizer.synchronizeOn(name, this)
 
+  squadOnce: (name, events) ->
+    (sequence) =>
+      @_verify(sequence)
+      if @synchronizer.allowOnce(name)
+        events(sequence)
+
   setLocation: (location) ->
     (sequence) =>
       settings = location?() ? location
