@@ -12,6 +12,10 @@ http://html5gamepad.com/
 
 # More info:
 
+Facebook: [@speedlazergame](https://facebook.com/speedlazergame)
+Twitter: [@speedlazergame](https://twitter.com/speedlazergame)
+[YouTube channel](https://www.youtube.com/channel/UCghWG8lQYJYig3oTPL3sbrQ)
+
 [![YouTube Lunch and Learn](https://raw.githubusercontent.com/matthijsgroen/game-play/master/images/youtube-2015-12-10.png)](http://www.theguild.nl/lunch-break-game-development)
 
 # Setup for development
