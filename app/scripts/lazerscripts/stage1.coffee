@@ -91,7 +91,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @parallel(
         @repeat 2, @cloneEncounter()
-        @placeSquad Game.Scripts.HeliAttack
+        @placeSquad Game.Scripts.HeliAttack,
+          amount: 2
+          delay: 5000
       )
 
       @setScenery 'SkylineBase'
@@ -150,13 +152,16 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @sequence(
       @setScenery('Ocean')
       @say('General', 'We send some drones for some last manual target practice')
-      @repeat(2, @sequence(
-        @wait(1000)
-        @placeSquad Game.Scripts.Swirler,
-          amount: 6
-          delay: 250
-          drop: 'pool'
-      ))
+      @parallel(
+        @gainHeight(150, duration: 4000)
+        @repeat(2, @sequence(
+          @wait(1000)
+          @placeSquad Game.Scripts.Swirler,
+            amount: 6
+            delay: 250
+            drop: 'pool'
+        ))
+      )
     )
 
   droneTakeover: ->
@@ -187,7 +192,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
       @setScenery('CoastStart')
       @swirlAttacks()
-      @underWaterAttacks()
+      @parallel(
+        @gainHeight(-150, duration: 4000)
+        @sequence(
+          @wait 2000
+          @underWaterAttacks()
+        )
+      )
     )
 
   enteringLand: ->

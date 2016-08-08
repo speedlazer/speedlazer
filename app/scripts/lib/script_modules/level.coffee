@@ -405,6 +405,37 @@ Game.ScriptModule.Level =
       @level.screenShake(amount, options)
       @wait(options.duration)(sequence)
 
+  screenFlash: (amount, options = {}) ->
+    (sequence) =>
+      @_verify(sequence)
+      options = _.defaults(options, {
+        duration: 200
+        pauses: 400
+        color: '#FF0000'
+        alpha: 1
+      })
+      flasher = @_fader()
+      defer = WhenJS.defer()
+
+      flasher.attr(
+        alpha: 0
+      ).color(
+        options.color
+      ).delay(
+        ->
+          @attr alpha: options.alpha
+          @delay(
+            -> @attr alpha: 0
+            options.duration
+          )
+        options.pauses
+        amount
+        ->
+          @attr alpha: 0
+          defer.resolve()
+      )
+      defer.promise
+
    moveCamera: (settings = {}) ->
      (sequence) =>
        # TODO: Figure out skipping
@@ -483,19 +514,11 @@ Game.ScriptModule.Level =
   screenFadeOut: ->
     (sequence) =>
       @_verify(sequence)
-      fader = Crafty('ScreenFader').get(0)
-      unless fader?
-        fader = Crafty.e('2D, DOM, Color, HUD, Tween, ScreenFader')
+      fader = @_fader()
 
       defer = WhenJS.defer()
 
-      fader.positionHud(
-        x: 0,
-        y: 0,
-        z: 1000
-      ).attr(
-        w: Crafty.viewport.width
-        h: Crafty.viewport.height
+      fader.attr(
         alpha: 0
       ).color(
         '#000000'
@@ -511,19 +534,11 @@ Game.ScriptModule.Level =
   screenFadeIn: ->
     (sequence) =>
       @_verify(sequence)
-      fader = Crafty('ScreenFader').get(0)
-      unless fader?
-        fader = Crafty.e('2D, DOM, Color, HUD, Tween, ScreenFader')
+      fader = @_fader()
 
       defer = WhenJS.defer()
 
-      fader.positionHud(
-        x: 0,
-        y: 0,
-        z: 1000
-      ).attr(
-        w: Crafty.viewport.width
-        h: Crafty.viewport.height
+      fader.attr(
         alpha: 1
       ).color(
         '#000000'
@@ -537,5 +552,19 @@ Game.ScriptModule.Level =
 
       defer.promise
 
+  _fader: ->
+    fader = Crafty('ScreenFader').get(0)
+    unless fader?
+      fader = Crafty.e('2D, DOM, Color, HUD, Tween, ScreenFader, Delay')
+
+    fader.positionHud(
+      x: 0,
+      y: 0,
+      z: 1000
+    ).attr(
+      w: Crafty.viewport.width
+      h: Crafty.viewport.height
+    )
+    fader
 
 

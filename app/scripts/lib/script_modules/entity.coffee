@@ -112,7 +112,8 @@ Game.ScriptModule.Entity =
   movePath: (inputPath, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
-      return unless @enemy.alive
+      if not @enemy.alive and not @decoyingEntity?
+        return WhenJS.resolve()
       settings = _.defaults(settings,
         rotate: yes
         skip: 0
@@ -198,7 +199,14 @@ Game.ScriptModule.Entity =
 
       if typeof location is 'string'
         target = Crafty(location).get 0
-        location = { x: target.x + Crafty.viewport.x, y: target.y + Crafty.viewport.y }
+        offsets = _.defaults(extraSettings,
+          offsetX: 0
+          offsetY: 0
+        )
+        location = {
+          x: target.x + Crafty.viewport.x + offsets.offsetX
+          y: target.y + Crafty.viewport.y + offsets.offsetY
+        }
 
       settings = location?() ? location
 
@@ -433,6 +441,12 @@ Game.ScriptModule.Entity =
       # will freeze others
       @synchronizer.synchronizeOn(name, this)
 
+  squadOnce: (name, events) ->
+    (sequence) =>
+      @_verify(sequence)
+      if @synchronizer.allowOnce(name)
+        events(sequence)
+
   setLocation: (location) ->
     (sequence) =>
       settings = location?() ? location
@@ -451,8 +465,12 @@ Game.ScriptModule.Entity =
 
   location: (settings = {}) ->
     =>
-      x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2)) + (settings.offsetX ? 0)
-      y: (@enemy.location.y ? (@entity.y + Crafty.viewport.y) + (@entity.h / 2)) + (settings.offsetY ? 0)
+      if @decoyingEntity?
+        x: (@entity.x + Crafty.viewport.x) + (@entity.w / 2) + (settings.offsetX ? 0)
+        y: (@entity.y + Crafty.viewport.y) + (@entity.h / 2) + (settings.offsetY ? 0)
+      else
+        x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2)) + (settings.offsetX ? 0)
+        y: (@enemy.location.y ? (@entity.y + Crafty.viewport.y) + (@entity.h / 2)) + (settings.offsetY ? 0)
 
   invincible: (yesNo) ->
     (sequence) =>
@@ -481,6 +499,7 @@ Game.ScriptModule.Entity =
         y: y - Crafty.viewport.y
         invincible: yes
         health: 1
+        defaultSpeed: @entity.defaultSpeed
       )
       @decoy.updatedHealth()
       if @entity.xFlipped
@@ -495,5 +514,6 @@ Game.ScriptModule.Entity =
       @decoy?.destroy()
       @decoy = null
       @entity = @decoyingEntity
+      @decoyingEntity = undefined
 
 

@@ -1,0 +1,9 @@
+--sort=yes
+--verbose=no
+--recurse
+--exclude=node_modules
+--exclude=app/bower_components
+--exclude=app/scripts/compiled
+--exclude=.tmp
+-o tags
+

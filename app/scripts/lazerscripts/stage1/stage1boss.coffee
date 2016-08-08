@@ -693,7 +693,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
       @sendToBackground(0.9, -100)
       @parallel(
         @while(
-          @moveTo(x: -.15, y: .5, speed: 400)
+          @moveTo(x: -.15, y: .4, speed: 400)
           @smoke()
         )
         @scale(0.5, duration: 3000)
@@ -702,7 +702,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
       @sendToBackground(0.5, -550)
       @parallel(
         @while(
-          @moveTo('MiliBase', speed: 150)
+          @moveTo('MiliBase', speed: 150, offsetY: -160, offsetX: -40)
           @smoke('light')
         )
         @scale(0.2, duration: 4000)
@@ -831,7 +831,10 @@ class Game.Scripts.Stage1BossMineField extends Game.EntityScript
         @wait 1000
         @animate('blink', -1)
         @wait 1000
-        => Crafty.trigger('BridgeCollapse', @level)
+        @squadOnce('bridge', @sequence(
+          => Crafty.trigger('BridgeCollapse', @level)
+          @screenFlash 2, color: '#FFFF80', alpha: .8
+        ))
         => @entity.absorbDamage damage: @entity.health
         @endSequence()
       )
