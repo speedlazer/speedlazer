@@ -112,7 +112,8 @@ Game.ScriptModule.Entity =
   movePath: (inputPath, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
-      return unless @enemy.alive
+      if not @enemy.alive and not @decoyingEntity?
+        return WhenJS.resolve()
       settings = _.defaults(settings,
         rotate: yes
         skip: 0
@@ -464,8 +465,12 @@ Game.ScriptModule.Entity =
 
   location: (settings = {}) ->
     =>
-      x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2)) + (settings.offsetX ? 0)
-      y: (@enemy.location.y ? (@entity.y + Crafty.viewport.y) + (@entity.h / 2)) + (settings.offsetY ? 0)
+      if @decoyingEntity?
+        x: (@entity.x + Crafty.viewport.x) + (@entity.w / 2) + (settings.offsetX ? 0)
+        y: (@entity.y + Crafty.viewport.y) + (@entity.h / 2) + (settings.offsetY ? 0)
+      else
+        x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2)) + (settings.offsetX ? 0)
+        y: (@enemy.location.y ? (@entity.y + Crafty.viewport.y) + (@entity.h / 2)) + (settings.offsetY ? 0)
 
   invincible: (yesNo) ->
     (sequence) =>
@@ -494,6 +499,7 @@ Game.ScriptModule.Entity =
         y: y - Crafty.viewport.y
         invincible: yes
         health: 1
+        defaultSpeed: @entity.defaultSpeed
       )
       @decoy.updatedHealth()
       if @entity.xFlipped
@@ -508,5 +514,6 @@ Game.ScriptModule.Entity =
       @decoy?.destroy()
       @decoy = null
       @entity = @decoyingEntity
+      @decoyingEntity = undefined
 
 

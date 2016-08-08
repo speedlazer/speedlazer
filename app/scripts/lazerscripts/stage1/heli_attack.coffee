@@ -15,8 +15,8 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
       weaponOrigin: [0, 25]
     ).helicopter()
     p.addComponent('BurstShot').burstShot
-      burstCooldown: 1500
-      burstAmount: 14
+      burstCooldown: 2500
+      burstAmount: 7
       angle: -15
       angleDeviation: 10
       aim: 45
@@ -25,7 +25,7 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
         projectile = Crafty.e('Projectile, Color, Enemy').attr(
           w: 12
           h: 4
-          speed: 550
+          speed: 350
         ).color('#FFFF00')
         projectile.shoot(x, y, angle)
     p
@@ -70,12 +70,30 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
   onKilled: ->
     @sequence(
       @deathDecoy()
-      @smallExplosion(offsetX: 20, offsetY: 30)
-      @wait 50
-      @smallExplosion(offsetX: 40, offsetY: 20)
-      @wait 50
-      @smallExplosion(offsetX: -50, offsetY: -10)
-      @wait 20
+      @while(
+        @movePath [
+          [.6, 1.1]
+        ], speed: 250
+        @sequence(
+          @blast(@location(),
+            radius: 10,
+            duration: 480,
+            z: -199
+            topDesaturation: 0.3
+            bottomDesaturation: 0.3
+            lightness: .2
+            alpha: .5
+          )
+          @blast(@location(offsetX: 10, offsetY: 5),
+            radius: 5,
+            duration: 180,
+            z: -199
+            topDesaturation: 0.3
+            bottomDesaturation: 0.3
+          )
+          @wait 100
+        )
+      )
       @endDecoy()
       @bigExplosion()
     )

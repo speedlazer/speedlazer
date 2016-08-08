@@ -2,18 +2,21 @@ Crafty.c 'Helicopter',
   init: ->
     @requires 'Enemy, helicopter, SpriteAnimation'
     @reel 'fly', 200, [[0, 6, 4, 2], [4, 6, 4, 2]]
-    @crop 0, 0, 128, 57
+    @crop 0, 9, 128, 55
     @origin 'center'
+    @collision [8, 5, 120, 5, 112, 35, 12, 47]
 
   helicopter: (attr = {}) ->
-    defaultHealth = 3000
+    defaultHealth = 2500
     @attr _.defaults(attr,
-      w: 120,
-      h: 50,
+      w: 128,
+      h: 55,
       health: defaultHealth
       maxHealth: attr.health ? defaultHealth
       weaponOrigin: [5, 46]
     )
+
+
     @origin 'center'
     @flip('x')
     @animate 'fly', -1
@@ -34,10 +37,12 @@ Crafty.c 'Helicopter',
     this
 
   updatedHealth: ->
-    #sprite = 0
-    #healthPerc = @health / @maxHealth
-    #sprite = 2 if healthPerc < .3
-    #@sprite(0, sprite)
+    healthPerc = @health / @maxHealth
+    if healthPerc < .01
+      @pauseAnimation()
+      @sprite(8, 6)
+    else
+      @animate('fly', -1) unless @isPlaying('fly')
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
     @vx = dx * (1000 / dt)
