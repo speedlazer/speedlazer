@@ -78,18 +78,14 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
           @blast(@location(),
             radius: 10,
             duration: 480,
-            z: -199
-            topDesaturation: 0.3
-            bottomDesaturation: 0.3
+            z: -1
             lightness: .2
             alpha: .5
           )
           @blast(@location(offsetX: 10, offsetY: 5),
             radius: 5,
             duration: 180,
-            z: -199
-            topDesaturation: 0.3
-            bottomDesaturation: 0.3
+            z: -1
           )
           @wait 100
         )
