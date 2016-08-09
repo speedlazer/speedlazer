@@ -227,8 +227,9 @@ generator.defineElement 'cityFrontTop', ->
   )
 
 generator.defineElement 'cityFront', ->
-  bb = Crafty.e('2D, WebGL, bigBuildingTop, ColorEffects').attr(z: -20).crop(1, 1, 446, 8 * 32)
+  bb = Crafty.e('2D, WebGL, bigBuildingTop, Collision, SunBlock, ColorEffects').attr(z: -20).crop(1, 1, 446, 8 * 32)
   bb.colorOverride('#001fff', 'partial')
+  bb.collision([32, 80, 160, 16, 416, 16, 416, 480, 32, 480])
   @add(0, @level.visibleHeight - 700, bb)
 
   height = 5
@@ -605,7 +606,6 @@ generator.defineBlock class extends Game.CityScenery
             -> p2.tweenPromise({ rotation: 27, dy: p2.dy + 200 }, 3000, 'easeInQuad')
           ]
       ]
-
 
 
   deck: (gradient, flipped, attr) ->
