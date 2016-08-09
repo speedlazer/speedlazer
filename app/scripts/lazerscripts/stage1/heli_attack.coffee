@@ -91,7 +91,6 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
         )
       )
       @endDecoy()
-      @bigExplosion()
     )
 
   fireRockets: (amount) ->
