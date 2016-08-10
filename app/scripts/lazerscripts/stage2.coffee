@@ -34,7 +34,7 @@ class Game.Scripts.Stage2 extends Game.LazerScript
       @setScenery 'Skyline2'
       @changeSeaLevel 500
       @parallel(
-        @gainHeight(-600, duration: 6000)
+        @gainHeight(-800, duration: 6000)
         @chapterTitle(2, 'Underground')
       )
       @checkpoint @checkpointStreets('Skyline2')
@@ -45,6 +45,7 @@ class Game.Scripts.Stage2 extends Game.LazerScript
   checkpointStreets: (scenery) ->
     @sequence(
       @setScenery(scenery)
+      @async @runScript(Game.Scripts.SunRise, skipTo: 10 * 60 * 1000)
       # TODO: Seriously drop some powerups for players to catch up a little
       @wait 6000
     )

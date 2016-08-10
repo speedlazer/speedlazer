@@ -676,7 +676,6 @@ generator.defineBlock class extends Game.CityScenery
     super
     @addElement 'cityFront'
     h = 400 + 200
-    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: 600, h: h, z: -10).color('#909090'))
 
     e = Crafty.e('2D, WebGL, ColorEffects, cityDistanceBaseTop, SunBlock, Horizon')
       .colorDesaturation(Game.backgroundColor)
@@ -716,12 +715,12 @@ generator.defineBlock class extends Game.CityScenery
 
     @addElement 'city'
 
-    h = 150
-    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h, z: -25).color('#505050'))
-    h2 = 400
-    @add(0, @level.visibleHeight - 100 + h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h2, z: -25).color('#202020'))
-    h = 150
-    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h + h2, z: -25).color('#505050'))
+    h = 130
+    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h, z: -25).color('#555'))
+    h2 = 10
+    @add(0, @level.visibleHeight - 100 + h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h2, z: -25).color('#777'))
+    h3 = 400
+    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h3, z: -25).color('#333'))
 
 
 generator.defineBlock class extends @Game.LevelScenery
