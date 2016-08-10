@@ -55,7 +55,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @parallel(
         @sequence(
           @wait 3000
-          @gainHeight(300, duration: 4000)
+          @gainHeight(800, duration: 8000)
           @placeSquad Game.Scripts.Shooter,
             amount: 8
             delay: 500

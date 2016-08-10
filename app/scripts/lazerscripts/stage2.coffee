@@ -33,8 +33,9 @@ class Game.Scripts.Stage2 extends Game.LazerScript
       )
       @setScenery 'Skyline2'
       @changeSeaLevel 500
+      # Add enemies during decent
       @parallel(
-        @gainHeight(-800, duration: 6000)
+        @gainHeight(-1300, duration: 20000)
         @chapterTitle(2, 'Underground')
       )
       @checkpoint @checkpointStreets('Skyline2')
