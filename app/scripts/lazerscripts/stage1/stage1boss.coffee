@@ -630,8 +630,8 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
 
   spawn: ->
     Crafty.e('LargeDrone, Horizon').drone(
-      maxHealth: 60000
-      health: 12000
+      maxHealth: 180000
+      health: 36000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
       defaultSpeed: 150
