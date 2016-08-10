@@ -248,8 +248,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
         @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
       )
-      @mineSwarm()
-      @setScenery('UnderBridge')
+      @parallel(
+        @mineSwarm()
+        @sequence(
+          @wait 5000
+          @setScenery('UnderBridge')
+        )
+      )
       @async @showText 'Warning!', color: '#FF0000', mode: 'blink'
       @while(
         @waitForScenery('UnderBridge', event: 'enter')
@@ -258,6 +263,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setSpeed 75
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
+      @checkpoint @checkpointStart('UnderBridge', 234000)
       @placeSquad Game.Scripts.Stage1BossStage1
       @parallel(
         @if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
