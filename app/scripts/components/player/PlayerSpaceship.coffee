@@ -81,7 +81,6 @@ Crafty.c 'PlayerSpaceship',
 
     @addComponent('Invincible').invincibleDuration(2000)
 
-    @setSealevel(Crafty.viewport.height - 20)
     @setDetectionOffset 40, 0
     @onHit 'Enemy', (collision) ->
       return if Game.paused

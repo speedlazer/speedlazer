@@ -395,6 +395,9 @@ Game.ScriptModule.Level =
     (sequence) =>
       @_verify(sequence)
       @level.sealevelOffset = offsetY
+      level = @level
+      Crafty('WaterSplashes').each ->
+        @setSealevel((Crafty.viewport.height - 20) + level.sealevelOffset)
 
   screenShake: (amount, options = {}) ->
     (sequence) =>
