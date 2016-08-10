@@ -119,7 +119,7 @@ Crafty.c 'PlayerSpaceship',
       @updateAcceleration()
 
       r = @rotation
-      newR = shipSpeedY / 20
+      newR = shipSpeedY / 40
       nr = r
       if r < newR
         nr += 1
