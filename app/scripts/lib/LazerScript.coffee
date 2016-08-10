@@ -86,7 +86,8 @@ class Game.EntityScript extends Game.LazerScript
     super
       .catch (e) =>
         throw e unless e.message is 'sequence mismatch'
-        @alternatePath
+        # Only wait for alternate path if still alive
+        @alternatePath if @enemy.alive
       .finally =>
         if @enemy.alive and !@entity.has('KeepAlive')
           @entity.destroy()

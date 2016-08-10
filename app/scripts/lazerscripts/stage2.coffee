@@ -40,6 +40,9 @@ class Game.Scripts.Stage2 extends Game.LazerScript
       )
       @checkpoint @checkpointStreets('Skyline2')
       @say 'DesignNote', 'Add some enemies and setting here!'
+      @placeSquad Game.Scripts.HeliAttack,
+        options:
+          ground: .8
       @wait 8000
     )
 

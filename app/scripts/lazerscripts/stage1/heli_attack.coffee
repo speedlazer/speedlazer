@@ -7,6 +7,7 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
 
   spawn: (options) ->
     @dir = options.from ? 'top'
+    @ground = options.ground ? 1.1
 
     p = Crafty.e('Helicopter').attr(
       x: Crafty.viewport.width + 40
@@ -73,7 +74,7 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
       @bigExplosion()
       @while(
         @movePath [
-          [.6, 1.1]
+          [.6, @ground]
         ], speed: 250
         @sequence(
           @blast(@location(),
@@ -91,6 +92,15 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
           @wait 100
         )
       )
+      @movePath [
+        [.6, @ground - .02]
+        [.6, @ground]
+      ], speed: 50
+      @bigExplosion()
+      =>
+        @entity.removeComponent('ViewportFixed')
+        @entity.attr(lightness: .3)
+      @wait 10000
       @endDecoy()
     )
 
