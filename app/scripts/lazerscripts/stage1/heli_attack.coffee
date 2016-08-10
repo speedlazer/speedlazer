@@ -70,6 +70,7 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
   onKilled: ->
     @sequence(
       @deathDecoy()
+      @bigExplosion()
       @while(
         @movePath [
           [.6, 1.1]
