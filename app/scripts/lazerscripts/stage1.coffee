@@ -96,16 +96,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           delay: 5000
       )
 
+      @async @showText 'Warning!', color: '#FF0000', mode: 'blink'
       @setScenery 'SkylineBase'
       @while(
         @wait 3000
-        @sequence(
-          @pickTarget('PlayerControlledShip')
-          @placeSquad Game.Scripts.Stage1BossRocket,
-            options:
-              location: @targetLocation(x: 1.3)
-          @wait 200
-        )
+        @waitingRocketStrike()
       )
       @placeSquad Game.Scripts.Stage1BossLeaving
       @say 'General', 'He went to the military complex!\nBut we cant get through those shields now...'
@@ -258,22 +253,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @async @showText 'Warning!', color: '#FF0000', mode: 'blink'
       @while(
         @waitForScenery('UnderBridge', event: 'enter')
-        @sequence(
-          @placeSquad Game.Scripts.Stage1BossRocketStrike,
-            amount: 6
-            delay: 150
-            options:
-              gridConfig:
-                x:
-                  start: 1.1
-                  steps: 1
-                  stepSize: 0.05
-                y:
-                  start: 0.125
-                  steps: 12
-                  stepSize: 0.05
-          @wait 200
-        )
+        @waitingRocketStrike()
       )
       @setSpeed 75
       @waitForScenery('UnderBridge', event: 'inScreen')
@@ -294,6 +274,24 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @if((-> @player(1).active), @drop(item: 'speedb', inFrontOf: @player(1)))
         @if((-> @player(2).active), @drop(item: 'speedb', inFrontOf: @player(2)))
       )
+    )
+
+  waitingRocketStrike: ->
+    @sequence(
+      @placeSquad Game.Scripts.Stage1BossRocketStrike,
+        amount: 6
+        delay: 150
+        options:
+          gridConfig:
+            x:
+              start: 1.1
+              steps: 1
+              stepSize: 0.05
+            y:
+              start: 0.125
+              steps: 12
+              stepSize: 0.05
+      @wait 200
     )
 
   swirlAttacks: ->
