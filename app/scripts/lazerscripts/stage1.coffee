@@ -104,7 +104,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
       @placeSquad Game.Scripts.Stage1BossLeaving
       @say 'General', 'He went to the military complex!\nBut we cant get through those shields now...'
-      @wait 3000
     )
 
   introText: ->

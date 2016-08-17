@@ -2,6 +2,7 @@ Game = @Game
 Game.Scripts ||= {}
 
 class Game.Scripts.Stage2 extends Game.LazerScript
+  nextScript: 'Stage1End'
 
   assets: ->
     @loadAssets('explosion')
@@ -39,7 +40,6 @@ class Game.Scripts.Stage2 extends Game.LazerScript
         @chapterTitle(2, 'Underground')
       )
       @checkpoint @checkpointStreets('Skyline2')
-      @say 'DesignNote', 'Add some enemies and setting here!'
       @placeSquad Game.Scripts.HeliAttack,
         options:
           ground: .8
