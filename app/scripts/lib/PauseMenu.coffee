@@ -23,6 +23,7 @@ class Game.PauseMenu
           if Crafty.audio.muted then 'Sound [off]' else 'Sound [on]'
         execute: ->
           Crafty.audio.toggleMute()
+          Game.changeSettings(sound: !Crafty.audio.muted)
       }
       {
         text: 'Restart'

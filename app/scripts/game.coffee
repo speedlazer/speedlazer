@@ -29,6 +29,10 @@ Game =
   start: ->
     @resetCredits()
 
+    settings = @settings()
+    if settings.sound is no
+      Crafty.audio.mute()
+
     Crafty.bind 'EnterFrame', ->
       return if Game.paused
       Crafty.trigger 'GameLoop', arguments...
@@ -139,6 +143,23 @@ Game =
       { initials: defInit, score: 1500 }
     ].concat loadedList
     _.sortBy(list, 'score').reverse()
+
+  settings: ->
+    data = localStorage.getItem('SPDLZRS')
+    settings = {}
+    if data
+      settings = JSON.parse(data)
+    _.defaults(settings,
+      sound: on
+    )
+
+  changeSettings: (changes = {}) ->
+    newSettings = _.defaults(changes,
+      @settings()
+    )
+    str = JSON.stringify(newSettings)
+    localStorage.setItem('SPDLZRS', str)
+
 
 # Export
 window.Game = Game
