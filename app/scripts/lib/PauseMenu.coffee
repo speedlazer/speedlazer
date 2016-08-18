@@ -153,10 +153,10 @@ class Game.PauseMenu
         "Score: #{@points}"
         "Lives: #{@lives - 1}"
         ""
-        "Speed: &nbsp;&nbsp;&nbsp;&nbsp;+#{@ship.primaryWeapon.stats.speed}"
-        "RapidFire: +#{@ship.primaryWeapon.stats.rapid}"
-        "AimAssist: +#{@ship.primaryWeapon.stats.aim}"
-        "Damage: &nbsp;&nbsp;&nbsp;+#{@ship.primaryWeapon.stats.damage}"
+        "&nbsp;&nbsp; Speed: &nbsp;&nbsp;&nbsp;&nbsp;+#{@ship.primaryWeapon.stats.speed}"
+        "&nbsp;&nbsp; RapidFire: +#{@ship.primaryWeapon.stats.rapid}"
+        "&nbsp;&nbsp; AimAssist: +#{@ship.primaryWeapon.stats.aim}"
+        "&nbsp;&nbsp; Damage: &nbsp;&nbsp;&nbsp;+#{@ship.primaryWeapon.stats.damage}"
       ]
       stats = Crafty.e('2D, WebGL, Color, PauseMenu')
         .attr(
@@ -169,7 +169,7 @@ class Game.PauseMenu
         )
         .color('#000')
       for o, i in statList
-        stat= Crafty.e('2D, DOM, Text')
+        stat = Crafty.e('2D, DOM, Text')
           .attr(
             x: stats.x + 20
             y: stats.y + 85 + (20 * i)
@@ -185,6 +185,18 @@ class Game.PauseMenu
             family: 'Press Start 2P'
           )
         stats.attach stat
+        if 2 < i < 7
+          s = ['speedBoost', 'rapidFireBoost', 'aimBoost', 'damageBoost']
+          icon = Crafty.e('2D, WebGL, ColorEffects, PauseMenu').addComponent(s[i - 3])
+            .attr(
+              x: stats.x + 20
+              y: stats.y + 82 + (20 * i)
+              w: 12
+              h: 12
+              z: 110
+            )
+            .colorOverride('white', 'partial')
+          stats.attach icon
 
 
   remove: ->
