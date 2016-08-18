@@ -50,7 +50,7 @@ class Game.PauseMenu
         w: (.3 * Crafty.viewport.width)
         h: (@options.length + 2) * 32
         z: 100
-        alpha: .3
+        alpha: .5
       )
       .color('#000000')
 
