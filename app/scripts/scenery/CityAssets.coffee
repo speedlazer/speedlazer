@@ -53,5 +53,6 @@ generator.defineAssets(
         speedBoost: [12, 0, 1, 1]
         damageBoost: [13, 0, 1, 1]
         aimBoost: [14, 0, 1, 1]
+        powerUpBox: [10, 1, 1, 1]
 )
 

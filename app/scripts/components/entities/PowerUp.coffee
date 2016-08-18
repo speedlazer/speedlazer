@@ -1,37 +1,41 @@
 Crafty.c 'PowerUp',
   init: ->
-    @requires '2D,WebGL,Color'
+    @requires '2D, WebGL, ColorEffects, powerUpBox, SpriteAnimation'
+    @reel 'blink', 600, [[10, 1], [11, 1], [12, 1], [11, 1]]
     @attr
-      w: 22
-      h: 22
+      w: 32
+      h: 32
 
   remove: ->
 
   powerUp: (@settings) ->
+    @animate 'blink', -1
+    color = '#802020'
     if @settings.type
       typeColors =
-        weapon: '#8080FF'
-        weaponUpgrade: '#FFFF00'
-        weaponBoost: '#00A000'
+        weapon: '#202080'
+        weaponUpgrade: '#D06000'
+        weaponBoost: '#30B030'
         ship: '#802020'
 
-      @color typeColors[@settings.type]
+      color = typeColors[@settings.type]
+    @colorOverride color, 'partial'
 
     if @settings.icon
       marking = Crafty.e('2D,WebGL,ColorEffects')
         .addComponent(@settings.icon)
-        .colorOverride('black', 'partial')
-        .attr w: 16, h: 16, x: 3, y: 3
+        .colorOverride('white', 'partial')
+        .attr w: 22, h: 22, x: 5, y: 5
       @attach marking
     else
       if @settings.marking
-        size = '12px'
-        pos = x: 5, y: 5
+        size = '16px'
+        pos = x: 8, y: 8
         if @settings.marking.length is 2
           size = '9px'
           pos = x: 3, y: 8
         marking = Crafty.e('2D,DOM,Text')
-          .textColor('#000000')
+          .textColor('#FFF')
           .textFont({
             size: size
             family: 'Press Start 2P'
