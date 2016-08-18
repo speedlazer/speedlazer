@@ -13,15 +13,15 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @inventoryAdd 'ship', 'life', marking: '❤'
     @inventoryAdd 'ship', 'points', marking: 'P'
 
-    @inventoryAdd 'weaponUpgrade', 'rapid', marking: 'RF'
-    @inventoryAdd 'weaponUpgrade', 'damage', marking: 'D'
-    @inventoryAdd 'weaponUpgrade', 'aim', marking: 'A'
-    @inventoryAdd 'weaponUpgrade', 'speed', marking: 'S'
+    @inventoryAdd 'weaponUpgrade', 'rapid', marking: 'RF', icon: 'rapidFireBoost'
+    @inventoryAdd 'weaponUpgrade', 'damage', marking: 'D', icon: 'damageBoost'
+    @inventoryAdd 'weaponUpgrade', 'aim', marking: 'A', icon: 'aimBoost'
+    @inventoryAdd 'weaponUpgrade', 'speed', marking: 'S', icon: 'speedBoost'
 
-    @inventoryAdd 'weaponBoost', 'rapidb', marking: 'RF'
-    @inventoryAdd 'weaponBoost', 'aimb', marking: 'A'
-    @inventoryAdd 'weaponBoost', 'speedb', marking: 'S'
-    @inventoryAdd 'weaponBoost', 'damageb', marking: 'D'
+    @inventoryAdd 'weaponBoost', 'rapidb', marking: 'RF', icon: 'rapidFireBoost'
+    @inventoryAdd 'weaponBoost', 'aimb', marking: 'A', icon: 'aimBoost'
+    @inventoryAdd 'weaponBoost', 'speedb', marking: 'S', icon: 'speedBoost'
+    @inventoryAdd 'weaponBoost', 'damageb', marking: 'D', icon: 'damageBoost'
 
     @sequence(
       @setPowerupPool 'rapidb', 'speed'
