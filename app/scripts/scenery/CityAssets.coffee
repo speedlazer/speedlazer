@@ -49,5 +49,9 @@ generator.defineAssets(
         standardLargeDrone: [0, 8, 3, 3]
         eyeStart: [6, 0, 1, 1]
         wingLoaded: [12, 2, 2, 1]
+        rapidFireBoost: [11, 0, 1, 1]
+        speedBoost: [12, 0, 1, 1]
+        damageBoost: [13, 0, 1, 1]
+        aimBoost: [14, 0, 1, 1]
 )
 
