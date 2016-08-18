@@ -42,10 +42,14 @@ Crafty.c 'ShootOnSight',
       return if @lastShotAt < @shootConfig.cooldown
 
     self = this
+    targets = []
     Crafty(@shootConfig.targetType).each ->
       angle = self._determineAngle(this)
       if Math.abs(angle - self.rotation) < self.shootConfig.sightAngle
-        self._shoot(this)
+        targets.push this
+    if targets.length > 0
+      target = _.sample(targets)
+      @_shoot(target)
 
   _determineAngle: (entity) ->
     angle = Math.atan2(@y - entity.y, @x - entity.x)
