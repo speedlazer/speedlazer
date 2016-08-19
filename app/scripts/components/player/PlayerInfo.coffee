@@ -22,6 +22,10 @@ Crafty.c 'PlayerInfo',
         size: '10px'
         family: 'Press Start 2P'
       )
+    @heart = Crafty.e('2D, WebGL, ColorEffects, heart, HUD')
+      .attr(w: 16, h: 16)
+      .positionHud(x: x - 2, y: 26, z: 2)
+      .colorOverride(player.color(), 'partial')
 
     if @player.has('Color')
       @lives.textColor player.color()
@@ -75,11 +79,15 @@ Crafty.c 'PlayerInfo',
     if @player.has('ControlScheme')
       if @player.lives is 0
         @lives.text('Game Over')
+        @heart.attr(alpha: 0)
+        # TODO: Add continue? with time counter
       else
+        @heart.attr(alpha: 1)
         text = (@player.lives - 1)
         if text is Infinity
           text = 'Demo mode'
-        @lives.text('❤ ' + text)
+        @lives.text('&nbsp;  ' + text)
     else
       @lives.text('Press fire to start!')
+      @heart.attr(alpha: 0)
       e.attr(alpha: 0) for n, e of @boosts

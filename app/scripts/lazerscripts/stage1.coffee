@@ -10,8 +10,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   execute: ->
     @inventoryAdd 'weapon', 'lasers', marking: 'L'
 
-    @inventoryAdd 'ship', 'life', marking: '❤'
-    @inventoryAdd 'ship', 'points', marking: 'P'
+    @inventoryAdd 'ship', 'life', marking: '❤', icon: 'heart'
+    @inventoryAdd 'ship', 'points', marking: 'P', icon: 'star'
 
     @inventoryAdd 'weaponUpgrade', 'rapid', marking: 'RF', icon: 'rapidFireBoost'
     @inventoryAdd 'weaponUpgrade', 'damage', marking: 'D', icon: 'damageBoost'
