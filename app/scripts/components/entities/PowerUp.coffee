@@ -1,10 +1,11 @@
 Crafty.c 'PowerUp',
   init: ->
-    @requires '2D, WebGL, ColorEffects, powerUpBox, SpriteAnimation'
+    @requires '2D, WebGL, ColorEffects, powerUpBox, SpriteAnimation, TweenPromise, Scalable'
     @reel 'blink', 600, [[10, 1], [11, 1], [12, 1], [11, 1]]
     @attr
       w: 32
       h: 32
+    @pickedUp = no
 
   remove: ->
 
@@ -44,3 +45,21 @@ Crafty.c 'PowerUp',
           .attr pos
         @attach marking
     this
+
+  pickup: ->
+    @pickedUp = yes
+    @tweenPromise(
+      scale: 1.5,
+      x: @x - 12,
+      y: @y - 12,
+      120
+    ).then =>
+      @tweenPromise(
+        alpha: 0,
+        scale: .3,
+        z: 20,
+        x: @x + 15,
+        y: @y + 15,
+        120
+      ).then => @destroy()
+
