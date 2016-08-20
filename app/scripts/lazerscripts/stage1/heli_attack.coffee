@@ -23,11 +23,15 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
       aim: 45
       cooldown: 50
       projectile: (x, y, angle) =>
-        projectile = Crafty.e('Projectile, Color, Enemy').attr(
-          w: 12
-          h: 4
-          speed: 350
-        ).color('#FFFF00')
+        projectile = Crafty.e('Projectile, sphere1, Enemy')
+          .crop(6, 21, 18, 7)
+          .flip()
+          .attr(
+            w: 12
+            h: 4
+            speed: 350
+          )
+
         projectile.shoot(x, y, angle)
     p
 

@@ -56,5 +56,6 @@ generator.defineAssets(
         heart: [13, 1, 1, 1]
         star: [14, 1, 1, 1]
         powerUpBox: [10, 1, 1, 1]
+        sphere1: [7, 3, 1, 1]
 )
 

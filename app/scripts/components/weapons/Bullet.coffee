@@ -1,7 +1,7 @@
 Crafty.c 'Bullet',
   init: ->
-    @requires '2D, WebGL, Color, Collision'
-    @color '#FFFF00'
+    @requires '2D, WebGL, sphere1, Collision'
+    @crop 6, 21, 18, 7
 
   fire: (properties) ->
     @attr(
