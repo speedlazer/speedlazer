@@ -114,32 +114,15 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @sunRise()
       @cameraCrew()
       @async @runScript Game.Scripts.IntroBarrel
-      @wait 2000 # Time for more players to activate
-      @if((-> @player(1).active and !@player(2).active)
-        @sequence(
-          @say 'General', 'Time to get the last ship to the factory\n' +
-            'to install the automated defence systems'
-          @say 'John', 'I hate that we pilots will be without jobs soon'
-        )
-      )
-      @if((-> !@player(1).active and @player(2).active)
-        @sequence(
-          @say 'General', 'Time to get the last ship to the factory\n' +
-            'to install the automated defence systems'
-          @say 'Jim', 'Man I don\'t trust that AI stuff for one bit'
-        )
-      )
       @if((-> @player(1).active and @player(2).active)
-        @sequence(
-          @say 'General', 'Time to get the last 2 ships to the factory\n' +
-            'to install the automated defence systems'
-          @say 'John', 'I have a feeling that we will be without jobs soon'
-        )
+        @say 'General', 'Time to get the last 2 ships to the factory\n' +
+          'to install the AI controlled defence systems'
+        @say 'General', 'Time to get the last ship to the factory\n' +
+          'to install the AI controlled defence systems'
       )
-      @say 'General', 'It saves lives when you no longer need soldiers,\n' +
-      'AI technology is the future after all.'
-
-      @wait 1500
+      #@say 'General', 'It saves lives when you no longer need soldiers,\n' +
+      #'AI technology is the future after all.'
+      #@wait 1500
     )
 
   tutorial: ->
@@ -156,16 +139,26 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             drop: 'pool'
         ))
       )
+      @wait(1000)
+      @say 'General', 'Great job, now get the ship to the defence factory in the city'
+      @say 'General', 'We will send some more target practice'
+      @repeat(2, @sequence(
+        @wait(1000)
+        @placeSquad Game.Scripts.Swirler,
+          amount: 6
+          delay: 250
+          drop: 'pool'
+      ))
     )
 
   droneTakeover: ->
     @sequence(
+      @say('General', 'What are those drones doing there!?')
       @placeSquad Game.Scripts.CrewShooters,
         amount: 4
         delay: 750
         drop: 'pool'
-      @say('General', 'What is going on with our drones?')
-      @say('General', 'They do not respond to our commands anymore!\nThe defence AI has been hacked!')
+      @say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!')
       @async @chapterTitle(1, 'Hacked')
       @setSpeed 150
     )

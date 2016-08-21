@@ -366,23 +366,23 @@ generator.defineBlock class extends Game.LevelScenery
         type: 'linear'
         x: -160
         easingFn: 'easeInQuad'
-        duration: 2500
+        duration: 1200
       ,
         type: 'linear'
         y: -130
-        duration: 2500
+        duration: 1200
         easingFn: 'easeInOutQuad'
         event: 'lift'
       ,
         type: 'delay'
-        duration: 1000
+        duration: 500
         event: 'shipExterior'
       ,
         type: 'linear'
         x: 70
         y: -10
         easingFn: 'easeInQuad'
-        duration: 2500
+        duration: 1200
       ,
         type: 'delay'
         duration: 1
@@ -425,13 +425,13 @@ generator.defineBlock class extends Game.LevelScenery
         @enableControl()
         @weaponsEnabled = yes
       @one 'lift', ->
-        block.elevator.tween({ y: block.elevator.y - 130 }, 2500, 'easeInOutQuad')
+        block.elevator.tween({ y: block.elevator.y - 130 }, 1200, 'easeInOutQuad')
         Crafty('ScrollWall').each ->
           @addComponent 'Tween'
-          @tween { y: 0 }, 5000
+          @tween { y: 0 }, 2500
           @one 'TweenEnd', -> @removeComponent 'Tween', no
       @one 'shipExterior', ->
-        block.outside.tween({ alpha: 1 }, 1500).addComponent('Solid')
+        block.outside.tween({ alpha: 1 }, 700).addComponent('Solid')
       @one 'go', ->
         block.level.setForcedSpeed block.speed
 
