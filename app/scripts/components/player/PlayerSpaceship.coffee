@@ -209,7 +209,7 @@ Crafty.c 'PlayerSpaceship',
         @scoreText 'Extra life!'
         return true
       if item.contains is 'points'
-        @scoreText 'Bonus points!'
+        @scoreText '+500 points!'
         return true
 
     if item.type is 'weaponUpgrade'
