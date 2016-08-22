@@ -25,7 +25,7 @@ class Game.Scripts.Swirler extends Game.Scripts.ArmyDrone
     @juice = options.juice
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 3000 + (Math.random() * 20000)
+        cooldown: 1000 + (Math.random() * 8000)
         sightAngle: 250
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Sphere, Enemy, Projectile').blink()
@@ -88,7 +88,7 @@ class Game.Scripts.ScraperFlyer extends Game.Scripts.ArmyDrone
       y: Crafty.viewport.height * .7
       defaultSpeed: 250
     ).shootOnSight
-      cooldown: 5000 + (Math.random() * 20000)
+      cooldown: 5000 + (Math.random() * 8000)
       sightAngle: 250
       projectile: (x, y, angle) =>
         projectile = Crafty.e('Sphere, Enemy, Projectile').blink()
@@ -132,7 +132,7 @@ class Game.Scripts.Shooter extends Game.Scripts.ArmyDrone
     @juice = options.juice
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 3000 + (Math.random() * 20000)
+        cooldown: 1000 + (Math.random() * 8000)
         sightAngle: 250
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Sphere, Enemy, Projectile').blink()
@@ -201,7 +201,7 @@ class Game.Scripts.CrewShooters extends Game.Scripts.ArmyDrone
   shootPlayer: ->
     =>
       @entity.shootOnSight
-        cooldown: 3000
+        cooldown: 1000 + (Math.random() * 8000)
         sightAngle: 360
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Sphere, Enemy, Projectile').blink()
