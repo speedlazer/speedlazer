@@ -1,0 +1,3 @@
+--ignore-dir=.tmp/
+--ignore-dir=app/scripts/compiled/
+--ignore-dir=app/bower_components/
