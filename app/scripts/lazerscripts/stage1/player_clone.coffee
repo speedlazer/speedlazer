@@ -17,11 +17,11 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
       cooldown: 150
       sightAngle: 20
       projectile: (x, y, angle) =>
-        projectile = Crafty.e('Sphere').attr(
+        projectile = Crafty.e('Sphere, Enemy, Projectile').attr(
           w: 8
           h: 4
           speed: 600
-        )
+        ).blink()
         projectile.shoot(x, y, angle)
     p
 

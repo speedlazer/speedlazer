@@ -28,7 +28,7 @@ class Game.Scripts.Swirler extends Game.Scripts.ArmyDrone
         cooldown: 3000 + (Math.random() * 20000)
         sightAngle: 250
         projectile: (x, y, angle) =>
-          projectile = Crafty.e('Sphere')
+          projectile = Crafty.e('Sphere, Enemy, Projectile').blink()
           projectile.shoot(x, y, angle)
     d
 
@@ -91,7 +91,7 @@ class Game.Scripts.ScraperFlyer extends Game.Scripts.ArmyDrone
       cooldown: 5000 + (Math.random() * 20000)
       sightAngle: 250
       projectile: (x, y, angle) =>
-        projectile = Crafty.e('Sphere')
+        projectile = Crafty.e('Sphere, Enemy, Projectile').blink()
         projectile.shoot(x, y, angle)
 
   execute: ->
@@ -135,7 +135,7 @@ class Game.Scripts.Shooter extends Game.Scripts.ArmyDrone
         cooldown: 3000 + (Math.random() * 20000)
         sightAngle: 250
         projectile: (x, y, angle) =>
-          projectile = Crafty.e('Sphere')
+          projectile = Crafty.e('Sphere, Enemy, Projectile').blink()
           projectile.shoot(x, y, angle)
     d
 
@@ -204,6 +204,6 @@ class Game.Scripts.CrewShooters extends Game.Scripts.ArmyDrone
         cooldown: 3000
         sightAngle: 360
         projectile: (x, y, angle) =>
-          projectile = Crafty.e('Sphere')
+          projectile = Crafty.e('Sphere, Enemy, Projectile').blink()
           projectile.shoot(x, y, angle)
 

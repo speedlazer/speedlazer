@@ -17,15 +17,12 @@ Crafty.c 'ShootOnSight',
     wo[0] *= (@scale ? 1)
     wo[1] *= (@scale ? 1)
     unless @muzzleFlash?
-      @muzzleFlash = Crafty.e('2D, WebGL, Color')
-        .color('#FF9')
+      @muzzleFlash = Crafty.e('Sphere')
         .attr(
           x: @x + wo[0]
           y: @y + wo[1]
-          w: 5
-          h: 5
           alpha: 0
-        )
+        ).muzzle()
       @attach @muzzleFlash
     @muzzleFlash.attr alpha: 0
 
