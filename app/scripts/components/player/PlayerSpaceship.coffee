@@ -170,8 +170,8 @@ Crafty.c 'PlayerSpaceship',
     # TODO: Needs refactoring
     if newStats.primary?
       @primaryWeapon.stats = newStats.primary.stats
-      @primaryWeapon.boosts = newStats.primary.boosts
-      @primaryWeapon.boostTimings = newStats.primary.boostTimings
+      #@primaryWeapon.boosts = newStats.primary.boosts
+      #@primaryWeapon.boostTimings = newStats.primary.boostTimings
       @primaryWeapon._determineWeaponSettings()
 
     stats = {}
