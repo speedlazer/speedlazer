@@ -5,7 +5,7 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
   assets: ->
     @loadAssets('largeDrone')
 
-  rocketStrikeDance: (homing = no) ->
+  rocketStrikeDance: ->
     @parallel(
       @movePath([
           [.7, .4]
@@ -19,14 +19,37 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
         ]
       )
       @repeat 2, @sequence(
-        @fireRockets(4, homing)
+        @fireRockets(4)
         @wait 1500
-        @fireRockets(4, homing)
+        @fireRockets(4)
         @wait 1000
-        @fireRockets(2, homing)
+        @fireRockets(2)
         @wait 300
         @fireRockets(2)
         @wait 300
+        @fireRockets(2)
+        @wait 300
+      )
+    )
+
+  rocketStrikeDanceHoming: ->
+    @parallel(
+      @movePath([
+          [.7, .4]
+          [.8, .3]
+          [.9, .5]
+          [.7, .6]
+          [.8, .7]
+          [.9, .4]
+          [.7, .1]
+          [.6, .2]
+        ]
+      )
+      @repeat 2, @sequence(
+        @fireRockets(2, yes)
+        @wait 3000
+        @fireRockets(2, yes)
+        @wait 600
         @fireRockets(2)
         @wait 300
       )
@@ -228,10 +251,10 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @repeat @sequence(
         @bombRaid(yes)
         @repeat 2, @while(
-          @rocketStrikeDance(yes)
+          @rocketStrikeDanceHoming()
           @sequence(
             @async @runScript(Game.Scripts.Stage1BossMine, @location())
-            @wait 1500
+            @wait 2500
           )
         )
         @wait 1000
