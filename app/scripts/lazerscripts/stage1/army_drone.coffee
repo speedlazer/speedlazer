@@ -25,14 +25,10 @@ class Game.Scripts.Swirler extends Game.Scripts.ArmyDrone
     @juice = options.juice
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 3000 + (Math.random() * 3000)
+        cooldown: 3000 + (Math.random() * 20000)
         sightAngle: 250
         projectile: (x, y, angle) =>
-          projectile = Crafty.e('Projectile, Color, Enemy').attr(
-            w: 6
-            h: 6
-            speed: 300
-          ).color('#FFFF00')
+          projectile = Crafty.e('Sphere, Enemy, Projectile').blink()
           projectile.shoot(x, y, angle)
     d
 
@@ -92,14 +88,10 @@ class Game.Scripts.ScraperFlyer extends Game.Scripts.ArmyDrone
       y: Crafty.viewport.height * .7
       defaultSpeed: 250
     ).shootOnSight
-      cooldown: 5000 + (Math.random() * 5000)
+      cooldown: 5000 + (Math.random() * 20000)
       sightAngle: 250
       projectile: (x, y, angle) =>
-        projectile = Crafty.e('Projectile, Color, Enemy').attr(
-          w: 6
-          h: 6
-          speed: 300
-        ).color('#FFFF00')
+        projectile = Crafty.e('Sphere, Enemy, Projectile').blink()
         projectile.shoot(x, y, angle)
 
   execute: ->
@@ -140,14 +132,10 @@ class Game.Scripts.Shooter extends Game.Scripts.ArmyDrone
     @juice = options.juice
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 3000 + (Math.random() * 3000)
+        cooldown: 3000 + (Math.random() * 20000)
         sightAngle: 250
         projectile: (x, y, angle) =>
-          projectile = Crafty.e('Projectile, Color, Enemy').attr(
-            w: 6
-            h: 6
-            speed: 300
-          ).color('#FFFF00')
+          projectile = Crafty.e('Sphere, Enemy, Projectile').blink()
           projectile.shoot(x, y, angle)
     d
 
@@ -216,10 +204,6 @@ class Game.Scripts.CrewShooters extends Game.Scripts.ArmyDrone
         cooldown: 3000
         sightAngle: 360
         projectile: (x, y, angle) =>
-          projectile = Crafty.e('Projectile, Color, Enemy').attr(
-            w: 6
-            h: 6
-            speed: 400
-          ).color('#FFFF00')
+          projectile = Crafty.e('Sphere, Enemy, Projectile').blink()
           projectile.shoot(x, y, angle)
 

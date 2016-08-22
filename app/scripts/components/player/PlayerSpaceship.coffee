@@ -93,7 +93,7 @@ Crafty.c 'PlayerSpaceship',
     @onHit 'PowerUp', (e) ->
       return if Game.paused
       for pu in e
-        @pickUp(pu.obj)
+        @pickUp(pu.obj) unless pu.obj.pickedUp
 
     @bind 'Hit', ->
       Crafty.e('Blast, Explosion').explode(
@@ -192,7 +192,7 @@ Crafty.c 'PlayerSpaceship',
     if @installItem powerUp.settings
       Crafty.audio.play('powerup')
       @trigger('PowerUp', powerUp.settings)
-      powerUp.destroy()
+      powerUp.pickup()
 
   installItem: (item) ->
     return unless item?
@@ -209,7 +209,7 @@ Crafty.c 'PlayerSpaceship',
         @scoreText 'Extra life!'
         return true
       if item.contains is 'points'
-        @scoreText 'Bonus points!'
+        @scoreText '+500 points!'
         return true
 
     if item.type is 'weaponUpgrade'

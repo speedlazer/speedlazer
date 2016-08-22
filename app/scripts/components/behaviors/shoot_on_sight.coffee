@@ -17,15 +17,12 @@ Crafty.c 'ShootOnSight',
     wo[0] *= (@scale ? 1)
     wo[1] *= (@scale ? 1)
     unless @muzzleFlash?
-      @muzzleFlash = Crafty.e('2D, WebGL, Color')
-        .color('#FF9')
+      @muzzleFlash = Crafty.e('Sphere')
         .attr(
           x: @x + wo[0]
           y: @y + wo[1]
-          w: 5
-          h: 5
           alpha: 0
-        )
+        ).muzzle()
       @attach @muzzleFlash
     @muzzleFlash.attr alpha: 0
 
@@ -42,10 +39,14 @@ Crafty.c 'ShootOnSight',
       return if @lastShotAt < @shootConfig.cooldown
 
     self = this
+    targets = []
     Crafty(@shootConfig.targetType).each ->
       angle = self._determineAngle(this)
       if Math.abs(angle - self.rotation) < self.shootConfig.sightAngle
-        self._shoot(this)
+        targets.push this
+    if targets.length > 0
+      target = _.sample(targets)
+      @_shoot(target)
 
   _determineAngle: (entity) ->
     angle = Math.atan2(@y - entity.y, @x - entity.x)

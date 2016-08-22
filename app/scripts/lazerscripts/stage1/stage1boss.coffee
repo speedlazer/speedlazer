@@ -5,7 +5,7 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
   assets: ->
     @loadAssets('largeDrone')
 
-  rocketStrikeDance: (homing = no) ->
+  rocketStrikeDance: ->
     @parallel(
       @movePath([
           [.7, .4]
@@ -19,15 +19,40 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
         ]
       )
       @repeat 2, @sequence(
-        @fireRockets(4, homing)
+        @fireRockets(4)
         @wait 1500
-        @fireRockets(4, homing)
+        @fireRockets(4)
         @wait 1000
-        @fireRockets(2, homing)
-        @wait 300
         @fireRockets(2)
         @wait 300
         @fireRockets(2)
+        @wait 300
+        @fireRockets(2)
+        @wait 300
+      )
+    )
+
+  rocketStrikeDanceHoming: ->
+    @parallel(
+      @movePath([
+          [.7, .4]
+          [.8, .3]
+          [.9, .5]
+          [.7, .6]
+          [.8, .7]
+          [.9, .4]
+          [.7, .1]
+          [.6, .2]
+        ]
+      )
+      @repeat 2, @sequence(
+        @fireRockets(2, yes)
+        @wait 600
+        @fireRockets(2, yes)
+        @wait 600
+        @fireRockets(2, yes)
+        @wait 900
+        @fireRockets(4)
         @wait 300
       )
     )
@@ -190,6 +215,10 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   bombRaid: (armed = no) ->
     @sequence(
+      @bigExplosion()
+      @wait 200
+      @bigExplosion()
+
       @moveTo(y: .1, speed: 200, easing: 'easeInOutQuad')
       @while(
         @moveTo(x: -100, speed: 400)
@@ -211,6 +240,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
               location: @location()
               armed: armed
           )
+          @smoke('light')
           @wait 300
         )
       )
@@ -228,10 +258,10 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @repeat @sequence(
         @bombRaid(yes)
         @repeat 2, @while(
-          @rocketStrikeDance(yes)
+          @rocketStrikeDanceHoming()
           @sequence(
             @async @runScript(Game.Scripts.Stage1BossMine, @location())
-            @wait 1500
+            @wait 2500
           )
         )
         @wait 1000
@@ -832,8 +862,9 @@ class Game.Scripts.Stage1BossMineField extends Game.EntityScript
         @animate('blink', -1)
         @wait 1000
         @squadOnce('bridge', @sequence(
+          @wait 500
           => Crafty.trigger('BridgeCollapse', @level)
-          @screenFlash 2, color: '#FFFF80', alpha: .8
+          @screenFlash 2, color: '#FFFF80', alpha: .4
         ))
         => @entity.absorbDamage damage: @entity.health
         @endSequence()

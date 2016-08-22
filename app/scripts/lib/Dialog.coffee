@@ -60,7 +60,7 @@
         ->
           defer.resolve()
           Crafty('Dialog').each -> @destroy()
-        , 2500 * lines.length, 0)
+        , 3000 * lines.length, 0)
 
     defer.promise
 
