@@ -47,10 +47,12 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
       )
       @repeat 2, @sequence(
         @fireRockets(2, yes)
-        @wait 3000
+        @wait 600
         @fireRockets(2, yes)
         @wait 600
-        @fireRockets(2)
+        @fireRockets(2, yes)
+        @wait 900
+        @fireRockets(4)
         @wait 300
       )
     )
@@ -213,6 +215,10 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   bombRaid: (armed = no) ->
     @sequence(
+      @bigExplosion()
+      @wait 200
+      @bigExplosion()
+
       @moveTo(y: .1, speed: 200, easing: 'easeInOutQuad')
       @while(
         @moveTo(x: -100, speed: 400)
@@ -234,6 +240,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
               location: @location()
               armed: armed
           )
+          @smoke('light')
           @wait 300
         )
       )
