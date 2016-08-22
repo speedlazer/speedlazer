@@ -24,7 +24,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @inventoryAdd 'weaponBoost', 'damageb', marking: 'D', icon: 'damageBoost'
 
     @sequence(
-      @setPowerupPool 'rapidb', 'speed'
+      @setPowerupPool 'rapidb', 'speed', 'points', 'rapidb'
       @introText()
       @tutorial()
       @setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
