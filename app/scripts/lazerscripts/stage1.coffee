@@ -35,93 +35,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @cityBay()
       @setPowerupPool 'speed', 'rapid', 'aim', 'speed', 'rapid', 'aim'
       @midstageBossfight()
-
-      @checkpoint @checkpointMidStage('BayFull', 400000)
-      @say('General', 'Hunt him down! We need that AI control back!')
-      @setSpeed 150
-
-      @setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
-
-      @placeSquad Game.Scripts.Shooter,
-        amount: 8
-        delay: 500
-        drop: 'pool'
-        options:
-          shootOnSight: yes
-
-      @repeat 2, @stalkerShootout()
-
-      @setScenery('Skyline')
-      @parallel(
-        @sequence(
-          @wait 3000
-          @gainHeight(800, duration: 8000)
-          @placeSquad Game.Scripts.Shooter,
-            amount: 8
-            delay: 500
-            drop: 'pool'
-            options:
-              shootOnSight: yes
-        )
-        @placeSquad Game.Scripts.Stage1BossPopup
-      )
-      @setSpeed 100
-      @checkpoint @checkpointMidStage('Skyline', 450000)
-
-      @setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
-      @attackWaves(
-        @parallel(
-          @placeSquad Game.Scripts.ScraperFlyer,
-            amount: 8
-            delay: 500
-          @placeSquad Game.Scripts.Shooter,
-            amount: 8
-            delay: 500
-            options:
-              shootOnSight: yes
-        )
-        drop: 'pool'
-      )
-      @parallel(
-        @attackWaves(
-          @parallel(
-            @placeSquad Game.Scripts.ScraperFlyer,
-              amount: 8
-              delay: 500
-            @placeSquad Game.Scripts.Shooter,
-              amount: 8
-              delay: 500
-              options:
-                shootOnSight: yes
-          )
-          drop: 'pool'
-        )
-        @cloneEncounter()
-      )
-      @cityFighting()
-      @parallel(
-        @placeSquad Game.Scripts.Stage1BossPopup
-        @cloneEncounter()
-      )
-
-      @gainHeight(300, duration: 4000)
-      @checkpoint @checkpointMidStage('Skyline', 500000)
-
-      @parallel(
-        @repeat 2, @cloneEncounter()
-        @placeSquad Game.Scripts.HeliAttack,
-          amount: 2
-          delay: 5000
-      )
-
-      @async @showText 'Warning!', color: '#FF0000', mode: 'blink'
-      @setScenery 'SkylineBase'
-      @while(
-        @wait 3000
-        @waitingRocketStrike()
-      )
-      @placeSquad Game.Scripts.Stage1BossLeaving
-      @say 'General', 'He went to the military complex!\nBut we cant get through those shields now...'
+      @bossfightReward()
+      @skylineFighting()
+      @highSkylineFighting()
     )
 
   introText: ->
@@ -374,8 +290,73 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
     )
 
-  cityFighting: ->
+  bossfightReward: ->
     @sequence(
+      @checkpoint @checkpointMidStage('BayFull', 400000)
+      @say('General', 'Hunt him down! We need that AI control back!')
+      @setSpeed 150
+
+      @setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
+
+      @placeSquad Game.Scripts.Shooter,
+        amount: 8
+        delay: 500
+        drop: 'pool'
+        options:
+          shootOnSight: yes
+
+      @repeat 2, @stalkerShootout()
+    )
+
+  skylineFighting: ->
+    @sequence(
+      @setScenery('Skyline')
+      @parallel(
+        @sequence(
+          @wait 3000
+          @gainHeight(800, duration: 8000)
+          @placeSquad Game.Scripts.Shooter,
+            amount: 8
+            delay: 500
+            drop: 'pool'
+            options:
+              shootOnSight: yes
+        )
+        @placeSquad Game.Scripts.Stage1BossPopup
+      )
+      @setSpeed 100
+      @checkpoint @checkpointMidStage('Skyline', 450000)
+
+      @setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
+      @attackWaves(
+        @parallel(
+          @placeSquad Game.Scripts.ScraperFlyer,
+            amount: 8
+            delay: 500
+          @placeSquad Game.Scripts.Shooter,
+            amount: 8
+            delay: 500
+            options:
+              shootOnSight: yes
+        )
+        drop: 'pool'
+      )
+      @parallel(
+        @attackWaves(
+          @parallel(
+            @placeSquad Game.Scripts.ScraperFlyer,
+              amount: 8
+              delay: 500
+            @placeSquad Game.Scripts.Shooter,
+              amount: 8
+              delay: 500
+              options:
+                shootOnSight: yes
+          )
+          drop: 'pool'
+        )
+        @cloneEncounter()
+      )
       @setScenery('Skyline')
       @parallel(
         @attackWaves(
@@ -401,6 +382,33 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             drop: 'pool'
         )
       )
+    )
+
+  highSkylineFighting: ->
+    @sequence(
+      @parallel(
+        @placeSquad Game.Scripts.Stage1BossPopup
+        @cloneEncounter()
+      )
+
+      @gainHeight(300, duration: 4000)
+      @checkpoint @checkpointMidStage('Skyline', 500000)
+
+      @parallel(
+        @repeat 2, @cloneEncounter()
+        @placeSquad Game.Scripts.HeliAttack,
+          amount: 2
+          delay: 5000
+      )
+
+      @async @showText 'Warning!', color: '#FF0000', mode: 'blink'
+      @setScenery 'SkylineBase'
+      @while(
+        @wait 3000
+        @waitingRocketStrike()
+      )
+      @placeSquad Game.Scripts.Stage1BossLeaving
+      @say 'General', 'He went to the military complex!\nBut we cant get through those shields now...'
     )
 
   cloneEncounter: ->
