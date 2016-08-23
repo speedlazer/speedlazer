@@ -255,6 +255,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
     @sequence(
       @cancelBullets('Mine')
+      @cancelBullets('shadow')
       @setSpeed 200
       @repeat @sequence(
         @bombRaid(yes)
@@ -284,6 +285,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
   endOfFight: ->
     @sequence(
       @cancelBullets('Mine')
+      @cancelBullets('shadow')
       @invincible yes
       @while(
         @moveTo(x: .6, y: .90, speed: 50)
