@@ -254,6 +254,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     @bindSequence 'Hit', @endOfFight, => @entity.healthBelow .2
 
     @sequence(
+      @cancelBullets('Mine')
       @setSpeed 200
       @repeat @sequence(
         @bombRaid(yes)
@@ -282,6 +283,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   endOfFight: ->
     @sequence(
+      @cancelBullets('Mine')
       @invincible yes
       @while(
         @moveTo(x: .6, y: .90, speed: 50)
