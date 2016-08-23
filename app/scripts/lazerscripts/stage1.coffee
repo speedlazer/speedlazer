@@ -153,11 +153,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   droneTakeover: ->
     @sequence(
-      @say('General', 'What are those drones doing there!?')
-      @placeSquad Game.Scripts.CrewShooters,
-        amount: 4
-        delay: 750
-        drop: 'pool'
+      @parallel(
+        @say('General', 'What are those drones doing there!?')
+        @placeSquad Game.Scripts.CrewShooters,
+          amount: 4
+          delay: 750
+          drop: 'pool'
+      )
       @say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!')
       @async @chapterTitle(1, 'Hacked')
       @setSpeed 150
