@@ -18,8 +18,8 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
       sightAngle: 20
       projectile: (x, y, angle) =>
         projectile = Crafty.e('Sphere, Enemy, Projectile').attr(
-          w: 8
-          h: 4
+          w: 9
+          h: 9
           speed: 600
         ).blink()
         projectile.shoot(x, y, angle)
