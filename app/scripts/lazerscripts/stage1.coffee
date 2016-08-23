@@ -69,15 +69,33 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @checkpoint @checkpointMidStage('Skyline', 450000)
 
       @setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
-      @placeSquad Game.Scripts.ScraperFlyer,
-        amount: 8
-        delay: 500
+      @attackWaves(
+        @parallel(
+          @placeSquad Game.Scripts.ScraperFlyer,
+            amount: 8
+            delay: 500
+          @placeSquad Game.Scripts.Shooter,
+            amount: 8
+            delay: 500
+            options:
+              shootOnSight: yes
+        )
         drop: 'pool'
+      )
       @parallel(
-        @placeSquad Game.Scripts.ScraperFlyer,
-          amount: 8
-          delay: 500
+        @attackWaves(
+          @parallel(
+            @placeSquad Game.Scripts.ScraperFlyer,
+              amount: 8
+              delay: 500
+            @placeSquad Game.Scripts.Shooter,
+              amount: 8
+              delay: 500
+              options:
+                shootOnSight: yes
+          )
           drop: 'pool'
+        )
         @cloneEncounter()
       )
       @cityFighting()
@@ -373,30 +391,32 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         )
         @sequence(
           @wait 3000
-          @placeSquad Game.Scripts.Swirler,
+          @placeSquad Game.Scripts.Shooter,
             amount: 4
             delay: 750
             drop: 'pool'
             options:
               shootOnSight: yes
-          @placeSquad Game.Scripts.HeliAttack
+          @placeSquad Game.Scripts.HeliAttack,
+            drop: 'pool'
         )
       )
     )
 
   cloneEncounter: ->
-    @parallel(
-      @sequence(
-        @wait 4000
+    @attackWaves(
+      @parallel(
+        @sequence(
+          @wait 4000
+          @placeSquad Game.Scripts.PlayerClone,
+            options:
+              from: 'top'
+        )
         @placeSquad Game.Scripts.PlayerClone,
-          drop: 'pool'
           options:
-            from: 'top'
+            from: 'bottom'
       )
-      @placeSquad Game.Scripts.PlayerClone,
-        drop: 'pool'
-        options:
-          from: 'bottom'
+      drop: 'pool'
     )
 
 
