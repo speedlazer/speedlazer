@@ -151,7 +151,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
         @moveTo(x: .75, y: .41)
         @sequence(
           @wait 500
-          @say 'Drone Commander', 'We have control now! You will suffer!\nEarths defences are in our hands!'
+          @say 'Drone Commander', 'We have control over the AI now! You will suffer!\nEarths defences are in our hands!'
         )
       )
       @laugh()
