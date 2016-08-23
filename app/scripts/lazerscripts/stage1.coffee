@@ -37,7 +37,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @midstageBossfight()
 
       @checkpoint @checkpointMidStage('BayFull', 400000)
-      @say('General', 'Hunt him down!')
+      @say('General', 'Hunt him down! We need that AI control back!')
       @setSpeed 150
 
       @setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
@@ -129,17 +129,17 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @sequence(
       @setScenery('Ocean')
       @say('General', 'We send some drones for some last manual target practice')
+      @showText 'Get Ready', color: '#00FF00', mode: 'blink', blink_amount: 3, blink_speed: 300
       @parallel(
         @gainHeight(150, duration: 4000)
         @repeat(2, @sequence(
-          @wait(1000)
           @placeSquad Game.Scripts.Swirler,
             amount: 6
             delay: 250
             drop: 'pool'
+          @wait(1000)
         ))
       )
-      @wait(1000)
       @say 'General', 'Great job, now get the ship to the defence factory in the city'
       @say 'General', 'We will send some more target practice'
       @repeat(2, @sequence(

@@ -8,6 +8,8 @@ Crafty.c 'BigText',
       color: '#EEEEEE'
       mode: 'fadeIn'
       super: null
+      blink_amount: 3
+      blink_speed: 1000
     )
     modes =
       'fadeIn':
@@ -33,7 +35,7 @@ Crafty.c 'BigText',
           d = WhenJS.defer()
           els[0].delay((->
             e.attr(alpha: (e.alpha + 1) % 2) for e in els
-          ), 1000, 5, (-> d.resolve()))
+          ), options.blink_speed, ((options.blink_amount - 1) * 2) + 1, (-> d.resolve()))
           d.promise
         leave: (els) ->
           el.attr(alpha: 0) for el in els
