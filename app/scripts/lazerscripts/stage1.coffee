@@ -140,15 +140,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
           @wait(1000)
         ))
       )
-      @say 'General', 'Great job, now get the ship to the defence factory in the city'
-      @say 'General', 'We will send some more target practice'
-      @repeat(2, @sequence(
-        @wait(1000)
-        @placeSquad Game.Scripts.Swirler,
-          amount: 6
-          delay: 250
-          drop: 'pool'
-      ))
+      @say('General', 'Great job, now get the ship to the defence factory in the city\n' +
+       'We will send some more target practice')
+      @placeSquad Game.Scripts.Shooter,
+        amount: 6
+        delay: 500
+        drop: 'pool'
     )
 
   droneTakeover: ->
