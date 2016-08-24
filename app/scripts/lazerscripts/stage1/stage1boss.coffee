@@ -68,6 +68,8 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
           z: 5
           offsetX: 0
           offsetY: 50
+          pointsOnHit: 0
+          pointsOnDestroy: 0
           location: @location()
       )
       @animate 'emptyWing', 0, 'wing'
@@ -76,6 +78,8 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
           z: -5
           offsetX: 0
           offsetY: -50
+          pointsOnHit: 0
+          pointsOnDestroy: 0
           location: @location()
       )
       @if(( -> amount > 2)
@@ -85,6 +89,8 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
             offsetX: 30
             offsetY: -100
             location: @location()
+            pointsOnHit: 0
+            pointsOnDestroy: 0
         )
       )
       @if(( -> amount > 3)
@@ -94,6 +100,8 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
             offsetX: 30
             offsetY: 100
             location: @location()
+            pointsOnHit: 0
+            pointsOnDestroy: 0
         )
       )
       @wait 500
@@ -397,7 +405,7 @@ class Game.Scripts.Stage1BossRocketStrike extends Game.EntityScript
 class Game.Scripts.Stage1BossRocket extends Game.EntityScript
   spawn: (options) ->
     options = _.defaults(options,
-      pointsOHit: 125
+      pointsOnHit: 125
       pointsOnDestroy: 50
       offsetY: 0
       offsetX: 0
