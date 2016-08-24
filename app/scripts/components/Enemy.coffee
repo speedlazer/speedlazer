@@ -38,10 +38,6 @@ Crafty.c 'Enemy',
             unless @juice is no
               @attr hitFlash: { _red: 255, _green: 255, _blue: 128 }
             @absorbDamage(splosion)
-            #if splosion.ship?
-              #console.log 'explosion by indirect hit caused by player!'
-            #else
-              #console.log 'explosion by indirect hit'
             splosion.damage = 0
       ->
         @attr hitFlash: no
@@ -49,8 +45,7 @@ Crafty.c 'Enemy',
 
   absorbDamage: (cause) ->
     return unless cause?
-    data = { @pointsOnHit, @pointsOnDestroy }
-    cause.ship?.trigger 'HitTarget', data
+    data = { @pointsOnHit, @pointsOnDestroy, location: { @x, @y }}
     @health -= cause.damage
     @updatedHealth?()
 
@@ -61,5 +56,6 @@ Crafty.c 'Enemy',
 
       cause.ship?.trigger 'DestroyTarget', data
       @deathCause = cause.ship
-      #console.log 'explosion by direct hit'
+    else
+      cause.ship?.trigger 'HitTarget', data
 

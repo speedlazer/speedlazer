@@ -42,14 +42,17 @@ Crafty.c 'ShipSpawnable',
 
     @listenTo @ship, 'HitTarget', (data) ->
       @stats.shotsHit += 1
-      @addPoints(data?.pointsOnHit ? 0)
+      points = (data.pointsOnHit ? 0)
+      @addPoints(points, data.location) if data?
 
     @listenTo @ship, 'DestroyTarget', (data) ->
       @stats.enemiesKilled += 1
-      @addPoints(data?.pointsOnDestroy ? 0)
+      points = (data.pointsOnDestroy ? 0) +
+        (data.pointsOnHit ? 0)
+      @addPoints(points, data.location) if data?
 
-    @listenTo @ship, 'BonusPoints', (points) ->
-      @addPoints(points)
+    @listenTo @ship, 'BonusPoints', (data) ->
+      @addPoints(data.points, data.location)
 
     @listenTo @ship, 'PowerUp', (powerUp) ->
       if powerUp.type is 'ship'

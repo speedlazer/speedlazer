@@ -251,7 +251,7 @@ Crafty.c 'PlayerSpaceship',
         rapidb: 'RapidFire'
         aimb: 'AimAssist'
         speedb: 'BulletSpeed'
-      @scoreText "#{t[info.aspect]} Boost expired", off
+      @scoreText "#{t[info.aspect]} Boost expired", positive: no
 
     @primaryWeapons.push weapon
     @currentPrimary = @primaryWeapons.length - 1
@@ -261,13 +261,21 @@ Crafty.c 'PlayerSpaceship',
     return yes for i in @items when i.contains is item
     no
 
-  scoreText: (text, positive = yes) ->
+  scoreText: (text, settings = {}) ->
+    settings = _.defaults(settings,
+      positive: yes
+      location: { @x, @y }
+      attach: yes
+      duration: 1000
+      distance: 70
+    )
+
     t = Crafty.e('Text, DOM, 2D, Tween, Delay')
-      .textColor(if positive then '#FFFFFF' else '#FF0000')
+      .textColor(if settings.positive then '#FFFFFF' else '#FF0000')
       .text(text)
       .attr(
-        x: @x
-        y: @y - 10
+        x: settings.location.x
+        y: settings.location.y - 10
         z: 990
         w: 250
       )
@@ -276,11 +284,11 @@ Crafty.c 'PlayerSpaceship',
         weight: 'bold',
         family: 'Press Start 2P'
       })
-    @attach t
+    @attach(t) if settings.attach
     t.delay(
       =>
-        @detach t
-        t.tween(rotation: 0, y: t.y - 70, alpha: 0.5, 1000, 'easeInQuad')
+        @detach(t) if settings.attach
+        t.tween(rotation: 0, y: t.y - settings.distance, alpha: 0.5, settings.duration, 'easeInQuad')
         t.one('TweenEnd', -> t.destroy())
       400
     )
