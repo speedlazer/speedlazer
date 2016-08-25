@@ -270,14 +270,23 @@ Crafty.c 'PlayerSpaceship',
       distance: 70
     )
 
+    location = settings.location?()
+    location = {
+      x: location.x - Crafty.viewport.x
+      y: location.y - Crafty.viewport.y
+    } if location
+
+    location ?= settings.location
+
     t = Crafty.e('Text, DOM, 2D, Tween, Delay')
-      .textColor(if settings.positive then '#FFFFFF' else '#FF0000')
+      .textColor(if settings.positive then '#DDD' else '#F00')
       .text(text)
       .attr(
-        x: settings.location.x
-        y: settings.location.y - 10
+        x: location.x
+        y: location.y - 10
         z: 990
         w: 250
+        alpha: .75
       )
       .textFont({
         size: '10px',

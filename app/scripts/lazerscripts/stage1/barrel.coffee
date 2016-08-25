@@ -20,7 +20,7 @@ class Game.Scripts.IntroBarrel extends Game.EntityScript
     )
 
   knockedOff: (player) ->
-    player.trigger 'BonusPoints', points: 25, location: @location()()
+    player.trigger 'BonusPoints', points: 25, location: @location()
     @parallel(
       @moveTo y: 1.25
       @rotate 90, 1500

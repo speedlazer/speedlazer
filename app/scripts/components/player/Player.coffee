@@ -46,8 +46,8 @@ Crafty.c 'Player',
       @ship.scoreText("+#{amount}",
         location: location
         attach: no
-        duration: 300
-        distance: 30
+        duration: 200
+        distance: 10
       )
 
     @points += amount
