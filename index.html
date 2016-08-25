@@ -1,70 +1,76 @@
 <!doctype html>
-<html>
+<html itemscope="" itemtype="http://schema.org/Article">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>SpeedLazer, A 2D Space adventure!</title>
+
+    <meta name="description" content="A Space shoot-em-up (SHMUP). Designed for keyboard or controller play">
+
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="Play SpeedLazer!">
+    <meta itemprop="description" content="A Space shoot-em-up (SHMUP). Best played with keyboard or controller">
+    <meta itemprop="image" content="http://speedlazer.net/images/share-speedlazer.png">
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@speedlazergame">
+    <meta name="twitter:title" content="Play SpeedLazer!">
+    <meta name="twitter:description" content="A 2D space adventure! Best played with keyboard or controller">
+    <meta name="twitter:creator" content="@matthijsgroen">
+    <!-- Twitter summary card with large image must be at least 280x150px -->
+    <meta name="twitter:image:src" content="http://www.example.com/image.jpg">
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="Play SpeedLazer!">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="http://speedlazer.net/">
+    <meta property="og:image" content="http://speedlazer.net/images/share-speedlazer.png">
+    <meta property="og:description" content="A 2D space adventure! Best played with keyboard or controller">
+    <meta property="og:site_name" content="SpeedLazer">
+    <meta property="fb:admins" content="1626632724316512">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Speedlazer (working title)</title>
-    <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet" type="text/css">
 
-    <link rel="stylesheet" href="styles/76db0ac5.main.css"/>
+    <link rel="stylesheet" href="styles/ef5a2625.main.css"/>
   </head>
   <body>
-    <section id="help">
-      <p>
-        Show some love!
-      </p>
-      <a class="github-button" href="https://github.com/matthijsgroen/game-play" data-icon="octicon-star" data-count-href="/matthijsgroen/game-play/stargazers" data-count-api="/repos/matthijsgroen/game-play#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star matthijsgroen/game-play on GitHub">Star</a>
-      <p>
-        <a href="https://embed.spotify.com/?uri=spotify%3Auser%3Athaisi%3Aplaylist%3A0QGrGyGVH4mVzHMTQPoq72" target="_blank">Listen on Spotify</a>
-      </p>
-
-      <h1>Controls</h1>
-      <h2>Keyboard 1</h2>
-      <dl>
-        <dt>Space</dt>
-        <dd>Fire</dd>
-        <dt>Arrow keys</dt>
-        <dd>Movement</dd>
-        <dt>P</dt>
-        <dd>Pause</dd>
-      </dl>
-      <h2>Keyboard 2</h2>
-      <dl>
-        <dt>G</dt>
-        <dd>Fire</dd>
-        <dt>WSAD</dt>
-        <dd>Movement</dd>
-        <dt>Q</dt>
-        <dd>Pause</dd>
-      </dl>
-      <h2>Gamepads</h2>
-      <dl>
-        <dt>Button 1 (X)</dt>
-        <dd>Fire</dd>
-        <dt>Left Stick</dt>
-        <dd>Movement</dd>
-        <dt>Start</dt>
-        <dd>Pause</dd>
-      </dl>
-    </section>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.7&appId=1772254276379174";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 
     <div id="theater">
       <div id="cr-stage"></div>
     </div>
     <script src="scripts/c34b54ae.bower_components.js"></script>
 
-    <script src="scripts/8b3320a6.combined-scripts.js"></script>
-    <script async="" defer="defer" id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <script src="scripts/f8073025.combined-scripts.js"></script>
 
-      ga('create', 'UA-71899181-1', 'auto');
-      ga('send', 'pageview');
+    <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-71899181-1', 'auto');
+ga('send', 'pageview');
     </script>
+
+    <footer>
+      <span class="copyright">&copy; 1981 Matthijs Groen</span>
+      <a class="github-button" href="https://github.com/matthijsgroen/game-play" data-icon="octicon-star" aria-label="Star matthijsgroen/game-play on GitHub">Star</a>
+      <a href="https://twitter.com/speedlazergame" class="twitter-follow-button" data-show-count="false">Follow @speedlazergame</a><script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <div class="fb-follow" data-href="https://www.facebook.com/SpeedLazerGame/" data-layout="standard" data-size="small" data-show-faces="false" data-colorscheme="dark" data-width="225" style="vertical-align:top;zoom:1;*display:inline"></div>
+    </footer>
+    <script async="" defer="defer" id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
   </body>
 </html>
