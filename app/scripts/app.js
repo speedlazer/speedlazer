@@ -13,7 +13,7 @@ window.Game.start(false);
 function scaleGame() {
   var stageHeight = $('#cr-stage').height(),
     stageWidth = $('#cr-stage').width(),
-    viewportHeight = $(window).height(),
+    viewportHeight = $(window).height() - 50,
     viewportWidth = $(window).width();
 
   var ratioY = viewportHeight / stageHeight;
@@ -21,6 +21,8 @@ function scaleGame() {
   var ratio = Math.min(ratioY, ratioX);
 
   $('#cr-stage').css('transform', 'scale('+ratio+')');
+
+  $('footer').css({ top: (576 * ratio) });
 }
 
 $(window).on('resize', function() {
@@ -43,4 +45,4 @@ $(document).on('click', '#cr-stage', function () {
   }
 });
 
-scaleGame();
+setTimeout(function() { scaleGame(); }, 0);

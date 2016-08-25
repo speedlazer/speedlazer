@@ -28,21 +28,24 @@ h1 {
 h2 {
   font-size: 1.1em;
 }
-section#help {
-  display: none;
-  width: 160px;
+footer {
+  color: #DDD;
+  text-align: center;
+  padding: 1em;
+
   position: absolute;
   top: 0;
-  right: 0;
-  color: #666;
-  text-align: right;
-  padding: 1em;
+  left: 0;
+  font-size: 0.8em;
+  vertical-align: super;
+  width: 100%
 }
+.copyright {
+  vertical-align: super;
+}
+
 a {
   color: #fff;
-}
-dt {
-  color: #999;
 }
 .fullscreen #theater {
   position: absolute;
