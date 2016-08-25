@@ -17,7 +17,7 @@ git checkout gh-pages
 
 # Move files to root
 cd dist
-mv * .[^.]* ..
+mv * ..
 cd ..
 rm -r dist
 git add audio images index.html scripts styles
