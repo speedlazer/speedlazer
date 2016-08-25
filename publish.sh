@@ -19,7 +19,7 @@ git checkout gh-pages
 cd dist
 mv * .[^.]* ..
 cd ..
-rm -f dist
+rm -r dist
 git add audio images index.html scripts styles
 
 # publish
