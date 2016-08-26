@@ -555,6 +555,12 @@ Game.ScriptModule.Level =
 
       defer.promise
 
+  cancelBullets: (selector, validator) ->
+    (sequence) =>
+      @_verify(sequence)
+      validator ?= (e) -> true
+      Crafty(selector).each -> @destroy() if validator(this)
+
   _fader: ->
     fader = Crafty('ScreenFader').get(0)
     unless fader?

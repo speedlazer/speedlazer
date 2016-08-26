@@ -68,6 +68,8 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
           z: 5
           offsetX: 0
           offsetY: 50
+          pointsOnHit: 0
+          pointsOnDestroy: 0
           location: @location()
       )
       @animate 'emptyWing', 0, 'wing'
@@ -76,6 +78,8 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
           z: -5
           offsetX: 0
           offsetY: -50
+          pointsOnHit: 0
+          pointsOnDestroy: 0
           location: @location()
       )
       @if(( -> amount > 2)
@@ -85,6 +89,8 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
             offsetX: 30
             offsetY: -100
             location: @location()
+            pointsOnHit: 0
+            pointsOnDestroy: 0
         )
       )
       @if(( -> amount > 3)
@@ -94,6 +100,8 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
             offsetX: 30
             offsetY: 100
             location: @location()
+            pointsOnHit: 0
+            pointsOnDestroy: 0
         )
       )
       @wait 500
@@ -149,10 +157,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @disableWeapons()
       @parallel(
         @moveTo(x: .75, y: .41)
-        @sequence(
-          @wait 500
-          @say 'Drone Commander', 'We have control now! You will suffer!\nEarths defences are in our hands!'
-        )
+        @say 'Drone Commander', 'We have control over the AI now! You will suffer!\nEarths defences are in our hands!'
       )
       @laugh()
       @invincible no
@@ -254,6 +259,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     @bindSequence 'Hit', @endOfFight, => @entity.healthBelow .2
 
     @sequence(
+      @cancelBullets('Mine')
+      @cancelBullets('shadow')
       @setSpeed 200
       @repeat @sequence(
         @bombRaid(yes)
@@ -282,6 +289,8 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   endOfFight: ->
     @sequence(
+      @cancelBullets('Mine')
+      @cancelBullets('shadow')
       @invincible yes
       @while(
         @moveTo(x: .6, y: .90, speed: 50)
@@ -396,7 +405,7 @@ class Game.Scripts.Stage1BossRocketStrike extends Game.EntityScript
 class Game.Scripts.Stage1BossRocket extends Game.EntityScript
   spawn: (options) ->
     options = _.defaults(options,
-      pointsOHit: 125
+      pointsOnHit: 125
       pointsOnDestroy: 50
       offsetY: 0
       offsetX: 0

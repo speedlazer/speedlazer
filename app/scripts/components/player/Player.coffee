@@ -38,10 +38,17 @@ Crafty.c 'Player',
   rewardExtraLife: ->
     @lastExtraLifeThreshold = @points
 
-  addPoints: (amount) ->
+  addPoints: (amount, location) ->
     # Debatable should you get points for a target
     # that gets destroyed after you self died?
     return unless @lives > 0
+    if location and amount > 0
+      @ship.scoreText("+#{amount}",
+        location: location
+        attach: no
+        duration: 200
+        distance: 0
+      )
 
     @points += amount
     @trigger 'UpdatePoints', points: @points

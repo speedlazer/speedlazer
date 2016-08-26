@@ -7,7 +7,7 @@ Crafty.c 'Helicopter',
     @collision [8, 5, 120, 5, 112, 35, 12, 47]
 
   helicopter: (attr = {}) ->
-    defaultHealth = 2500
+    defaultHealth = 2750
     @attr _.defaults(attr,
       w: 128,
       h: 55,

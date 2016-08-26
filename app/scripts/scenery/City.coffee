@@ -433,7 +433,7 @@ generator.defineBlock class extends Game.LevelScenery
       @one 'shipExterior', ->
         block.outside.tween({ alpha: 1 }, 700).addComponent('Solid')
       @one 'go', ->
-        block.level.setForcedSpeed block.speed
+        block.level.setForcedSpeed block.speed, accelerate: no
 
 generator.defineBlock class extends Game.CityScenery
   name: 'City.Ocean'

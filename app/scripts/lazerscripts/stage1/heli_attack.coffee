@@ -14,7 +14,10 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
       y: .6 * Crafty.viewport.height
       defaultSpeed: options.speed ? 40
       weaponOrigin: [0, 25]
-    ).helicopter()
+    ).helicopter(
+      pointsOnHit: 25
+      pointsOnDestroy: 200
+    )
     p.addComponent('BurstShot').burstShot
       burstCooldown: 2500
       burstAmount: 7

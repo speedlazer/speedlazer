@@ -12,14 +12,17 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
       x: Crafty.viewport.width + 40
       y: .1 * Crafty.viewport.height
       defaultSpeed: options.speed ? 280
-    ).playerClone()
+    ).playerClone(
+      pointsOnHit: 25
+      pointsOnDestroy: 125
+    )
     p.addComponent('ShootOnSight').shootOnSight
       cooldown: 150
       sightAngle: 20
       projectile: (x, y, angle) =>
         projectile = Crafty.e('Sphere, Enemy, Projectile').attr(
-          w: 8
-          h: 4
+          w: 9
+          h: 9
           speed: 600
         ).blink()
         projectile.shoot(x, y, angle)

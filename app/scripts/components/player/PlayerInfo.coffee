@@ -7,7 +7,7 @@ Crafty.c 'PlayerInfo',
     @player = player
     @score = Crafty.e('2D, DOM, Text, HUD')
       .attr(w: 220, h: 20)
-      .positionHud(x: x, y: 10, z: 2)
+      .positionHud(x: x, y: 10, z: 200)
       .textFont(
         size: '10px'
         family: 'Press Start 2P'
@@ -17,14 +17,14 @@ Crafty.c 'PlayerInfo',
 
     @lives = Crafty.e('2D, DOM, Text, HUD')
       .attr(w: 220, h: 20)
-      .positionHud(x: x, y: 30, z: 2)
+      .positionHud(x: x, y: 30, z: 200)
       .textFont(
         size: '10px'
         family: 'Press Start 2P'
       )
     @heart = Crafty.e('2D, WebGL, ColorEffects, heart, HUD')
       .attr(w: 16, h: 16)
-      .positionHud(x: x - 2, y: 26, z: 2)
+      .positionHud(x: x - 2, y: 26, z: 200)
       .colorOverride(player.color(), 'partial')
 
     if @player.has('Color')
@@ -44,19 +44,19 @@ Crafty.c 'PlayerInfo',
     playerColor = @player.color()
     @boosts['speedb'] = Crafty.e('2D, WebGL, speedBoost, ColorEffects, HUD')
       .attr(w: 16, h: 16)
-      .positionHud(x: x + 50, y: 29, z: 2)
+      .positionHud(x: x + 50, y: 29, z: 200)
       .colorOverride(playerColor, 'partial')
     @boosts['rapidb'] = Crafty.e('2D, WebGL, rapidFireBoost, ColorEffects, HUD')
       .attr(w: 16, h: 16)
-      .positionHud(x: x + 70, y: 28, z: 2)
+      .positionHud(x: x + 70, y: 28, z: 200)
       .colorOverride(playerColor, 'partial')
     @boosts['aimb'] = Crafty.e('2D, WebGL, aimBoost, ColorEffects, HUD')
       .attr(w: 16, h: 16)
-      .positionHud(x: x + 90, y: 28, z: 2)
+      .positionHud(x: x + 90, y: 28, z: 200)
       .colorOverride(playerColor, 'partial')
     @boosts['damageb'] = Crafty.e('2D, WebGL, damageBoost, ColorEffects, HUD')
       .attr(w: 16, h: 16)
-      .positionHud(x: x + 110, y: 28, z: 2)
+      .positionHud(x: x + 110, y: 28, z: 200)
       .colorOverride(playerColor, 'partial')
 
   updateBoostInfo: ->
