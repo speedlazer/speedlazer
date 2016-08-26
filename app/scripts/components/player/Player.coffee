@@ -47,7 +47,7 @@ Crafty.c 'Player',
         location: location
         attach: no
         duration: 200
-        distance: 10
+        distance: 0
       )
 
     @points += amount
