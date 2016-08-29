@@ -125,14 +125,19 @@ Game.ScriptModule.Level =
   # @param speaker: the speaker of the text
   # @param text: the text to display. This can be multiple lines (\n as seperator)
   #
-  say: (speaker, text) ->
+  say: (speaker, text, options = {}) ->
     (sequence) =>
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
       unless text?
         text = speaker
         speaker = undefined
-      Game.say(speaker, text, bottom: @level.visibleHeight)
+      options = _.defaults(options,
+        speaker: speaker
+        noise: 'none'
+        bottom: @level.visibleHeight
+      )
+      Game.say(speaker, text, options)
 
   # Drop an item in the screen at a given location,
   #

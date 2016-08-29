@@ -58,4 +58,17 @@ generator.defineAssets(
         powerUpBox: [10, 1, 1, 1]
         sphere1: [7, 3, 1, 1]
 )
-
+generator.defineAssets(
+  'portraits'
+  contents: [
+    'general'
+  ]
+  spriteMap: 'portraits.png'
+  sprites:
+    all:
+      tile: 32
+      tileh: 32
+      map:
+        pGeneral: [0, 0, 2, 2]
+        noise: [4, 0, 2, 2]
+)

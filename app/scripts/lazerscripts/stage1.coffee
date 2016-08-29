@@ -5,7 +5,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   nextScript: 'Stage2'
 
   assets: ->
-    @loadAssets('explosion', 'playerShip')
+    @loadAssets('explosion', 'playerShip', 'general')
 
   execute: ->
     @inventoryAdd 'weapon', 'lasers', marking: 'L'
@@ -50,9 +50,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @async @runScript Game.Scripts.IntroBarrel
       @if((-> @player(1).active and @player(2).active)
         @say 'General', 'Time to get the last 2 ships to the factory\n' +
-          'to install the AI controlled defence systems'
+          'to install the AI controlled defence systems', noise: 'low'
         @say 'General', 'Time to get the last ship to the factory\n' +
-          'to install the AI controlled defence systems'
+          'to install the AI controlled defence systems', noise: 'low'
       )
       #@say 'General', 'It saves lives when you no longer need soldiers,\n' +
       #'AI technology is the future after all.'
@@ -62,7 +62,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   tutorial: ->
     @sequence(
       @setScenery('Ocean')
-      @say('General', 'We send some drones for some last manual target practice')
+      @say('General', 'We send some drones for some last manual target practice', noise: 'low')
       @showText 'Get Ready', color: '#00FF00', mode: 'blink', blink_amount: 3, blink_speed: 300
       @parallel(
         @gainHeight(150, duration: 4000)
@@ -75,7 +75,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         ))
       )
       @say('General', 'Great job, now get the ship to the defence factory in the city\n' +
-       'We will send some more target practice')
+       'We will send some more target practice', noise: 'low')
       @placeSquad Game.Scripts.Shooter,
         amount: 6
         delay: 500
@@ -85,13 +85,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   droneTakeover: ->
     @sequence(
       @parallel(
-        @say('General', 'What are those drones doing there!?')
+        @say('General', 'What are those drones doing there!?', noise: 'low')
         @placeSquad Game.Scripts.CrewShooters,
           amount: 4
           delay: 750
           drop: 'pool'
       )
-      @say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!')
+      @say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!', noise: 'low')
       @async @chapterTitle(1, 'Hacked')
       @setSpeed 150
     )
@@ -106,7 +106,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @parallel(
         @sequence(
           @wait 2000
-          @say 'General', 'We\'re under attack!?!'
+          @say 'General', 'We\'re under attack!?!', noise: 'low'
         )
         @swirlAttacks()
       )
@@ -293,7 +293,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   bossfightReward: ->
     @sequence(
       @checkpoint @checkpointMidStage('BayFull', 400000)
-      @say('General', 'Hunt him down! We need that AI control back!')
+      @say('General', 'Hunt him down! We need that AI control back!', noise: 'low')
       @setSpeed 150
 
       @setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
@@ -408,7 +408,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @waitingRocketStrike()
       )
       @placeSquad Game.Scripts.Stage1BossLeaving
-      @say 'General', 'He went to the military complex!\nBut we cant get through those shields now...'
+      @say 'General', 'He went to the military complex!\nBut we cant get through those shields now...', noise: 'low'
     )
 
   cloneEncounter: ->
