@@ -4,4 +4,4 @@ app/scripts/compiled/*.js
 app/libs/when.js
 TODO.md
 .tmp
-dist
+./dist
