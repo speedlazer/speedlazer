@@ -56,7 +56,7 @@
             alpha: switch settings.noise
               when 'low' then .4
           )
-          .reel('low', 150, [
+          .reel('low', 250, [
             [4, 0]
             [4, 0]
             [6, 0]
