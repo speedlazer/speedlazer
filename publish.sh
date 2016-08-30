@@ -20,7 +20,7 @@ cd dist
 mv * ..
 cd ..
 rm -r dist
-git add audio images index.html scripts styles
+git add audio images index.html scripts styles dist
 
 # publish
 
