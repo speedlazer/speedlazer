@@ -63,7 +63,10 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @sequence(
       @setScenery('Ocean')
       @say('General', 'We send some drones for some last manual target practice', noise: 'low')
-      @showText 'Get Ready', color: '#00FF00', mode: 'blink', blink_amount: 3, blink_speed: 300
+      @parallel(
+        @showText 'Get Ready', color: '#00FF00', mode: 'blink', blink_amount: 3, blink_speed: 300
+        @say('John', 'Let\'s go!')
+      )
       @parallel(
         @gainHeight(150, duration: 4000)
         @repeat(2, @sequence(
@@ -85,7 +88,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   droneTakeover: ->
     @sequence(
       @parallel(
-        @say('General', 'What are those drones doing there!?', noise: 'low')
+        @say('John', 'What are those drones doing there!?')
         @placeSquad Game.Scripts.CrewShooters,
           amount: 4
           delay: 750

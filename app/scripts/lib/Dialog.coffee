@@ -16,6 +16,7 @@
 
     avatar = switch speaker
       when 'General' then n: 'pGeneral', l: [0, 0]
+      when 'John' then n: 'pPilot', l: [0, 2]
 
     h = Math.max(4, h) if avatar
 
@@ -29,7 +30,7 @@
       )
     back.bind('Abort', -> defer.resolve())
 
-    avatarOffset = if avatar then 64 else 0
+    avatarOffset = if avatar then 70 else 0
     if avatar?
       portrait = Crafty.e('2D, WebGL, SpriteAnimation')
         .addComponent(avatar.n)
