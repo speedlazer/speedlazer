@@ -69,7 +69,6 @@ generator.defineAssets(
       tile: 32
       tileh: 32
       map:
-        pGeneral: [0, 0, 2, 2]
-        pPilot: [0, 1, 2, 2]
-        noise: [4, 0, 2, 2]
+        pGeneral: [0, 0, 4, 4]
+        pPilot: [0, 4, 4, 4]
 )
