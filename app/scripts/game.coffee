@@ -160,7 +160,6 @@ Game =
     str = JSON.stringify(newSettings)
     localStorage.setItem('SPDLZRS', str)
 
-
 # Export
 window.Game = Game
 

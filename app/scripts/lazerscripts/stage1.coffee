@@ -61,6 +61,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   tutorial: ->
     @sequence(
+      @setSpeed 200
       @setScenery('Ocean')
       @say('General', 'We send some drones for some last manual target practice', noise: 'low')
       @parallel(
@@ -96,7 +97,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
       @say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!', noise: 'low')
       @async @chapterTitle(1, 'Hacked')
-      @setSpeed 150
     )
 
   cameraCrew: ->
@@ -297,7 +297,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @sequence(
       @checkpoint @checkpointMidStage('BayFull', 400000)
       @say('General', 'Hunt him down! We need that AI control back!', noise: 'low')
-      @setSpeed 150
+      @setSpeed 200
 
       @setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
 
