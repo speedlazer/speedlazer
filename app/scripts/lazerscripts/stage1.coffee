@@ -104,7 +104,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   oceanFighting: ->
     @sequence(
-      @checkpoint @checkpointStart('Ocean', 42000)
+      @checkpoint @checkpointStart('Ocean', 45000)
 
       @parallel(
         @sequence(
@@ -126,7 +126,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   enteringLand: ->
     @sequence(
-      @checkpoint @checkpointStart('CoastStart', 110000)
+      @checkpoint @checkpointStart('CoastStart', 93000)
       @setScenery('BayStart')
       @mineSwarm()
       @underWaterAttacks()
@@ -134,7 +134,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   cityBay: ->
     @sequence(
-      @checkpoint @checkpointStart('Bay', 173000)
+      @checkpoint @checkpointStart('Bay', 131000)
       @setScenery('UnderBridge')
       @parallel(
         @placeSquad Game.Scripts.Stalker,
@@ -154,7 +154,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   midstageBossfight: ->
     @sequence(
-      @checkpoint @checkpointStart('BayFull', 226000)
+      @checkpoint @checkpointStart('BayFull', 168000)
       @parallel(
         @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
         @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
@@ -179,7 +179,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setSpeed 75
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
-      @checkpoint @checkpointStart('UnderBridge', 234000)
+      @checkpoint @checkpointStart('UnderBridge', 203000)
       @placeSquad Game.Scripts.Stage1BossStage1
       @parallel(
         @if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
