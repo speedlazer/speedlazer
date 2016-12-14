@@ -130,10 +130,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setScenery('BayStart')
       @mineSwarm()
       @underWaterAttacks()
-      @parallel(
-        @swirlAttacks()
-        @mineSwarm()
-      )
     )
 
   cityBay: ->
@@ -146,15 +142,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @mineSwarm direction: 'left'
       )
 
-      @parallel(
-        @sequence(
-          @stalkerShootout()
-          @parallel(
-            @placeSquad Game.Scripts.Stalker,
-              drop: 'pool'
-            @mineSwarm direction: 'left'
-          )
-          @swirlAttacks()
+      @sequence(
+        @stalkerShootout()
+        @parallel(
+          @placeSquad Game.Scripts.Stalker,
+            drop: 'pool'
+          @mineSwarm direction: 'left'
         )
       )
     )
@@ -162,11 +155,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   midstageBossfight: ->
     @sequence(
       @checkpoint @checkpointStart('BayFull', 226000)
-      @parallel(
-        @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
-      )
-      @mineSwarm()
       @parallel(
         @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
         @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
@@ -253,7 +241,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     )
 
   sunRise: (options = { skipTo: 0 }) ->
-    @async @runScript(Game.Scripts.SunRise, options)
+    @async @runScript(Game.Scripts.SunRise, _.extend({ speed: 2 }, options))
 
   mineSwarm: (options = { direction: 'right' })->
     @placeSquad Game.Scripts.JumpMine,
