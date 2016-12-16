@@ -289,32 +289,21 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
 
-      @placeSquad Game.Scripts.Shooter,
-        amount: 8
-        delay: 500
-        drop: 'pool'
-        options:
-          shootOnSight: yes
-
-      @repeat 2, @stalkerShootout()
+      @stalkerShootout()
+      @setScenery('Skyline')
+      @parallel(
+        @gainHeight(800, duration: 8000)
+        @placeSquad Game.Scripts.Shooter,
+          amount: 8
+          delay: 500
+          drop: 'pool'
+          options:
+            shootOnSight: yes
+      )
     )
 
   skylineFighting: ->
     @sequence(
-      @setScenery('Skyline')
-      @parallel(
-        @sequence(
-          @wait 3000
-          @gainHeight(800, duration: 8000)
-          @placeSquad Game.Scripts.Shooter,
-            amount: 8
-            delay: 500
-            drop: 'pool'
-            options:
-              shootOnSight: yes
-        )
-        @placeSquad Game.Scripts.Stage1BossPopup
-      )
       @setSpeed 100
       @checkpoint @checkpointMidStage('Skyline', 450000)
 
@@ -348,6 +337,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         )
         @cloneEncounter()
       )
+      @placeSquad Game.Scripts.Stage1BossPopup
       @setScenery('Skyline')
       @parallel(
         @attackWaves(
