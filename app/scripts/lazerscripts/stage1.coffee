@@ -389,7 +389,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @waitingRocketStrike()
       )
       @placeSquad Game.Scripts.Stage1BossLeaving
-      @say 'General', 'He went to the military complex!\nBut we cant get through those shields now...', noise: 'low'
+      @say 'General', 'He is going to the military complex!\nBut we cant get through those shields now...', noise: 'low'
     )
 
   cloneEncounter: ->
