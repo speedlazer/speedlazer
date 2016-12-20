@@ -27,19 +27,19 @@ Crafty.c 'PlayerSpaceship',
     @_updateFlyingSpeed velocity, dt
 
   _updateFlyingSpeed: (newSpeed, dt) ->
-    if newSpeed < 50
+    if newSpeed < 30
       correction = newSpeed / 2
     else
-      correction = 25 + ((newSpeed / 400) * 100)
+      correction = 15 + ((newSpeed / 400) * 100)
 
     if @currentRenderedSpeed > correction
-      @currentRenderedSpeed -= 12
+      @currentRenderedSpeed -= 6
     else if @currentRenderedSpeed < correction
-      @currentRenderedSpeed += 12
+      @currentRenderedSpeed += 6
     if @currentRenderedSpeed < 0
       @currentRenderedSpeed = 0
 
-    w = @currentRenderedSpeed
+    w = 10 + @currentRenderedSpeed
 
     h = Math.min(w / 3, 15)
     @backFire.attr(
