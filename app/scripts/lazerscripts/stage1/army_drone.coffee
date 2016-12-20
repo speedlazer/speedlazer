@@ -19,7 +19,7 @@ class Game.Scripts.Swirler extends Game.Scripts.ArmyDrone
     d = Crafty.e('Drone').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height / 2
-      defaultSpeed: options.speed ? 250
+      defaultSpeed: options.speed ? 300
       juice: options.juice
     )
     @juice = options.juice
@@ -86,7 +86,7 @@ class Game.Scripts.ScraperFlyer extends Game.Scripts.ArmyDrone
     Crafty.e('Drone, ShootOnSight, ColorEffects, Horizon').drone(
       x: -50
       y: Crafty.viewport.height * .7
-      defaultSpeed: 250
+      defaultSpeed: 300
     ).shootOnSight
       cooldown: 5000 + (Math.random() * 8000)
       sightAngle: 250
@@ -126,7 +126,7 @@ class Game.Scripts.Shooter extends Game.Scripts.ArmyDrone
     d = Crafty.e('Drone').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .71
-      defaultSpeed: options.speed ? 250
+      defaultSpeed: options.speed ? 300
       juice: options.juice
     )
     @juice = options.juice
@@ -161,7 +161,7 @@ class Game.Scripts.CrewShooters extends Game.Scripts.ArmyDrone
     Crafty.e('Drone, ShootOnSight, ColorEffects, Horizon').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .23
-      defaultSpeed: 200
+      defaultSpeed: 250
     ).shootOnSight
       targetType: 'CameraCrew'
       shootWhenHidden: yes

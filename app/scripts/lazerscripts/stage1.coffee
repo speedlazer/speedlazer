@@ -104,7 +104,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   oceanFighting: ->
     @sequence(
-      @checkpoint @checkpointStart('Ocean', 42000)
+      @checkpoint @checkpointStart('Ocean', 45000)
 
       @parallel(
         @sequence(
@@ -126,19 +126,15 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   enteringLand: ->
     @sequence(
-      @checkpoint @checkpointStart('CoastStart', 110000)
+      @checkpoint @checkpointStart('CoastStart', 93000)
       @setScenery('BayStart')
       @mineSwarm()
       @underWaterAttacks()
-      @parallel(
-        @swirlAttacks()
-        @mineSwarm()
-      )
     )
 
   cityBay: ->
     @sequence(
-      @checkpoint @checkpointStart('Bay', 173000)
+      @checkpoint @checkpointStart('Bay', 131000)
       @setScenery('UnderBridge')
       @parallel(
         @placeSquad Game.Scripts.Stalker,
@@ -146,27 +142,19 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @mineSwarm direction: 'left'
       )
 
-      @parallel(
-        @sequence(
-          @stalkerShootout()
-          @parallel(
-            @placeSquad Game.Scripts.Stalker,
-              drop: 'pool'
-            @mineSwarm direction: 'left'
-          )
-          @swirlAttacks()
+      @sequence(
+        @stalkerShootout()
+        @parallel(
+          @placeSquad Game.Scripts.Stalker,
+            drop: 'pool'
+          @mineSwarm direction: 'left'
         )
       )
     )
 
   midstageBossfight: ->
     @sequence(
-      @checkpoint @checkpointStart('BayFull', 226000)
-      @parallel(
-        @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
-      )
-      @mineSwarm()
+      @checkpoint @checkpointStart('BayFull', 168000)
       @parallel(
         @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
         @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
@@ -191,7 +179,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setSpeed 75
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
-      @checkpoint @checkpointStart('UnderBridge', 234000)
+      @checkpoint @checkpointStart('UnderBridge', 203000)
       @placeSquad Game.Scripts.Stage1BossStage1
       @parallel(
         @if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
@@ -253,7 +241,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     )
 
   sunRise: (options = { skipTo: 0 }) ->
-    @async @runScript(Game.Scripts.SunRise, options)
+    @async @runScript(Game.Scripts.SunRise, _.extend({ speed: 2 }, options))
 
   mineSwarm: (options = { direction: 'right' })->
     @placeSquad Game.Scripts.JumpMine,
@@ -301,32 +289,21 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
 
-      @placeSquad Game.Scripts.Shooter,
-        amount: 8
-        delay: 500
-        drop: 'pool'
-        options:
-          shootOnSight: yes
-
-      @repeat 2, @stalkerShootout()
+      @stalkerShootout()
+      @setScenery('Skyline')
+      @parallel(
+        @gainHeight(800, duration: 8000)
+        @placeSquad Game.Scripts.Shooter,
+          amount: 8
+          delay: 500
+          drop: 'pool'
+          options:
+            shootOnSight: yes
+      )
     )
 
   skylineFighting: ->
     @sequence(
-      @setScenery('Skyline')
-      @parallel(
-        @sequence(
-          @wait 3000
-          @gainHeight(800, duration: 8000)
-          @placeSquad Game.Scripts.Shooter,
-            amount: 8
-            delay: 500
-            drop: 'pool'
-            options:
-              shootOnSight: yes
-        )
-        @placeSquad Game.Scripts.Stage1BossPopup
-      )
       @setSpeed 100
       @checkpoint @checkpointMidStage('Skyline', 450000)
 
@@ -360,6 +337,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         )
         @cloneEncounter()
       )
+      @placeSquad Game.Scripts.Stage1BossPopup
       @setScenery('Skyline')
       @parallel(
         @attackWaves(
@@ -411,7 +389,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @waitingRocketStrike()
       )
       @placeSquad Game.Scripts.Stage1BossLeaving
-      @say 'General', 'He went to the military complex!\nBut we cant get through those shields now...', noise: 'low'
+      @say 'General', 'He is going to the military complex!\nBut we cant get through those shields now...', noise: 'low'
     )
 
   cloneEncounter: ->

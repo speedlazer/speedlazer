@@ -313,11 +313,13 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
         @scale(0.8, duration: 3000)
       )
-      @turnAround()
-      @sendToBackground(0.7, -150)
-      @while(
-        @moveTo(x: 1.1, speed: 500, easing: 'easeInQuad')
-        @smoke('medium')
+      @leaveAnimation @sequence(
+        @turnAround()
+        @sendToBackground(0.7, -150)
+        @while(
+          @moveTo(x: 1.1, speed: 500, easing: 'easeInQuad')
+          @smoke('medium')
+        )
       )
     )
 
@@ -657,11 +659,13 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
           )
         )
       )
-      @turnAround()
-      @sendToBackground(0.7, -150)
-      @while(
-        @moveTo(x: 1.1, speed: 300)
-        @smoke('light')
+      @leaveAnimation @sequence(
+        @turnAround()
+        @sendToBackground(0.7, -150)
+        @while(
+          @moveTo(x: 1.1, speed: 300)
+          @smoke('light')
+        )
       )
     )
 
@@ -727,7 +731,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
     )
 
   leaveScreen: ->
-    @sequence(
+    @leaveAnimation @sequence(
       @animate 'emptyWing', 0, 'wing'
       @sendToBackground(0.9, -100)
       @parallel(

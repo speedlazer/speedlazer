@@ -516,4 +516,12 @@ Game.ScriptModule.Entity =
       @entity = @decoyingEntity
       @decoyingEntity = undefined
 
-
+  leaveAnimation: (task) ->
+    (sequence) =>
+      @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
+      @entity.addComponent('KeepAlive')
+      task(sequence).then =>
+        if @enemy.alive
+          @entity.destroy()
+      return
