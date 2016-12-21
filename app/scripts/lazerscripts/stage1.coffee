@@ -306,6 +306,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @sequence(
       @setSpeed 100
       @checkpoint @checkpointMidStage('Skyline', 450000)
+      @changeSeaLevel 500
 
       @setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
       @attackWaves(
@@ -373,11 +374,12 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       )
 
       @gainHeight(300, duration: 4000)
-      @checkpoint @checkpointMidStage('Skyline', 500000)
+      @checkpoint @checkpointEndStage('Skyline', 500000)
 
       @parallel(
         @repeat 2, @cloneEncounter()
         @placeSquad Game.Scripts.HeliAttack,
+          drop: 'pool'
           amount: 2
           delay: 5000
       )
@@ -421,5 +423,20 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setScenery(scenery)
       @sunRise(skipTo: sunSkip)
       @wait 2000
+    )
+
+  checkpointEndStage: (scenery, sunSkip) ->
+    @sequence(
+      @setScenery(scenery)
+      @sunRise(skipTo: sunSkip)
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'damage', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'damage', inFrontOf: @player(2)))
+      )
+      @wait 2000
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'rapid', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'speed', inFrontOf: @player(2)))
+      )
     )
 

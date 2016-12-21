@@ -195,7 +195,8 @@ Game.ScriptModule.Entity =
   moveTo: (location, extraSettings = {}) ->
     (sequence) =>
       @_verify(sequence)
-      return unless @enemy.alive
+      if not @enemy.alive and not @decoyingEntity?
+        return WhenJS.resolve()
 
       if typeof location is 'string'
         target = Crafty(location).get 0
