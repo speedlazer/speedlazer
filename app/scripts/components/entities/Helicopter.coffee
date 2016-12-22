@@ -16,7 +16,6 @@ Crafty.c 'Helicopter',
       weaponOrigin: [5, 46]
     )
 
-
     @origin 'center'
     @flip('x')
     @animate 'fly', -1

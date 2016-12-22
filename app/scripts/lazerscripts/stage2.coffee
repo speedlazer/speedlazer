@@ -41,7 +41,8 @@ class Game.Scripts.Stage2 extends Game.LazerScript
           delay: 6000
       )
       @checkpoint @checkpointStreets('Skyline2')
-      @placeSquad Game.Scripts.HeliAttack
+      @placeSquad Game.Scripts.TankAttack
+      #@placeSquad Game.Scripts.HeliAttack
       @wait 8000
     )
 
