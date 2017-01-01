@@ -51,8 +51,11 @@ Crafty.defineScene 'Game', (data = {}) ->
       .catch (e) ->
         throw e unless e.message is 'sequence mismatch'
 
+  checkpointsPassed = 0
+
   Crafty.bind 'ScriptFinished', (script) ->
     checkpoint = Math.max(0, script.startAtCheckpoint - script.currentCheckpoint)
+    checkpointsPassed += script.currentCheckpoint
     if script.nextScript
       executeScript(script.nextScript, startAtCheckpoint: checkpoint)
     else
@@ -68,8 +71,8 @@ Crafty.defineScene 'Game', (data = {}) ->
     window.ga('send', 'event', 'Game', 'End', "Checkpoint #{script.currentCheckpoint}")
 
     Crafty.enterScene('GameOver',
-      checkpoint: script.currentCheckpoint
-      script: scriptName
+      checkpoint: checkpointsPassed + script.currentCheckpoint
+      script: startScript
     )
 
   new Game.PauseMenu
