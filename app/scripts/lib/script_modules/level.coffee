@@ -339,7 +339,7 @@ Game.ScriptModule.Level =
 
       if options.damage
         e.ship = @entity.deathCause
-        e.addComponent('Enemy')
+        e.addComponent('Hostile')
 
   loadAssets: (names...) ->
     (sequence) =>

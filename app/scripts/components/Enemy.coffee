@@ -1,6 +1,6 @@
 Crafty.c 'Enemy',
   init: ->
-    @requires '2D, WebGL, Collision, Tween, Choreography, ViewportFixed, Hideable, Flipable, Scalable, SunBlock'
+    @requires '2D, WebGL, Collision, Tween, Choreography, ViewportFixed, Hideable, Flipable, Scalable, SunBlock, Hostile'
     @attr
       pointsOnHit: 10
       pointsOnDestroy: 50

@@ -825,7 +825,7 @@ class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
         cooldown: 1000
         sightAngle: 8
         projectile: (x, y, angle) =>
-          projectile = Crafty.e('Projectile, Color, Enemy').attr(
+          projectile = Crafty.e('Projectile, Color, Hostile').attr(
             w: 6
             h: 6
             speed: 650

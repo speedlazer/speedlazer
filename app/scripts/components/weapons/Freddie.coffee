@@ -87,7 +87,7 @@ Crafty.c 'Freddy',
 
     @bind 'GameLoop', @_move
 
-    @onHit 'Enemy',
+    @onHit 'Hostile',
       (collision) =>
         return if Game.paused
 

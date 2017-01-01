@@ -188,7 +188,7 @@ Crafty.c 'RapidWeaponLaser',
 
     list = []
     Crafty('Enemy').each ->
-      list.push({ x: @x, y: @y + (@h / 2), e: this }) unless @has('Projectile') or @hidden
+      list.push({ x: @x, y: @y + (@h / 2), e: this }) unless @hidden
 
     @pickedEntity = null
     pickedDistance = Infinity

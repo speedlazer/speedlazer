@@ -27,7 +27,7 @@ Game.ScriptTemplate.Level =
         options
       )
       if options.damage
-        e.addComponent('Enemy')
+        e.addComponent('Hostile')
 
   smallExplosion: (options = {}) ->
     options = _.defaults(options,

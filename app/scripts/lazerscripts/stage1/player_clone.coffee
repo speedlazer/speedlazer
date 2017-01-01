@@ -20,7 +20,7 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
       cooldown: 150
       sightAngle: 20
       projectile: (x, y, angle) =>
-        projectile = Crafty.e('Sphere, Enemy, Projectile').attr(
+        projectile = Crafty.e('Sphere, Hostile, Projectile').attr(
           w: 9
           h: 9
           speed: 600

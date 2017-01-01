@@ -82,7 +82,7 @@ Crafty.c 'PlayerSpaceship',
     @addComponent('Invincible').invincibleDuration(2000)
 
     @setDetectionOffset 40, 0
-    @onHit 'Enemy', (collision) ->
+    @onHit 'Hostile', (collision) ->
       return if Game.paused
       return if @has('Invincible')
       hit = no
