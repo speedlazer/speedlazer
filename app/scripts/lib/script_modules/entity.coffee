@@ -526,3 +526,9 @@ Game.ScriptModule.Entity =
         if @enemy.alive
           @entity.destroy()
       return
+
+  action: (name, args) ->
+    (sequence) =>
+      @_verify(sequence)
+      return WhenJS() if @_skippingToCheckpoint()
+      WhenJS(@entity.execute(name, args, this))
