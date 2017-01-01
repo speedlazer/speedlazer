@@ -34,7 +34,7 @@ Crafty.c 'Tank',
     )
     @charge.origin(@charge.w - 10, 10)
 
-    @laser = Crafty.e('2D, Color, WebGL, TweenPromise')
+    @laser = Crafty.e('2D, Color, WebGL, TweenPromise, Collision')
     @laser.color('#F0F')
     laserLength = 1000
     @laser.attr(
