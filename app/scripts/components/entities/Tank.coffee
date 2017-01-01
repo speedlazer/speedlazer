@@ -36,7 +36,7 @@ Crafty.c 'Tank',
 
     @laser = Crafty.e('2D, Color, WebGL, TweenPromise')
     @laser.color('#F0F')
-    laserLength = 800
+    laserLength = 1000
     @laser.attr(
       x: @barrel.x - laserLength
       y: @barrel.y
@@ -67,6 +67,9 @@ Crafty.c 'Tank',
     if angle is null
       return WhenJS().delay(1000).then =>
         @aimAt(player)
+    if angle < -80
+      angle = (angle + 360) % 360
+
     duration = Math.abs(@barrel.rotation - angle) * 1000 / @aimSpeed
     @barrel.tweenPromise(rotation: angle, duration).then =>
       adjusted = Math.abs(@aimAngle(player) - @barrel.rotation)
