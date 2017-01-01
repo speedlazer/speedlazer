@@ -188,6 +188,10 @@ Game.ScriptModule.Level =
 
   # Returns an object with information about a player
   #
+  # @param 'nr' the player number to select
+  #   it can also be the value 'anyActive' to select
+  #   a random participating player
+  #
   # @player(1)
   #  .name : name of the player
   #  .active : is the player active in the game
@@ -196,6 +200,7 @@ Game.ScriptModule.Level =
   #  .has(name) : Checking method if the ship has certain upgrades
   player: (nr) ->
     players = {}
+    active = []
     Crafty('Player').each ->
       players[@name] =
         name: @name
@@ -213,11 +218,17 @@ Game.ScriptModule.Level =
 
     Crafty('Player ControlScheme').each ->
       players[@name].active = yes
-      unless @lives > 0
+      if @lives > 0
+        active.push @name
+      else
         players[@name].active = no
         players[@name].gameOver = yes
 
-    players["Player #{nr}"]
+    key = if nr is 'anyActive'
+      _.sample(active)
+    else
+      "Player #{nr}"
+    players[key]
 
   # Change the upcoming scenery.
   # Note that this scenery will be started out of screen,

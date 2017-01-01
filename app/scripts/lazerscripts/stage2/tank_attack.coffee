@@ -15,9 +15,21 @@ class Game.Scripts.TankAttack extends Game.EntityScript
     @bindSequence 'Destroyed', @onKilled
 
     @sequence(
-      @moveTo x: .2
-      @wait 200
-      @moveTo x: .8
+      @moveTo x: .2, speed: 120
+      @action('searchAim')
+      @while(
+        @sequence( # movement pattern
+          @wait 200
+          @moveTo x: .8
+          @wait 4000
+          @moveTo x: -.2
+        )
+        @sequence( # attack pattern
+          @action 'shoot'
+          @wait 1000
+          @action 'searchAim'
+        )
+      )
     )
 
   onKilled: ->
