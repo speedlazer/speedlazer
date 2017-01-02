@@ -594,7 +594,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
   spawn: ->
     Crafty.e('LargeDrone, Horizon').drone(
       maxHealth: 60000
-      health: 12000
+      health: 17000
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .5
       defaultSpeed: 150
