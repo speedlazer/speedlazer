@@ -2,6 +2,7 @@ Crafty.c 'PlayerInfo',
   init: ->
     @requires '2D, Listener'
     @boosts = {}
+    @visible = yes
 
   playerInfo: (x, player) ->
     @player = player
@@ -40,6 +41,9 @@ Crafty.c 'PlayerInfo',
     @listenTo player, 'GameLoop', => @updateBoostInfo()
     this
 
+  setVisibility: (visibility) ->
+    @visible = visibility
+
   createBoostsVisuals: (x) ->
     playerColor = @player.color()
     @boosts['speedb'] = Crafty.e('2D, WebGL, speedBoost, ColorEffects, HUD')
@@ -62,6 +66,7 @@ Crafty.c 'PlayerInfo',
   updateBoostInfo: ->
     e.attr(alpha: 0) for n, e of @boosts
     return unless @player.has('ControlScheme')
+    return if @visibile is no
     if @player.ship?
       stats = @player.ship.stats()
       for boost, timing of stats.primary.boostTimings
@@ -79,15 +84,17 @@ Crafty.c 'PlayerInfo',
     if @player.has('ControlScheme')
       if @player.lives is 0
         @lives.text('Game Over')
-        @heart.attr(alpha: 0)
+        @heart.attr(alpha: 0, visible: no)
         # TODO: Add continue? with time counter
       else
-        @heart.attr(alpha: 1)
+        @heart.attr(alpha: 1) if @visibile is yes
+        @heart.attr(visible: yes)
         text = (@player.lives - 1)
         if text is Infinity
           text = 'Demo mode'
         @lives.text('&nbsp;  ' + text)
     else
       @lives.text('Press fire to start!')
-      @heart.attr(alpha: 0)
+      @heart.attr(alpha: 0, visible: no)
       e.attr(alpha: 0) for n, e of @boosts
+

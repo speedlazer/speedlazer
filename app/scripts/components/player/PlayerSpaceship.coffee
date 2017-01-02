@@ -195,6 +195,8 @@ Crafty.c 'PlayerSpaceship',
       powerUp.pickup()
 
   installItem: (item) ->
+    # TODO : extract inventory / weapon handling into new component
+    # and use it with the PlayerControlledCube as well
     return unless item?
     if item.type is 'weapon'
       return if @hasItem item.contains

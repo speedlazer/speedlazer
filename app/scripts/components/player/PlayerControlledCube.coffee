@@ -15,6 +15,23 @@ Crafty.c 'PlayerControlledCube',
     @weaponsEnabled = yes
     @currentRenderedSpeed = 0
 
+  stats: (newStats = {}) ->
+    # TODO: Needs refactoring
+    if newStats.primary?
+      @primaryWeapon.stats = newStats.primary.stats
+      #@primaryWeapon.boosts = newStats.primary.boosts
+      #@primaryWeapon.boostTimings = newStats.primary.boostTimings
+      @primaryWeapon._determineWeaponSettings()
+
+    stats = {}
+    stats['primary'] = {
+      stats: @primaryWeapon?.stats ? {}
+      boosts: @primaryWeapon?.boosts ? {}
+      boostTimings: @primaryWeapon?.boostTimings ? {}
+    }
+
+    stats
+
   start: ->
     @addComponent('Invincible').invincibleDuration(2000)
 
@@ -84,25 +101,37 @@ Crafty.c 'PlayerControlledCube',
       powerUp.destroy()
 
   installItem: (item) ->
-    if item is 'xp'
-      @primaryWeapon?.addXP(1000)
+    return unless item?
+    if item.type is 'weapon'
+      return if @hasItem item.contains
+      @items.push item
+
+      if item.contains is 'lasers'
+        @_installPrimary 'RapidWeaponLaser'
+        return true
+
+      if item.contains is 'oldlasers'
+        @_installPrimary 'OldWeaponLaser'
+        return true
+
+      if item.contains is 'diagonals'
+        @_installPrimary 'RapidDiagonalLaser'
+        return true
+
+    if item.type is 'ship'
+      if item.contains is 'life'
+        @scoreText 'Extra life!'
+        return true
+      if item.contains is 'points'
+        @scoreText '+500 points!'
+        return true
+
+    if item.type is 'weaponUpgrade'
+      @primaryWeapon.upgrade item.contains
       return true
 
-    return if @hasItem item
-    @items.push item
-
-    # TODO: Add multiple primary weapons, which can be swapped
-    # Count XP on current weapon only
-    if item is 'lasers'
-      @_installPrimary 'RapidWeaponLaser'
-      return true
-
-    if item is 'oldlasers'
-      @_installPrimary 'OldWeaponLaser'
-      return true
-
-    if item is 'diagonals'
-      @_installPrimary 'RapidDiagonalLaser'
+    if item.type is 'weaponBoost'
+      @primaryWeapon.boost item.contains
       return true
 
   clearItems: ->

@@ -464,10 +464,11 @@ Game.ScriptModule.Level =
   setWeapons: (newWeapons) ->
     (sequence) =>
       @_verify(sequence)
+      self = this
       Crafty('PlayerControlledShip').each ->
         @clearItems()
         for item in newWeapons
-          itemSettings = @inventory(item)
+          itemSettings = self.inventory(item)
           @installItem itemSettings
       @level.setStartWeapons newWeapons
 
@@ -509,11 +510,13 @@ Game.ScriptModule.Level =
       )
       Crafty('HUD').each ->
         @addComponent('Tween')
-        @tween(
-          alpha: if settings.visible then 1.0 else 0.0
-          settings.duration
-        )
-      @wait(settings.duration)(sequence)
+        if @visible and settings.visible
+          @tween(alpha: 1.0, settings.duration)
+        else
+          @tween(alpha: 0.0, settings.duration)
+      @wait(settings.duration)(sequence).then =>
+        Crafty('PlayerInfo').each ->
+          @setVisibility(settings.visible)
 
   setShipType: (newType) ->
     (sequence) =>
