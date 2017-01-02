@@ -1,6 +1,6 @@
 Crafty.c 'PlayerSpaceship',
   init: ->
-    @requires '2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, WaterSplashes, PlayerControlledShip, Acceleration'
+    @requires '2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, WaterSplashes, PlayerControlledShip, Acceleration, InventoryWeapons'
     @attr w: 71, h: 45
     @collision [
       21, 13
@@ -166,23 +166,6 @@ Crafty.c 'PlayerSpaceship',
     @primaryWeapon.install(this)
     @currentPrimary = nextWeapon
 
-  stats: (newStats = {}) ->
-    # TODO: Needs refactoring
-    if newStats.primary?
-      @primaryWeapon.stats = newStats.primary.stats
-      #@primaryWeapon.boosts = newStats.primary.boosts
-      #@primaryWeapon.boostTimings = newStats.primary.boostTimings
-      @primaryWeapon._determineWeaponSettings()
-
-    stats = {}
-    stats['primary'] = {
-      stats: @primaryWeapon?.stats ? {}
-      boosts: @primaryWeapon?.boosts ? {}
-      boostTimings: @primaryWeapon?.boostTimings ? {}
-    }
-
-    stats
-
   superWeapon: (onOff) ->
     return unless onOff
     @superUsed += 1
@@ -193,34 +176,6 @@ Crafty.c 'PlayerSpaceship',
       Crafty.audio.play('powerup')
       @trigger('PowerUp', powerUp.settings)
       powerUp.pickup()
-
-  installItem: (item) ->
-    # TODO : extract inventory / weapon handling into new component
-    # and use it with the PlayerControlledCube as well
-    return unless item?
-    if item.type is 'weapon'
-      return if @hasItem item.contains
-      @items.push item
-
-      if item.contains is 'lasers'
-        @_installPrimary 'RapidWeaponLaser'
-        return true
-
-    if item.type is 'ship'
-      if item.contains is 'life'
-        @scoreText 'Extra life!'
-        return true
-      if item.contains is 'points'
-        @scoreText '+500 points!'
-        return true
-
-    if item.type is 'weaponUpgrade'
-      @primaryWeapon.upgrade item.contains
-      return true
-
-    if item.type is 'weaponBoost'
-      @primaryWeapon.boost item.contains
-      return true
 
   clearItems: ->
     @primaryWeapon?.uninstall()

@@ -66,3 +66,5 @@ Crafty.c 'OldWeaponLaser',
         @addXP(5)
         @ship.trigger('BulletDestroyedTarget', target)
 
+  _determineWeaponSettings: ->
+

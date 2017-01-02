@@ -3,9 +3,6 @@ Game.Scripts ||= {}
 
 class Game.Scripts.PresentationSunRise extends Game.EntityScript
 
-  assets: ->
-    @loadAssets('sun')
-
   spawn: (options) ->
     sky = Crafty('Sky').get(0) || Crafty.e('2D, WebGL, Gradient, Sky, HUD, ColorFade').attr(
       w: Crafty.viewport.width

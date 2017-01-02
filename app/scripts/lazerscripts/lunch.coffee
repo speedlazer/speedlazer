@@ -6,11 +6,10 @@ class Game.Scripts.Lunch extends Game.LazerScript
     @loadAssets('explosion', 'playerShip')
 
   execute: ->
-    @inventoryAdd 'item', 'lasers', ->
-      Crafty.e('PowerUp').powerUp(contains: 'lasers', marking: 'L')
-    @inventoryAdd 'item', 'xp', ->
-      Crafty.e('PowerUp').powerUp(contains: 'xp', marking: 'X')
-
+    @inventoryAdd 'weapon', 'oldlasers', marking: 'L'
+    @inventoryAdd 'weapon', 'lasers', marking: 'L'
+    @inventoryAdd 'ship', 'points', marking: 'P', icon: 'star'
+    @inventoryAdd 'ship', 'xp', marking: 'XP', icon: 'star'
     Game.explosionMode = 'block'
 
     @sequence(
@@ -24,7 +23,6 @@ class Game.Scripts.Lunch extends Game.LazerScript
       @setWeapons(['oldlasers'])
       @nextSlide()
       @updateTitle 'First enemy'
-
       @placeSquad Game.Scripts.Slider,
         options:
           gridConfig:
@@ -34,7 +32,6 @@ class Game.Scripts.Lunch extends Game.LazerScript
               start: .5
       @showHud()
       @updateTitle '2 Players'
-
       @nextSlide()
       @updateTitle 'More enemies'
       @setScenery('OpenSpace')
@@ -99,7 +96,6 @@ class Game.Scripts.Lunch extends Game.LazerScript
           @wait 3000
         )
       )
-
       @updateTitle 'Enemy choreo start'
       @nextSlide @sequence(
         @placeSquad Game.Scripts.Sine,
@@ -158,7 +154,6 @@ class Game.Scripts.Lunch extends Game.LazerScript
               stepSize: .1
 
       @enableWeapons()
-
       @updateTitle 'Particle effects'
       => Game.explosionMode = 'particles'
       => Game.webGLMode = off

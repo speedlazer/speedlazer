@@ -1,6 +1,6 @@
 Crafty.c 'PlayerControlledCube',
   init: ->
-    @requires '2D, WebGL, Color, Listener, Collision, SunBlock, PlayerControlledShip, Acceleration'
+    @requires '2D, WebGL, Color, Listener, Collision, SunBlock, PlayerControlledShip, Acceleration, InventoryWeapons'
     @attr w: 40, h: 40
 
     @bind 'Moved', (from) ->
@@ -14,23 +14,6 @@ Crafty.c 'PlayerControlledCube',
     @superUsed = 0
     @weaponsEnabled = yes
     @currentRenderedSpeed = 0
-
-  stats: (newStats = {}) ->
-    # TODO: Needs refactoring
-    if newStats.primary?
-      @primaryWeapon.stats = newStats.primary.stats
-      #@primaryWeapon.boosts = newStats.primary.boosts
-      #@primaryWeapon.boostTimings = newStats.primary.boostTimings
-      @primaryWeapon._determineWeaponSettings()
-
-    stats = {}
-    stats['primary'] = {
-      stats: @primaryWeapon?.stats ? {}
-      boosts: @primaryWeapon?.boosts ? {}
-      boostTimings: @primaryWeapon?.boostTimings ? {}
-    }
-
-    stats
 
   start: ->
     @addComponent('Invincible').invincibleDuration(2000)
@@ -96,43 +79,9 @@ Crafty.c 'PlayerControlledCube',
 
   pickUp: (powerUp) ->
     contents =  powerUp.settings.contains
-    if @installItem contents
-      Crafty.audio.play('powerup')
-      powerUp.destroy()
-
-  installItem: (item) ->
-    return unless item?
-    if item.type is 'weapon'
-      return if @hasItem item.contains
-      @items.push item
-
-      if item.contains is 'lasers'
-        @_installPrimary 'RapidWeaponLaser'
-        return true
-
-      if item.contains is 'oldlasers'
-        @_installPrimary 'OldWeaponLaser'
-        return true
-
-      if item.contains is 'diagonals'
-        @_installPrimary 'RapidDiagonalLaser'
-        return true
-
-    if item.type is 'ship'
-      if item.contains is 'life'
-        @scoreText 'Extra life!'
-        return true
-      if item.contains is 'points'
-        @scoreText '+500 points!'
-        return true
-
-    if item.type is 'weaponUpgrade'
-      @primaryWeapon.upgrade item.contains
-      return true
-
-    if item.type is 'weaponBoost'
-      @primaryWeapon.boost item.contains
-      return true
+    if @installItem powerUp.settings
+      @trigger('PowerUp', powerUp.settings)
+      powerUp.pickup()
 
   clearItems: ->
     @primaryWeapon?.uninstall()
