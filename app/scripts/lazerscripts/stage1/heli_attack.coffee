@@ -77,7 +77,7 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
       ]
 
   onKilled: ->
-    @sequence(
+    @leaveAnimation @sequence(
       @deathDecoy()
       @bigExplosion()
       @while(

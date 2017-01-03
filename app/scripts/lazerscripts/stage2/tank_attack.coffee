@@ -33,7 +33,7 @@ class Game.Scripts.TankAttack extends Game.EntityScript
     )
 
   onKilled: ->
-    @sequence(
+    @leaveAnimation @sequence(
       @deathDecoy()
       @bigExplosion()
       @wait 200

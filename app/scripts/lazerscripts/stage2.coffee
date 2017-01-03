@@ -42,7 +42,7 @@ class Game.Scripts.Stage2 extends Game.LazerScript
       )
       @checkpoint @checkpointStreets('Skyline2')
       @placeSquad Game.Scripts.TankAttack
-      #@placeSquad Game.Scripts.HeliAttack
+      @placeSquad Game.Scripts.HeliAttack
       @wait 8000
     )
 
