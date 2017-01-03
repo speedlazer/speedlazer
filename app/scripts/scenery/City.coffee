@@ -226,13 +226,13 @@ generator.defineElement 'cityFrontTop', ->
       @buildingExploded = yes
   )
 
-generator.defineElement 'cityFront', ->
+generator.defineElement 'cityFront', (height = 7, offSet = 0) ->
   bb = Crafty.e('2D, WebGL, bigBuildingTop, Collision, SunBlock, ColorEffects').attr(z: -20).crop(1, 1, 446, 6 * 32)
   bb.colorOverride('#001fff', 'partial')
-  bb.collision([32, 80, 160, 16, 416, 16, 416, 1280, 32, 1280])
-  @add(0, @level.visibleHeight - 1200, bb)
+  calcHeight = (height + 2.5) * 128
+  bb.collision([32, 80, 160, 16, 416, 16, 416, calcHeight, 32, calcHeight])
+  @add(offSet, @level.visibleHeight - calcHeight + 16, bb)
 
-  height = 7
   for i in [0...height]
     floor = Crafty.e('2D, WebGL, bigBuildingLayer, ColorEffects').attr(z: -20).crop(1, 0, 446, 4 * 32)
     floor.attr(x: bb.x, y: bb.y + bb.h + (i * floor.h))
@@ -707,6 +707,7 @@ generator.defineBlock class extends Game.CityScenery
   generate: ->
     super
     @addElement 'cityFront'
+    @addElement 'cityFront', 4, 512
 
     @addElement 'water'
     @addElement 'cityDistance'
@@ -721,7 +722,6 @@ generator.defineBlock class extends Game.CityScenery
     @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h3, z: -25).color('#333'))
     h3 = 40
     @add(0, @level.visibleHeight + 170 - h3, Crafty.e('2D, Solid').attr(w: @delta.x, h: h3, z: 2))
-
 
 generator.defineBlock class extends @Game.LevelScenery
   name: 'City.TrainTunnel'
