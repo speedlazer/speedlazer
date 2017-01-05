@@ -225,6 +225,7 @@ Crafty.c 'PlayerSpaceship',
       attach: yes
       duration: 1000
       distance: 70
+      delay: 400
     )
 
     location = settings.location?()
@@ -259,6 +260,6 @@ Crafty.c 'PlayerSpaceship',
         @detach(t) if settings.attach
         t.tween(rotation: 0, y: t.y - settings.distance, alpha: 0.5, settings.duration, 'easeInQuad')
         t.one('TweenEnd', -> t.destroy())
-      400
+      settings.delay
     )
 

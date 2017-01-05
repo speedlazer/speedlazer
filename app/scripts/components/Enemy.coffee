@@ -45,7 +45,9 @@ Crafty.c 'Enemy',
 
   absorbDamage: (cause) ->
     return unless cause?
-    data = { @pointsOnHit, @pointsOnDestroy, location: { @x, @y }}
+    x = @x + @w / 2
+    y = @y + @h / 2
+    data = { @pointsOnHit, @pointsOnDestroy, location: { x, y }}
     @health -= cause.damage
     @updatedHealth?()
 
