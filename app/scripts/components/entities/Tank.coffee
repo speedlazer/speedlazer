@@ -1,47 +1,47 @@
 Crafty.c 'Tank',
   init: ->
-    @requires 'Enemy, Color, Delay'
+    @requires 'Enemy, laserTank, Delay'
+    @crop 6, 5, 179, 103
 
   tank: (attr = {}) ->
     defaultHealth = 2750
     @attr _.defaults(attr,
-      w: 150
-      h: 100
+      w: 179
+      h: 103
       health: defaultHealth
       maxHealth: attr.health ? defaultHealth
       aimSpeed: 45
     )
-    @color '#FF0000'
-    @barrel = Crafty.e('2D, WebGL, Color, TweenPromise')
-    @barrel.color('#060')
+    @barrel = Crafty.e('2D, WebGL, laserTankBarrel, TweenPromise')
+    @barrel.crop(5, 4, 109, 38)
     @barrel.attr(
-      x: @x + 20
-      y: @y + 20
-      z: @z + 1
-      w: 100
-      h: 20
+      x: @x + 54
+      y: @y
+      z: @z - 1
+      w: 109
+      h: 38
     )
-    @barrel.origin(@barrel.w - 10, 10)
+    @barrel.origin(@barrel.w - 32, 32)
 
     @charge = Crafty.e('2D, Color, WebGL, TweenPromise')
     @charge.color('#F0F')
     @charge.attr(
       x: @barrel.x - 10
-      y: @barrel.y
+      y: @barrel.y + 5
       w: 10
-      h: 20
+      h: 28
       alpha: 0
     )
-    @charge.origin(@charge.w - 10, 10)
+    @charge.origin(@charge.w - 32, 32)
 
     @laser = Crafty.e('2D, Color, WebGL, TweenPromise, Collision')
     @laser.color('#F0F')
     laserLength = 1000
     @laser.attr(
       x: @barrel.x - laserLength
-      y: @barrel.y
+      y: @barrel.y + 5
       w: laserLength
-      h: 20
+      h: 28
       alpha: 0
     )
     @laser.origin(@laser.w - 10, 10)

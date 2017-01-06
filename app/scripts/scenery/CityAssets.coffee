@@ -29,6 +29,7 @@ generator.defineAssets(
     'rocket'
     'helicopter'
     'largeDrone'
+    'laserTank'
   ]
   spriteMap: 'city-enemies.png'
   sprites:
@@ -57,6 +58,8 @@ generator.defineAssets(
         star: [14, 1, 1, 1]
         powerUpBox: [10, 1, 1, 1]
         sphere1: [7, 3, 1, 1]
+        laserTank: [0, 11, 6, 3]
+        laserTankBarrel: [6, 11, 4, 2]
 )
 generator.defineAssets(
   'portraits'

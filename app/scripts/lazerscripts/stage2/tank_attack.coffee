@@ -40,7 +40,8 @@ class Game.Scripts.TankAttack extends Game.EntityScript
       @bigExplosion()
       =>
         @entity.removeComponent('ViewportFixed')
-        @entity.color('#100000')
+        @entity.attr(lightness: .3)
+        @entity.barrel.attr(lightness: .3)
       @wait 10000
       @endDecoy()
     )
