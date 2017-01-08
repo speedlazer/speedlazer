@@ -226,19 +226,19 @@ generator.defineElement 'cityFrontTop', ->
       @buildingExploded = yes
   )
 
-generator.defineElement 'cityFront', (height = 7, offSet = 0) ->
+generator.defineElement 'cityFront', (height = 6, offSet = 0, bottomVariant = 'bigBuildingBottom') ->
   bb = Crafty.e('2D, WebGL, bigBuildingTop, Collision, SunBlock, ColorEffects').attr(z: -20).crop(1, 1, 446, 6 * 32)
   bb.colorOverride('#001fff', 'partial')
   calcHeight = (height + 2.5) * 128
   bb.collision([32, 80, 160, 16, 416, 16, 416, calcHeight, 32, calcHeight])
-  @add(offSet, @level.visibleHeight - calcHeight + 16, bb)
+  @add(offSet, @level.visibleHeight - calcHeight - 16, bb)
 
   for i in [0...height]
     floor = Crafty.e('2D, WebGL, bigBuildingLayer, ColorEffects').attr(z: -20).crop(1, 0, 446, 4 * 32)
     floor.attr(x: bb.x, y: bb.y + bb.h + (i * floor.h))
     bb.attach(floor)
 
-  bottom = Crafty.e('2D, WebGL, bigBuildingBottom, ColorEffects').attr(z: -20).crop(1, 1, 446, 120)
+  bottom = Crafty.e("2D, WebGL, #{bottomVariant}, ColorEffects").attr(z: -20).crop(1, 1, 446, 184)
   bottom.attr(x: bb.x, y: bb.y + bb.h + (height * 128))
   bb.attach(bottom)
 
@@ -296,7 +296,8 @@ class Game.CityScenery extends Game.LevelScenery
           bigBuildingBrokenTop: [30, 13, 16, 6]
 
           bigBuildingLayer: [16, 19, 16, 4]
-          bigBuildingBottom: [16, 25, 16, 4]
+          bigBuildingBottom: [16, 23, 16, 6]
+          bigBuildingBottom2: [30, 23, 16, 6]
 
           glass: [12, 9, 4, 3]
           cloud: [16, 9, 8, 3]
@@ -707,7 +708,7 @@ generator.defineBlock class extends Game.CityScenery
   generate: ->
     super
     @addElement 'cityFront'
-    @addElement 'cityFront', 4, 512
+    @addElement 'cityFront', 4, 512, 'bigBuildingBottom2'
 
     @addElement 'water'
     @addElement 'cityDistance'
