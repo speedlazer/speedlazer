@@ -1,9 +1,9 @@
 {
-  "name": "SpeedLazer",
+  "name": "speedlazer",
   "version": "0.0.0",
   "appPath": "app",
   "dependencies": {
-    "crafty": "../Crafty/",
+    "crafty": "craftyjs/Crafty#0.8.0-rc1",
     "crafty-gamepad": "svenjacobs/crafty-gamepad",
     "jquery": "~1.7.2",
     "jsbezier": "*",
