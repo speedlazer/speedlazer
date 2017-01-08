@@ -22,7 +22,7 @@ Crafty.c 'StageEnd',
       y: @y + 10
       w: @w
       z: 91
-    ).css 'textAlign', 'center'
+    ).textAlign 'center'
       .text "Stage #{stage} Cleared: #{title}"
       .textColor('#FFFFFF')
       .textFont({
@@ -172,7 +172,7 @@ Crafty.c 'StageEnd',
           y: y
           w: cw
           z: 3
-        ).css 'textAlign', 'right'
+        ).textAlign 'right'
           .text cell
           .textColor('#FFFFFF')
           .textFont({

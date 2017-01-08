@@ -14,7 +14,7 @@ Crafty.defineScene 'Scores', ->
     .attr(x: 0, y: h * .1, w: w)
     .text('Highscores')
     .textColor('#FFFF00')
-    .css('textAlign', 'center')
+    .textAlign 'center'
     .textFont({
       size: '40px'
       weight: 'bold'
@@ -41,7 +41,7 @@ Crafty.defineScene 'Scores', ->
           .attr(x: 0, y: (h * .25) + (36 * i), w: w)
           .text("#{nr}  #{entry.score} #{entry.initials}")
           .textColor('#FFFF00')
-          .css('textAlign', 'center')
+          .textAlign 'center'
           .textFont({
             size: size
             weight: 'bold'
