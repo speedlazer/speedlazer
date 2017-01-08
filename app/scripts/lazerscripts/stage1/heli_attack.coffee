@@ -7,7 +7,7 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
 
   spawn: (options) ->
     @dir = options.from ? 'top'
-    @ground = options.ground ? 700
+    @ground = options.ground ? 660
     @corpseKeep = options.corpseKeep ? 10000
 
     p = Crafty.e('Helicopter').attr(
