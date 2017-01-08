@@ -45,7 +45,7 @@ Crafty.c 'BigText',
     if options.super?
       ch = Crafty.e('2D, DOM, Text, Tween, HUD')
         .attr w: Crafty.viewport.width, z: 1, alpha: 0
-        .css 'textAlign', 'center'
+        .textAlign 'center'
         .text options.super
         .positionHud(
           x: @x,
@@ -61,7 +61,7 @@ Crafty.c 'BigText',
       texts.push ch
 
     this.attr w: Crafty.viewport.width, z: 1, alpha: 0
-      .css 'textAlign', 'center'
+      .textAlign 'center'
       .text text
       .positionHud(
         x: @x,

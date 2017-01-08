@@ -17,7 +17,7 @@ Crafty.defineScene 'GameOver', (data) ->
     .attr(x: 0, y: h * .2, w: w)
     .text(text)
     .textColor('#FF0000')
-    .css('textAlign', 'center')
+    .textAlign 'center'
     .textFont({
       size: '50px'
       weight: 'bold'
@@ -42,7 +42,7 @@ Crafty.defineScene 'GameOver', (data) ->
         .attr(x: 0, y: (h * .45) + (data.index * 45), w: w)
         .text(t)
         .textColor(data.color)
-        .css("textAlign", "center")
+        .textAlign 'center'
         .textFont({
           size: '20px'
           weight: 'bold'
@@ -54,7 +54,7 @@ Crafty.defineScene 'GameOver', (data) ->
           .attr(x: w * .25, y: (h * .45) + ((data.index + 1) * 45), w: w)
           .text("Enter name: ")
           .textColor(data.color)
-          .css("textAlign", "left")
+          .textAlign 'left'
           .textFont({
             size: '20px'
             weight: 'bold'
@@ -63,7 +63,7 @@ Crafty.defineScene 'GameOver', (data) ->
         k = Crafty.e('TextInput')
           .attr(x: w * .6, y: (h * .45) + ((data.index + 1) * 45), w: w)
           .textColor(data.color)
-          .css("textAlign", "left")
+          .textAlign 'left'
           .textFont({
             size: '20px'
             weight: 'bold'
@@ -127,7 +127,7 @@ Crafty.defineScene 'GameOver', (data) ->
         Crafty.e('2D, DOM, Text')
           .attr(x: 0, y: h * .8, w: w)
           .textColor('#FF0000')
-          .css("textAlign", "center")
+          .textAlign 'center'
           .textFont(
             size: '15px'
             weight: 'bold'
@@ -137,7 +137,7 @@ Crafty.defineScene 'GameOver', (data) ->
         e = Crafty.e('2D, DOM, Text')
           .attr(x: 0, y: (h * .8) + 30, w: w)
           .textColor('#FF0000')
-          .css("textAlign", "center")
+          .textAlign 'center'
           .textFont(
             size: '15px'
             weight: 'bold'
