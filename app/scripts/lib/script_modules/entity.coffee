@@ -124,9 +124,10 @@ Game.ScriptModule.Entity =
       )
       path = [].concat inputPath
 
+      layerOptions = @entity._drawLayer.options
       path.unshift [
-        Math.round(@entity.x + Crafty.viewport.x)
-        Math.round(@entity.y + Crafty.viewport.y)
+        Math.round(@entity.x) + (Crafty.viewport.x * layerOptions.xResponse)
+        Math.round(@entity.y) + (Crafty.viewport.y * layerOptions.yResponse)
       ]
 
       pp = path[0]
@@ -153,8 +154,8 @@ Game.ScriptModule.Entity =
         c = Math.sqrt(a**2 + b**2)
         d += c
         pp = pn
-        x -= Crafty.viewport.x
-        y -= Crafty.viewport.y
+        x -= (Crafty.viewport.x * layerOptions.xResponse)
+        y -= (Crafty.viewport.y * layerOptions.yResponse)
         { x, y }
       )
       duration = (d / settings.speed) * 1000
