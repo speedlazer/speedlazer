@@ -126,8 +126,8 @@ Game.ScriptModule.Entity =
 
       layerOptions = @entity._drawLayer.options
       path.unshift [
-        Math.round(@entity.x) + (Crafty.viewport.x * layerOptions.xResponse)
-        Math.round(@entity.y) + (Crafty.viewport.y * layerOptions.yResponse)
+        Math.round(@entity.x + (Crafty.viewport.x * layerOptions.xResponse))
+        Math.round(@entity.y + (Crafty.viewport.y * layerOptions.yResponse))
       ]
 
       pp = path[0]
