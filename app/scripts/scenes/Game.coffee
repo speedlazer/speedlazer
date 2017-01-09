@@ -10,6 +10,25 @@ Crafty.defineScene 'Game', (data = {}) ->
   Game.backgroundColor = null
   level = Game.levelGenerator.createLevel()
 
+  Crafty.createLayer('UILayerDOM', 'DOM',
+    scaleResponse: 0
+    yResponse: 0
+    xResponse: 0
+    z: 40
+  )
+  Crafty.createLayer('UILayerWebGL', 'WebGL',
+    scaleResponse: 0
+    yResponse: 0
+    xResponse: 0
+    z: 35
+  )
+  Crafty.createLayer('StaticBackground', 'WebGL',
+    scaleResponse: 0
+    yResponse: 0
+    xResponse: 0
+    z: 0
+  )
+
   # Load default sprites
   # This is a dirty fix to prevent
   # 'glDrawElements: attempt to render with no buffer attached to enabled attribute 6'

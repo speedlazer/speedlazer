@@ -20,10 +20,10 @@
 
     h = Math.max(4, h) if avatar
 
-    back = Crafty.e('2D, WebGL, Color, Tween, HUD, Dialog')
+    back = Crafty.e('2D, UILayerWebGL, Color, Tween, Dialog')
       .attr(w: w, h: (h * 20), alpha: 0.7)
       .color('#000000')
-      .positionHud(
+      .attr(
         x: x - 10
         y: settings.bottom - (h * 20)
         z: 100
@@ -32,7 +32,7 @@
 
     avatarOffset = if avatar then 100 else 0
     if avatar?
-      portrait = Crafty.e('2D, WebGL, SpriteAnimation')
+      portrait = Crafty.e('2D, UILayerWebGL, SpriteAnimation')
         .addComponent(avatar.n)
         .sprite(avatar.l..., 4, 4)
         .attr(
@@ -63,7 +63,7 @@
 
     offset = 15
     if speaker?
-      speakerText = Crafty.e('2D, DOM, Text')
+      speakerText = Crafty.e('2D, UILayerDOM, Text')
         .attr(
           w: w - 20
           x: back.x + 10 + avatarOffset
@@ -82,7 +82,7 @@
       offset = 30
 
     for line, i in lines
-      back.attach(Crafty.e('2D, DOM, Text')
+      back.attach(Crafty.e('2D, UILayerDOM, Text')
         .attr(
           w: w - 20
           x: back.x + 10 + avatarOffset
