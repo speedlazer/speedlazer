@@ -22,7 +22,7 @@ Crafty.defineScene 'Game', (data = {}) ->
     xResponse: 0
     z: 35
   )
-  Crafty.createLayer('StaticBackground', 'WebGL',
+  Crafty.createLayer('StaticBackgroundLayer', 'WebGL',
     scaleResponse: 0
     yResponse: 0
     xResponse: 0

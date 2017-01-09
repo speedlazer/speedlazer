@@ -4,7 +4,7 @@ Game.Scripts ||= {}
 class Game.Scripts.SunRise extends Game.EntityScript
 
   spawn: (options) ->
-    sky = Crafty('Sky').get(0) || Crafty.e('2D, StaticBackground, Gradient, Sky, ColorFade').attr(
+    sky = Crafty('Sky').get(0) || Crafty.e('2D, StaticBackgroundLayer, Gradient, Sky, ColorFade').attr(
       w: Crafty.viewport.width
       h: Crafty.viewport.height * .7
     ).attr(

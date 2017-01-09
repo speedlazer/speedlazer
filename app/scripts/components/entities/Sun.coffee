@@ -1,13 +1,14 @@
 Crafty.c 'Sun',
   init: ->
-    @requires '2D, WebGL, Collision, Choreography, ViewportFixed, sun'
+    @requires '2D, StaticBackgroundLayer, Collision, Choreography, sun'
     @crop(0, 0, 64, 64)
 
-    @attr(w: 20, h: 20, z: -1000)
+    @attr(w: 20, h: 20, z: 10)
 
     @origin 'center'
+
     @glare = []
-    directGlare = Crafty.e('2D, WebGL, Glare, directGlare')
+    directGlare = Crafty.e('2D, UILayerWebGL, Glare, directGlare')
       .crop(0, 0, 175, 175)
       .attr
         w: @w * 3
@@ -16,11 +17,10 @@ Crafty.c 'Sun',
         alpha: 0.8
         originalAlpha: 0.8
       .origin('center')
-      #.color('#FFFFFF')
     @attach directGlare
     @glare.push directGlare
 
-    blueGlare = Crafty.e('2D, WebGL, Glare, bigGlare, Horizon')
+    blueGlare = Crafty.e('2D, UILayerWebGL, Glare, bigGlare, Horizon')
       .crop(0, 0, 200, 200)
       .attr
         mirrored: yes
@@ -33,11 +33,10 @@ Crafty.c 'Sun',
         blur: 2.0
       .origin('center')
       .saturationGradient(1.0, 1.0)
-      #.color('#B0B0FF')
     @attach blueGlare
     @glare.push blueGlare
 
-    redGlare = Crafty.e('2D, WebGL, Glare, bigGlare, ColorEffects')
+    redGlare = Crafty.e('2D, UILayerWebGL, Glare, bigGlare, ColorEffects')
       .crop(0, 0, 200, 200)
       .colorOverride('#fd6565')
       .attr
@@ -49,11 +48,10 @@ Crafty.c 'Sun',
         alpha: 0.6
         originalAlpha: 0.6
       .origin('center')
-      #.color('#FF9090')
     @attach redGlare
     @glare.push redGlare
 
-    bigGlare = Crafty.e('2D, WebGL, Glare, bigGlare')
+    bigGlare = Crafty.e('2D, UILayerWebGL, Glare, bigGlare')
       .crop(0, 0, 200, 200)
       .attr
         mirrored: yes
@@ -64,7 +62,6 @@ Crafty.c 'Sun',
         res: 1.1
         originalAlpha: 0.2
       .origin('center')
-      #.color('#FF9090')
     @attach bigGlare
     @glare.push bigGlare
 
@@ -98,10 +95,11 @@ Crafty.c 'Sun',
     perc = maxCoverage / sunArea
     perc = 1 if maxCoverage > sunArea
 
+    layerOptions = this._drawLayer.options
     hw = Crafty.viewport.width / 2
     hh = Crafty.viewport.height / 2
-    dx = @x + (@w / 2) - ((Crafty.viewport.x * -1) + hw)
-    dy = @y + (@h / 2) - ((Crafty.viewport.y * -1) + hh)
+    dx = @x + (@w / 2) - ((Crafty.viewport.x * -1 * layerOptions.xResponse) + hw)
+    dy = @y + (@h / 2) - ((Crafty.viewport.y * -1 * layerOptions.yResponse) + hh)
     px = dx / hw
     py = dy / hh
 
