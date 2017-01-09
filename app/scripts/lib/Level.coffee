@@ -62,9 +62,9 @@ class Game.Level
       @data.enemiesSpawned ?= 0
       @data.enemiesSpawned += 1
 
-    Crafty.e('2D, DOM, Text, HUD, LevelTitle')
+    Crafty.e('2D, UILayerDOM, Text, LevelTitle')
       .attr(w: 250, h: 20)
-      .positionHud(x: (Crafty.viewport.width - 250), y: 10, z: 2)
+      .attr(x: (Crafty.viewport.width - 250), y: 10, z: 2)
       .textFont(
         size: '10px'
         family: 'Press Start 2P'

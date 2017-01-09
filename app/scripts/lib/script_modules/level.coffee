@@ -11,7 +11,6 @@ Game.ScriptModule ?= {}
 # - waitForScenery
 # - gainHeight
 # - setSpeed
-# - showScore
 # - disableWeapons
 # - enableWeapons
 # - explosion
@@ -286,15 +285,6 @@ Game.ScriptModule.Level =
       )
       @level.setForcedSpeed speed, options
 
-  # Show the scores of the players active in the game
-  # This is used to end a stage in the game
-  showScore: (stage, title) ->
-    (sequence) =>
-      @_verify(sequence)
-      score = Crafty.e('StageEnd').stageEnd(@level, stage, title)
-      @wait(15 * 2000)(sequence).then =>
-        score.destroy()
-
   disableWeapons: (players...) ->
     (sequence) =>
       @_verify(sequence)
@@ -496,7 +486,7 @@ Game.ScriptModule.Level =
       settings = _.defaults(settings,
         duration: 1000
       )
-      Crafty('HUD').each ->
+      Crafty('UILayerDOM, UILayerWebGL').each ->
         @addComponent('Tween')
         @tween(
           alpha: if settings.visible then 1.0 else 0.0
@@ -569,9 +559,9 @@ Game.ScriptModule.Level =
   _fader: ->
     fader = Crafty('ScreenFader').get(0)
     unless fader?
-      fader = Crafty.e('2D, DOM, Color, HUD, Tween, ScreenFader, Delay')
+      fader = Crafty.e('2D, UILayerDOM, Color, Tween, ScreenFader, Delay')
 
-    fader.positionHud(
+    fader.attr(
       x: 0,
       y: 0,
       z: 1000
