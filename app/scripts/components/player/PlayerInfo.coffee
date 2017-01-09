@@ -5,7 +5,7 @@ Crafty.c 'PlayerInfo',
 
   playerInfo: (x, player) ->
     @player = player
-    @score = Crafty.e('2D, DOM, Text, UILayerDOM')
+    @score = Crafty.e('2D, Text, UILayerDOM')
       .attr(
         w: 220, h: 20
         x: x, y: 10, z: 200
@@ -17,7 +17,7 @@ Crafty.c 'PlayerInfo',
     if @player.has('Color')
       @score.textColor @player.color()
 
-    @lives = Crafty.e('2D, DOM, Text, UILayerDOM')
+    @lives = Crafty.e('2D, Text, UILayerDOM')
       .attr(
         w: 220, h: 20
         x: x, y: 30, z: 200
