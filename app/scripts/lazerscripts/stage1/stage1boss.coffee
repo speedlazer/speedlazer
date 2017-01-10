@@ -268,7 +268,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
           @rocketStrikeDanceHoming()
           @sequence(
             @async @runScript(Game.Scripts.Stage1BossMine, @location())
-            @wait 2500
+            @wait 1500
           )
         )
         @wait 1000
