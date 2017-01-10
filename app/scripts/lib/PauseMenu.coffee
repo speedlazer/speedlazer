@@ -63,7 +63,7 @@ class Game.PauseMenu
       )
       .text('Game Paused')
       .textColor('#D0D0D0')
-      .css("textAlign", "center")
+      .textAlign 'center'
       .textFont(
         size: '15px'
         weight: 'bold'
@@ -81,7 +81,7 @@ class Game.PauseMenu
         )
         .text(o.text?() ? o.text)
         .textColor('#D0D0D0')
-        .css("textAlign", "left")
+        .textAlign 'left'
         .textFont(
           size: '15px'
           weight: 'bold'
@@ -100,7 +100,7 @@ class Game.PauseMenu
       )
       .text('>')
       .textColor('#0000FF')
-      .css("textAlign", "left")
+      .textAlign 'left'
       .textFont(
         size: '15px'
         weight: 'bold'
@@ -179,7 +179,7 @@ class Game.PauseMenu
           )
           .text(o)
           .textColor('#D0D0D0')
-          .css("textAlign", "left")
+          .textAlign 'left'
           .textFont(
             size: '8px'
             weight: 'bold'

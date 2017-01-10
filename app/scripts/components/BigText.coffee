@@ -1,7 +1,7 @@
 
 Crafty.c 'BigText',
   init: ->
-    @requires '2D, DOM, Text, Tween, Delay, HUD'
+    @requires '2D, Text, Tween, Delay, UILayerDOM'
 
   bigText: (text, options = {}) ->
     options = _.defaults(options,
@@ -43,11 +43,11 @@ Crafty.c 'BigText',
 
     texts = [this]
     if options.super?
-      ch = Crafty.e('2D, DOM, Text, Tween, HUD')
+      ch = Crafty.e('2D, Text, Tween, UILayerDOM')
         .attr w: Crafty.viewport.width, z: 1, alpha: 0
-        .css 'textAlign', 'center'
+        .textAlign 'center'
         .text options.super
-        .positionHud(
+        .attr(
           x: @x,
           y: 200,
           z: -1
@@ -61,9 +61,9 @@ Crafty.c 'BigText',
       texts.push ch
 
     this.attr w: Crafty.viewport.width, z: 1, alpha: 0
-      .css 'textAlign', 'center'
+      .textAlign 'center'
       .text text
-      .positionHud(
+      .attr(
         x: @x,
         y: 240,
         z: -1

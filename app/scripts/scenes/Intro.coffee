@@ -48,7 +48,7 @@ Crafty.defineScene 'Intro', ->
     .attr(x: 0, y: (h * .85), w: w)
     .text("HI SCORE: #{entry.score} #{entry.initials}")
     .textColor('#FFFF00')
-    .css('textAlign', 'center')
+    .textAlign('center')
     .textFont({
       size: '10px'
       weight: 'bold'

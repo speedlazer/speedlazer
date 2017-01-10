@@ -45,7 +45,7 @@ Crafty.c 'TextInput',
       .attr(x: @x, y: @y, w: @w)
       .text("_  ")
       .textColor('#0000FF')
-      .css("textAlign", "left")
+      .textAlign "left"
       .textFont({
         size: '20px'
         weight: 'bold'

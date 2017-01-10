@@ -6,9 +6,11 @@ Crafty.c 'PlayerInfo',
 
   playerInfo: (x, player) ->
     @player = player
-    @score = Crafty.e('2D, DOM, Text, HUD')
-      .attr(w: 220, h: 20)
-      .positionHud(x: x, y: 10, z: 200)
+    @score = Crafty.e('2D, Text, UILayerDOM')
+      .attr(
+        w: 220, h: 20
+        x: x, y: 10, z: 200
+      )
       .textFont(
         size: '10px'
         family: 'Press Start 2P'
@@ -16,16 +18,20 @@ Crafty.c 'PlayerInfo',
     if @player.has('Color')
       @score.textColor @player.color()
 
-    @lives = Crafty.e('2D, DOM, Text, HUD')
-      .attr(w: 220, h: 20)
-      .positionHud(x: x, y: 30, z: 200)
+    @lives = Crafty.e('2D, Text, UILayerDOM')
+      .attr(
+        w: 220, h: 20
+        x: x, y: 30, z: 200
+      )
       .textFont(
         size: '10px'
         family: 'Press Start 2P'
       )
-    @heart = Crafty.e('2D, WebGL, ColorEffects, heart, HUD')
-      .attr(w: 16, h: 16)
-      .positionHud(x: x - 2, y: 26, z: 200)
+    @heart = Crafty.e('2D, ColorEffects, heart, UILayerWebGL')
+      .attr(
+        w: 16, h: 16
+        x: x - 2, y: 26, z: 200
+      )
       .colorOverride(player.color(), 'partial')
 
     if @player.has('Color')
@@ -46,21 +52,21 @@ Crafty.c 'PlayerInfo',
 
   createBoostsVisuals: (x) ->
     playerColor = @player.color()
-    @boosts['speedb'] = Crafty.e('2D, WebGL, speedBoost, ColorEffects, HUD')
+    @boosts['speedb'] = Crafty.e('2D, UILayerWebGL, speedBoost, ColorEffects')
       .attr(w: 16, h: 16)
-      .positionHud(x: x + 50, y: 29, z: 200)
+      .attr(x: x + 50, y: 29, z: 200)
       .colorOverride(playerColor, 'partial')
-    @boosts['rapidb'] = Crafty.e('2D, WebGL, rapidFireBoost, ColorEffects, HUD')
+    @boosts['rapidb'] = Crafty.e('2D, UILayerWebGL, rapidFireBoost, ColorEffects')
       .attr(w: 16, h: 16)
-      .positionHud(x: x + 70, y: 28, z: 200)
+      .attr(x: x + 70, y: 28, z: 200)
       .colorOverride(playerColor, 'partial')
-    @boosts['aimb'] = Crafty.e('2D, WebGL, aimBoost, ColorEffects, HUD')
+    @boosts['aimb'] = Crafty.e('2D, UILayerWebGL, aimBoost, ColorEffects')
       .attr(w: 16, h: 16)
-      .positionHud(x: x + 90, y: 28, z: 200)
+      .attr(x: x + 90, y: 28, z: 200)
       .colorOverride(playerColor, 'partial')
-    @boosts['damageb'] = Crafty.e('2D, WebGL, damageBoost, ColorEffects, HUD')
+    @boosts['damageb'] = Crafty.e('2D, UILayerWebGL, damageBoost, ColorEffects')
       .attr(w: 16, h: 16)
-      .positionHud(x: x + 110, y: 28, z: 200)
+      .attr(x: x + 110, y: 28, z: 200)
       .colorOverride(playerColor, 'partial')
 
   updateBoostInfo: ->
