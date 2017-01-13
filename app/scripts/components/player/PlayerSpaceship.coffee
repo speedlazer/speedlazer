@@ -1,6 +1,7 @@
 Crafty.c 'PlayerSpaceship',
   init: ->
-    @requires '2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, WaterSplashes, PlayerControlledShip, Acceleration, InventoryWeapons'
+    @requires '2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, ' +
+      'WaterSplashes, PlayerControlledShip, Acceleration, InventoryWeapons'
     @attr w: 71, h: 45
     @collision [
       21, 13
