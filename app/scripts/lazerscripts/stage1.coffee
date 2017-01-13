@@ -289,16 +289,36 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
       @setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
 
-      @stalkerShootout()
-      @setScenery('Skyline')
       @parallel(
-        @gainHeight(800, duration: 8000)
-        @placeSquad Game.Scripts.Shooter,
-          amount: 8
-          delay: 500
-          drop: 'pool'
-          options:
-            shootOnSight: yes
+        @sequence(
+          @wait 4000
+          @gainHeight(800, duration: 14000)
+        )
+        @sequence(
+          @stalkerShootout()
+          @setScenery('Skyline')
+          @placeSquad Game.Scripts.Shooter,
+            amount: 8
+            delay: 500
+            drop: 'pool'
+            options:
+              shootOnSight: yes
+          @attackWaves(
+            @parallel(
+              @placeSquad Game.Scripts.Shooter,
+                amount: 8
+                delay: 500
+                options:
+                  shootOnSight: yes
+              @placeSquad Game.Scripts.Swirler,
+                amount: 8
+                delay: 500
+                options:
+                  shootOnSight: yes
+            )
+            drop: 'pool'
+          )
+        )
       )
     )
 
