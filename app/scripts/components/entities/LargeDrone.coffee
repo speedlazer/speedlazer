@@ -1,6 +1,6 @@
 Crafty.c 'LargeDrone',
   init: ->
-    @requires 'Enemy, standardLargeDrone, SpriteAnimation'
+    @requires 'Enemy, standardLargeDrone, SpriteAnimation, ViewportFixed'
 
   drone: (attr = {}) ->
     defaultHealth = 360000
@@ -32,7 +32,7 @@ Crafty.c 'LargeDrone',
       [10, 2, 2, 1], [12, 2, 2, 1]
     ]
 
-    @enemy()
+    @enemy().fixViewport()
     @onHit 'Mine', (e) ->
       return if Game.paused
       return if @hidden

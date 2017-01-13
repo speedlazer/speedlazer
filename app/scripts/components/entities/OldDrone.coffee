@@ -1,6 +1,6 @@
 Crafty.c 'OldDrone',
   init: ->
-    @requires 'Enemy, Color'
+    @requires 'Enemy, Color, ViewportFixed'
 
   drone: (attr = {}) ->
     @color '#0000FF'
@@ -9,6 +9,5 @@ Crafty.c 'OldDrone',
     @origin 'center'
     @attr weaponOrigin: [2, 25]
 
-    @enemy()
-    this
+    @enemy().fixViewport()
 

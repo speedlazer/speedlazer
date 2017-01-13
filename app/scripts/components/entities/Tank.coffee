@@ -1,10 +1,11 @@
 Crafty.c 'Tank',
   init: ->
-    @requires 'Enemy, laserTank, Delay'
+    @requires 'Enemy, laserTank, Delay, ViewportFixed'
     @crop 6, 5, 179, 103
 
   tank: (attr = {}) ->
     defaultHealth = 2750
+    @fixViewport(['x'])
     @attr _.defaults(attr,
       w: 179
       h: 103

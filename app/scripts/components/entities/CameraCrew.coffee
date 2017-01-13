@@ -6,7 +6,7 @@
     @attr(
       w: 60
       h: 25
-    )
+    ).fixViewport()
     @origin 'center'
 
   cameraCrew: ->

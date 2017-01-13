@@ -1,6 +1,6 @@
 Crafty.c 'Helicopter',
   init: ->
-    @requires 'Enemy, helicopter, SpriteAnimation'
+    @requires 'Enemy, helicopter, SpriteAnimation, ViewportFixed'
     @reel 'fly', 200, [[0, 6, 4, 2], [4, 6, 4, 2]]
     @crop 0, 9, 128, 55
     @origin 'center'
@@ -21,7 +21,7 @@ Crafty.c 'Helicopter',
     @animate 'fly', -1
     #@colorOverride '#808080', 'partial'
 
-    @enemy()
+    @enemy().fixViewport()
     @bind 'Hit', (data) =>
       if data.projectile.has('Bullet')
         @shiftedX += 2

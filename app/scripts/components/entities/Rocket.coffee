@@ -1,6 +1,6 @@
 Crafty.c 'Rocket',
   init: ->
-    @requires 'Enemy, standardRocket'
+    @requires 'Enemy, standardRocket, ViewportFixed'
 
   rocket: (attr = {}) ->
     @crop(0, 0, 47, 17)
@@ -8,8 +8,7 @@ Crafty.c 'Rocket',
       health: 300)
     @origin 'center'
 
-    @enemy()
-    this
+    @enemy().fixViewport()
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
     @vx = dx * (1000 / dt)
