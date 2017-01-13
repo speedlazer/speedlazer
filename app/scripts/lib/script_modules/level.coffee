@@ -268,18 +268,18 @@ Game.ScriptModule.Level =
       @_verify(sequence)
       d = WhenJS.defer()
 
-      currentSpeed = @level._forcedSpeed?.x || @level._forcedSpeed
+      currentSpeed = @level._forcedSpeed?.x ? @level._forcedSpeed
       { duration } = options
       if @_skippingToCheckpoint() or duration is 0
         @level.setHeight -height
       else
         speedY = (height / duration) * 1000
 
-        @level.setForcedSpeed(x: currentSpeed, y: -speedY)
+        @level.setForcedSpeed({ x: currentSpeed, y: -speedY }, accellerate: no)
         level = @level
         Crafty.e('Delay').delay(
           ->
-            level.setForcedSpeed(currentSpeed)
+            level.setForcedSpeed(currentSpeed, accellerate: no)
             d.resolve()
           duration
         )
