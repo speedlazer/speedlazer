@@ -1,6 +1,6 @@
 Crafty.c 'Mine',
   init: ->
-    @requires 'Enemy, standardMine, SpriteAnimation, ViewportFixed'
+    @requires 'Enemy, standardMine, SpriteAnimation'
     @reel 'open', 200, [[4, 3], [5, 3]]
     @reel 'close', 200, [[4, 3], [3, 3]]
     @reel 'blink', 100, [[5, 3], [6, 3]]
@@ -14,7 +14,8 @@ Crafty.c 'Mine',
     @attr _.defaults(attr, h: 25, w: 25, health: 100)
     @origin 'center'
 
-    @enemy().fixViewport()
+    @enemy()
+    this
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
     @vx = dx * (1000 / dt)

@@ -3,7 +3,6 @@ Crafty.c 'Projectile',
     @requires '2D, WebGL, ViewportFixed'
 
   shoot: (x, y, angle) ->
-    @fixViewport()
     @attr(
       x: x,
       y: y,

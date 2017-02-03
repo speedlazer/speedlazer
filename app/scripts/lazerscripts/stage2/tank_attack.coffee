@@ -6,7 +6,7 @@ class Game.Scripts.TankAttack extends Game.EntityScript
   spawn: (options) ->
     p = Crafty.e('Tank').attr(
       x: Crafty.viewport.width + 40
-      y: 600
+      y: 400
       defaultSpeed: 30
       weaponOrigin: [30, 0]
     ).tank()

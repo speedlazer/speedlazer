@@ -3,7 +3,7 @@ Crafty.c 'Sun',
     @requires '2D, WebGL, Collision, Choreography, ViewportFixed, sun'
     @crop(0, 0, 64, 64)
 
-    @attr(w: 20, h: 20, z: -1000).fixViewport()
+    @attr(w: 20, h: 20, z: -1000)
 
     @origin 'center'
     @glare = []

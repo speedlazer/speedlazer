@@ -1,6 +1,6 @@
 Crafty.c 'PlayerClone',
   init: ->
-    @requires 'Enemy, playerShip, ViewportFixed'
+    @requires 'Enemy, playerShip'
 
   playerClone: (attr = {}) ->
     defaultHealth = 300
@@ -14,7 +14,7 @@ Crafty.c 'PlayerClone',
     @origin 'center'
     @colorOverride '#808080', 'partial'
 
-    @enemy().fixViewport()
+    @enemy()
     @bind 'Hit', (data) =>
       if data.projectile.has('Bullet')
         @shiftedX += 2

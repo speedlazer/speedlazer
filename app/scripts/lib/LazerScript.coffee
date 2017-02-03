@@ -61,12 +61,9 @@ class Game.EntityScript extends Game.LazerScript
       return WhenJS({ alive: no, killedAt: (new Date), location: null })
 
     unless @entity.has('PlayerControlledShip')
-      compensate = {}
-      if 'x' in (@entity.fixedAxis ? [])
-        compensate.x = @entity.x - Crafty.viewport.x
-      if 'y' in (@entity.fixedAxis ? [])
-        compensate.y = @entity.y - Crafty.viewport.y
-      @entity.attr compensate
+      @entity.attr
+        x: @entity.x - Crafty.viewport.x
+        y: @entity.y - Crafty.viewport.y
 
     @entity.bind 'Destroyed', =>
       @currentSequence = null

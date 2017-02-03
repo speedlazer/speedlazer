@@ -1,6 +1,6 @@
 Crafty.c 'Drone',
   init: ->
-    @requires 'Enemy, ViewportFixed, standardDrone'
+    @requires 'Enemy, standardDrone'
 
   drone: (attr = {}) ->
     @attr _.defaults(attr,
@@ -13,7 +13,7 @@ Crafty.c 'Drone',
     @collision [2, 25, 8,18, 20,13, 30, 15, 33, 28, 14, 34, 4, 30]
     @attr weaponOrigin: [2, 25]
 
-    @enemy().fixViewport()
+    @enemy()
     @bind 'Hit', (data) =>
       @shiftedX += 5 unless @juice is no
       Crafty.audio.play('hit', 1, .5) unless @juice is no
