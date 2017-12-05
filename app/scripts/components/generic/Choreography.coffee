@@ -205,11 +205,6 @@ Crafty.c 'Choreography',
       # single-last one. (length - 2)
       @_lastBezierPathPoint = @_currentPart.path[@_currentPart.path.length - 2]
 
-    unless @_currentPart.viewport?
-      @_currentPart.viewport =
-        y: Crafty.viewport.y
-
-    shiftedY = (@_currentPart.viewport.y - Crafty.viewport.y)
     point = bp.pointOnPath(@_currentPart.bPath, v)
     ppoint = bp.pointOnPath(@_currentPart.bPath, prevv)
     @shiftedX ?= 0
