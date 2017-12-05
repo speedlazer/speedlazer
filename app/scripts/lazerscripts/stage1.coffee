@@ -245,18 +245,18 @@ class Game.Scripts.Stage1 extends Game.LazerScript
 
   mineSwarm: (options = { direction: 'right' })->
     @placeSquad Game.Scripts.JumpMine,
-      amount: 20
+      amount: 10
       delay: 100
       options:
         gridConfig:
           x:
-            start: 0.1
-            steps: 16
-            stepSize: 0.05
+            start: 0.2
+            steps: 8
+            stepSize: 0.10
           y:
             start: 0.125
-            steps: 12
-            stepSize: 0.05
+            steps: 6
+            stepSize: 0.10
         points: options.points ? yes
         direction: options.direction
 
