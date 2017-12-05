@@ -300,7 +300,7 @@ Game.ScriptModule.Entity =
         .attr(
           w: @entity.w + 10
           x: @entity.x - 5
-          y: @_getSeaLevel() - 10
+          y: @_getSeaLevel() - 10 - Crafty.viewport.y
           h: 20
           z: @entity.z - 1
         )
@@ -308,7 +308,7 @@ Game.ScriptModule.Entity =
     if Game.explosionMode?
       @_waterSplash()
     @entity.addComponent('WaterSplashes')
-    @entity.setSealevel(@_getSeaLevel())
+    @entity.setSealevel(@_getSeaLevel() - Crafty.viewport.y)
 
     if @entity.has('ViewportFixed')
       waterSpot.addComponent('ViewportFixed')
