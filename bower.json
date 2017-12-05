@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "appPath": "app",
   "dependencies": {
-    "crafty": "craftyjs/Crafty#0.8.0-rc1",
+    "crafty": "craftyjs/Crafty",
     "crafty-gamepad": "svenjacobs/crafty-gamepad",
     "jquery": "~1.7.2",
     "jsbezier": "*",
