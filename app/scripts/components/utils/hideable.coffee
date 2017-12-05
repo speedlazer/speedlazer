@@ -19,7 +19,7 @@ Crafty.c 'Hideable',
   hide: (@hideMarker, options) ->
     @hidden = yes
 
-    if options.below and @has('Sprite')
+    if options.below and @has('Sprite') and @rotation == 0
       @hideAt = options.below
       for c in @_children
         c.attr?(hideAt: options.below)
@@ -28,6 +28,7 @@ Crafty.c 'Hideable',
       for c in @_children
         c.attr?(alpha: .0)
     @trigger 'Hiding', this
+    this
 
   reveal: ->
     @hideMarker?.destroy()

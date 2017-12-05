@@ -29,11 +29,11 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
       @moveTo x: .22, y: .45
       @repeat @sequence(
         @parallel(
-          @scale(0.6, duration: 4000)
+          @scale(0.7, duration: 4000)
           @moveTo x: .36, y: .47, speed: 25, easing: 'easeInOutQuad'
         )
         @parallel(
-          @scale(0.4, duration: 4000)
+          @scale(0.5, duration: 4000)
           @moveTo x: .22, y: .5, speed: 25, easing: 'easeInOutQuad'
         )
       )
@@ -55,10 +55,10 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
       @turnAround()
       @while(
         @movePath [
-          [.6, .82]
+          [.62, .68]
         ], speed: 150
         @sequence(
-          @blast(@location(),
+          @blast(@location(offSetX: 0, offsetY: 10),
             radius: 10,
             duration: 480,
             z: -199
@@ -67,7 +67,7 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
             lightness: .2
             alpha: .5
           )
-          @blast(@location(offsetX: 10, offsetY: 5),
+          @blast(@location(offsetX: 10, offsetY: 25),
             radius: 5,
             duration: 180,
             z: -199
