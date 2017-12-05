@@ -22,14 +22,20 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
     @sequence(
       @sendToBackground(0.85, -100)
       @setLocation x: 0.45, y: .4
-      @moveTo x: -.1
+      @moveTo x: -0.3
       @turnAround()
       @wait 200
-      @sendToBackground(0.75, -200)
+      @sendToBackground(0.5, -200)
       @moveTo x: .22, y: .45
       @repeat @sequence(
-        @moveTo x: .36, y: .47, speed: 25, easing: 'easeInOutQuad'
-        @moveTo x: .25, y: .5, speed: 25, easing: 'easeInOutQuad'
+        @parallel(
+          @scale(0.6, duration: 4000)
+          @moveTo x: .36, y: .47, speed: 25, easing: 'easeInOutQuad'
+        )
+        @parallel(
+          @scale(0.4, duration: 4000)
+          @moveTo x: .22, y: .5, speed: 25, easing: 'easeInOutQuad'
+        )
       )
     )
 

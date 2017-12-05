@@ -11,7 +11,13 @@ Crafty.c 'Mine',
 
   mine: (attr = {}) ->
     @crop 4, 4, 25, 25
-    @attr _.defaults(attr, h: 25, w: 25, health: 100)
+    @attr _.defaults(
+      attr,
+      h: 25,
+      w: 25,
+      health: 100
+      weaponOrigin: [12, 12]
+    )
     @origin 'center'
 
     @enemy()
