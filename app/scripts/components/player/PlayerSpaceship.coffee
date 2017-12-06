@@ -87,9 +87,13 @@ Crafty.c 'PlayerSpaceship',
       return if Game.paused
       return if @has('Invincible')
       hit = no
+      damage = 0
       for e in collision
+        if e.obj.damage and e.obj.damage > damage and !e.obj.damageHandled
+          damage = e.obj.damage
+          e.obj.damageHandled = true
         hit = yes unless e.obj.hidden
-      @trigger('Hit') if hit
+      @trigger('Hit', { damage }) if hit
 
     @onHit 'PowerUp', (e) ->
       return if Game.paused
@@ -97,13 +101,23 @@ Crafty.c 'PlayerSpaceship',
         @pickUp(pu.obj) unless pu.obj.pickedUp
 
     @bind 'Hit', ->
+      @addComponent('Invincible').invincibleDuration(1000)
+      Crafty.e('Blast, Explosion').explode(
+        x: @x + (@w / 2)
+        y: @y + (@h / 2)
+        radius: @w / 3
+      )
+      Crafty.audio.play("explosion")
+      Crafty('ScrollWall').get(0).screenShake(10, 500)
+
+    @bind 'Die', ->
       Crafty.e('Blast, Explosion').explode(
         x: @x + (@w / 2)
         y: @y + (@h / 2)
         radius: @w
       )
       Crafty.audio.play("explosion")
-      Crafty('ScrollWall').get(0).screenShake(10, 1000)
+      Crafty('ScrollWall').get(0).screenShake(20, 2000)
       @trigger 'Destroyed', this
 
     @bind 'GameLoop', (fd) ->

@@ -15,12 +15,19 @@ Crafty.c 'Player',
 
     @attr({
       lives: 3 #Infinity,
+      health: 5
+      maxHealth: 5
       points: 0
     })
+
+  loseHealth: (damage) ->
+    @health -= damage
+    @trigger 'UpdateHealth', lives: @health
 
   loseLife: ->
     return unless @lives > 0
     @lives -= 1
+    @health = @maxHealth
     @trigger 'UpdateLives', lives: @lives
 
     if @lives <= 0

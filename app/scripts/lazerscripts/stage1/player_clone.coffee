@@ -24,6 +24,7 @@ class Game.Scripts.PlayerClone extends Game.EntityScript
           w: 9
           h: 9
           speed: 600
+          damage: 1
         ).blink()
         projectile.shoot(x, y, angle)
     p

@@ -4,6 +4,7 @@ Crafty.c 'Enemy',
     @attr
       pointsOnHit: 10
       pointsOnDestroy: 50
+      damage: 2
     @invincible = no
 
   enemy: (options = {}) ->

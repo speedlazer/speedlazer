@@ -42,6 +42,7 @@ Crafty.c 'PlayerInfo',
 
     @listenTo player, 'UpdateLives', @updatePlayerInfo
     @listenTo player, 'UpdatePoints', @updatePlayerInfo
+    @listenTo player, 'UpdateHealth', @updatePlayerInfo
     @listenTo player, 'Activated', => @updatePlayerInfo()
     @listenTo player, 'Deactivated', => @updatePlayerInfo()
     @listenTo player, 'GameLoop', => @updateBoostInfo()
@@ -98,7 +99,7 @@ Crafty.c 'PlayerInfo',
         text = (@player.lives - 1)
         if text is Infinity
           text = 'Demo mode'
-        @lives.text('&nbsp;  ' + text)
+        @lives.text('&nbsp;  ' + text + ':' + Math.max(0, @player.health))
     else
       @lives.text('Press fire to start!')
       @heart.attr(alpha: 0, visible: no)

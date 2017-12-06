@@ -34,6 +34,7 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
             w: 20
             h: 8
             speed: 350
+            damage: 1
           )
 
         projectile.shoot(x, y, angle)
