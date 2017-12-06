@@ -21,7 +21,7 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
     )
     p.addComponent('BurstShot').burstShot
       burstCooldown: 2500
-      burstAmount: 7
+      burstAmount: 4
       angle: -15
       angleDeviation: 10
       aim: 45
@@ -31,8 +31,8 @@ class Game.Scripts.HeliAttack extends Game.EntityScript
           .crop(6, 21, 18, 7)
           .flip()
           .attr(
-            w: 12
-            h: 4
+            w: 20
+            h: 8
             speed: 350
           )
 
