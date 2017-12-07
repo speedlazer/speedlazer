@@ -157,7 +157,7 @@ Crafty.c 'PlayerSpaceship',
 
       # still hitting an object? then we where forced in
       # and are crashed (squashed probably)
-      @trigger('Hit') if @hit('Edge') or @hit('Solid')
+      @trigger('Hit', { damage: 300 }) if @hit('Edge') or @hit('Solid')
 
     this
 
