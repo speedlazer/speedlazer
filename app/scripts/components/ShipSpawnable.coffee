@@ -72,6 +72,12 @@ Crafty.c 'ShipSpawnable',
     @ship.start()
     @listenTo @ship, 'Hit', (d) ->
       @loseHealth(d.damage)
+
+      sprite = 0
+      healthPerc = @health / @maxHealth
+      sprite = 2 if healthPerc < .3
+      @ship.sprite(0, sprite)
+
       if (@health < 0)
         @ship.trigger('Die')
 
