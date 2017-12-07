@@ -55,19 +55,19 @@ Crafty.c 'PlayerInfo',
     playerColor = @player.color()
     @boosts['speedb'] = Crafty.e('2D, UILayerWebGL, speedBoost, ColorEffects')
       .attr(w: 16, h: 16)
-      .attr(x: x + 50, y: 29, z: 200)
+      .attr(x: x, y: 45, z: 200)
       .colorOverride(playerColor, 'partial')
     @boosts['rapidb'] = Crafty.e('2D, UILayerWebGL, rapidFireBoost, ColorEffects')
       .attr(w: 16, h: 16)
-      .attr(x: x + 70, y: 28, z: 200)
+      .attr(x: x + 20, y: 44, z: 200)
       .colorOverride(playerColor, 'partial')
     @boosts['aimb'] = Crafty.e('2D, UILayerWebGL, aimBoost, ColorEffects')
       .attr(w: 16, h: 16)
-      .attr(x: x + 90, y: 28, z: 200)
+      .attr(x: x + 40, y: 44, z: 200)
       .colorOverride(playerColor, 'partial')
     @boosts['damageb'] = Crafty.e('2D, UILayerWebGL, damageBoost, ColorEffects')
       .attr(w: 16, h: 16)
-      .attr(x: x + 110, y: 28, z: 200)
+      .attr(x: x + 50, y: 44, z: 200)
       .colorOverride(playerColor, 'partial')
 
   updateBoostInfo: ->
@@ -99,7 +99,8 @@ Crafty.c 'PlayerInfo',
         text = (@player.lives - 1)
         if text is Infinity
           text = 'Demo mode'
-        @lives.text('&nbsp;  ' + text + ':' + Math.max(0, @player.health))
+        health = Array(Math.max(0, @player.health)).fill('▩').join('')
+        @lives.text('&nbsp;  ' + text + ' ' + health)
     else
       @lives.text('Press fire to start!')
       @heart.attr(alpha: 0, visible: no)
