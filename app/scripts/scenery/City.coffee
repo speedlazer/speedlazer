@@ -304,13 +304,15 @@ class Game.CityScenery extends Game.LevelScenery
           shadow: [16, 12, 2, 1]
           bridgeDeck: [0, 32, 16, 6]
           damagedBridgeDeck: [0, 48, 16, 6]
-          bridgePillar: [32, 29, 6, 17]
-          bridgePillarBroken: [38, 29, 6, 17]
+          bridgePillar: [36, 29, 6, 17]
+          bridgePillarBroken: [42, 29, 6, 17]
           bigGlare: [0, 38, 7, 7]
-          sun: [13, 38, 2, 2]
+          sun: [0, 22, 2, 2]
           directGlare: [7, 38, 6, 6]
+          aircraftCarrier: [13, 38, 23, 6]
+          aircraftCarrierBottom: [13, 44, 23, 4]
 
-generator.defineBlock class extends Game.LevelScenery
+generator.defineBlock class extends Game.CityScenery
   name: 'City.Intro'
   delta:
     x: 1024
@@ -320,34 +322,21 @@ generator.defineBlock class extends Game.LevelScenery
   generate: ->
     super
 
-    shipLength = 700
-
-    #height = 65
-    #@add(0, @level.visibleHeight - 10, Crafty.e('2D, WebGL, Solid, Color').attr(w: @delta.x, h: 90).color('#000080'))
-    #@add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color').attr(w: @delta.x, h: height + 10, z: -300).color('#000080'))
     @addElement 'waterFront'
 
-    height = 45
-    shipHeight = 155
-    cabinHeight = 150
+    #barrelLocator = Crafty.e('2D, BarrelLocation')
 
-    @add(0, @level.visibleHeight - height - shipHeight, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: -23, w: shipLength, h: shipHeight))
-    @add(50, @level.visibleHeight - height - shipHeight - cabinHeight, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: -23, w: 350, h: cabinHeight))
+    e = Crafty.e('2D, WebGL, aircraftCarrier').attr(z: -23)
+    @add(0, @level.visibleHeight - 330, e)
 
-    @elevator = Crafty.e('2D, WebGL, Color, Tween').color('#707070').attr(z: -22, w: 160, h: 5)
-    @add(110, @level.visibleHeight - 70, @elevator)
-
-    @outside = Crafty.e('2D, WebGL, Color, Tween').color('#303030').attr(z: -21, w: shipLength + 10, h: shipHeight - 5, alpha: 0)
-    @add(0, @level.visibleHeight - @outside.h - height, @outside)
-
-    barrelLocator = Crafty.e('2D, BarrelLocation')
-    @add(500, @level.visibleHeight - @outside.h - height, barrelLocator)
+    @outside = Crafty.e('2D, WebGL, aircraftCarrierBottom').attr(z: 20)
+    @add(0, @level.visibleHeight - 330 + (6 * 32), @outside)
 
     @addElement 'water'
     @addElement 'waterHorizon'
 
     frontWave = Crafty.e('2D, WebGL, waterFront1, WaveFront').attr(
-      z: 3
+      z: 30
       w: ((@delta.x + Crafty.viewport.width * .5)) + 1
       h: 200
       lightness: 0.5
@@ -365,20 +354,11 @@ generator.defineBlock class extends Game.LevelScenery
     @level.setForcedSpeed 0
     c = [
         type: 'linear'
-        x: -160
-        easingFn: 'easeInQuad'
-        duration: 1200
-      ,
-        type: 'linear'
-        y: -130
+        y: -70
         duration: 1200
         easingFn: 'easeInOutQuad'
+      ,
         event: 'lift'
-      ,
-        type: 'delay'
-        duration: 500
-        event: 'shipExterior'
-      ,
         type: 'linear'
         x: 70
         y: -10
@@ -415,7 +395,7 @@ generator.defineBlock class extends Game.LevelScenery
       return fixOtherShips(this) unless index is 0
       leadAnimated = this
       @addComponent 'Choreography'
-      @attr x: 360 - (50 * index), y: Crafty.viewport.height - 70 - @h
+      @attr x: 200 - (50 * index), y: Crafty.viewport.height - 70 - @h
       @disableControl()
       @weaponsEnabled = no
       @choreography c
@@ -426,13 +406,11 @@ generator.defineBlock class extends Game.LevelScenery
         @enableControl()
         @weaponsEnabled = yes
       @one 'lift', ->
-        block.elevator.tween({ y: block.elevator.y - 130 }, 1200, 'easeInOutQuad')
+        block.outside.addComponent('Solid')
         Crafty('ScrollWall').each ->
           @addComponent 'Tween'
           @tween { y: 0 }, 2500
           @one 'TweenEnd', -> @removeComponent 'Tween', no
-      @one 'shipExterior', ->
-        block.outside.tween({ alpha: 1 }, 700).addComponent('Solid')
       @one 'go', ->
         block.level.setForcedSpeed block.speed, accelerate: no
 
@@ -582,8 +560,8 @@ generator.defineBlock class extends Game.CityScenery
       d1.half.sprite(16, 32)
       d2.half.sprite(16, 32)
 
-      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise').sprite(38, 29)
-      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise').sprite(38, 29)
+      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise').sprite(42, 29)
+      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise').sprite(42, 29)
       dh = Crafty('BridgeCeiling').get(0).addComponent('TweenPromise')
       level.setForcedSpeed 200, accelerate: yes
 
