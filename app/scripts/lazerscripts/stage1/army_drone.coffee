@@ -33,6 +33,7 @@ class Game.Scripts.Swirler extends Game.Scripts.ArmyDrone
             .attr(
               w: 10
               h: 10
+              damage: 1
             )
           projectile.shoot(x, y, angle)
     d
@@ -150,6 +151,7 @@ class Game.Scripts.Shooter extends Game.Scripts.ArmyDrone
             .attr(
               w: 10
               h: 10
+              damage: 1
             )
           projectile.shoot(x, y, angle)
     d
@@ -223,6 +225,7 @@ class Game.Scripts.CrewShooters extends Game.Scripts.ArmyDrone
             .attr(
               w: 10
               h: 10
+              damage: 1
             )
             .blink()
           projectile.shoot(x, y, angle)

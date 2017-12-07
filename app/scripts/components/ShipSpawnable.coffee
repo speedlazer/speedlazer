@@ -70,6 +70,17 @@ Crafty.c 'ShipSpawnable',
     # We start it after the spawned event, so that listeners can
     # reposition it before
     @ship.start()
+    @listenTo @ship, 'Hit', (d) ->
+      @loseHealth(d.damage)
+
+      sprite = 0
+      healthPerc = @health / @maxHealth
+      sprite = 2 if healthPerc < .3
+      @ship.sprite(0, sprite)
+
+      if (@health < 0)
+        @ship.trigger('Die')
+
     @listenTo @ship, 'Destroyed', ->
       @ship.destroy()
       stats = @ship.stats()

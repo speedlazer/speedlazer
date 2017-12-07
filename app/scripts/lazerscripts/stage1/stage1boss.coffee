@@ -829,6 +829,7 @@ class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
             w: 6
             h: 6
             speed: 650
+            damage: 1
           ).color('#FFFF00')
           projectile.shoot(x, y, angle)
     d

@@ -26,6 +26,7 @@ class Game.Scripts.JumpMine extends Game.EntityScript
             w: 14
             h: 14
             speed: 200
+            damage: 1
           )
         projectile.shoot(x, y, angle)
     )

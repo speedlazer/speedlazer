@@ -13,6 +13,7 @@ Crafty.c 'Invincible',
 
   remove: ->
     @cancelDelay @_blink
+    @alpha = 1.0
 
   invincibleDuration: (duration) ->
     @delay(@_blink, 250, -1)
