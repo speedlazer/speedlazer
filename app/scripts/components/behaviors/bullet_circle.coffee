@@ -10,7 +10,7 @@ Crafty.c 'BulletCircle',
     return if @hidden and !@shootConfig.shootWhenHidden
     @lastShotAt = 0
     @currentBurst += 1
-    wo = @weaponOrigin ? [0, 0]
+    wo = @weaponOrigin || @shootConfig.weaponOrigin || [@w / 2, @h / 2]
     wo[0] *= (@scale ? 1)
     wo[1] *= (@scale ? 1)
 
