@@ -1,9 +1,21 @@
 Crafty.c 'Bullet',
   init: ->
-    @requires '2D, WebGL, sphere1, Collision'
+    @requires '2D, WebGL, sphere1, Collision, ColorEffects'
     @crop 6, 21, 18, 7
 
   fire: (properties) ->
+    c = {}
+    basicC = {
+      _red: 255
+      _green: 255
+      _blue: 255
+    }
+    Crafty.assignColor(properties.ship.playerColor, c)
+    for comp in ['_red', '_green', '_blue']
+      newC = (c[comp] + basicC[comp] + basicC[comp]) / 3
+      c[comp] = newC
+
+    @colorOverride(c)
     @attr(
       damage: properties.damage
       speed: properties.speed

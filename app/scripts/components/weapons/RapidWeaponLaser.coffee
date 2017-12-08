@@ -1,6 +1,6 @@
 Crafty.c 'RapidWeaponLaser',
   init: ->
-    @requires '2D,WebGL,muzzleFlash'
+    @requires '2D,WebGL,muzzleFlash,ColorEffects'
     @attr
       w: 30
       h: 16
@@ -22,6 +22,19 @@ Crafty.c 'RapidWeaponLaser',
     @unbind 'GameLoop', @_autoFire
 
   install: (@ship) ->
+    c = {}
+    basicC = {
+      _red: 255
+      _green: 255
+      _blue: 255
+    }
+    Crafty.assignColor(@ship.playerColor, c)
+    for comp in ['_red', '_green', '_blue']
+      newC = (c[comp] + basicC[comp] + basicC[comp]) / 3
+      c[comp] = newC
+
+    @colorOverride(c)
+
     @attr
       x: @ship.x + 38
       y: @ship.y + 22
