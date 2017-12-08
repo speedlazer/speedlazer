@@ -309,8 +309,29 @@ class Game.CityScenery extends Game.LevelScenery
           bigGlare: [0, 38, 7, 7]
           sun: [0, 22, 2, 2]
           directGlare: [7, 38, 6, 6]
-          aircraftCarrier: [13, 38, 23, 6]
-          aircraftCarrierBottom: [13, 44, 23, 4]
+          aircraftCarrierEnd: [30, 43, 6, 5]
+          aircraftCarrierBottomFlat: [19, 45, 6, 3]
+          aircraftCarrierTopFlat: [26, 43, 4, 2]
+
+          aircraftCarrierOpenHatch: [31, 40, 5, 1]
+
+          aircraftCarrierCabinEnd: [24, 38, 2, 7]
+          aircraftCarrierCabin: [22, 38, 2, 7]
+          aircraftCarrierCabinRadar: [20, 38, 2, 7]
+          aircraftCarrierCabinStart: [19, 38, 1, 7]
+
+Crafty.c('carrierHatch', {
+  init: ->
+    @requires '2D, WebGL, aircraftCarrierOpenHatch, SpriteAnimation'
+    @attr(z: -10)
+    @crop 0, 2, 5*32, 32
+
+    @reel 'open', 1000, [
+      [31, 40]
+      [31, 38]
+      [31, 39]
+    ]
+})
 
 generator.defineBlock class extends Game.CityScenery
   name: 'City.Intro'
@@ -324,13 +345,52 @@ generator.defineBlock class extends Game.CityScenery
 
     @addElement 'waterFront'
 
-    #barrelLocator = Crafty.e('2D, BarrelLocation')
+    barrelLocator = Crafty.e('2D, BarrelLocation')
+    @add(550, @level.visibleHeight - 330 + (7*32), barrelLocator)
 
-    e = Crafty.e('2D, WebGL, aircraftCarrier').attr(z: -23)
-    @add(0, @level.visibleHeight - 330, e)
+    @outside = Crafty.e('2D, WebGL').attr({
+      w: 25 * 32
+      h: 4 * 32
+    })
+    @add(0, @level.visibleHeight - 330 + (7 * 32), @outside)
 
-    @outside = Crafty.e('2D, WebGL, aircraftCarrierBottom').attr(z: 20)
-    @add(0, @level.visibleHeight - 330 + (6 * 32), @outside)
+    end = Crafty.e('2D, WebGL, aircraftCarrierEnd').attr(z: -13)
+    @add(22*32, @level.visibleHeight - 330 + (5*32), end)
+
+    p1hatch = Crafty.e('carrierHatch')
+    @add((5*32) + 100, @level.visibleHeight - 330 + (6*32), p1hatch)
+
+    p2hatch = Crafty.e('carrierHatch')
+    @add((5*32) - 100, @level.visibleHeight - 330 + (6*32), p2hatch)
+
+    for i in [0..3]
+      bottom = Crafty.e('2D, WebGL, aircraftCarrierBottomFlat').attr(z: 20)
+      @add(((i * 6)*32) - 64, @level.visibleHeight - 330 + (7*32), bottom)
+
+    for i in [4, 5]
+      top = Crafty.e('2D, WebGL, aircraftCarrierTopFlat').attr(z: -13)
+      @add(((i * 4)*32) - 64, @level.visibleHeight - 330 + (5*32), top)
+
+    top = Crafty.e('2D, WebGL, aircraftCarrierTopFlat').attr(z: -13)
+    @add(-32, @level.visibleHeight - 330 + (5*32), top)
+
+    cend = Crafty.e('2D, WebGL, aircraftCarrierCabinEnd').attr(z: -13)
+    @add((32 * 12), @level.visibleHeight - 330, cend)
+
+    c3 = Crafty.e('2D, WebGL, aircraftCarrierCabin').attr(z: -13)
+    @add((32 * 10), @level.visibleHeight - 330, c3)
+
+    c2 = Crafty.e('2D, WebGL, aircraftCarrierCabin').attr(z: -13)
+    @add((32 * 8), @level.visibleHeight - 330, c2)
+
+    c1 = Crafty.e('2D, WebGL, aircraftCarrierCabin').attr(z: -13)
+    @add((32 * 4), @level.visibleHeight - 330, c1)
+
+    cRadar = Crafty.e('2D, WebGL, aircraftCarrierCabinRadar').attr(z: -13)
+    @add((32 * 6), @level.visibleHeight - 330, cRadar)
+
+    cStart = Crafty.e('2D, WebGL, aircraftCarrierCabinStart').attr(z: -13)
+    @add((32 * 3), @level.visibleHeight - 330, cStart)
 
     @addElement 'water'
     @addElement 'waterHorizon'
@@ -353,8 +413,15 @@ generator.defineBlock class extends Game.CityScenery
     Crafty('ScrollWall').attr y: 120
     @level.setForcedSpeed 0
     c = [
+        type: 'delay'
+        duration: 1000
+      ,
+        type: 'delay'
+        duration: 1000
+        event: 'openHatch'
+      ,
         type: 'linear'
-        y: -70
+        y: -80
         duration: 1200
         easingFn: 'easeInOutQuad'
       ,
@@ -379,7 +446,7 @@ generator.defineBlock class extends Game.CityScenery
     fixOtherShips = (newShip) ->
       return unless leadAnimated
       return unless leadAnimated.has 'Choreography'
-      newShip.attr(x: leadAnimated.x - newShip.w - 10, y: leadAnimated.y)
+      newShip.attr(x: leadAnimated.x - 200, y: leadAnimated.y)
       newShip.disableControl() if leadAnimated.disableControls
       newShip.addComponent 'Choreography'
       newShip.synchChoreography leadAnimated
@@ -395,7 +462,7 @@ generator.defineBlock class extends Game.CityScenery
       return fixOtherShips(this) unless index is 0
       leadAnimated = this
       @addComponent 'Choreography'
-      @attr x: 200 - (50 * index), y: Crafty.viewport.height - 70 - @h
+      @attr x: 300 - (200 * index), y: Crafty.viewport.height - 50 - @h
       @disableControl()
       @weaponsEnabled = no
       @choreography c
@@ -405,8 +472,13 @@ generator.defineBlock class extends Game.CityScenery
       @one 'unlock', ->
         @enableControl()
         @weaponsEnabled = yes
+      @one 'openHatch', ->
+        Crafty('carrierHatch').each ->
+          @animate('open')
       @one 'lift', ->
         block.outside.addComponent('Solid')
+        Crafty('aircraftCarrierBottomFlat').each ->
+          @attr(z: -13)
         Crafty('ScrollWall').each ->
           @addComponent 'Tween'
           @tween { y: 0 }, 2500
