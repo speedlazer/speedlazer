@@ -331,6 +331,12 @@ Crafty.c('carrierHatch', {
       [31, 38]
       [31, 39]
     ]
+
+    @reel 'close', 1000, [
+      [31, 39]
+      [31, 38]
+      [31, 40]
+    ]
 })
 
 generator.defineBlock class extends Game.CityScenery
@@ -356,6 +362,26 @@ generator.defineBlock class extends Game.CityScenery
 
     end = Crafty.e('2D, WebGL, aircraftCarrierEnd').attr(z: -13)
     @add(22*32, @level.visibleHeight - 330 + (5*32), end)
+
+    water = Crafty.e('2D, WebGL, WaterSplashes')
+      .attr(
+        z: 30
+        w: 32 * 25
+        h: 32 * 5
+        alpha: 0.3
+      )
+      .setSealevel(@level.visibleHeight + 10)
+      .attr({
+        waterRadius: 8
+        minSplashDuration: 1700
+        defaultWaterCooldown: 800
+        waterSplashSpeed: 700
+        minOffset: 2
+        waterAlpha: .9
+        splashUpwards: false
+      })
+
+    @add(0, @level.visibleHeight - 330 + (5 * 32), water)
 
     p1hatch = Crafty.e('carrierHatch')
     @add((5*32) + 100, @level.visibleHeight - 330 + (6*32), p1hatch)
@@ -477,6 +503,8 @@ generator.defineBlock class extends Game.CityScenery
           @animate('open')
       @one 'lift', ->
         block.outside.addComponent('Solid')
+        Crafty('carrierHatch').each ->
+          @animate('close')
         Crafty('aircraftCarrierBottomFlat').each ->
           @attr(z: -13)
         Crafty('ScrollWall').each ->

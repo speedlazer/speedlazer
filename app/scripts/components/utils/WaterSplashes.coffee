@@ -3,15 +3,21 @@ Crafty.c 'WaterSplashes',
     @bind 'GameLoop', @_waterSplashes
     @cooldown = 0
     @defaultWaterCooldown ?= 70
+    @waterRadius ?= 5
+    @minSplashDuration ?= 210
     @detectionOffset = 0
     @minOffset = -10
+    @waterAlpha ?= .6
+    @splashUpwards = false
 
   remove: ->
     @unbind 'GameLoop', @_waterSplashes
 
   setSealevel: (@sealevel) ->
+    this
 
   setDetectionOffset: (@detectionOffset, @minOffset = -10) ->
+    this
 
   _waterSplashes: (fd) ->
     return if window.Game.explosionMode?
@@ -20,7 +26,7 @@ Crafty.c 'WaterSplashes',
       speed = @waterSplashSpeed ? @defaultSpeed
       @cooldown = @defaultWaterCooldown
       upwards = 1
-      if @_lastWaterY isnt @y
+      if @_lastWaterY isnt @y and @splashUpwards
         upwards = (speed - 20) / 30
 
       upwards *= @scale ? 1
@@ -40,11 +46,11 @@ Crafty.c 'WaterSplashes',
               x: @x + (i * coverage) + (pos * coverage)
               y: @sealevel + @minOffset
               z: @z + 3
-              duration: 210 + (Math.random() * 100)
-              radius: 5
+              duration: @minSplashDuration + (Math.random() * 100)
+              radius: @waterRadius
               topDesaturation: @topDesaturation
               bottomDesaturation: @bottomDesaturation
-              alpha: .6
+              alpha: @waterAlpha
               gravity: 0.2
               ->
                 gravity: @gravity + 0.3
