@@ -377,7 +377,6 @@ generator.defineBlock class extends Game.CityScenery
         defaultWaterCooldown: 800
         waterSplashSpeed: 700
         minOffset: 2
-        waterAlpha: .9
         splashUpwards: false
       })
 
