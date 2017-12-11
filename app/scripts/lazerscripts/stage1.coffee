@@ -119,7 +119,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
         @gainHeight(-150, duration: 4000)
         @sequence(
           @wait 2000
-          @underWaterAttacks()
+          @underWaterAttacks2()
         )
       )
     )
@@ -127,9 +127,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   enteringLand: ->
     @sequence(
       @checkpoint @checkpointStart('CoastStart', 93000)
-      @setScenery('BayStart')
-      @droneShip()
       @mineSwarm()
+      @droneShip()
+      @setScenery('BayStart')
       @underWaterAttacks()
     )
 
@@ -239,6 +239,13 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @placeSquad Game.Scripts.Stalker,
         drop: 'pool'
       @repeat 2, @stalkerShootout()
+    )
+
+  underWaterAttacks2: ->
+    @sequence(
+      @stalkerShootout()
+      @droneShip()
+      @stalkerShootout()
     )
 
   sunRise: (options = { skipTo: 0 }) ->
