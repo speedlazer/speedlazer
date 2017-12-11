@@ -128,6 +128,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     @sequence(
       @checkpoint @checkpointStart('CoastStart', 93000)
       @setScenery('BayStart')
+      @droneShip()
       @mineSwarm()
       @underWaterAttacks()
     )
@@ -259,6 +260,10 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             stepSize: 0.10
         points: options.points ? yes
         direction: options.direction
+
+  droneShip: ->
+    @placeSquad Game.Scripts.DroneShip,
+      drop: 'pool'
 
   stalkerShootout: ->
     @parallel(

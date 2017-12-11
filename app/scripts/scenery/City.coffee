@@ -310,6 +310,7 @@ class Game.CityScenery extends Game.LevelScenery
           sun: [0, 22, 2, 2]
           directGlare: [7, 38, 6, 6]
           aircraftCarrierEnd: [30, 43, 6, 5]
+          aircraftCarrierStart: [13, 43, 6, 5]
           aircraftCarrierBottomFlat: [19, 45, 6, 3]
           aircraftCarrierTopFlat: [26, 43, 4, 2]
 
