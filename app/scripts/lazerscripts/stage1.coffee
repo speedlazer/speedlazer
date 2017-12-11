@@ -47,7 +47,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setScenery('Intro')
       @sunRise()
       @cameraCrew()
-      @async @runScript Game.Scripts.IntroBarrel
+      @async @runScript Game.Scripts.IntroBarrel, index: 0
+      @async @runScript Game.Scripts.IntroBarrel, index: 1
       @if((-> @player(1).active and @player(2).active)
         @say 'General', 'Time to get the last 2 ships to the factory\n' +
           'to install the AI controlled defence systems', noise: 'low'

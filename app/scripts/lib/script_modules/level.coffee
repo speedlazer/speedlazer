@@ -364,12 +364,15 @@ Game.ScriptModule.Level =
       return WhenJS() if @_skippingToCheckpoint()
       Crafty.e('BigText').bigText(text, options)
 
-  pickTarget: (selection) ->
+  pickTarget: (selection, index = null) ->
     (sequence) =>
       pickTarget = (selection) ->
         entities = Crafty(selection)
         return null if entities.length is 0
-        entities.get Math.floor(Math.random() * entities.length)
+        if index is null
+          entities.get Math.floor(Math.random() * entities.length)
+        else
+          entities.get index
 
       # TODO: When this script is done, unbind events
       refreshTarget = (ship) =>
