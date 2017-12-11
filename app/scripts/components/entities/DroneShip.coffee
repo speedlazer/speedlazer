@@ -28,6 +28,19 @@ Crafty.c 'DroneShip',
     )
     @attach(end)
 
+    start2 = Crafty.e('2D, WebGL, aircraftCarrierStart').attr(
+      x: @x
+      y: @y + 60
+      z: 3
+    ).crop(0, 60, 6*32, 5*32)
+    @attach(start2)
+    end2 = Crafty.e('2D, WebGL, aircraftCarrierEnd').attr(
+      x: @x + 6 * 32
+      y: @y + 60
+      z: 3
+    ).crop(0, 60, 6*32, 5*32)
+    @attach(end2)
+
     @hatch = Crafty.e('carrierHatch').attr(
       x: @x + 3 * 32
       y: @y + 28
