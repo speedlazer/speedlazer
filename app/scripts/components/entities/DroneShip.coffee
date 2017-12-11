@@ -21,6 +21,14 @@ Crafty.c 'DroneShip',
       z: @z
     )
     @attach(start)
+
+    radar = Crafty.e('2D, WebGL, aircraftCarrierRadar').attr(
+      x: @x + 8 * 32
+      y: @y - 24
+      z: @z + 1
+    )
+    @attach(radar)
+
     end = Crafty.e('2D, WebGL, aircraftCarrierEnd').attr(
       x: @x + 6 * 32
       y: @y
