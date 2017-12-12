@@ -46,7 +46,7 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setSpeed 100
       @setScenery('Intro')
       @sunRise()
-      @cameraCrew()
+      @async @placeSquad(Game.Scripts.CameraCrew)
       @async @runScript Game.Scripts.IntroBarrel, index: 0
       @async @runScript Game.Scripts.IntroBarrel, index: 1
       @if((-> @player(1).active and @player(2).active)
@@ -100,9 +100,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @async @chapterTitle(1, 'Hacked')
     )
 
-  cameraCrew: ->
-    @async @placeSquad(Game.Scripts.CameraCrew)
-
   oceanFighting: ->
     @sequence(
       @checkpoint @checkpointStart('Ocean', 45000)
@@ -118,9 +115,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @swirlAttacks()
       @parallel(
         @gainHeight(-150, duration: 4000)
+        @wait 2000
         @sequence(
-          @wait 2000
-          @underWaterAttacks2()
+          @stalkerShootout()
+          @droneShip()
+          @stalkerShootout()
         )
       )
     )
@@ -130,6 +129,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @checkpoint @checkpointStart('CoastStart', 93000)
       @mineSwarm()
       @droneShip()
+      @mineSwarm()
+      @droneShip() # Bossfight
       @setScenery('BayStart')
       @underWaterAttacks()
     )
@@ -243,11 +244,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
     )
 
   underWaterAttacks2: ->
-    @sequence(
-      @stalkerShootout()
-      @droneShip()
-      @stalkerShootout()
-    )
 
   sunRise: (options = { skipTo: 0 }) ->
     @async @runScript(Game.Scripts.SunRise, _.extend({ speed: 2 }, options))

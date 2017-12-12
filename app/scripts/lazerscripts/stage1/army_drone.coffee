@@ -17,7 +17,7 @@ class Game.Scripts.ShipDrone extends Game.Scripts.ArmyDrone
 
   spawn: (options) ->
     d = Crafty.e('Drone').drone(
-      x: Crafty.viewport.width * .35
+      x: Crafty.viewport.width * .15
       y: Crafty.viewport.height * .9
       defaultSpeed: options.speed ? 300
       juice: options.juice
@@ -41,7 +41,7 @@ class Game.Scripts.ShipDrone extends Game.Scripts.ArmyDrone
   execute: ->
     @bindSequence 'Destroyed', @onKilled
     @movePath [
-      [.35, .21]
+      [.15, .21]
       [.156, .5]
       [.5, .833]
       [.86, .52]

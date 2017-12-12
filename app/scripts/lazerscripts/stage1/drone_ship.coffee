@@ -7,12 +7,12 @@ class Game.Scripts.DroneShip extends Game.EntityScript
     Crafty.e('DroneShip').attr(
       x: Crafty.viewport.width + 180
       y: 450
-      defaultSpeed: options.speed ? 200
+      defaultSpeed: options.speed ? 350
     ).setSealevel(@level.visibleHeight + 10)
 
   execute: ->
     @sequence(
-      @moveTo(x: 0.2)
+      @moveTo(x: 0.02)
       => @entity.open()
       @wait(1000)
       @parallel(

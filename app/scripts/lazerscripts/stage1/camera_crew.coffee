@@ -10,7 +10,7 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
     Crafty.e('CameraCrew, Horizon')
       .attr(
         x: (Crafty.viewport.width * .2) - Crafty.viewport.x
-        y: Crafty.viewport.height * .2
+        y: Crafty.viewport.height * .15
         defaultSpeed: 100
         topDesaturation: 0.3
         bottomDesaturation: 0.3
@@ -20,9 +20,9 @@ class Game.Scripts.CameraCrew extends Game.EntityScript
     @entity.colorDesaturation Game.backgroundColor
     @bindSequence 'Hit', @crash
     @sequence(
-      @sendToBackground(0.85, -100)
+      @sendToBackground(0.85, -1)
       @setLocation x: 0.45, y: .4
-      @moveTo x: -0.3
+      @moveTo x: -0.3, speed: 200
       @turnAround()
       @wait 200
       @sendToBackground(0.5, -200)

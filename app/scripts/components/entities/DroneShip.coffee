@@ -5,7 +5,7 @@ Crafty.c 'DroneShip',
     @attr(
       w: 32 * 12
       h: 32 * 5
-      z: -13
+      z: 6
       waterRadius: 8
       minSplashDuration: 1700
       defaultWaterCooldown: 800
@@ -18,21 +18,21 @@ Crafty.c 'DroneShip',
     start = Crafty.e('2D, WebGL, aircraftCarrierStart').attr(
       x: @x
       y: @y
-      z: @z
+      z: -13
     )
     @attach(start)
 
     radar = Crafty.e('2D, WebGL, aircraftCarrierRadar').attr(
       x: @x + 8 * 32
       y: @y - 24
-      z: @z + 1
+      z: -12
     )
     @attach(radar)
 
     end = Crafty.e('2D, WebGL, aircraftCarrierEnd').attr(
       x: @x + 6 * 32
       y: @y
-      z: @z
+      z: -13
     )
     @attach(end)
 
