@@ -218,10 +218,10 @@ Game.ScriptModule.Entity =
 
       _.extend(settings, extraSettings)
 
-      if settings.x? and (-1 < settings.x < 2)
+      if settings.x? and (-2 < settings.x < 2)
         settings.x *= Crafty.viewport.width
 
-      if settings.y? and (-1 < settings.y < 2)
+      if settings.y? and (-2 < settings.y < 2)
         settings.y *= Crafty.viewport.height
 
       if settings.positionType is 'absoluteY'

@@ -312,6 +312,7 @@ class Game.CityScenery extends Game.LevelScenery
           aircraftCarrierEnd: [30, 43, 6, 5]
           aircraftCarrierStart: [13, 43, 6, 5]
           aircraftCarrierBottomFlat: [19, 45, 6, 3]
+          aircraftCarrierBottomSpace: [25, 45, 4, 3]
           aircraftCarrierTopFlat: [26, 43, 4, 2]
 
           aircraftCarrierOpenHatch: [31, 40, 5, 1]

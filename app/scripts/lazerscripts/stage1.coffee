@@ -130,9 +130,15 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @mineSwarm()
       @droneShip()
       @mineSwarm()
-      @droneShip() # Bossfight
+      @shipBossFight() # Bossfight
       @setScenery('BayStart')
       @underWaterAttacks()
+    )
+
+  shipBossFight: ->
+    @sequence(
+      @checkpoint @checkpointStart('Coast', 93000)
+      @placeSquad Game.Scripts.ShipBoss
     )
 
   cityBay: ->
