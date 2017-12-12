@@ -3,10 +3,9 @@ Game.Scripts ||= {}
 
 class Game.Scripts.IntroBarrel extends Game.EntityScript
 
-  spawn: ->
-    Crafty.e('2D, WebGL, Tween, Color, Collision, Choreography, Hideable')
-      .color('#606000')
-      .attr({ z: 3, w: 10, h: 15, defaultSpeed: 150 })
+  spawn: (@options = {}) ->
+    Crafty.e('2D, WebGL, Tween, boxes, Collision, Choreography, Hideable')
+      .attr({ z: 23, defaultSpeed: 150 })
       .onHit 'PlayerControlledShip', (c) ->
         return if Game.paused
         @trigger('Knock', c[0].obj)
@@ -14,7 +13,7 @@ class Game.Scripts.IntroBarrel extends Game.EntityScript
   execute: ->
     @bindSequence 'Knock', @knockedOff
     @sequence(
-      @pickTarget('BarrelLocation')
+      @pickTarget('BoxesLocation', @options.index)
       @setLocation(@targetLocation(offsetY: -15))
       @wait 20000
     )
@@ -22,6 +21,7 @@ class Game.Scripts.IntroBarrel extends Game.EntityScript
   knockedOff: (player) ->
     player.trigger 'BonusPoints', points: 25, location: @location()
     @parallel(
+      => @entity.sprite(28, 38)
       @moveTo y: 1.25
       @rotate 90, 1500
     )

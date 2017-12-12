@@ -139,13 +139,25 @@ class Game.Scripts.Stage1Boss extends Game.EntityScript
 
 class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
   spawn: ->
-    Crafty.e('LargeDrone, Horizon').drone(
+    Crafty.e('LargeDrone, Horizon, BulletCircle').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       defaultSpeed: 100
       health: 23000
       #defaultSpeed: 50
       pointsOnHit: 10
+    ).bulletCircle(
+      burstAmount: 16
+      projectile: (x, y, angle) =>
+        projectile = Crafty.e('Sphere, Hostile, Projectile')
+          .blink()
+          .attr(
+            w: 14
+            h: 14
+            speed: 200
+            damage: 1
+          )
+        projectile.shoot(x, y, angle)
     )
 
   execute: ->
@@ -174,7 +186,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
       # fase 1
       @repeat @sequence(
-        @repeat 2, @rocketStrikeDance()
+        @rocketStrikeDance()
         @mineFieldStrike()
       )
     )
@@ -220,9 +232,17 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
 
   bombRaid: (armed = no) ->
     @sequence(
-      @bigExplosion()
-      @wait 200
-      @bigExplosion()
+      @while(
+        @moveTo(x: .8, speed: 200, easing: 'easeInOutQuad')
+        @sequence(
+          @bigExplosion()
+          @wait 200
+        )
+      )
+      @repeat(5, @sequence(
+        => @entity.shootRing()
+        @wait 300
+      ))
 
       @moveTo(y: .1, speed: 200, easing: 'easeInOutQuad')
       @while(
@@ -291,6 +311,10 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
     @sequence(
       @cancelBullets('Mine')
       @cancelBullets('shadow')
+      @repeat(5, @sequence(
+        => @entity.shootRing()
+        @wait 300
+      ))
       @invincible yes
       @while(
         @moveTo(x: .6, y: .90, speed: 50)
@@ -859,7 +883,7 @@ class Game.Scripts.Stage1BossMineField extends Game.EntityScript
     Crafty.e('Mine').mine(
       x: location.x
       y: location.y + 36
-      defaultSpeed: options.speed ? 200
+      defaultSpeed: options.speed ? 250
       pointsOnHit: if options.points then 10 else 0
       pointsOnDestroy: if options.points then 50 else 0
     )

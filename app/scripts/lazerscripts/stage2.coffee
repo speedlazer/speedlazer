@@ -33,9 +33,10 @@ class Game.Scripts.Stage2 extends Game.LazerScript
       )
       @setScenery 'Skyline2'
       # Add enemies during decent
+      @chapterTitle(2, 'Underground')
+      @showText 'Get Ready', color: '#00FF00', mode: 'blink', blink_amount: 3, blink_speed: 300
       @parallel(
         @gainHeight(-1300, duration: 30000)
-        @chapterTitle(2, 'Underground')
         @placeSquad Game.Scripts.HeliAttack,
           amount: 3
           delay: 6000

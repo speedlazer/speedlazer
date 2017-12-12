@@ -1,7 +1,7 @@
 Crafty.c 'Sun',
   init: ->
     @requires '2D, WebGL, Collision, Choreography, ViewportFixed, sun'
-    @crop(0, 0, 64, 64)
+    @crop(0, 1, 64, 64)
 
     @attr(w: 20, h: 20, z: -1000)
 

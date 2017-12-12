@@ -46,8 +46,9 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @setSpeed 100
       @setScenery('Intro')
       @sunRise()
-      @cameraCrew()
-      @async @runScript Game.Scripts.IntroBarrel
+      @async @placeSquad(Game.Scripts.CameraCrew)
+      @async @runScript Game.Scripts.IntroBarrel, index: 0
+      @async @runScript Game.Scripts.IntroBarrel, index: 1
       @if((-> @player(1).active and @player(2).active)
         @say 'General', 'Time to get the last 2 ships to the factory\n' +
           'to install the AI controlled defence systems', noise: 'low'
@@ -99,9 +100,6 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @async @chapterTitle(1, 'Hacked')
     )
 
-  cameraCrew: ->
-    @async @placeSquad(Game.Scripts.CameraCrew)
-
   oceanFighting: ->
     @sequence(
       @checkpoint @checkpointStart('Ocean', 45000)
@@ -117,9 +115,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @swirlAttacks()
       @parallel(
         @gainHeight(-150, duration: 4000)
+        @wait 2000
         @sequence(
-          @wait 2000
-          @underWaterAttacks()
+          @stalkerShootout()
+          @droneShip()
+          @stalkerShootout()
         )
       )
     )
@@ -127,8 +127,11 @@ class Game.Scripts.Stage1 extends Game.LazerScript
   enteringLand: ->
     @sequence(
       @checkpoint @checkpointStart('CoastStart', 93000)
-      @setScenery('BayStart')
       @mineSwarm()
+      @droneShip()
+      @mineSwarm()
+      @droneShip() # Bossfight
+      @setScenery('BayStart')
       @underWaterAttacks()
     )
 
@@ -240,6 +243,8 @@ class Game.Scripts.Stage1 extends Game.LazerScript
       @repeat 2, @stalkerShootout()
     )
 
+  underWaterAttacks2: ->
+
   sunRise: (options = { skipTo: 0 }) ->
     @async @runScript(Game.Scripts.SunRise, _.extend({ speed: 2 }, options))
 
@@ -259,6 +264,10 @@ class Game.Scripts.Stage1 extends Game.LazerScript
             stepSize: 0.10
         points: options.points ? yes
         direction: options.direction
+
+  droneShip: ->
+    @placeSquad Game.Scripts.DroneShip,
+      drop: 'pool'
 
   stalkerShootout: ->
     @parallel(

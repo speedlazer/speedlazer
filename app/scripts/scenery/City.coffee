@@ -304,13 +304,47 @@ class Game.CityScenery extends Game.LevelScenery
           shadow: [16, 12, 2, 1]
           bridgeDeck: [0, 32, 16, 6]
           damagedBridgeDeck: [0, 48, 16, 6]
-          bridgePillar: [32, 29, 6, 17]
-          bridgePillarBroken: [38, 29, 6, 17]
+          bridgePillar: [36, 29, 6, 17]
+          bridgePillarBroken: [42, 29, 6, 17]
           bigGlare: [0, 38, 7, 7]
-          sun: [13, 38, 2, 2]
+          sun: [0, 22, 2, 2]
           directGlare: [7, 38, 6, 6]
+          aircraftCarrierEnd: [30, 43, 6, 5]
+          aircraftCarrierStart: [13, 43, 6, 5]
+          aircraftCarrierBottomFlat: [19, 45, 6, 3]
+          aircraftCarrierTopFlat: [26, 43, 4, 2]
 
-generator.defineBlock class extends Game.LevelScenery
+          aircraftCarrierOpenHatch: [31, 40, 5, 1]
+
+          aircraftCarrierCabinEnd: [24, 38, 2, 7]
+          aircraftCarrierCabin: [22, 38, 2, 7]
+          aircraftCarrierCabinRadar: [20, 38, 2, 7]
+          aircraftCarrierCabinStart: [19, 38, 1, 7]
+          aircraftCarrierRadar: [26, 38, 2, 2]
+          aircraftCarrierAntenna: [29, 38, 2, 3]
+          boxes: [28, 39, 1, 1]
+          boxesFalling: [28, 38, 1, 1]
+
+Crafty.c('carrierHatch', {
+  init: ->
+    @requires '2D, WebGL, aircraftCarrierOpenHatch, SpriteAnimation'
+    @attr(z: -10)
+    @crop 0, 2, 5*32, 32
+
+    @reel 'open', 1000, [
+      [31, 40]
+      [31, 38]
+      [31, 39]
+    ]
+
+    @reel 'close', 1000, [
+      [31, 39]
+      [31, 38]
+      [31, 40]
+    ]
+})
+
+generator.defineBlock class extends Game.CityScenery
   name: 'City.Intro'
   delta:
     x: 1024
@@ -320,34 +354,97 @@ generator.defineBlock class extends Game.LevelScenery
   generate: ->
     super
 
-    shipLength = 700
-
-    #height = 65
-    #@add(0, @level.visibleHeight - 10, Crafty.e('2D, WebGL, Solid, Color').attr(w: @delta.x, h: 90).color('#000080'))
-    #@add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color').attr(w: @delta.x, h: height + 10, z: -300).color('#000080'))
     @addElement 'waterFront'
 
-    height = 45
-    shipHeight = 155
-    cabinHeight = 150
+    barrelLocator = Crafty.e('2D, BoxesLocation')
+    @add(550, @level.visibleHeight - 340 + (7*32), barrelLocator)
 
-    @add(0, @level.visibleHeight - height - shipHeight, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: -23, w: shipLength, h: shipHeight))
-    @add(50, @level.visibleHeight - height - shipHeight - cabinHeight, Crafty.e('2D, WebGL, Color').color('#202020').attr(z: -23, w: 350, h: cabinHeight))
+    barrelLocator = Crafty.e('2D, BoxesLocation')
+    @add(550 + 64, @level.visibleHeight - 340 + (7*32), barrelLocator)
 
-    @elevator = Crafty.e('2D, WebGL, Color, Tween').color('#707070').attr(z: -22, w: 160, h: 5)
-    @add(110, @level.visibleHeight - 70, @elevator)
+    barrelLocator = Crafty.e('2D, WebGL, boxes').attr(z: -8)
+    @add(550 + 72, @level.visibleHeight - 340 + (5*32), barrelLocator)
 
-    @outside = Crafty.e('2D, WebGL, Color, Tween').color('#303030').attr(z: -21, w: shipLength + 10, h: shipHeight - 5, alpha: 0)
-    @add(0, @level.visibleHeight - @outside.h - height, @outside)
+    @outside = Crafty.e('2D, WebGL').attr({
+      w: 25 * 32
+      h: 4 * 32
+    })
+    @add(0, @level.visibleHeight - 330 + (7 * 32), @outside)
 
-    barrelLocator = Crafty.e('2D, BarrelLocation')
-    @add(500, @level.visibleHeight - @outside.h - height, barrelLocator)
+    end = Crafty.e('2D, WebGL, aircraftCarrierEnd').attr(z: -13)
+    @add(22*32, @level.visibleHeight - 330 + (5*32), end)
+
+    water = Crafty.e('2D, WebGL, WaterSplashes')
+      .attr(
+        z: 30
+        w: 32 * 25
+        h: 32 * 5
+        alpha: 0.3
+      )
+      .setSealevel(@level.visibleHeight + 10)
+      .attr({
+        waterRadius: 8
+        minSplashDuration: 1700
+        defaultWaterCooldown: 800
+        waterSplashSpeed: 700
+        minOffset: 2
+        splashUpwards: false
+      })
+
+    @add(0, @level.visibleHeight - 330 + (5 * 32), water)
+
+    p1hatch = Crafty.e('carrierHatch')
+    @add((5*32) + 100, @level.visibleHeight - 330 + (6*32), p1hatch)
+
+    p2hatch = Crafty.e('carrierHatch')
+    @add((5*32) - 100, @level.visibleHeight - 330 + (6*32), p2hatch)
+
+    for i in [0..3]
+      bottom = Crafty.e('2D, WebGL, aircraftCarrierBottomFlat').attr(z: 20)
+      @add(((i * 6)*32) - 64, @level.visibleHeight - 330 + (7*32), bottom)
+
+    for i in [4, 5]
+      top = Crafty.e('2D, WebGL, aircraftCarrierTopFlat').attr(z: -13)
+      @add(((i * 4)*32) - 64, @level.visibleHeight - 330 + (5*32), top)
+
+    top = Crafty.e('2D, WebGL, aircraftCarrierTopFlat').attr(z: -13)
+    @add(-32, @level.visibleHeight - 330 + (5*32), top)
+
+    cEnd = Crafty.e('2D, WebGL, aircraftCarrierCabinEnd, ColorEffects').attr(z: -13)
+    cEnd.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
+    @add((32 * 12), @level.visibleHeight - 330, cEnd)
+
+    c3 = Crafty.e('2D, WebGL, aircraftCarrierCabin, ColorEffects').attr(z: -13)
+    c3.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
+    @add((32 * 10), @level.visibleHeight - 330, c3)
+
+    c2 = Crafty.e('2D, WebGL, aircraftCarrierCabinRadar, ColorEffects').attr(z: -13)
+    c2.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
+    @add((32 * 8), @level.visibleHeight - 330, c2)
+
+    radar = Crafty.e('2D, WebGL, aircraftCarrierRadar').attr(z: -11)
+    @add((32 * 6), @level.visibleHeight - 330 + 22, radar)
+
+    antenna = Crafty.e('2D, WebGL, aircraftCarrierAntenna').attr(z: -11)
+    @add((32 * 9), @level.visibleHeight - 318 - 32, antenna)
+
+    c1 = Crafty.e('2D, WebGL, aircraftCarrierCabin, ColorEffects').attr(z: -13)
+    c1.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
+    @add((32 * 4), @level.visibleHeight - 330, c1)
+
+    cRadar = Crafty.e('2D, WebGL, aircraftCarrierCabinRadar, ColorEffects').attr(z: -13)
+    cRadar.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
+    @add((32 * 6), @level.visibleHeight - 330, cRadar)
+
+    cStart = Crafty.e('2D, WebGL, aircraftCarrierCabinStart, ColorEffects').attr(z: -13)
+    cStart.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
+    @add((32 * 3), @level.visibleHeight - 330, cStart)
 
     @addElement 'water'
     @addElement 'waterHorizon'
 
     frontWave = Crafty.e('2D, WebGL, waterFront1, WaveFront').attr(
-      z: 3
+      z: 30
       w: ((@delta.x + Crafty.viewport.width * .5)) + 1
       h: 200
       lightness: 0.5
@@ -364,21 +461,19 @@ generator.defineBlock class extends Game.LevelScenery
     Crafty('ScrollWall').attr y: 120
     @level.setForcedSpeed 0
     c = [
-        type: 'linear'
-        x: -160
-        easingFn: 'easeInQuad'
-        duration: 1200
-      ,
-        type: 'linear'
-        y: -130
-        duration: 1200
-        easingFn: 'easeInOutQuad'
-        event: 'lift'
+        type: 'delay'
+        duration: 1000
       ,
         type: 'delay'
-        duration: 500
-        event: 'shipExterior'
+        duration: 1000
+        event: 'openHatch'
       ,
+        type: 'linear'
+        y: -80
+        duration: 1200
+        easingFn: 'easeInOutQuad'
+      ,
+        event: 'lift'
         type: 'linear'
         x: 70
         y: -10
@@ -399,7 +494,7 @@ generator.defineBlock class extends Game.LevelScenery
     fixOtherShips = (newShip) ->
       return unless leadAnimated
       return unless leadAnimated.has 'Choreography'
-      newShip.attr(x: leadAnimated.x - newShip.w - 10, y: leadAnimated.y)
+      newShip.attr(x: leadAnimated.x - 200, y: leadAnimated.y)
       newShip.disableControl() if leadAnimated.disableControls
       newShip.addComponent 'Choreography'
       newShip.synchChoreography leadAnimated
@@ -415,7 +510,7 @@ generator.defineBlock class extends Game.LevelScenery
       return fixOtherShips(this) unless index is 0
       leadAnimated = this
       @addComponent 'Choreography'
-      @attr x: 360 - (50 * index), y: Crafty.viewport.height - 70 - @h
+      @attr x: 300 - (200 * index), y: Crafty.viewport.height - 50 - @h
       @disableControl()
       @weaponsEnabled = no
       @choreography c
@@ -425,14 +520,19 @@ generator.defineBlock class extends Game.LevelScenery
       @one 'unlock', ->
         @enableControl()
         @weaponsEnabled = yes
+      @one 'openHatch', ->
+        Crafty('carrierHatch').each ->
+          @animate('open')
       @one 'lift', ->
-        block.elevator.tween({ y: block.elevator.y - 130 }, 1200, 'easeInOutQuad')
+        block.outside.addComponent('Solid')
+        Crafty('carrierHatch').each ->
+          @animate('close')
+        Crafty('aircraftCarrierBottomFlat').each ->
+          @attr(z: -13)
         Crafty('ScrollWall').each ->
           @addComponent 'Tween'
           @tween { y: 0 }, 2500
           @one 'TweenEnd', -> @removeComponent 'Tween', no
-      @one 'shipExterior', ->
-        block.outside.tween({ alpha: 1 }, 700).addComponent('Solid')
       @one 'go', ->
         block.level.setForcedSpeed block.speed, accelerate: no
 
@@ -582,8 +682,8 @@ generator.defineBlock class extends Game.CityScenery
       d1.half.sprite(16, 32)
       d2.half.sprite(16, 32)
 
-      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise').sprite(38, 29)
-      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise').sprite(38, 29)
+      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise').sprite(42, 29)
+      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise').sprite(42, 29)
       dh = Crafty('BridgeCeiling').get(0).addComponent('TweenPromise')
       level.setForcedSpeed 200, accelerate: yes
 
