@@ -7,41 +7,49 @@ Crafty.c 'Enemy',
       damage: 2
     @invincible = no
 
+  onProjectileHit: (e) ->
+    return if Game.paused
+    return if @hidden
+    bullet = e[0].obj
+    unless @invincible
+      unless @juice is no
+        @attr hitFlash: { _red: 255, _green: 255, _blue: 0 }
+      @absorbDamage(bullet)
+
+      @trigger('Hit', entity: this, projectile: bullet)
+    bullet.destroy()
+
+  onProjectileHitEnd: ->
+    @attr hitFlash: no
+
+  onExplosionHit: (e) ->
+    return if Game.paused
+    return if @hidden
+    return if @invincible
+    for c in e
+      splosion = c.obj
+      if splosion.damage > 0
+        @trigger('Hit', entity: this, projectile: splosion)
+        unless @juice is no
+          @attr hitFlash: { _red: 255, _green: 255, _blue: 128 }
+        @absorbDamage(splosion)
+        splosion.damage = 0
+
   enemy: (options = {}) ->
     options = _.defaults(options,
       projectile: 'Bullet'
     )
     Crafty.trigger('EnemySpawned', this)
-    @onHit options.projectile,
-      (e) ->
-        return if Game.paused
-        return if @hidden
-        bullet = e[0].obj
-        unless @invincible
-          unless @juice is no
-            @attr hitFlash: { _red: 255, _green: 255, _blue: 0 }
-          @absorbDamage(bullet)
-
-          @trigger('Hit', entity: this, projectile: bullet)
-        bullet.destroy()
-      ->
-        @attr hitFlash: no
-
-    @onHit 'Explosion',
-      (e) ->
-        return if Game.paused
-        return if @hidden
-        return if @invincible
-        for c in e
-          splosion = c.obj
-          if splosion.damage > 0
-            @trigger('Hit', entity: this, projectile: splosion)
-            unless @juice is no
-              @attr hitFlash: { _red: 255, _green: 255, _blue: 128 }
-            @absorbDamage(splosion)
-            splosion.damage = 0
-      ->
-        @attr hitFlash: no
+    @onHit(
+      options.projectile
+      (e) => @onProjectileHit(e)
+      => @onProjectileHitEnd()
+    )
+    @onHit(
+      'Explosion'
+      (e) => @onExplosionHit(e)
+      => @onProjectileHitEnd()
+    )
     this
 
   absorbDamage: (cause) ->
