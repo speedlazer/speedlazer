@@ -55,8 +55,8 @@ class Game.EntityScript extends Game.LazerScript
       @entity.removeComponent('ViewportFixed')
       point.attach(@entity)
       @entity.attr({
-        x: point.x
-        y: point.y
+        x: point.x + Crafty.viewport.x
+        y: point.y + Crafty.viewport.y
         z: point.z
       })
 
