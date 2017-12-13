@@ -81,10 +81,10 @@ Crafty.c 'BattleShip',
     )
     @attach(@hatch)
 
-    @attach Crafty.e('2D, WebGL, MineCannon').attr(
+    @attach Crafty.e('2D, WebGL, MineCannonPlace').attr(
       x: @x + 82
       y: @y + 28
-      z: -5
+      z: 15
       w: 15
       h: 2
     )
@@ -121,6 +121,7 @@ Crafty.c 'BattleShip',
     part.flip('X') if name in flip
     if name in cabin
       part.addComponent('ColorEffects')
+      part.addComponent('SunBlock')
       part.colorOverride(@_color, 'partial')
 
     @attach part

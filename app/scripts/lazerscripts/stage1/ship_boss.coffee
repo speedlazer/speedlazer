@@ -7,19 +7,17 @@ class Game.Scripts.ShipBoss extends Game.EntityScript
     Crafty.e('BattleShip').attr(
       x: Crafty.viewport.width + 180
       y: 400
-      defaultSpeed: options.speed ? 350
+      defaultSpeed: options.speed ? 150
     ).setSealevel(@level.visibleHeight - 10)
 
   execute: ->
     @sequence(
-      @wait(50)
-      @placeSquad Game.Scripts.MineCannon,
-        options:
-          attach: 'MineCannon'
-      @moveTo(x: 0.8)
-
-      #@wait(5000)
-      @wait(5000)
+      @parallel(
+        @placeSquad Game.Scripts.MineCannon,
+          options:
+            attach: 'MineCannonPlace'
+        @moveTo(x: 0.8)
+      )
       @moveTo(x: 0.1)
       @wait(5000)
       @moveTo(x: -0.3)

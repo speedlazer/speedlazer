@@ -473,6 +473,10 @@ Game.ScriptModule.Entity =
         x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2)) + (settings.offsetX ? 0)
         y: (@enemy.location.y ? (@entity.y + Crafty.viewport.y) + (@entity.h / 2)) + (settings.offsetY ? 0)
 
+  get: (property) ->
+    =>
+      @entity.get(property)
+
   invincible: (yesNo) ->
     (sequence) =>
       @_verify(sequence)
