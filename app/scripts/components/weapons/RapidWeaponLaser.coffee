@@ -129,6 +129,7 @@ Crafty.c 'RapidWeaponLaser',
         x: start.x
         y: start.y
         z: 1
+      .updateCollision(settings.w, settings.h)
       .fire
         ship: @ship
         damage: @damage
@@ -149,6 +150,7 @@ Crafty.c 'RapidWeaponLaser',
         x: start.x
         y: start.y
         z: -1
+      .updateCollision(settings.w, settings.h)
       .fire
         ship: @ship
         damage: @damage

@@ -2,6 +2,21 @@ Crafty.c 'Bullet',
   init: ->
     @requires '2D, WebGL, sphere1, Collision, ColorEffects'
     @crop 6, 21, 18, 7
+    @collision [
+      0, 0,
+      18, 0,
+      18, 7,
+      0, 7
+    ]
+
+  updateCollision: (w, h) ->
+    @collision [
+      0, 0,
+      w, 0,
+      w, h,
+      0, h
+    ]
+    this
 
   fire: (properties) ->
     c = {}
