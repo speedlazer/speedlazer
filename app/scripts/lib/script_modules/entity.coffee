@@ -492,16 +492,30 @@ Game.ScriptModule.Entity =
     (sequence) =>
       @_verify(sequence)
       @decoy = @spawn(@options)
-      { x, y } = @location()()
+      if @options.attach
+        point = Crafty(@options.attach).get(@options.index)
+        @decoy.removeComponent('ViewportFixed')
+        point.attach(@decoy)
+        @decoy.attr({
+          x: point.x
+          y: point.y
+          z: point.z
+          invincible: yes
+          health: 1
+          defaultSpeed: @entity.defaultSpeed
+        })
+      else
+        { x, y } = @location()()
+        #@decoy.removeComponent('ViewportFixed')
+        @decoy.attr(
+          x: x - Crafty.viewport.x
+          y: y - Crafty.viewport.y
+          invincible: yes
+          health: 1
+          defaultSpeed: @entity.defaultSpeed
+        )
       @decoy.removeComponent('BurstShot')
-      #@decoy.removeComponent('ViewportFixed')
-      @decoy.attr(
-        x: x - Crafty.viewport.x
-        y: y - Crafty.viewport.y
-        invincible: yes
-        health: 1
-        defaultSpeed: @entity.defaultSpeed
-      )
+      @decoy.removeComponent('Hostile')
       @decoy.updatedHealth()
       if @entity.xFlipped
         @decoy.flipX()

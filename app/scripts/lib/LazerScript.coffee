@@ -50,6 +50,16 @@ class Game.EntityScript extends Game.LazerScript
     args.push {} if _.isEmpty args
 
     @entity = @spawn(args...)
+    if @options.attach
+      point = Crafty(@options.attach).get(@options.index)
+      @entity.removeComponent('ViewportFixed')
+      point.attach(@entity)
+      @entity.attr({
+        x: point.x
+        y: point.y
+        z: point.z
+      })
+
     if _.isObject(args[0]) and args[0].identifier?
       identifier = args[0].identifier# + args[0].index
       @entity.addComponent(identifier)
