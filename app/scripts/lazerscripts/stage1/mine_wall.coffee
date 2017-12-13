@@ -33,5 +33,3 @@ class Game.Scripts.MineWall extends Game.EntityScript
   onKilled: ->
     @blast(@location(), damage: 300, radius: 40)
 
-
-

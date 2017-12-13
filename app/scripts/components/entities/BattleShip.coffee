@@ -75,13 +75,26 @@ Crafty.c 'BattleShip',
     ).flip('X')
 
     @hatch = Crafty.e('carrierHatch').attr(
-      x: @x + 6 * 32
+      x: @x + 10 * 32
       y: @y + 28
       z: -5
     )
     @attach(@hatch)
 
-    @collision [20, 50, 32 * width, 50, 32 * width, 188, 20, 188]
+    @attach Crafty.e('2D, WebGL, MineCannon').attr(
+      x: @x + 82
+      y: @y + 28
+      z: -5
+      w: 15
+      h: 2
+    )
+
+    @collision [
+      20, 60,
+      32 * width, 60,
+      32 * width, 188,
+      20, 188
+    ]
 
   _addTopParts: (name) ->
     cabin = ['CabinEnd', 'Cabin', 'CabinStart']

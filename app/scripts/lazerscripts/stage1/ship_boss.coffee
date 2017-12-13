@@ -12,7 +12,17 @@ class Game.Scripts.ShipBoss extends Game.EntityScript
 
   execute: ->
     @sequence(
-      @moveTo(x: 0.02)
+      @wait(50)
+      @placeSquad Game.Scripts.MineCannon,
+        options:
+          attach: 'MineCannon'
+      @moveTo(x: 0.8)
+
+      #@wait(5000)
+      @wait(5000)
+      @moveTo(x: 0.1)
+      @wait(5000)
+      @moveTo(x: -0.3)
       @wait(5000)
       @moveTo(x: -1.5)
     )
