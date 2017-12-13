@@ -13,7 +13,7 @@ class Game.Scripts.DroneShip extends Game.EntityScript
   execute: ->
     @sequence(
       @moveTo(x: 0.02)
-      => @entity.open()
+      @action 'open'
       @wait(1000)
       @parallel(
         @placeSquad Game.Scripts.ShipDrone,
@@ -24,7 +24,7 @@ class Game.Scripts.DroneShip extends Game.EntityScript
             shootOnSight: yes
         @sequence(
           @wait(3000)
-          => @entity.close()
+          @action 'close'
           @moveTo(x: -0.5)
         )
       )
