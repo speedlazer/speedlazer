@@ -1,4 +1,16 @@
-Game = @Game
+require('./stage1/army_drone')
+require('./stage1/barrel')
+require('./stage1/camera_crew')
+require('./stage1/drone_ship')
+require('./stage1/heli_attack')
+require('./stage1/jump_mine')
+require('./stage1/mine_wall')
+require('./stage1/player_clone')
+require('./stage1/stage1boss')
+require('./stage1/sunrise')
+require('./stage1/sunset')
+
+Game = require('src/scripts/game')
 Game.Scripts ||= {}
 
 class Game.Scripts.Stage1 extends Game.LazerScript

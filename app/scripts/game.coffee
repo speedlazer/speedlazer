@@ -1,3 +1,4 @@
+
 Game =
   paused: no
   firstLevel: 'Game'
@@ -161,5 +162,5 @@ Game =
     localStorage.setItem('SPDLZRS', str)
 
 # Export
-window.Game = Game
+module.exports = Game
 

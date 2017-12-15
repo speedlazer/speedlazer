@@ -1,4 +1,4 @@
-Game = @Game
+Game = require('src/scripts/game')
 Game.ScriptTemplate ?= {}
 
 # Templates for various actions in the game

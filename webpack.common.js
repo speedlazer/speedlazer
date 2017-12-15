@@ -11,13 +11,22 @@ module.exports = {
     filename: '[name].[hash].js',
     path: path.resolve(__dirname, 'dist')
   },
+  resolve: {
+    alias: {
+      src: path.resolve(__dirname, 'app/')
+    },
+    extensions: [".js", ".coffee"]
+  },
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: "app/index.html"
     }),
     new webpack.ProvidePlugin({
-      Crafty: ['./crafty-loader', 'Crafty']
+      Crafty: ['src/crafty-loader', 'Crafty'],
+      $: ['jquery'],
+      WhenJS: ['src/when-loader', 'default'],
+      _: ['underscore']
     })
   ],
   module: {
@@ -41,6 +50,12 @@ module.exports = {
         options: {
           minimize: true
         }
+      },
+      {
+        test: /\.coffee$/,
+        use: [
+          'coffee-loader'
+        ]
       }
     ]
   }

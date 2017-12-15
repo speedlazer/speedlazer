@@ -1,7 +1,5 @@
-
-# Import
-generator = @Game.levelGenerator
-Game = @Game
+Game = require('src/scripts/game')
+generator = Game.levelGenerator
 
 generator.defineElement 'cloud', ->
   v = Math.random()
@@ -824,7 +822,7 @@ generator.defineBlock class extends Game.CityScenery
     h3 = 40
     @add(0, @level.visibleHeight + 170 - h3, Crafty.e('2D, Solid').attr(w: @delta.x, h: h3, z: 2))
 
-generator.defineBlock class extends @Game.LevelScenery
+generator.defineBlock class extends Game.LevelScenery
   name: 'City.TrainTunnel'
   delta:
     x: 1024
@@ -840,7 +838,7 @@ generator.defineBlock class extends @Game.LevelScenery
     h = 150
     @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h + h2, z: -10).color('#505050'))
 
-generator.defineBlock class extends @Game.LevelScenery
+generator.defineBlock class extends Game.LevelScenery
   name: 'City.SmallerTrainTunnel'
   delta:
     x: 1024

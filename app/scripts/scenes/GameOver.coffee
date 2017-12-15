@@ -1,6 +1,6 @@
+Game = require('src/scripts/game')
+
 Crafty.defineScene 'GameOver', (data) ->
-  # import from globals
-  Game = window.Game
 
   # constructor
   Crafty.background('#000')

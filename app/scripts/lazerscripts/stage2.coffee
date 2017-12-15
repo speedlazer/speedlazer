@@ -1,4 +1,4 @@
-Game = @Game
+Game = require('src/scripts/game')
 Game.Scripts ||= {}
 
 class Game.Scripts.Stage2 extends Game.LazerScript

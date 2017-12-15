@@ -1,4 +1,4 @@
-Game = @Game
+Game = require('src/scripts/game')
 Game.Scripts ||= {}
 
 class Game.Scripts.Slider extends Game.EntityScript

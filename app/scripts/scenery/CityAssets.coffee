@@ -1,6 +1,5 @@
-
-# Import
-generator = @Game.levelGenerator
+Game = require('src/scripts/game')
+generator = Game.levelGenerator
 
 generator.defineAssets(
   'explosion'

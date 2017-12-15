@@ -1,19 +1,51 @@
 import "./styles/normalize.css";
 import "./styles/style.css";
-import portraits from './images/portraits.png';
+import "./scripts/components";
+import "./scripts/lib";
+import "./scripts/scenery";
+import "./scripts/lazerscripts";
+import "./scripts/scenes";
 
-function component() {
-  var element = document.createElement('div');
+import Game from "src/scripts/game";
+import $ from "jquery";
+import screenfull from "screenfull";
 
-  // Lodash, currently included via a script, is required for this line to work
-  element.innerHTML = "Hello webpack";
-  // Add the image to our existing div.
-  var myIcon = new Image();
-  myIcon.src = portraits;
-  console.log(Crafty.getVersion())
+Game.start(false);
 
-  element.appendChild(myIcon);
-  return element;
+function scaleGame() {
+  var stageHeight = $('#cr-stage').height(),
+    stageWidth = $('#cr-stage').width(),
+    viewportHeight = $(window).height() - 50,
+    viewportWidth = $(window).width();
+
+  var ratioY = viewportHeight / stageHeight;
+  var ratioX = viewportWidth / stageWidth;
+  var ratio = Math.min(ratioY, ratioX);
+
+  $('#cr-stage').css('transform', 'scale('+ratio+')');
+
+  $('footer').css({ top: (576 * ratio) });
 }
 
-document.body.appendChild(component());
+$(window).on('resize', function() {
+  scaleGame();
+});
+
+// Handle the fullscreen button
+$(document).on('click', '#cr-stage', function () {
+  if (screenfull.enabled) {
+    screenfull.request($('#theater')[0]);
+    $('body').addClass('fullscreen');
+    scaleGame();
+    document.addEventListener(screenfull.raw.fullscreenchange, function () {
+      if (!screenfull.isFullscreen) {
+        // exit fullscreen code here
+        $('body').removeClass('fullscreen');
+        scaleGame();
+      }
+    });
+  }
+});
+
+setTimeout(function() { scaleGame(); }, 0);
+

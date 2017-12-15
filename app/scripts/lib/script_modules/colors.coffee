@@ -1,4 +1,4 @@
-Game = @Game
+Game = require('src/scripts/game')
 Game.ScriptModule ?= {}
 
 Game.ScriptModule.Colors =

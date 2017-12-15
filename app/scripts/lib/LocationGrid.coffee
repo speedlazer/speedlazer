@@ -1,4 +1,4 @@
-Game = @Game
+Game = require('src/scripts/game')
 
 class Game.LocationGrid
   constructor: (settings) ->

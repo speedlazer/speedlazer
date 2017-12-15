@@ -1,3 +1,5 @@
+Game = require('src/scripts/game')
+
 SPRITE_EFFECT_VERTEX_SHADER = """
   attribute vec2 aPosition;
   attribute vec4 aSpriteDimensions;
@@ -185,7 +187,7 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
       topSaturation = 3.0
       bottomSaturation = 3.0
 
-    if window.Game.webGLMode is off
+    if Game.webGLMode is off
       topSaturation = 0.0
       bottomSaturation = 0.0
       lightness = 1.0 if ent.has('cloud')

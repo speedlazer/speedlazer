@@ -1,3 +1,5 @@
+Game = require('src/scripts/game')
+
 Crafty.c 'WaterSplashes',
   init: ->
     @bind 'GameLoop', @_waterSplashes
@@ -20,7 +22,7 @@ Crafty.c 'WaterSplashes',
     this
 
   _waterSplashes: (fd) ->
-    return if window.Game.explosionMode?
+    return if Game.explosionMode?
     @cooldown -= fd.dt
     if (@y + @h + @detectionOffset > @sealevel) and (@y < @sealevel) and (@cooldown <= 0)
       speed = @waterSplashSpeed ? @defaultSpeed

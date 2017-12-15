@@ -1,6 +1,7 @@
+Game = require('src/scripts/game')
+
 Crafty.defineScene 'Intro', ->
   # import from globals
-  Game = window.Game
   Game.resetCredits()
 
   # constructor
