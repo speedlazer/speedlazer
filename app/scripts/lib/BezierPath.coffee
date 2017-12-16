@@ -1,3 +1,5 @@
+jsbezier = require('jsbezier')
+
 class Game.BezierPath
 
   scalePoints: (points, { origin, scale }) ->
