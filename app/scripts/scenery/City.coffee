@@ -1,4 +1,3 @@
-Game = require('src/scripts/game')
 generator = Game.levelGenerator
 cityScenery = require('src/images/city-scenery.png')
 
@@ -44,7 +43,7 @@ generator.defineElement 'cloud', ->
     @addBackground(60 + Math.random() * 400, y, c2, s)
 
 generator.defineElement 'waterHorizon', ->
-  h = Crafty.e('2D, WebGL, waterHorizon, SunBlock, Horizon')
+  h = Crafty.e('2D, WebGL, waterHorizon, SunBlock, Horizon, ColorEffects')
     .attr(z: -600, w: 257)
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(1.0, .2)
@@ -59,7 +58,7 @@ generator.defineElement 'waterHorizon', ->
   @addBackground(0, @level.visibleHeight - 225, goldenStripe, .25)
 
 generator.defineElement 'water', ->
-  h = Crafty.e('2D, WebGL, waterMiddle, Horizon, ColorEffects')
+  h = Crafty.e('2D, WebGL, waterMiddle, Horizon')
     .crop(1, 0, 511, 192)
     .attr(z: -500, w: 513)
     .colorDesaturation(Game.backgroundColor)
@@ -140,9 +139,9 @@ generator.defineElement 'waterFront', ->
 generator.defineElement 'cityHorizon', (mode) ->
   @addElement 'waterHorizon'
   e = if mode is 'start'
-    Crafty.e('2D, WebGL, ColorEffects, coastStart, SunBlock, Horizon')
+    Crafty.e('2D, WebGL, coastStart, SunBlock, Horizon')
   else
-    Crafty.e('2D, WebGL, ColorEffects, coast, SunBlock, Horizon')
+    Crafty.e('2D, WebGL, coast, SunBlock, Horizon')
   e.colorDesaturation(Game.backgroundColor)
     .saturationGradient(.9, .8)
     .crop(1, 0, 255, 32)
@@ -150,7 +149,7 @@ generator.defineElement 'cityHorizon', (mode) ->
   @addBackground(0, @level.visibleHeight - 225 - 16, e, .25)
 
 generator.defineElement 'cityDistance', (mode) ->
-  e = Crafty.e('2D, WebGL, ColorEffects, cityDistance, SunBlock, Horizon')
+  e = Crafty.e('2D, WebGL, cityDistance, SunBlock, Horizon')
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.9, .6)
     .crop(1, 1, 255, 223)
@@ -712,13 +711,13 @@ generator.defineBlock class extends Game.CityScenery
     aspectR = 1024 / 180
     attr.h = attr.w / aspectR
     color = if flipped then '#2ba04c' else '#b15a5a'
-    result = Crafty.e('2D, WebGL, bridgeDeck, ColorEffects, Horizon, SunBlock, SpriteAnimation')
+    result = Crafty.e('2D, WebGL, bridgeDeck, Horizon, SunBlock, SpriteAnimation')
       .crop(0, 2, 511, 180)
       .attr(_.extend(attr, w: attr.w / 2))
       .saturationGradient(gradient, gradient)
       .colorOverride color, 'partial'
 
-    part2 = Crafty.e('2D, WebGL, bridgeDeck, ColorEffects, Horizon, SunBlock, SpriteAnimation')
+    part2 = Crafty.e('2D, WebGL, bridgeDeck, Horizon, SunBlock, SpriteAnimation')
       .crop(0, 2, 511, 180)
       .saturationGradient(gradient, gradient)
       .flip('X')
@@ -740,7 +739,7 @@ generator.defineBlock class extends Game.CityScenery
     aspectR = 180 / 534
     attr.w = attr.h * aspectR
     attr.h = attr.h
-    Crafty.e('2D, WebGL, bridgePillar, ColorEffects, Horizon, SunBlock')
+    Crafty.e('2D, WebGL, bridgePillar, Horizon, SunBlock')
       .crop(2, 0, 180, 534)
       .attr(attr)
       .saturationGradient(gradient, gradient)
@@ -777,7 +776,7 @@ generator.defineBlock class extends Game.CityScenery
     @addElement 'cityFront'
     h = 400 + 200
 
-    e = Crafty.e('2D, WebGL, ColorEffects, cityDistanceBaseTop, SunBlock, Horizon')
+    e = Crafty.e('2D, WebGL, cityDistanceBaseTop, SunBlock, Horizon')
       .colorDesaturation(Game.backgroundColor)
       .saturationGradient(.9, .6)
       .crop(1, 1, 255, 223)
@@ -785,7 +784,7 @@ generator.defineBlock class extends Game.CityScenery
 
     @addBackground(0, @level.visibleHeight - 225 - 16 - 127, e, .25)
 
-    eb = Crafty.e('2D, WebGL, ColorEffects, cityDistanceBaseBottom, MiliBase, SunBlock, Horizon')
+    eb = Crafty.e('2D, WebGL, cityDistanceBaseBottom, MiliBase, SunBlock, Horizon')
       .colorDesaturation(Game.backgroundColor)
       .saturationGradient(.9, .6)
       .crop(1, 1, 255, 127)

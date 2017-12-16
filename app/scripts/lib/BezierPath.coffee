@@ -1,5 +1,3 @@
-Game = require('src/scripts/game')
-
 class Game.BezierPath
 
   scalePoints: (points, { origin, scale }) ->

@@ -1,5 +1,3 @@
-Game = require('src/scripts/game')
-
 class Game.LocationGrid
   constructor: (settings) ->
     settings = _.defaults settings,

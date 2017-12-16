@@ -1,5 +1,3 @@
-Game = require('src/scripts/game')
-
 # Crude extraction of logic. It needs more refactoring,
 # and could be extracted more to a generic Menu class
 class Game.PauseMenu

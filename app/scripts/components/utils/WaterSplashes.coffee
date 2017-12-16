@@ -1,5 +1,3 @@
-Game = require('src/scripts/game')
-
 Crafty.c 'WaterSplashes',
   init: ->
     @bind 'GameLoop', @_waterSplashes

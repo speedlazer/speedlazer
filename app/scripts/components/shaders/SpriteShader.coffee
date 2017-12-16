@@ -1,5 +1,3 @@
-Game = require('src/scripts/game')
-
 SPRITE_EFFECT_VERTEX_SHADER = """
   attribute vec2 aPosition;
   attribute vec4 aSpriteDimensions;

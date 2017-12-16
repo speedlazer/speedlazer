@@ -1,6 +1,3 @@
-Game = require('src/scripts/game')
-Game.Scripts ||= {}
-
 class Game.Scripts.TankAttack extends Game.EntityScript
 
   spawn: (options) ->

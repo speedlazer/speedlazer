@@ -1,6 +1,3 @@
-Game = require('src/scripts/game')
-Game.ScriptModule ?= {}
-
 # Core scripting mechanics. Mainly Controlflow statements
 #
 #  - sequence

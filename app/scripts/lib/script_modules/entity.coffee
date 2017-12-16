@@ -1,6 +1,3 @@
-Game = require('src/scripts/game')
-Game.ScriptModule ?= {}
-
 # Actions to control an entity in the game
 #
 # - bindSequence

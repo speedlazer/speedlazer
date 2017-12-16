@@ -1,6 +1,3 @@
-Game = require('src/scripts/game')
-Game.Scripts ||= {}
-
 class Game.Scripts.PresentationLeaveScreen extends Game.EntityScript
 
   spawn: (options) ->

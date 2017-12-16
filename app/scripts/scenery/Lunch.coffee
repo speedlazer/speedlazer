@@ -1,4 +1,3 @@
-Game = require('src/scripts/game')
 generator = Game.levelGenerator
 
 generator.defineElement 'blockcloud', ->

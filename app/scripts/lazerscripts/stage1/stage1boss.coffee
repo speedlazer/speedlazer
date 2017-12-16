@@ -1,6 +1,3 @@
-Game = require('src/scripts/game')
-Game.Scripts ||= {}
-
 class Game.Scripts.Stage1Boss extends Game.EntityScript
   assets: ->
     @loadAssets('largeDrone')

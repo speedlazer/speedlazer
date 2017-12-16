@@ -1,6 +1,3 @@
-Game = require('src/scripts/game')
-Game.Scripts ||= {}
-
 class Game.Scripts.ArmyDrone extends Game.EntityScript
   assets: ->
     @loadAssets('drone')
@@ -130,7 +127,7 @@ class Game.Scripts.Stalker extends Game.Scripts.ArmyDrone
 class Game.Scripts.ScraperFlyer extends Game.Scripts.ArmyDrone
 
   spawn: ->
-    Crafty.e('Drone, ShootOnSight, ColorEffects, Horizon').drone(
+    Crafty.e('Drone, ShootOnSight, Horizon').drone(
       x: -50
       y: Crafty.viewport.height * .7
       defaultSpeed: 300
@@ -216,7 +213,7 @@ class Game.Scripts.Shooter extends Game.Scripts.ArmyDrone
 class Game.Scripts.CrewShooters extends Game.Scripts.ArmyDrone
 
   spawn: ->
-    Crafty.e('Drone, ShootOnSight, ColorEffects, Horizon').drone(
+    Crafty.e('Drone, ShootOnSight, Horizon').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .23
       defaultSpeed: 250
@@ -224,7 +221,7 @@ class Game.Scripts.CrewShooters extends Game.Scripts.ArmyDrone
       targetType: 'CameraCrew'
       shootWhenHidden: yes
       projectile: (x, y, angle) =>
-        projectile = Crafty.e('Projectile, Color, BackgroundBullet, ColorEffects, Horizon').attr(
+        projectile = Crafty.e('Projectile, Color, BackgroundBullet, Horizon').attr(
           w: 3
           h: 3
           z: -200

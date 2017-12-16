@@ -1,5 +1,6 @@
 import when from "when";
 import sequence from "when/sequence";
+import parallel from "when/parallel";
 
 //when.callbacks = require('../callbacks');
 //when.cancelable = require('../cancelable');
@@ -8,7 +9,7 @@ import sequence from "when/sequence";
 //when.guard = require('../guard');
 //when.keys = require('../keys');
 //when.nodefn = when.node = require('../node');
-//when.parallel = require('../parallel');
+when.parallel = parallel;
 //when.pipeline = require('../pipeline');
 //when.poll = require('../poll');
 when.sequence = sequence;

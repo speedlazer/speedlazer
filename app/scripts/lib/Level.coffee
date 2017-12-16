@@ -12,8 +12,6 @@ a level can access and use and modify this data.
 
 ###
 
-Game = require('src/scripts/game')
-
 class Game.Level
   constructor: (@generator, @data = {}) ->
     @blocks = []

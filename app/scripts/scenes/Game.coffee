@@ -1,7 +1,6 @@
 level = null
 script = null
 scriptName = null
-Game = require('src/scripts/game')
 
 Crafty.defineScene 'Game', (data = {}) ->
   # constructor

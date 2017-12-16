@@ -10,9 +10,6 @@ require('./stage1/stage1boss')
 require('./stage1/sunrise')
 require('./stage1/sunset')
 
-Game = require('src/scripts/game')
-Game.Scripts ||= {}
-
 class Game.Scripts.Stage1 extends Game.LazerScript
   nextScript: 'Stage2'
 

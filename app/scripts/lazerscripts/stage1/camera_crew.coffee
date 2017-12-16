@@ -1,6 +1,3 @@
-Game = require('src/scripts/game')
-Game.Scripts ||= {}
-
 class Game.Scripts.CameraCrew extends Game.EntityScript
 
   assets: ->

@@ -1,5 +1,3 @@
-Game = require('src/scripts/game')
-
 Crafty.defineScene 'Intro', ->
   # import from globals
   Game.resetCredits()

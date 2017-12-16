@@ -1,4 +1,3 @@
-Game = require('src/scripts/game')
 generator = Game.levelGenerator
 
 cityEnemies = require('src/images/city-enemies.png')

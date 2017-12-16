@@ -1,8 +1,8 @@
 require('./script_modules/core')
 require('./script_modules/level')
+require('./script_modules/entity')
+require('./script_modules/colors')
 require('./script_templates/level')
-
-Game = require('src/scripts/game')
 
 class Game.LazerScript
   constructor: (@level) ->

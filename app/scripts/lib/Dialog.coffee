@@ -1,5 +1,3 @@
-Game = require('src/scripts/game')
-
 Game.say = (speaker, text, settings) ->
   Crafty('Dialog').each ->
     @trigger('Abort')

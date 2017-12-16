@@ -6,7 +6,6 @@ import "./scripts/scenery";
 import "./scripts/lazerscripts";
 import "./scripts/scenes";
 
-import Game from "src/scripts/game";
 import $ from "jquery";
 import screenfull from "screenfull";
 
