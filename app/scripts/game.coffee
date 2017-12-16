@@ -1,3 +1,4 @@
+CryptoJS = require('crypto-js')
 
 Game =
   paused: no

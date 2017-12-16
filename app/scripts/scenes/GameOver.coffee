@@ -1,3 +1,5 @@
+CryptoJS = require('crypto-js')
+
 Crafty.defineScene 'GameOver', (data) ->
 
   # constructor
