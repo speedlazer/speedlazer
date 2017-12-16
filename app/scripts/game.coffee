@@ -40,7 +40,7 @@ Game =
 
     Crafty.paths(
       audio: 'audio/'
-      images: 'images/'
+      images: '/'
     )
     # Start crafty and set a background color so that we can see it's working
     Crafty.init(1024, 576, $('#cr-stage')[0]) # PAL+

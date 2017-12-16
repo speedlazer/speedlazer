@@ -1,10 +1,13 @@
 Game = require('src/scripts/game')
 generator = Game.levelGenerator
+cityEnemies = require('src/images/city-enemies.png')
+explosion = require('src/images/explosion.png')
+portraits = require('src/images/portraits.png')
 
 generator.defineAssets(
   'explosion'
   contents: ['explosion']
-  spriteMap: 'explosion.png'
+  spriteMap: explosion
   sprites:
     all:
       tile: 96
@@ -30,7 +33,7 @@ generator.defineAssets(
     'largeDrone'
     'laserTank'
   ]
-  spriteMap: 'city-enemies.png'
+  spriteMap: cityEnemies
   sprites:
     all:
       tile: 32
@@ -65,7 +68,7 @@ generator.defineAssets(
   contents: [
     'general'
   ]
-  spriteMap: 'portraits.png'
+  spriteMap: portraits
   sprites:
     all:
       tile: 32

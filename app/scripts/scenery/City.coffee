@@ -1,5 +1,6 @@
 Game = require('src/scripts/game')
 generator = Game.levelGenerator
+cityScenery = require('src/images/city-scenery.png')
 
 generator.defineElement 'cloud', ->
   v = Math.random()
@@ -271,7 +272,7 @@ generator.defineElement 'cityStart', ->
 class Game.CityScenery extends Game.LevelScenery
   assets: ->
     sprites:
-      'city-scenery.png':
+      "#{cityScenery}":
         tile: 32
         tileh: 32
         map:
