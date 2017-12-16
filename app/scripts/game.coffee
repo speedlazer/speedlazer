@@ -39,7 +39,7 @@ Game =
       Crafty.trigger 'GameLoop', arguments...
 
     Crafty.paths(
-      audio: 'audio/'
+      audio: '/'
       images: '/'
     )
     # Start crafty and set a background color so that we can see it's working

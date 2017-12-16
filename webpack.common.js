@@ -45,6 +45,12 @@ module.exports = {
         ]
       },
       {
+        test: /\.(ogg)$/,
+        use: [
+          'file-loader'
+        ]
+      },
+      {
         test: /\.html$/,
         loader: 'html-loader',
         options: {
