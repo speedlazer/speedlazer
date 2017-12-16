@@ -6,6 +6,9 @@ module.exports = merge(common, {
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.GA_TRACKER': JSON.stringify('UA-Tracker')
+    })
   ],
   devtool: 'inline-source-map',
   devServer: {

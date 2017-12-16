@@ -8,6 +8,8 @@ import "./scripts/scenes";
 
 import $ from "jquery";
 import screenfull from "screenfull";
+window.ga('create', process.env.GA_TRACKER, 'auto');
+window.ga('send', 'pageview');
 
 Game.start(false);
 
