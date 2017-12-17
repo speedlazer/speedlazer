@@ -1,6 +1,3 @@
-Game = @Game
-Game.ScriptModule ?= {}
-
 # Actions to control an entity in the game
 #
 # - bindSequence

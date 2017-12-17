@@ -1,5 +1,4 @@
-Game = @Game
-Game.Scripts ||= {}
+require('src/scripts/lazerscripts/lunch/presentation_leave_screen')
 
 class Game.Scripts.Stage1End extends Game.LazerScript
 

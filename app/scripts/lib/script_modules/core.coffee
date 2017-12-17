@@ -1,6 +1,3 @@
-Game = @Game
-Game.ScriptModule ?= {}
-
 # Core scripting mechanics. Mainly Controlflow statements
 #
 #  - sequence

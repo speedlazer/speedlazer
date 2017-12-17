@@ -1,3 +1,5 @@
+CryptoJS = require('crypto-js')
+
 Game =
   paused: no
   firstLevel: 'Game'
@@ -38,8 +40,8 @@ Game =
       Crafty.trigger 'GameLoop', arguments...
 
     Crafty.paths(
-      audio: 'audio/'
-      images: 'images/'
+      audio: '/'
+      images: '/'
     )
     # Start crafty and set a background color so that we can see it's working
     Crafty.init(1024, 576, $('#cr-stage')[0]) # PAL+
@@ -160,6 +162,10 @@ Game =
     str = JSON.stringify(newSettings)
     localStorage.setItem('SPDLZRS', str)
 
+  Scripts: {}
+  ScriptModule: {}
+  ScriptTemplate: {}
+
 # Export
-window.Game = Game
+module.exports = { default: Game }
 

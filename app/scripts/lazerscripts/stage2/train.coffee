@@ -1,6 +1,3 @@
-Game = @Game
-Game.Scripts ||= {}
-
 class Game.Scripts.Train extends Game.EntityScript
   spawn: ->
     p = Crafty.e('Enemy, Color').attr(

@@ -1,14 +1,17 @@
-'use strict';
-require('scripts/components/*');
-require('scripts/compiled/components');
-require('scripts/compiled/game');
-require('scripts/compiled/lib');
-require('scripts/compiled/lazerscripts');
-require('scripts/compiled/scenery');
-require('scripts/scenes/*');
-require('scripts/compiled/scenes');
+import "./styles/normalize.css";
+import "./styles/style.css";
+import "./scripts/components";
+import "./scripts/lib";
+import "./scripts/scenery";
+import "./scripts/lazerscripts";
+import "./scripts/scenes";
 
-window.Game.start(false);
+import $ from "jquery";
+import screenfull from "screenfull";
+window.ga('create', process.env.GA_TRACKER, 'auto');
+window.ga('send', 'pageview');
+
+Game.start(false);
 
 function scaleGame() {
   var stageHeight = $('#cr-stage').height(),
@@ -46,3 +49,4 @@ $(document).on('click', '#cr-stage', function () {
 });
 
 setTimeout(function() { scaleGame(); }, 0);
+

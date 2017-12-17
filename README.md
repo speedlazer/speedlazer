@@ -21,30 +21,14 @@ Twitter: [@speedlazergame](https://twitter.com/speedlazergame)
 
 # Setup for development
 
-Make sure you have the [Live reload Chrome
-plugin](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei)
-
 ```
-npm install
-bower install
-grunt serve
+yarn install
+yarn start
 ```
 
 The game files are in `app/scripts`. The "Game" is in
 `app/scripts/scenes/Game.coffee`. But it mainly runs DSL scripts,
 located in `app/scripts/lazerscripts`
-
-# Building a game from scratch
-
-See: https://github.com/sgmeyer/generator-crafty
-
-```
-npm install -g yo bower grunt-cli gulp
-npm install -g generator-crafty
-yo crafty
-echo "node_modules" >> .gitignore
-echo "bower_components" >> .gitignore
-```
 
 # License
 

@@ -2,26 +2,26 @@
 set -e
 
 # Dry run
-grunt
+yarn build
 rm -r dist
 
 # Clean up for release
 git checkout gh-pages
 git rm -r audio images index.html scripts styles dist
+#git rm -r assets index.html game.*.js game.*.js.map
 git commit -m 'prepare for release'
 
 # Buid project
-git checkout master
-grunt
-git checkout gh-pages
+git checkout -
+yarn build
+git checkout -
 
 # Move files to root
-mv dist dist2
-cd dist2
+cd dist
 mv * ..
 cd ..
-rm -r dist2
-git add audio images index.html scripts styles dist
+rm -r dist
+git add index.html assets game.*.js game.*.js.map
 
 # publish
 

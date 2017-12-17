@@ -1,6 +1,3 @@
-Game = @Game
-Game.ScriptModule ?= {}
-
 Game.ScriptModule.Colors =
   backgroundColorFade: (settings, bottomColors, topColors) ->
     (sequence) =>

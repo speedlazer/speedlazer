@@ -1,11 +1,19 @@
+generator = Game.levelGenerator
 
-# Import
-generator = @Game.levelGenerator
+cityEnemies = require('src/images/city-enemies.png')
+explosion = require('src/images/explosion.png')
+portraits = require('src/images/portraits.png')
+
+explosionAudio = require('src/audio/explosion.ogg')
+laserHitAudio = require('src/audio/laser-hit.ogg')
+laserShotAudio = require('src/audio/laser-shot.ogg')
+laughAudio = require('src/audio/laugh.ogg')
+powerupAudio = require('src/audio/powerup.ogg')
 
 generator.defineAssets(
   'explosion'
   contents: ['explosion']
-  spriteMap: 'explosion.png'
+  spriteMap: explosion
   sprites:
     all:
       tile: 96
@@ -13,11 +21,11 @@ generator.defineAssets(
       map:
         explosionStart: [0, 0]
   audio:
-    explosion: ['explosion.ogg']
-    shoot: ['laser-shot.ogg']
-    hit: ['laser-hit.ogg']
-    powerup: ['powerup.ogg']
-    laugh: ['laugh.ogg']
+    explosion: [explosionAudio]
+    shoot: [laserShotAudio]
+    hit: [laserHitAudio]
+    powerup: [powerupAudio]
+    laugh: [laughAudio]
 )
 generator.defineAssets(
   'player'
@@ -31,7 +39,7 @@ generator.defineAssets(
     'largeDrone'
     'laserTank'
   ]
-  spriteMap: 'city-enemies.png'
+  spriteMap: cityEnemies
   sprites:
     all:
       tile: 32
@@ -66,7 +74,7 @@ generator.defineAssets(
   contents: [
     'general'
   ]
-  spriteMap: 'portraits.png'
+  spriteMap: portraits
   sprites:
     all:
       tile: 32

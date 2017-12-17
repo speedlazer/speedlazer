@@ -1,6 +1,3 @@
-Game = @Game
-Game.Scripts ||= {}
-
 class Game.Scripts.Lunch extends Game.LazerScript
   assets: ->
     @loadAssets('explosion', 'playerShip')

@@ -1,6 +1,3 @@
-Game = @Game
-Game.ScriptModule ?= {}
-
 # Actions to control the flow of a level
 #
 # - placeSquad

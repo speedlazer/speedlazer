@@ -1,6 +1,3 @@
-Game = @Game
-Game.Scripts ||= {}
-
 class Game.Scripts.PlayerClone extends Game.EntityScript
   assets: ->
     @loadAssets('playerShip')

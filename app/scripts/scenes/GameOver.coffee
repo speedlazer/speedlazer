@@ -1,6 +1,6 @@
+CryptoJS = require('crypto-js')
+
 Crafty.defineScene 'GameOver', (data) ->
-  # import from globals
-  Game = window.Game
 
   # constructor
   Crafty.background('#000')

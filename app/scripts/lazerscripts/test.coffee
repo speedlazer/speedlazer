@@ -1,6 +1,3 @@
-Game = @Game
-Game.Scripts ||= {}
-
 class Game.Scripts.Test extends Game.LazerScript
   assets: ->
     @loadAssets('playerShip')
