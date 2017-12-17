@@ -1,6 +1,3 @@
-Game = @Game
-Game.Scripts ||= {}
-
 class Game.Scripts.PresentationShooter extends Game.EntityScript
   spawn: (options) ->
     d = Crafty.e('OldDrone').drone(

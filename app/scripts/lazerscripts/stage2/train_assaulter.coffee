@@ -1,6 +1,3 @@
-Game = @Game
-Game.Scripts ||= {}
-
 class Game.Scripts.TrainAssaulter extends Game.EntityScript
   assets: ->
     @loadAssets('playerShip')

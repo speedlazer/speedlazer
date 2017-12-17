@@ -1,6 +1,3 @@
-Game = @Game
-Game.Scripts ||= {}
-
 class Game.Scripts.CameraCrew extends Game.EntityScript
 
   assets: ->

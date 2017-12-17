@@ -1,4 +1,3 @@
-
 Crafty.c 'TweenPromise',
   init: ->
     @requires 'Tween'

@@ -1,5 +1,4 @@
-Game = @Game
-Game.Scripts ||= {}
+require('./stage2/tank_attack')
 
 class Game.Scripts.Stage2 extends Game.LazerScript
   nextScript: 'Stage1End'

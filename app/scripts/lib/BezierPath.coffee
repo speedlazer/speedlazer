@@ -1,4 +1,4 @@
-Game = @Game
+jsbezier = require('jsbezier')
 
 class Game.BezierPath
 

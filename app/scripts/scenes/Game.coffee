@@ -1,7 +1,6 @@
 level = null
 script = null
 scriptName = null
-Game = @Game
 
 Crafty.defineScene 'Game', (data = {}) ->
   # constructor

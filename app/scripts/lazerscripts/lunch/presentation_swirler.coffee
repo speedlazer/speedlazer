@@ -1,6 +1,3 @@
-Game = @Game
-Game.Scripts ||= {}
-
 class Game.Scripts.PresentationSwirler extends Game.EntityScript
 
   spawn: (options) ->

@@ -1,6 +1,3 @@
-Game = @Game
-Game.Scripts ||= {}
-
 class Game.Scripts.Slider extends Game.EntityScript
 
   spawn: (options) ->

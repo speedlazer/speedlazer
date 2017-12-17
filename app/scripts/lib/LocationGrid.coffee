@@ -1,5 +1,3 @@
-Game = @Game
-
 class Game.LocationGrid
   constructor: (settings) ->
     settings = _.defaults settings,

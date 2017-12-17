@@ -1,5 +1,3 @@
-Game = @Game
-
 class Game.Synchronizer
   constructor: ->
     @entities = []

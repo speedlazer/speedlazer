@@ -1,6 +1,3 @@
-Game = @Game
-Game.Scripts ||= {}
-
 class Game.Scripts.LunchBoss extends Game.EntityScript
   assets: ->
     @loadAssets('largeDrone')

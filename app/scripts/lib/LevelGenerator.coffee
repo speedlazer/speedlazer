@@ -1,5 +1,3 @@
-Game = @Game
-
 ##
 # LevelGenerator
 #

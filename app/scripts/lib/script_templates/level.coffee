@@ -1,6 +1,3 @@
-Game = @Game
-Game.ScriptTemplate ?= {}
-
 # Templates for various actions in the game
 # to remove duplication.
 # They generally call lower level lazerScript
