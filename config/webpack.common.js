@@ -13,7 +13,7 @@ const cleanOptions = {
 
 module.exports = {
   entry: {
-    game: './app/index.js'
+    game: './src/index.js'
   },
   output: {
     filename: '[name].[hash].js',
@@ -21,18 +21,18 @@ module.exports = {
   },
   resolve: {
     alias: {
-      src: path.resolve(__dirname, '..', 'app/')
+      src: path.resolve(__dirname, '..', 'src/')
     },
     extensions: [".js", ".coffee"]
   },
   plugins: [
     new CleanWebpackPlugin(['dist'], cleanOptions),
     new HtmlWebpackPlugin({
-      template: "app/index.html"
+      template: "src/index.html"
     }),
     new webpack.ProvidePlugin({
       Crafty: ['src/crafty-loader', 'default'],
-      Game: ['src/scripts/Game', 'default'],
+      Game: ['src/Game', 'default'],
       WhenJS: ['src/when-loader', 'default'],
       _: ['underscore']
     })
