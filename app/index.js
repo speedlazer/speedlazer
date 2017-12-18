@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import "./styles/normalize.css";
 import "./styles/style.css";
 import "./scripts/components";
@@ -6,47 +7,45 @@ import "./scripts/scenery";
 import "./scripts/lazerscripts";
 import "./scripts/scenes";
 
-import $ from "jquery";
 import screenfull from "screenfull";
-window.ga('create', process.env.GA_TRACKER, 'auto');
-window.ga('send', 'pageview');
+window.ga("create", process.env.GA_TRACKER, "auto");
+window.ga("send", "pageview");
 
 Game.start(false);
 
-function scaleGame() {
-  var stageHeight = $('#cr-stage').height(),
-    stageWidth = $('#cr-stage').width(),
-    viewportHeight = $(window).height() - 50,
-    viewportWidth = $(window).width();
+const scaleGame = () => {
+  const stage = document.getElementById("cr-stage");
+  const stageHeight = stage.clientHeight;
+  const stageWidth = stage.clientWidth;
+  const viewportHeight = window.innerHeight - 50;
+  const viewportWidth = window.innerWidth;
 
-  var ratioY = viewportHeight / stageHeight;
-  var ratioX = viewportWidth / stageWidth;
-  var ratio = Math.min(ratioY, ratioX);
+  const ratioY = viewportHeight / stageHeight;
+  const ratioX = viewportWidth / stageWidth;
+  const ratio = Math.min(ratioY, ratioX);
 
-  $('#cr-stage').css('transform', 'scale('+ratio+')');
-
-  $('footer').css({ top: (576 * ratio) });
+  stage.style.transform = `scale(${ratio})`;
+  document.getElementsByTagName("footer")[0].style.top = `${576 * ratio}px`;
 }
 
-$(window).on('resize', function() {
-  scaleGame();
-});
+window.addEventListener("resize", scaleGame);
 
 // Handle the fullscreen button
-$(document).on('click', '#cr-stage', function () {
-  if (screenfull.enabled) {
-    screenfull.request($('#theater')[0]);
-    $('body').addClass('fullscreen');
+document.addEventListener("click", e => {
+  if (e.target.matches("#cr-stage,#cr-stage *")) {
+    const theater = document.getElementById("theater")
+    screenfull.request(theater)
+    document.body.classList.add('fullscreen')
     scaleGame();
-    document.addEventListener(screenfull.raw.fullscreenchange, function () {
+    document.addEventListener(screenfull.raw.fullscreenchange, () => {
       if (!screenfull.isFullscreen) {
         // exit fullscreen code here
-        $('body').removeClass('fullscreen');
+        document.body.classList.remove('fullscreen')
         scaleGame();
       }
     });
   }
 });
 
-setTimeout(function() { scaleGame(); }, 0);
+setTimeout(scaleGame, 0);
 
