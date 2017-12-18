@@ -34,8 +34,8 @@ Core =
   # example:
   #
   #   @parallel(
-  #     @placeSquad Game.Scripts.EnemyType1
-  #     @placeSquad Game.Scripts.EnemyType2
+  #     @placeSquad EnemyType1
+  #     @placeSquad EnemyType2
   #   )
   parallel: (tasks...) ->
     (sequence) =>
@@ -93,11 +93,11 @@ Core =
   # Repeat forever or amount of times.
   # example for infinite repeat (see `while`):
   #
-  #   @repeat @placeSquad Game.Scripts.EnemyType1
+  #   @repeat @placeSquad EnemyType1
   #
   # example:
   #
-  #   @repeat 3, @placeSquad Game.Scripts.EnemyType1
+  #   @repeat 3, @placeSquad EnemyType1
   repeat: (times, block) ->
     (sequence) =>
       @_verify(sequence)
@@ -118,7 +118,7 @@ Core =
   # Run a subscript, and continue after completion.
   # example:
   #
-  #   @runScript Game.Scripts.EnemyType1, argsForScript...
+  #   @runScript EnemyType1, argsForScript...
   runScript: (scriptClass, args...) ->
     (sequence) =>
       @_verify(sequence)

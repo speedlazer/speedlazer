@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.PresentationShooter extends EntityScript
+class PresentationShooter extends EntityScript
   spawn: (options) ->
     d = Crafty.e('OldDrone').drone(
       x: Crafty.viewport.width + 40
@@ -36,3 +36,5 @@ class Game.Scripts.PresentationShooter extends EntityScript
       offsetY: 20
     ))
 
+module.exports =
+  default: PresentationShooter

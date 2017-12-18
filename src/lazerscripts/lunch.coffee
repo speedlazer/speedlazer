@@ -1,4 +1,16 @@
+PresentationLeaveScreen = require('./lunch/presentation_leave_screen').default
+LittleDancer = require('./lunch/little_dancer').default
+LunchBossStage1 = require('./lunch/lunch_boss').default
+PresentationShooter = require('./lunch/presentation_shooter').default
+PresentationSunRise = require('./lunch/presentation_sunrise').default
+PresentationSunSet = require('./lunch/presentation_sunset').default
+PresentationSwirler = require('./lunch/presentation_swirler').default
+JumpMine = require('./stage1/jump_mine').default
+Sine = require('./lunch/sine').default
+Slider = require('./lunch/slider').default
+SunRise = require('./stage1/sunrise').default
 { LazerScript } = require('src/lib/LazerScript')
+{ Swirler, Shooter } = require('./stage1/army_drone')
 
 class Lunch extends LazerScript
   assets: ->
@@ -22,7 +34,7 @@ class Lunch extends LazerScript
       @setWeapons(['oldlasers'])
       @nextSlide()
       @updateTitle 'First enemy'
-      @placeSquad Game.Scripts.Slider,
+      @placeSquad Slider,
         options:
           gridConfig:
             x:
@@ -36,7 +48,7 @@ class Lunch extends LazerScript
       @setScenery('OpenSpace')
       @setSpeed 150, accellerate: no
       @parallel(
-        @placeSquad Game.Scripts.Slider,
+        @placeSquad Slider,
           amount: 15
           options:
             gridConfig:
@@ -80,7 +92,7 @@ class Lunch extends LazerScript
           @say 'Enemies', 'Get them!'
         )
         @nextSlide @sequence(
-          @placeSquad Game.Scripts.Slider,
+          @placeSquad Slider,
             amount: 5
             options:
               gridConfig:
@@ -97,7 +109,7 @@ class Lunch extends LazerScript
       )
       @updateTitle 'Enemy choreo start'
       @nextSlide @sequence(
-        @placeSquad Game.Scripts.Sine,
+        @placeSquad Sine,
           amount: 5
           delay: 1000
         @wait 3000
@@ -113,7 +125,7 @@ class Lunch extends LazerScript
       @nextSlide()
       @updateTitle 'Bezier, powerups'
       @nextSlide @sequence(
-        @placeSquad Game.Scripts.PresentationSwirler,
+        @placeSquad PresentationSwirler,
           drop: 'xp'
           amount: 4
           delay: 500
@@ -122,18 +134,18 @@ class Lunch extends LazerScript
 
       @updateTitle 'Lazerscript environment'
       @nextSlide(
-        @placeSquad Game.Scripts.PresentationSwirler,
+        @placeSquad PresentationSwirler,
           drop: 'xp'
           amount: 3
           delay: 500
       )
       @nextSlide(
         @parallel(
-          @placeSquad Game.Scripts.PresentationShooter,
+          @placeSquad PresentationShooter,
             drop: 'xp'
             amount: 3
             delay: 600
-          @placeSquad Game.Scripts.PresentationSwirler,
+          @placeSquad PresentationSwirler,
             amount: 3
             delay: 500
         )
@@ -142,7 +154,7 @@ class Lunch extends LazerScript
       @updateTitle 'Lazerscript enemies'
       @disableWeapons()
 
-      @placeSquad Game.Scripts.LittleDancer,
+      @placeSquad LittleDancer,
         amount: 5
         delay: 2000
         options:
@@ -159,9 +171,9 @@ class Lunch extends LazerScript
 
       @checkpoint @setScenery('OceanOld')
       @setScenery('OceanToNew')
-      @async @runScript(Game.Scripts.PresentationSunRise, skipTo: 0, speed: 10)
+      @async @runScript(PresentationSunRise, skipTo: 0, speed: 10)
       @repeat 4, @sequence(
-        @placeSquad Game.Scripts.PresentationSwirler,
+        @placeSquad PresentationSwirler,
           drop: 'xp'
           amount: 6
           delay: 700
@@ -175,9 +187,9 @@ class Lunch extends LazerScript
       @nextSlide @sequence(
         @mineSwarm(juice: no)
       )
-      @checkpoint @sunriseCheckpoint(Game.Scripts.PresentationSunRise, 90000, 10, 'CoastStart')
+      @checkpoint @sunriseCheckpoint(PresentationSunRise, 90000, 10, 'CoastStart')
       @parallel(
-        @runScript(Game.Scripts.PresentationSunSet, skipTo: 0, speed: 50)
+        @runScript(PresentationSunSet, skipTo: 0, speed: 50)
         @sequence(
           @say 'Graphics', 'Ok lets do the sunrise again'
           @say 'Graphics', 'And now use WebGL Shaders'
@@ -192,7 +204,7 @@ class Lunch extends LazerScript
         Crafty('waterMiddle').each -> @attr lightness: 1.0
         Crafty('waterHorizon').each -> @attr lightness: 1.0
       @chapterTitle(1, 'WebGL Shaders')
-      @async @runScript(Game.Scripts.SunRise, skipTo: 0, speed: 2)
+      @async @runScript(SunRise, skipTo: 0, speed: 2)
       @setScenery('BayStart')
       @nextSlide @sequence(
         @swirlAttacks2()
@@ -223,14 +235,14 @@ class Lunch extends LazerScript
         @mineSwarm(juice: yes)
       )
       @nextSlide(
-        @placeSquad Game.Scripts.Swirler,
+        @placeSquad Swirler,
           amount: 4
           delay: 500
           drop: 'xp'
           options:
             juice: yes
       )
-      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 120000, 2, 'Bay')
+      @checkpoint @sunriseCheckpoint(SunRise, 120000, 2, 'Bay')
       @setScenery 'UnderBridge'
       @updateTitle 'Player ship'
       @setWeapons(['lasers'])
@@ -238,7 +250,7 @@ class Lunch extends LazerScript
       @setWeapons(['lasers'])
       @while(
         @waitForScenery('UnderBridge', event: 'enter')
-        @placeSquad Game.Scripts.Swirler,
+        @placeSquad Swirler,
           amount: 4
           delay: 500
           drop: 'xp'
@@ -247,13 +259,13 @@ class Lunch extends LazerScript
       )
       @setSpeed 50, accellerate: yes
       @waitForScenery('UnderBridge', event: 'inScreen')
-      @checkpoint @sunriseCheckpoint(Game.Scripts.SunRise, 140000, 2, 'UnderBridge')
+      @checkpoint @sunriseCheckpoint(SunRise, 140000, 2, 'UnderBridge')
       @setSpeed 0
       @nextSlide()
       @chapterTitle(4, 'Bossfight!')
-      @placeSquad Game.Scripts.LunchBossStage1
+      @placeSquad LunchBossStage1
       @checkpoint @parallel(
-        @async @runScript(Game.Scripts.SunRise, skipTo: 450000, speed: 2)
+        @async @runScript(SunRise, skipTo: 450000, speed: 2)
         @setScenery 'Skyline'
         @gainHeight(600, duration: 0)
         @setSpeed 150
@@ -263,7 +275,7 @@ class Lunch extends LazerScript
         @sequence(
           @disableControls()
           @disableWeapons()
-          @placeSquad(Game.Scripts.PresentationLeaveScreen,
+          @placeSquad(PresentationLeaveScreen,
             amount: 2
             delay: 1000
           )
@@ -325,7 +337,7 @@ class Lunch extends LazerScript
       juice: yes
     )
 
-    @placeSquad Game.Scripts.JumpMine,
+    @placeSquad JumpMine,
       amount: 8
       delay: 300
       options:
@@ -344,11 +356,11 @@ class Lunch extends LazerScript
 
   swirlAttacks: ->
     @parallel(
-      @repeat 2, @placeSquad Game.Scripts.PresentationSwirler,
+      @repeat 2, @placeSquad PresentationSwirler,
         amount: 4
         delay: 500
         drop: 'xp'
-      @repeat 2, @placeSquad Game.Scripts.PresentationShooter,
+      @repeat 2, @placeSquad PresentationShooter,
         amount: 4
         delay: 500
         drop: 'xp'
@@ -356,12 +368,12 @@ class Lunch extends LazerScript
 
   swirlAttacks2: (options = { juice: no }) ->
     @parallel(
-      @repeat 2, @placeSquad Game.Scripts.Swirler,
+      @repeat 2, @placeSquad Swirler,
         amount: 4
         delay: 500
         drop: 'xp'
         options: options
-      @repeat 2, @placeSquad Game.Scripts.Shooter,
+      @repeat 2, @placeSquad Shooter,
         amount: 4
         delay: 500
         drop: 'xp'

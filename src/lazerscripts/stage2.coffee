@@ -1,6 +1,8 @@
-require('./stage2/tank_attack')
 { LazerScript } = require('src/lib/LazerScript')
 StageEnd = require('./stage1end').default
+HeliAttack = require('./stage1/heli_attack').default
+TankAttack = require('./stage2/tank_attack').default
+SunRise = require('./stage1/sunrise').default
 
 class Stage2 extends LazerScript
   nextScript: StageEnd
@@ -38,20 +40,20 @@ class Stage2 extends LazerScript
       @showText 'Get Ready', color: '#00FF00', mode: 'blink', blink_amount: 3, blink_speed: 300
       @parallel(
         @gainHeight(-1300, duration: 30000)
-        @placeSquad Game.Scripts.HeliAttack,
+        @placeSquad HeliAttack,
           amount: 3
           delay: 6000
       )
       @checkpoint @checkpointStreets('Skyline2')
-      @placeSquad Game.Scripts.TankAttack
-      @placeSquad Game.Scripts.HeliAttack
+      @placeSquad TankAttack
+      @placeSquad HeliAttack
       @wait 8000
     )
 
   checkpointStreets: (scenery) ->
     @sequence(
       @setScenery(scenery)
-      @async @runScript(Game.Scripts.SunRise, skipTo: 10 * 60 * 1000)
+      @async @runScript(SunRise, skipTo: 10 * 60 * 1000)
       # TODO: Seriously drop some powerups for players to catch up a little
       @wait 6000
     )

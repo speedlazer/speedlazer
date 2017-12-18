@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.PresentationSunRise extends EntityScript
+class PresentationSunRise extends EntityScript
 
   spawn: (options) ->
     sky = Crafty('Sky').get(0) || Crafty.e('2D, WebGL, Gradient, Sky, HUD, ColorFade').attr(
@@ -62,3 +62,5 @@ class Game.Scripts.PresentationSunRise extends EntityScript
       @setLocation x: .5, y: .11
     )
 
+module.exports =
+  default: PresentationSunRise

@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.TrainAssaulter extends EntityScript
+class TrainAssaulter extends EntityScript
   assets: ->
     @loadAssets('playerShip')
 
@@ -47,3 +47,5 @@ class Game.Scripts.TrainAssaulter extends EntityScript
   onKilled: ->
     @bigExplosion()
 
+module.exports =
+  default: TrainAssaulter

@@ -1,7 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.JumpMine extends EntityScript
-
+class JumpMine extends EntityScript
   assets: ->
     @loadAssets('mine')
 
@@ -56,3 +55,5 @@ class Game.Scripts.JumpMine extends EntityScript
   onKilled: ->
     @bigExplosion(juice: @juice)
 
+module.exports =
+  default: JumpMine

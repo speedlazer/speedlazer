@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.SplashJumper extends EntityScript
+class SplashJumper extends EntityScript
 
   spawn: ->
     Crafty.e('Drone').drone(
@@ -23,3 +23,6 @@ class Game.Scripts.SplashJumper extends EntityScript
 
   onKilled: ->
     @explosion(@location())
+
+module.exports =
+  default: SplashJumper

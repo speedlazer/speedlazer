@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.PresentationLeaveScreen extends EntityScript
+class PresentationLeaveScreen extends EntityScript
 
   spawn: (options) ->
     ship = undefined
@@ -20,4 +20,5 @@ class Game.Scripts.PresentationLeaveScreen extends EntityScript
       @moveTo x: 1.1, y: .45 + (@options.index * .1), speed: 500, easing: 'easeInQuad'
     )
 
-
+module.exports =
+  default: PresentationLeaveScreen

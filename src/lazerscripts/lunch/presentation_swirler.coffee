@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.PresentationSwirler extends EntityScript
+class PresentationSwirler extends EntityScript
 
   spawn: (options) ->
     d = Crafty.e('OldDrone').drone(
@@ -38,3 +38,5 @@ class Game.Scripts.PresentationSwirler extends EntityScript
       offsetY: 20
     ))
 
+module.exports =
+  default: PresentationSwirler

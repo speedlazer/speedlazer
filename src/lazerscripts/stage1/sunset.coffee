@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.SunSet extends EntityScript
+class SunSet extends EntityScript
 
   spawn: (options) ->
     sun = Crafty('Sun')
@@ -34,3 +34,6 @@ class Game.Scripts.SunSet extends EntityScript
         )
       )
     )
+
+module.exports =
+  SunSet

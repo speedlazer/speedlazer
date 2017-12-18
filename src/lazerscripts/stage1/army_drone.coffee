@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.ArmyDrone extends EntityScript
+class ArmyDrone extends EntityScript
   assets: ->
     @loadAssets('drone')
 
@@ -12,7 +12,7 @@ class Game.Scripts.ArmyDrone extends EntityScript
       @endDecoy()
     )
 
-class Game.Scripts.ShipDrone extends Game.Scripts.ArmyDrone
+class ShipDrone extends ArmyDrone
 
   spawn: (options) ->
     d = Crafty.e('Drone').drone(
@@ -53,7 +53,7 @@ class Game.Scripts.ShipDrone extends Game.Scripts.ArmyDrone
       [-20, .21]
     ], rotate: no
 
-class Game.Scripts.Swirler extends Game.Scripts.ArmyDrone
+class Swirler extends ArmyDrone
 
   spawn: (options) ->
     d = Crafty.e('Drone').drone(
@@ -95,7 +95,7 @@ class Game.Scripts.Swirler extends Game.Scripts.ArmyDrone
     ], rotate: no
 
 
-class Game.Scripts.Stalker extends Game.Scripts.ArmyDrone
+class Stalker extends ArmyDrone
 
   spawn: ->
     Crafty.e('Drone').drone(
@@ -126,7 +126,7 @@ class Game.Scripts.Stalker extends Game.Scripts.ArmyDrone
       @moveTo(y: -50, easing: 'easeInQuad')
     )
 
-class Game.Scripts.ScraperFlyer extends Game.Scripts.ArmyDrone
+class ScraperFlyer extends ArmyDrone
 
   spawn: ->
     Crafty.e('Drone, ShootOnSight, Horizon').drone(
@@ -171,7 +171,7 @@ class Game.Scripts.ScraperFlyer extends Game.Scripts.ArmyDrone
       )
     )
 
-class Game.Scripts.Shooter extends Game.Scripts.ArmyDrone
+class Shooter extends ArmyDrone
 
   spawn: (options) ->
     d = Crafty.e('Drone').drone(
@@ -212,7 +212,7 @@ class Game.Scripts.Shooter extends Game.Scripts.ArmyDrone
       [-20, .625]
     ]
 
-class Game.Scripts.CrewShooters extends Game.Scripts.ArmyDrone
+class CrewShooters extends ArmyDrone
 
   spawn: ->
     Crafty.e('Drone, ShootOnSight, Horizon').drone(
@@ -270,3 +270,11 @@ class Game.Scripts.CrewShooters extends Game.Scripts.ArmyDrone
             .blink()
           projectile.shoot(x, y, angle)
 
+module.exports = {
+  Swirler
+  Shooter
+  CrewShooters
+  Stalker
+  ScraperFlyer
+  ShipDrone
+}

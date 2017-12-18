@@ -1,6 +1,7 @@
 { EntityScript } = require('src/lib/LazerScript')
+{ ShipDrone } = require('./army_drone')
 
-class Game.Scripts.DroneShip extends EntityScript
+class DroneShip extends EntityScript
 
   spawn: (options) ->
     Crafty.e('DroneShip').attr(
@@ -15,7 +16,7 @@ class Game.Scripts.DroneShip extends EntityScript
       => @entity.open()
       @wait(1000)
       @parallel(
-        @placeSquad Game.Scripts.ShipDrone,
+        @placeSquad ShipDrone,
           amount: 5,
           drop: 'pool'
           delay: 500
@@ -29,3 +30,5 @@ class Game.Scripts.DroneShip extends EntityScript
       )
     )
 
+module.exports =
+  default: DroneShip

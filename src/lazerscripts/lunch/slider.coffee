@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.Slider extends EntityScript
+class Slider extends EntityScript
 
   spawn: (options) ->
     target = options.grid.getLocation()
@@ -14,3 +14,5 @@ class Game.Scripts.Slider extends EntityScript
   execute: ->
     @moveTo x: -30
 
+module.exports =
+  default: Slider

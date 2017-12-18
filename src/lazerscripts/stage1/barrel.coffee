@@ -1,7 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.IntroBarrel extends EntityScript
-
+class IntroBarrel extends EntityScript
   spawn: (@options = {}) ->
     Crafty.e('2D, WebGL, Tween, boxes, Collision, Choreography, Hideable')
       .attr({ z: 23, defaultSpeed: 150 })
@@ -25,4 +24,5 @@ class Game.Scripts.IntroBarrel extends EntityScript
       @rotate 90, 1500
     )
 
-
+module.exports =
+  default: IntroBarrel

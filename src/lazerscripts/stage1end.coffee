@@ -1,4 +1,4 @@
-require('src/lazerscripts/lunch/presentation_leave_screen')
+PresentationLeaveScreen = require('./lunch/presentation_leave_screen').default
 { LazerScript } = require('src/lib/LazerScript')
 
 class Stage1End extends LazerScript
@@ -12,7 +12,7 @@ class Stage1End extends LazerScript
         @sequence(
           @disableControls()
           @disableWeapons()
-          @placeSquad(Game.Scripts.PresentationLeaveScreen,
+          @placeSquad(PresentationLeaveScreen,
             amount: 2
             delay: 1000
           )

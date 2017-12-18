@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.LittleDancer extends EntityScript
+class LittleDancer extends EntityScript
 
   spawn: (options) ->
     @wallTarget = options.grid.getLocation()
@@ -64,3 +64,5 @@ class Game.Scripts.LittleDancer extends EntityScript
       @oldExplosion(@location(offsetX: 20, offsetY: 20), radius: 40)
     )
 
+module.exports =
+  default: LittleDancer

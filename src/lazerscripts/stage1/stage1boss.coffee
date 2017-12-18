@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.Stage1Boss extends EntityScript
+class Stage1Boss extends EntityScript
   assets: ->
     @loadAssets('largeDrone')
 
@@ -57,9 +57,9 @@ class Game.Scripts.Stage1Boss extends EntityScript
     )
 
   fireRockets: (amount, homing) ->
-    script = Game.Scripts.Stage1BossRocket
+    script = Stage1BossRocket
     if homing
-      script = Game.Scripts.Stage1BossAimedRocket
+      script = Stage1BossAimedRocket
 
     @sequence(
       @async @placeSquad(script,
@@ -82,7 +82,7 @@ class Game.Scripts.Stage1Boss extends EntityScript
           location: @location()
       )
       @if(( -> amount > 2)
-        @async @placeSquad(Game.Scripts.Stage1BossRocket,
+        @async @placeSquad(Stage1BossRocket,
           options:
             z: -5
             offsetX: 30
@@ -93,7 +93,7 @@ class Game.Scripts.Stage1Boss extends EntityScript
         )
       )
       @if(( -> amount > 3)
-        @async @placeSquad(Game.Scripts.Stage1BossRocket,
+        @async @placeSquad(Stage1BossRocket,
           options:
             z: -5
             offsetX: 30
@@ -136,7 +136,7 @@ class Game.Scripts.Stage1Boss extends EntityScript
       @wait -> options.wait + (Math.random() * 50)
     )
 
-class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
+class Stage1BossStage1 extends Stage1Boss
   spawn: ->
     Crafty.e('LargeDrone, Horizon, BulletCircle').drone(
       x: Crafty.viewport.width + 40
@@ -173,7 +173,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @laugh()
       @invincible no
       @enableWeapons()
-      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+      @async @placeSquad(Stage1BossRocket,
         options:
           location: @location()
           pointsOnDestroy: 0
@@ -208,7 +208,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
             [1.2, .6]
           ], speed: 400)
         )
-        @placeSquad(Game.Scripts.Stage1BossMineField,
+        @placeSquad(Stage1BossMineField,
           amount: 30
           delay: 300
           options:
@@ -247,7 +247,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @while(
         @moveTo(x: -100, speed: 400)
         @sequence(
-          @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
+          @async @placeSquad(Stage1BossBombRaid,
             options:
               location: @location()
               armed: no
@@ -259,7 +259,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       @while(
         @moveTo(x: 1.0, speed: 400)
         @sequence(
-          @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
+          @async @placeSquad(Stage1BossBombRaid,
             options:
               location: @location()
               armed: armed
@@ -286,7 +286,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
         @repeat 2, @while(
           @rocketStrikeDanceHoming()
           @sequence(
-            @async @runScript(Game.Scripts.Stage1BossMine, @location())
+            @async @runScript(Stage1BossMine, @location())
             @wait 1500
           )
         )
@@ -346,7 +346,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       )
     )
 
-class Game.Scripts.Stage1BossMine extends EntityScript
+class Stage1BossMine extends EntityScript
   assets: ->
     @loadAssets('mine')
 
@@ -381,7 +381,7 @@ class Game.Scripts.Stage1BossMine extends EntityScript
     @bigExplosion()
 
 
-class Game.Scripts.Stage1BossRocketStrike extends EntityScript
+class Stage1BossRocketStrike extends EntityScript
   spawn: (options) ->
     options = _.defaults(options,
       pointsOHit: 125
@@ -427,7 +427,7 @@ class Game.Scripts.Stage1BossRocketStrike extends EntityScript
   onKilled: ->
     @bigExplosion()
 
-class Game.Scripts.Stage1BossRocket extends EntityScript
+class Stage1BossRocket extends EntityScript
   spawn: (options) ->
     options = _.defaults(options,
       pointsOnHit: 125
@@ -490,7 +490,7 @@ class Game.Scripts.Stage1BossRocket extends EntityScript
   onKilled: ->
     @bigExplosion()
 
-class Game.Scripts.Stage1BossAimedRocket extends EntityScript
+class Stage1BossAimedRocket extends EntityScript
   spawn: (options) ->
     options = _.defaults(options,
       pointsOHit: 125
@@ -550,7 +550,7 @@ class Game.Scripts.Stage1BossAimedRocket extends EntityScript
   onKilled: ->
     @bigExplosion()
 
-class Game.Scripts.Stage1BossHomingRocket extends EntityScript
+class Stage1BossHomingRocket extends EntityScript
   spawn: (options) ->
     options = _.defaults(options,
       pointsOHit: 125
@@ -613,7 +613,7 @@ class Game.Scripts.Stage1BossHomingRocket extends EntityScript
   onKilled: ->
     @bigExplosion()
 
-class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
+class Stage1BossPopup extends Stage1Boss
   spawn: ->
     Crafty.e('LargeDrone, Horizon').drone(
       maxHealth: 60000
@@ -640,7 +640,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
       @invincible yes
       @moveTo(y: .5, x: 0.95, speed: 200, easing: 'easeInOutQuad')
 
-      @async @placeSquad(Game.Scripts.Stage1BossPopupMineField,
+      @async @placeSquad(Stage1BossPopupMineField,
         amount: 20
         delay: 50
         options:
@@ -655,7 +655,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
               steps: 5
               stepSize: 0.075
       )
-      @async @placeSquad(Game.Scripts.Stage1BossPopupMineField,
+      @async @placeSquad(Stage1BossPopupMineField,
         amount: 20
         delay: 50
         options:
@@ -692,7 +692,7 @@ class Game.Scripts.Stage1BossPopup extends Game.Scripts.Stage1Boss
       )
     )
 
-class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
+class Stage1BossLeaving extends Stage1Boss
 
   spawn: ->
     Crafty.e('LargeDrone, Horizon').drone(
@@ -777,7 +777,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
 
   attackCycle: ->
     @repeat 4, @sequence(
-      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+      @async @placeSquad(Stage1BossRocket,
         options:
           location: @location()
           pointsOnDestroy: 0
@@ -796,7 +796,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
       )
     )
 
-class Game.Scripts.Stage1BossBombRaid extends EntityScript
+class Stage1BossBombRaid extends EntityScript
   assets: ->
     @loadAssets('mine')
 
@@ -832,7 +832,7 @@ class Game.Scripts.Stage1BossBombRaid extends EntityScript
     @bigExplosion()
 
 
-class Game.Scripts.Stage1BossDroneRaid extends EntityScript
+class Stage1BossDroneRaid extends EntityScript
   assets: ->
     @loadAssets('drone')
 
@@ -870,7 +870,7 @@ class Game.Scripts.Stage1BossDroneRaid extends EntityScript
   onKilled: ->
     @smallExplosion()
 
-class Game.Scripts.Stage1BossMineField extends EntityScript
+class Stage1BossMineField extends EntityScript
 
   assets: ->
     @loadAssets('mine')
@@ -911,7 +911,7 @@ class Game.Scripts.Stage1BossMineField extends EntityScript
   onKilled: ->
     @bigExplosion(juice: @juice)
 
-class Game.Scripts.Stage1BossPopupMineField extends EntityScript
+class Stage1BossPopupMineField extends EntityScript
   assets: ->
     @loadAssets('mine')
 
@@ -948,3 +948,14 @@ class Game.Scripts.Stage1BossPopupMineField extends EntityScript
   onKilled: ->
     @bigExplosion(juice: @juice)
 
+module.exports = {
+  Stage1BossAimedRocket
+  Stage1BossBombRaid
+  Stage1BossDroneRaid
+  Stage1BossLeaving
+  Stage1BossMine
+  Stage1BossPopup
+  Stage1BossRocket
+  Stage1BossRocketStrike
+  Stage1BossStage1
+}

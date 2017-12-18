@@ -1,16 +1,16 @@
-require('./stage1/army_drone')
-require('./stage1/barrel')
-require('./stage1/camera_crew')
-require('./stage1/drone_ship')
-require('./stage1/heli_attack')
-require('./stage1/jump_mine')
-require('./stage1/mine_wall')
-require('./stage1/player_clone')
-require('./stage1/stage1boss')
-require('./stage1/sunrise')
-require('./stage1/sunset')
 { LazerScript } = require('src/lib/LazerScript')
 Stage2 = require('./stage2').default
+
+CameraCrew = require('./stage1/camera_crew').default
+IntroBarrel = require('./stage1/barrel').default
+
+{ ScraperFlyer, Swirler, Shooter, CrewShooters, Stalker } = require('./stage1/army_drone')
+SunRise = require('./stage1/sunrise').default
+JumpMine = require('./stage1/jump_mine').default
+DroneShip = require('./stage1/drone_ship').default
+HeliAttack = require('./stage1/heli_attack').default
+PlayerClone = require('./stage1/player_clone').default
+{ Stage1BossLeaving, Stage1BossRocketStrike, Stage1BossPopup, Stage1BossStage1 } = require('./stage1/stage1boss')
 
 class Stage1 extends LazerScript
   nextScript: Stage2
@@ -57,9 +57,9 @@ class Stage1 extends LazerScript
       @setSpeed 100
       @setScenery('Intro')
       @sunRise()
-      @async @placeSquad(Game.Scripts.CameraCrew)
-      @async @runScript Game.Scripts.IntroBarrel, index: 0
-      @async @runScript Game.Scripts.IntroBarrel, index: 1
+      @async @placeSquad(CameraCrew)
+      @async @runScript IntroBarrel, index: 0
+      @async @runScript IntroBarrel, index: 1
       @if((-> @player(1).active and @player(2).active)
         @say 'General', 'Time to get the last 2 ships to the factory\n' +
           'to install the AI controlled defence systems', noise: 'low'
@@ -83,7 +83,7 @@ class Stage1 extends LazerScript
       @parallel(
         @gainHeight(150, duration: 4000)
         @repeat(2, @sequence(
-          @placeSquad Game.Scripts.Swirler,
+          @placeSquad Swirler,
             amount: 6
             delay: 250
             drop: 'pool'
@@ -92,7 +92,7 @@ class Stage1 extends LazerScript
       )
       @say('General', 'Great job, now get the ship to the defence factory in the city\n' +
        'We will send some more target practice', noise: 'low')
-      @placeSquad Game.Scripts.Shooter,
+      @placeSquad Shooter,
         amount: 6
         delay: 500
         drop: 'pool'
@@ -102,7 +102,7 @@ class Stage1 extends LazerScript
     @sequence(
       @parallel(
         @say('John', 'What are those drones doing there!?')
-        @placeSquad Game.Scripts.CrewShooters,
+        @placeSquad CrewShooters,
           amount: 4
           delay: 750
           drop: 'pool'
@@ -151,7 +151,7 @@ class Stage1 extends LazerScript
       @checkpoint @checkpointStart('Bay', 131000)
       @setScenery('UnderBridge')
       @parallel(
-        @placeSquad Game.Scripts.Stalker,
+        @placeSquad Stalker,
           drop: 'pool'
         @mineSwarm direction: 'left'
       )
@@ -159,7 +159,7 @@ class Stage1 extends LazerScript
       @sequence(
         @stalkerShootout()
         @parallel(
-          @placeSquad Game.Scripts.Stalker,
+          @placeSquad Stalker,
             drop: 'pool'
           @mineSwarm direction: 'left'
         )
@@ -194,7 +194,7 @@ class Stage1 extends LazerScript
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
       @checkpoint @checkpointStart('UnderBridge', 203000)
-      @placeSquad Game.Scripts.Stage1BossStage1
+      @placeSquad Stage1BossStage1
       @parallel(
         @if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
         @if((-> @player(2).active), @drop(item: 'life', inFrontOf: @player(2)))
@@ -214,7 +214,7 @@ class Stage1 extends LazerScript
 
   waitingRocketStrike: ->
     @sequence(
-      @placeSquad Game.Scripts.Stage1BossRocketStrike,
+      @placeSquad Stage1BossRocketStrike,
         amount: 6
         delay: 150
         options:
@@ -233,12 +233,12 @@ class Stage1 extends LazerScript
   swirlAttacks: ->
     @attackWaves(
       @parallel(
-        @repeat 2, @placeSquad Game.Scripts.Swirler,
+        @repeat 2, @placeSquad Swirler,
           amount: 8
           delay: 500
           options:
             shootOnSight: yes
-        @repeat 2, @placeSquad Game.Scripts.Shooter,
+        @repeat 2, @placeSquad Shooter,
           amount: 8
           delay: 500
           options:
@@ -249,7 +249,7 @@ class Stage1 extends LazerScript
 
   underWaterAttacks: ->
     @sequence(
-      @placeSquad Game.Scripts.Stalker,
+      @placeSquad Stalker,
         drop: 'pool'
       @repeat 2, @stalkerShootout()
     )
@@ -257,10 +257,10 @@ class Stage1 extends LazerScript
   underWaterAttacks2: ->
 
   sunRise: (options = { skipTo: 0 }) ->
-    @async @runScript(Game.Scripts.SunRise, _.extend({ speed: 2 }, options))
+    @async @runScript(SunRise, _.extend({ speed: 2 }, options))
 
   mineSwarm: (options = { direction: 'right' })->
-    @placeSquad Game.Scripts.JumpMine,
+    @placeSquad JumpMine,
       amount: 10
       delay: 100
       options:
@@ -277,21 +277,21 @@ class Stage1 extends LazerScript
         direction: options.direction
 
   droneShip: ->
-    @placeSquad Game.Scripts.DroneShip,
+    @placeSquad DroneShip,
       drop: 'pool'
 
   stalkerShootout: ->
     @parallel(
-      @placeSquad Game.Scripts.Stalker,
+      @placeSquad Stalker,
         drop: 'pool'
       @attackWaves(
         @parallel(
-          @placeSquad Game.Scripts.Shooter,
+          @placeSquad Shooter,
             amount: 8
             delay: 500
             options:
               shootOnSight: yes
-          @placeSquad Game.Scripts.Swirler,
+          @placeSquad Swirler,
             amount: 8
             delay: 500
             options:
@@ -317,7 +317,7 @@ class Stage1 extends LazerScript
         @sequence(
           @stalkerShootout()
           @setScenery('Skyline')
-          @placeSquad Game.Scripts.Shooter,
+          @placeSquad Shooter,
             amount: 8
             delay: 500
             drop: 'pool'
@@ -325,12 +325,12 @@ class Stage1 extends LazerScript
               shootOnSight: yes
           @attackWaves(
             @parallel(
-              @placeSquad Game.Scripts.Shooter,
+              @placeSquad Shooter,
                 amount: 8
                 delay: 500
                 options:
                   shootOnSight: yes
-              @placeSquad Game.Scripts.Swirler,
+              @placeSquad Swirler,
                 amount: 8
                 delay: 500
                 options:
@@ -351,10 +351,10 @@ class Stage1 extends LazerScript
       @setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
       @attackWaves(
         @parallel(
-          @placeSquad Game.Scripts.ScraperFlyer,
+          @placeSquad ScraperFlyer,
             amount: 8
             delay: 500
-          @placeSquad Game.Scripts.Shooter,
+          @placeSquad Shooter,
             amount: 8
             delay: 500
             options:
@@ -365,10 +365,10 @@ class Stage1 extends LazerScript
       @parallel(
         @attackWaves(
           @parallel(
-            @placeSquad Game.Scripts.ScraperFlyer,
+            @placeSquad ScraperFlyer,
               amount: 8
               delay: 500
-            @placeSquad Game.Scripts.Shooter,
+            @placeSquad Shooter,
               amount: 8
               delay: 500
               options:
@@ -378,15 +378,15 @@ class Stage1 extends LazerScript
         )
         @cloneEncounter()
       )
-      @placeSquad Game.Scripts.Stage1BossPopup
+      @placeSquad Stage1BossPopup
       @setScenery('Skyline')
       @parallel(
         @attackWaves(
           @sequence(
-            @placeSquad Game.Scripts.ScraperFlyer,
+            @placeSquad ScraperFlyer,
               amount: 6
               delay: 500
-            @placeSquad Game.Scripts.ScraperFlyer,
+            @placeSquad ScraperFlyer,
               amount: 8
               delay: 500
           )
@@ -394,13 +394,13 @@ class Stage1 extends LazerScript
         )
         @sequence(
           @wait 3000
-          @placeSquad Game.Scripts.Shooter,
+          @placeSquad Shooter,
             amount: 4
             delay: 750
             drop: 'pool'
             options:
               shootOnSight: yes
-          @placeSquad Game.Scripts.HeliAttack,
+          @placeSquad HeliAttack,
             drop: 'pool'
         )
       )
@@ -409,7 +409,7 @@ class Stage1 extends LazerScript
   highSkylineFighting: ->
     @sequence(
       @parallel(
-        @placeSquad Game.Scripts.Stage1BossPopup
+        @placeSquad Stage1BossPopup
         @cloneEncounter()
       )
 
@@ -418,7 +418,7 @@ class Stage1 extends LazerScript
 
       @parallel(
         @repeat 2, @cloneEncounter()
-        @placeSquad Game.Scripts.HeliAttack,
+        @placeSquad HeliAttack,
           drop: 'pool'
           amount: 2
           delay: 5000
@@ -430,7 +430,7 @@ class Stage1 extends LazerScript
         @wait 3000
         @waitingRocketStrike()
       )
-      @placeSquad Game.Scripts.Stage1BossLeaving
+      @placeSquad Stage1BossLeaving
       @say 'General', 'He is going to the military complex!\nBut we cant get through those shields now...', noise: 'low'
     )
 
@@ -439,11 +439,11 @@ class Stage1 extends LazerScript
       @parallel(
         @sequence(
           @wait 4000
-          @placeSquad Game.Scripts.PlayerClone,
+          @placeSquad PlayerClone,
             options:
               from: 'top'
         )
-        @placeSquad Game.Scripts.PlayerClone,
+        @placeSquad PlayerClone,
           options:
             from: 'bottom'
       )

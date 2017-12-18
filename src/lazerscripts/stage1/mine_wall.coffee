@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.MineWall extends EntityScript
+class MineWall extends EntityScript
 
   spawn: (options) ->
     @startX = if options.direction is 'left' then -80 else 680
@@ -32,5 +32,5 @@ class Game.Scripts.MineWall extends EntityScript
   onKilled: ->
     @blast(@location(), damage: 300, radius: 40)
 
-
-
+module.exports =
+  default: MineWall

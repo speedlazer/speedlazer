@@ -163,8 +163,6 @@ Game =
     str = JSON.stringify(newSettings)
     localStorage.setItem('SPDLZRS', str)
 
-  Scripts: {}
-
 # Export
 module.exports = { default: Game }
 

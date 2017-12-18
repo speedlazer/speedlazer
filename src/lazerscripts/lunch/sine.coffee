@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.Sine extends EntityScript
+class Sine extends EntityScript
 
   spawn: ->
     Crafty.e('OldDrone').drone(
@@ -21,3 +21,5 @@ class Game.Scripts.Sine extends EntityScript
       [-.3,  .625]
     ], rotate: no
 
+module.exports =
+  default: Sine

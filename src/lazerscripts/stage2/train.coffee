@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class Game.Scripts.Train extends EntityScript
+class Train extends EntityScript
   spawn: ->
     p = Crafty.e('Enemy, Color').attr(
       x: -1200
@@ -46,4 +46,5 @@ class Game.Scripts.Train extends EntityScript
   onKilled: ->
     @bigExplosion()
 
-
+module.exports =
+  default: Train

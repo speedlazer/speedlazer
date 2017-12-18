@@ -1,6 +1,7 @@
 { EntityScript } = require('src/lib/LazerScript')
+{ Stage1BossRocket } = require('./stage1boss')
 
-class Game.Scripts.HeliAttack extends EntityScript
+class HeliAttack extends EntityScript
   assets: ->
     @loadAssets('helicopter')
 
@@ -127,7 +128,7 @@ class Game.Scripts.HeliAttack extends EntityScript
     )
 
   fireRockets: (amount) ->
-    script = Game.Scripts.Stage1BossRocket
+    script = Stage1BossRocket
 
     @sequence(
       @async @placeSquad(script,
@@ -151,3 +152,5 @@ class Game.Scripts.HeliAttack extends EntityScript
       @wait 500
     )
 
+module.exports =
+  default: HeliAttack

@@ -1,6 +1,7 @@
 { EntityScript } = require('src/lib/LazerScript')
+{ Stage1BossAimedRocket, Stage1BossBombRaid } = require('./stage1boss')
 
-class Game.Scripts.PlayerClone extends EntityScript
+class PlayerClone extends EntityScript
   assets: ->
     @loadAssets('playerShip')
 
@@ -77,7 +78,7 @@ class Game.Scripts.PlayerClone extends EntityScript
     )
 
   dropBombs: ->
-    @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
+    @async @placeSquad(Stage1BossBombRaid,
       options:
         location: @location()
         armed: no
@@ -86,7 +87,7 @@ class Game.Scripts.PlayerClone extends EntityScript
 
 
   fireRockets: (amount) ->
-    script = Game.Scripts.Stage1BossAimedRocket
+    script = Stage1BossAimedRocket
 
     @sequence(
       @async @placeSquad(script,
@@ -111,3 +112,5 @@ class Game.Scripts.PlayerClone extends EntityScript
       )
     )
 
+module.exports =
+  default: PlayerClone

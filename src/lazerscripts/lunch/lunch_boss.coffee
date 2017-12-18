@@ -1,6 +1,7 @@
 { EntityScript } = require('src/lib/LazerScript')
+{ Stage1BossMine, Stage1BossRocket, Stage1BossDroneRaid } = require('./stage1/stage1boss')
 
-class Game.Scripts.LunchBoss extends EntityScript
+class LunchBoss extends EntityScript
   assets: ->
     @loadAssets('largeDrone')
 
@@ -33,7 +34,7 @@ class Game.Scripts.LunchBoss extends EntityScript
       @wait -> options.wait + (Math.random() * 50)
     )
 
-class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
+class LunchBossStage1 extends LunchBoss
   spawn: ->
     Crafty.e('LargeDrone, Horizon').drone(
       x: Crafty.viewport.width + 40
@@ -59,7 +60,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @laugh()
       @invincible no
       @enableWeapons()
-      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+      @async @placeSquad(Stage1BossRocket,
         options:
           location: @location()
           pointsOnDestroy: 0
@@ -73,10 +74,10 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
 
   attackCycle: (speed) ->
     @sequence(
-      @async @runScript(Game.Scripts.Stage1BossMine, @location())
+      @async @runScript(Stage1BossMine, @location())
       @moveTo(y: .36, easing: 'easeInOutQuad', speed: speed)
       @wait 200
-      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+      @async @placeSquad(Stage1BossRocket,
         options:
           location: @location()
           pointsOnDestroy: 0
@@ -84,9 +85,9 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       )
       @animate 'emptyWing', 0, 'wing'
       @animate 'reload', 0, 'wing'
-      @async @runScript(Game.Scripts.Stage1BossMine, @location())
+      @async @runScript(Stage1BossMine, @location())
       @moveTo(y: .58, easing: 'easeInOutQuad', speed: speed)
-      @async @placeSquad(Game.Scripts.Stage1BossRocket,
+      @async @placeSquad(Stage1BossRocket,
         options:
           location: @location()
           pointsOnDestroy: 0
@@ -106,7 +107,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @repeat @sequence(
         @repeat 3, @attackCycle(50)
         @laugh()
-        @async @placeSquad(Game.Scripts.Stage1BossDroneRaid,
+        @async @placeSquad(Stage1BossDroneRaid,
           amount: 6
           delay: 300
           options:
@@ -136,14 +137,14 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
 
   attackCycleAir: ->
     @repeat 5, @sequence(
-      @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
+      @async @placeSquad(Stage1BossHomingRocket,
         options:
           z: 5
           offsetY: 100
           location: @location()
       )
       @animate 'emptyWing', 0, 'wing'
-      @async @placeSquad(Game.Scripts.Stage1BossHomingRocket,
+      @async @placeSquad(Stage1BossHomingRocket,
         options:
           z: -5
           offsetY: -100
@@ -162,7 +163,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
     @sequence(
       @moveTo(y: .5, x: 0.95, speed: 100, 'easeInOutQuad')
 
-      @async @placeSquad(Game.Scripts.LunchBossMineField,
+      @async @placeSquad(LunchBossMineField,
         amount: 20
         delay: 50
         options:
@@ -177,7 +178,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
               steps: 5
               stepSize: 0.075
       )
-      @async @placeSquad(Game.Scripts.LunchBossMineField,
+      @async @placeSquad(LunchBossMineField,
         amount: 20
         delay: 50
         options:
@@ -279,7 +280,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @while(
         @moveTo(x: -100, speed: 200)
         @sequence(
-          @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
+          @async @placeSquad(Stage1BossBombRaid,
             options:
               location: @location()
               armed: no
@@ -291,7 +292,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
       @while(
         @moveTo(x: 1.0, speed: 200)
         @sequence(
-          @async @placeSquad(Game.Scripts.Stage1BossBombRaid,
+          @async @placeSquad(Stage1BossBombRaid,
             options:
               location: @location()
               armed: armed
@@ -306,7 +307,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
     )
 
 
-class Game.Scripts.LunchBossMineField extends EntityScript
+class LunchBossMineField extends EntityScript
   assets: ->
     @loadAssets('mine')
 
@@ -343,3 +344,5 @@ class Game.Scripts.LunchBossMineField extends EntityScript
   onKilled: ->
     @bigExplosion(juice: @juice)
 
+module.exports =
+  default: LunchBossStage1

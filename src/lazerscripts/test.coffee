@@ -1,4 +1,6 @@
 { LazerScript, EntityScript } = require('src/lib/LazerScript')
+SunRise = require('./stage1/sunrise').default
+{ Swirler } = require('./stage1/army_drone')
 
 class Test extends LazerScript
   assets: ->
@@ -8,14 +10,14 @@ class Test extends LazerScript
     @sequence(
       #@setShipType('PlayerControlledCube')
       @setScenery 'Ocean'
-      @async @runScript(Game.Scripts.SunRise, skipTo: 200000)
+      @async @runScript(SunRise, skipTo: 200000)
       @setSpeed 50
       #@testEnemy(1)
       #@testEnemy(3)
     )
 
   testEnemy: (amount) ->
-    @placeSquad Game.Scripts.EnemyTestScript,
+    @placeSquad EnemyTestScript,
       amount: amount
       delay: 2500
       options:
@@ -23,11 +25,11 @@ class Test extends LazerScript
         assetsName: 'newEnemyNameHere'
 
   oldEnemy: (amount) ->
-    @placeSquad Game.Scripts.Swirler,
+    @placeSquad Swirler,
       amount: amount
       delay: 2500
 
-class Game.Scripts.EnemyTestScript extends EntityScript
+class EnemyTestScript extends EntityScript
   assets: (options) ->
     @loadAssets(options.assetsName ? 'shadow')
 
