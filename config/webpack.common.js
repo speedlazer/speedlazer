@@ -3,22 +3,26 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 
+const cleanOptions = {
+  root: path.resolve(__dirname, '..')
+}
+
 module.exports = {
   entry: {
     game: './app/index.js'
   },
   output: {
     filename: '[name].[hash].js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, '..', 'dist')
   },
   resolve: {
     alias: {
-      src: path.resolve(__dirname, 'app/')
+      src: path.resolve(__dirname, '..', 'app/')
     },
     extensions: [".js", ".coffee"]
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(['dist'], cleanOptions),
     new HtmlWebpackPlugin({
       template: "app/index.html"
     }),

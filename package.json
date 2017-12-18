@@ -29,8 +29,8 @@
     "webpack-merge": "^4.1.1"
   },
   "scripts": {
-    "build": "webpack --config webpack.prod.js",
-    "start": "webpack-dev-server --open --config webpack.dev.js"
+    "build": "webpack --config ./config/webpack.prod.js",
+    "start": "webpack-dev-server --open --config ./config/webpack.dev.js"
   },
   "dependencies": {
     "craftyjs": "craftyjs/Crafty",
