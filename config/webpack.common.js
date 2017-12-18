@@ -33,7 +33,6 @@ module.exports = {
     new webpack.ProvidePlugin({
       Crafty: ['src/crafty-loader', 'default'],
       Game: ['src/scripts/Game', 'default'],
-      $: ['jquery'],
       WhenJS: ['src/when-loader', 'default'],
       _: ['underscore']
     })

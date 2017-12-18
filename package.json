@@ -43,7 +43,6 @@
   "dependencies": {
     "craftyjs": "craftyjs/Crafty",
     "crypto-js": "^3.1.9-1",
-    "jquery": "^3.2.1",
     "jsbezier": "^0.9.1",
     "screenfull": "^3.3.2",
     "underscore": "^1.8.3",
