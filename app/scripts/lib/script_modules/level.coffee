@@ -82,10 +82,12 @@ Game.ScriptModule.Level =
                 lastLocation = location
 
           if allKilled and lastLocation
-            lastLocation.x -= Crafty.viewport.x
-            lastLocation.y -= Crafty.viewport.y
+            dropLocation = {
+              x: lastLocation.x - Crafty.viewport.x
+              y: lastLocation.y - Crafty.viewport.y
+            }
             if settings.drop
-              @drop(item: settings.drop, location: lastLocation)(sequence)
+              @drop(item: settings.drop, location: dropLocation)(sequence)
 
   attackWaves: (promise, settings = {}) ->
     (sequence) =>
