@@ -1,4 +1,6 @@
-class Game.Scripts.Test extends Game.LazerScript
+{ LazerScript, EntityScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.Test extends LazerScript
   assets: ->
     @loadAssets('playerShip')
 
@@ -25,7 +27,7 @@ class Game.Scripts.Test extends Game.LazerScript
       amount: amount
       delay: 2500
 
-class Game.Scripts.EnemyTestScript extends Game.EntityScript
+class Game.Scripts.EnemyTestScript extends EntityScript
   assets: (options) ->
     @loadAssets(options.assetsName ? 'shadow')
 

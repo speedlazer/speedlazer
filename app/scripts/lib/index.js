@@ -1,6 +1,5 @@
 import "./Level";
 import "./LevelGenerator";
-import "./LazerScript";
 import "./BezierPath";
 import "./Dialog";
 import "./EventHandler";

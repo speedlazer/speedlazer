@@ -1,4 +1,6 @@
-class Game.Scripts.TankAttack extends Game.EntityScript
+{ EntityScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.TankAttack extends EntityScript
 
   spawn: (options) ->
     p = Crafty.e('Tank').attr(

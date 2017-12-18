@@ -1,4 +1,6 @@
-class Game.Scripts.MineWall extends Game.EntityScript
+{ EntityScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.MineWall extends EntityScript
 
   spawn: (options) ->
     @startX = if options.direction is 'left' then -80 else 680

@@ -1,4 +1,6 @@
-class Game.Scripts.Lunch extends Game.LazerScript
+{ LazerScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.Lunch extends LazerScript
   assets: ->
     @loadAssets('explosion', 'playerShip')
 

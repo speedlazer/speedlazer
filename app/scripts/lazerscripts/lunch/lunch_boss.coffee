@@ -1,4 +1,6 @@
-class Game.Scripts.LunchBoss extends Game.EntityScript
+{ EntityScript } = require('app/scripts/lib/LazerScript')
+
+class Game.Scripts.LunchBoss extends EntityScript
   assets: ->
     @loadAssets('largeDrone')
 
@@ -304,7 +306,7 @@ class Game.Scripts.LunchBossStage1 extends Game.Scripts.LunchBoss
     )
 
 
-class Game.Scripts.LunchBossMineField extends Game.EntityScript
+class Game.Scripts.LunchBossMineField extends EntityScript
   assets: ->
     @loadAssets('mine')
 

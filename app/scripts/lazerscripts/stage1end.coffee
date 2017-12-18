@@ -1,6 +1,7 @@
 require('src/scripts/lazerscripts/lunch/presentation_leave_screen')
+{ LazerScript } = require('src/scripts/lib/LazerScript')
 
-class Game.Scripts.Stage1End extends Game.LazerScript
+class Game.Scripts.Stage1End extends LazerScript
 
   assets: ->
     @loadAssets('explosion')

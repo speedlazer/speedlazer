@@ -1,4 +1,6 @@
-class Game.Scripts.DroneShip extends Game.EntityScript
+{ EntityScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.DroneShip extends EntityScript
 
   spawn: (options) ->
     Crafty.e('DroneShip').attr(

@@ -1,4 +1,6 @@
-class Game.Scripts.TrainAssaulter extends Game.EntityScript
+{ EntityScript } = require('app/scripts/lib/LazerScript')
+
+class Game.Scripts.TrainAssaulter extends EntityScript
   assets: ->
     @loadAssets('playerShip')
 

@@ -10,7 +10,7 @@
 #  - wait
 #  - checkpoint
 #
-Game.ScriptModule.Core =
+Core =
   _verify: (sequence) ->
     throw new Error('sequence mismatch') unless sequence is @currentSequence
     @level.verify()
@@ -179,3 +179,6 @@ Game.ScriptModule.Core =
         task(sequence)
       else
         window.ga('send', 'event', 'Game', "Checkpoint #{@currentCheckpoint}")
+
+module.exports =
+  default: Core

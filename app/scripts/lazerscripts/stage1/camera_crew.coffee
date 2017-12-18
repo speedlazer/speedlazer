@@ -1,4 +1,6 @@
-class Game.Scripts.CameraCrew extends Game.EntityScript
+{ EntityScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.CameraCrew extends EntityScript
 
   assets: ->
     @loadAssets('helicopter')

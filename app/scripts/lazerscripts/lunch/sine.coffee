@@ -1,4 +1,6 @@
-class Game.Scripts.Sine extends Game.EntityScript
+{ EntityScript } = require('app/scripts/lib/LazerScript')
+
+class Game.Scripts.Sine extends EntityScript
 
   spawn: ->
     Crafty.e('OldDrone').drone(

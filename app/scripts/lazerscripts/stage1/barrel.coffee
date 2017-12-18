@@ -1,4 +1,6 @@
-class Game.Scripts.IntroBarrel extends Game.EntityScript
+{ EntityScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.IntroBarrel extends EntityScript
 
   spawn: (@options = {}) ->
     Crafty.e('2D, WebGL, Tween, boxes, Collision, Choreography, Hideable')

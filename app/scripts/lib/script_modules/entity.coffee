@@ -9,7 +9,7 @@
 # - synchronizeOn
 # - location
 #
-Game.ScriptModule.Entity =
+Entity =
   # Change the execution sequence when the bound entity fires a trigger.
   #
   # You can use this to:
@@ -529,3 +529,6 @@ Game.ScriptModule.Entity =
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
       WhenJS(@entity.execute(name, args, this))
+
+module.exports =
+  default: Entity

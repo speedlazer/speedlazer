@@ -1,4 +1,6 @@
-class Game.Scripts.PlayerClone extends Game.EntityScript
+{ EntityScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.PlayerClone extends EntityScript
   assets: ->
     @loadAssets('playerShip')
 

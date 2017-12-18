@@ -14,3 +14,4 @@ import "./Invincible";
 import "./ScrollWall";
 import "./ShipSpawnable";
 import "./TextInput";
+import "./Horizon";

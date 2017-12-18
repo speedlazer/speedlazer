@@ -2,7 +2,7 @@
 # to remove duplication.
 # They generally call lower level lazerScript
 # methods.
-Game.ScriptTemplate.Level =
+Level =
   oldExplosion: (location, options = {}) ->
     (sequence) =>
       @_verify(sequence)
@@ -62,3 +62,6 @@ Game.ScriptTemplate.Level =
           offsetY: options.offsetY
         }), damage: options.damage, radius: 40)
       )
+
+module.exports =
+  default: Level

@@ -9,8 +9,9 @@ require('./stage1/player_clone')
 require('./stage1/stage1boss')
 require('./stage1/sunrise')
 require('./stage1/sunset')
+{ LazerScript } = require('src/scripts/lib/LazerScript')
 
-class Game.Scripts.Stage1 extends Game.LazerScript
+class Game.Scripts.Stage1 extends LazerScript
   nextScript: 'Stage2'
 
   assets: ->

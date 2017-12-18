@@ -1,4 +1,6 @@
-class Game.Scripts.LittleDancer extends Game.EntityScript
+{ EntityScript } = require('app/scripts/lib/LazerScript')
+
+class Game.Scripts.LittleDancer extends EntityScript
 
   spawn: (options) ->
     @wallTarget = options.grid.getLocation()

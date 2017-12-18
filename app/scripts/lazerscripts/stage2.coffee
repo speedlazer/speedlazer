@@ -1,6 +1,7 @@
 require('./stage2/tank_attack')
+{ LazerScript } = require('src/scripts/lib/LazerScript')
 
-class Game.Scripts.Stage2 extends Game.LazerScript
+class Game.Scripts.Stage2 extends LazerScript
   nextScript: 'Stage1End'
 
   assets: ->

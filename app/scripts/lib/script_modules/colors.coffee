@@ -1,4 +1,4 @@
-Game.ScriptModule.Colors =
+Colors =
   backgroundColorFade: (settings, bottomColors, topColors) ->
     (sequence) =>
       Crafty.background(bottomColors[0])
@@ -26,8 +26,6 @@ Game.ScriptModule.Colors =
     Crafty('Horizon').each ->
       @colorDesaturation color
 
-Crafty.c 'Horizon',
-  init: ->
-    @requires 'ColorEffects'
-    @colorDesaturation Game.backgroundColor
-
+module.exports = {
+  default: Colors
+}

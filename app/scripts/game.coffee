@@ -164,8 +164,6 @@ Game =
     localStorage.setItem('SPDLZRS', str)
 
   Scripts: {}
-  ScriptModule: {}
-  ScriptTemplate: {}
 
 # Export
 module.exports = { default: Game }

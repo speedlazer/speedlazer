@@ -1,10 +1,10 @@
-require('./script_modules/core')
-require('./script_modules/level')
-require('./script_modules/entity')
-require('./script_modules/colors')
-require('./script_templates/level')
+Core = require('./script_modules/core').default
+Level = require('./script_modules/level').default
+Entity = require('./script_modules/entity').default
+Colors = require('./script_modules/colors').default
+LevelTemplate = require('./script_templates/level').default
 
-class Game.LazerScript
+class LazerScript
   constructor: (@level) ->
 
   run: (args...) ->
@@ -38,16 +38,16 @@ class Game.LazerScript
       @currentSequence = null
 
 _.extend(
-  Game.LazerScript::
-  Game.ScriptModule.Core
-  Game.ScriptModule.Level
-  Game.ScriptModule.Colors
-  Game.ScriptTemplate.Level
+  LazerScript::
+  Core
+  Level
+  Colors
+  LevelTemplate
 )
 
 # Could these be merged? V ^
 
-class Game.EntityScript extends Game.LazerScript
+class EntityScript extends LazerScript
 
   initialize: (args...) ->
     @boundEvents = []
@@ -101,6 +101,11 @@ class Game.EntityScript extends Game.LazerScript
   spawn: ->
 
 _.extend(
-  Game.EntityScript::
-  Game.ScriptModule.Entity
+  EntityScript::
+  Entity
 )
+
+module.exports = {
+  LazerScript
+  EntityScript
+}

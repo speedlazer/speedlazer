@@ -1,4 +1,6 @@
-class Game.Scripts.ArmyDrone extends Game.EntityScript
+{ EntityScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.ArmyDrone extends EntityScript
   assets: ->
     @loadAssets('drone')
 

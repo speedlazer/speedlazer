@@ -1,4 +1,6 @@
-class Game.Scripts.Stage1Boss extends Game.EntityScript
+{ EntityScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.Stage1Boss extends EntityScript
   assets: ->
     @loadAssets('largeDrone')
 
@@ -344,7 +346,7 @@ class Game.Scripts.Stage1BossStage1 extends Game.Scripts.Stage1Boss
       )
     )
 
-class Game.Scripts.Stage1BossMine extends Game.EntityScript
+class Game.Scripts.Stage1BossMine extends EntityScript
   assets: ->
     @loadAssets('mine')
 
@@ -379,7 +381,7 @@ class Game.Scripts.Stage1BossMine extends Game.EntityScript
     @bigExplosion()
 
 
-class Game.Scripts.Stage1BossRocketStrike extends Game.EntityScript
+class Game.Scripts.Stage1BossRocketStrike extends EntityScript
   spawn: (options) ->
     options = _.defaults(options,
       pointsOHit: 125
@@ -425,7 +427,7 @@ class Game.Scripts.Stage1BossRocketStrike extends Game.EntityScript
   onKilled: ->
     @bigExplosion()
 
-class Game.Scripts.Stage1BossRocket extends Game.EntityScript
+class Game.Scripts.Stage1BossRocket extends EntityScript
   spawn: (options) ->
     options = _.defaults(options,
       pointsOnHit: 125
@@ -488,7 +490,7 @@ class Game.Scripts.Stage1BossRocket extends Game.EntityScript
   onKilled: ->
     @bigExplosion()
 
-class Game.Scripts.Stage1BossAimedRocket extends Game.EntityScript
+class Game.Scripts.Stage1BossAimedRocket extends EntityScript
   spawn: (options) ->
     options = _.defaults(options,
       pointsOHit: 125
@@ -548,7 +550,7 @@ class Game.Scripts.Stage1BossAimedRocket extends Game.EntityScript
   onKilled: ->
     @bigExplosion()
 
-class Game.Scripts.Stage1BossHomingRocket extends Game.EntityScript
+class Game.Scripts.Stage1BossHomingRocket extends EntityScript
   spawn: (options) ->
     options = _.defaults(options,
       pointsOHit: 125
@@ -794,7 +796,7 @@ class Game.Scripts.Stage1BossLeaving extends Game.Scripts.Stage1Boss
       )
     )
 
-class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
+class Game.Scripts.Stage1BossBombRaid extends EntityScript
   assets: ->
     @loadAssets('mine')
 
@@ -830,7 +832,7 @@ class Game.Scripts.Stage1BossBombRaid extends Game.EntityScript
     @bigExplosion()
 
 
-class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
+class Game.Scripts.Stage1BossDroneRaid extends EntityScript
   assets: ->
     @loadAssets('drone')
 
@@ -868,7 +870,7 @@ class Game.Scripts.Stage1BossDroneRaid extends Game.EntityScript
   onKilled: ->
     @smallExplosion()
 
-class Game.Scripts.Stage1BossMineField extends Game.EntityScript
+class Game.Scripts.Stage1BossMineField extends EntityScript
 
   assets: ->
     @loadAssets('mine')
@@ -909,7 +911,7 @@ class Game.Scripts.Stage1BossMineField extends Game.EntityScript
   onKilled: ->
     @bigExplosion(juice: @juice)
 
-class Game.Scripts.Stage1BossPopupMineField extends Game.EntityScript
+class Game.Scripts.Stage1BossPopupMineField extends EntityScript
   assets: ->
     @loadAssets('mine')
 

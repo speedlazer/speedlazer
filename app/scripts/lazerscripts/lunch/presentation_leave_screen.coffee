@@ -1,4 +1,6 @@
-class Game.Scripts.PresentationLeaveScreen extends Game.EntityScript
+{ EntityScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.PresentationLeaveScreen extends EntityScript
 
   spawn: (options) ->
     ship = undefined

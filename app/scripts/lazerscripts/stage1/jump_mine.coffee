@@ -1,4 +1,6 @@
-class Game.Scripts.JumpMine extends Game.EntityScript
+{ EntityScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.JumpMine extends EntityScript
 
   assets: ->
     @loadAssets('mine')

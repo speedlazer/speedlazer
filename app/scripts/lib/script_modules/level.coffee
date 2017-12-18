@@ -14,7 +14,7 @@
 # - pickTarget
 # - targetLocation
 #
-Game.ScriptModule.Level =
+Level =
   # Place a set of multiple enemies.
   #
   # It starts multiple 'entityScripts' in parallel, but
@@ -589,4 +589,5 @@ Game.ScriptModule.Level =
     )
     fader
 
-
+module.exports =
+  default: Level

@@ -1,4 +1,6 @@
-class Game.Scripts.HeliAttack extends Game.EntityScript
+{ EntityScript } = require('src/scripts/lib/LazerScript')
+
+class Game.Scripts.HeliAttack extends EntityScript
   assets: ->
     @loadAssets('helicopter')
 
