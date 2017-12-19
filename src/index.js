@@ -7,6 +7,7 @@ import "./scenery";
 import "./scenes";
 
 import screenfull from "screenfull";
+/* eslint-env node */
 window.ga("create", process.env.GA_TRACKER, "auto");
 window.ga("send", "pageview");
 
@@ -25,21 +26,21 @@ const scaleGame = () => {
 
   stage.style.transform = `scale(${ratio})`;
   document.getElementsByTagName("footer")[0].style.top = `${576 * ratio}px`;
-}
+};
 
 window.addEventListener("resize", scaleGame);
 
 // Handle the fullscreen button
 document.addEventListener("click", e => {
   if (e.target.matches("#cr-stage,#cr-stage *")) {
-    const theater = document.getElementById("theater")
-    screenfull.request(theater)
-    document.body.classList.add('fullscreen')
+    const theater = document.getElementById("theater");
+    screenfull.request(theater);
+    document.body.classList.add("fullscreen");
     scaleGame();
     document.addEventListener(screenfull.raw.fullscreenchange, () => {
       if (!screenfull.isFullscreen) {
         // exit fullscreen code here
-        document.body.classList.remove('fullscreen')
+        document.body.classList.remove("fullscreen");
         scaleGame();
       }
     });
@@ -47,4 +48,3 @@ document.addEventListener("click", e => {
 });
 
 setTimeout(scaleGame, 0);
-
