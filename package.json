@@ -46,6 +46,7 @@
     "build": "webpack --config ./config/webpack.prod.js",
     "start": "webpack-dev-server --open --config ./config/webpack.dev.js",
     "lint": "eslint src/",
+    "test": "eslint src/",
     "prettier": "prettier '{,!(node_modules|dist|.tmp)/**/}*.js' --write"
   },
   "dependencies": {
