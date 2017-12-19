@@ -1,16 +1,13 @@
 { LazerScript } = require('src/lib/LazerScript')
-Stage2 = require('./stage2').default
+{ Swirler, Shooter, CrewShooters, Stalker } = require('./stage1/army_drone')
+{ Stage1BossRocketStrike, Stage1BossStage1 } = require('./stage1/stage1boss')
 
-CameraCrew = require('./stage1/camera_crew').default
+CameraCrew  = require('./stage1/camera_crew').default
+DroneShip   = require('./stage1/drone_ship').default
 IntroBarrel = require('./stage1/barrel').default
-
-{ ScraperFlyer, Swirler, Shooter, CrewShooters, Stalker } = require('./stage1/army_drone')
-SunRise = require('./stage1/sunrise').default
-JumpMine = require('./stage1/jump_mine').default
-DroneShip = require('./stage1/drone_ship').default
-HeliAttack = require('./stage1/heli_attack').default
-PlayerClone = require('./stage1/player_clone').default
-{ Stage1BossLeaving, Stage1BossRocketStrike, Stage1BossPopup, Stage1BossStage1 } = require('./stage1/stage1boss')
+JumpMine    = require('./stage1/jump_mine').default
+Stage2      = require('./stage2').default
+SunRise     = require('./stage1/sunrise').default
 
 class Stage1 extends LazerScript
   nextScript: Stage2
@@ -42,13 +39,10 @@ class Stage1 extends LazerScript
       @droneTakeover()
       @oceanFighting()
       @setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
-      @enteringLand()
+      @midStageBossFight()
       @cityBay()
       @setPowerupPool 'speed', 'rapid', 'aim', 'speed', 'rapid', 'aim'
-      @midstageBossfight()
-      @bossfightReward()
-      @skylineFighting()
-      @highSkylineFighting()
+      @endStageBossfight()
     )
 
   introText: ->
@@ -135,7 +129,7 @@ class Stage1 extends LazerScript
       )
     )
 
-  enteringLand: ->
+  midStageBossFight: ->
     @sequence(
       @checkpoint @checkpointStart('CoastStart', 93000)
       @mineSwarm()
@@ -166,7 +160,7 @@ class Stage1 extends LazerScript
       )
     )
 
-  midstageBossfight: ->
+  endStageBossfight: ->
     @sequence(
       @checkpoint @checkpointStart('BayFull', 168000)
       @parallel(
@@ -301,183 +295,11 @@ class Stage1 extends LazerScript
       )
     )
 
-  bossfightReward: ->
-    @sequence(
-      @checkpoint @checkpointMidStage('BayFull', 400000)
-      @say('General', 'Hunt him down! We need that AI control back!', noise: 'low')
-      @setSpeed 200
-
-      @setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
-
-      @parallel(
-        @sequence(
-          @wait 4000
-          @gainHeight(800, duration: 14000)
-        )
-        @sequence(
-          @stalkerShootout()
-          @setScenery('Skyline')
-          @placeSquad Shooter,
-            amount: 8
-            delay: 500
-            drop: 'pool'
-            options:
-              shootOnSight: yes
-          @attackWaves(
-            @parallel(
-              @placeSquad Shooter,
-                amount: 8
-                delay: 500
-                options:
-                  shootOnSight: yes
-              @placeSquad Swirler,
-                amount: 8
-                delay: 500
-                options:
-                  shootOnSight: yes
-            )
-            drop: 'pool'
-          )
-        )
-      )
-    )
-
-  skylineFighting: ->
-    @sequence(
-      @setSpeed 100
-      @checkpoint @checkpointMidStage('Skyline', 450000)
-      @changeSeaLevel 500
-
-      @setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
-      @attackWaves(
-        @parallel(
-          @placeSquad ScraperFlyer,
-            amount: 8
-            delay: 500
-          @placeSquad Shooter,
-            amount: 8
-            delay: 500
-            options:
-              shootOnSight: yes
-        )
-        drop: 'pool'
-      )
-      @parallel(
-        @attackWaves(
-          @parallel(
-            @placeSquad ScraperFlyer,
-              amount: 8
-              delay: 500
-            @placeSquad Shooter,
-              amount: 8
-              delay: 500
-              options:
-                shootOnSight: yes
-          )
-          drop: 'pool'
-        )
-        @cloneEncounter()
-      )
-      @placeSquad Stage1BossPopup
-      @setScenery('Skyline')
-      @parallel(
-        @attackWaves(
-          @sequence(
-            @placeSquad ScraperFlyer,
-              amount: 6
-              delay: 500
-            @placeSquad ScraperFlyer,
-              amount: 8
-              delay: 500
-          )
-          drop: 'pool'
-        )
-        @sequence(
-          @wait 3000
-          @placeSquad Shooter,
-            amount: 4
-            delay: 750
-            drop: 'pool'
-            options:
-              shootOnSight: yes
-          @placeSquad HeliAttack,
-            drop: 'pool'
-        )
-      )
-    )
-
-  highSkylineFighting: ->
-    @sequence(
-      @parallel(
-        @placeSquad Stage1BossPopup
-        @cloneEncounter()
-      )
-
-      @gainHeight(300, duration: 4000)
-      @checkpoint @checkpointEndStage('Skyline', 500000)
-
-      @parallel(
-        @repeat 2, @cloneEncounter()
-        @placeSquad HeliAttack,
-          drop: 'pool'
-          amount: 2
-          delay: 5000
-      )
-
-      @async @showText 'Warning!', color: '#FF0000', mode: 'blink'
-      @setScenery 'SkylineBase'
-      @while(
-        @wait 3000
-        @waitingRocketStrike()
-      )
-      @placeSquad Stage1BossLeaving
-      @say 'General', 'He is going to the military complex!\nBut we cant get through those shields now...', noise: 'low'
-    )
-
-  cloneEncounter: ->
-    @attackWaves(
-      @parallel(
-        @sequence(
-          @wait 4000
-          @placeSquad PlayerClone,
-            options:
-              from: 'top'
-        )
-        @placeSquad PlayerClone,
-          options:
-            from: 'bottom'
-      )
-      drop: 'pool'
-    )
-
-
   checkpointStart: (scenery, sunSkip) ->
     @sequence(
       @setScenery(scenery)
       @sunRise(skipTo: sunSkip)
       @wait 2000
-    )
-
-  checkpointMidStage: (scenery, sunSkip) ->
-    @sequence(
-      @setScenery(scenery)
-      @sunRise(skipTo: sunSkip)
-      @wait 2000
-    )
-
-  checkpointEndStage: (scenery, sunSkip) ->
-    @sequence(
-      @setScenery(scenery)
-      @sunRise(skipTo: sunSkip)
-      @parallel(
-        @if((-> @player(1).active), @drop(item: 'damage', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'damage', inFrontOf: @player(2)))
-      )
-      @wait 2000
-      @parallel(
-        @if((-> @player(1).active), @drop(item: 'rapid', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'speed', inFrontOf: @player(2)))
-      )
     )
 
 module.exports =
