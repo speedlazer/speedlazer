@@ -1,3 +1,5 @@
+EXTRA_LIFE_POINT_BOUNDARY = 15000
+
 Crafty.c 'Player',
   init: ->
     @reset()
@@ -48,7 +50,7 @@ Crafty.c 'Player',
 
   eligibleForExtraLife: ->
     @lastExtraLifeThreshold ||= 0
-    if @points - @lastExtraLifeThreshold >= 10000
+    if @points - @lastExtraLifeThreshold >= EXTRA_LIFE_POINT_BOUNDARY
       yes
 
   rewardExtraLife: ->
