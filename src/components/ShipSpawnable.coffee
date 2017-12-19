@@ -61,6 +61,7 @@ Crafty.c 'ShipSpawnable',
         @healthBoost() if powerUp.contains is 'healthb'
         @addPoints(500) if powerUp.contains is 'points'
       @addPoints(20)
+      @_updateShipSprite()
 
     @listenTo @ship, 'Shoot', ->
       @stats.shotsFired += 1
@@ -74,11 +75,7 @@ Crafty.c 'ShipSpawnable',
     @ship.start()
     @listenTo @ship, 'Hit', (d) ->
       @loseHealth(d.damage)
-
-      sprite = 0
-      healthPerc = @health / @maxHealth
-      sprite = 2 if healthPerc < .3
-      @ship.sprite(0, sprite)
+      @_updateShipSprite()
 
       if (@health < 0)
         @ship.trigger('Die')
@@ -96,3 +93,8 @@ Crafty.c 'ShipSpawnable',
       )
     this
 
+  _updateShipSprite: ->
+    sprite = 0
+    healthPerc = @health / @maxHealth
+    sprite = 2 if healthPerc < .3
+    @ship.sprite(0, sprite)
