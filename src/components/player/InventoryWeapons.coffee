@@ -36,9 +36,15 @@ Crafty.c 'InventoryWeapons',
         @_installPrimary 'RapidDiagonalLaser'
         return true
 
-    if item.type is 'ship'
+    if item.type in ['ship', 'shipBoost', 'shipUpgrade']
       if item.contains is 'life'
         @scoreText 'Extra life!'
+        return true
+      if item.contains is 'healthb'
+        @scoreText 'Full health!'
+        return true
+      if item.contains is 'healthu'
+        @scoreText 'Health upgrade!'
         return true
       if item.contains is 'points'
         @scoreText '+500 points!'

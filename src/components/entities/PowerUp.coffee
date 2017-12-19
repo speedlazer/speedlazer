@@ -18,6 +18,8 @@ Crafty.c 'PowerUp',
         weaponBoost: '#D06000'
         weaponUpgrade: '#30B030'
         ship: '#802020'
+        shipUpgrade: '#30B030'
+        shipBoost: '#D06000'
 
       color = typeColors[@settings.type]
     @colorOverride color, 'partial'

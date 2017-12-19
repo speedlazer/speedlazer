@@ -20,6 +20,8 @@ class Stage1 extends LazerScript
     @inventoryAdd 'weapon', 'lasers', marking: 'L'
 
     @inventoryAdd 'ship', 'life', marking: '❤', icon: 'heart'
+    @inventoryAdd 'shipUpgrade', 'healthu', marking: '❤', icon: 'heart'
+    @inventoryAdd 'shipBoost', 'healthb', marking: '❤', icon: 'heart'
     @inventoryAdd 'ship', 'points', marking: 'P', icon: 'star'
 
     @inventoryAdd 'weaponUpgrade', 'rapid', marking: 'RF', icon: 'rapidFireBoost'
@@ -196,8 +198,8 @@ class Stage1 extends LazerScript
       @checkpoint @checkpointStart('UnderBridge', 203000)
       @placeSquad Stage1BossStage1
       @parallel(
-        @if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'life', inFrontOf: @player(2)))
+        @if((-> @player(1).active), @drop(item: 'healthu', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'healthu', inFrontOf: @player(2)))
       )
       @setSpeed 200
       @wait 500
