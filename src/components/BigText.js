@@ -27,7 +27,10 @@ Crafty.c("BigText", {
           return new Promise(resolve => {
             elements[0].one("TweenEnd", resolve);
             elements.forEach(element =>
-              element.tween({ viewportY: element.viewportY + 100, alpha: 0 }, 1500)
+              element.tween(
+                { viewportY: element.viewportY + 100, alpha: 0 },
+                1500
+              )
             );
           });
         }
