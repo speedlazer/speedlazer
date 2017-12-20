@@ -1,3 +1,5 @@
+EXTRA_LIFE_POINT_BOUNDARY = 15000
+
 Crafty.c 'Player',
   init: ->
     @reset()
@@ -22,7 +24,7 @@ Crafty.c 'Player',
 
   loseHealth: (damage) ->
     @health -= damage
-    @trigger 'UpdateHealth', lives: @health
+    @trigger 'UpdateHealth', health: @health
 
   loseLife: ->
     return unless @lives > 0
@@ -37,9 +39,18 @@ Crafty.c 'Player',
     @lives += 1
     @trigger 'UpdateLives', lives: @lives
 
+  healthUpgrade: ->
+    @maxHealth += 1
+    @health = @maxHealth
+    @trigger 'UpdateHealth', maxHealth: @maxHealth, health: @health
+
+  healthBoost: ->
+    @health = @maxHealth
+    @trigger 'UpdateHealth', health: @health
+
   eligibleForExtraLife: ->
     @lastExtraLifeThreshold ||= 0
-    if @points - @lastExtraLifeThreshold >= 10000
+    if @points - @lastExtraLifeThreshold >= EXTRA_LIFE_POINT_BOUNDARY
       yes
 
   rewardExtraLife: ->

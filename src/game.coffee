@@ -35,9 +35,14 @@ Game =
     if settings.sound is no
       Crafty.audio.mute()
 
-    Crafty.bind 'EnterFrame', ->
+    start = (new Date()) * 1
+    gameTime = start
+
+    Crafty.bind 'EnterFrame', (fd) ->
       return if Game.paused
-      Crafty.trigger 'GameLoop', arguments...
+      gameTime += fd.dt
+
+      Crafty.trigger 'GameLoop', Object.assign({}, fd, { inGameTime: gameTime })
 
     Crafty.paths(
       audio: '/'

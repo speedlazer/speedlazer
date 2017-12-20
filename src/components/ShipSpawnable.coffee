@@ -37,6 +37,7 @@ Crafty.c 'ShipSpawnable',
     @ship.colorOverride?(@color(), 'partial') #if @has('ColorEffects')
     @ship.color?(@color()) if @has('Color')
     @ship.setSealevel?((Crafty.viewport.height - 20) + (@level.sealevelOffset ? 0))
+    @_updateShipSprite()
 
     @assignControls(@ship) if @has('ControlScheme')
 
@@ -55,10 +56,13 @@ Crafty.c 'ShipSpawnable',
       @addPoints(data.points, data.location)
 
     @listenTo @ship, 'PowerUp', (powerUp) ->
-      if powerUp.type is 'ship'
+      if powerUp.type in ['ship', 'shipBoost', 'shipUpgrade']
         @gainLife() if powerUp.contains is 'life'
+        @healthUpgrade() if powerUp.contains is 'healthu'
+        @healthBoost() if powerUp.contains is 'healthb'
         @addPoints(500) if powerUp.contains is 'points'
       @addPoints(20)
+      @_updateShipSprite()
 
     @listenTo @ship, 'Shoot', ->
       @stats.shotsFired += 1
@@ -72,11 +76,7 @@ Crafty.c 'ShipSpawnable',
     @ship.start()
     @listenTo @ship, 'Hit', (d) ->
       @loseHealth(d.damage)
-
-      sprite = 0
-      healthPerc = @health / @maxHealth
-      sprite = 2 if healthPerc < .3
-      @ship.sprite(0, sprite)
+      @_updateShipSprite()
 
       if (@health < 0)
         @ship.trigger('Die')
@@ -94,3 +94,8 @@ Crafty.c 'ShipSpawnable',
       )
     this
 
+  _updateShipSprite: ->
+    sprite = 0
+    healthPerc = @health / @maxHealth
+    sprite = 2 if healthPerc < .3
+    @ship.sprite(0, sprite)
