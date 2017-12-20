@@ -18,9 +18,9 @@ module.exports = {
     "compat/compat": "error"
   },
   globals: {
-    "Game": false,
-    "Crafty": false,
-    "WhenJS": false,
-    "_": false
+    Game: false,
+    Crafty: false,
+    WhenJS: false,
+    _: false
   }
 };
