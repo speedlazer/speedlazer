@@ -1,3 +1,4 @@
+defaults = require('lodash/defaults')
 { EntityScript } = require('src/lib/LazerScript')
 
 class Stage1Boss extends EntityScript
@@ -383,7 +384,7 @@ class Stage1BossMine extends EntityScript
 
 class Stage1BossRocketStrike extends EntityScript
   spawn: (options) ->
-    options = _.defaults(options,
+    options = defaults(options,
       pointsOHit: 125
       pointsOnDestroy: 50
     )
@@ -429,7 +430,7 @@ class Stage1BossRocketStrike extends EntityScript
 
 class Stage1BossRocket extends EntityScript
   spawn: (options) ->
-    options = _.defaults(options,
+    options = defaults(options,
       pointsOnHit: 125
       pointsOnDestroy: 50
       offsetY: 0
@@ -492,7 +493,7 @@ class Stage1BossRocket extends EntityScript
 
 class Stage1BossAimedRocket extends EntityScript
   spawn: (options) ->
-    options = _.defaults(options,
+    options = defaults(options,
       pointsOHit: 125
       pointsOnDestroy: 50
       z: 5
@@ -552,7 +553,7 @@ class Stage1BossAimedRocket extends EntityScript
 
 class Stage1BossHomingRocket extends EntityScript
   spawn: (options) ->
-    options = _.defaults(options,
+    options = defaults(options,
       pointsOHit: 125
       pointsOnDestroy: 50
       z: 5

@@ -1,15 +1,18 @@
+defaults = require('lodash/defaults')
+shuffle = require('lodash/shuffle')
+
 class Game.LocationGrid
   constructor: (settings) ->
-    settings = _.defaults settings,
+    settings = defaults settings,
       x: {}
       y: {}
 
-    settings.x = _.defaults settings.x,
+    settings.x = defaults settings.x,
       start: 0
       steps: 1
       stepSize: 1
 
-    settings.y = _.defaults settings.y,
+    settings.y = defaults settings.y,
       start: 0
       steps: 1
       stepSize: 1
@@ -23,7 +26,7 @@ class Game.LocationGrid
         yPerc = (y - settings.y.start) / (settings.y.stepSize * settings.y.steps)
         coords.push { x, y, xPerc, yPerc }
 
-    @freeCoords = _.shuffle coords
+    @freeCoords = shuffle coords
 
   _coordList: (listSettings) ->
     for i in [0...listSettings.steps]

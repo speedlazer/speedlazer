@@ -20,7 +20,6 @@ module.exports = {
   globals: {
     Game: false,
     Crafty: false,
-    WhenJS: false,
-    _: false
+    WhenJS: false
   }
 };

@@ -1,3 +1,5 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'Helicopter',
   init: ->
     @requires 'Enemy, helicopter, SpriteAnimation'
@@ -8,7 +10,7 @@ Crafty.c 'Helicopter',
 
   helicopter: (attr = {}) ->
     defaultHealth = 2750
-    @attr _.defaults(attr,
+    @attr defaults(attr,
       w: 128,
       h: 55,
       health: defaultHealth

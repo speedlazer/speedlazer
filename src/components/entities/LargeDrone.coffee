@@ -1,3 +1,5 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'LargeDrone',
   init: ->
     @requires 'Enemy, standardLargeDrone, SpriteAnimation'
@@ -5,7 +7,7 @@ Crafty.c 'LargeDrone',
   drone: (attr = {}) ->
     defaultHealth = 360000
     @crop 0, 0, 90, 70
-    @attr _.defaults(attr,
+    @attr defaults(attr,
       health: defaultHealth
       maxHealth: attr.health ? defaultHealth
       z: -1

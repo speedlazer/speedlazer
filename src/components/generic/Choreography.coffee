@@ -1,3 +1,7 @@
+defaults = require('lodash/defaults')
+clone = require('lodash/clone')
+extend = require('lodash/extend')
+
 # TODO: Document
 #
 # I need to rethinkt the intentions of this component.
@@ -40,7 +44,7 @@ Crafty.c 'Choreography',
 
   choreography: (c, options = {}) ->
     @uniqueBind('GameLoop', @_choreographyTick)
-    @_options = _.defaults(options, {
+    @_options = defaults(options, {
       repeat: 0
       compensateCameraSpeed: no
       skip: 0
@@ -65,12 +69,12 @@ Crafty.c 'Choreography',
     this
 
   synchChoreography: (otherComponent) ->
-    @_choreography = _.clone otherComponent._choreography
+    @_choreography = clone otherComponent._choreography
     @_options = otherComponent._options
     @_repeated = otherComponent._repeated
     @_toSkip = otherComponent._toSkip
-    @_currentPart = _.clone otherComponent._currentPart
-    @_currentPart.easing = _.clone otherComponent._currentPart.easing
+    @_currentPart = clone otherComponent._currentPart
+    @_currentPart.easing = clone otherComponent._currentPart.easing
     @uniqueBind('GameLoop', @_choreographyTick)
 
   _setupCPart: (number) ->
@@ -109,7 +113,7 @@ Crafty.c 'Choreography',
 
   _setupPart: (part, number) ->
     easingFn = part.easingFn ? 'linear'
-    @_currentPart = _.extend(_.clone(part),
+    @_currentPart = extend(clone(part),
       part: number
       x: @x
       y: @y

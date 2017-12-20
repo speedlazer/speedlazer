@@ -1,3 +1,4 @@
+extend = require('lodash/extend')
 { LazerScript } = require('src/lib/LazerScript')
 { Stage1BossLeaving, Stage1BossPopup, Stage1BossRocketStrike } = require('./stage1/stage1boss')
 { ScraperFlyer, Swirler, Shooter, Stalker } = require('./stage1/army_drone')
@@ -239,7 +240,7 @@ class Stage2 extends LazerScript
     )
 
   sunRise: (options = { skipTo: 0 }) ->
-    @async @runScript(SunRise, _.extend({ speed: 2 }, options))
+    @async @runScript(SunRise, extend({ speed: 2 }, options))
 
   stalkerShootout: ->
     @parallel(

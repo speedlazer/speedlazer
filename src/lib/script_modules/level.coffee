@@ -1,3 +1,8 @@
+clone = require('lodash/clone')
+sample = require('lodash/sample')
+shuffle = require('lodash/shuffle')
+defaults = require('lodash/defaults')
+
 # Actions to control the flow of a level
 #
 # - placeSquad
@@ -36,12 +41,12 @@ Level =
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
       synchronizer = new Game.Synchronizer
-      settings = _.clone settings
+      settings = clone settings
 
-      options = _.defaults({
+      options = defaults({
         synchronizer: synchronizer
       }, settings.options)
-      settings = _.defaults({}, settings,
+      settings = defaults({}, settings,
         amount: 1
         delay: 1000
       )
@@ -54,14 +59,14 @@ Level =
       loadingAssets = WhenJS(true)
 
       if scripts[0]?.assets?
-        loadingAssets = scripts[0].assets(_.clone(settings.options))(sequence)
+        loadingAssets = scripts[0].assets(clone(settings.options))(sequence)
 
       loadingAssets.then =>
         promises = (for script, i in scripts
           do (script, i) =>
             @wait(i * settings.delay)(sequence).then =>
               @_verify(sequence)
-              s = _.clone(settings.options)
+              s = clone(settings.options)
               s.index = i
               script.run(s)
         )
@@ -132,7 +137,7 @@ Level =
       unless text?
         text = speaker
         speaker = undefined
-      options = _.defaults(options,
+      options = defaults(options,
         speaker: speaker
         noise: 'none'
         bottom: @level.visibleHeight
@@ -225,7 +230,7 @@ Level =
         players[@name].gameOver = yes
 
     key = if nr is 'anyActive'
-      _.sample(active)
+      sample(active)
     else
       "Player #{nr}"
     players[key]
@@ -251,7 +256,7 @@ Level =
   waitForScenery: (sceneryType, options = {}) ->
     (sequence) =>
       @_verify(sequence)
-      options = _.defaults(options,
+      options = defaults(options,
         event: 'enter'
       )
       return WhenJS() if @_skippingToCheckpoint()
@@ -292,7 +297,7 @@ Level =
   setSpeed: (speed, options = {}) ->
     (sequence) =>
       @_verify(sequence)
-      options = _.defaults(options,
+      options = defaults(options,
         accellerate: yes
       )
       @level.setForcedSpeed speed, options
@@ -314,7 +319,7 @@ Level =
       x -= Crafty.viewport.x
       y -= Crafty.viewport.y
       options = options?() ? options
-      options = _.defaults(
+      options = defaults(
         { x, y }
         options
         {
@@ -412,7 +417,7 @@ Level =
   screenShake: (amount, options = {}) ->
     (sequence) =>
       @_verify(sequence)
-      options = _.defaults(options, {
+      options = defaults(options, {
         duration: 1000
       })
       @level.screenShake(amount, options)
@@ -421,7 +426,7 @@ Level =
   screenFlash: (amount, options = {}) ->
     (sequence) =>
       @_verify(sequence)
-      options = _.defaults(options, {
+      options = defaults(options, {
         duration: 200
         pauses: 400
         color: '#FF0000'
@@ -482,16 +487,16 @@ Level =
   setPowerupPool: (powerups...) ->
     (sequence) =>
       @_verify(sequence)
-      @powerupPool = _.shuffle(powerups)
+      @powerupPool = shuffle(powerups)
 
   hideHud: (settings = {}) ->
-    settings = _.defaults(settings,
+    settings = defaults(settings,
       visible: no
     )
     @toggleHud(settings)
 
   showHud: (settings = {}) ->
-    settings = _.defaults(settings,
+    settings = defaults(settings,
       visible: yes
     )
     @toggleHud(settings)
@@ -499,7 +504,7 @@ Level =
   toggleHud: (settings = {}) ->
     (sequence) =>
       @_verify(sequence)
-      settings = _.defaults(settings,
+      settings = defaults(settings,
         duration: 1000
       )
       Crafty('UILayerDOM, UILayerWebGL').each ->

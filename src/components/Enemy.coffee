@@ -1,3 +1,5 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'Enemy',
   init: ->
     @requires '2D, WebGL, Collision, Tween, Choreography, ViewportFixed, Hideable, Flipable, Scalable, SunBlock, Hostile'
@@ -36,7 +38,7 @@ Crafty.c 'Enemy',
         splosion.damage = 0
 
   enemy: (options = {}) ->
-    options = _.defaults(options,
+    options = defaults(options,
       projectile: 'Bullet'
     )
     Crafty.trigger('EnemySpawned', this)

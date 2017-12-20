@@ -1,4 +1,6 @@
 CryptoJS = require('crypto-js')
+defaults = require('lodash/defaults')
+sortBy = require('lodash/sortBy')
 
 Game =
   paused: no
@@ -150,19 +152,19 @@ Game =
       { initials: defInit, score: 2000 }
       { initials: defInit, score: 1500 }
     ].concat loadedList
-    _.sortBy(list, 'score').reverse()
+    sortBy(list, 'score').reverse()
 
   settings: ->
     data = localStorage.getItem('SPDLZRS')
     settings = {}
     if data
       settings = JSON.parse(data)
-    _.defaults(settings,
+    defaults(settings,
       sound: on
     )
 
   changeSettings: (changes = {}) ->
-    newSettings = _.defaults(changes,
+    newSettings = defaults(changes,
       @settings()
     )
     str = JSON.stringify(newSettings)

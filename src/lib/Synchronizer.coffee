@@ -1,3 +1,5 @@
+difference = require('lodash/difference')
+
 class Game.Synchronizer
   constructor: ->
     @entities = []
@@ -9,7 +11,7 @@ class Game.Synchronizer
     entity
 
   unregisterEntity: (entity) ->
-    index = _.indexOf(@entities, entity)
+    index = @entities.indexOf(entity)
     @entities.splice(index, 1) if index >= 0
     @_verifyActiveSynchronisations()
     entity
@@ -23,7 +25,7 @@ class Game.Synchronizer
       @synchronizations[name] = synchronization
 
     synchronization.registered.push entity if entity not in synchronization.registered
-    if _.difference(@entities, synchronization.registered).length is 0
+    if difference(@entities, synchronization.registered).length is 0
       synchronization.defer.resolve()
 
     synchronization.defer.promise
@@ -37,7 +39,7 @@ class Game.Synchronizer
 
   _verifyActiveSynchronisations: ->
     for name, sync of @synchronizations
-      if _.difference(@entities, sync.registered).length is 0
+      if difference(@entities, sync.registered).length is 0
         sync.defer.resolve()
 
 

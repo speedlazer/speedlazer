@@ -1,3 +1,6 @@
+isFunction = require('lodash/isFunction')
+without = require('lodash/without')
+
 ##
 # LevelScenery
 #
@@ -127,7 +130,7 @@ class Game.LevelScenery
   # Helper method to bind to an event in the game
   # and registers the bind for auto unbinding.
   bind: (event, options, callback) ->
-    if _.isFunction(options) and callback is undefined
+    if isFunction(options) and callback is undefined
       callback = options
       options = {}
 
@@ -142,7 +145,7 @@ class Game.LevelScenery
     for b in @createdBindings when b.event is event
       unbound.push b
       Crafty.unbind(b.event, b.callback)
-    @createdBindings = _.without(@createdBindings, unbound...)
+    @createdBindings = without(@createdBindings, unbound...)
 
   canCleanup: ->
     cameraX = Crafty.viewport._x * -1

@@ -1,3 +1,4 @@
+extend = require('lodash/extend')
 generator = Game.levelGenerator
 cityScenery = require('src/images/city-scenery.png')
 
@@ -714,7 +715,7 @@ generator.defineBlock class extends Game.CityScenery
     color = if flipped then '#2ba04c' else '#b15a5a'
     result = Crafty.e('2D, WebGL, bridgeDeck, Horizon, SunBlock, SpriteAnimation')
       .crop(0, 2, 511, 180)
-      .attr(_.extend(attr, w: attr.w / 2))
+      .attr(extend(attr, w: attr.w / 2))
       .saturationGradient(gradient, gradient)
       .colorOverride color, 'partial'
 
@@ -723,7 +724,7 @@ generator.defineBlock class extends Game.CityScenery
       .saturationGradient(gradient, gradient)
       .flip('X')
       .colorOverride color, 'partial'
-    part2.attr(_.extend(attr,
+    part2.attr(extend(attr,
       x: result.x + result.w
       y: result.y
       z: result.z
