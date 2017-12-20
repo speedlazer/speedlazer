@@ -103,6 +103,7 @@ class Stage1 extends LazerScript
       )
       @say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!', noise: 'low')
       @async @chapterTitle(1, 'Hacked')
+
     )
 
   oceanFighting: ->
@@ -127,14 +128,23 @@ class Stage1 extends LazerScript
           @stalkerShootout()
         )
       )
+
     )
 
   midStageBossFight: ->
+
     @sequence(
       @checkpoint @checkpointStart('CoastStart', 93000)
       @mineSwarm()
       @droneShip()
       @mineSwarm()
+      @parallel(
+        @say('John', 'Enemy Navy Mothership approaching! Stay alert!')
+        @placeSquad CrewShooters,
+          amount: 5
+          delay: 300
+          drop: 'pool'
+      )
       @shipBossFight() # Bossfight
       @setScenery('BayStart')
       @underWaterAttacks()
@@ -143,7 +153,16 @@ class Stage1 extends LazerScript
   shipBossFight: ->
     @sequence(
       @checkpoint @checkpointStart('Coast', 93000)
-      @placeSquad ShipBoss
+
+        @parallel(
+          @say('John', 'Time to show these monkeys who\'s boss')
+          @placeSquad ShipBoss
+          @placeSquad CrewShooters,
+            amount: 5
+            delay: 2500
+        )
+
+
     )
 
   cityBay: ->
