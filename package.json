@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "SpeedLazer is a HTML5 Side scrolling shoot-em-up made with Crafty.js",
   "license": "MIT",
+  "homepage": "http://speedlazer.net",
   "repository": {
     "type": "git",
     "url": "https://github.com/matthijsgroen/game-play"
@@ -11,7 +12,8 @@
     "side-scroller",
     "HTML5",
     "Crafty.js",
-    "SCHMUP",
+    "SHMUP",
+    "Gamepad",
     "WebGL"
   ],
   "devDependencies": {
