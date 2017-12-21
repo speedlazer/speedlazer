@@ -1,3 +1,5 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'Tank',
   init: ->
     @requires 'Enemy, laserTank, Delay'
@@ -5,7 +7,7 @@ Crafty.c 'Tank',
 
   tank: (attr = {}) ->
     defaultHealth = 2750
-    @attr _.defaults(attr,
+    @attr defaults(attr,
       w: 179
       h: 103
       health: defaultHealth

@@ -1,10 +1,12 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'PlayerClone',
   init: ->
     @requires 'Enemy, playerShip'
 
   playerClone: (attr = {}) ->
     defaultHealth = 300
-    @attr _.defaults(attr,
+    @attr defaults(attr,
       h: 45,
       w: 71,
       health: defaultHealth

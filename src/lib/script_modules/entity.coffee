@@ -1,3 +1,9 @@
+defaults = require('lodash/defaults')
+isFunction = require('lodash/isFunction')
+isObject = require('lodash/isObject')
+extend = require('lodash/extend')
+clone = require('lodash/clone')
+
 # Actions to control an entity in the game
 #
 # - bindSequence
@@ -65,7 +71,7 @@ Entity =
     (sequence) =>
       @_verify(sequence)
       oscale = @entity.scale ? 1.0
-      options = _.defaults(options,
+      options = defaults(options,
         duration: Math.abs(scale - oscale) * 1000
       )
       d = WhenJS.defer()
@@ -111,7 +117,7 @@ Entity =
       @_verify(sequence)
       if not @enemy.alive and not @decoyingEntity?
         return WhenJS.resolve()
-      settings = _.defaults(settings,
+      settings = defaults(settings,
         rotate: yes
         skip: 0
         speed: @entity.defaultSpeed
@@ -193,11 +199,11 @@ Entity =
     (sequence) =>
       @_verify(sequence)
       if not @enemy.alive and not @decoyingEntity?
-        return WhenJS.resolve()
+        return Promise.resolve()
 
       if typeof location is 'string'
         target = Crafty(location).get 0
-        offsets = _.defaults(extraSettings,
+        offsets = defaults(extraSettings,
           offsetX: 0
           offsetY: 0
         )
@@ -211,9 +217,9 @@ Entity =
       # When the location function returns null,
       # settings becomes the function, which is
       # invalid. So we need to safeguard against it.
-      return WhenJS() if _.isFunction settings
+      return Promise.resolve() if isFunction settings
 
-      _.extend(settings, extraSettings)
+      extend(settings, extraSettings)
 
       if settings.x? and (-2 < settings.x < 2)
         settings.x *= Crafty.viewport.width
@@ -224,13 +230,13 @@ Entity =
       if settings.positionType is 'absoluteY'
         settings.y += Crafty.viewport.y
 
-      throw new Error('location invalid') unless _.isObject(location)
+      throw new Error('location invalid') unless isObject(location)
 
       seaLevel = @_getSeaLevel()
 
       if @enemy.moveState is 'air'
         if settings.y? and settings.y + @entity.h > seaLevel + Crafty.viewport.y
-          airSettings = _.clone settings
+          airSettings = clone settings
           airSettings.y = seaLevel - @entity.h
           return @_moveAir(airSettings)
             .then =>
@@ -243,7 +249,7 @@ Entity =
 
       if @enemy.moveState is 'water'
         if settings.y? and settings.y + @entity.h < seaLevel + Crafty.viewport.y
-          waterSettings = _.clone settings
+          waterSettings = clone settings
           waterSettings.y = seaLevel - @entity.h
           return @_moveWater(waterSettings)
             .then =>
@@ -330,15 +336,15 @@ Entity =
     defer.promise
 
   _moveWater: (settings) ->
-    defaults =
+    defaultValues =
       speed: @entity.defaultSpeed
 
     if @entity.has('ViewportFixed')
-      defaults.x = @entity.x + Crafty.viewport.x
-      defaults.y = @entity.y + Crafty.viewport.y
+      defaultValues.x = @entity.x + Crafty.viewport.x
+      defaultValues.y = @entity.y + Crafty.viewport.y
 
     seaLevel = @_getSeaLevel()
-    settings = _.defaults(settings, defaults)
+    settings = defaults(settings, defaultValues)
     surfaceSize =
       w: @entity.w * 1.2
       h: (@entity.w / 3)
@@ -383,36 +389,35 @@ Entity =
     (Crafty.viewport.height - 240) + (220 * (@entity.scale ? 1.0)) + (@level.sealevelOffset ? 0)
 
   _moveAir: (settings) ->
-    defaults =
+    defaultsValues =
       speed: @entity.defaultSpeed
 
     if @entity.has('ViewportFixed')
-      defaults.x = @entity.x + Crafty.viewport.x
-      defaults.y = @entity.y + Crafty.viewport.y
+      defaultsValues.x = @entity.x + Crafty.viewport.x
+      defaultsValues.y = @entity.y + Crafty.viewport.y
 
-    settings = _.defaults(settings, defaults)
+    settings = defaults(settings, defaultsValues)
 
     deltaX = if settings.x? then Math.abs(settings.x - (@entity.x + Crafty.viewport.x)) else 0
     deltaY = if settings.y? then Math.abs(settings.y - (@entity.y + Crafty.viewport.y)) else 0
     delta = Math.sqrt((deltaX ** 2) + (deltaY ** 2))
 
-    defer = WhenJS.defer()
-    easing = settings.easing ? 'linear'
-
-    @entity.choreography(
-      [
-        type: 'viewport'
-        x: settings.x
-        y: settings.y
-        rotation: settings.rotation
-        easingFn: easing
-        maxSpeed: settings.speed
-        duration: (delta / settings.speed) * 1000
-      ]
-    ).one('ChoreographyEnd', ->
-      defer.resolve()
+    return new Promise((resolve) =>
+      easing = settings.easing ? 'linear'
+      @entity.choreography(
+        [
+          type: 'viewport'
+          x: settings.x
+          y: settings.y
+          rotation: settings.rotation
+          easingFn: easing
+          maxSpeed: settings.speed
+          duration: (delta / settings.speed) * 1000
+        ]
+      ).one('ChoreographyEnd', ->
+        resolve()
+      )
     )
-    defer.promise
 
   # Rotate the entity a given set of degrees over an amount of time
   rotate: (degrees, duration) ->

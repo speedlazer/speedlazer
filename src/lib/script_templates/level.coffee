@@ -1,3 +1,5 @@
+defaults = require('lodash/defaults')
+
 # Templates for various actions in the game
 # to remove duplication.
 # They generally call lower level lazerScript
@@ -9,7 +11,7 @@ Level =
       { x, y } = location()
       x -= Crafty.viewport.x
       y -= Crafty.viewport.y
-      options = _.defaults(
+      options = defaults(
         { x, y }
         options
         {
@@ -27,7 +29,7 @@ Level =
         e.addComponent('Hostile')
 
   smallExplosion: (options = {}) ->
-    options = _.defaults(options,
+    options = defaults(options,
       juice: yes
       offsetX: 0
       offsetY: 0
@@ -44,7 +46,7 @@ Level =
       )
 
   bigExplosion: (options = {}) ->
-    options = _.defaults(options,
+    options = defaults(options,
       juice: yes
       offsetX: 0
       offsetY: 0

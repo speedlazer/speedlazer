@@ -1,9 +1,11 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'BurstShot',
   remove: ->
     @unbind('GameLoop', @_checkForShot)
 
   burstShot: (options) ->
-    @shootConfig =  _.defaults(options,
+    @shootConfig =  defaults(options,
       targetType: 'PlayerControlledShip'
       burstCooldown: 800
       cooldown: 200

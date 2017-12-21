@@ -1,3 +1,5 @@
+clone = require('lodash/clone')
+sortBy = require('lodash/sortBy')
 CryptoJS = require('crypto-js')
 
 Crafty.defineScene 'GameOver', (data) ->
@@ -96,7 +98,7 @@ Crafty.defineScene 'GameOver', (data) ->
           k.destroy()
 
   collect = []
-  hs = _.clone Game.highscores()
+  hs = clone Game.highscores()
 
   Crafty('Player ControlScheme').each (index) ->
     highscoreEntry = null
@@ -110,7 +112,7 @@ Crafty.defineScene 'GameOver', (data) ->
     })
     window.ga('send', 'event', 'Game', 'Score', undefined, @points)
 
-  hs = _.sortBy(hs, 'score').reverse()
+  hs = sortBy(hs, 'score').reverse()
 
   WhenJS.sequence(collect).then =>
 

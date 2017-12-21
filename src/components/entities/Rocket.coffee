@@ -1,10 +1,12 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'Rocket',
   init: ->
     @requires 'Enemy, standardRocket'
 
   rocket: (attr = {}) ->
     @crop(0, 0, 47, 17)
-    @attr _.defaults(attr,
+    @attr defaults(attr,
       health: 300)
     @origin 'center'
 

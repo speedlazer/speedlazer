@@ -1,3 +1,4 @@
+defaults = require('lodash/defaults')
 { LazerScript, EntityScript } = require('src/lib/LazerScript')
 SunRise = require('./stage1/sunrise').default
 { Swirler } = require('./stage1/army_drone')
@@ -78,7 +79,7 @@ Crafty.c 'NewEnemyNameHere',
     @parts = {}
 
   initEnemy: (attr = {}) ->
-    @attr _.defaults(attr,
+    @attr defaults(attr,
       health: 200
       defaultSpeed: 200
     )

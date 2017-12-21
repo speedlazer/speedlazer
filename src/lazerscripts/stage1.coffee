@@ -1,3 +1,4 @@
+extend = require('lodash/extend')
 { LazerScript } = require('src/lib/LazerScript')
 { Swirler, Shooter, CrewShooters, Stalker } = require('./stage1/army_drone')
 { Stage1BossRocketStrike, Stage1BossStage1 } = require('./stage1/stage1boss')
@@ -278,7 +279,7 @@ class Stage1 extends LazerScript
   underWaterAttacks2: ->
 
   sunRise: (options = { skipTo: 0 }) ->
-    @async @runScript(SunRise, _.extend({ speed: 2 }, options))
+    @async @runScript(SunRise, extend({ speed: 2 }, options))
 
   mineSwarm: (options = { direction: 'right' })->
     @placeSquad JumpMine,

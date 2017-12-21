@@ -1,3 +1,5 @@
+isObject = require('lodash/isObject')
+
 Crafty.c 'ColorEffects',
 
   colorDesaturation: (color) ->
@@ -13,7 +15,7 @@ Crafty.c 'ColorEffects',
   colorOverride: (color, mode = 'all') ->
     return this unless color?
     c = {}
-    if _.isObject color
+    if isObject color
       c = color
     else
       Crafty.assignColor(color, c)

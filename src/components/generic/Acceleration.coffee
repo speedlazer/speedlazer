@@ -1,3 +1,5 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'Acceleration',
   init: ->
     @_currentSpeed = { x: 0, y: 0 }
@@ -10,7 +12,7 @@ Crafty.c 'Acceleration',
     @_handleAcceleration('y')
 
   targetSpeed: (speed, options = {}) ->
-    options = _.defaults(options,
+    options = defaults(options,
       accellerate: yes
     )
     if options.accellerate

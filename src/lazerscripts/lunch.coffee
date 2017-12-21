@@ -1,3 +1,4 @@
+defaults = require('lodash/defaults')
 PresentationLeaveScreen = require('./lunch/presentation_leave_screen').default
 LittleDancer = require('./lunch/little_dancer').default
 LunchBossStage1 = require('./lunch/lunch_boss').default
@@ -332,7 +333,7 @@ class Lunch extends LazerScript
       d.promise
 
   mineSwarm: (options = {}) ->
-    options = _.defaults(options,
+    options = defaults(options,
       direction: 'right'
       juice: yes
     )

@@ -1,3 +1,5 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'MineCannon',
   init: ->
     @requires 'Enemy, Color'
@@ -9,7 +11,7 @@ Crafty.c 'MineCannon',
 
   mineCannon: (attr = {}) ->
     defaultHealth = 1750
-    @attr _.defaults(attr,
+    @attr defaults(attr,
       health: defaultHealth
       maxHealth: attr.health ? defaultHealth
       aimSpeed: 45

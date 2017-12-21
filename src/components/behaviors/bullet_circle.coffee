@@ -1,7 +1,9 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'BulletCircle',
 
   bulletCircle: (options) ->
-    @shootConfig =  _.defaults(options,
+    @shootConfig =  defaults(options,
       burstAmount: 10
     )
     this

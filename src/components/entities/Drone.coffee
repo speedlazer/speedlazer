@@ -1,9 +1,11 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'Drone',
   init: ->
     @requires 'Enemy, standardDrone'
 
   drone: (attr = {}) ->
-    @attr _.defaults(attr,
+    @attr defaults(attr,
       w: 40
       h: 40
       health: 100

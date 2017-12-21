@@ -1,3 +1,5 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'PlayerSpaceship',
   init: ->
     @requires '2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, ' +
@@ -234,7 +236,7 @@ Crafty.c 'PlayerSpaceship',
     no
 
   scoreText: (text, settings = {}) ->
-    settings = _.defaults(settings,
+    settings = defaults(settings,
       positive: yes
       location: { @x, @y }
       attach: yes
