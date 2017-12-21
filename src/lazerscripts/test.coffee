@@ -16,7 +16,7 @@ class Test extends LazerScript
       #@setShipType('PlayerControlledCube')
       @setWeapons(['lasers'])
       @setScenery 'Ocean'
-      @async @runScript(SunRise, skipTo: 200000)
+      @async @runScript(SunRise, speed: 6)
       @repeat(2, @sequence(
         @placeSquad Swirler,
           amount: 6

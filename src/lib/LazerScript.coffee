@@ -62,8 +62,8 @@ class EntityScript extends LazerScript
       @entity.removeComponent('ViewportFixed')
       point.attach(@entity)
       @entity.attr({
-        x: point.x + Crafty.viewport.x
-        y: point.y + Crafty.viewport.y
+        x: point.x
+        y: point.y
         z: point.z
       })
 
@@ -79,14 +79,14 @@ class EntityScript extends LazerScript
 
     unless @entity.has('PlayerControlledShip')
       @entity.attr
-        x: @entity.x - Crafty.viewport.x
-        y: @entity.y - Crafty.viewport.y
+        x: @entity.x
+        y: @entity.y
 
     @entity.bind 'Destroyed', =>
       @currentSequence = null
       @synchronizer.unregisterEntity(this)
-      @enemy.location.x = (@entity.x + Crafty.viewport.x)
-      @enemy.location.y = (@entity.y + Crafty.viewport.y)
+      @enemy.location.x = @entity.x
+      @enemy.location.y = @entity.y
       @enemy.alive = no
       @enemy.killedAt = new Date
 

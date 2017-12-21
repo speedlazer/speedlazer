@@ -247,8 +247,8 @@ Crafty.c 'PlayerSpaceship',
 
     location = settings.location?()
     location = {
-      x: location.x - Crafty.viewport.x
-      y: location.y - Crafty.viewport.y
+      x: location.x
+      y: location.y
     } if location
 
     location ?= settings.location

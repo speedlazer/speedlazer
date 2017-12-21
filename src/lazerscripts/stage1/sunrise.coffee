@@ -15,8 +15,8 @@ class SunRise extends EntityScript
     sun = Crafty('Sun')
     if sun.length > 0
       sun.attr(
-        x: (Crafty.viewport.width * .97) - Crafty.viewport.x
-        y: (Crafty.viewport.height * .74) - Crafty.viewport.y
+        x: (Crafty.viewport.width * .97)
+        y: (Crafty.viewport.height * .74)
         defaultSpeed: options.speed ? 1
       )
     else

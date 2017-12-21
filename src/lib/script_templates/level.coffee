@@ -9,8 +9,6 @@ Level =
     (sequence) =>
       @_verify(sequence)
       { x, y } = location()
-      x -= Crafty.viewport.x
-      y -= Crafty.viewport.y
       options = defaults(
         { x, y }
         options

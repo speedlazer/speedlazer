@@ -76,8 +76,8 @@ Crafty.c 'Freddy',
     @ship.addComponent('Invincible').invincibleDuration(-1)
 
     @attr(
-      x: -Crafty.viewport.x - 100
-      y: -Crafty.viewport.y + (Crafty.viewport.height * .5)
+      x: -100
+      y: (Crafty.viewport.height * .5)
     )
     @circlePos = 180
     @eaten = 0

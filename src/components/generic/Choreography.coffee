@@ -142,16 +142,16 @@ Crafty.c 'Choreography',
     destinationX = @_currentPart.dx
     dx = 0
     if destinationX
-      @_currentPart.moveOriginX ?= @_currentPart.x + Crafty.viewport.x - Crafty.viewport.xShift
+      @_currentPart.moveOriginX ?= @_currentPart.x - Crafty.viewport.xShift
       diffX = destinationX - @_currentPart.moveOriginX
       motionX = (diffX * v)
       pmotionX = (diffX * prevv)
-      dx = motionX - pmotionX #+ @shiftedX - Crafty.viewport.xShift
+      dx = motionX - pmotionX
 
     destinationY = @_currentPart.dy
     dy = 0
     if destinationY
-      @_currentPart.moveOriginY ?= @_currentPart.y + Crafty.viewport.y - Crafty.viewport.yShift
+      @_currentPart.moveOriginY ?= @_currentPart.y - Crafty.viewport.yShift
       diffY = destinationY - @_currentPart.moveOriginY
       motionY = (diffY * v)
       pmotionY = (diffY * prevv)
@@ -209,11 +209,6 @@ Crafty.c 'Choreography',
       # single-last one. (length - 2)
       @_lastBezierPathPoint = @_currentPart.path[@_currentPart.path.length - 2]
 
-    unless @_currentPart.viewport?
-      @_currentPart.viewport =
-        y: Crafty.viewport.y
-
-    shiftedY = (@_currentPart.viewport.y - Crafty.viewport.y)
     point = bp.pointOnPath(@_currentPart.bPath, v)
     ppoint = bp.pointOnPath(@_currentPart.bPath, prevv)
     @shiftedX ?= 0
