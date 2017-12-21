@@ -167,7 +167,7 @@ class Game.Level
 
     Crafty.one 'ShipSpawned', =>
       @_playersActive = yes
-      @_scrollWall.scrollWall(@_forcedSpeed)
+      #@_scrollWall.scrollWall(@_forcedSpeed)
 
     Crafty('Player').each (index) ->
       spawnPosition = ->
@@ -219,8 +219,8 @@ class Game.Level
     else
       delta = 0
     @_forcedSpeed = speed
-    if @_playersActive
-      @_scrollWall.scrollWall(@_forcedSpeed, options)
+    #if @_playersActive
+      #@_scrollWall.scrollWall(@_forcedSpeed, options)
     Crafty('Bullet').each -> @attr speed: @speed + delta
     Crafty('PlayerControlledShip').each ->
       @forcedSpeed speed, options
@@ -237,12 +237,12 @@ class Game.Level
       x: 0
       duration: 1000
     })
-    @_scrollWall.cameraPan(options)
+    #@_scrollWall.cameraPan(options)
 
   setHeight: (deltaY) ->
-    @_scrollWall.setHeight deltaY
-    Crafty('PlayerControlledShip').each ->
-      @y += deltaY
+    #@_scrollWall.setHeight deltaY
+    #Crafty('PlayerControlledShip').each ->
+      #@y += deltaY
 
   setWeaponsEnabled: (onOff, players) ->
     players = [1, 2] unless players? and !isEmpty(players)
