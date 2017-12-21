@@ -114,12 +114,12 @@ Game =
         right: 15
 
     # Simply start splashscreen
-    handler = (e) =>
-      if e.key == Crafty.keys.N
-        Crafty.unbind('KeyDown', handler)
-        Crafty.enterScene('Game', script: 'Lunch', checkpoint: 0)
+    #handler = (e) =>
+      #if e.key == Crafty.keys.N
+        #Crafty.unbind('KeyDown', handler)
+        #Crafty.enterScene('Game', script: 'Lunch', checkpoint: 0)
 
-    Crafty.bind('KeyDown', handler)
+    #Crafty.bind('KeyDown', handler)
     #Crafty.enterScene('New')
     Crafty.enterScene('Intro')
 
