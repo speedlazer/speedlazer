@@ -15,22 +15,23 @@ Crafty.c 'ViewportRelativeMotion',
       dx: @dx ? 0
       dy: @dy ? 0
 
-    shifted = (@_initialViewport.x - Crafty.viewport._x) * (@_speed - 1)
+    shifted = @_initialViewport.x * (@_speed - 1)
     newX = @_location.sx - shifted + @_location.dx
-    newY = @_location.sy - (Crafty.viewport._y * (1 - @_speed)) + @_location.dy
+    newY = @_location.sy - @_location.dy
     #newY = @_location.sy - (Crafty.viewport._y * (1 - ((@_speed - 0.25) * 1.2))) + @location.dy
     @_location.x = Math.floor newX
     @_location.y = Math.floor newY
     @attr @_location
 
     @motion = Crafty.bind 'CameraMove', (coords) =>
-      shifted = (@_initialViewport.x + coords.x) * (@_speed - 1)
-      newX = @_location.sx - shifted + @dx
-      if @_distanceSky
-        newY = @_location.sy - (-coords.y * (1 - @_speed)) + @dy
-      else
-        newY = @_location.sy - (-coords.y * (1 - ((@_speed - 0.225) * 1.2))) + @dy
-      @attr x: newX, y: newY
+      x = @x - (coords.dx * @_speed)
+
+      #newX = @_location.sx - shifted + @dx
+      #if @_distanceSky
+        #newY = @_location.sy - (-coords.y * (1 - @_speed)) + @dy
+      #else
+        #newY = @_location.sy - (-coords.y * (1 - ((@_speed - 0.225) * 1.2))) + @dy
+      @attr x: x
     this
 
   remove: ->

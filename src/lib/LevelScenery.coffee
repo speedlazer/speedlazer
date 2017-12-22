@@ -55,8 +55,13 @@ class Game.LevelScenery
 
   _notifyEnterFunction: (offsetX = 0) ->
     block = this
-    Crafty.e('2D, Collision')
-      .attr({ x: @x + offsetX, y: @y, w: 10, h: 800 })
+    Crafty.e('2D, Collision, ViewportRelativeMotion')
+      .attr({ w: 10, h: 800 })
+      .viewportRelativeMotion({
+        x: @x + offsetX,
+        y: @y,
+        speed: 1
+      })
       .onHit 'ScrollFront', ->
         unless @triggeredFront
           Crafty.trigger('EnterBlock', block) #, index)
@@ -113,7 +118,11 @@ class Game.LevelScenery
   # block in the level. Also registers the entity
   # for automatic cleanup.
   add: (x, y, element) ->
-    element.attr x: @x + x, y: @y + y
+    element.addComponent('ViewportRelativeMotion').viewportRelativeMotion(
+      x: @x + x
+      y: @y + y
+      speed: 1
+    )
     @createdElements.push element
 
   addBackground: (x, y, element, speed) ->

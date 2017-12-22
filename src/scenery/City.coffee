@@ -91,38 +91,44 @@ generator.defineElement 'waterFront', ->
   water1.originalY = water1.y
 
   water2 = Crafty.e('2D, WebGL, waterFront2, Wave2')
-    .attr(z: -20)
+  water1.attach(water2)
+  water2.attr(
+      z: -20
+      x: water1.x + water1.w
+      y: water1.y
+    )
     .crop(0, 1, 512, 95)
-  @add(512, @level.visibleHeight - height, water2)
-  water2.originalX = water2.x
-  water2.originalY = water2.y
 
   @level.registerWaveTween 'OceanWaves', 6000, 'easeInOutQuad', (v, forward) ->
     distance = 50
     distanceh = 40
-    moveh = 5
+    moveh = 8
     width = 513
     height = 125
     Crafty('Wave1').each ->
-      if forward
-        @w = width + (v * distance)
-        @y = @originalY + (v * moveh)
-        @h = height - (v * distanceh)
-      else
-        @w = width + distance - (v * distance)
-        @y = @originalY + moveh - (v * moveh)
-        @h = height - distanceh + (v * distanceh)
+      x = @x
+      w = width + (v * distance)
+      y = @originalY + (v * moveh)
+      h = height - (v * distanceh)
+
+      if !forward
+        w = width + distance - (v * distance)
+        y = @originalY + moveh - (v * moveh)
+        h = height - distanceh + (v * distanceh)
+
+      @attr(w: w, h: h, y: y)
+      @_children.forEach((e) ->
+        e.attr(x: x + w)
+      )
+
     Crafty('Wave2').each ->
       if forward
         @w = width - (v * distance)
-        @x = @originalX + (v * distance)
-        @y = @originalY + (v * moveh)
         @h = height - (v * distanceh)
       else
         @w = width - distance + (v * distance)
-        @x = @originalX + distance - (v * distance)
-        @y = @originalY + moveh - (v * moveh)
         @h = height - distanceh + (v * distanceh)
+
     Crafty('WaveFront').each ->
       width = 1200
       distance = 120

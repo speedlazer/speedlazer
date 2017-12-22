@@ -52,8 +52,8 @@ Crafty.c 'ScrollWall',
 
       # the speed is px / sec
       # the time passed is fd.dt in milliseconds
-      @x += (speedX / 1000.0) * fd.dt
-      @y += (speedY / 1000.0) * fd.dt
+      #@x += (speedX / 1000.0) * fd.dt
+      #@y += (speedY / 1000.0) * fd.dt
 
       xShift = 0
       yShift = 0
@@ -87,14 +87,21 @@ Crafty.c 'ScrollWall',
       Crafty.viewport.xShift = xShift
       Crafty.viewport.yShift = yShift
 
+      dx = (speedX / 1000.0) * fd.dt
+      dy = (speedY / 1000.0) * fd.dt
+
       Crafty.trigger('CameraMove',
         x: Math.round(@x)
         y: Math.round(@y)
+        dx: dx
+        dy: dy
         panning: cameraPan
       )
       Crafty.trigger('ViewportMove',
         x: Math.round(x)
         y: Math.round(y)
+        dx: dx
+        dy: dy
       )
 
     # TODO: Verify correctness of these statements
