@@ -150,8 +150,6 @@ Crafty.c 'PlayerSpaceship',
       @_updateFlyingSpeed shipSpeedX, fd.dt
       @rotation = nr
 
-      @x += motionX
-      @y += motionY
       # Move player back if flying into an object
       if @hit('Edge') or @hit('Solid')
         @x -= motionX

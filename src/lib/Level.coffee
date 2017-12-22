@@ -221,7 +221,7 @@ class Game.Level
     @_forcedSpeed = speed
     #if @_playersActive
       #@_scrollWall.scrollWall(@_forcedSpeed, options)
-    Crafty('Bullet').each -> @attr speed: @speed + delta
+    #Crafty('Bullet').each -> @attr speed: @speed + delta
     Crafty('PlayerControlledShip').each ->
       @forcedSpeed speed, options
 

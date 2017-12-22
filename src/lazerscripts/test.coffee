@@ -24,7 +24,9 @@ class Test extends LazerScript
           drop: 'points'
         @wait(1000)
       ))
+      @setSpeed 100
       @mineSwarm()
+      @setSpeed 300
     )
 
   mineSwarm: (options = { direction: 'right' })->
