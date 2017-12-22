@@ -21,7 +21,7 @@ generator.defineElement 'cloud', ->
     )
     if Math.random() < 0.7
       c1 = c1.flip('X')
-    @addBackground(20 + (Math.random() * 400), y, c1, .375)
+    @addBackground(100 + (Math.random() * 300), y, c1, .375)
 
   if v < .6
     s = (Math.random() * .20) + .15
@@ -41,7 +41,7 @@ generator.defineElement 'cloud', ->
     )
     if Math.random() < 0.2
       c2 = c2.flip('X')
-    @addBackground(60 + Math.random() * 400, y, c2, s)
+    @addBackground(360 + Math.random() * 300, y, c2, s)
 
 generator.defineElement 'waterHorizon', ->
   h = Crafty.e('2D, WebGL, waterHorizon, SunBlock, Horizon, ColorEffects')
