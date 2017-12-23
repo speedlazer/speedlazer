@@ -116,7 +116,7 @@ generator.defineElement 'waterFront', ->
         y = @originalY + moveh - (v * moveh)
         h = height - distanceh + (v * distanceh)
 
-      @attr(w: w, h: h, y: y)
+      @attr(w: w, h: h) #, y: y)
       @_children.forEach((e) ->
         e.attr(x: x + w)
       )

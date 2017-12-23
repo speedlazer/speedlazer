@@ -118,8 +118,9 @@ class Game.Level
     for block in @blocks when block.x < 640
       block.enter()
 
-    Crafty.bind('ViewportMove', ({ dx }) =>
+    Crafty.bind('ViewportMove', ({ dx, dy }) =>
       @generationPosition.x -= dx
+      @generationPosition.y -= dy
       if @generationPosition.x < @bufferLength
         @_update()
     )

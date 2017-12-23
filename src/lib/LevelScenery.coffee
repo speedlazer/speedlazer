@@ -120,7 +120,8 @@ class Game.LevelScenery
   add: (x, y, element) ->
     element.addComponent('ViewportRelativeMotion').viewportRelativeMotion(
       x: @x + x
-      y: @y + y
+      y: y + 40
+      offsetY: (@y - 40)
       speed: 1
     )
     @createdElements.push element
@@ -128,7 +129,8 @@ class Game.LevelScenery
   addBackground: (x, y, element, speed) ->
     element.addComponent('ViewportRelativeMotion').viewportRelativeMotion(
       x: @x + x
-      y: @y + y
+      y: y + 40
+      offsetY: (@y - 40)
       speed: speed
     )
     @createdElements.push element

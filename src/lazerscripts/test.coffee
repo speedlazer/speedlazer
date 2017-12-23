@@ -21,14 +21,31 @@ class Test extends LazerScript
 
       @async @runScript(SunRise, speed: 6)
 
-      @repeat(2, @sequence(
-        @placeSquad Swirler,
-          amount: 6
-          delay: 250
-          drop: 'points'
-        @wait(1000)
-      ))
+      @placeSquad Swirler,
+        amount: 6
+        delay: 250
+        drop: 'points'
+      @wait(1000)
+      @gainHeight(150, duration: 4000)
+      @setScenery 'CoastStart'
+
       @setSpeed 900
+
+      @placeSquad Swirler,
+        amount: 6
+        delay: 250
+        drop: 'points'
+      @setScenery 'BayStart'
+
+      @placeSquad Swirler,
+        amount: 6
+        delay: 250
+        drop: 'points'
+
+      @gainHeight(150, duration: 4000)
+
+      @wait 10000
+      @gainHeight(-300, duration: 4000)
     )
 
   mineSwarm: (options = { direction: 'right' })->
