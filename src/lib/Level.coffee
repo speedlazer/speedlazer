@@ -114,17 +114,14 @@ class Game.Level
 
     @_seedPreceedingGeometry()
     @_update()
-    @lastUpdate = 200
 
     for block in @blocks when block.x < 640
       block.enter()
 
     Crafty.bind('ViewportMove', ({ dx }) =>
-      @lastUpdate -= dx
       @generationPosition.x -= dx
-      if @lastUpdate < -300
+      if @generationPosition.x < @bufferLength
         @_update()
-        @lastUpdate = 200
     )
 
     Crafty.uniqueBind 'LeaveBlock', (block) => #(index) =>
