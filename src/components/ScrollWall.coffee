@@ -154,8 +154,8 @@ Crafty.c 'ScrollWall',
     @targetSpeed(speed, options)
 
   setHeight: (deltaY) ->
-    @y += deltaY
-    Crafty.viewport.y = -@y
+    #@y += deltaY
+    #Crafty.viewport.y = -@y
 
   setAllowPushing: (@allowPushing) ->
 
