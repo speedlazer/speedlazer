@@ -21,7 +21,7 @@ generator.defineElement 'cloud', ->
     )
     if Math.random() < 0.7
       c1 = c1.flip('X')
-    @addBackground(100 + (Math.random() * 300), y, c1, .375)
+    @addBackground(300 + (Math.random() * 300), y, c1, .375)
 
   if v < .6
     s = (Math.random() * .20) + .15
