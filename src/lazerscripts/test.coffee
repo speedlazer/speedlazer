@@ -14,9 +14,13 @@ class Test extends LazerScript
 
     @sequence(
       #@setShipType('PlayerControlledCube')
+      #
       @setWeapons(['lasers'])
       @setScenery 'Ocean'
+      @setSpeed 600
+
       @async @runScript(SunRise, speed: 6)
+
       @repeat(2, @sequence(
         @placeSquad Swirler,
           amount: 6
@@ -24,9 +28,7 @@ class Test extends LazerScript
           drop: 'points'
         @wait(1000)
       ))
-      @setSpeed 100
-      @mineSwarm()
-      @setSpeed 300
+      @setSpeed 900
     )
 
   mineSwarm: (options = { direction: 'right' })->
