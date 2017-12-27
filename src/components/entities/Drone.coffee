@@ -8,7 +8,7 @@ Crafty.c 'Drone',
     @attr defaults(attr,
       w: 40
       h: 40
-      health: 100
+      health: 200
       defaultSpeed: 100
     )
     @origin 'center'
