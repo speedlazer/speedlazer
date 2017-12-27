@@ -239,9 +239,9 @@ Entity =
           return @_moveAir(airSettings)
             .then =>
               @enemy.moveState = 'water'
-              if @enemy.alive
-                @_setupWaterSpot()
-                @_moveWater(settings)
+              #if @enemy.alive
+              @_setupWaterSpot()
+              @_moveWater(settings)
         else
           return @_moveAir(settings)
 
@@ -252,9 +252,9 @@ Entity =
           return @_moveWater(waterSettings)
             .then =>
               @enemy.moveState = 'air'
-              if @enemy.alive
-                @_removeWaterSpot()
-                @_moveAir(settings)
+              #if @enemy.alive
+              @_removeWaterSpot()
+              @_moveAir(settings)
         else
           return @_moveWater(settings)
 
@@ -384,7 +384,8 @@ Entity =
     WhenJS.all([defer.promise, @_moveAir(settings)])
 
   _getSeaLevel: ->
-    (Crafty.viewport.height - 240) + (220 * (@entity.scale ? 1.0)) + (@level.sealevelOffset ? 0)
+    lvl = Crafty('ScrollWall').get(0).viewHeight
+    (Crafty.viewport.height - 240) + ((220 - lvl) * (@entity.scale ? 1.0)) + (@level.sealevelOffset ? 0)
 
   _moveAir: (settings) ->
     defaultsValues =

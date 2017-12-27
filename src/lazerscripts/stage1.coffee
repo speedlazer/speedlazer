@@ -18,6 +18,7 @@ class Stage1 extends LazerScript
     @loadAssets('explosion', 'playerShip', 'general')
 
   execute: ->
+    Crafty.e('DebugInfo')
     @inventoryAdd 'weapon', 'lasers', marking: 'L'
 
     @inventoryAdd 'ship', 'life', marking: '❤', icon: 'heart'

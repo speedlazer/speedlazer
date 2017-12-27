@@ -42,8 +42,6 @@ Crafty.c 'WaterSplashes',
           Crafty.e('Blast, ViewportRelativeMotion')
             .colorOverride('#FFFFFF')
             .viewportRelativeMotion(
-              x: @x + (i * coverage) + (pos * coverage)
-              y: @sealevel + @minOffset
               speed: 1
             )
             .explode(

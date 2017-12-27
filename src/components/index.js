@@ -8,6 +8,7 @@ import "./utils";
 import "./weapons";
 
 import "./BigText";
+import "./DebugInfo";
 import "./Enemy";
 import "./Invincible";
 import "./ScrollWall";

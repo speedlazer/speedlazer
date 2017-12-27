@@ -1,4 +1,4 @@
-correction = 0.125
+correction = 0.225
 
 calculateY = (delta, speed) ->
   delta * (speed - (correction - (correction * speed)))

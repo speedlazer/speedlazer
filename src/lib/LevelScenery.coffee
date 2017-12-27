@@ -51,15 +51,16 @@ class Game.LevelScenery
     @y ?= pos.y
     @generated = yes
     @generate()
-    @_notifyEnterFunction(@notifyOffsetX)
+    @_notifyEnterFunction()
 
-  _notifyEnterFunction: (offsetX = 0) ->
+  _notifyEnterFunction: () ->
     block = this
     Crafty.e('2D, Collision, ViewportRelativeMotion')
       .attr({ w: 10, h: 800 })
       .viewportRelativeMotion({
-        x: @x + offsetX,
-        y: @y,
+        x: @x
+        y: 40
+        offsetY: (@y - 40)
         speed: 1
       })
       .onHit 'ScrollFront', ->
@@ -160,7 +161,6 @@ class Game.LevelScenery
 
   canCleanup: ->
     cameraX = Crafty.viewport._x * -1
-    return no if (@x + @delta.x) > cameraX
     for elem in @createdElements
       if elem.x + elem.w >= cameraX
         return no

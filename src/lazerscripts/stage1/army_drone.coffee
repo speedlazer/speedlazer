@@ -12,7 +12,7 @@ class ArmyDrone extends EntityScript
       @smokePrint()
       @moveTo(
         y: 1000
-        speed: 400
+        speed: 600
         easing: 'easeInQuad'
       )
       @endDecoy()

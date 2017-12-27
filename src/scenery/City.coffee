@@ -143,7 +143,7 @@ generator.defineElement 'waterFront', ->
         h = height - (v * distanceh)
       else
         w = width + distance - (v * distance)
-        y = Y + moveh - (v * moveh)
+        y = moveh - (v * moveh)
         h = height - distanceh + (v * distanceh)
 
       @shift(0, y - @waveY, w - @w, h - @h)
