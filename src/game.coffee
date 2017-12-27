@@ -55,6 +55,7 @@ Game =
     Crafty.init(1024, 576, stage) # PAL+
     #Crafty.pixelart(true)
     Crafty.background('#000000')
+    Crafty.timer.FPS(62.5)
 
     Crafty.e('Player, Color')
       .attr(name: 'Player 1', z: 0, playerNumber: 1)
