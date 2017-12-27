@@ -65,7 +65,7 @@ class Swirler extends ArmyDrone
     d = Crafty.e('Drone').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height / 2
-      defaultSpeed: options.speed ? 300
+      defaultSpeed: options.speed ? 400
       juice: options.juice
     )
     @juice = options.juice
@@ -80,6 +80,7 @@ class Swirler extends ArmyDrone
               w: 10
               h: 10
               damage: 1
+              speed: 500
             )
           projectile.shoot(x, y, angle)
     d
@@ -87,6 +88,12 @@ class Swirler extends ArmyDrone
   execute: ->
     @bindSequence 'Destroyed', @onKilled
     @movePath [
+
+      [.5, .21]
+      [.156, .5]
+      [.5, .833]
+      [.86, .52]
+
       [.5, .21]
       [.156, .5]
       [.5, .833]
