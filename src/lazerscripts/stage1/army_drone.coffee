@@ -71,7 +71,7 @@ class Swirler extends ArmyDrone
     @juice = options.juice
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 1000 + (Math.random() * 8000)
+        cooldown: 2000 + (Math.random() * 8000)
         sightAngle: 250
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Sphere, Hostile, Projectile')
@@ -190,13 +190,13 @@ class Shooter extends ArmyDrone
     d = Crafty.e('Drone').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .71
-      defaultSpeed: options.speed ? 300
+      defaultSpeed: options.speed ? 400
       juice: options.juice
     )
     @juice = options.juice
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 1000 + (Math.random() * 8000)
+        cooldown: 2000 + (Math.random() * 8000)
         sightAngle: 250
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Sphere, Hostile, Projectile')
@@ -205,6 +205,7 @@ class Shooter extends ArmyDrone
               w: 10
               h: 10
               damage: 1
+              speed: 500
             )
           projectile.shoot(x, y, angle)
     d
@@ -231,7 +232,7 @@ class CrewShooters extends ArmyDrone
     Crafty.e('Drone, ShootOnSight, Horizon').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .23
-      defaultSpeed: 250
+      defaultSpeed: 350
     ).shootOnSight
       targetType: 'CameraCrew'
       shootWhenHidden: yes
@@ -240,7 +241,7 @@ class CrewShooters extends ArmyDrone
           w: 3
           h: 3
           z: -200
-          speed: 300
+          speed: 400
           topDesaturation: 0.5
           bottomDesaturation: 0.5
         ).color('#FFFF00')
@@ -279,6 +280,7 @@ class CrewShooters extends ArmyDrone
               w: 10
               h: 10
               damage: 1
+              speed: 500
             )
             .blink()
           projectile.shoot(x, y, angle)

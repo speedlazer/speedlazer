@@ -53,7 +53,7 @@ class Stage1 extends LazerScript
   introText: ->
     @sequence(
       @setWeapons(['lasers'])
-      @setSpeed 100
+      @setSpeed 200, accellerate: no
       @setScenery('Intro')
       @sunRise()
       @async @placeSquad(CameraCrew)
@@ -77,19 +77,19 @@ class Stage1 extends LazerScript
 
   tutorial: ->
     @sequence(
-      @setSpeed 200
       @setScenery('Ocean')
       @say('General', 'We send some drones for some last manual target practice', noise: 'low')
+      @setSpeed 200
       @parallel(
-        @showText 'Get Ready', color: '#00FF00', mode: 'blink', blink_amount: 3, blink_speed: 300
+        @showText 'Get Ready', color: '#00FF00', mode: 'blink', blink_amount: 6, blink_speed: 100
         @say('John', 'Let\'s go!')
       )
       @parallel(
         @gainHeight(150, duration: 4000)
         @repeat(2, @sequence(
           @placeSquad Swirler,
-            amount: 6
-            delay: 250
+            amount: 5
+            delay: 200
             drop: 'pool'
           @wait(1000)
         ))
@@ -97,8 +97,8 @@ class Stage1 extends LazerScript
       @say('General', 'Great job, now get the ship to the defence factory in the city\n' +
        'We will send some more target practice', noise: 'low')
       @placeSquad Shooter,
-        amount: 6
-        delay: 500
+        amount: 5
+        delay: 200
         drop: 'pool'
     )
 
@@ -108,7 +108,7 @@ class Stage1 extends LazerScript
         @say('John', 'What are those drones doing there!?')
         @placeSquad CrewShooters,
           amount: 4
-          delay: 750
+          delay: 600
           drop: 'pool'
       )
       @say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!', noise: 'low')
@@ -263,13 +263,13 @@ class Stage1 extends LazerScript
     @attackWaves(
       @parallel(
         @repeat 2, @placeSquad Swirler,
-          amount: 8
-          delay: 500
+          amount: 5
+          delay: 200
           options:
             shootOnSight: yes
         @repeat 2, @placeSquad Shooter,
-          amount: 8
-          delay: 500
+          amount: 5
+          delay: 200
           options:
             shootOnSight: yes
       )
