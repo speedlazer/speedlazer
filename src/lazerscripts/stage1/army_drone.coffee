@@ -9,6 +9,12 @@ class ArmyDrone extends EntityScript
       @deathDecoy()
       @smallExplosion(juice: @juice, offsetX: 20, offsetY: 20)
       @rotate 30, 60
+      @smokePrint()
+      @moveTo(
+        y: 1000
+        speed: 400
+        easing: 'easeInQuad'
+      )
       @endDecoy()
     )
 
