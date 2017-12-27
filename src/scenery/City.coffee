@@ -368,11 +368,11 @@ generator.defineBlock class extends Game.CityScenery
 
     @addElement 'waterFront'
 
-    barrelLocator = Crafty.e('2D, BoxesLocation')
-    @add(550, @level.visibleHeight - 340 + (7*32), barrelLocator)
+    barrelLocator = Crafty.e('2D, BoxesLocation, WebGL, Color').color('FF0000')
+    @add(550, @level.visibleHeight - 360 + (7*32), barrelLocator)
 
-    barrelLocator = Crafty.e('2D, BoxesLocation')
-    @add(550 + 64, @level.visibleHeight - 340 + (7*32), barrelLocator)
+    barrelLocator = Crafty.e('2D, BoxesLocation, WebGL, Color').color('0000FF')
+    @add(550 + 64, @level.visibleHeight - 360 + (7*32), barrelLocator)
 
     barrelLocator = Crafty.e('2D, WebGL, boxes').attr(z: -8)
     @add(550 + 72, @level.visibleHeight - 340 + (5*32), barrelLocator)

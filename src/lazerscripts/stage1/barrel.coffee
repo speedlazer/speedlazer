@@ -10,11 +10,7 @@ class IntroBarrel extends EntityScript
 
   execute: ->
     @bindSequence 'Knock', @knockedOff
-    @sequence(
-      @pickTarget('BoxesLocation', @options.index)
-      @setLocation(@targetLocation(offsetY: -15))
-      @wait 20000
-    )
+    @wait 20000
 
   knockedOff: (player) ->
     player.trigger 'BonusPoints', points: 25, location: @location()

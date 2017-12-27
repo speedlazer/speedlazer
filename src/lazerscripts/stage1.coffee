@@ -57,7 +57,13 @@ class Stage1 extends LazerScript
       @setScenery('Intro')
       @sunRise()
       @async @placeSquad(CameraCrew)
-      @async @placeSquad(IntroBarrel, amount: 2, delay: 0)
+      @async @placeSquad(
+        IntroBarrel,
+        amount: 2,
+        delay: 0,
+        options:
+          attach: 'BoxesLocation'
+      )
       @if((-> @player(1).active and @player(2).active)
         @say 'General', 'Time to get the last 2 ships to the factory\n' +
           'to install the AI controlled defence systems', noise: 'low'
