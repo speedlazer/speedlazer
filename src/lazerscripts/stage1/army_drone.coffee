@@ -261,8 +261,8 @@ class CrewShooters extends ArmyDrone
           [-.33, .23]
         ]
         @sequence(
-          @wait 2000
-          @scale(1.0, duration: 5000)
+          @wait 1500
+          @scale(1.0, duration: 4000)
           @reveal()
           @shootPlayer()
         )

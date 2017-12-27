@@ -88,8 +88,8 @@ class Stage1 extends LazerScript
         @gainHeight(150, duration: 4000)
         @repeat(2, @sequence(
           @placeSquad Swirler,
-            amount: 5
-            delay: 200
+            amount: 4
+            delay: 250
             drop: 'pool'
           @wait(1000)
         ))
@@ -142,7 +142,6 @@ class Stage1 extends LazerScript
     )
 
   midStageBossFight: ->
-
     @sequence(
       @checkpoint @checkpointStart('CoastStart', 93000)
       @mineSwarm()
@@ -151,8 +150,8 @@ class Stage1 extends LazerScript
       @parallel(
         @say('John', 'Enemy Navy Mothership approaching! Stay alert!')
         @placeSquad CrewShooters,
-          amount: 5
-          delay: 300
+          amount: 4
+          delay: 250
           drop: 'pool'
       )
       @shipBossFight() # Bossfight
@@ -263,13 +262,13 @@ class Stage1 extends LazerScript
     @attackWaves(
       @parallel(
         @repeat 2, @placeSquad Swirler,
-          amount: 5
-          delay: 200
+          amount: 4
+          delay: 250
           options:
             shootOnSight: yes
         @repeat 2, @placeSquad Shooter,
-          amount: 5
-          delay: 200
+          amount: 4
+          delay: 250
           options:
             shootOnSight: yes
       )
@@ -282,8 +281,6 @@ class Stage1 extends LazerScript
         drop: 'pool'
       @repeat 2, @stalkerShootout()
     )
-
-  underWaterAttacks2: ->
 
   sunRise: (options = { skipTo: 0 }) ->
     @async @runScript(SunRise, extend({ speed: 2 }, options))
@@ -316,13 +313,13 @@ class Stage1 extends LazerScript
       @attackWaves(
         @parallel(
           @placeSquad Shooter,
-            amount: 8
-            delay: 500
+            amount: 4
+            delay: 250
             options:
               shootOnSight: yes
           @placeSquad Swirler,
-            amount: 8
-            delay: 500
+            amount: 4
+            delay: 250
             options:
               shootOnSight: yes
         )

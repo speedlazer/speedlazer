@@ -343,13 +343,13 @@ Crafty.c('carrierHatch', {
     @attr(z: -10)
     @crop 0, 2, 5*32, 32
 
-    @reel 'open', 1000, [
+    @reel 'open', 600, [
       [31, 40]
       [31, 38]
       [31, 39]
     ]
 
-    @reel 'close', 1000, [
+    @reel 'close', 600, [
       [31, 39]
       [31, 38]
       [31, 40]
@@ -477,7 +477,7 @@ generator.defineBlock class extends Game.CityScenery
         duration: 1000
       ,
         type: 'delay'
-        duration: 1000
+        duration: 600
         event: 'openHatch'
       ,
         type: 'linear'
