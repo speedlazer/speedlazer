@@ -88,7 +88,7 @@ generator.defineElement 'waterFront', ->
     .attr(z: -20)
     .crop(0, 1, 512, 95)
   @add(0, @level.visibleHeight - height, water1)
-  water1.originalY = water1.y
+  water1.waveY = 0
 
   water2 = Crafty.e('2D, WebGL, waterFront2, Wave2')
   water1.attach(water2)
@@ -105,43 +105,49 @@ generator.defineElement 'waterFront', ->
     moveh = 8
     width = 513
     height = 125
+
     Crafty('Wave1').each ->
-      x = @x
       w = width + (v * distance)
-      y = @originalY + (v * moveh)
+      y = (v * moveh)
       h = height - (v * distanceh)
 
       if !forward
         w = width + distance - (v * distance)
-        y = @originalY + moveh - (v * moveh)
+        y = moveh - (v * moveh)
         h = height - distanceh + (v * distanceh)
-
-      @attr(w: w, h: h) #, y: y)
+      wShift = w - @w
+      @shift(0, y - @waveY, wShift, h - @h)
+      @waveY = y
       @_children.forEach((e) ->
-        e.attr(x: x + w)
+        e.shift(wShift)
       )
 
     Crafty('Wave2').each ->
       if forward
-        @w = width - (v * distance)
-        @h = height - (v * distanceh)
+        w = width - (v * distance)
+        h = height - (v * distanceh)
       else
-        @w = width - distance + (v * distance)
-        @h = height - distanceh + (v * distanceh)
+        w = width - distance + (v * distance)
+        h = height - distanceh + (v * distanceh)
+      @shift(0, 0, w - @w, h - @h)
 
     Crafty('WaveFront').each ->
       width = 1200
       distance = 120
       height = 200
       distanceh = 80
+
       if forward
-        @w = width + (v * distance)
-        @y = @originalY + (v * moveh)
-        @h = height - (v * distanceh)
+        w = width + (v * distance)
+        y = (v * moveh)
+        h = height - (v * distanceh)
       else
-        @w = width + distance - (v * distance)
-        @y = @originalY + moveh - (v * moveh)
-        @h = height - distanceh + (v * distanceh)
+        w = width + distance - (v * distance)
+        y = Y + moveh - (v * moveh)
+        h = height - distanceh + (v * distanceh)
+
+      @shift(0, y - @waveY, w - @w, h - @h)
+      @waveY = y
 
 generator.defineElement 'cityHorizon', (mode) ->
   @addElement 'waterHorizon'
@@ -457,7 +463,7 @@ generator.defineBlock class extends Game.CityScenery
       #blur: 6.0
     ).crop(0, 1, 512, 95)
     @addBackground(0, @level.visibleHeight - 18, frontWave, 1.25)
-    frontWave.originalY = frontWave.y
+    frontWave.waveY = 0
 
     @addElement 'cloud'
 

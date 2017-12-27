@@ -39,8 +39,13 @@ Crafty.c 'WaterSplashes',
           r += 1
           pos = Math.random()
           sealevel = @sealevel
-          Crafty.e('Blast')
+          Crafty.e('Blast, ViewportRelativeMotion')
             .colorOverride('#FFFFFF')
+            .viewportRelativeMotion(
+              x: @x + (i * coverage) + (pos * coverage)
+              y: @sealevel + @minOffset
+              speed: 1
+            )
             .explode(
               upwards: if r % 2 is 0 then upwards else 0
               x: @x + (i * coverage) + (pos * coverage)
@@ -52,12 +57,16 @@ Crafty.c 'WaterSplashes',
               bottomDesaturation: @bottomDesaturation
               alpha: @waterAlpha
               gravity: 0.2
-              ->
-                gravity: @gravity + 0.3
-                alpha: Math.max(0.1, (@alpha - Math.random() * .03))
-                y: Math.min(@y - (Math.random() * @upwards) + @gravity, sealevel - 10)
-                x: @x + ((-.5 + pos) * Math.random() * 4.0)
-                w: @w + .3
-                h: @h + .3
+              (prev) ->
+                @attr(
+                  gravity: @gravity + 0.3
+                  alpha: Math.max(0.1, (@alpha - Math.random() * .03))
+                )
+                return {
+                  y: Math.min(prev.y - (Math.random() * @upwards) + @gravity, sealevel - 10)
+                  x: prev.x + ((-.5 + pos) * Math.random() * 4.0)
+                  w: prev.w + .3
+                  h: prev.h + .3
+                }
             )
     @_lastWaterY = @y
