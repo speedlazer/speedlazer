@@ -326,6 +326,7 @@ Level =
           damage: 0
           radius: 20
           duration: 160
+          viewportFixed: yes
           z: 5
           topDesaturation: 0
           bottomDesaturation: 0
@@ -338,6 +339,10 @@ Level =
         options,
         frameOptions
       )
+      if (options.viewportFixed == no)
+        e.addComponent('ViewportRelativeMotion')
+        e.viewportRelativeMotion({ speed: 1 })
+
       if y > @_getSeaLevel() - 60 and options.lightness is 1.0
         e.addComponent('WaterSplashes')
         e.attr waterSplashSpeed: 500, defaultWaterCooldown: 450
