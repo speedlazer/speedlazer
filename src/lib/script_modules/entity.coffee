@@ -239,7 +239,6 @@ Entity =
           return @_moveAir(airSettings)
             .then =>
               @enemy.moveState = 'water'
-              #if @enemy.alive
               @_setupWaterSpot()
               @_moveWater(settings)
         else
@@ -252,7 +251,6 @@ Entity =
           return @_moveWater(waterSettings)
             .then =>
               @enemy.moveState = 'air'
-              #if @enemy.alive
               @_removeWaterSpot()
               @_moveAir(settings)
         else
@@ -400,6 +398,7 @@ Entity =
     deltaX = if settings.x? then Math.abs(settings.x - @entity.x) else 0
     deltaY = if settings.y? then Math.abs(settings.y - @entity.y) else 0
     delta = Math.sqrt((deltaX ** 2) + (deltaY ** 2))
+    return Promise.resolve() if delta == 0
 
     return new Promise((resolve) =>
       easing = settings.easing ? 'linear'
