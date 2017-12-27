@@ -213,7 +213,7 @@ class Stage1 extends LazerScript
           @setScenery('UnderBridge')
         )
       )
-      @async @showText 'Warning!', color: '#FF0000', mode: 'blink'
+      @async @showText 'Warning!', color: '#FF0000', mode: 'blink', blink_amount: 6, blink_speed: 100
       @while(
         @waitForScenery('UnderBridge', event: 'enter')
         @waitingRocketStrike()

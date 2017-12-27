@@ -129,9 +129,11 @@ class Stage1Boss extends EntityScript
           alpha: options.alpha
           lightness: 1.0
         ->
-          rotation: @rotation + 1
-          alpha: Math.max(0, @alpha - .003)
-          lightness: -> Math.max(.2, @lightness - .05)
+          @attr(
+            rotation: @rotation + 1
+            alpha: Math.max(0, @alpha - .003)
+            lightness: -> Math.max(.2, @lightness - .05)
+          )
           y: @y - (Math.random() * 2)
       )
       @wait -> options.wait + (Math.random() * 50)
@@ -472,16 +474,18 @@ class Stage1BossRocket extends EntityScript
           ->
             radius: 5
             duration: 135
-            z: 1
-            alpha: .8
+            z: -1
+            alpha: .9
             lightness: 1.0
             gravity: (Math.random() * .2)
             vertical: 0
           ->
-            vertical: @vertical + Math.random() * @gravity
-            rotation: @rotation + (Math.random() * 3)
-            alpha: Math.max(0.1, (@alpha - Math.random() * .03))
-            lightness: Math.max(.4, @lightness - .05)
+            @attr(
+              vertical: @vertical + Math.random() * @gravity
+              rotation: @rotation + (Math.random() * 3)
+              alpha: Math.max(0.1, (@alpha - Math.random() * .02))
+              lightness: Math.max(.2, @lightness - .05)
+            )
             y: @y - @vertical
         )
         @wait 20
@@ -902,7 +906,7 @@ class Stage1BossMineField extends EntityScript
         @squadOnce('bridge', @sequence(
           @wait 500
           => Crafty.trigger('BridgeCollapse', @level)
-          @screenFlash 2, color: '#FFFF80', alpha: .4
+          @screenFlash 4, color: '#FFFF80', alpha: .8, duration: 30
         ))
         => @entity.absorbDamage damage: @entity.health
         @endSequence()

@@ -43,6 +43,7 @@ class JumpMine extends EntityScript
           @moveTo(x: -50, speed: 35)
         )
         @sequence(
+          @wait 1000
           @animate('blink', -1)
           @wait 1000
           => @entity.absorbDamage damage: @entity.health

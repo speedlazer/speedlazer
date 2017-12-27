@@ -239,6 +239,7 @@ Entity =
           return @_moveAir(airSettings)
             .then =>
               @enemy.moveState = 'water'
+              return if not @enemy.alive and not @decoyingEntity?
               @_setupWaterSpot()
               @_moveWater(settings)
         else
@@ -251,6 +252,7 @@ Entity =
           return @_moveWater(waterSettings)
             .then =>
               @enemy.moveState = 'air'
+              return if not @enemy.alive and not @decoyingEntity?
               @_removeWaterSpot()
               @_moveAir(settings)
         else
