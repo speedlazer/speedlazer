@@ -482,7 +482,7 @@ generator.defineBlock class extends Game.CityScenery
       ,
         type: 'linear'
         y: -80
-        duration: 1200
+        duration: 800
         easingFn: 'easeInOutQuad'
       ,
         event: 'lift'
@@ -490,7 +490,7 @@ generator.defineBlock class extends Game.CityScenery
         x: 70
         y: -10
         easingFn: 'easeInQuad'
-        duration: 1200
+        duration: 600
       ,
         type: 'delay'
         duration: 1
