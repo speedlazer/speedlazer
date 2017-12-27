@@ -9,17 +9,18 @@ Crafty.c 'ViewportRelativeMotion',
   remove: ->
 
   viewportRelativeMotion: ({ x, y, offsetY, speed }) ->
-    @_startLocation = { x, y }
     @_speed = speed
-    vpx = Crafty.viewport.width / 4
+    if x? and y?
+      @_startLocation = { x, y }
+      vpx = Crafty.viewport.width / 4
 
-    sx = x + ((x - vpx) * (@_speed - 1)) - (vpx * (@_speed - 1))
-    newX = sx + (@dx || 0)
+      sx = x + ((x - vpx) * (@_speed - 1)) - (vpx * (@_speed - 1))
+      newX = sx + (@dx || 0)
 
-    sy = y + calculateY(offsetY, @_speed)
-    newY = sy - (@dy || 0)
+      sy = y + calculateY(offsetY, @_speed)
+      newY = sy - (@dy || 0)
 
-    @attr x: Math.floor(newX), y: Math.floor(newY)
+      @attr x: Math.floor(newX), y: Math.floor(newY)
 
     @motion = Crafty.bind 'CameraMove', (coords) =>
       x = - (coords.dx * @_speed)
