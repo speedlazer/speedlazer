@@ -84,11 +84,11 @@ generator.defineElement 'waterFront', ->
   height = 65
   @add(0, @level.visibleHeight - 45, Crafty.e('2D, Solid').attr(w: @delta.x, h: 45))
 
-  water1 = Crafty.e('2D, WebGL, waterFront1, Wave1')
+  water1 = Crafty.e('2D, Delta2D, WebGL, waterFront1, Wave1')
     .attr(z: -20)
     .crop(0, 1, 512, 95)
   @add(0, @level.visibleHeight - height, water1)
-  water1.waveY = 0
+  #water1.waveY = 0
 
   water2 = Crafty.e('2D, WebGL, waterFront2, Wave2')
   water1.attach(water2)
@@ -116,8 +116,8 @@ generator.defineElement 'waterFront', ->
         y = moveh - (v * moveh)
         h = height - distanceh + (v * distanceh)
       wShift = w - @w
-      @shift(0, y - @waveY, wShift, h - @h)
-      @waveY = y
+      #@shift(0, 0, wShift, h - @h)
+      @attr(dy: y, w: w, h: h)
       @_children.forEach((e) ->
         e.shift(wShift)
       )
@@ -129,7 +129,7 @@ generator.defineElement 'waterFront', ->
       else
         w = width - distance + (v * distance)
         h = height - distanceh + (v * distanceh)
-      @shift(0, 0, w - @w, h - @h)
+      @attr(w: w, h: h)
 
     Crafty('WaveFront').each ->
       width = 1200
@@ -672,7 +672,7 @@ generator.defineBlock class extends Game.CityScenery
 
     @addBackground(0, 20,   @deck(0, no,  w: 900, z: -20).addComponent('BackDeck'), .9)
 
-    dh = Crafty.e('2D, Solid, Collision, BridgeCeiling').attr(w: 1000, h: 30).origin('middle right')
+    dh = Crafty.e('2D, Solid, Collision, BridgeCeiling').attr(w: 1000, h: 30).origin('middle middle')
     @addBackground(0, -60, dh, 1.0)
 
     d1 = @deck(0, yes, w: 1000, z: -10).addComponent('MainDeck')
@@ -687,21 +687,21 @@ generator.defineBlock class extends Game.CityScenery
     @addBackground(834, -60, p2, 1.2)
 
     @bind 'BridgeCollapse', once: yes, (level) =>
-      d0 = Crafty('FrontDeck').get(0).addComponent('TweenPromise').sprite(16, 32)
-      d1 = Crafty('MainDeck').get(0).addComponent('TweenPromise').sprite(16, 32)
-      d2 = Crafty('BackDeck').get(0).addComponent('TweenPromise').sprite(16, 32)
+      d0 = Crafty('FrontDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d1 = Crafty('MainDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d2 = Crafty('BackDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
       d0.half.sprite(16, 32)
       d1.half.sprite(16, 32)
       d2.half.sprite(16, 32)
 
-      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise').sprite(42, 29)
-      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise').sprite(42, 29)
-      dh = Crafty('BridgeCeiling').get(0).addComponent('TweenPromise')
-      level.setForcedSpeed 200, accelerate: yes
+      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
+      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
+      dh = Crafty('BridgeCeiling').get(0).addComponent('TweenPromise', 'Delta2D')
 
       WhenJS.sequence [
         ->
           WhenJS.parallel [
+            -> level.setForcedSpeed 75, accelerate: yes
             -> d0.tweenPromise({ rotation: -12, dy: d0.dy + 100 }, 4000, 'easeInQuad')
             -> d1.tweenPromise({ rotation: -10, dy: d1.dy + 100 }, 4000, 'easeInQuad')
             -> dh.tweenPromise({ rotation: -10, dy: dh.dy + 100 }, 4000, 'easeInQuad')
@@ -711,6 +711,7 @@ generator.defineBlock class extends Game.CityScenery
           ]
         ->
           WhenJS.parallel [
+            -> level.setForcedSpeed 300, accelerate: yes
             -> d0.tweenPromise({ dy: d0.dy + 400 }, 4000, 'easeInQuad')
             -> d1.tweenPromise({ dy: d1.dy + 430 }, 4000, 'easeInQuad')
             -> dh.tweenPromise({ dy: dh.dy + 430 }, 4000, 'easeInQuad')
