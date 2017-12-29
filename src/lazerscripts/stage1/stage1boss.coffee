@@ -16,19 +16,15 @@ class Stage1Boss extends EntityScript
           [.9, .4]
           [.7, .1]
           [.6, .2]
-        ]
+        ], speed: 200
       )
       @repeat 2, @sequence(
         @fireRockets(4)
-        @wait 1500
+        @wait 500
         @fireRockets(4)
-        @wait 1000
+        @wait 500
         @fireRockets(2)
-        @wait 300
-        @fireRockets(2)
-        @wait 300
-        @fireRockets(2)
-        @wait 300
+        @wait 200
       )
     )
 
@@ -189,7 +185,9 @@ class Stage1BossStage1 extends Stage1Boss
       # fase 1
       @repeat @sequence(
         @rocketStrikeDance()
+        @wait 100
         @mineFieldStrike()
+        @wait 200
       )
     )
 
@@ -197,23 +195,23 @@ class Stage1BossStage1 extends Stage1Boss
     @sequence(
       @parallel(
         @sequence(
-          @moveTo(x: -.2, y: .8, speed: 400, easing: 'easeInQuad')
+          @moveTo(x: -.2, y: .8, speed: 600, easing: 'easeInQuad')
           @turnAround()
           @movePath([
             [.2, .2]
             [.9, .6]
             [1.2, .4]
-          ], speed: 400)
+          ], speed: 600)
           @turnAround()
           @movePath([
             [.8, .2]
             [.5, .5]
             [1.2, .6]
-          ], speed: 400)
+          ], speed: 600)
         )
         @placeSquad(Stage1BossMineField,
           amount: 30
-          delay: 300
+          delay: 200
           options:
             location: @location()
             gridConfig:
@@ -221,6 +219,9 @@ class Stage1BossStage1 extends Stage1Boss
                 start: 0.1
                 steps: 6
                 stepSize: 0.15
+                avoid: ->
+                  rnd = Math.random()
+                  [1 + Math.floor(rnd * 4.0)]
               y:
                 start: 0.125
                 steps: 8
@@ -896,17 +897,15 @@ class Stage1BossMineField extends EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @moveTo(y: 1.05, speed: 400)
-      @moveTo(x: @target.x, easing: 'easeOutQuad')
+      @moveTo(x: @target.x, speed: 400, easing: 'easeOutQuad')
       @synchronizeOn 'dropped'
-      @moveTo(y: @target.y, easing: 'easeOutQuad')
+      @moveTo(y: @target.y, easing: 'easeOutQuad', speed: 400)
       @sequence(
-        @wait 1000
         @animate('blink', -1)
         @wait 1000
         @squadOnce('bridge', @sequence(
-          @wait 500
+          @wait 200
           => Crafty.trigger('BridgeCollapse', @level)
-          @screenFlash 4, color: '#FFFF80', alpha: .8, duration: 30
         ))
         => @entity.absorbDamage damage: @entity.health
         @endSequence()
