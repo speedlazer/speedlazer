@@ -59,7 +59,7 @@ Crafty.defineScene 'Intro', ->
   Crafty('Player').each ->
     @reset()
     @one 'Activated', ->
-      Crafty.enterScene(Game.firstLevel, script: Test) # checkpoint: value
+      Crafty.enterScene(Game.firstLevel)
 
   Crafty.e('Delay').delay ->
       Crafty.enterScene('Scores')
