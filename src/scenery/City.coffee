@@ -686,6 +686,18 @@ generator.defineBlock class extends Game.CityScenery
     @addBackground(-20,  -60, p1, 1.2)
     @addBackground(834, -60, p2, 1.2)
 
+    @bind 'BridgeDamage', once: yes, (level) =>
+      d0 = Crafty('FrontDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d1 = Crafty('MainDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d2 = Crafty('BackDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d0.half.sprite(16, 32)
+      d1.half.sprite(16, 32)
+      d2.half.sprite(16, 32)
+
+      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
+      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
+      dh = Crafty('BridgeCeiling').get(0).addComponent('TweenPromise', 'Delta2D')
+
     @bind 'BridgeCollapse', once: yes, (level) =>
       d0 = Crafty('FrontDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
       d1 = Crafty('MainDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
