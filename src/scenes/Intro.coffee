@@ -1,3 +1,5 @@
+Test = require('src/lazerscripts/test').default
+
 Crafty.defineScene 'Intro', ->
   # import from globals
   Game.resetCredits()

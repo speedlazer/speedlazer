@@ -97,12 +97,14 @@ Game.say = (speaker, text, settings) ->
       })
     )
 
+  wordCount = lines.join(' ').split(' ').length
+
   Crafty.e('Dialog, Delay')
     .delay(
       ->
         defer.resolve()
         Crafty('Dialog').each -> @destroy()
-      , 3000 * lines.length, 0)
+      , 1500 * Math.ceil(wordCount / 5), 0)
 
   defer.promise
 

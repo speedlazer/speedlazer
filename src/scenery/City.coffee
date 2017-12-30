@@ -1,3 +1,4 @@
+extend = require('lodash/extend')
 generator = Game.levelGenerator
 cityScenery = require('src/images/city-scenery.png')
 
@@ -20,7 +21,7 @@ generator.defineElement 'cloud', ->
     )
     if Math.random() < 0.7
       c1 = c1.flip('X')
-    @addBackground(20 + (Math.random() * 400), y, c1, .375)
+    @addBackground(300 + (Math.random() * 300), y, c1, .375)
 
   if v < .6
     s = (Math.random() * .20) + .15
@@ -40,7 +41,7 @@ generator.defineElement 'cloud', ->
     )
     if Math.random() < 0.2
       c2 = c2.flip('X')
-    @addBackground(60 + Math.random() * 400, y, c2, s)
+    @addBackground(360 + Math.random() * 300, y, c2, s)
 
 generator.defineElement 'waterHorizon', ->
   h = Crafty.e('2D, WebGL, waterHorizon, SunBlock, Horizon, ColorEffects')
@@ -83,58 +84,70 @@ generator.defineElement 'waterFront', ->
   height = 65
   @add(0, @level.visibleHeight - 45, Crafty.e('2D, Solid').attr(w: @delta.x, h: 45))
 
-  water1 = Crafty.e('2D, WebGL, waterFront1, Wave1')
+  water1 = Crafty.e('2D, Delta2D, WebGL, waterFront1, Wave1')
     .attr(z: -20)
     .crop(0, 1, 512, 95)
   @add(0, @level.visibleHeight - height, water1)
-  water1.originalY = water1.y
+  #water1.waveY = 0
 
   water2 = Crafty.e('2D, WebGL, waterFront2, Wave2')
-    .attr(z: -20)
+  water1.attach(water2)
+  water2.attr(
+      z: -20
+      x: water1.x + water1.w
+      y: water1.y
+    )
     .crop(0, 1, 512, 95)
-  @add(512, @level.visibleHeight - height, water2)
-  water2.originalX = water2.x
-  water2.originalY = water2.y
 
   @level.registerWaveTween 'OceanWaves', 6000, 'easeInOutQuad', (v, forward) ->
     distance = 50
     distanceh = 40
-    moveh = 5
+    moveh = 8
     width = 513
     height = 125
+
     Crafty('Wave1').each ->
-      if forward
-        @w = width + (v * distance)
-        @y = @originalY + (v * moveh)
-        @h = height - (v * distanceh)
-      else
-        @w = width + distance - (v * distance)
-        @y = @originalY + moveh - (v * moveh)
-        @h = height - distanceh + (v * distanceh)
+      w = width + (v * distance)
+      y = (v * moveh)
+      h = height - (v * distanceh)
+
+      if !forward
+        w = width + distance - (v * distance)
+        y = moveh - (v * moveh)
+        h = height - distanceh + (v * distanceh)
+      wShift = w - @w
+      #@shift(0, 0, wShift, h - @h)
+      @attr(dy: y, w: w, h: h)
+      @_children.forEach((e) ->
+        e.shift(wShift)
+      )
+
     Crafty('Wave2').each ->
       if forward
-        @w = width - (v * distance)
-        @x = @originalX + (v * distance)
-        @y = @originalY + (v * moveh)
-        @h = height - (v * distanceh)
+        w = width - (v * distance)
+        h = height - (v * distanceh)
       else
-        @w = width - distance + (v * distance)
-        @x = @originalX + distance - (v * distance)
-        @y = @originalY + moveh - (v * moveh)
-        @h = height - distanceh + (v * distanceh)
+        w = width - distance + (v * distance)
+        h = height - distanceh + (v * distanceh)
+      @attr(w: w, h: h)
+
     Crafty('WaveFront').each ->
       width = 1200
       distance = 120
       height = 200
       distanceh = 80
+
       if forward
-        @w = width + (v * distance)
-        @y = @originalY + (v * moveh)
-        @h = height - (v * distanceh)
+        w = width + (v * distance)
+        y = (v * moveh)
+        h = height - (v * distanceh)
       else
-        @w = width + distance - (v * distance)
-        @y = @originalY + moveh - (v * moveh)
-        @h = height - distanceh + (v * distanceh)
+        w = width + distance - (v * distance)
+        y = moveh - (v * moveh)
+        h = height - distanceh + (v * distanceh)
+
+      @shift(0, y - @waveY, w - @w, h - @h)
+      @waveY = y
 
 generator.defineElement 'cityHorizon', (mode) ->
   @addElement 'waterHorizon'
@@ -310,6 +323,7 @@ class Game.CityScenery extends Game.LevelScenery
           aircraftCarrierEnd: [30, 43, 6, 5]
           aircraftCarrierStart: [13, 43, 6, 5]
           aircraftCarrierBottomFlat: [19, 45, 6, 3]
+          aircraftCarrierBottomSpace: [25, 45, 4, 3]
           aircraftCarrierTopFlat: [26, 43, 4, 2]
 
           aircraftCarrierOpenHatch: [31, 40, 5, 1]
@@ -329,13 +343,13 @@ Crafty.c('carrierHatch', {
     @attr(z: -10)
     @crop 0, 2, 5*32, 32
 
-    @reel 'open', 1000, [
+    @reel 'open', 600, [
       [31, 40]
       [31, 38]
       [31, 39]
     ]
 
-    @reel 'close', 1000, [
+    @reel 'close', 600, [
       [31, 39]
       [31, 38]
       [31, 40]
@@ -354,11 +368,11 @@ generator.defineBlock class extends Game.CityScenery
 
     @addElement 'waterFront'
 
-    barrelLocator = Crafty.e('2D, BoxesLocation')
-    @add(550, @level.visibleHeight - 340 + (7*32), barrelLocator)
+    barrelLocator = Crafty.e('2D, BoxesLocation, WebGL, Color').color('FF0000')
+    @add(550, @level.visibleHeight - 360 + (7*32), barrelLocator)
 
-    barrelLocator = Crafty.e('2D, BoxesLocation')
-    @add(550 + 64, @level.visibleHeight - 340 + (7*32), barrelLocator)
+    barrelLocator = Crafty.e('2D, BoxesLocation, WebGL, Color').color('0000FF')
+    @add(550 + 64, @level.visibleHeight - 360 + (7*32), barrelLocator)
 
     barrelLocator = Crafty.e('2D, WebGL, boxes').attr(z: -8)
     @add(550 + 72, @level.visibleHeight - 340 + (5*32), barrelLocator)
@@ -379,7 +393,6 @@ generator.defineBlock class extends Game.CityScenery
         h: 32 * 5
         alpha: 0.3
       )
-      .setSealevel(@level.visibleHeight + 10)
       .attr({
         waterRadius: 8
         minSplashDuration: 1700
@@ -449,7 +462,7 @@ generator.defineBlock class extends Game.CityScenery
       #blur: 6.0
     ).crop(0, 1, 512, 95)
     @addBackground(0, @level.visibleHeight - 18, frontWave, 1.25)
-    frontWave.originalY = frontWave.y
+    frontWave.waveY = 0
 
     @addElement 'cloud'
 
@@ -463,12 +476,12 @@ generator.defineBlock class extends Game.CityScenery
         duration: 1000
       ,
         type: 'delay'
-        duration: 1000
+        duration: 600
         event: 'openHatch'
       ,
         type: 'linear'
         y: -80
-        duration: 1200
+        duration: 800
         easingFn: 'easeInOutQuad'
       ,
         event: 'lift'
@@ -476,7 +489,7 @@ generator.defineBlock class extends Game.CityScenery
         x: 70
         y: -10
         easingFn: 'easeInQuad'
-        duration: 1200
+        duration: 600
       ,
         type: 'delay'
         duration: 1
@@ -658,7 +671,7 @@ generator.defineBlock class extends Game.CityScenery
 
     @addBackground(0, 20,   @deck(0, no,  w: 900, z: -20).addComponent('BackDeck'), .9)
 
-    dh = Crafty.e('2D, Solid, Collision, BridgeCeiling').attr(w: 1000, h: 30).origin('middle right')
+    dh = Crafty.e('2D, Solid, Collision, BridgeCeiling').attr(w: 1000, h: 30).origin('middle middle')
     @addBackground(0, -60, dh, 1.0)
 
     d1 = @deck(0, yes, w: 1000, z: -10).addComponent('MainDeck')
@@ -672,22 +685,34 @@ generator.defineBlock class extends Game.CityScenery
     @addBackground(-20,  -60, p1, 1.2)
     @addBackground(834, -60, p2, 1.2)
 
-    @bind 'BridgeCollapse', once: yes, (level) =>
-      d0 = Crafty('FrontDeck').get(0).addComponent('TweenPromise').sprite(16, 32)
-      d1 = Crafty('MainDeck').get(0).addComponent('TweenPromise').sprite(16, 32)
-      d2 = Crafty('BackDeck').get(0).addComponent('TweenPromise').sprite(16, 32)
+    @bind 'BridgeDamage', once: yes, (level) =>
+      d0 = Crafty('FrontDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d1 = Crafty('MainDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d2 = Crafty('BackDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
       d0.half.sprite(16, 32)
       d1.half.sprite(16, 32)
       d2.half.sprite(16, 32)
 
-      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise').sprite(42, 29)
-      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise').sprite(42, 29)
-      dh = Crafty('BridgeCeiling').get(0).addComponent('TweenPromise')
-      level.setForcedSpeed 200, accelerate: yes
+      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
+      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
+      dh = Crafty('BridgeCeiling').get(0).addComponent('TweenPromise', 'Delta2D')
+
+    @bind 'BridgeCollapse', once: yes, (level) =>
+      d0 = Crafty('FrontDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d1 = Crafty('MainDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d2 = Crafty('BackDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d0.half.sprite(16, 32)
+      d1.half.sprite(16, 32)
+      d2.half.sprite(16, 32)
+
+      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
+      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
+      dh = Crafty('BridgeCeiling').get(0).addComponent('TweenPromise', 'Delta2D')
 
       WhenJS.sequence [
         ->
           WhenJS.parallel [
+            -> level.setForcedSpeed 75, accelerate: yes
             -> d0.tweenPromise({ rotation: -12, dy: d0.dy + 100 }, 4000, 'easeInQuad')
             -> d1.tweenPromise({ rotation: -10, dy: d1.dy + 100 }, 4000, 'easeInQuad')
             -> dh.tweenPromise({ rotation: -10, dy: dh.dy + 100 }, 4000, 'easeInQuad')
@@ -697,6 +722,7 @@ generator.defineBlock class extends Game.CityScenery
           ]
         ->
           WhenJS.parallel [
+            -> level.setForcedSpeed 300, accelerate: yes
             -> d0.tweenPromise({ dy: d0.dy + 400 }, 4000, 'easeInQuad')
             -> d1.tweenPromise({ dy: d1.dy + 430 }, 4000, 'easeInQuad')
             -> dh.tweenPromise({ dy: dh.dy + 430 }, 4000, 'easeInQuad')
@@ -713,7 +739,7 @@ generator.defineBlock class extends Game.CityScenery
     color = if flipped then '#2ba04c' else '#b15a5a'
     result = Crafty.e('2D, WebGL, bridgeDeck, Horizon, SunBlock, SpriteAnimation')
       .crop(0, 2, 511, 180)
-      .attr(_.extend(attr, w: attr.w / 2))
+      .attr(extend(attr, w: attr.w / 2))
       .saturationGradient(gradient, gradient)
       .colorOverride color, 'partial'
 
@@ -722,7 +748,7 @@ generator.defineBlock class extends Game.CityScenery
       .saturationGradient(gradient, gradient)
       .flip('X')
       .colorOverride color, 'partial'
-    part2.attr(_.extend(attr,
+    part2.attr(extend(attr,
       x: result.x + result.w
       y: result.y
       z: result.z

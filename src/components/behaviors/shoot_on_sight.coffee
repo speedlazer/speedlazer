@@ -1,3 +1,6 @@
+defaults = require('lodash/defaults')
+sample = require('lodash/sample')
+
 Crafty.c 'ShootOnSight',
   init: ->
     @requires 'Delay'
@@ -6,7 +9,7 @@ Crafty.c 'ShootOnSight',
     @unbind('GameLoop', @_checkForShot)
 
   shootOnSight: (options) ->
-    @shootConfig =  _.defaults(options,
+    @shootConfig =  defaults(options,
       targetType: 'PlayerControlledShip'
       sightAngle: 10
       shootWhenHidden: no
@@ -45,7 +48,7 @@ Crafty.c 'ShootOnSight',
       if Math.abs(angle - self.rotation) < self.shootConfig.sightAngle
         targets.push this
     if targets.length > 0
-      target = _.sample(targets)
+      target = sample(targets)
       @_shoot(target)
 
   _determineAngle: (entity) ->

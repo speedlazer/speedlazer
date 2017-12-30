@@ -43,8 +43,8 @@ class Game.PauseMenu
   _buildMenu: (@options) ->
     menu = Crafty.e('2D, DOM, Color, PauseMenu')
       .attr(
-        x: - Crafty.viewport.x + (.35 * Crafty.viewport.width),
-        y: (Crafty.viewport.height * .3) - Crafty.viewport.y,
+        x: (.35 * Crafty.viewport.width),
+        y: (Crafty.viewport.height * .3),
         w: (.3 * Crafty.viewport.width)
         h: (@options.length + 2) * 32
         z: 100
@@ -142,8 +142,8 @@ class Game.PauseMenu
         .attr(
           w: 71
           h: 45
-          x: - Crafty.viewport.x + ((xOff + .07) * Crafty.viewport.width)
-          y: (Crafty.viewport.height * .3) - Crafty.viewport.y + 20
+          x: ((xOff + .07) * Crafty.viewport.width)
+          y: (Crafty.viewport.height * .3) + 20
           z: 101
         )
         .flip('X')
@@ -159,8 +159,8 @@ class Game.PauseMenu
       ]
       stats = Crafty.e('2D, WebGL, Color, PauseMenu')
         .attr(
-          x: - Crafty.viewport.x + (xOff * Crafty.viewport.width)
-          y: (Crafty.viewport.height * .3) - Crafty.viewport.y
+          x: (xOff * Crafty.viewport.width)
+          y: (Crafty.viewport.height * .3)
           w: (.25 * Crafty.viewport.width)
           h: (statList.length + 5) * 20
           z: 100

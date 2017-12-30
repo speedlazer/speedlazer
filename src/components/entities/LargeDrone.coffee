@@ -1,3 +1,5 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'LargeDrone',
   init: ->
     @requires 'Enemy, standardLargeDrone, SpriteAnimation'
@@ -5,7 +7,7 @@ Crafty.c 'LargeDrone',
   drone: (attr = {}) ->
     defaultHealth = 360000
     @crop 0, 0, 90, 70
-    @attr _.defaults(attr,
+    @attr defaults(attr,
       health: defaultHealth
       maxHealth: attr.health ? defaultHealth
       z: -1
@@ -18,6 +20,14 @@ Crafty.c 'LargeDrone',
     @attach(@eye)
     @eye.attr(x: 2 + @x, y: 18 + @y, z: 1)
     @eye.reel 'slow', 1500, [
+      [6, 0], [7, 0], [8, 0], [9, 0],
+      [6, 1], [7, 1], [8, 1], [9, 1]
+    ]
+    @eye.reel 'medium', 500, [
+      [6, 0], [7, 0], [8, 0], [9, 0],
+      [6, 1], [7, 1], [8, 1], [9, 1]
+    ]
+    @eye.reel 'fast', 250, [
       [6, 0], [7, 0], [8, 0], [9, 0],
       [6, 1], [7, 1], [8, 1], [9, 1]
     ]
@@ -44,7 +54,6 @@ Crafty.c 'LargeDrone',
     @updatedHealth()
     @bind 'Hit', (data) =>
       if data.projectile.has('Bullet')
-        @shiftedX += 1
         Crafty.audio.play('hit', 1, .5)
         Crafty.e('Blast, LaserHit').explode(
           x: data.projectile.x

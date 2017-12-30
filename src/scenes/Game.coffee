@@ -30,6 +30,8 @@ Crafty.defineScene 'Game', (data = {}) ->
     z: 0
   )
 
+  Crafty.e('BigText, LoadingText').bigText('Loading')
+
   # Load default sprites
   # This is a dirty fix to prevent
   # 'glDrawElements: attempt to render with no buffer attached to enabled attribute 6'
@@ -83,7 +85,9 @@ Crafty.defineScene 'Game', (data = {}) ->
         )
       console.log 'End of content!'
 
-  wait.then -> executeScript(startScript, options)
+  wait.then ->
+    Crafty('LoadingText').destroy()
+    executeScript(startScript, options)
 
   Crafty.bind 'GameOver', ->
     window.ga('send', 'event', 'Game', 'End', "Checkpoint #{script.currentCheckpoint}")

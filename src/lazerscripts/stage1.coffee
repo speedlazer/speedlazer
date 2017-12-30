@@ -1,13 +1,15 @@
+extend = require('lodash/extend')
 { LazerScript } = require('src/lib/LazerScript')
 { Swirler, Shooter, CrewShooters, Stalker } = require('./stage1/army_drone')
 { Stage1BossRocketStrike, Stage1BossStage1 } = require('./stage1/stage1boss')
+{ StartOfDawn, DayBreak, Morning } = require('./stage1/sunrise')
 
 CameraCrew  = require('./stage1/camera_crew').default
 DroneShip   = require('./stage1/drone_ship').default
 IntroBarrel = require('./stage1/barrel').default
 JumpMine    = require('./stage1/jump_mine').default
+ShipBoss    = require('./stage1/ship_boss').default
 Stage2      = require('./stage2').default
-SunRise     = require('./stage1/sunrise').default
 
 class Stage1 extends LazerScript
   nextScript: Stage2
@@ -16,9 +18,12 @@ class Stage1 extends LazerScript
     @loadAssets('explosion', 'playerShip', 'general')
 
   execute: ->
+    Crafty.e('DebugInfo')
     @inventoryAdd 'weapon', 'lasers', marking: 'L'
 
     @inventoryAdd 'ship', 'life', marking: '❤', icon: 'heart'
+    @inventoryAdd 'shipUpgrade', 'healthu', marking: '❤', icon: 'heart'
+    @inventoryAdd 'shipBoost', 'healthb', marking: '❤', icon: 'heart'
     @inventoryAdd 'ship', 'points', marking: 'P', icon: 'star'
 
     @inventoryAdd 'weaponUpgrade', 'rapid', marking: 'RF', icon: 'rapidFireBoost'
@@ -34,9 +39,11 @@ class Stage1 extends LazerScript
     @sequence(
       @setPowerupPool 'rapidb', 'speed', 'points', 'rapidb'
       @introText()
+      @sunRise(0)
       @tutorial()
       @setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
       @droneTakeover()
+      @sunRise(1)
       @oceanFighting()
       @setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
       @midStageBossFight()
@@ -48,12 +55,16 @@ class Stage1 extends LazerScript
   introText: ->
     @sequence(
       @setWeapons(['lasers'])
-      @setSpeed 100
+      @setSpeed 200, accellerate: no
       @setScenery('Intro')
-      @sunRise()
       @async @placeSquad(CameraCrew)
-      @async @runScript IntroBarrel, index: 0
-      @async @runScript IntroBarrel, index: 1
+      @async @placeSquad(
+        IntroBarrel,
+        amount: 2,
+        delay: 0,
+        options:
+          attach: 'BoxesLocation'
+      )
       @if((-> @player(1).active and @player(2).active)
         @say 'General', 'Time to get the last 2 ships to the factory\n' +
           'to install the AI controlled defence systems', noise: 'low'
@@ -67,18 +78,18 @@ class Stage1 extends LazerScript
 
   tutorial: ->
     @sequence(
-      @setSpeed 200
       @setScenery('Ocean')
       @say('General', 'We send some drones for some last manual target practice', noise: 'low')
+      @setSpeed 200
       @parallel(
-        @showText 'Get Ready', color: '#00FF00', mode: 'blink', blink_amount: 3, blink_speed: 300
+        @showText 'Get Ready', color: '#00FF00', mode: 'blink', blink_amount: 6, blink_speed: 100
         @say('John', 'Let\'s go!')
       )
       @parallel(
         @gainHeight(150, duration: 4000)
         @repeat(2, @sequence(
           @placeSquad Swirler,
-            amount: 6
+            amount: 4
             delay: 250
             drop: 'pool'
           @wait(1000)
@@ -87,8 +98,8 @@ class Stage1 extends LazerScript
       @say('General', 'Great job, now get the ship to the defence factory in the city\n' +
        'We will send some more target practice', noise: 'low')
       @placeSquad Shooter,
-        amount: 6
-        delay: 500
+        amount: 5
+        delay: 200
         drop: 'pool'
     )
 
@@ -98,16 +109,17 @@ class Stage1 extends LazerScript
         @say('John', 'What are those drones doing there!?')
         @placeSquad CrewShooters,
           amount: 4
-          delay: 750
+          delay: 600
           drop: 'pool'
       )
       @say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!', noise: 'low')
       @async @chapterTitle(1, 'Hacked')
+
     )
 
   oceanFighting: ->
     @sequence(
-      @checkpoint @checkpointStart('Ocean', 45000)
+      @checkpoint @checkpointStart('Ocean', 0)
 
       @parallel(
         @sequence(
@@ -116,7 +128,6 @@ class Stage1 extends LazerScript
         )
         @swirlAttacks()
       )
-      @setScenery('CoastStart')
       @swirlAttacks()
       @parallel(
         @gainHeight(-150, duration: 4000)
@@ -127,22 +138,49 @@ class Stage1 extends LazerScript
           @stalkerShootout()
         )
       )
+
     )
 
   midStageBossFight: ->
     @sequence(
-      @checkpoint @checkpointStart('CoastStart', 93000)
+      @checkpoint @checkpointStart('CoastStart', 1)
       @mineSwarm()
       @droneShip()
+      @sunRise(2)
       @mineSwarm()
-      @droneShip() # Bossfight
+      @parallel(
+        @say('John', 'Enemy Navy Mothership approaching! Stay alert!')
+        @placeSquad CrewShooters,
+          amount: 4
+          delay: 250
+          drop: 'pool'
+      )
+      @shipBossFight()
       @setScenery('BayStart')
       @underWaterAttacks()
     )
 
+  shipBossFight: ->
+    @sequence(
+      @checkpoint @checkpointStart('Ocean', 1)
+
+      @parallel(
+        @say('John', 'Time to show these monkeys who\'s boss')
+        @sequence(
+          @wait 30000
+          @setScenery('CoastStart')
+          @wait 5000
+        )
+        @placeSquad ShipBoss
+        @placeSquad CrewShooters,
+          amount: 5
+          delay: 2500
+      )
+    )
+
   cityBay: ->
     @sequence(
-      @checkpoint @checkpointStart('Bay', 131000)
+      @checkpoint @checkpointStart('Bay', 2)
       @setScenery('UnderBridge')
       @parallel(
         @placeSquad Stalker,
@@ -162,7 +200,7 @@ class Stage1 extends LazerScript
 
   endStageBossfight: ->
     @sequence(
-      @checkpoint @checkpointStart('BayFull', 168000)
+      @checkpoint @checkpointStart('BayFull', 2)
       @parallel(
         @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
         @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
@@ -179,7 +217,7 @@ class Stage1 extends LazerScript
           @setScenery('UnderBridge')
         )
       )
-      @async @showText 'Warning!', color: '#FF0000', mode: 'blink'
+      @async @showText 'Warning!', color: '#FF0000', mode: 'blink', blink_amount: 6, blink_speed: 100
       @while(
         @waitForScenery('UnderBridge', event: 'enter')
         @waitingRocketStrike()
@@ -187,11 +225,11 @@ class Stage1 extends LazerScript
       @setSpeed 75
       @waitForScenery('UnderBridge', event: 'inScreen')
       @setSpeed 0
-      @checkpoint @checkpointStart('UnderBridge', 203000)
+      @checkpoint @checkpointStart('UnderBridge', 2)
       @placeSquad Stage1BossStage1
       @parallel(
-        @if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'life', inFrontOf: @player(2)))
+        @if((-> @player(1).active), @drop(item: 'healthu', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'healthu', inFrontOf: @player(2)))
       )
       @setSpeed 200
       @wait 500
@@ -228,13 +266,13 @@ class Stage1 extends LazerScript
     @attackWaves(
       @parallel(
         @repeat 2, @placeSquad Swirler,
-          amount: 8
-          delay: 500
+          amount: 4
+          delay: 250
           options:
             shootOnSight: yes
         @repeat 2, @placeSquad Shooter,
-          amount: 8
-          delay: 500
+          amount: 4
+          delay: 250
           options:
             shootOnSight: yes
       )
@@ -248,10 +286,13 @@ class Stage1 extends LazerScript
       @repeat 2, @stalkerShootout()
     )
 
-  underWaterAttacks2: ->
+  sunRise: (fase = 0) ->
+    script = switch fase
+      when 0 then StartOfDawn
+      when 1 then DayBreak
+      when 2 then Morning
 
-  sunRise: (options = { skipTo: 0 }) ->
-    @async @runScript(SunRise, _.extend({ speed: 2 }, options))
+    @async @runScript(script)
 
   mineSwarm: (options = { direction: 'right' })->
     @placeSquad JumpMine,
@@ -281,13 +322,13 @@ class Stage1 extends LazerScript
       @attackWaves(
         @parallel(
           @placeSquad Shooter,
-            amount: 8
-            delay: 500
+            amount: 4
+            delay: 250
             options:
               shootOnSight: yes
           @placeSquad Swirler,
-            amount: 8
-            delay: 500
+            amount: 4
+            delay: 250
             options:
               shootOnSight: yes
         )
@@ -295,10 +336,10 @@ class Stage1 extends LazerScript
       )
     )
 
-  checkpointStart: (scenery, sunSkip) ->
+  checkpointStart: (scenery, step) ->
     @sequence(
       @setScenery(scenery)
-      @sunRise(skipTo: sunSkip)
+      @sunRise(step)
       @wait 2000
     )
 

@@ -62,3 +62,8 @@ Crafty.c 'DroneShip',
   close: ->
     @hatch.animate('close')
 
+  execute: (action) ->
+    switch action
+      when 'open' then @open()
+      when 'close' then @close()
+

@@ -8,7 +8,7 @@ class CameraCrew extends EntityScript
   spawn: (options) ->
     Crafty.e('CameraCrew, Horizon')
       .attr(
-        x: (Crafty.viewport.width * .2) - Crafty.viewport.x
+        x: (Crafty.viewport.width * .2)
         y: Crafty.viewport.height * .15
         defaultSpeed: 100
         topDesaturation: 0.3

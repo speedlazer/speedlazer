@@ -12,18 +12,19 @@ class JumpMine extends EntityScript
     Crafty.e('Mine, BulletCircle').mine(
       x: x
       y: 440
-      defaultSpeed: options.speed ? 200
+      health: 400
+      defaultSpeed: options.speed ? 400
       pointsOnHit: if options.points then 10 else 0
       pointsOnDestroy: if options.points then 50 else 0
     ).bulletCircle(
-      burstAmount: 8
+      burstAmount: 4
       projectile: (x, y, angle) =>
         projectile = Crafty.e('Sphere, Hostile, Projectile')
           .blink()
           .attr(
             w: 14
             h: 14
-            speed: 200
+            speed: 400
             damage: 1
           )
         projectile.shoot(x, y, angle)
@@ -43,6 +44,7 @@ class JumpMine extends EntityScript
           @moveTo(x: -50, speed: 35)
         )
         @sequence(
+          @wait 1000
           @animate('blink', -1)
           @wait 1000
           => @entity.absorbDamage damage: @entity.health

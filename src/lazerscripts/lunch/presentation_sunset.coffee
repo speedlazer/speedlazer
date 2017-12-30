@@ -14,8 +14,8 @@ class PresentationSunSet extends EntityScript
     sun = Crafty('Sun')
     if sun.length > 0
       sun.attr(
-        x: (Crafty.viewport.width * .5) - Crafty.viewport.x
-        y: (Crafty.viewport.height * .11) - Crafty.viewport.y
+        x: (Crafty.viewport.width * .5)
+        y: (Crafty.viewport.height * .11)
         defaultSpeed: options.speed ? 1
       )
     else

@@ -1,3 +1,6 @@
+extend = require('lodash/extend')
+isObject = require('lodash/isObject')
+isEmpty = require('lodash/isEmpty')
 Core = require('./script_modules/core').default
 Level = require('./script_modules/level').default
 Entity = require('./script_modules/entity').default
@@ -37,7 +40,7 @@ class LazerScript
     unless playersActive
       @currentSequence = null
 
-_.extend(
+extend(
   LazerScript::
   Core
   Level
@@ -51,10 +54,20 @@ class EntityScript extends LazerScript
 
   initialize: (args...) ->
     @boundEvents = []
-    args.push {} if _.isEmpty args
+    args.push {} if isEmpty args
 
     @entity = @spawn(args...)
-    if _.isObject(args[0]) and args[0].identifier?
+    if @options.attach
+      point = Crafty(@options.attach).get(@options.index)
+      @entity.removeComponent('ViewportFixed')
+      point.attach(@entity)
+      @entity.attr({
+        x: point.x
+        y: point.y
+        z: point.z
+      })
+
+    if isObject(args[0]) and args[0].identifier?
       identifier = args[0].identifier# + args[0].index
       @entity.addComponent(identifier)
     @synchronizer = @options.synchronizer ? new Game.Synchronizer
@@ -66,14 +79,14 @@ class EntityScript extends LazerScript
 
     unless @entity.has('PlayerControlledShip')
       @entity.attr
-        x: @entity.x - Crafty.viewport.x
-        y: @entity.y - Crafty.viewport.y
+        x: @entity.x
+        y: @entity.y
 
     @entity.bind 'Destroyed', =>
       @currentSequence = null
       @synchronizer.unregisterEntity(this)
-      @enemy.location.x = (@entity.x + Crafty.viewport.x)
-      @enemy.location.y = (@entity.y + Crafty.viewport.y)
+      @enemy.location.x = @entity.x
+      @enemy.location.y = @entity.y
       @enemy.alive = no
       @enemy.killedAt = new Date
 
@@ -100,7 +113,7 @@ class EntityScript extends LazerScript
 
   spawn: ->
 
-_.extend(
+extend(
   EntityScript::
   Entity
 )

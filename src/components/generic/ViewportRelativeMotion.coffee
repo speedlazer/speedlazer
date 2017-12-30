@@ -1,36 +1,34 @@
+correction = 0.225
+
+calculateY = (delta, speed) ->
+  delta * (speed - (correction - (correction * speed)))
+
 Crafty.c 'ViewportRelativeMotion',
   init: ->
 
   remove: ->
 
-  viewportRelativeMotion: ({ x, y, speed, distanceSky }) ->
-    @_distanceSky = distanceSky
-    @_startLocation = { x, y }
+  viewportRelativeMotion: ({ x, y, offsetY, speed }) ->
     @_speed = speed
-    @_initialViewport =
-      x: (Crafty.viewport.width / 4)
-    @_location =
-      sx: x + ((x - @_initialViewport.x) * (@_speed - 1))
-      sy: y
-      dx: @dx ? 0
-      dy: @dy ? 0
+    if x? and y?
+      @_startLocation = { x, y }
+      vpx = Crafty.viewport.width / 4
 
-    shifted = (@_initialViewport.x - Crafty.viewport._x) * (@_speed - 1)
-    newX = @_location.sx - shifted + @_location.dx
-    newY = @_location.sy - (Crafty.viewport._y * (1 - @_speed)) + @_location.dy
-    #newY = @_location.sy - (Crafty.viewport._y * (1 - ((@_speed - 0.25) * 1.2))) + @location.dy
-    @_location.x = Math.floor newX
-    @_location.y = Math.floor newY
-    @attr @_location
+      sx = x + ((x - vpx) * (@_speed - 1)) - (vpx * (@_speed - 1))
+      newX = sx + (@dx || 0)
+
+      sy = y + calculateY(offsetY, @_speed)
+      newY = sy - (@dy || 0)
+
+      @attr x: Math.floor(newX), y: Math.floor(newY)
 
     @motion = Crafty.bind 'CameraMove', (coords) =>
-      shifted = (@_initialViewport.x + coords.x) * (@_speed - 1)
-      newX = @_location.sx - shifted + @dx
-      if @_distanceSky
-        newY = @_location.sy - (-coords.y * (1 - @_speed)) + @dy
-      else
-        newY = @_location.sy - (-coords.y * (1 - ((@_speed - 0.225) * 1.2))) + @dy
-      @attr x: newX, y: newY
+      x = - (coords.dx * @_speed)
+      y = - calculateY(coords.dy, @_speed)
+
+      #newX = @_location.sx - shifted + @dx
+      #newY = @_location.sy - (-coords.y * (1 - ((@_speed - 0.225) * 1.2))) + @dy
+      @shift x, y
     this
 
   remove: ->

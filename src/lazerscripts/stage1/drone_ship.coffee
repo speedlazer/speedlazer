@@ -8,12 +8,12 @@ class DroneShip extends EntityScript
       x: Crafty.viewport.width + 180
       y: 450
       defaultSpeed: options.speed ? 350
-    ).setSealevel(@level.visibleHeight + 10)
+    )
 
   execute: ->
     @sequence(
       @moveTo(x: 0.02)
-      => @entity.open()
+      @action 'open'
       @wait(1000)
       @parallel(
         @placeSquad ShipDrone,
@@ -24,7 +24,7 @@ class DroneShip extends EntityScript
             shootOnSight: yes
         @sequence(
           @wait(3000)
-          => @entity.close()
+          @action 'close'
           @moveTo(x: -0.5)
         )
       )

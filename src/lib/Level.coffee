@@ -1,3 +1,7 @@
+defaults = require('lodash/defaults')
+isEmpty = require('lodash/isEmpty')
+clone = require('lodash/clone')
+
 ###
 
 # Level
@@ -110,30 +114,30 @@ class Game.Level
 
     @_seedPreceedingGeometry()
     @_update()
-    @lastUpdate = Crafty.viewport._x + 200
 
     for block in @blocks when block.x < 640
       block.enter()
 
-    Crafty.bind('ViewportScroll', =>
-      if @lastUpdate - Crafty.viewport._x >= 300
+    Crafty.bind('ViewportMove', ({ dx, dy }) =>
+      @generationPosition.x -= dx
+      @generationPosition.y -= dy
+      if @generationPosition.x < @bufferLength
         @_update()
-        @lastUpdate = Crafty.viewport._x
     )
 
     Crafty.uniqueBind 'LeaveBlock', (block) => #(index) =>
-      index = _.indexOf(@blocks, block)
+      index = @blocks.indexOf(block)
       @_handleSceneryEvents(@blocks[index - 1], 'leave') if index > 0
       @_handleSceneryEvents(block, 'inScreen')
       @_cleanupBuildBlocks()
 
     Crafty.uniqueBind 'EnterBlock', (block) => #(index) =>
-      index = _.indexOf(@blocks, block)
+      index = @blocks.indexOf(block)
       @_handleSceneryEvents(@blocks[index - 1], 'outScreen') if index > 0
       @_handleSceneryEvents(block, 'enter')
 
     Crafty.uniqueBind 'PlayerEnterBlock', (block) => #(index) =>
-      index = _.indexOf(@blocks, block)
+      index = @blocks.indexOf(block)
       @_handleSceneryEvents(@blocks[index - 1], 'playerLeave') if index > 0
       @_handleSceneryEvents(block, 'playerEnter')
 
@@ -150,7 +154,7 @@ class Game.Level
     @sceneryEvents.push { eventType, sceneryType, callback }
 
   _placePlayerShips: ->
-    defaults =
+    defaultValues =
       spawnPosition:
         x: 100
         y: 200
@@ -159,7 +163,7 @@ class Game.Level
         y: 0
       title: ''
 
-    settings = _.defaults(@data, defaults)
+    settings = defaults(@data, defaultValues)
 
     Crafty.one 'ShipSpawned', =>
       @_playersActive = yes
@@ -167,7 +171,7 @@ class Game.Level
 
     Crafty('Player').each (index) ->
       spawnPosition = ->
-        pos = _.clone settings.spawnPosition
+        pos = clone settings.spawnPosition
         Crafty('PlayerControlledShip').each ->
           pos.x = @x + settings.spawnOffset.x + Crafty.viewport.x
           pos.y = @y + settings.spawnOffset.y + Crafty.viewport.y
@@ -197,7 +201,7 @@ class Game.Level
 
   inventoryAdd: (type, name, options) ->
     @invItems ||= {}
-    @invItems[name] ||= _.defaults(options,
+    @invItems[name] ||= defaults(options,
       type: type
       contains: name
     )
@@ -207,7 +211,7 @@ class Game.Level
     Crafty('Player ControlScheme').each -> @spawnShip() if @ship?
 
   setForcedSpeed: (speed, options) ->
-    options = _.defaults(options,
+    options = defaults(options,
       accellerate: yes
     )
     if @_forcedSpeed
@@ -217,31 +221,31 @@ class Game.Level
     @_forcedSpeed = speed
     if @_playersActive
       @_scrollWall.scrollWall(@_forcedSpeed, options)
-    Crafty('Bullet').each -> @attr speed: @speed + delta
+    #Crafty('Bullet').each -> @attr speed: @speed + delta
     Crafty('PlayerControlledShip').each ->
       @forcedSpeed speed, options
 
   screenShake: (amount, options = {}) ->
-    options = _.defaults(options, {
+    options = defaults(options, {
       duration: 1000
     })
     @_scrollWall.screenShake(amount, options.duration)
 
   cameraPan: (options = {}) ->
-    options = _.defaults(options, {
+    options = defaults(options, {
       y: 0
       x: 0
       duration: 1000
     })
-    @_scrollWall.cameraPan(options)
+    #@_scrollWall.cameraPan(options)
 
   setHeight: (deltaY) ->
-    @_scrollWall.setHeight deltaY
-    Crafty('PlayerControlledShip').each ->
-      @y += deltaY
+    #@_scrollWall.setHeight deltaY
+    #Crafty('PlayerControlledShip').each ->
+      #@y += deltaY
 
   setWeaponsEnabled: (onOff, players) ->
-    players = [1, 2] unless players? and !_.isEmpty(players)
+    players = [1, 2] unless players? and !isEmpty(players)
     @_weaponsEnabled ?= {}
     @_weaponsEnabled[player] = onOff for player in players
     Crafty('PlayerControlledShip').each ->
@@ -270,7 +274,7 @@ class Game.Level
     Crafty.unbind('LeaveBlock')
     Crafty.unbind('EnterBlock')
     Crafty.unbind('ShipSpawned')
-    Crafty.unbind('ViewportScroll')
+    Crafty.unbind('ViewportMove')
     Crafty.unbind('GameLoop', @_waveTicks)
     b?.clean() for b in @blocks
 
@@ -278,8 +282,7 @@ class Game.Level
     throw new Error('sequence mismatch') unless @active
 
   _update: ->
-    startX = - Crafty.viewport._x
-    endX = startX + @bufferLength
+    endX = @bufferLength
 
     counter = 0
     overflowThreshold = 10
@@ -329,7 +332,7 @@ class Game.Level
     if prev = blockKlass::autoPrevious
       blockType = "#{@namespace}.#{prev}"
 
-    p = _.clone @generationPosition
+    p = clone @generationPosition
     @_insertBlockToLevel(blockType, {})
     @_insertBlockToLevel(blockType, {})
     @_insertBlockToLevel(blockType, {})

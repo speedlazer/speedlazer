@@ -2,8 +2,8 @@ Crafty.c 'RapidWeaponLaser',
   init: ->
     @requires '2D,WebGL,muzzleFlash,ColorEffects'
     @attr
-      w: 30
-      h: 16
+      w: 40
+      h: 24
 
     @stats =
       rapid: 0
@@ -65,14 +65,14 @@ Crafty.c 'RapidWeaponLaser',
     @trigger('boost', aspect: aspect)
 
   _determineWeaponSettings: ->
-    @cooldown = 175 - ((@boosts.rapidb || @stats.rapid) * 10)
+    @cooldown = 135 - ((@boosts.rapidb || @stats.rapid) * 7)
 
     @damage = 100 + ((@boosts.damageb || @stats.damage) * 50)
 
     @aimAngle = 0 + ((@boosts.aimb || @stats.aim) * 6)
     @aimDistance = Math.min(40 + ((@boosts.aimb || @stats.aim) * 50), 500)
 
-    @speed = 650 + ((@boosts.speedb || @stats.speed) * 70)
+    @speed = 750 + ((@boosts.speedb || @stats.speed) * 70)
 
     levels = (value for k, value of @stats when k isnt 'damage')
     @overallLevel = Math.min(levels...)
@@ -97,7 +97,7 @@ Crafty.c 'RapidWeaponLaser',
         @_determineWeaponSettings()
         @trigger('boostExpired', aspect: k)
 
-    @attr alpha: 0 if @lastShot >= 60
+    @attr alpha: 0 if @lastShot >= 30
     return unless @shooting
     allowBullet = (@shotsFired < @burstCount)
     return unless @ship.weaponsEnabled
@@ -117,11 +117,11 @@ Crafty.c 'RapidWeaponLaser',
 
   _createFrontBullet: ->
     settings =
-      w: (@speed // 25), speed: @speed, h: 8 + @overallLevel, o: @overallLevel
+      w: (@speed // 25), speed: @speed, h: 10 + @overallLevel, o: @overallLevel
 
     start =
       x: @x + @w
-      y: @y + (@h / 2) - (settings.h / 2) + 1 + settings.o
+      y: @y + (@h / 2) - (settings.h / 2) + 10 + settings.o
     Crafty.e('Bullet')
       .attr
         w: settings.w
@@ -129,6 +129,7 @@ Crafty.c 'RapidWeaponLaser',
         x: start.x
         y: start.y
         z: 1
+      .updateCollision(settings.w, settings.h)
       .fire
         ship: @ship
         damage: @damage
@@ -137,11 +138,11 @@ Crafty.c 'RapidWeaponLaser',
 
   _createBackBullet: ->
     settings =
-      w: (@speed // 35), speed: @speed, h: 7 + @overallLevel, o: @overallLevel
+      w: (@speed // 35), speed: @speed, h: 9 + @overallLevel, o: @overallLevel
 
     start =
       x: @x + @w
-      y: @y + (@h / 2) - (settings.h / 2) - 2 - settings.o
+      y: @y + (@h / 2) - (settings.h / 2) - 10 - settings.o
     Crafty.e('Bullet')
       .attr
         w: settings.w
@@ -149,6 +150,7 @@ Crafty.c 'RapidWeaponLaser',
         x: start.x
         y: start.y
         z: -1
+      .updateCollision(settings.w, settings.h)
       .fire
         ship: @ship
         damage: @damage

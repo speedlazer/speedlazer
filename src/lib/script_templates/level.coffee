@@ -1,3 +1,5 @@
+defaults = require('lodash/defaults')
+
 # Templates for various actions in the game
 # to remove duplication.
 # They generally call lower level lazerScript
@@ -7,9 +9,7 @@ Level =
     (sequence) =>
       @_verify(sequence)
       { x, y } = location()
-      x -= Crafty.viewport.x
-      y -= Crafty.viewport.y
-      options = _.defaults(
+      options = defaults(
         { x, y }
         options
         {
@@ -27,7 +27,7 @@ Level =
         e.addComponent('Hostile')
 
   smallExplosion: (options = {}) ->
-    options = _.defaults(options,
+    options = defaults(options,
       juice: yes
       offsetX: 0
       offsetY: 0
@@ -43,8 +43,30 @@ Level =
         => Crafty.audio.play("explosion", 1, .25)
       )
 
+  smokePrint: (options = {}) ->
+    options = defaults(options,
+      juice: yes
+      offsetX: 0
+      offsetY: 0
+    )
+    if options.juice is no
+      @blast(@location())
+    else
+      @blast(
+        @location({
+          offsetX: options.offsetX
+          offsetY: options.offsetY
+        }),
+        =>
+          viewportFixed: no
+          alpha: 0.3
+          z: @entity.z - 3
+          lightness: 0.1
+          duration: 200
+      )
+
   bigExplosion: (options = {}) ->
-    options = _.defaults(options,
+    options = defaults(options,
       juice: yes
       offsetX: 0
       offsetY: 0

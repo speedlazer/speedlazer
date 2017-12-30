@@ -1,4 +1,6 @@
 CryptoJS = require('crypto-js')
+defaults = require('lodash/defaults')
+sortBy = require('lodash/sortBy')
 
 Game =
   paused: no
@@ -35,9 +37,14 @@ Game =
     if settings.sound is no
       Crafty.audio.mute()
 
-    Crafty.bind 'EnterFrame', ->
+    start = (new Date()) * 1
+    gameTime = start
+
+    Crafty.bind 'EnterFrame', (fd) ->
       return if Game.paused
-      Crafty.trigger 'GameLoop', arguments...
+      gameTime += fd.dt
+
+      Crafty.trigger 'GameLoop', Object.assign({}, fd, { inGameTime: gameTime })
 
     Crafty.paths(
       audio: '/'
@@ -48,6 +55,7 @@ Game =
     Crafty.init(1024, 576, stage) # PAL+
     #Crafty.pixelart(true)
     Crafty.background('#000000')
+    Crafty.timer.FPS(62.5)
 
     Crafty.e('Player, Color')
       .attr(name: 'Player 1', z: 0, playerNumber: 1)
@@ -107,12 +115,12 @@ Game =
         right: 15
 
     # Simply start splashscreen
-    handler = (e) =>
-      if e.key == Crafty.keys.N
-        Crafty.unbind('KeyDown', handler)
-        Crafty.enterScene('Game', script: 'Lunch', checkpoint: 0)
+    #handler = (e) =>
+      #if e.key == Crafty.keys.N
+        #Crafty.unbind('KeyDown', handler)
+        #Crafty.enterScene('Game', script: 'Lunch', checkpoint: 0)
 
-    Crafty.bind('KeyDown', handler)
+    #Crafty.bind('KeyDown', handler)
     #Crafty.enterScene('New')
     Crafty.enterScene('Intro')
 
@@ -145,19 +153,19 @@ Game =
       { initials: defInit, score: 2000 }
       { initials: defInit, score: 1500 }
     ].concat loadedList
-    _.sortBy(list, 'score').reverse()
+    sortBy(list, 'score').reverse()
 
   settings: ->
     data = localStorage.getItem('SPDLZRS')
     settings = {}
     if data
       settings = JSON.parse(data)
-    _.defaults(settings,
+    defaults(settings,
       sound: on
     )
 
   changeSettings: (changes = {}) ->
-    newSettings = _.defaults(changes,
+    newSettings = defaults(changes,
       @settings()
     )
     str = JSON.stringify(newSettings)
@@ -165,4 +173,3 @@ Game =
 
 # Export
 module.exports = { default: Game }
-

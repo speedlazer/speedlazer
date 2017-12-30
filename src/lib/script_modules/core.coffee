@@ -142,13 +142,14 @@ Core =
 
       duration = Math.max(amount?() ? amount, 0)
       parts = duration // 40
+      level = this
       Crafty.e('Delay').delay(
-        =>
+        ->
           try
-            @_verify(sequence)
+            level._verify(sequence)
           catch e
-            d.reject e
-          return
+            d.reject(e)
+            @destroy()
         40
         parts
         ->

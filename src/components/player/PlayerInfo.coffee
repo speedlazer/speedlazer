@@ -27,6 +27,15 @@ Crafty.c 'PlayerInfo',
         size: '10px'
         family: 'Press Start 2P'
       )
+    @health = Crafty.e('2D, Text, UILayerDOM')
+      .attr(
+        w: 220, h: 20
+        x: x + 70, y: 28, z: 200
+      )
+      .textFont(
+        size: '10px'
+        family: 'Press Start 2P'
+      )
     @heart = Crafty.e('2D, ColorEffects, heart, UILayerWebGL')
       .attr(
         w: 16, h: 16
@@ -36,6 +45,7 @@ Crafty.c 'PlayerInfo',
 
     if @player.has('Color')
       @lives.textColor player.color()
+      @health.textColor player.color()
 
     @updatePlayerInfo()
     @createBoostsVisuals(x)
@@ -43,9 +53,11 @@ Crafty.c 'PlayerInfo',
     @listenTo player, 'UpdateLives', @updatePlayerInfo
     @listenTo player, 'UpdatePoints', @updatePlayerInfo
     @listenTo player, 'UpdateHealth', @updatePlayerInfo
-    @listenTo player, 'Activated', => @updatePlayerInfo()
-    @listenTo player, 'Deactivated', => @updatePlayerInfo()
-    @listenTo player, 'GameLoop', => @updateBoostInfo()
+    @listenTo player, 'Activated', @updatePlayerInfo
+    @listenTo player, 'Deactivated', @updatePlayerInfo
+    @listenTo player, 'GameLoop', (fd) =>
+      @updateBoostInfo()
+      @updateHealthInfo(fd)
     this
 
   setVisibility: (visibility) ->
@@ -82,6 +94,16 @@ Crafty.c 'PlayerInfo',
           alpha = 0 if Math.floor(timing / 200) % 2 is 0
         @boosts[boost].attr(alpha: alpha)
 
+  updateHealthInfo: (fd) ->
+    @health.attr(alpha: 0)
+    return unless @player.has('ControlScheme')
+    return if @visibile is no
+    if @player.ship?
+      alpha = 1
+      if @player.health < 1
+        alpha = 0 if Math.floor(fd.inGameTime / 200) % 2 is 0
+      @health.attr(alpha: alpha)
+
   updatePlayerInfo: ->
     if @player.has('ControlScheme')
       @score.text('Score: ' + @player.points)
@@ -92,6 +114,7 @@ Crafty.c 'PlayerInfo',
       if @player.lives is 0
         @lives.text('Game Over')
         @heart.attr(alpha: 0, visible: no)
+        @health.attr(alpha: 0, visible: no)
         # TODO: Add continue? with time counter
       else
         @heart.attr(alpha: 1) if @visibile is yes
@@ -99,10 +122,14 @@ Crafty.c 'PlayerInfo',
         text = (@player.lives - 1)
         if text is Infinity
           text = 'Demo mode'
-        health = Array(Math.max(0, @player.health)).fill('▩').join('')
-        @lives.text('&nbsp;  ' + text + ' ' + health)
+        @lives.text('&nbsp;  ' + text)
+
+        health = Array(Math.max(1, @player.health)).fill('▩').join('')
+        @health.attr(alpha: 1) if @visibile is yes
+        @health.text(health)
     else
       @lives.text('Press fire to start!')
       @heart.attr(alpha: 0, visible: no)
+      @health.attr(alpha: 0, visible: no)
       e.attr(alpha: 0) for n, e of @boosts
 

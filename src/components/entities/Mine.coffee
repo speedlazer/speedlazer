@@ -1,3 +1,5 @@
+defaults = require('lodash/defaults')
+
 Crafty.c 'Mine',
   init: ->
     @requires 'Enemy, standardMine, SpriteAnimation'
@@ -11,7 +13,7 @@ Crafty.c 'Mine',
 
   mine: (attr = {}) ->
     @crop 4, 4, 25, 25
-    @attr _.defaults(
+    @attr defaults(
       attr,
       h: 25,
       w: 25,

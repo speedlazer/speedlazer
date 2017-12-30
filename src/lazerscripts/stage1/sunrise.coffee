@@ -15,8 +15,6 @@ class SunRise extends EntityScript
     sun = Crafty('Sun')
     if sun.length > 0
       sun.attr(
-        x: (Crafty.viewport.width * .97) - Crafty.viewport.x
-        y: (Crafty.viewport.height * .74) - Crafty.viewport.y
         defaultSpeed: options.speed ? 1
       )
     else
@@ -26,6 +24,25 @@ class SunRise extends EntityScript
           y: Crafty.viewport.height * .74
           defaultSpeed: options.speed ? 1
         )
+
+class StartOfDawn extends SunRise
+
+  execute: ->
+    speed = @options.speed ? 1
+    @options.skipTo ?= 0
+
+    preColor = (20000 / speed)
+    @sequence(
+      @setLocation x: .97, y: .74
+      @backgroundColorFade(
+        duration: preColor,
+        skip: @options.skipTo,
+        ['#000000', '#000020', '#000020', '#7e261b'],
+        ['#000000', '#000000', '#000020', '#222c50']
+      )
+    )
+
+class FullSunRise extends SunRise
 
   execute: ->
     speed = @options.speed ? 1
@@ -55,5 +72,73 @@ class SunRise extends EntityScript
       )
     )
 
-module.exports =
-  default: SunRise
+class DayBreak extends SunRise
+
+  execute: ->
+    speed = @options.speed ? 1
+    @options.skipTo ?= 0
+
+    colorDuration = (30000 / speed)
+    @sequence(
+      @setLocation x: .97, y: .74
+      @parallel(
+        @backgroundColorFade(
+          duration: colorDuration,
+          skip: (@options.skipTo),
+          ['#7e261b', '#d39915', '#e8b32c']
+          ['#222c50', '#7a86a2', '#606aa5']
+        )
+        @movePath [
+          [.75, .61]
+        ], rotate: no, skip: @options.skipTo, speed: speed * 20
+      )
+    )
+
+class Morning extends SunRise
+
+  execute: ->
+    speed = @options.speed ? 1
+    @options.skipTo ?= 0
+
+    colorDuration = (60000 / speed)
+    @sequence(
+      @setLocation x: .75, y: .61
+      @parallel(
+        @backgroundColorFade(
+          duration: colorDuration,
+          skip: (@options.skipTo),
+          ['#e8b32c', '#f0b722']
+          ['#606aa5', '#c099cc']
+        )
+        @movePath [
+          [.71, .45]
+        ], rotate: no, skip: @options.skipTo, speed: speed * 4
+      )
+    )
+
+class Noon extends SunRise
+
+  execute: ->
+    speed = @options.speed ? 1
+    @options.skipTo ?= 0
+
+    colorDuration = (80000 / speed)
+    @parallel(
+      @setLocation x: .71, y: .45
+      @backgroundColorFade(
+        duration: colorDuration,
+        skip: (@options.skipTo),
+        ['#f0b722', '#f7e459', '#d6d5d5', '#d6d5d5']
+        ['#c099cc', '#366eab', '#366eab']
+      )
+      @movePath [
+        [.4, .1]
+      ], rotate: no, skip: @options.skipTo, speed: speed * 3
+    )
+
+module.exports = {
+  StartOfDawn
+  DayBreak
+  Morning
+  Noon
+}

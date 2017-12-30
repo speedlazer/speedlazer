@@ -98,8 +98,6 @@ Crafty.c("Gamepad", {
   }
 });
 
-export default "Gamepad";
-
 /* Controls an entity with a gamepad.
  *
  * The index of the gamepad and other options need to be specified

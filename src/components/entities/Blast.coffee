@@ -43,9 +43,16 @@ Crafty.c 'Blast',
       [1, 3]
     ]
     if frameOptions
+      @blastProps = {
+        x: @x
+        y: @y
+        w: @w
+        h: @h
+      }
       @bind 'GameLoop', =>
-        a = frameOptions.call(this)
-        @attr a
+        newProps = frameOptions.call(this, @blastProps)
+        @shift(newProps.x - @blastProps.x, newProps.y - @blastProps.y, newProps.w - @blastProps.w, newProps.h - @blastProps.h)
+        @blastProps = newProps
 
     @bind 'AnimationEnd', =>
       @destroy()
