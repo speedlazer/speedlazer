@@ -393,7 +393,6 @@ generator.defineBlock class extends Game.CityScenery
         h: 32 * 5
         alpha: 0.3
       )
-      .setSealevel(@level.visibleHeight + 10)
       .attr({
         waterRadius: 8
         minSplashDuration: 1700

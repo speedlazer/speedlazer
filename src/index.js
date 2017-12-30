@@ -5,6 +5,7 @@ import "./components";
 import "./lib";
 import "./scenery";
 import "./scenes";
+import "./systems/SeaLevel";
 
 import screenfull from "screenfull";
 /* eslint-env node */

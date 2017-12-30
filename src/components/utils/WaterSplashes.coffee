@@ -13,16 +13,14 @@ Crafty.c 'WaterSplashes',
   remove: ->
     @unbind 'GameLoop', @_waterSplashes
 
-  setSealevel: (@sealevel) ->
-    this
-
   setDetectionOffset: (@detectionOffset, @minOffset = -10) ->
     this
 
   _waterSplashes: (fd) ->
     return if Game.explosionMode?
     @cooldown -= fd.dt
-    if (@y + @h + @detectionOffset > @sealevel) and (@y < @sealevel) and (@cooldown <= 0)
+    sealevel = Crafty.s('SeaLevel').getSeaLevel(@scale)
+    if (@y + @h + @detectionOffset > sealevel) and (@y < sealevel) and (@cooldown <= 0)
       speed = @waterSplashSpeed ? @defaultSpeed
       @cooldown = @defaultWaterCooldown
       upwards = 1
@@ -38,7 +36,6 @@ Crafty.c 'WaterSplashes',
         for d in [0...Math.min(upwards, 3)]
           r += 1
           pos = Math.random()
-          sealevel = @sealevel
           Crafty.e('Blast, ViewportRelativeMotion')
             .colorOverride('#FFFFFF')
             .viewportRelativeMotion(
@@ -47,7 +44,7 @@ Crafty.c 'WaterSplashes',
             .explode(
               upwards: if r % 2 is 0 then upwards else 0
               x: @x + (i * coverage) + (pos * coverage)
-              y: @sealevel + @minOffset
+              y: sealevel + @minOffset
               z: @z + 3
               duration: @minSplashDuration + (Math.random() * 100)
               radius: @waterRadius

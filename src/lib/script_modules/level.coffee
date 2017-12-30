@@ -347,7 +347,6 @@ Level =
         e.addComponent('WaterSplashes')
         e.attr waterSplashSpeed: 500, defaultWaterCooldown: 450
         e.setDetectionOffset 40, 0
-        e.setSealevel(@_getSeaLevel())
 
       if options.damage
         e.ship = @entity.deathCause
@@ -416,8 +415,7 @@ Level =
       @_verify(sequence)
       @level.sealevelOffset = offsetY
       level = @level
-      Crafty('WaterSplashes').each ->
-        @setSealevel((Crafty.viewport.height - 20) + level.sealevelOffset)
+      Crafty.s('SeaLevel').setOffset(level.sealevelOffset)
 
   screenShake: (amount, options = {}) ->
     (sequence) =>

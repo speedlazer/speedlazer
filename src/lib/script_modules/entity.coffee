@@ -309,7 +309,6 @@ Entity =
     if Game.explosionMode?
       @_waterSplash()
     @entity.addComponent('WaterSplashes')
-    @entity.setSealevel(@_getSeaLevel() - Crafty.viewport.y)
 
     if @entity.has('ViewportFixed')
       waterSpot.addComponent('ViewportFixed')
@@ -384,8 +383,7 @@ Entity =
     WhenJS.all([defer.promise, @_moveAir(settings)])
 
   _getSeaLevel: ->
-    lvl = Crafty('ScrollWall').get(0).viewHeight
-    (Crafty.viewport.height - 240) + ((220 - lvl) * (@entity.scale ? 1.0)) + (@level.sealevelOffset ? 0)
+    Crafty.s('SeaLevel').getSeaLevel(@entity.scale)
 
   _moveAir: (settings) ->
     defaultsValues =

@@ -36,7 +36,6 @@ Crafty.c 'ShipSpawnable',
     @ship.playerColor = @color()
     @ship.colorOverride?(@color(), 'partial') #if @has('ColorEffects')
     @ship.color?(@color()) if @has('Color')
-    @ship.setSealevel?((Crafty.viewport.height - 20) + (@level.sealevelOffset ? 0))
     @_updateShipSprite()
 
     @assignControls(@ship) if @has('ControlScheme')
