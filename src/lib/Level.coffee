@@ -167,7 +167,7 @@ class Game.Level
 
     Crafty.one 'ShipSpawned', =>
       @_playersActive = yes
-      #@_scrollWall.scrollWall(@_forcedSpeed)
+      @_scrollWall.scrollWall(@_forcedSpeed)
 
     Crafty('Player').each (index) ->
       spawnPosition = ->
