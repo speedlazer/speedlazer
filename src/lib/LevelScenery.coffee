@@ -49,16 +49,17 @@ class Game.LevelScenery
     return if @generated
     @x ?= pos.x
     @y ?= pos.y
+    @notifyOffsetX = 0
     @generated = yes
     @generate()
-    @_notifyEnterFunction()
+    @_notifyEnterFunction(@notifyOffsetX)
 
-  _notifyEnterFunction: () ->
+  _notifyEnterFunction: (xOffset) ->
     block = this
     Crafty.e('2D, Collision, ViewportRelativeMotion')
       .attr({ w: 10, h: 800 })
       .viewportRelativeMotion({
-        x: @x
+        x: @x + xOffset
         y: 40
         offsetY: (@y - 40)
         speed: 1
