@@ -32,8 +32,9 @@ class Game.LocationGrid
 
   _coordList: (listSettings) ->
     avoid = listSettings.avoid?() ? listSettings.avoid
+    start = listSettings.start?() ? listSettings.start
     for i in [0...listSettings.steps] when i not in avoid
-      listSettings.start + (i * listSettings.stepSize)
+      start + (i * listSettings.stepSize)
 
   getLocation: ->
     @freeCoords.pop()
