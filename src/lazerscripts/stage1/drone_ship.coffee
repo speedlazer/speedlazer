@@ -8,7 +8,7 @@ class DroneShip extends EntityScript
       x: Crafty.viewport.width + 180
       y: 450
       defaultSpeed: options.speed ? 350
-    ).setSealevel(@level.visibleHeight + 10)
+    )
 
   execute: ->
     @sequence(

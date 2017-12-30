@@ -55,6 +55,7 @@ Game =
     Crafty.init(1024, 576, stage) # PAL+
     #Crafty.pixelart(true)
     Crafty.background('#000000')
+    Crafty.timer.FPS(62.5)
 
     Crafty.e('Player, Color')
       .attr(name: 'Player 1', z: 0, playerNumber: 1)
@@ -114,12 +115,12 @@ Game =
         right: 15
 
     # Simply start splashscreen
-    handler = (e) =>
-      if e.key == Crafty.keys.N
-        Crafty.unbind('KeyDown', handler)
-        Crafty.enterScene('Game', script: 'Lunch', checkpoint: 0)
+    #handler = (e) =>
+      #if e.key == Crafty.keys.N
+        #Crafty.unbind('KeyDown', handler)
+        #Crafty.enterScene('Game', script: 'Lunch', checkpoint: 0)
 
-    Crafty.bind('KeyDown', handler)
+    #Crafty.bind('KeyDown', handler)
     #Crafty.enterScene('New')
     Crafty.enterScene('Intro')
 

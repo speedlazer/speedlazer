@@ -49,14 +49,21 @@ class Game.LevelScenery
     return if @generated
     @x ?= pos.x
     @y ?= pos.y
+    @notifyOffsetX = 0
     @generated = yes
     @generate()
     @_notifyEnterFunction(@notifyOffsetX)
 
-  _notifyEnterFunction: (offsetX = 0) ->
+  _notifyEnterFunction: (xOffset) ->
     block = this
-    Crafty.e('2D, Collision')
-      .attr({ x: @x + offsetX, y: @y, w: 10, h: 800 })
+    Crafty.e('2D, Collision, ViewportRelativeMotion')
+      .attr({ w: 10, h: 800 })
+      .viewportRelativeMotion({
+        x: @x + xOffset
+        y: 40
+        offsetY: (@y - 40)
+        speed: 1
+      })
       .onHit 'ScrollFront', ->
         unless @triggeredFront
           Crafty.trigger('EnterBlock', block) #, index)
@@ -113,13 +120,19 @@ class Game.LevelScenery
   # block in the level. Also registers the entity
   # for automatic cleanup.
   add: (x, y, element) ->
-    element.attr x: @x + x, y: @y + y
+    element.addComponent('ViewportRelativeMotion').viewportRelativeMotion(
+      x: @x + x
+      y: y + 40
+      offsetY: (@y - 40)
+      speed: 1
+    )
     @createdElements.push element
 
   addBackground: (x, y, element, speed) ->
     element.addComponent('ViewportRelativeMotion').viewportRelativeMotion(
       x: @x + x
-      y: @y + y
+      y: y + 40
+      offsetY: (@y - 40)
       speed: speed
     )
     @createdElements.push element
@@ -149,7 +162,6 @@ class Game.LevelScenery
 
   canCleanup: ->
     cameraX = Crafty.viewport._x * -1
-    return no if (@x + @delta.x) > cameraX
     for elem in @createdElements
       if elem.x + elem.w >= cameraX
         return no

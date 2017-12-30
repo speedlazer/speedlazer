@@ -11,11 +11,13 @@ class Game.LocationGrid
       start: 0
       steps: 1
       stepSize: 1
+      avoid: []
 
     settings.y = defaults settings.y,
       start: 0
       steps: 1
       stepSize: 1
+      avoid: []
 
     xs = @_coordList(settings.x)
     ys = @_coordList(settings.y)
@@ -29,8 +31,10 @@ class Game.LocationGrid
     @freeCoords = shuffle coords
 
   _coordList: (listSettings) ->
-    for i in [0...listSettings.steps]
-      listSettings.start + (i * listSettings.stepSize)
+    avoid = listSettings.avoid?() ? listSettings.avoid
+    start = listSettings.start?() ? listSettings.start
+    for i in [0...listSettings.steps] when i not in avoid
+      start + (i * listSettings.stepSize)
 
   getLocation: ->
     @freeCoords.pop()

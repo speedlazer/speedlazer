@@ -128,8 +128,8 @@ Entity =
       path = [].concat inputPath
 
       path.unshift [
-        Math.round(@entity.x + Crafty.viewport.x)
-        Math.round(@entity.y + Crafty.viewport.y)
+        @entity.x
+        @entity.y
       ]
 
       pp = path[0]
@@ -156,8 +156,6 @@ Entity =
         c = Math.sqrt(a**2 + b**2)
         d += c
         pp = pn
-        x -= Crafty.viewport.x
-        y -= Crafty.viewport.y
         { x, y }
       )
       duration = (d / settings.speed) * 1000
@@ -208,8 +206,8 @@ Entity =
           offsetY: 0
         )
         location = {
-          x: target.x + Crafty.viewport.x + offsets.offsetX
-          y: target.y + Crafty.viewport.y + offsets.offsetY
+          x: target.x + offsets.offsetX
+          y: target.y + offsets.offsetY
         }
 
       settings = location?() ? location
@@ -227,8 +225,8 @@ Entity =
       if settings.y? and (-2 < settings.y < 2)
         settings.y *= Crafty.viewport.height
 
-      if settings.positionType is 'absoluteY'
-        settings.y += Crafty.viewport.y
+      #if settings.positionType is 'absoluteY'
+        #settings.y += Crafty.viewport.y
 
       throw new Error('location invalid') unless isObject(location)
 
@@ -241,9 +239,9 @@ Entity =
           return @_moveAir(airSettings)
             .then =>
               @enemy.moveState = 'water'
-              if @enemy.alive
-                @_setupWaterSpot()
-                @_moveWater(settings)
+              return if not @enemy.alive and not @decoyingEntity?
+              @_setupWaterSpot()
+              @_moveWater(settings)
         else
           return @_moveAir(settings)
 
@@ -254,9 +252,9 @@ Entity =
           return @_moveWater(waterSettings)
             .then =>
               @enemy.moveState = 'air'
-              if @enemy.alive
-                @_removeWaterSpot()
-                @_moveAir(settings)
+              return if not @enemy.alive and not @decoyingEntity?
+              @_removeWaterSpot()
+              @_moveAir(settings)
         else
           return @_moveWater(settings)
 
@@ -264,8 +262,8 @@ Entity =
     (sequence) =>
       @_verify(sequence)
 
-      x = Math.round(@entity.x + Crafty.viewport.x)
-      y = Math.round(@entity.y + Crafty.viewport.y)
+      x = @entity.x
+      y = @entity.y
 
       if res = location?()
         tx = res.x
@@ -303,7 +301,7 @@ Entity =
         .attr(
           w: @entity.w + 10
           x: @entity.x - 5
-          y: @_getSeaLevel() - 10 - Crafty.viewport.y
+          y: @_getSeaLevel() - 10
           h: 20
           z: @entity.z - 1
         )
@@ -311,7 +309,6 @@ Entity =
     if Game.explosionMode?
       @_waterSplash()
     @entity.addComponent('WaterSplashes')
-    @entity.setSealevel(@_getSeaLevel() - Crafty.viewport.y)
 
     if @entity.has('ViewportFixed')
       waterSpot.addComponent('ViewportFixed')
@@ -340,8 +337,8 @@ Entity =
       speed: @entity.defaultSpeed
 
     if @entity.has('ViewportFixed')
-      defaultValues.x = @entity.x + Crafty.viewport.x
-      defaultValues.y = @entity.y + Crafty.viewport.y
+      defaultValues.x = @entity.x
+      defaultValues.y = @entity.y
 
     seaLevel = @_getSeaLevel()
     settings = defaults(settings, defaultValues)
@@ -355,8 +352,8 @@ Entity =
       h: 5
       alpha: 0.2
 
-    deltaX = if settings.x? then Math.abs(settings.x - (@entity.hideMarker.x + Crafty.viewport.x)) else 0
-    deltaY = if settings.y? then Math.abs(settings.y - (@entity.hideMarker.y + Crafty.viewport.y)) else 0
+    deltaX = if settings.x? then Math.abs(settings.x - @entity.hideMarker.x) else 0
+    deltaY = if settings.y? then Math.abs(settings.y - @entity.hideMarker.y) else 0
     delta = Math.sqrt((deltaX ** 2) + (deltaY ** 2))
     duration = (delta / settings.speed) * 1000
 
@@ -386,21 +383,22 @@ Entity =
     WhenJS.all([defer.promise, @_moveAir(settings)])
 
   _getSeaLevel: ->
-    (Crafty.viewport.height - 240) + (220 * (@entity.scale ? 1.0)) + (@level.sealevelOffset ? 0)
+    Crafty.s('SeaLevel').getSeaLevel(@entity.scale)
 
   _moveAir: (settings) ->
     defaultsValues =
       speed: @entity.defaultSpeed
 
     if @entity.has('ViewportFixed')
-      defaultsValues.x = @entity.x + Crafty.viewport.x
-      defaultsValues.y = @entity.y + Crafty.viewport.y
+      defaultsValues.x = @entity.x
+      defaultsValues.y = @entity.y
 
     settings = defaults(settings, defaultsValues)
 
-    deltaX = if settings.x? then Math.abs(settings.x - (@entity.x + Crafty.viewport.x)) else 0
-    deltaY = if settings.y? then Math.abs(settings.y - (@entity.y + Crafty.viewport.y)) else 0
+    deltaX = if settings.x? then Math.abs(settings.x - @entity.x) else 0
+    deltaY = if settings.y? then Math.abs(settings.y - @entity.y) else 0
     delta = Math.sqrt((deltaX ** 2) + (deltaY ** 2))
+    return Promise.resolve() if delta == 0
 
     return new Promise((resolve) =>
       easing = settings.easing ? 'linear'
@@ -462,18 +460,18 @@ Entity =
         y *= Crafty.viewport.height
 
       @entity.attr(
-        x: x - Crafty.viewport.x
-        y: y - Crafty.viewport.y
+        x: x
+        y: y
       )
 
   location: (settings = {}) ->
     =>
       if @decoyingEntity?
-        x: (@entity.x + Crafty.viewport.x) + (@entity.w / 2) + (settings.offsetX ? 0)
-        y: (@entity.y + Crafty.viewport.y) + (@entity.h / 2) + (settings.offsetY ? 0)
+        x: @entity.x + (@entity.w / 2) + (settings.offsetX ? 0)
+        y: @entity.y + (@entity.h / 2) + (settings.offsetY ? 0)
       else
-        x: (@enemy.location.x ? (@entity.x + Crafty.viewport.x) + (@entity.w / 2)) + (settings.offsetX ? 0)
-        y: (@enemy.location.y ? (@entity.y + Crafty.viewport.y) + (@entity.h / 2)) + (settings.offsetY ? 0)
+        x: (@enemy.location.x ? @entity.x + (@entity.w / 2)) + (settings.offsetX ? 0)
+        y: (@enemy.location.y ? @entity.y + (@entity.h / 2)) + (settings.offsetY ? 0)
 
   get: (property) ->
     =>
@@ -514,8 +512,8 @@ Entity =
         { x, y } = @location()()
         #@decoy.removeComponent('ViewportFixed')
         @decoy.attr(
-          x: x - Crafty.viewport.x
-          y: y - Crafty.viewport.y
+          x: x
+          y: y
           invincible: yes
           health: 1
           defaultSpeed: @entity.defaultSpeed

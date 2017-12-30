@@ -11,6 +11,7 @@ Crafty.c 'ScrollWall',
       speed:
         x: 0
         y: 0
+      viewHeight: 0
 
     @wallEnd = Crafty.e('2D, ScrollFront, Edge')
       .attr(x: - (Crafty.viewport.x - Crafty.viewport.width) - 3, y: 0, h: Crafty.viewport.height, w: 12)
@@ -52,8 +53,8 @@ Crafty.c 'ScrollWall',
 
       # the speed is px / sec
       # the time passed is fd.dt in milliseconds
-      @x += (speedX / 1000.0) * fd.dt
-      @y += (speedY / 1000.0) * fd.dt
+      #@x += (speedX / 1000.0) * fd.dt
+      #@y += (speedY / 1000.0) * fd.dt
 
       xShift = 0
       yShift = 0
@@ -87,14 +88,22 @@ Crafty.c 'ScrollWall',
       Crafty.viewport.xShift = xShift
       Crafty.viewport.yShift = yShift
 
+      dx = (speedX / 1000.0) * fd.dt
+      dy = (speedY / 1000.0) * fd.dt
+      @viewHeight += dy
+
       Crafty.trigger('CameraMove',
         x: Math.round(@x)
         y: Math.round(@y)
+        dx: dx
+        dy: dy
         panning: cameraPan
       )
       Crafty.trigger('ViewportMove',
         x: Math.round(x)
         y: Math.round(y)
+        dx: dx
+        dy: dy
       )
 
     # TODO: Verify correctness of these statements
@@ -145,10 +154,6 @@ Crafty.c 'ScrollWall',
 
   scrollWall: (speed, options = {}) ->
     @targetSpeed(speed, options)
-
-  setHeight: (deltaY) ->
-    @y += deltaY
-    Crafty.viewport.y = -@y
 
   setAllowPushing: (@allowPushing) ->
 

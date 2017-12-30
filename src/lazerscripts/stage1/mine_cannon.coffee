@@ -50,15 +50,15 @@ class CannonMine extends EntityScript
     endXY = coords(
       location.angle,
       {
-        x: location.xStart + Crafty.viewport.x
-        y: location.yStart + Crafty.viewport.y
+        x: location.xStart
+        y: location.yStart
       },
       300
     )
 
     @locationInfo = {
-      startX: location.xStart + Crafty.viewport.x
-      startY: location.yStart + Crafty.viewport.y
+      startX: location.xStart
+      startY: location.yStart
       endX: endXY.x
       endY: endXY.y
     }

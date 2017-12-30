@@ -47,7 +47,7 @@ Crafty.c 'KeyboardControls',
           movementMap[key] = value
 
     ship.addComponent('Multiway, Keyboard')
-      .multiway({ y: 400, x: 400 }, movementMap, clamp: yes)
+      .multiway({ y: 500, x: 500 }, movementMap, clamp: yes)
       .bind('GamePause', (paused) ->
         if paused
           @disabledBeforePause = @disableControls

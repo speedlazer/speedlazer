@@ -84,7 +84,7 @@ Crafty.c 'PlayerSpaceship',
 
     @addComponent('Invincible').invincibleDuration(2000)
 
-    @setDetectionOffset 40, 0
+    @setDetectionOffset 60, 0
     @onHit 'Hostile', (collision) ->
       return if Game.paused
       return if @has('Invincible')
@@ -150,8 +150,6 @@ Crafty.c 'PlayerSpaceship',
       @_updateFlyingSpeed shipSpeedX, fd.dt
       @rotation = nr
 
-      @x += motionX
-      @y += motionY
       # Move player back if flying into an object
       if @hit('Edge') or @hit('Solid')
         @x -= motionX
@@ -247,8 +245,8 @@ Crafty.c 'PlayerSpaceship',
 
     location = settings.location?()
     location = {
-      x: location.x - Crafty.viewport.x
-      y: location.y - Crafty.viewport.y
+      x: location.x
+      y: location.y
     } if location
 
     location ?= settings.location

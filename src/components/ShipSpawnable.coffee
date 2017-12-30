@@ -20,23 +20,22 @@ Crafty.c 'ShipSpawnable',
     pos.x = 10 if pos.x < 10
     if @ship?
       pos = {
-        x: @ship.x + Crafty.viewport.x
-        y: @ship.y + Crafty.viewport.y
+        x: @ship.x
+        y: @ship.y
       }
       @ship.destroy()
       @ship = null
 
     @ship = Crafty.e(@level.getShipType())
       .attr
-        x: pos.x - Crafty.viewport.x
-        y: pos.y - Crafty.viewport.y
+        x: pos.x
+        y: pos.y
         z: @z
         playerNumber: @playerNumber
 
     @ship.playerColor = @color()
     @ship.colorOverride?(@color(), 'partial') #if @has('ColorEffects')
     @ship.color?(@color()) if @has('Color')
-    @ship.setSealevel?((Crafty.viewport.height - 20) + (@level.sealevelOffset ? 0))
     @_updateShipSprite()
 
     @assignControls(@ship) if @has('ControlScheme')

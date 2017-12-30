@@ -9,7 +9,7 @@ class ShipBoss extends EntityScript
       x: Crafty.viewport.width + 180
       y: 400
       defaultSpeed: options.speed ? 150
-    ).setSealevel(@level.visibleHeight - 10)
+    )
 
   execute: ->
     @sequence(

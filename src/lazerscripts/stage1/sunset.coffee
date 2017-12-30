@@ -6,8 +6,8 @@ class SunSet extends EntityScript
     sun = Crafty('Sun')
     if sun.length > 0
       sun.attr(
-        x: sun.x + Crafty.viewport.x
-        y: sun.y + Crafty.viewport.y
+        x: sun.x
+        y: sun.y
       )
     else
       Crafty.e('Sun, ColorFade, KeepAlive')

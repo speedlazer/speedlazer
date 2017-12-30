@@ -114,15 +114,15 @@ class Game.Level
 
     @_seedPreceedingGeometry()
     @_update()
-    @lastUpdate = Crafty.viewport._x + 200
 
     for block in @blocks when block.x < 640
       block.enter()
 
-    Crafty.bind('ViewportScroll', =>
-      if @lastUpdate - Crafty.viewport._x >= 300
+    Crafty.bind('ViewportMove', ({ dx, dy }) =>
+      @generationPosition.x -= dx
+      @generationPosition.y -= dy
+      if @generationPosition.x < @bufferLength
         @_update()
-        @lastUpdate = Crafty.viewport._x
     )
 
     Crafty.uniqueBind 'LeaveBlock', (block) => #(index) =>
@@ -221,7 +221,7 @@ class Game.Level
     @_forcedSpeed = speed
     if @_playersActive
       @_scrollWall.scrollWall(@_forcedSpeed, options)
-    Crafty('Bullet').each -> @attr speed: @speed + delta
+    #Crafty('Bullet').each -> @attr speed: @speed + delta
     Crafty('PlayerControlledShip').each ->
       @forcedSpeed speed, options
 
@@ -237,12 +237,12 @@ class Game.Level
       x: 0
       duration: 1000
     })
-    @_scrollWall.cameraPan(options)
+    #@_scrollWall.cameraPan(options)
 
   setHeight: (deltaY) ->
-    @_scrollWall.setHeight deltaY
-    Crafty('PlayerControlledShip').each ->
-      @y += deltaY
+    #@_scrollWall.setHeight deltaY
+    #Crafty('PlayerControlledShip').each ->
+      #@y += deltaY
 
   setWeaponsEnabled: (onOff, players) ->
     players = [1, 2] unless players? and !isEmpty(players)
@@ -274,7 +274,7 @@ class Game.Level
     Crafty.unbind('LeaveBlock')
     Crafty.unbind('EnterBlock')
     Crafty.unbind('ShipSpawned')
-    Crafty.unbind('ViewportScroll')
+    Crafty.unbind('ViewportMove')
     Crafty.unbind('GameLoop', @_waveTicks)
     b?.clean() for b in @blocks
 
@@ -282,8 +282,7 @@ class Game.Level
     throw new Error('sequence mismatch') unless @active
 
   _update: ->
-    startX = - Crafty.viewport._x
-    endX = startX + @bufferLength
+    endX = @bufferLength
 
     counter = 0
     overflowThreshold = 10
