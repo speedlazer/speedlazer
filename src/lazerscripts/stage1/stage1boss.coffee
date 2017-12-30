@@ -159,7 +159,7 @@ class Stage1BossStage1 extends Stage1Boss
     )
 
   execute: ->
-    @bindSequence 'Hit', @fase2, => @entity.healthBelow .5
+    @bindSequence 'Hit', @fase2, => @entity.healthBelow .7
 
     @sequence(
       @invincible yes
@@ -186,12 +186,85 @@ class Stage1BossStage1 extends Stage1Boss
       @repeat @sequence(
         @rocketStrikeDance()
         @wait 100
-        @mineFieldStrike()
-        @wait 200
+        @mineStomp()
+        @wait 100
       )
     )
 
-  mineFieldStrike: ->
+  fase2: ->
+    # start at .7
+    @bindSequence 'Hit', @fase3, => @entity.healthBelow .4
+
+    # fase 2
+    @sequence(
+      @mineFieldStrike('BridgeDamage')
+      @repeat @sequence(
+        @wait 100
+        @rocketStrikeDance()
+        @wait 100
+        @mineStomp()
+      )
+    )
+
+  fase3: ->
+    # start at .4
+    @bindSequence 'Hit', @endOfFight, => @entity.healthBelow .2
+
+    @sequence(
+      @mineFieldStrike('BridgeCollapse')
+      @wait 500
+      @rocketStrikeDance()
+      #@cancelBullets('Mine')
+      #@cancelBullets('shadow')
+      @setSpeed 200
+      @repeat @sequence(
+        @bombRaid(yes)
+        @repeat 2, @while(
+          @rocketStrikeDanceHoming()
+          @sequence(
+            @async @runScript(Stage1BossMine, @location())
+            @wait 1500
+          )
+        )
+        @wait 1000
+      )
+    )
+
+  mineStomp: ->
+    @sequence(
+      @animate 'fast', -1, 'eye'
+
+      @while(
+        @repeat(2,
+          @placeSquad(Stage1BossMineStomp,
+            amount: 8
+            delay: 50
+            options:
+              location: @location()
+              gridConfig:
+                x:
+                  start: ->
+                    rnd = Math.random()
+                    loc = 1 + Math.floor(rnd * 5.0)
+                    loc * 0.15
+                  steps: 1
+                  stepSize: 0.15
+                y:
+                  start: 0.125
+                  steps: 8
+                  stepSize: 0.1
+          )
+        )
+        @movePath([
+          [.7, .3]
+          [.9, .4]
+          [.9, .2]
+        ], speed: 200)
+      )
+      @animate 'slow', -1, 'eye'
+    )
+
+  mineFieldStrike: (event) ->
     @sequence(
       @parallel(
         @sequence(
@@ -214,6 +287,7 @@ class Stage1BossStage1 extends Stage1Boss
           delay: 200
           options:
             location: @location()
+            event: event
             gridConfig:
               x:
                 start: 0.1
@@ -277,26 +351,6 @@ class Stage1BossStage1 extends Stage1Boss
       @moveTo(x: .85, y: .41, speed: 400)
     )
 
-  fase2: ->
-    # start at .6
-    @bindSequence 'Hit', @endOfFight, => @entity.healthBelow .2
-
-    @sequence(
-      @cancelBullets('Mine')
-      @cancelBullets('shadow')
-      @setSpeed 200
-      @repeat @sequence(
-        @bombRaid(yes)
-        @repeat 2, @while(
-          @rocketStrikeDanceHoming()
-          @sequence(
-            @async @runScript(Stage1BossMine, @location())
-            @wait 1500
-          )
-        )
-        @wait 1000
-      )
-    )
 
   laugh: ->
     @sequence(
@@ -884,10 +938,12 @@ class Stage1BossMineField extends EntityScript
   spawn: (options) ->
     location = options.location()
     @target = options.grid.getLocation()
+    @event = options.event
 
     Crafty.e('Mine').mine(
       x: location.x
       y: location.y + 36
+      health: 400
       defaultSpeed: options.speed ? 250
       pointsOnHit: if options.points then 10 else 0
       pointsOnDestroy: if options.points then 50 else 0
@@ -905,10 +961,54 @@ class Stage1BossMineField extends EntityScript
         @wait 1000
         @squadOnce('bridge', @sequence(
           @wait 200
-          => Crafty.trigger('BridgeCollapse', @level)
+          =>
+            console.log('trigger event', @event)
+            Crafty.trigger(@event, @level)
         ))
         => @entity.absorbDamage damage: @entity.health
         @endSequence()
+      )
+    )
+
+  onKilled: ->
+    @bigExplosion(juice: @juice)
+
+class Stage1BossMineStomp extends EntityScript
+
+  assets: ->
+    @loadAssets('mine')
+
+  spawn: (options) ->
+    location = options.location()
+    @target = options.grid.getLocation()
+
+    Crafty.e('Mine').mine(
+      x: location.x
+      y: location.y + 36
+      health: 400
+      defaultSpeed: options.speed ? 250
+      pointsOnHit: if options.points then 10 else 0
+      pointsOnDestroy: if options.points then 50 else 0
+    )
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @moveTo(y: 1.05, speed: 400)
+      @moveTo(x: @target.x, speed: 400, easing: 'easeOutQuad')
+      @synchronizeOn 'dropped'
+      @moveTo(y: @target.y, easing: 'easeOutQuad', speed: 400)
+      @sequence(
+        @animate('blink', -1)
+        @pickTarget('PlayerControlledShip')
+        @parallel(
+          @moveTo(@targetLocation(y: @target.y), speed: 400)
+          @sequence(
+            @wait 1000
+            => @entity.absorbDamage damage: @entity.health
+            @endSequence()
+          )
+        )
       )
     )
 
