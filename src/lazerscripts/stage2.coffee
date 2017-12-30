@@ -2,14 +2,13 @@ extend = require('lodash/extend')
 { LazerScript } = require('src/lib/LazerScript')
 { Stage1BossLeaving, Stage1BossPopup, Stage1BossRocketStrike } = require('./stage1/stage1boss')
 { ScraperFlyer, Swirler, Shooter, Stalker } = require('./stage1/army_drone')
-SunRise = require('./stage1/sunrise').default
+{ Noon } = require('./stage1/sunrise')
 JumpMine = require('./stage1/jump_mine').default
 PlayerClone = require('./stage1/player_clone').default
 HeliAttack = require('./stage1/heli_attack').default
 StageEnd = require('./stage1end').default
 HeliAttack = require('./stage1/heli_attack').default
 TankAttack = require('./stage2/tank_attack').default
-SunRise = require('./stage1/sunrise').default
 
 class Stage2 extends LazerScript
   nextScript: StageEnd
@@ -66,7 +65,7 @@ class Stage2 extends LazerScript
   checkpointStreets: (scenery) ->
     @sequence(
       @setScenery(scenery)
-      @async @runScript(SunRise, skipTo: 10 * 60 * 1000)
+      @async @runScript(Noon, skipTo: 10 * 60 * 1000)
       # TODO: Seriously drop some powerups for players to catch up a little
       @wait 6000
     )
@@ -240,7 +239,7 @@ class Stage2 extends LazerScript
     )
 
   sunRise: (options = { skipTo: 0 }) ->
-    @async @runScript(SunRise, extend({ speed: 2 }, options))
+    @async @runScript(Noon, extend({ speed: 1 }, options))
 
   stalkerShootout: ->
     @parallel(
