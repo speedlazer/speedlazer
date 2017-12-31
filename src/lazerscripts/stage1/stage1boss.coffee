@@ -943,7 +943,7 @@ class Stage1BossMineField extends EntityScript
     Crafty.e('Mine').mine(
       x: location.x
       y: location.y + 36
-      health: 400
+      health: 300
       defaultSpeed: options.speed ? 250
       pointsOnHit: if options.points then 10 else 0
       pointsOnDestroy: if options.points then 50 else 0
@@ -985,7 +985,7 @@ class Stage1BossMineStomp extends EntityScript
     Crafty.e('Mine').mine(
       x: location.x
       y: location.y + 36
-      health: 400
+      health: 300
       defaultSpeed: options.speed ? 250
       pointsOnHit: if options.points then 10 else 0
       pointsOnDestroy: if options.points then 50 else 0

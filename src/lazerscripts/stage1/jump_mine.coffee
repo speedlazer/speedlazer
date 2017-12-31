@@ -12,7 +12,7 @@ class JumpMine extends EntityScript
     Crafty.e('Mine, BulletCircle').mine(
       x: x
       y: 440
-      health: 400
+      health: 300
       defaultSpeed: options.speed ? 400
       pointsOnHit: if options.points then 10 else 0
       pointsOnDestroy: if options.points then 50 else 0
