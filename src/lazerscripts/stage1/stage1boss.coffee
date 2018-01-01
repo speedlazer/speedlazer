@@ -250,23 +250,26 @@ class Stage1BossStage1 extends Stage1Boss
 
       @while(
         @repeat(2,
-          @placeSquad(Stage1BossMineStomp,
-            amount: 8
-            delay: 50
-            options:
-              location: @location()
-              gridConfig:
-                x:
-                  start: ->
-                    rnd = Math.random()
-                    loc = 1 + Math.floor(rnd * 5.0)
-                    loc * 0.15
-                  steps: 1
-                  stepSize: 0.15
-                y:
-                  start: 0.125
-                  steps: 8
-                  stepSize: 0.1
+          @sequence(
+            @async @placeSquad(Stage1BossMineStomp,
+              amount: 8
+              delay: 50
+              options:
+                location: @location()
+                gridConfig:
+                  x:
+                    start: ->
+                      rnd = Math.random()
+                      loc = 1 + Math.floor(rnd * 5.0)
+                      loc * 0.15
+                    steps: 1
+                    stepSize: 0.15
+                  y:
+                    start: 0.125
+                    steps: 8
+                    stepSize: 0.1
+            )
+            @wait 2000
           )
         )
         @movePath([
@@ -989,7 +992,7 @@ class Stage1BossMineStomp extends EntityScript
 
   spawn: (options) ->
     location = options.location()
-    @target = options.grid.getLocation()
+    @gridPos = options.grid.getLocation()
 
     Crafty.e('Mine').mine(
       x: location.x
@@ -1004,16 +1007,18 @@ class Stage1BossMineStomp extends EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @moveTo(y: 1.05, speed: 400)
-      @moveTo(x: @target.x, speed: 400, easing: 'easeOutQuad')
+      @moveTo(x: @gridPos.x, speed: 400, easing: 'easeOutQuad')
       @synchronizeOn 'dropped'
-      @moveTo(y: @target.y, easing: 'easeOutQuad', speed: 400)
+      @pickTarget('PlayerControlledShip')
+      @lockTarget()
+      @moveTo(y: @gridPos.y, easing: 'easeOutQuad', speed: 400)
       @sequence(
-        @animate('blink', -1)
-        @pickTarget('PlayerControlledShip')
         @parallel(
-          @moveTo(@targetLocation(y: @target.y), speed: 400)
+          @moveThrough(@targetLocation(y: @gridPos.y), speed: 400)
           @sequence(
-            @wait 1000
+            @wait 500
+            @animate('blink', -1)
+            @wait 300
             => @entity.absorbDamage damage: @entity.health
             @endSequence()
           )

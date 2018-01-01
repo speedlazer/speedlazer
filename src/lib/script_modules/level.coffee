@@ -397,6 +397,10 @@ Level =
       if selection is 'PlayerControlledShip' and @target
         @target.one 'Destroyed', refreshTarget
 
+  lockTarget: ->
+    (sequence) =>
+      @target = { x: @target.x, y: @target.y }
+
   targetLocation: (override = {}) ->
     =>
       if override.x? and (-1 < override.x < 2)
