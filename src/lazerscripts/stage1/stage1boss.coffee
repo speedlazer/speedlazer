@@ -182,17 +182,16 @@ class Stage1BossStage1 extends Stage1Boss
       @animate 'reload', 0, 'wing'
       @moveTo(y: .43, speed: 5)
 
-      # TODO: Add 'choose' syntax that randomly picks one
-
       # TODO: Add homing missile attack to the mix
-
-      # TODO: Add Search mines to the mix
 
       # fase 1
       @repeat @sequence(
         @rocketStrikeDance()
         @wait 100
-        @mineStomp()
+        @choose(
+          @mineStomp()
+          @searchMines()
+        )
         @wait 100
       )
     )
@@ -205,8 +204,6 @@ class Stage1BossStage1 extends Stage1Boss
 
     # TODO: Add homing missile attack to the mix
 
-    # TODO: Add Search mines to the mix
-
     # fase 2
     @sequence(
       @mineFieldStrike('BridgeDamage')
@@ -214,7 +211,10 @@ class Stage1BossStage1 extends Stage1Boss
         @wait 100
         @rocketStrikeDance()
         @wait 100
-        @mineStomp()
+        @choose(
+          @mineStomp()
+          @searchMines()
+        )
       )
     )
 
@@ -249,7 +249,7 @@ class Stage1BossStage1 extends Stage1Boss
       @animate 'fast', -1, 'eye'
 
       @while(
-        @repeat(2,
+        @repeat(3,
           @sequence(
             @async @placeSquad(Stage1BossMineStomp,
               amount: 8
@@ -280,6 +280,20 @@ class Stage1BossStage1 extends Stage1Boss
       )
       @animate 'slow', -1, 'eye'
     )
+
+  searchMines: ->
+    @while(
+      @repeat 5, @sequence(
+         @async @runScript(Stage1BossMine, @location())
+         @wait 1500
+      )
+      @movePath([
+        [.7, .6]
+        [.9, .7]
+        [.9, .5]
+      ], speed: 200)
+    )
+
 
   mineFieldStrike: (event) ->
     @sequence(
@@ -426,14 +440,26 @@ class Stage1BossMine extends EntityScript
     @loadAssets('mine')
 
   spawn: (location) ->
-    Crafty.e('Mine').mine(
+    Crafty.e('Mine, BulletCircle').mine(
       health: 100
       x: location().x
       y: location().y + 10
       z: -4
-      defaultSpeed: 200
+      defaultSpeed: 400
       pointsOnHit: 0
       pointsOnDestroy: 0
+    ).bulletCircle(
+      burstAmount: 4
+      projectile: (x, y, angle) =>
+        projectile = Crafty.e('Sphere, Hostile, Projectile')
+          .blink()
+          .attr(
+            w: 14
+            h: 14
+            speed: 400
+            damage: 1
+          )
+        projectile.shoot(x, y, angle)
     )
 
   execute: ->
@@ -449,6 +475,7 @@ class Stage1BossMine extends EntityScript
       @animate 'blink', -1
       @wait 1000
       => @entity.absorbDamage damage: @entity.health
+      => @entity.shootRing()
       @endSequence()
     )
 
