@@ -1,6 +1,6 @@
 difference = require('lodash/difference')
 
-class Game.Synchronizer
+class Synchronizer
   constructor: ->
     @entities = []
     @synchronizations = {}
@@ -42,5 +42,5 @@ class Game.Synchronizer
       if difference(@entities, sync.registered).length is 0
         sync.defer.resolve()
 
-
-
+module.exports =
+  default: Synchronizer

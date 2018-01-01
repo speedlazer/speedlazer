@@ -2,6 +2,7 @@ clone = require('lodash/clone')
 sample = require('lodash/sample')
 shuffle = require('lodash/shuffle')
 defaults = require('lodash/defaults')
+Synchronizer = require('src/lib/Synchronizer').default
 
 # Actions to control the flow of a level
 #
@@ -40,7 +41,7 @@ Level =
     (sequence) =>
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
-      synchronizer = new Game.Synchronizer
+      synchronizer = new Synchronizer
       settings = clone settings
 
       options = defaults({

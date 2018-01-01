@@ -182,6 +182,12 @@ class Stage1BossStage1 extends Stage1Boss
       @animate 'reload', 0, 'wing'
       @moveTo(y: .43, speed: 5)
 
+      # TODO: Add 'choose' syntax that randomly picks one
+
+      # TODO: Add homing missile attack to the mix
+
+      # TODO: Add Search mines to the mix
+
       # fase 1
       @repeat @sequence(
         @rocketStrikeDance()
@@ -194,6 +200,12 @@ class Stage1BossStage1 extends Stage1Boss
   fase2: ->
     # start at .7
     @bindSequence 'Hit', @fase3, => @entity.healthBelow .4
+
+    # TODO: Add screenshake and debris falling to the mix
+
+    # TODO: Add homing missile attack to the mix
+
+    # TODO: Add Search mines to the mix
 
     # fase 2
     @sequence(
@@ -209,6 +221,8 @@ class Stage1BossStage1 extends Stage1Boss
   fase3: ->
     # start at .4
     @bindSequence 'Hit', @endOfFight, => @entity.healthBelow .2
+
+    # TODO: Revise with drone attacks
 
     @sequence(
       @mineFieldStrike('BridgeCollapse')
@@ -959,12 +973,7 @@ class Stage1BossMineField extends EntityScript
       @sequence(
         @animate('blink', -1)
         @wait 1000
-        @squadOnce('bridge', @sequence(
-          @wait 200
-          =>
-            console.log('trigger event', @event)
-            Crafty.trigger(@event, @level)
-        ))
+        @squadOnce('bridge', => Crafty.trigger(@event, @level))
         => @entity.absorbDamage damage: @entity.health
         @endSequence()
       )
