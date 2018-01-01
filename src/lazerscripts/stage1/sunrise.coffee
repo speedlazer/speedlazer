@@ -78,7 +78,7 @@ class DayBreak extends SunRise
     speed = @options.speed ? 1
     @options.skipTo ?= 0
 
-    colorDuration = (30000 / speed)
+    colorDuration = (45000 / speed)
     @sequence(
       @setLocation x: .97, y: .74
       @parallel(
@@ -90,7 +90,7 @@ class DayBreak extends SunRise
         )
         @movePath [
           [.75, .61]
-        ], rotate: no, skip: @options.skipTo, speed: speed * 20
+        ], rotate: no, skip: @options.skipTo, speed: speed * 10
       )
     )
 
