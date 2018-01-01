@@ -79,7 +79,7 @@ class Stage1Boss extends EntityScript
           location: @location()
       )
       @if(( -> amount > 2)
-        @async @placeSquad(Stage1BossRocket,
+        @async @placeSquad(script,
           options:
             z: -5
             offsetX: 30
@@ -90,7 +90,7 @@ class Stage1Boss extends EntityScript
         )
       )
       @if(( -> amount > 3)
-        @async @placeSquad(Stage1BossRocket,
+        @async @placeSquad(script,
           options:
             z: -5
             offsetX: 30
@@ -182,17 +182,18 @@ class Stage1BossStage1 extends Stage1Boss
       @animate 'reload', 0, 'wing'
       @moveTo(y: .43, speed: 5)
 
-      # TODO: Add homing missile attack to the mix
-
       # fase 1
       @repeat @sequence(
-        @rocketStrikeDance()
-        @wait 100
+        @choose(
+          @homingMissileStrike()
+          @rocketStrikeDance()
+        )
+        @wait 1000
         @choose(
           @mineStomp()
           @searchMines()
         )
-        @wait 100
+        @wait 1000
       )
     )
 
@@ -202,15 +203,16 @@ class Stage1BossStage1 extends Stage1Boss
 
     # TODO: Add screenshake and debris falling to the mix
 
-    # TODO: Add homing missile attack to the mix
-
     # fase 2
     @sequence(
       @mineFieldStrike('BridgeDamage')
       @repeat @sequence(
-        @wait 100
-        @rocketStrikeDance()
-        @wait 100
+        @wait 1000
+        @choose(
+          @homingMissileStrike()
+          @rocketStrikeDance()
+        )
+        @wait 1000
         @choose(
           @mineStomp()
           @searchMines()
@@ -284,8 +286,8 @@ class Stage1BossStage1 extends Stage1Boss
   searchMines: ->
     @while(
       @repeat 5, @sequence(
-         @async @runScript(Stage1BossMine, @location())
-         @wait 1500
+        @async @runScript(Stage1BossMine, @location())
+        @wait 1500
       )
       @movePath([
         [.7, .6]
@@ -294,9 +296,21 @@ class Stage1BossStage1 extends Stage1Boss
       ], speed: 200)
     )
 
+  homingMissileStrike: ->
+    @while(
+      @repeat 10, @sequence(
+        @fireRockets(4, true)
+        @wait 500
+      )
+      @movePath([
+        [.9, .2]
+        [.9, .7]
+      ], speed: 100)
+    )
 
   mineFieldStrike: (event) ->
     @sequence(
+      @wait 2000
       @parallel(
         @sequence(
           @moveTo(x: -.2, y: .8, speed: 600, easing: 'easeInQuad')
@@ -619,7 +633,7 @@ class Stage1BossAimedRocket extends EntityScript
       scale: options.scale
       pointsOnHit: options.pointsOnHit
       pointsOnDestroy: options.pointsOnDestroy
-    )
+    ).colorOverride('#eeffee')
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
