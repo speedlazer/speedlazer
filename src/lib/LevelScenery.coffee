@@ -147,11 +147,11 @@ class Game.LevelScenery
       callback = options
       options = {}
 
-    @createdBindings.push { event, callback }
     if options.once is yes
-      Crafty.one(event, callback)
+      callback = Crafty.one(event, callback)
     else
-      Crafty.bind(event, callback)
+      callback = Crafty.bind(event, callback)
+    @createdBindings.push { event, callback }
 
   unbind: (event) ->
     unbound = []

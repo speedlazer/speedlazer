@@ -258,7 +258,7 @@ Entity =
         else
           return @_moveWater(settings)
 
-  moveThrough: (location) ->
+  moveThrough: (location, options) ->
     (sequence) =>
       @_verify(sequence)
 
@@ -281,8 +281,15 @@ Entity =
       rad = Math.atan2(dy, dx)
       fx = (Math.cos(rad) * 1000) + x
       fy = (Math.sin(rad) * 1000) + y
-
-      @moveTo(x: fx, y: fy, rotation: yes)(sequence)
+      opts = defaults(
+        {
+          x: fx,
+          y: fy
+        }
+        options,
+        { rotation: yes },
+      )
+      @moveTo(opts)(sequence)
 
   _setupWaterSpot: ->
     if Game.explosionMode?

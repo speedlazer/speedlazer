@@ -685,29 +685,37 @@ generator.defineBlock class extends Game.CityScenery
     @addBackground(-20,  -60, p1, 1.2)
     @addBackground(834, -60, p2, 1.2)
 
-    @bind 'BridgeDamage', once: yes, (level) =>
-      d0 = Crafty('FrontDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
-      d1 = Crafty('MainDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
-      d2 = Crafty('BackDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+    @bind 'BridgeDamage', once: yes, (level) ->
+      get = (name) ->
+        s = Crafty(name)
+        s.get(s.length - 1)
+
+      d0 = get('FrontDeck').addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d1 = get('MainDeck').addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d2 = get('BackDeck').addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
       d0.half.sprite(16, 32)
       d1.half.sprite(16, 32)
       d2.half.sprite(16, 32)
 
-      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
-      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
-      dh = Crafty('BridgeCeiling').get(0).addComponent('TweenPromise', 'Delta2D')
+      p1 = get('TiltPillarLeft').addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
+      p2 = get('TiltPillarRight').addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
+      dh = get('BridgeCeiling').addComponent('TweenPromise', 'Delta2D')
 
     @bind 'BridgeCollapse', once: yes, (level) =>
-      d0 = Crafty('FrontDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
-      d1 = Crafty('MainDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
-      d2 = Crafty('BackDeck').get(0).addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      get = (name) ->
+        s = Crafty(name)
+        s.get(s.length - 1)
+
+      d0 = get('FrontDeck').addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d1 = get('MainDeck').addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
+      d2 = get('BackDeck').addComponent('TweenPromise', 'Delta2D').sprite(16, 32)
       d0.half.sprite(16, 32)
       d1.half.sprite(16, 32)
       d2.half.sprite(16, 32)
 
-      p1 = Crafty('TiltPillarLeft').get(0).addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
-      p2 = Crafty('TiltPillarRight').get(0).addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
-      dh = Crafty('BridgeCeiling').get(0).addComponent('TweenPromise', 'Delta2D')
+      p1 = get('TiltPillarLeft').addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
+      p2 = get('TiltPillarRight').addComponent('TweenPromise', 'Delta2D').sprite(42, 29)
+      dh = get('BridgeCeiling').addComponent('TweenPromise', 'Delta2D')
 
       WhenJS.sequence [
         ->
@@ -731,6 +739,11 @@ generator.defineBlock class extends Game.CityScenery
             -> p2.tweenPromise({ rotation: 27, dy: p2.dy + 200 }, 3000, 'easeInQuad')
           ]
       ]
+
+  leave: ->
+    super
+    @unbind('BridgeDamage')
+    @unbind('BridgeCollapse')
 
 
   deck: (gradient, flipped, attr) ->

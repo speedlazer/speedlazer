@@ -115,6 +115,12 @@ Core =
       WhenJS(block(sequence)).then =>
         @repeat(times - 1, block)(sequence)
 
+  choose: (sequences...) ->
+    (sequence) =>
+      @_verify(sequence)
+      pick = Math.floor(Math.random() * sequences.length)
+      sequences[pick](sequence)
+
   # Run a subscript, and continue after completion.
   # example:
   #

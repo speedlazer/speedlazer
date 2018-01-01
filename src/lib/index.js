@@ -6,4 +6,3 @@ import "./EventHandler";
 import "./LevelScenery";
 import "./LocationGrid";
 import "./PauseMenu";
-import "./Synchronizer";
