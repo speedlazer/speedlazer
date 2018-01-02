@@ -183,6 +183,8 @@ class Stage1BossStage1 extends Stage1Boss
       @moveTo(y: .43, speed: 5)
 
       # fase 1
+      # TODO: Add underwater missile attacks
+      # TODO: Add mine patterns
       @repeat @sequence(
         @choose(
           @homingMissileStrike()
@@ -206,6 +208,8 @@ class Stage1BossStage1 extends Stage1Boss
     # fase 2
     @sequence(
       @mineFieldStrike('BridgeDamage')
+      @cancelBullets('Mine')
+      @cancelBullets('shadow')
       @repeat @sequence(
         @wait 1000
         @choose(
@@ -224,8 +228,6 @@ class Stage1BossStage1 extends Stage1Boss
     # start at .4
     @bindSequence 'Hit', @endOfFight, => @entity.healthBelow .2
 
-    # TODO: Revise with drone attacks
-
     @sequence(
       @mineFieldStrike('BridgeCollapse')
       @wait 500
@@ -233,6 +235,8 @@ class Stage1BossStage1 extends Stage1Boss
       #@cancelBullets('Mine')
       #@cancelBullets('shadow')
       @setSpeed 200
+      # TODO: Revise with drone attacks
+
       @repeat @sequence(
         @bombRaid(yes)
         @repeat 2, @while(
