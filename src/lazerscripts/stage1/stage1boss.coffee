@@ -534,14 +534,15 @@ class Stage1BossRocket extends EntityScript
             lightness: 1.0
             gravity: (Math.random() * .2)
             vertical: 0
-          ->
+          (p, fd) ->
+            mul = fd.dt / (1000 / Crafty.timer.FPS())
             @attr(
-              vertical: @vertical + Math.random() * @gravity
-              rotation: @rotation + (Math.random() * 3)
-              alpha: Math.max(0.1, (@alpha - Math.random() * .02))
-              lightness: Math.max(.2, @lightness - .05)
+              vertical: @vertical + Math.random() * @gravity * mul
+              rotation: @rotation + (Math.random() * 3 * mul)
+              alpha: Math.max(0.1, (@alpha - Math.random() * .02 * mul))
+              lightness: Math.max(.2, @lightness - (.05 * mul))
             )
-            y: @y - @vertical
+            y: @y - (@vertical * mul)
         )
         @wait 20
       )

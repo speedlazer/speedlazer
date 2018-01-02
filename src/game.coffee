@@ -8,6 +8,7 @@ Game =
   togglePause: ->
     @paused = !@paused
     if @paused
+      @setGameSpeed(0.0)
       Crafty('Delay').each -> @pauseDelays()
       Crafty('Tween').each -> @pauseTweens()
       Crafty('Particles').each -> @pauseParticles()
@@ -19,6 +20,7 @@ Game =
 
       Crafty.trigger('GamePause', @paused)
     else
+      @setGameSpeed(1.0)
       Crafty('Delay').each -> @resumeDelays()
       Crafty('Tween').each -> @resumeTweens()
       Crafty('Particles').each -> @resumeParticles()
@@ -29,6 +31,10 @@ Game =
           @enableControl()
       Crafty.trigger('GamePause', @paused)
 
+  setGameSpeed: (speed) ->
+    @gameSpeed = speed
+    Crafty('SpriteAnimation').each -> @animationSpeed = speed
+
   # Initialize and start our game
   start: ->
     @resetCredits()
@@ -38,13 +44,19 @@ Game =
       Crafty.audio.mute()
 
     start = (new Date()) * 1
-    gameTime = start
+    @gameTime = start
+    @setGameSpeed(1.0)
+    Crafty.bind 'NewEntity', (data) =>
+      e = Crafty(data.id)
+      if e.has('SpriteAnimation')
+        e.animationSpeed = @gameSpeed
 
-    Crafty.bind 'EnterFrame', (fd) ->
-      return if Game.paused
-      gameTime += fd.dt
+    Crafty.bind 'EnterFrame', (fd) =>
+      @gameTime += fd.dt unless Game.paused
+      fd.dt = fd.dt * @gameSpeed
+      fd.inGameTime = @gameTime
 
-      Crafty.trigger 'GameLoop', Object.assign({}, fd, { inGameTime: gameTime })
+      Crafty.trigger 'GameLoop', fd
 
     Crafty.paths(
       audio: '/'
