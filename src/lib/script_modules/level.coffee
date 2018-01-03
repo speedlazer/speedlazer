@@ -417,14 +417,39 @@ Level =
       level = @level
       Crafty.s('SeaLevel').setOffset(level.sealevelOffset)
 
-  screenShake: (amount, options = {}) ->
+  addMinorScreenshake: ->
     (sequence) =>
       @_verify(sequence)
-      options = defaults(options, {
-        duration: 1000
-      })
-      @level.screenShake(amount, options)
-      @wait(options.duration)(sequence)
+      @level.addTrauma(0.2)
+
+  slowMotionMoment: ->
+    (sequence) =>
+      @_verify(sequence)
+      new Promise((resolve) ->
+        Game.setGameSpeed 0.3
+        Crafty.e('Delay, TimeManager').delay(
+          -> Game.setGameSpeed 0.1
+          500
+          0
+        ).delay(
+          -> Game.setGameSpeed 0.3
+          1500
+          0
+        ).delay(
+          ->
+            Game.setGameSpeed 1.0
+            @destroy()
+            resolve()
+          2000
+          0
+        )
+      )
+
+
+  addMajorScreenshake: ->
+    (sequence) =>
+      @_verify(sequence)
+      @level.addTrauma(0.5)
 
   screenFlash: (amount, options = {}) ->
     (sequence) =>
@@ -456,12 +481,6 @@ Level =
           defer.resolve()
       )
       defer.promise
-
-   moveCamera: (settings = {}) ->
-     (sequence) =>
-       # TODO: Figure out skipping
-       @level.cameraPan(settings)
-       @wait(settings.duration)(sequence)
 
   setWeapons: (newWeapons) ->
     (sequence) =>

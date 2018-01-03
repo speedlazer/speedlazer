@@ -142,7 +142,7 @@ Crafty.c 'Choreography',
     destinationX = @_currentPart.dx
     dx = 0
     if destinationX
-      @_currentPart.moveOriginX ?= @_currentPart.x - Crafty.viewport.xShift
+      @_currentPart.moveOriginX ?= @_currentPart.x
       diffX = destinationX - @_currentPart.moveOriginX
       motionX = (diffX * v)
       pmotionX = (diffX * prevv)
@@ -151,7 +151,7 @@ Crafty.c 'Choreography',
     destinationY = @_currentPart.dy
     dy = 0
     if destinationY
-      @_currentPart.moveOriginY ?= @_currentPart.y - Crafty.viewport.yShift
+      @_currentPart.moveOriginY ?= @_currentPart.y
       diffY = destinationY - @_currentPart.moveOriginY
       motionY = (diffY * v)
       pmotionY = (diffY * prevv)

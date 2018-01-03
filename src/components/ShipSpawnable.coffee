@@ -84,14 +84,14 @@ Crafty.c 'ShipSpawnable',
       @ship.destroy()
       stats = @ship.stats()
       @ship = null
-      Game.setGameSpeed 0.5
+      Game.setGameSpeed 0.3
       Crafty.e('Delay, TimeManager').delay(
         -> Game.setGameSpeed 0.1
         500
         0
       ).delay(
-        -> Game.setGameSpeed 0.5
-        1000
+        -> Game.setGameSpeed 0.3
+        1500
         0
       ).delay(
         =>

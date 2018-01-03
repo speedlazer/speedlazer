@@ -1,8 +1,12 @@
+{ Noise } = require('noisejs')
+
+noise = new Noise(Math.random())
+
 Crafty.c 'ScrollWall',
   init: ->
     @requires('2D, Edge, Collision, Acceleration')
-    @shakes = []
-    @motions = []
+    @trauma = 0
+    @time = 0
     @attr
       x: 0
       y: 0
@@ -53,40 +57,24 @@ Crafty.c 'ScrollWall',
 
       # the speed is px / sec
       # the time passed is fd.dt in milliseconds
-      #@x += (speedX / 1000.0) * fd.dt
-      #@y += (speedY / 1000.0) * fd.dt
 
-      xShift = 0
-      yShift = 0
+      screenshake = Math.pow(@trauma, 2)
+      @trauma = Math.max(0, @trauma - (0.001 * fd.dt))
+      x = 0
+      y = 0
+      if screenshake > 0
+        MAX_X_OFFSET = 80
+        MAX_Y_OFFSET = 60
 
-      for shake, index in @shakes by -1
-        shake.easing.tick(fd.dt)
-        coords = shake.coords(shake.easing.value())
-        xShift += coords[0]
-        yShift += coords[1]
-        @shakes.splice(index, 1) if shake.easing.complete
+        @time += fd.dt
 
-      cameraPan =
-        x: 0
-        y: 0
-      for motion, index in @motions by -1
-        coordsBefore = motion.coords(motion.easing.value())
-        motion.easing.tick(fd.dt)
-        coordsAfter = motion.coords(motion.easing.value())
-        deltaX = coordsAfter[0] - coordsBefore[0]
-        deltaY = coordsAfter[1] - coordsBefore[1]
-        cameraPan.x += deltaX
-        cameraPan.y += deltaY
-        @x += deltaX
-        @y += deltaY
-        @motions.splice(index, 1) if motion.easing.complete
-      x = @x + xShift
-      y = @y + yShift
+        xn = noise.perlin2(0.1, @time / ((1.3 - @trauma) * 20))
+        yn = noise.perlin2(@time / ((1.3 - @trauma) * 20), 0.3)
+        x = 0 + Math.round(MAX_X_OFFSET * screenshake * xn)
+        y = 0 + Math.round(MAX_Y_OFFSET * screenshake * yn)
 
-      Crafty.viewport.y = -y if Crafty.viewport.y isnt -y
-      Crafty.viewport.x = -x if Crafty.viewport.x isnt -x
-      Crafty.viewport.xShift = xShift
-      Crafty.viewport.yShift = yShift
+      Crafty.viewport.x = x
+      Crafty.viewport.y = y
 
       dx = (speedX / 1000.0) * fd.dt
       dy = (speedY / 1000.0) * fd.dt
@@ -97,7 +85,6 @@ Crafty.c 'ScrollWall',
         y: Math.round(@y)
         dx: dx
         dy: dy
-        panning: cameraPan
       )
       Crafty.trigger('ViewportMove',
         x: Math.round(x)
@@ -125,32 +112,8 @@ Crafty.c 'ScrollWall',
         #p = e.obj
         #p.attr y: @wallBottom.y - p.h
 
-  screenShake: (amount, duration) ->
-    @shakes.push(
-      amount: amount
-      duration: duration
-      shakeX: Math.ceil(duration / 100)
-      shakeY: Math.ceil(duration / 200)
-      easing: new Crafty.easing(duration, 'linear')
-      startX: if Math.random() > 0.5 then -1 else 1
-      startY: if Math.random() > 0.5 then -1 else 1
-      coords: (v) ->
-        shakeX = Math.cos((Math.PI / 2) + (v * @shakeX * (Math.PI / 2)))
-        shakeY = Math.cos((Math.PI / 2) + (v * @shakeY * (Math.PI / 2)))
-        [
-          shakeX * amount * @startX
-          shakeY * amount * @startY
-        ]
-    )
-
-  cameraPan: (options) ->
-    @motions.push(
-      easing: new Crafty.easing(options.duration, 'easeInOutQuad')
-      x: options.x ? 0
-      y: options.y ? 0
-      coords: (v) ->
-        [@x * v, @y * v]
-    )
+  addTrauma: (amount) ->
+    @trauma = Math.min(1, @trauma + amount)
 
   scrollWall: (speed, options = {}) ->
     @targetSpeed(speed, options)

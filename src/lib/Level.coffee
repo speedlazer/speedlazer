@@ -225,19 +225,8 @@ class Game.Level
     Crafty('PlayerControlledShip').each ->
       @forcedSpeed speed, options
 
-  screenShake: (amount, options = {}) ->
-    options = defaults(options, {
-      duration: 1000
-    })
-    @_scrollWall.screenShake(amount, options.duration)
-
-  cameraPan: (options = {}) ->
-    options = defaults(options, {
-      y: 0
-      x: 0
-      duration: 1000
-    })
-    #@_scrollWall.cameraPan(options)
+  addTrauma: (trauma) ->
+    @_scrollWall.addTrauma(trauma)
 
   setHeight: (deltaY) ->
     #@_scrollWall.setHeight deltaY

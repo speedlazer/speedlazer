@@ -110,7 +110,7 @@ Crafty.c 'PlayerSpaceship',
         radius: @w / 3
       )
       Crafty.audio.play("explosion")
-      Crafty('ScrollWall').get(0).screenShake(10, 500)
+      Crafty('ScrollWall').get(0).addTrauma(0.3)
 
     @bind 'Die', ->
       Crafty.e('Blast, Explosion').explode(
@@ -119,7 +119,8 @@ Crafty.c 'PlayerSpaceship',
         radius: @w
       )
       Crafty.audio.play("explosion")
-      Crafty('ScrollWall').get(0).screenShake(20, 2000)
+      # this trauma is added upon the 'hit'
+      Crafty('ScrollWall').get(0).addTrauma(0.3)
       @trigger 'Destroyed', this
 
     @bind 'GameLoop', (fd) ->
