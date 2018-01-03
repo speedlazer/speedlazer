@@ -92,9 +92,9 @@ Crafty.c 'PlayerSpaceship',
         hit = no
         damage = 0
         for e in collision
-          if e.obj.damage and e.obj.damage > damage
+          if e.obj.damage and e.obj.damage > damage and !e.obj.hidden
             damage = e.obj.damage
-          hit = yes unless e.obj.hidden
+            hit = yes
         @trigger('Hit', { damage }) if hit
     )
 
