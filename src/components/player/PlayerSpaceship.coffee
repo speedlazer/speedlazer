@@ -117,7 +117,6 @@ Crafty.c 'PlayerSpaceship',
         x: @x + (@w / 2)
         y: @y + (@h / 2)
         radius: @w
-        duration: 1000
       )
       Crafty.audio.play("explosion")
       Crafty('ScrollWall').get(0).screenShake(20, 2000)

@@ -48,6 +48,7 @@ Game =
     @setGameSpeed(1.0)
     Crafty.bind 'NewEntity', (data) =>
       e = Crafty(data.id)
+      return if e.has('TimeManager')
       if e.has('SpriteAnimation')
         e.animationSpeed = @gameSpeed
 
