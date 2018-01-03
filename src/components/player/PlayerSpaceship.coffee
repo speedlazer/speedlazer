@@ -82,20 +82,21 @@ Crafty.c 'PlayerSpaceship',
 
     @backFire.colorOverride(c)
 
-    @addComponent('Invincible').invincibleDuration(2000)
+    @addComponent('Invincible').invincibleDuration(1500)
 
     @setDetectionOffset 60, 0
-    @onHit 'Hostile', (collision) ->
-      return if Game.paused
-      return if @has('Invincible')
-      hit = no
-      damage = 0
-      for e in collision
-        if e.obj.damage and e.obj.damage > damage and !e.obj.damageHandled
-          damage = e.obj.damage
-          e.obj.damageHandled = true
-        hit = yes unless e.obj.hidden
-      @trigger('Hit', { damage }) if hit
+    @onHit('Hostile',
+      (collision) ->
+        return if Game.paused
+        return if @has('Invincible')
+        hit = no
+        damage = 0
+        for e in collision
+          if e.obj.damage and e.obj.damage > damage
+            damage = e.obj.damage
+          hit = yes unless e.obj.hidden
+        @trigger('Hit', { damage }) if hit
+    )
 
     @onHit 'PowerUp', (e) ->
       return if Game.paused
@@ -103,7 +104,7 @@ Crafty.c 'PlayerSpaceship',
         @pickUp(pu.obj) unless pu.obj.pickedUp
 
     @bind 'Hit', ->
-      @addComponent('Invincible').invincibleDuration(1000)
+      @addComponent('Invincible').invincibleDuration(2000)
       Crafty.e('Blast, Explosion').explode(
         x: @x + (@w / 2)
         y: @y + (@h / 2)
