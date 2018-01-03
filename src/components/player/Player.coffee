@@ -6,7 +6,7 @@ Crafty.c 'Player',
 
   reset: ->
     @softReset()
-    @removeComponent('ControlScheme')
+    @removeComponent('ControlScheme') if @has('ControlScheme')
 
   softReset: ->
     @stats =
