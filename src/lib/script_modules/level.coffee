@@ -413,7 +413,7 @@ Level =
   changeSeaLevel: (offsetY) ->
     (sequence) =>
       @_verify(sequence)
-      @level.sealevelOffset = offsetY
+      @level.sealevelOffset = -offsetY
       level = @level
       Crafty.s('SeaLevel').setOffset(level.sealevelOffset)
 
