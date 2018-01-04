@@ -16,7 +16,7 @@ Crafty.c 'Player',
       bonus: 0
 
     @attr({
-      lives: 3 #Infinity,
+      lives: Infinity,
       health: 5
       maxHealth: 5
       points: 0
