@@ -53,16 +53,16 @@ Crafty.c 'WaterSplashes',
               alpha: @waterAlpha
               gravity: 0.2
               (prev, fd) ->
-                mul = fd.dt / (1000 / Crafty.timer.FPS())
+                mul = fd.dt / 1000.0
                 @attr(
-                  gravity: @gravity + (0.3 * mul)
-                  alpha: Math.max(0.1, (@alpha - Math.random() * (.03 * mul)))
+                  gravity: @gravity + (15 * mul)
+                  alpha: Math.max(0.1, (@alpha - Math.random() * (1.5 * mul)))
                 )
                 return {
-                  y: Math.min(prev.y - (Math.random() * @upwards * mul) + @gravity, sealevel - 10)
-                  x: prev.x + ((-.5 + pos) * Math.random() * 4 * mul)
-                  w: prev.w + (.3 * mul)
-                  h: prev.h + (.3 * mul)
+                  y: Math.min(prev.y - (Math.random() * @upwards * 50 * mul) + @gravity, sealevel - 10)
+                  x: prev.x + ((-.5 + pos) * Math.random() * 200 * mul)
+                  w: prev.w + (15 * mul)
+                  h: prev.h + (15 * mul)
                 }
             )
     @_lastWaterY = @y
