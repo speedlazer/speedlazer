@@ -81,8 +81,24 @@ Crafty.c 'BattleShip',
     )
     @attach(@hatch)
 
-    @attach Crafty.e('2D, WebGL, MineCannonPlace').attr(
+    @attach Crafty.e('2D, MineCannonPlace').attr(
       x: @x + 82
+      y: @y + 28
+      z: 15
+      w: 15
+      h: 2
+    )
+
+    @attach Crafty.e('2D, TurretPlace').attr(
+      x: @x + 550
+      y: @y + 28
+      z: 15
+      w: 15
+      h: 2
+    )
+
+    @attach Crafty.e('2D, TurretPlace').attr(
+      x: @x + 1050
       y: @y + 28
       z: 15
       w: 15
@@ -148,3 +164,7 @@ Crafty.c 'BattleShip',
     @hatch.animate('close')
 
 
+  execute: (action) ->
+    switch action
+      when 'open' then @open()
+      when 'close' then @close()

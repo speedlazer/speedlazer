@@ -182,11 +182,16 @@ class Stage1BossStage1 extends Stage1Boss
       @animate 'reload', 0, 'wing'
       @moveTo(y: .43, speed: 5)
 
+      # TODO: Add homing missile attack to the mix
+
       # fase 1
       @repeat @sequence(
         @rocketStrikeDance()
         @wait 100
-        @mineStomp()
+        @choose(
+          @mineStomp()
+          @searchMines()
+        )
         @wait 100
       )
     )
@@ -195,6 +200,10 @@ class Stage1BossStage1 extends Stage1Boss
     # start at .7
     @bindSequence 'Hit', @fase3, => @entity.healthBelow .4
 
+    # TODO: Add screenshake and debris falling to the mix
+
+    # TODO: Add homing missile attack to the mix
+
     # fase 2
     @sequence(
       @mineFieldStrike('BridgeDamage')
@@ -202,13 +211,18 @@ class Stage1BossStage1 extends Stage1Boss
         @wait 100
         @rocketStrikeDance()
         @wait 100
-        @mineStomp()
+        @choose(
+          @mineStomp()
+          @searchMines()
+        )
       )
     )
 
   fase3: ->
     # start at .4
     @bindSequence 'Hit', @endOfFight, => @entity.healthBelow .2
+
+    # TODO: Revise with drone attacks
 
     @sequence(
       @mineFieldStrike('BridgeCollapse')
@@ -235,24 +249,27 @@ class Stage1BossStage1 extends Stage1Boss
       @animate 'fast', -1, 'eye'
 
       @while(
-        @repeat(2,
-          @placeSquad(Stage1BossMineStomp,
-            amount: 8
-            delay: 50
-            options:
-              location: @location()
-              gridConfig:
-                x:
-                  start: ->
-                    rnd = Math.random()
-                    loc = 1 + Math.floor(rnd * 5.0)
-                    loc * 0.15
-                  steps: 1
-                  stepSize: 0.15
-                y:
-                  start: 0.125
-                  steps: 8
-                  stepSize: 0.1
+        @repeat(3,
+          @sequence(
+            @async @placeSquad(Stage1BossMineStomp,
+              amount: 8
+              delay: 50
+              options:
+                location: @location()
+                gridConfig:
+                  x:
+                    start: ->
+                      rnd = Math.random()
+                      loc = 1 + Math.floor(rnd * 5.0)
+                      loc * 0.15
+                    steps: 1
+                    stepSize: 0.15
+                  y:
+                    start: 0.125
+                    steps: 8
+                    stepSize: 0.1
+            )
+            @wait 2000
           )
         )
         @movePath([
@@ -263,6 +280,20 @@ class Stage1BossStage1 extends Stage1Boss
       )
       @animate 'slow', -1, 'eye'
     )
+
+  searchMines: ->
+    @while(
+      @repeat 5, @sequence(
+         @async @runScript(Stage1BossMine, @location())
+         @wait 1500
+      )
+      @movePath([
+        [.7, .6]
+        [.9, .7]
+        [.9, .5]
+      ], speed: 200)
+    )
+
 
   mineFieldStrike: (event) ->
     @sequence(
@@ -409,14 +440,26 @@ class Stage1BossMine extends EntityScript
     @loadAssets('mine')
 
   spawn: (location) ->
-    Crafty.e('Mine').mine(
+    Crafty.e('Mine, BulletCircle').mine(
       health: 100
       x: location().x
       y: location().y + 10
       z: -4
-      defaultSpeed: 200
+      defaultSpeed: 400
       pointsOnHit: 0
       pointsOnDestroy: 0
+    ).bulletCircle(
+      burstAmount: 4
+      projectile: (x, y, angle) =>
+        projectile = Crafty.e('Sphere, Hostile, Projectile')
+          .blink()
+          .attr(
+            w: 14
+            h: 14
+            speed: 400
+            damage: 1
+          )
+        projectile.shoot(x, y, angle)
     )
 
   execute: ->
@@ -432,6 +475,7 @@ class Stage1BossMine extends EntityScript
       @animate 'blink', -1
       @wait 1000
       => @entity.absorbDamage damage: @entity.health
+      => @entity.shootRing()
       @endSequence()
     )
 
@@ -944,7 +988,7 @@ class Stage1BossMineField extends EntityScript
     Crafty.e('Mine').mine(
       x: location.x
       y: location.y + 36
-      health: 400
+      health: 300
       defaultSpeed: options.speed ? 250
       pointsOnHit: if options.points then 10 else 0
       pointsOnDestroy: if options.points then 50 else 0
@@ -960,12 +1004,7 @@ class Stage1BossMineField extends EntityScript
       @sequence(
         @animate('blink', -1)
         @wait 1000
-        @squadOnce('bridge', @sequence(
-          @wait 200
-          =>
-            console.log('trigger event', @event)
-            Crafty.trigger(@event, @level)
-        ))
+        @squadOnce('bridge', => Crafty.trigger(@event, @level))
         => @entity.absorbDamage damage: @entity.health
         @endSequence()
       )
@@ -981,12 +1020,12 @@ class Stage1BossMineStomp extends EntityScript
 
   spawn: (options) ->
     location = options.location()
-    @target = options.grid.getLocation()
+    @gridPos = options.grid.getLocation()
 
     Crafty.e('Mine').mine(
       x: location.x
       y: location.y + 36
-      health: 400
+      health: 300
       defaultSpeed: options.speed ? 250
       pointsOnHit: if options.points then 10 else 0
       pointsOnDestroy: if options.points then 50 else 0
@@ -996,16 +1035,18 @@ class Stage1BossMineStomp extends EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @moveTo(y: 1.05, speed: 400)
-      @moveTo(x: @target.x, speed: 400, easing: 'easeOutQuad')
+      @moveTo(x: @gridPos.x, speed: 400, easing: 'easeOutQuad')
       @synchronizeOn 'dropped'
-      @moveTo(y: @target.y, easing: 'easeOutQuad', speed: 400)
+      @pickTarget('PlayerControlledShip')
+      @lockTarget()
+      @moveTo(y: @gridPos.y, easing: 'easeOutQuad', speed: 400)
       @sequence(
-        @animate('blink', -1)
-        @pickTarget('PlayerControlledShip')
         @parallel(
-          @moveTo(@targetLocation(y: @target.y), speed: 400)
+          @moveThrough(@targetLocation(y: @gridPos.y), speed: 400)
           @sequence(
-            @wait 1000
+            @wait 500
+            @animate('blink', -1)
+            @wait 300
             => @entity.absorbDamage damage: @entity.health
             @endSequence()
           )

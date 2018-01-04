@@ -6,6 +6,7 @@ Level = require('./script_modules/level').default
 Entity = require('./script_modules/entity').default
 Colors = require('./script_modules/colors').default
 LevelTemplate = require('./script_templates/level').default
+Synchronizer = require('src/lib/Synchronizer').default
 
 class LazerScript
   constructor: (@level) ->
@@ -70,7 +71,7 @@ class EntityScript extends LazerScript
     if isObject(args[0]) and args[0].identifier?
       identifier = args[0].identifier# + args[0].index
       @entity.addComponent(identifier)
-    @synchronizer = @options.synchronizer ? new Game.Synchronizer
+    @synchronizer = @options.synchronizer ? new Synchronizer
     @synchronizer.registerEntity this
 
     unless @entity?
