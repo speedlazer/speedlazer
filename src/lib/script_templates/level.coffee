@@ -77,7 +77,7 @@ Level =
       @blast(@location(), damage: options.damage, radius: 40)
     else
       @parallel(
-        @screenShake(10, duration: 200)
+        @addMinorScreenshake()
         => Crafty.audio.play("explosion")
         @blast(@location({
           offsetX: options.offsetX
