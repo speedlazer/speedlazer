@@ -6,7 +6,7 @@
   "homepage": "http://speedlazer.net",
   "repository": {
     "type": "git",
-    "url": "https://github.com/matthijsgroen/game-play"
+    "url": "https://github.com/speedlazer/speedlazer"
   },
   "keywords": [
     "side-scroller",
