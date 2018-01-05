@@ -11,8 +11,8 @@ Crafty.c("DebugInfo", {
     this.bind("EnterFrame", fd => {
       this.text(
         `T: ${Math.round(Game.gameTime / 1000)}s ` +
-        `E: ${Crafty("*").length} ` +
-        `FPS: ${Math.round(1000 / fd.dt)}`
+          `E: ${Crafty("*").length} ` +
+          `FPS: ${Math.round(1000 / fd.dt)}`
       );
     });
   }
