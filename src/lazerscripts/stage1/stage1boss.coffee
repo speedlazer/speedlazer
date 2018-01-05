@@ -190,12 +190,20 @@ class Stage1BossStage1 extends Stage1Boss
           @homingMissileStrike()
           @rocketStrikeDance()
         )
-        @wait 1000
+        @movePath([
+          [.9, .4]
+          [.7, .5]
+        ], speed: 300)
+
         @choose(
           @mineStomp()
           @searchMines()
+          @minePatterns()
         )
-        @wait 1000
+        @movePath([
+          [.7, .5]
+          [.9, .4]
+        ], speed: 300)
       )
     )
 
@@ -211,16 +219,20 @@ class Stage1BossStage1 extends Stage1Boss
       @cancelBullets('Mine')
       @cancelBullets('shadow')
       @repeat @sequence(
-        @wait 1000
-        @choose(
-          @homingMissileStrike()
-          @rocketStrikeDance()
-        )
-        @wait 1000
+        @movePath([
+          [.9, .4]
+          [.7, .5]
+        ], speed: 300)
+
         @choose(
           @mineStomp()
           @searchMines()
+          @minePatterns()
         )
+        @movePath([
+          [.7, .5]
+          [.9, .4]
+        ], speed: 300)
       )
     )
 
@@ -248,6 +260,47 @@ class Stage1BossStage1 extends Stage1Boss
         )
         @wait 1000
       )
+    )
+
+  minePatterns: ->
+    @while(
+      @sequence(
+        @placeSquad(Stage1BossMinePattern,
+          amount: 5
+          delay: 50
+          options:
+            ringStartAngle: 0
+            location: @location()
+            gridConfig:
+              initial: [
+                { x: 0.2, y: 0.3 }
+                { x: 0.8, y: 0.3 }
+                { x: 0.5, y: 0.5 }
+                { x: 0.2, y: 0.7 }
+                { x: 0.8, y: 0.7 }
+              ]
+        )
+        @placeSquad(Stage1BossMinePattern,
+          amount: 5
+          delay: 50
+          options:
+            ringStartAngle: 0.5
+            location: @location()
+            gridConfig:
+              initial: [
+                { x: 0.2, y: 0.3 }
+                { x: 0.8, y: 0.3 }
+                { x: 0.5, y: 0.5 }
+                { x: 0.2, y: 0.7 }
+                { x: 0.8, y: 0.7 }
+              ]
+        )
+      )
+      @movePath([
+        [.9, .4]
+        [.9, .6]
+        [.7, .5]
+      ], speed: 100)
     )
 
   mineStomp: ->
@@ -1070,6 +1123,56 @@ class Stage1BossMineStomp extends EntityScript
           )
         )
       )
+    )
+
+  onKilled: ->
+    @bigExplosion(juice: @juice)
+
+class Stage1BossMinePattern extends EntityScript
+
+  assets: ->
+    @loadAssets('mine')
+
+  spawn: (options) ->
+    location = options.location()
+    @gridPos = options.grid.getLocation()
+
+    Crafty.e('Mine, BulletCircle').mine(
+      x: location.x
+      y: location.y + 36
+      health: 300
+      defaultSpeed: options.speed ? 250
+      pointsOnHit: if options.points then 10 else 0
+      pointsOnDestroy: if options.points then 50 else 0
+    ).bulletCircle(
+      angle: options.ringStartAngle
+      burstAmount: 4
+      projectile: (x, y, angle) =>
+        projectile = Crafty.e('Sphere, Hostile, Projectile')
+          .blink()
+          .attr(
+            w: 14
+            h: 14
+            speed: 400
+            damage: 1
+          )
+        projectile.shoot(x, y, angle)
+    )
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @moveTo(y: 1.05, speed: 400)
+      @moveTo(x: @gridPos.x, speed: 400, easing: 'easeOutQuad')
+      @synchronizeOn 'dropped'
+      @moveTo(y: @gridPos.y, easing: 'easeOutQuad', speed: 400)
+
+      @synchronizeOn 'splode'
+      @animate('blink', -1)
+      @wait 300
+      => @entity.absorbDamage damage: @entity.health
+      => @entity.shootRing()
+      @endSequence()
     )
 
   onKilled: ->
