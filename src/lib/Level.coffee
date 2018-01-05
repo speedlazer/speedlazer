@@ -16,7 +16,7 @@ a level can access and use and modify this data.
 
 ###
 
-class Game.Level
+class Level
   constructor: (@generator, @data = {}) ->
     @blocks = []
     @bufferLength = Crafty.viewport.width * 3
@@ -332,3 +332,5 @@ class Game.Level
 
   setStartWeapons: (@playerStartWeapons) ->
 
+module.exports =
+  default: Level

@@ -21,7 +21,7 @@ without = require('lodash/without')
 # example:
 #   class MyBlock extends Game.LevelScenery
 #     ...
-#   Game.levelGenerator.defineBlock MyBlock
+#   levelGenerator.defineBlock MyBlock
 #
 ##
 class Game.LevelScenery
