@@ -5,6 +5,7 @@ Crafty.c 'BulletCircle',
   bulletCircle: (options) ->
     @shootConfig =  defaults(options,
       burstAmount: 10
+      angle: 'random'
     )
     this
 
@@ -17,7 +18,11 @@ Crafty.c 'BulletCircle',
     wo[1] *= (@scale ? 1)
 
     angleRange = 360 / @shootConfig.burstAmount
-    startAngle = Math.random() * angleRange
+    ang = if @shootConfig.angle == 'random'
+      Math.random()
+    else
+      @shootConfig.angle
+    startAngle = ang * angleRange
 
     for i in [0...@shootConfig.burstAmount]
       @shootConfig.projectile(
