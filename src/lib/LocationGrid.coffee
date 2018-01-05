@@ -1,7 +1,7 @@
 defaults = require('lodash/defaults')
 shuffle = require('lodash/shuffle')
 
-class Game.LocationGrid
+class LocationGrid
   constructor: (settings) ->
     settings = defaults settings,
       x: {}
@@ -39,4 +39,6 @@ class Game.LocationGrid
   getLocation: ->
     @freeCoords.pop()
 
-
+module.exports = {
+  default: LocationGrid
+}

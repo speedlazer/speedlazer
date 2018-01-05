@@ -3,6 +3,7 @@ sample = require('lodash/sample')
 shuffle = require('lodash/shuffle')
 defaults = require('lodash/defaults')
 Synchronizer = require('src/lib/Synchronizer').default
+LocationGrid = require('src/lib/LocationGrid').default
 
 # Actions to control the flow of a level
 #
@@ -52,7 +53,7 @@ Level =
         delay: 1000
       )
       if options.gridConfig?
-        options.grid = new Game.LocationGrid(options.gridConfig)
+        options.grid = new LocationGrid(options.gridConfig)
       settings.options = options
       scripts = (for i in [0...settings.amount]
         synchronizer.registerEntity(new scriptClass(@level))
