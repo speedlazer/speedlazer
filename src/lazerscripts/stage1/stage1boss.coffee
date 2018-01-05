@@ -1100,7 +1100,7 @@ class Stage1BossPopupMineField extends EntityScript
       @moveTo(x: @target.x, y: @target.y, easing: 'easeOutQuad')
       @synchronizeOn 'placed'
       @sequence(
-        @wait (1 - @target.xPerc) * 1000
+        @wait (1 - @target.x) * 1000
         @animate('blink', -1)
         @wait 1000
         => @entity.absorbDamage damage: @entity.health

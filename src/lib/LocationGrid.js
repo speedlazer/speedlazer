@@ -5,33 +5,30 @@ class LocationGrid {
   constructor(settings) {
     settings = defaults(settings, {
       x: {},
-      y: {}
+      y: {},
+      initial: []
     });
 
     settings.x = defaults(settings.x, {
       start: 0,
-      steps: 1,
+      steps: 0,
       stepSize: 1,
       avoid: []
     });
 
     settings.y = defaults(settings.y, {
       start: 0,
-      steps: 1,
+      steps: 0,
       stepSize: 1,
       avoid: []
     });
 
     const xs = this.coordList(settings.x);
     const ys = this.coordList(settings.y);
-    const coords = [];
+    const coords = settings.initial;
     for (let y of ys) {
       for (let x of xs) {
-        const xPerc =
-          (x - settings.x.start) / (settings.x.stepSize * settings.x.steps);
-        const yPerc =
-          (y - settings.y.start) / (settings.y.stepSize * settings.y.steps);
-        coords.push({ x, y, xPerc, yPerc });
+        coords.push({ x, y });
       }
     }
 
