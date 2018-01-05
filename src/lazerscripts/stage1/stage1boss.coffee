@@ -16,13 +16,13 @@ class Stage1Boss extends EntityScript
           [.9, .4]
           [.7, .1]
           [.6, .2]
-        ], speed: 200
+        ], speed: 250
       )
       @repeat 2, @sequence(
         @fireRockets(4)
         @wait 500
         @fireRockets(4)
-        @wait 500
+        @wait 400
         @fireRockets(2)
         @wait 200
       )
@@ -141,7 +141,7 @@ class Stage1BossStage1 extends Stage1Boss
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       defaultSpeed: 100
-      health: 23000
+      health: 30000
       #defaultSpeed: 50
       pointsOnHit: 10
     ).bulletCircle(
@@ -220,19 +220,22 @@ class Stage1BossStage1 extends Stage1Boss
       @cancelBullets('shadow')
       @repeat @sequence(
         @movePath([
+          [.7, .5]
+          [.9, .4]
+        ], speed: 300)
+        @choose(
+          @homingMissileStrike()
+          @rocketStrikeDance()
+        )
+        @movePath([
           [.9, .4]
           [.7, .5]
         ], speed: 300)
-
         @choose(
           @mineStomp()
           @searchMines()
           @minePatterns()
         )
-        @movePath([
-          [.7, .5]
-          [.9, .4]
-        ], speed: 300)
       )
     )
 
@@ -308,7 +311,7 @@ class Stage1BossStage1 extends Stage1Boss
       @animate 'fast', -1, 'eye'
 
       @while(
-        @repeat(3,
+        @repeat(2,
           @sequence(
             @async @placeSquad(Stage1BossMineStomp,
               amount: 8
@@ -355,19 +358,23 @@ class Stage1BossStage1 extends Stage1Boss
 
   homingMissileStrike: ->
     @while(
-      @repeat 10, @sequence(
+      @repeat 5, @sequence(
         @fireRockets(4, true)
         @wait 500
       )
       @movePath([
         [.9, .2]
         [.9, .7]
-      ], speed: 100)
+      ], speed: 200)
     )
 
   mineFieldStrike: (event) ->
     @sequence(
-      @wait 2000
+      @movePath([
+        [.7, .6]
+        [.9, .7]
+        [.9, .5]
+      ], speed: 100)
       @parallel(
         @sequence(
           @moveTo(x: -.2, y: .8, speed: 600, easing: 'easeInQuad')

@@ -43,8 +43,7 @@ Game =
     if settings.sound is no
       Crafty.audio.mute()
 
-    start = (new Date()) * 1
-    @gameTime = start
+    @gameTime = 0
     @setGameSpeed(1.0)
     Crafty.bind 'NewEntity', (data) =>
       e = Crafty(data.id)
