@@ -137,25 +137,13 @@ class Stage1Boss extends EntityScript
 
 class Stage1BossStage1 extends Stage1Boss
   spawn: ->
-    Crafty.e('LargeDrone, Horizon, BulletCircle').drone(
+    Crafty.e('LargeDrone, Horizon').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       defaultSpeed: 100
       health: 30000
       #defaultSpeed: 50
       pointsOnHit: 10
-    ).bulletCircle(
-      burstAmount: 16
-      projectile: (x, y, angle) =>
-        projectile = Crafty.e('Sphere, Hostile, Projectile')
-          .blink()
-          .attr(
-            w: 14
-            h: 14
-            speed: 200
-            damage: 1
-          )
-        projectile.shoot(x, y, angle)
     )
 
   execute: ->
@@ -425,10 +413,6 @@ class Stage1BossStage1 extends Stage1Boss
           @wait 200
         )
       )
-      @repeat(5, @sequence(
-        => @entity.shootRing()
-        @wait 300
-      ))
 
       @moveTo(y: .1, speed: 200, easing: 'easeInOutQuad')
       @while(
@@ -477,10 +461,6 @@ class Stage1BossStage1 extends Stage1Boss
     @sequence(
       @cancelBullets('Mine')
       @cancelBullets('shadow')
-      @repeat(5, @sequence(
-        => @entity.shootRing()
-        @wait 300
-      ))
       @invincible yes
       @while(
         @moveTo(x: .6, y: .90, speed: 50)
