@@ -22,6 +22,23 @@ class Test extends LazerScript
 
       @async @runScript(StartOfDawn, speed: 1)
 
+      @wait(1000)
+      @addMinorScreenshake()
+      @wait(1000)
+      @addMinorScreenshake()
+      @wait(1000)
+      @addMinorScreenshake()
+      @wait(20)
+      @addMinorScreenshake()
+      @wait(20)
+      @addMinorScreenshake()
+      @wait(2000)
+      @addMajorScreenshake()
+      @wait(2000)
+      @addMajorScreenshake()
+      @wait(20)
+      @addMajorScreenshake()
+
       @repeat(3, @placeSquad(Swirler,
         amount: 6
         delay: 250
@@ -38,12 +55,12 @@ class Test extends LazerScript
       @async @runScript(Morning, speed: 1)
       @mineSwarm()
 
-      @repeat(2, @placeSquad(Swirler,
-        amount: 6
-        delay: 250
-        drop: 'points'
-      ))
-      @async @runScript(Noon, speed: 1)
+      #@repeat(2, @placeSquad(Swirler,
+        #amount: 6
+        #delay: 250
+        #drop: 'points'
+      #))
+      #@async @runScript(Noon, speed: 1)
 
       #@placeSquad Stalker,
         #drop: 'pool'

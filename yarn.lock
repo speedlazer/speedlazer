@@ -3702,6 +3702,10 @@ node-pre-gyp@^0.6.39:
     tar "^2.2.1"
     tar-pack "^3.4.0"
 
+noisejs@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/noisejs/-/noisejs-2.1.0.tgz#84b4c4cd04ff43367034f65253e213e0d9fe1aff"
+
 nopt@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/nopt/-/nopt-4.0.1.tgz#d0d4685afd5415193c8c7505602d0d17cd64474d"
