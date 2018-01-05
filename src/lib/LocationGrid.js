@@ -49,8 +49,8 @@ class LocationGrid {
         : listSettings.start;
     return Array(listSettings.steps)
       .fill()
-      .filter((v, i) => !avoid.includes(i))
-      .map((v, i) => start + i * listSettings.stepSize);
+      .map((v, i) => start + i * listSettings.stepSize)
+      .filter((v, i) => !avoid.includes(i));
   }
 
   getLocation() {
