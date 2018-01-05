@@ -1,6 +1,6 @@
 jsbezier = require('jsbezier')
 
-class Game.BezierPath
+class BezierPath
 
   scalePoints: (points, { origin, scale }) ->
     o =
@@ -164,3 +164,5 @@ class Game.BezierPath
       x[n - i - 1] -= tmp[n - i] * x[n - i] # Backsubstitution.
     x
 
+module.exports =
+  default: BezierPath
