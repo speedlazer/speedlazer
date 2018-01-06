@@ -108,7 +108,9 @@ Crafty.c 'ShipSpawnable',
       )
     this
 
+  # TODO: Make this a concern of the ship itself
   _updateShipSprite: ->
+    return unless @ship.has('Sprite')
     sprite = 0
     healthPerc = @health / @maxHealth
     sprite = 2 if healthPerc < .3

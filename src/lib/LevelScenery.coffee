@@ -19,12 +19,12 @@ without = require('lodash/without')
 # and then register the new block at the LevelGenerator
 #
 # example:
-#   class MyBlock extends Game.LevelScenery
+#   class MyBlock extends LevelScenery
 #     ...
-#   Game.levelGenerator.defineBlock MyBlock
+#   levelGenerator.defineBlock MyBlock
 #
 ##
-class Game.LevelScenery
+class LevelScenery
   screenHeight: 480
 
   constructor: (@level, @generator, @settings) ->
@@ -167,3 +167,5 @@ class Game.LevelScenery
         return no
     yes
 
+module.exports =
+  default: LevelScenery

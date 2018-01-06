@@ -1,3 +1,5 @@
+Level = require('./Level').default
+
 ##
 # LevelGenerator
 #
@@ -11,21 +13,21 @@
 #
 # example:
 #
-#   class MyBlock extends Game.LevelScenery
+#   class MyBlock extends LevelScenery
 #     ...
 #
-#   Game.levelGenerator.defineBlock MyBlock
+#   levelGenerator.defineBlock(MyBlock)
 #
 # With these blocks a level can be created through
 # the generator.
 #
-# level = Game.levelGenerator.createLevel()
+# level = levelGenerator.createLevel()
 #
 # metadata can be passed in for the blocks to
 # be used and accessed.
 #
 ##
-class Game.LevelGenerator
+class LevelGenerator
 
   constructor: ->
     @buildingBlocks = {}
@@ -91,6 +93,9 @@ class Game.LevelGenerator
   # Create a new level
   # @param {data} meta data that all pieces in the level can access
   createLevel: (data = { namespace: 'City' }) ->
-    new Game.Level(this, data)
+    new Level(this, data)
 
-Game.levelGenerator = new Game.LevelGenerator
+levelGenerator = new LevelGenerator
+
+module.exports =
+  default: levelGenerator

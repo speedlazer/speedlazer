@@ -1,4 +1,4 @@
-generator = Game.levelGenerator
+levelGenerator = require('src/lib/LevelGenerator').default
 
 cityEnemies = require('src/images/city-enemies.png')
 explosion = require('src/images/explosion.png')
@@ -10,7 +10,7 @@ laserShotAudio = require('src/audio/laser-shot.ogg')
 laughAudio = require('src/audio/laugh.ogg')
 powerupAudio = require('src/audio/powerup.ogg')
 
-generator.defineAssets(
+levelGenerator.defineAssets(
   'explosion'
   contents: ['explosion']
   spriteMap: explosion
@@ -27,7 +27,7 @@ generator.defineAssets(
     powerup: [powerupAudio]
     laugh: [laughAudio]
 )
-generator.defineAssets(
+levelGenerator.defineAssets(
   'player'
   contents: [
     'playerShip'
@@ -69,7 +69,7 @@ generator.defineAssets(
         laserTank: [0, 11, 6, 3]
         laserTankBarrel: [6, 11, 4, 2]
 )
-generator.defineAssets(
+levelGenerator.defineAssets(
   'portraits'
   contents: [
     'general'
