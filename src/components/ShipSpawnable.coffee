@@ -108,6 +108,7 @@ Crafty.c 'ShipSpawnable',
       )
     this
 
+  # TODO: Make this a concern of the ship itself
   _updateShipSprite: ->
     return unless @ship.has('Sprite')
     sprite = 0
