@@ -26,7 +26,7 @@ const scaleGame = () => {
   const ratio = Math.min(ratioY, ratioX);
 
   stage.style.transform = `scale(${ratio})`;
-  const left = Math.max(0, (viewportWidth - (stageWidth * ratio)) * 0.5);
+  const left = Math.max(0, (viewportWidth - stageWidth * ratio) * 0.5);
   stage.style.left = `${left}px`;
   document.getElementsByTagName("footer")[0].style.top = `${576 * ratio}px`;
 };
