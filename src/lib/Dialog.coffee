@@ -1,4 +1,4 @@
-Game.say = (speaker, text, settings) ->
+say = (speaker, text, settings) ->
   Crafty('Dialog').each ->
     @trigger('Abort')
     @destroy()
@@ -108,3 +108,5 @@ Game.say = (speaker, text, settings) ->
 
   defer.promise
 
+module.exports =
+  say: say
