@@ -171,8 +171,6 @@ class Stage1BossStage1 extends Stage1Boss
       @moveTo(y: .43, speed: 5)
 
       # fase 1
-      # TODO: Add underwater missile attacks
-      # TODO: Add mine patterns
       @repeat @sequence(
         @choose(
           @homingMissileStrike()
@@ -199,8 +197,6 @@ class Stage1BossStage1 extends Stage1Boss
     # start at .7
     @bindSequence 'Hit', @fase3, => @entity.healthBelow .4
 
-    # TODO: Add screenshake and debris falling to the mix
-
     # fase 2
     @sequence(
       @mineFieldStrike('BridgeDamage')
@@ -211,20 +207,28 @@ class Stage1BossStage1 extends Stage1Boss
           [.7, .5]
           [.9, .4]
         ], speed: 300)
-        @choose(
+        @withDebrisFalling(@choose(
           @homingMissileStrike()
           @rocketStrikeDance()
-        )
+        ))
         @movePath([
           [.9, .4]
           [.7, .5]
         ], speed: 300)
-        @choose(
+        @withDebrisFalling(@choose(
           @mineStomp()
           @searchMines()
           @minePatterns()
-        )
+        ))
       )
+    )
+
+  withDebrisFalling: (attack) ->
+    @parallel(
+      attack
+      @placeSquad BridgeDebrisFalling,
+        amount: 2,
+        delay: 2000
     )
 
   fase3: ->
@@ -232,7 +236,7 @@ class Stage1BossStage1 extends Stage1Boss
     @bindSequence 'Hit', @endOfFight, => @entity.healthBelow .2
 
     @sequence(
-      @mineFieldStrike('BridgeCollapse')
+      @withDebrisFalling(@mineFieldStrike('BridgeCollapse'))
       @wait 500
       @rocketStrikeDance()
       #@cancelBullets('Mine')
@@ -1202,6 +1206,49 @@ class Stage1BossPopupMineField extends EntityScript
 
   onKilled: ->
     @bigExplosion(juice: @juice)
+
+class BridgeDebrisFalling extends EntityScript
+  spawn: (options) ->
+    Crafty.e('Debris').debris(
+      health: 700
+      x: (Math.random() * 0.8) + 0.1
+      y: -0.1
+      z: -4
+      defaultSpeed: options.speed ? 400
+      pointsOnHit: 0
+      pointsOnDestroy: 0
+    )
+
+  execute: ->
+    x = Math.random() * 0.8 + 0.1
+    @sequence(
+      @setLocation x: x, y: -0.1
+      @addMajorScreenshake()
+      @wait 300
+      # debris falling
+      @while(
+        @moveTo(y: 1.1, easing: 'easeInQuad')
+        @sequence(
+          @blast(@location(),
+            ->
+              radius: 50
+              duration: 235
+              z: 1
+              alpha: .3
+              lightness: 0.3
+              gravity: (Math.random() * .3)
+              vertical: 0
+            ->
+              vertical: @vertical + Math.random() * @gravity
+              rotation: @rotation + (Math.random() * 3)
+              alpha: Math.max(0.1, (@alpha - Math.random() * .03))
+              y: @y - @vertical
+          )
+          @wait 40
+        )
+      )
+    )
+
 
 module.exports = {
   Stage1BossAimedRocket
