@@ -124,6 +124,9 @@ Crafty.c 'PlayerSpaceship',
       Crafty('ScrollWall').get(0).addTrauma(0.3)
       @trigger 'Destroyed', this
 
+    @bind 'CameraPan', ({ dx, dy }) ->
+      @shift(-dx, -dy)
+
     @bind 'GameLoop', (fd) ->
       if @has 'AnimationMode'
         if @_choreography?.length is 0

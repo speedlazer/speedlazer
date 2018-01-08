@@ -118,7 +118,7 @@ class Level
     for block in @blocks when block.x < 640
       block.enter()
 
-    Crafty.bind('ViewportMove', ({ dx, dy }) =>
+    Crafty.bind('CameraMove', ({ dx, dy }) =>
       @generationPosition.x -= dx
       @generationPosition.y -= dy
       if @generationPosition.x < @bufferLength
@@ -228,10 +228,37 @@ class Level
   addTrauma: (trauma) ->
     @_scrollWall.addTrauma(trauma)
 
-  setHeight: (deltaY) ->
-    #@_scrollWall.setHeight deltaY
-    #Crafty('PlayerControlledShip').each ->
-      #@y += deltaY
+  setHeight: (dy) ->
+    if @blocks.length is 0
+      @generationPosition.y -= dy
+      @_scrollWall.viewHeight += dy
+    else
+      @_scrollWall.viewHeight += dy
+      Crafty.trigger('CameraMove',
+        dx: 0
+        dy: dy
+      )
+
+  panCamera: (settings, duration) ->
+    y = 0
+    panner = Crafty.e('TweenPromise').attr(y: 0)
+    panner.bind('GameLoop', =>
+      dy = panner.y - y
+      y = panner.y
+      @_scrollWall.viewHeight += dy
+      Crafty.trigger('CameraMove',
+        dx: 0
+        dy: dy
+      )
+      Crafty.trigger('CameraPan',
+        dx: 0
+        dy: dy
+      )
+    )
+    panner.tweenPromise({
+      y: settings.y
+    }, duration, 'easeInOutQuad').then ->
+      panner.destroy()
 
   setWeaponsEnabled: (onOff, players) ->
     players = [1, 2] unless players? and !isEmpty(players)
@@ -263,7 +290,7 @@ class Level
     Crafty.unbind('LeaveBlock')
     Crafty.unbind('EnterBlock')
     Crafty.unbind('ShipSpawned')
-    Crafty.unbind('ViewportMove')
+    Crafty.unbind('CameraMove')
     Crafty.unbind('GameLoop', @_waveTicks)
     b?.clean() for b in @blocks
 

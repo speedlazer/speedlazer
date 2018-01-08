@@ -11,11 +11,24 @@ class Test extends LazerScript
     Crafty.e('DebugInfo')
 
     @sequence(
-      @setShipType('PlayerControlledCube')
+      #@setShipType('PlayerControlledCube')
 
       @setWeapons(['lasers'])
+      @gainHeight(150, duration: 0)
       @setScenery 'Ocean'
       @setSpeed 0
+      @panCamera(y: 120, 0)
+      @wait 1500
+      @panCamera(y: -120, 4000)
+      @wait 1500
+      @setSpeed 300
+      @wait 15000
+      @gainHeight 20, duration: 1000
+      @wait 5000
+      @gainHeight 60, duration: 4000
+
+      @wait 10000
+      @gainHeight -140, duration: 4000
 
       @async @runScript(StartOfDawn, speed: 1)
     )

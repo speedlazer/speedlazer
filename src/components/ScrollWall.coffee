@@ -81,14 +81,6 @@ Crafty.c 'ScrollWall',
       @viewHeight += dy
 
       Crafty.trigger('CameraMove',
-        x: Math.round(@x)
-        y: Math.round(@y)
-        dx: dx
-        dy: dy
-      )
-      Crafty.trigger('ViewportMove',
-        x: Math.round(x)
-        y: Math.round(y)
         dx: dx
         dy: dy
       )
