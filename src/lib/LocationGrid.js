@@ -2,8 +2,8 @@ import defaults from "lodash/defaults";
 import shuffle from "lodash/shuffle";
 
 class LocationGrid {
-  constructor(settings) {
-    settings = defaults(settings, {
+  constructor(config) {
+    const settings = defaults({}, config, {
       x: {},
       y: {},
       initial: []
