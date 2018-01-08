@@ -181,7 +181,7 @@ class Stage1BossStage1 extends Stage1Boss
         @movePath([
           [.9, .4]
           [.7, .5]
-        ], speed: 300)
+        ], speed: 150)
 
         @choose(
           @mineStomp()
@@ -191,7 +191,7 @@ class Stage1BossStage1 extends Stage1Boss
         @movePath([
           [.7, .5]
           [.9, .4]
-        ], speed: 300)
+        ], speed: 150)
       )
     )
 
@@ -352,8 +352,9 @@ class Stage1BossStage1 extends Stage1Boss
       )
       @movePath([
         [.9, .2]
+        [.8, .4]
         [.9, .7]
-      ], speed: 200)
+      ], speed: 150)
     )
 
   mineFieldStrike: (event) ->
