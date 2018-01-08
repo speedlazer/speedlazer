@@ -228,10 +228,16 @@ class Level
   addTrauma: (trauma) ->
     @_scrollWall.addTrauma(trauma)
 
-  setHeight: (deltaY) ->
-    #@_scrollWall.setHeight deltaY
-    #Crafty('PlayerControlledShip').each ->
-      #@y += deltaY
+  setHeight: (dy) ->
+    if @blocks.length is 0
+      @generationPosition.y -= dy
+      @_scrollWall.viewHeight += dy
+    else
+      @_scrollWall.viewHeight += dy
+      Crafty.trigger('CameraMove',
+        dx: 0
+        dy: dy
+      )
 
   panCamera: (settings, duration) ->
     y = 0
@@ -239,6 +245,7 @@ class Level
     panner.bind('GameLoop', =>
       dy = panner.y - y
       y = panner.y
+      @_scrollWall.viewHeight += dy
       Crafty.trigger('CameraMove',
         dx: 0
         dy: dy
