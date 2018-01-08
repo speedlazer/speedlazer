@@ -274,14 +274,14 @@ Level =
   gainHeight: (height, options) ->
     (sequence) =>
       @_verify(sequence)
-      d = WhenJS.defer()
 
-      currentSpeed = @level._forcedSpeed?.x ? @level._forcedSpeed
       { duration } = options
       if @_skippingToCheckpoint() or duration is 0
         @level.setHeight -height
       else
+        d = WhenJS.defer()
         speedY = (height / duration) * 1000
+        currentSpeed = @level._forcedSpeed?.x ? @level._forcedSpeed
 
         @level.setForcedSpeed({ x: currentSpeed, y: -speedY }, accellerate: no)
         level = @level
@@ -422,6 +422,12 @@ Level =
       @level.sealevelOffset = -offsetY
       level = @level
       Crafty.s('SeaLevel').setOffset(level.sealevelOffset)
+
+  panCamera: (settings, duration) ->
+    (sequence) =>
+      @_verify(sequence)
+      @level.panCamera(settings, duration)
+      #if @_skippingToCheckpoint() or duration is 0
 
   addMinorScreenshake: ->
     (sequence) =>

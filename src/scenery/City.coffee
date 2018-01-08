@@ -470,8 +470,9 @@ levelGenerator.defineBlock class extends CityScenery
   enter: ->
     super
     @speed = @level._forcedSpeed
-    #Crafty('ScrollWall').attr y: 120
+    @level.panCamera(y: 120, 0)
     @level.setForcedSpeed 0
+
     c = [
         type: 'delay'
         duration: 1000
@@ -541,10 +542,7 @@ levelGenerator.defineBlock class extends CityScenery
           @animate('close')
         Crafty('aircraftCarrierBottomFlat').each ->
           @attr(z: -13)
-        #Crafty('ScrollWall').each ->
-          #@addComponent 'Tween'
-          #@tween { y: 0 }, 2500
-          #@one 'TweenEnd', -> @removeComponent 'Tween', no
+        block.level.panCamera(y: -120, 2500)
       @one 'go', ->
         block.level.setForcedSpeed block.speed, accelerate: no
 
