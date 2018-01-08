@@ -210,6 +210,7 @@ class Stage1BossStage1 extends Stage1Boss
         @withDebrisFalling(@choose(
           @homingMissileStrike()
           @rocketStrikeDance()
+          @debrisFalling()
         ))
         @movePath([
           [.9, .4]
@@ -229,6 +230,14 @@ class Stage1BossStage1 extends Stage1Boss
       @placeSquad BridgeDebrisFalling,
         amount: 2,
         delay: 2000
+    )
+
+  debrisFalling: ->
+    @sequence(
+      @moveTo(x: 1.2, speed: 300, easing: 'easeInQuad')
+      @placeSquad BridgeDebrisFalling,
+        amount: 5,
+        delay: 700
     )
 
   fase3: ->
