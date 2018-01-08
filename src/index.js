@@ -18,7 +18,7 @@ const scaleGame = () => {
   const stage = document.getElementById("cr-stage");
   const stageHeight = stage.clientHeight;
   const stageWidth = stage.clientWidth;
-  const viewportHeight = window.innerHeight - 50;
+  const viewportHeight = window.innerHeight - 60;
   const viewportWidth = window.innerWidth;
 
   const ratioY = viewportHeight / stageHeight;

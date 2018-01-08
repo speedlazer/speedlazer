@@ -1,2 +1,1 @@
-import "./Dialog";
 import "./PauseMenu";

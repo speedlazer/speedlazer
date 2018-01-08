@@ -68,8 +68,8 @@ Crafty.c 'ScrollWall',
 
         @time += fd.dt
 
-        xn = noise.perlin2(0.1, @time / ((3 - @trauma) * 160))
-        yn = noise.perlin2(@time / ((3 - @trauma) * 160), 0.3)
+        xn = noise.perlin2(0.1, @time / ((3 - @trauma) * 360))
+        yn = noise.perlin2(@time / ((3 - @trauma) * 360), 0.3)
         x = 0 + Math.round(MAX_X_OFFSET * screenshake * xn)
         y = 0 + Math.round(MAX_Y_OFFSET * screenshake * yn)
 

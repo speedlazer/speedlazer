@@ -4,6 +4,7 @@ shuffle = require('lodash/shuffle')
 defaults = require('lodash/defaults')
 Synchronizer = require('src/lib/Synchronizer').default
 LocationGrid = require('src/lib/LocationGrid').default
+say = require('src/lib/Dialog').say
 
 # Actions to control the flow of a level
 #
@@ -144,7 +145,7 @@ Level =
         noise: 'none'
         bottom: @level.visibleHeight
       )
-      Game.say(speaker, text, options)
+      say(speaker, text, options)
 
   # Drop an item in the screen at a given location,
   #
