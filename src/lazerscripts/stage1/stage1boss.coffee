@@ -477,7 +477,7 @@ class Stage1BossStage1 extends Stage1Boss
       @cancelBullets('shadow')
       @invincible yes
       @while(
-        @moveTo(x: .6, y: .90, speed: 50)
+        @moveTo(x: .6, y: .90, speed: 100, easing: 'easeInOutQuad')
         @sequence(
           @smallExplosion()
           @while(
@@ -486,7 +486,7 @@ class Stage1BossStage1 extends Stage1Boss
           )
         )
       )
-      @moveTo(y: 1.1, x: .4, speed: 50)
+      @moveTo(y: 1.1, x: .4, speed: 200, easing: 'easeInOutQuad')
       @moveTo(y: .6, x: .4, speed: 350, easing: 'easeOutQuad')
       @sendToBackground(0.9, -100)
       @parallel(
