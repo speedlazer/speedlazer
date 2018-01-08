@@ -264,11 +264,11 @@ class Stage1BossStage1 extends Stage1Boss
             location: @location()
             gridConfig:
               initial: [
-                { x: 0.2, y: 0.3 }
-                { x: 0.8, y: 0.3 }
+                { x: 0.2, y: 0.25 }
+                { x: 0.8, y: 0.25 }
                 { x: 0.5, y: 0.5 }
-                { x: 0.2, y: 0.7 }
-                { x: 0.8, y: 0.7 }
+                { x: 0.2, y: 0.75 }
+                { x: 0.8, y: 0.75 }
               ]
         )
         @placeSquad(Stage1BossMinePattern,
@@ -279,18 +279,18 @@ class Stage1BossStage1 extends Stage1Boss
             location: @location()
             gridConfig:
               initial: [
-                { x: 0.2, y: 0.3 }
-                { x: 0.8, y: 0.3 }
+                { x: 0.2, y: 0.25 }
+                { x: 0.8, y: 0.25 }
                 { x: 0.5, y: 0.5 }
-                { x: 0.2, y: 0.7 }
-                { x: 0.8, y: 0.7 }
+                { x: 0.2, y: 0.75 }
+                { x: 0.8, y: 0.75 }
               ]
         )
       )
       @movePath([
-        [.9, .4]
-        [.9, .6]
-        [.7, .5]
+        [.95, .4]
+        [.95, .6]
+        [.85, .5]
       ], speed: 100)
     )
 
