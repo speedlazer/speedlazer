@@ -51,7 +51,7 @@ Game =
       if e.has('SpriteAnimation')
         e.animationSpeed = @gameSpeed
 
-    Crafty.bind 'EnterFrame', (fd) =>
+    Crafty.bind 'UpdateFrame', (fd) =>
       @gameTime += fd.dt unless Game.paused
       fd.dt = fd.dt * @gameSpeed
       fd.inGameTime = @gameTime

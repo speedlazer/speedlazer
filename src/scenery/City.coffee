@@ -91,7 +91,7 @@ levelGenerator.defineElement 'waterFront', ->
   @add(0, @level.visibleHeight - height, water1)
   #water1.waveY = 0
 
-  water2 = Crafty.e('2D, WebGL, waterFront2, Wave2')
+  water2 = Crafty.e('2D, Delta2D, WebGL, waterFront2, Wave2')
   water1.attach(water2)
   water2.attr(
       z: -20
@@ -117,11 +117,7 @@ levelGenerator.defineElement 'waterFront', ->
         y = moveh - (v * moveh)
         h = height - distanceh + (v * distanceh)
       wShift = w - @w
-      #@shift(0, 0, wShift, h - @h)
       @attr(dy: y, w: w, h: h)
-      @_children.forEach((e) ->
-        e.shift(wShift)
-      )
 
     Crafty('Wave2').each ->
       if forward
@@ -130,7 +126,8 @@ levelGenerator.defineElement 'waterFront', ->
       else
         w = width - distance + (v * distance)
         h = height - distanceh + (v * distanceh)
-      @attr(w: w, h: h)
+      wShift = width - w
+      @attr(dx: wShift, w: w, h: h)
 
     Crafty('WaveFront').each ->
       width = 1200

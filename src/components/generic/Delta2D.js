@@ -1,27 +1,10 @@
 Crafty.c("Delta2D", {
-  init() {
-    this.requires("2D");
-    this._defineDelta2DProperties();
-  },
+  required: "2D",
 
-  // This is Crafty 0.8.0 syntax.
-  // This can be greatly simplified in the new (yet unreleased) version
-  // of crafty, by using 'required:' and 'properties:' keys
-
-  _defineDelta2DProperties: function() {
-    for (const prop in this._delta2D_property_definitions) {
-      Object.defineProperty(
-        this,
-        prop,
-        this._delta2D_property_definitions[prop]
-      );
-    }
-  },
-
-  _delta2D_property_definitions: {
+  properties: {
     dx: {
       set: function(value) {
-        this.shift(value - this._dx);
+        this.shift(value - this._dx, 0);
         this._dx = value;
       },
       // getter for the `dx` property

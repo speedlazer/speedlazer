@@ -14,7 +14,6 @@ class Test extends LazerScript
       #@setShipType('PlayerControlledCube')
 
       @setWeapons(['lasers'])
-      @gainHeight(150, duration: 0)
       @setScenery 'Ocean'
       @setSpeed 0
       @panCamera(y: 120, 0)
