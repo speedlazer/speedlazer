@@ -519,7 +519,6 @@ Entity =
         })
       else
         { x, y } = @location()()
-        #@decoy.removeComponent('ViewportFixed')
         @decoy.attr(
           x: x
           y: y
@@ -527,8 +526,10 @@ Entity =
           health: 1
           defaultSpeed: @entity.defaultSpeed
         )
-      @decoy.removeComponent('BurstShot')
-      @decoy.removeComponent('Hostile')
+
+      @decoy.removeComponent('BurstShot') if @decoy.has('BurstShot')
+      @decoy.removeComponent('Hostile') if @decoy.has('Hostile')
+
       @decoy.updatedHealth()
       if @entity.xFlipped
         @decoy.flipX()
