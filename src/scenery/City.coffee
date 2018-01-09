@@ -1,8 +1,9 @@
 extend = require('lodash/extend')
-generator = Game.levelGenerator
+levelGenerator = require('src/lib/LevelGenerator').default
 cityScenery = require('src/images/city-scenery.png')
+LevelScenery = require('src/lib/LevelScenery').default
 
-generator.defineElement 'cloud', ->
+levelGenerator.defineElement 'cloud', ->
   v = Math.random()
   blur = (Math.random() * 4.0)
   if v > .2
@@ -43,7 +44,7 @@ generator.defineElement 'cloud', ->
       c2 = c2.flip('X')
     @addBackground(360 + Math.random() * 300, y, c2, s)
 
-generator.defineElement 'waterHorizon', ->
+levelGenerator.defineElement 'waterHorizon', ->
   h = Crafty.e('2D, WebGL, waterHorizon, SunBlock, Horizon, ColorEffects')
     .attr(z: -600, w: 257)
     .colorDesaturation(Game.backgroundColor)
@@ -58,7 +59,7 @@ generator.defineElement 'waterHorizon', ->
     .attr(z: -599, w: (@delta.x * .25), h: 1, alpha: 0)
   @addBackground(0, @level.visibleHeight - 225, goldenStripe, .25)
 
-generator.defineElement 'water', ->
+levelGenerator.defineElement 'water', ->
   h = Crafty.e('2D, WebGL, waterMiddle, Horizon')
     .crop(1, 0, 511, 192)
     .attr(z: -500, w: 513)
@@ -80,7 +81,7 @@ generator.defineElement 'water', ->
         @dy = moveh - (v * moveh)
         @h = height - distanceh + (v * distanceh)
 
-generator.defineElement 'waterFront', ->
+levelGenerator.defineElement 'waterFront', ->
   height = 65
   @add(0, @level.visibleHeight - 45, Crafty.e('2D, Solid').attr(w: @delta.x, h: 45))
 
@@ -149,7 +150,7 @@ generator.defineElement 'waterFront', ->
       @shift(0, y - @waveY, w - @w, h - @h)
       @waveY = y
 
-generator.defineElement 'cityHorizon', (mode) ->
+levelGenerator.defineElement 'cityHorizon', (mode) ->
   @addElement 'waterHorizon'
   e = if mode is 'start'
     Crafty.e('2D, WebGL, coastStart, SunBlock, Horizon')
@@ -161,7 +162,7 @@ generator.defineElement 'cityHorizon', (mode) ->
     .attr(z: -598, w: 256)
   @addBackground(0, @level.visibleHeight - 225 - 16, e, .25)
 
-generator.defineElement 'cityDistance', (mode) ->
+levelGenerator.defineElement 'cityDistance', (mode) ->
   e = Crafty.e('2D, WebGL, cityDistance, SunBlock, Horizon')
     .colorDesaturation(Game.backgroundColor)
     .saturationGradient(.9, .6)
@@ -170,7 +171,7 @@ generator.defineElement 'cityDistance', (mode) ->
 
   @addBackground(0, @level.visibleHeight - 225 - 16, e, .25)
 
-generator.defineElement 'city', ->
+levelGenerator.defineElement 'city', ->
   bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon, Flipable')
     .attr(z: -505) #, blur: 1.2)
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
@@ -197,7 +198,7 @@ generator.defineElement 'city', ->
   @addBackground(0, @level.visibleHeight - 310, c, .5)
   @addBackground(0, @level.visibleHeight - 310, d, .5)
 
-generator.defineElement 'cityFrontTop', ->
+levelGenerator.defineElement 'cityFrontTop', ->
   bb = Crafty.e('2D, WebGL, bigBuildingTop, ColorEffects, RiggedExplosion').attr(z: -20).crop(1, 1, 446, 6 * 32)
   bb.colorOverride('#001fff', 'partial')
   @add(0, @level.visibleHeight - 1200, bb)
@@ -237,7 +238,7 @@ generator.defineElement 'cityFrontTop', ->
       @buildingExploded = yes
   )
 
-generator.defineElement 'cityFront', (height = 6, offSet = 0, bottomVariant = 'bigBuildingBottom') ->
+levelGenerator.defineElement 'cityFront', (height = 6, offSet = 0, bottomVariant = 'bigBuildingBottom') ->
   bb = Crafty.e('2D, WebGL, bigBuildingTop, Collision, SunBlock, ColorEffects').attr(z: -20).crop(1, 1, 446, 6 * 32)
   bb.colorOverride('#001fff', 'partial')
   calcHeight = (height + 2.5) * 128
@@ -253,10 +254,10 @@ generator.defineElement 'cityFront', (height = 6, offSet = 0, bottomVariant = 'b
   bottom.attr(x: bb.x, y: bb.y + bb.h + (height * 128))
   bb.attach(bottom)
 
-generator.defineElement 'cityFrontBlur', ->
+levelGenerator.defineElement 'cityFrontBlur', ->
   @addBackground(200, @level.visibleHeight - 1350, Crafty.e('2D, WebGL, bigBuildingTop').crop(1, 1, 446, 6 * 32).attr(w: 768, h: 288, z: 50, lightness: .4), 1.5)
 
-generator.defineElement 'city-bridge', ->
+levelGenerator.defineElement 'city-bridge', ->
   bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon')
     .collision([4, 29, 72, 29, 72, 118, 4, 118])
     .colorDesaturation(Game.backgroundColor)
@@ -273,7 +274,7 @@ generator.defineElement 'city-bridge', ->
 
   @addBackground(0, @level.visibleHeight - 182, e, .5)
 
-generator.defineElement 'cityStart', ->
+levelGenerator.defineElement 'cityStart', ->
   e = Crafty.e('2D, WebGL, cityStart, Collision, SunBlock, Horizon')
     .attr(z: -305)
     .colorDesaturation(Game.backgroundColor)
@@ -281,7 +282,7 @@ generator.defineElement 'cityStart', ->
   e.collision([215, 155, 215, 60, 300, 60, 300, 10, 500, 10, 500, 155])
   @addBackground(0, @level.visibleHeight - 310, e, .5)
 
-class Game.CityScenery extends Game.LevelScenery
+class CityScenery extends LevelScenery
   assets: ->
     sprites:
       "#{cityScenery}":
@@ -356,7 +357,7 @@ Crafty.c('carrierHatch', {
     ]
 })
 
-generator.defineBlock class extends Game.CityScenery
+levelGenerator.defineBlock class extends CityScenery
   name: 'City.Intro'
   delta:
     x: 1024
@@ -469,8 +470,9 @@ generator.defineBlock class extends Game.CityScenery
   enter: ->
     super
     @speed = @level._forcedSpeed
-    Crafty('ScrollWall').attr y: 120
+    @level.panCamera(y: 120, 0)
     @level.setForcedSpeed 0
+
     c = [
         type: 'delay'
         duration: 1000
@@ -540,14 +542,11 @@ generator.defineBlock class extends Game.CityScenery
           @animate('close')
         Crafty('aircraftCarrierBottomFlat').each ->
           @attr(z: -13)
-        Crafty('ScrollWall').each ->
-          @addComponent 'Tween'
-          @tween { y: 0 }, 2500
-          @one 'TweenEnd', -> @removeComponent 'Tween', no
+        block.level.panCamera(y: -120, 2500)
       @one 'go', ->
         block.level.setForcedSpeed block.speed, accelerate: no
 
-generator.defineBlock class extends Game.CityScenery
+levelGenerator.defineBlock class extends CityScenery
   name: 'City.Ocean'
   delta:
     x: 1024
@@ -562,7 +561,7 @@ generator.defineBlock class extends Game.CityScenery
     @addElement 'water'
     @addElement 'waterFront'
 
-generator.defineBlock class extends Game.CityScenery
+levelGenerator.defineBlock class extends CityScenery
   name: 'City.CoastStart'
   delta:
     x: 1024
@@ -577,7 +576,7 @@ generator.defineBlock class extends Game.CityScenery
     @addElement 'water'
     @addElement 'waterFront'
 
-generator.defineBlock class extends Game.CityScenery
+levelGenerator.defineBlock class extends CityScenery
   name: 'City.Coast'
   delta:
     x: 1024
@@ -590,7 +589,7 @@ generator.defineBlock class extends Game.CityScenery
     @addElement 'water'
     @addElement 'cloud'
 
-generator.defineBlock class extends Game.CityScenery
+levelGenerator.defineBlock class extends CityScenery
   name: 'City.BayStart'
   delta:
     x: 1024
@@ -606,7 +605,7 @@ generator.defineBlock class extends Game.CityScenery
     @addElement 'waterFront'
     @addElement 'cityStart'
 
-generator.defineBlock class extends Game.CityScenery
+levelGenerator.defineBlock class extends CityScenery
   name: 'City.Bay'
   delta:
     x: 1024
@@ -620,7 +619,7 @@ generator.defineBlock class extends Game.CityScenery
     @addElement 'cityHorizon'
     @addElement 'city'
 
-generator.defineBlock class extends Game.CityScenery
+levelGenerator.defineBlock class extends CityScenery
   name: 'City.BayFull'
   delta:
     x: 1024
@@ -634,7 +633,7 @@ generator.defineBlock class extends Game.CityScenery
     @addElement 'cityDistance'
     @addElement 'city'
 
-generator.defineBlock class extends Game.CityScenery
+levelGenerator.defineBlock class extends CityScenery
   name: 'City.UnderBridge'
   delta:
     x: 1024
@@ -787,7 +786,7 @@ generator.defineBlock class extends Game.CityScenery
     @pillar(gradient, attr).flip('X')
 
 
-generator.defineBlock class extends Game.CityScenery
+levelGenerator.defineBlock class extends CityScenery
   name: 'City.Skyline'
   delta:
     x: 1024
@@ -803,7 +802,7 @@ generator.defineBlock class extends Game.CityScenery
     @addElement 'cityDistance'
     @addElement 'city'
 
-generator.defineBlock class extends Game.CityScenery
+levelGenerator.defineBlock class extends CityScenery
   name: 'City.SkylineBase'
   delta:
     x: 1024
@@ -836,7 +835,7 @@ generator.defineBlock class extends Game.CityScenery
     h = 400 + 300
     @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h, z: -10).color('#505050'))
 
-generator.defineBlock class extends Game.CityScenery
+levelGenerator.defineBlock class extends CityScenery
   name: 'City.Skyline2'
   delta:
     x: 1024
@@ -861,7 +860,7 @@ generator.defineBlock class extends Game.CityScenery
     h3 = 40
     @add(0, @level.visibleHeight + 170 - h3, Crafty.e('2D, Solid').attr(w: @delta.x, h: h3, z: 2))
 
-generator.defineBlock class extends Game.LevelScenery
+levelGenerator.defineBlock class extends LevelScenery
   name: 'City.TrainTunnel'
   delta:
     x: 1024
@@ -877,7 +876,7 @@ generator.defineBlock class extends Game.LevelScenery
     h = 150
     @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h + h2, z: -10).color('#505050'))
 
-generator.defineBlock class extends Game.LevelScenery
+levelGenerator.defineBlock class extends LevelScenery
   name: 'City.SmallerTrainTunnel'
   delta:
     x: 1024

@@ -35,14 +35,17 @@ Crafty.c 'PlayerControlledCube',
     @bind 'Hit', ->
       @trigger 'Destroyed', this
 
+    @bind 'CameraPan', ({ dx, dy }) ->
+      @shift(-dx, -dy)
+
     @bind 'GameLoop', (fd) ->
       motionX = (@_currentSpeed.x / 1000.0) * fd.dt
       motionY = (@_currentSpeed.y / 1000.0) * fd.dt
       @updateAcceleration()
 
-      @x += motionX
-      @y += motionY
-      # Move player back if flying into an object
+      #@x += motionX
+      #@y += motionY
+      ## Move player back if flying into an object
       if @hit('Edge') or @hit('Solid')
         @x -= motionX
         @y -= motionY

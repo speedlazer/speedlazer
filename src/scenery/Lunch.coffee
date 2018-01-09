@@ -1,6 +1,7 @@
-generator = Game.levelGenerator
+levelGenerator = require('src/lib/LevelGenerator').default
+LevelScenery = require('src/lib/LevelScenery').default
 
-generator.defineElement 'blockcloud', ->
+levelGenerator.defineElement 'blockcloud', ->
   v = Math.random()
   blur = (Math.random() * 4.0)
   if v > .2
@@ -34,13 +35,13 @@ generator.defineElement 'blockcloud', ->
     @addBackground(30 + Math.random() * 400, y, c2, s)
 
 
-generator.defineBlock class extends Game.LevelScenery
+levelGenerator.defineBlock class extends LevelScenery
   name: 'City.Blackness'
   delta:
     x: 600
     y: 0
 
-generator.defineBlock class extends Game.LevelScenery
+levelGenerator.defineBlock class extends LevelScenery
   name: 'City.OceanOld'
   delta:
     x: 800
@@ -63,7 +64,7 @@ generator.defineBlock class extends Game.LevelScenery
     @addBackground(0, @level.visibleHeight - 150, Crafty.e('2D, WebGL, Color, SunBlock').color('#3030B0').attr({ z: -500, w: (@delta.x * .5) + 1, h: 105 }), .5)
     @addBackground(0, @level.visibleHeight - 90, Crafty.e('2D, WebGL, Color, SunBlock').color('#3030B0').attr({ z: -301, w: (@delta.x * .5) + 1, h: 70 }), .5)
 
-generator.defineBlock class extends Game.CityScenery
+levelGenerator.defineBlock class extends CityScenery
   name: 'City.OceanToNew'
   delta:
     x: 1024
@@ -123,7 +124,7 @@ generator.defineBlock class extends Game.CityScenery
       .attr(z: -299, rotation: -90, h: @delta.x, w: 200)
     @add(0, @level.visibleHeight - height + 200, wfg)
 
-generator.defineBlock class extends Game.LevelScenery
+levelGenerator.defineBlock class extends LevelScenery
   name: 'City.OpenSpace'
   delta:
     x: 700
@@ -137,7 +138,7 @@ generator.defineBlock class extends Game.LevelScenery
     @add(100, 450, Crafty.e('2D, WebGL, Solid, Color').color('#505045').attr({ w: 52, h: 40 }))
     @add(400, 550, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 82, h: 30 }))
 
-generator.defineBlock class extends Game.LevelScenery
+levelGenerator.defineBlock class extends LevelScenery
   name: 'City.TunnelStart'
   delta:
     x: 1000
@@ -156,7 +157,7 @@ generator.defineBlock class extends Game.LevelScenery
     @add(380, -40, Crafty.e('2D, WebGL, Color').color('#202020').attr({ z: -10, w: @delta.x - 380, h: @level.visibleHeight + 40 }))
 
 
-generator.defineBlock class extends Game.LevelScenery
+levelGenerator.defineBlock class extends LevelScenery
   name: 'City.TunnelEnd'
   delta:
     x: 1000
@@ -177,7 +178,7 @@ generator.defineBlock class extends Game.LevelScenery
     @add(450, @level.visibleHeight - h, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 550, h: h }))
     @add(0, -40, Crafty.e('2D, WebGL, Color').color('#202020').attr({ z: -10, w: 380, h: @level.visibleHeight + 40 }))
 
-generator.defineBlock class extends Game.LevelScenery
+levelGenerator.defineBlock class extends LevelScenery
   name: 'City.Tunnel'
   delta:
     x: 1000

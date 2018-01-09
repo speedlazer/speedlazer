@@ -1,4 +1,5 @@
 Stage1 = require('src/lazerscripts/stage1').default
+levelGenerator = require('src/lib/LevelGenerator').default
 
 level = null
 script = null
@@ -9,7 +10,7 @@ Crafty.defineScene 'Game', (data = {}) ->
   #
   # import from globals
   Game.backgroundColor = null
-  level = Game.levelGenerator.createLevel()
+  level = levelGenerator.createLevel()
 
   Crafty.createLayer('UILayerDOM', 'DOM',
     scaleResponse: 0
@@ -36,7 +37,7 @@ Crafty.defineScene 'Game', (data = {}) ->
   # This is a dirty fix to prevent
   # 'glDrawElements: attempt to render with no buffer attached to enabled attribute 6'
   # to happen mid-stage
-  wait = Game.levelGenerator.loadAssets(['explosion']).then =>
+  wait = levelGenerator.loadAssets(['explosion']).then =>
     d = WhenJS.defer()
     e = Crafty.e('WebGL, explosion')
     setTimeout(
