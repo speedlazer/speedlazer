@@ -40,6 +40,6 @@ Crafty.c("DebugInfo", {
   },
 
   capture(name) {
-    console.log(name, this.text());
+    Crafty.log(name, this.text());
   }
 });
