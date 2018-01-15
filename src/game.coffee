@@ -2,6 +2,17 @@ CryptoJS = require('crypto-js')
 defaults = require('lodash/defaults')
 sortBy = require('lodash/sortBy')
 
+###
+# Destructure this file into multiple components
+#
+# - extract Pause functionality
+# - extract GameSpeed functionality
+# - extract Background color functionality
+#
+# Further: Check why so many parts need access to 'Game.paused'
+#
+###
+
 Game =
   paused: no
   firstLevel: 'Game'
@@ -33,7 +44,15 @@ Game =
 
   setGameSpeed: (speed) ->
     @gameSpeed = speed
-    Crafty('SpriteAnimation').each -> @animationSpeed = speed
+    Crafty('SpriteAnimation').each ->
+      return if @has('TimeManager')
+      @animationSpeed = speed
+    Crafty('Delay').each ->
+      return if @has('TimeManager')
+      @delaySpeed = speed
+    Crafty('Tween').each ->
+      return if @has('TimeManager')
+      @tweenSpeed = speed
 
   # Initialize and start our game
   start: ->
@@ -45,11 +64,16 @@ Game =
 
     @gameTime = 0
     @setGameSpeed(1.0)
+
     Crafty.bind 'NewEntity', (data) =>
       e = Crafty(data.id)
       return if e.has('TimeManager')
       if e.has('SpriteAnimation')
         e.animationSpeed = @gameSpeed
+      if e.has('Delay')
+        e.delaySpeed = @gameSpeed
+      if e.has('Tween')
+        e.tweenSpeed = @gameSpeed
 
     Crafty.bind 'UpdateFrame', (fd) =>
       @gameTime += fd.dt unless Game.paused
