@@ -55,7 +55,7 @@ Crafty.defineScene 'Scores', ->
   Crafty('Player').each ->
     @reset()
     @one 'Activated', ->
-      Crafty.enterScene(Game.firstLevel)
+      Crafty.enterScene('Game')
 
 
   Crafty.e('Delay').delay ->
