@@ -37,5 +37,9 @@ Crafty.c("DebugInfo", {
           `FPS: ${Math.round(1000 / fd.dt)}`
       );
     });
+  },
+
+  capture(name) {
+    console.log(name, this.text());
   }
 });
