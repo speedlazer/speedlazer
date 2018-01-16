@@ -15,12 +15,13 @@ class Benchmark extends LazerScript
       #@setShipType('PlayerControlledCube')
 
       @setWeapons(['lasers'])
-      @setScenery 'Bay'
+      @setScenery 'Ocean'
       @setSpeed 0
       @wait 1500
       => Crafty('DebugInfo').capture('start')
       @setSpeed 300
       @wait 15000
+      @setScenery('BayStart')
       => Crafty('DebugInfo').capture('scrolling')
       @runScript(StartOfDawn, speed: 5)
       @runScript(DayBreak, speed: 5)
@@ -33,7 +34,16 @@ class Benchmark extends LazerScript
       @enemies()
       => Crafty('PlayerSpaceship').shoot(false)
       => Crafty('DebugInfo').capture('swirlers shooting')
-      @wait 1000
+      @parallel(
+        @gainHeight(800, duration: 14000)
+        @setScenery('Skyline')
+      )
+      => Crafty('PlayerSpaceship').shoot(true)
+      @enemies()
+      => Crafty('PlayerSpaceship').shoot(false)
+      => Crafty('DebugInfo').capture('swirlers shooting skyline')
+      @setScenery 'Ocean'
+      @gainHeight(-800, duration: 14000)
       => Crafty('DebugInfo').capture('end')
     )
 
