@@ -4,7 +4,6 @@ sortBy = require('lodash/sortBy')
 
 Game =
   paused: no
-  firstLevel: 'Game'
   togglePause: ->
     @paused = !@paused
     if @paused
