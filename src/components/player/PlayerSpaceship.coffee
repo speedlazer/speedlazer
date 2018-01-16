@@ -12,11 +12,11 @@ Crafty.c 'PlayerSpaceship',
       35, 32
     ]
 
-    @bind 'Moved', (from) ->
+    @bind 'Move', (from) ->
       if @hit('Edge') or @hit('Solid') # Contain player within playfield
-        setBack = {}
-        setBack[from.axis] = from.oldValue
-        @attr setBack
+        delta = @motionDelta()
+        @shift(- delta.x, - delta.y)
+
     @primaryWeapon = undefined
     @primaryWeapons = []
     @secondaryWeapon = undefined

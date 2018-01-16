@@ -4,10 +4,6 @@ calculateY = (delta, speed) ->
   delta * (speed - (correction - (correction * speed)))
 
 Crafty.c 'ViewportRelativeMotion',
-  init: ->
-
-  remove: ->
-
   viewportRelativeMotion: ({ x, y, offsetY, speed }) ->
     @_speed = speed
     if x? and y?

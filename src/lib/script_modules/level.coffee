@@ -166,19 +166,19 @@ Level =
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
       itemSettings = @inventory(options.item)
-      item = -> Crafty.e('PowerUp').powerUp(itemSettings)
+      item = (attrs) -> Crafty.e('PowerUp').attr(attrs).powerUp(itemSettings)
       unless itemSettings
         console.warn 'Item ', options.item, ' is not known'
         return WhenJS()
       if player = options.inFrontOf
         ship = player.ship()
         if ship
-          @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: player.ship().y + Crafty.viewport.y
+          item(z: -1, x: Crafty.viewport.width, y: player.ship().y + Crafty.viewport.y)
         else
           unless player.gameOver
             d = WhenJS.defer()
             player.entity.one 'ShipSpawned', (ship) =>
-              @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: ship.y + Crafty.viewport.y
+              item(z: -1, x: Crafty.viewport.width, y: ship.y + Crafty.viewport.y)
               d.resolve()
             return d.promise
 
@@ -192,7 +192,7 @@ Level =
         else
           coords = pos
 
-        item().attr(x: coords.x, y: coords.y, z: -1)
+        item(x: coords.x, y: coords.y, z: -1)
 
   # Returns an object with information about a player
   #
