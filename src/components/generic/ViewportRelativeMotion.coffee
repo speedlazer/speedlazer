@@ -18,7 +18,7 @@ Crafty.c 'ViewportRelativeMotion',
 
       @attr x: Math.floor(newX), y: Math.floor(newY)
 
-    @motion = Crafty.bind 'CameraMove', ({dx, dy}) =>
+    @motion = @bind 'CameraMove', ({dx, dy}) =>
       x = - (dx * @_speed)
       y = - calculateY(dy, @_speed)
 
@@ -28,4 +28,4 @@ Crafty.c 'ViewportRelativeMotion',
     this
 
   remove: ->
-    Crafty.unbind 'CameraMove', @motion
+    @unbind 'CameraMove', @motion
