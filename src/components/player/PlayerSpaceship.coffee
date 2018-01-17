@@ -1,4 +1,5 @@
 defaults = require('lodash/defaults')
+createEntityPool = require('src/lib/entityPool').default
 
 Crafty.c 'PlayerSpaceship',
   init: ->
@@ -24,6 +25,7 @@ Crafty.c 'PlayerSpaceship',
     @weaponsEnabled = yes
     @currentRenderedSpeed = 0
     @flip('X')
+    @emitCooldown = 0
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
     velocity = Math.max(dx * (1000 / dt), 0)
@@ -51,6 +53,25 @@ Crafty.c 'PlayerSpaceship',
       w: w
       h: h
     )
+    @_emitTrail(dt)
+
+  _emitTrail: (dt) ->
+    @emitCooldown -= dt
+    if @emitCooldown < 0
+      w = @backFire.w / 4
+      h = 4
+      @trailEntPool.get().attr(
+        x: @x - w
+        dy: 0
+        y: Math.floor(@y + 21 - (Math.random() * 4))
+        w: w
+        h: h
+        z: -4
+        alpha: 0.3 + (Math.random() * 0.4)
+      ).tweenPromise({ alpha: 0, h: 2, dy: 2 }, 750, 'easeOutQuad').then((e) =>
+        @trailEntPool.recycle(e)
+      )
+      @emitCooldown = 30
 
   start: ->
     @backFire = Crafty.e('2D, WebGL, shipEngineFire, ColorEffects')
@@ -76,11 +97,24 @@ Crafty.c 'PlayerSpaceship',
       _blue: 255
     }
     Crafty.assignColor(@playerColor, c)
+    @trailColor = Object.assign({}, c)
     for comp in ['_red', '_green', '_blue']
       newC = (c[comp] + basicC[comp] + basicC[comp]) / 3
       c[comp] = newC
 
     @backFire.colorOverride(c)
+    @trailEntPool = createEntityPool(
+      =>
+        Crafty.e(
+          '2D, WebGL, shipEngineFire, Delta2D, TweenPromise, ViewportRelativeMotion, ColorEffects'
+        ).colorOverride(
+          @trailColor
+        ).viewportRelativeMotion(
+          speed: 1
+        )
+      2
+    )
+
 
     @addComponent('Invincible').invincibleDuration(1500)
 
