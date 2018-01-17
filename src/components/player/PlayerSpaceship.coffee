@@ -115,7 +115,6 @@ Crafty.c 'PlayerSpaceship',
       2
     )
 
-
     @addComponent('Invincible').invincibleDuration(1500)
 
     @setDetectionOffset 60, 0
@@ -316,4 +315,7 @@ Crafty.c 'PlayerSpaceship',
         t.one('TweenEnd', -> t.destroy())
       settings.delay
     )
+
+  remove: ->
+    @trailEntPool.clean()
 
