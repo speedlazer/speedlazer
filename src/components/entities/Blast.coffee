@@ -1,9 +1,12 @@
 Crafty.c 'Blast',
   init: ->
     @requires '2D, WebGL, explosionStart, SpriteAnimation, Horizon, Collision'
+    @cleanup = => @destroy()
 
   remove: ->
     @unbind 'GameLoop'
+
+  setCleanup: (@cleanup) -> this
 
   explode: (attr, frameOptions) ->
     radius = attr.radius ? 20
@@ -54,9 +57,9 @@ Crafty.c 'Blast',
         @shift(newProps.x - @blastProps.x, newProps.y - @blastProps.y, newProps.w - @blastProps.w, newProps.h - @blastProps.h)
         @blastProps = newProps
 
-    @bind 'AnimationEnd', =>
-      @destroy()
+    @one 'AnimationEnd', =>
+      @unbind 'GameLoop'
+      @cleanup(this)
     @animate 'explode'
     this
-
 

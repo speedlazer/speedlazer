@@ -1,3 +1,17 @@
+createEntityPool = require('src/lib/entityPool').default
+
+splashPool = createEntityPool(
+  ->
+    Crafty.e('Blast, ViewportRelativeMotion')
+      .colorOverride('#FFFFFF')
+      .viewportRelativeMotion(
+        speed: 1
+      ).setCleanup(
+        (e) -> splashPool.recycle(e)
+      )
+  200
+)
+
 Crafty.c 'WaterSplashes',
   init: ->
     @bind 'GameLoop', @_waterSplashes
@@ -36,12 +50,8 @@ Crafty.c 'WaterSplashes',
         for d in [0...Math.min(upwards, 3)]
           r += 1
           pos = Math.random()
-          Crafty.e('Blast, ViewportRelativeMotion')
-            .colorOverride('#FFFFFF')
-            .viewportRelativeMotion(
-              speed: 1
-            )
-            .explode(
+          splashPool.get()
+            .explode({
               upwards: if r % 2 is 0 then upwards else 0
               x: @x + (i * coverage) + (pos * coverage)
               y: sealevel + @minOffset
@@ -52,17 +62,18 @@ Crafty.c 'WaterSplashes',
               bottomDesaturation: @bottomDesaturation
               alpha: @waterAlpha
               gravity: 0.2
-              (prev, fd) ->
-                mul = fd.dt / 1000.0
-                @attr(
-                  gravity: @gravity + (15 * mul)
-                  alpha: Math.max(0.1, (@alpha - Math.random() * (1.5 * mul)))
-                )
-                return {
-                  y: Math.min(prev.y - (Math.random() * @upwards * 50 * mul) + @gravity, sealevel - 10)
-                  x: prev.x + ((-.5 + pos) * Math.random() * 200 * mul)
-                  w: prev.w + (15 * mul)
-                  h: prev.h + (15 * mul)
-                }
+            }
+            (prev, fd) ->
+              mul = fd.dt / 1000.0
+              @attr(
+                gravity: @gravity + (15 * mul)
+                alpha: Math.max(0.1, (@alpha - Math.random() * (1.5 * mul)))
+              )
+              return {
+                y: Math.min(prev.y - (Math.random() * @upwards * 50 * mul) + @gravity, sealevel - 10)
+                x: prev.x + ((-.5 + pos) * Math.random() * 200 * mul)
+                w: prev.w + (15 * mul)
+                h: prev.h + (15 * mul)
+              }
             )
     @_lastWaterY = @y
