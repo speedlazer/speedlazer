@@ -5,7 +5,7 @@ Crafty.c("TweenPromise", {
 
   tweenPromise(...args) {
     return new Promise(resolve => {
-      this.one("TweenEnd", resolve);
+      this.one("TweenEnd", () => resolve(this));
       this.tween(...args);
     });
   }
