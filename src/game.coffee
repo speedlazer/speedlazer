@@ -102,7 +102,7 @@ Game =
       .setName('Player 2')
       .color('#00FF00')
 
-    Crafty.e('KeyboardControls, PlayerAssignable')
+    Crafty.e('AnalogKeyboardControls, PlayerAssignable')
       .controls
         fire: Crafty.keys.SPACE
         switchWeapon: Crafty.keys.PERIOD
@@ -114,7 +114,7 @@ Game =
         pause: Crafty.keys.P
 
 
-    Crafty.e('KeyboardControls, PlayerAssignable')
+    Crafty.e('AnalogKeyboardControls, PlayerAssignable')
       .controls
         fire: Crafty.keys.G
         switchWeapon: Crafty.keys.H
