@@ -27,9 +27,28 @@ Crafty.c 'PlayerSpaceship',
     @flip('X')
     @emitCooldown = 0
 
-  updateMovementVisuals: (rotation, dx, dy, dt) ->
+  updateMovementVisuals: (rotation = 0, dx, dy, dt) ->
     velocity = Math.max(dx * (1000 / dt), 0)
+
+    if dy > 0
+      if @healthPerc < 0.3
+        @sprite(13, 5)
+      else
+        @sprite(7, 4)
+    else if dy < 0
+      if @healthPerc < 0.3
+        @sprite(13, 3)
+      else
+        @sprite(10, 4)
+    else
+      if @healthPerc < 0.3
+        @sprite(0, 2)
+      else
+        @sprite(0, 0)
+
+    @rotation = 0
     @_updateFlyingSpeed velocity, dt
+    @rotation = rotation
 
   _updateFlyingSpeed: (newSpeed, dt) ->
     if newSpeed < 30
@@ -74,9 +93,10 @@ Crafty.c 'PlayerSpaceship',
       @emitCooldown = 30
 
   start: ->
-    @backFire = Crafty.e('2D, WebGL, shipEngineFire, ColorEffects')
-      .crop(28, 0, 68, 29)
+    @backFire = Crafty.e('2D, WebGL, shipEngineFire, ColorEffects, SpriteAnimation')
+    @backFire.reel 'burn', 300, [[4, 5, 3, 1], [3, 0, 3, 1]]
     @backFire.timing = 0
+    @backFire.animate('burn', -1)
     w = 68
     h = 10
 
@@ -97,11 +117,11 @@ Crafty.c 'PlayerSpaceship',
       _blue: 255
     }
     Crafty.assignColor(@playerColor, c)
-    @trailColor = Object.assign({}, c)
     for comp in ['_red', '_green', '_blue']
       newC = (c[comp] + basicC[comp] + basicC[comp]) / 3
       c[comp] = newC
 
+    @trailColor = c
     @backFire.colorOverride(c)
     @trailEntPool = createEntityPool(
       =>
@@ -161,20 +181,18 @@ Crafty.c 'PlayerSpaceship',
       @shift(-dx, -dy)
 
     @bind 'GameLoop', (fd) ->
+      motionX = ((@vx + @_currentSpeed.x) / 1000.0) * fd.dt
+      motionY = ((@vy + @_currentSpeed.y) / 1000.0) * fd.dt
+
       if @has 'AnimationMode'
         if @_choreography?.length is 0
-          @_updateFlyingSpeed @_currentSpeed.x, fd.dt
+          @updateMovementVisuals(@rotation, motionX, motionY, fd.dt)
         return
 
-      motionX = (@_currentSpeed.x / 1000.0) * fd.dt
-      motionY = (@_currentSpeed.y / 1000.0) * fd.dt
-
-      shipSpeedX = @_currentSpeed.x + @vx
-      shipSpeedY = @_currentSpeed.y + @vy
       @updateAcceleration()
 
       r = @rotation
-      newR = shipSpeedY / 40
+      newR = motionY
       nr = r
       if r < newR
         nr += 1
@@ -184,9 +202,7 @@ Crafty.c 'PlayerSpaceship',
       @rotation = nr
       nr = r if @hit('Edge') or @hit('Solid')
 
-      @rotation = 0
-      @_updateFlyingSpeed shipSpeedX, fd.dt
-      @rotation = nr
+      @updateMovementVisuals(@rotation, motionX, motionY, fd.dt)
 
       # Move player back if flying into an object
       if @hit('Edge') or @hit('Solid')

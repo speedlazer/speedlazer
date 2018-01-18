@@ -48,7 +48,7 @@ levelGenerator.defineAssets(
         playerShip: [0, 0, 3, 2]
         playerShipDamaged: [0, 2, 3, 2]
         muzzleFlash: [10, 0, 1, 1]
-        shipEngineFire: [3, 0, 3, 1]
+        shipEngineFire: [4, 5, 3, 1]
         freddie: [3, 1, 3, 2]
         standardMine: [3, 3, 1, 1]
         standardDrone: [0, 4, 2, 2]
