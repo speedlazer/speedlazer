@@ -60,7 +60,6 @@ class EntityScript extends LazerScript
     @entity = @spawn(args...)
     if @options.attach
       point = Crafty(@options.attach).get(@options.index)
-      @entity.removeComponent('ViewportFixed') if @entity.has('ViewportFixed')
       point.attach(@entity)
       @entity.attr({
         x: point.x

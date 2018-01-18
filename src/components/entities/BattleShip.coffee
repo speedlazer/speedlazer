@@ -1,7 +1,7 @@
 Crafty.c 'BattleShip',
   init: ->
     @requires '2D, WebGL, Tween, Choreography, Solid, Collision,' +
-      'ViewportFixed, Hideable, Flipable, Scalable, SunBlock, WaterSplashes'
+      'Hideable, Flipable, Scalable, SunBlock, WaterSplashes'
     width = 37
     @attr(
       w: 32 * width

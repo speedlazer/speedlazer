@@ -319,8 +319,6 @@ Entity =
       @_waterSplash()
     @entity.addComponent('WaterSplashes')
 
-    if @entity.has('ViewportFixed')
-      waterSpot.addComponent('ViewportFixed')
     @entity.hide(waterSpot, below: @_getSeaLevel())
 
   _removeWaterSpot: ->
@@ -344,10 +342,6 @@ Entity =
   _moveWater: (settings) ->
     defaultValues =
       speed: @entity.defaultSpeed
-
-    if @entity.has('ViewportFixed')
-      defaultValues.x = @entity.x
-      defaultValues.y = @entity.y
 
     seaLevel = @_getSeaLevel()
     settings = defaults(settings, defaultValues)
@@ -397,10 +391,6 @@ Entity =
   _moveAir: (settings) ->
     defaultsValues =
       speed: @entity.defaultSpeed
-
-    if @entity.has('ViewportFixed')
-      defaultsValues.x = @entity.x
-      defaultsValues.y = @entity.y
 
     settings = defaults(settings, defaultsValues)
 
@@ -507,7 +497,6 @@ Entity =
       @decoy = @spawn(@options)
       if @options.attach
         point = Crafty(@options.attach).get(@options.index)
-        @decoy.removeComponent('ViewportFixed')
         point.attach(@decoy)
         @decoy.attr({
           x: point.x

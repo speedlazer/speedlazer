@@ -121,7 +121,6 @@ class HeliAttack extends EntityScript
       )
       @bigExplosion()
       =>
-        @entity.removeComponent('ViewportFixed')
         @entity.attr(lightness: .3)
       @wait @corpseKeep
       @endDecoy()

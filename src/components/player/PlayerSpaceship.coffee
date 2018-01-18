@@ -306,8 +306,6 @@ Crafty.c 'PlayerSpaceship',
       })
     if settings.attach
       @attach(t)
-    else
-      t.addComponent('ViewportFixed')
     t.delay(
       =>
         @detach(t) if settings.attach
