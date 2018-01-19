@@ -81,6 +81,14 @@ Crafty.c 'BattleShip',
     )
     @attach(@hatch)
 
+    @hatch2 = Crafty.e('carrierHatch').attr(
+      x: @x + 10 * 62
+      y: @y + 28
+      z: -5
+    )
+    @attach(@hatch2)
+
+
     @attach Crafty.e('2D, MineCannonPlace').attr(
       x: @x + 82
       y: @y + 28
@@ -157,14 +165,20 @@ Crafty.c 'BattleShip',
 
     @_bottomX += width * 32
 
-  open: ->
-    @hatch.animate('open')
+  open: (hatch) ->
+    @hatch.animate('open') if 0 in hatch
+    @hatch2.animate('open') if 1 in hatch
 
-  close: ->
-    @hatch.animate('close')
+  close: (hatch) ->
+    @hatch.animate('close') if 0 in hatch
+    @hatch2.animate('close') if 1 in hatch
 
 
   execute: (action) ->
     switch action
-      when 'open' then @open()
-      when 'close' then @close()
+      when 'open1' then @open([0])
+      when 'close1' then @close([0])
+      when 'open2' then @open([1])
+      when 'close2' then @close([1])
+      when 'open' then @open([0,1])
+      when 'close' then @close([0,1])

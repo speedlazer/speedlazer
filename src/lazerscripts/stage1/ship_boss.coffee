@@ -34,6 +34,10 @@ class ShipBoss extends EntityScript
         @placeSquad ScraperFlyer,
           amount: 4
           delay: 500
+          options: {
+            x: 20
+            y: -20
+          }
       # Fix sequencing
       #
       # Fix hatches
@@ -42,45 +46,82 @@ class ShipBoss extends EntityScript
           @wait(8000)
           @placeSquad Shooter,
             amount: 3
-            delay: 500
-          @placeSquad Shooter,
-            amount: 6
-            delay: 200
+            delay: 250
+            options: {
+              x: 20
+              y: 300
+            }
+          #
+          # @placeSquad Shooter,
+          #   amount: 6
+          #   delay: 200
         )
         @wait(8000)
         @sequence(
           @placeSquad Swirler,
             amount: 4
-            delay: 1200
+            delay: 400
           @wait(6000)
           @parallel(
-            @action 'open'
-            @placeSquad Shooter,
-              amount: 6
-              delay: 1000
-            @placeSquad ScraperFlyer,
-              amount: 6
-              delay: 800
+            # Open hatch 1
+            @action 'open1'
+              @placeSquad Shooter,
+                amount: 5,
+                delay: 200
+                options: {
+                  x: 525
+                  y: Crafty.viewport.height + 100
+                }
+              @sequence(
+                @wait(3000)
+                # close hatch 1
+                @action 'close1'
+                @moveTo(x: -0.5)
+              )
+              @sequence(
+                @wait(3000)
+                # close hatch 1
+                @action 'open2'
+                @moveTo(x: -0.1)
+              )
+
+            # @placeSquad ScraperFlyer,
+            #   amount: 6
+            #   delay: 800
+            # @action 'open'
+            #   @placeSquad Shooter,
+            #     amount: 3,
+            #     delay: 200
+            #     options: {
+            #       x: 850
+            #       y: Crafty.viewport.height + 100
+            #     }
+            #   @sequence(
+            #     # Close hatch 1
+            #     @wait(2000)
+            #     @action 'close'
+            #     @moveTo(x: 0.2)
+            #   )
           )
 
-          @wait(6000)
-          @placeSquad ScraperFlyer,
-            amount: 4
-            delay: 200
-          @placeSquad Stalker,
-            amount: 6
-            delay: 200
+          # @wait(6000)
+          # @placeSquad ScraperFlyer,
+          #   amount: 4
+          #   delay: 200
+          # @placeSquad Stalker,
+          #   amount: 6
+          #   delay: 200
         )
-        @parallel(
-          @moveTo(x: -0.8)
-
-          @sequence(
-            @placeSquad ScraperFlyer,
-              amount: 4
-              delay: 50
-
-          )
-        )
+        # @parallel(
+        #   @moveTo(x: -0.8)
+        #
+        #   @sequence(
+        #     @placeSquad ScraperFlyer,
+        #       amount: 4
+        #       delay: 50
+        #
+        #   )
+        # )
         # @wait(3000)
         # @sequence(
         #   @placeSquad CrewShooters,

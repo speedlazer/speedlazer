@@ -188,8 +188,8 @@ class Shooter extends ArmyDrone
 
   spawn: (options) ->
     d = Crafty.e('Drone').drone(
-      x: Crafty.viewport.width + 40
-      y: Crafty.viewport.height * .71
+      x: if options.x then options.x else Crafty.viewport.width + 40
+      y: if options.y then options.y else Crafty.viewport.height * .71
       defaultSpeed: options.speed ? 400
       juice: options.juice
     )
