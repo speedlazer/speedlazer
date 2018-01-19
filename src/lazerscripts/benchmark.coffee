@@ -1,6 +1,7 @@
 { LazerScript } = require('src/lib/LazerScript')
 { StartOfDawn, DayBreak, Morning } = require('./stage1/sunrise')
 { Swirler, Shooter } = require('./stage1/army_drone')
+ShipBoss = require('./benchmark/ship_boss').default
 
 class Benchmark extends LazerScript
   assets: ->
@@ -16,17 +17,20 @@ class Benchmark extends LazerScript
 
       @setWeapons(['lasers'])
       @setScenery 'Ocean'
+      @runScript(StartOfDawn, speed: 4)
       @setSpeed 0
       @wait 1500
       => Crafty('DebugInfo').capture('start')
       @setSpeed 300
       @wait 15000
-      @setScenery('BayStart')
+      @setScenery('CoastStart')
       => Crafty('DebugInfo').capture('scrolling')
-      @runScript(StartOfDawn, speed: 5)
-      @runScript(DayBreak, speed: 5)
-      @runScript(Morning, speed: 5)
+      @runScript(DayBreak, speed: 8)
+      @runScript(Morning, speed: 8)
       => Crafty('DebugInfo').capture('recolor')
+      @placeSquad ShipBoss
+      => Crafty('DebugInfo').capture('ship particles')
+      @setScenery('BayStart')
       => Crafty('PlayerSpaceship').each(-> @addComponent('Invincible').invincibleDuration(15000))
       @enemies()
       => Crafty('DebugInfo').capture('swirlers')
