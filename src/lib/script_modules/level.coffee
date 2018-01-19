@@ -349,7 +349,7 @@ Level =
       if y > @_getSeaLevel() - 60 and options.lightness is 1.0
         e.addComponent('WaterSplashes')
         e.attr waterSplashSpeed: 500, defaultWaterCooldown: 450
-        e.setDetectionOffset 40, 0
+        e.setDetectionOffset 40
 
       if options.damage
         e.ship = @entity.deathCause

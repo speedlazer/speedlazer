@@ -8,11 +8,10 @@ Crafty.c 'BattleShip',
       h: 32 * 7
       z: 6
       waterRadius: 10
-      minSplashDuration: 1200
-      defaultWaterCooldown: 500
+      minSplashDuration: 600
+      defaultWaterCooldown: 400
       waterSplashSpeed: 700
-      minOffset: 2
-      splashUpwards: false
+      minOffset: -20
     )
     @_topX = 0
     @_bottomX = 0

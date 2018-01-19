@@ -1,20 +1,72 @@
 createEntityPool = require('src/lib/entityPool').default
 
+Crafty.c('GameParticle', {
+  events:
+    'CameraPan': ({ dx, dy }) ->
+      @shift(-dx, -dy)
+
+  particle: (props) ->
+    duration = props.duration ? 100
+    running = 0
+    onGameLoop = (fd) =>
+      running += fd.dt
+      if running > duration
+        @unbind 'GameLoop', onGameLoop
+        @trigger('ParticleEnded', this)
+
+
+    @bind 'GameLoop', onGameLoop
+    this
+})
+
+Crafty.c('Explode', {
+  required: 'explosionStart, SpriteAnimation'
+  init: ->
+    @reel 'explodeReset', 20, [
+      [0, 0]
+    ]
+
+  playExplode: (duration) ->
+    @animate 'explodeReset'
+    @reel 'explode', duration, [
+      [0, 0]
+      [1, 0]
+      [2, 0]
+      [3, 0]
+      [4, 0]
+
+      [0, 1]
+      [1, 1]
+      [2, 1]
+      [3, 1]
+      [4, 1]
+
+      [0, 2]
+      [1, 2]
+      [2, 2]
+      [3, 2]
+      [4, 2]
+
+      [0, 3]
+      [1, 3]
+    ]
+    @animate 'explode'
+    this
+
+})
+
 splashPool = createEntityPool(
   ->
-    Crafty.e('Blast, ViewportRelativeMotion')
+    Crafty.e('2D, WebGL, Explode, ColorEffects, GameParticle, Motion, Tween')
       .colorOverride('#FFFFFF')
-      .viewportRelativeMotion(
-        speed: 1
-      ).setCleanup(
-        (e) -> splashPool.recycle(e)
-      )
   200
 )
 
 Crafty.c 'WaterSplashes',
+  events:
+    'GameLoop': '_waterSplashes'
+
   init: ->
-    @bind 'GameLoop', @_waterSplashes
     @cooldown = 0
     @defaultWaterCooldown ?= 70
     @waterRadius ?= 5
@@ -24,9 +76,6 @@ Crafty.c 'WaterSplashes',
     @waterAlpha ?= .6
     @splashUpwards = false
 
-  remove: ->
-    @unbind 'GameLoop', @_waterSplashes
-
   setDetectionOffset: (@detectionOffset, @minOffset = -10) ->
     this
 
@@ -34,6 +83,8 @@ Crafty.c 'WaterSplashes',
     return if Game.explosionMode?
     @cooldown -= fd.dt
     sealevel = Crafty.s('SeaLevel').getSeaLevel(@scale)
+    flySpeed = Crafty('ScrollWall')._currentSpeed.x
+
     if (@y + @h + @detectionOffset > sealevel) and (@y < sealevel) and (@cooldown <= 0)
       speed = @waterSplashSpeed ? @defaultSpeed
       @cooldown = @defaultWaterCooldown
@@ -46,34 +97,35 @@ Crafty.c 'WaterSplashes',
       coverage = 45
       parts = (@w / coverage)
       r = 0
+      vy = Math.min(Math.abs((@vy || 0) / 3), 100)
       for i in [0...parts]
         for d in [0...Math.min(upwards, 3)]
           r += 1
           pos = Math.random()
+          duration = (@minSplashDuration + (vy * 4) + (pos * 100)) * 3
+          factor = 210 / @minSplashDuration
           splashPool.get()
-            .explode({
-              upwards: if r % 2 is 0 then upwards else 0
-              x: @x + (i * coverage) + (pos * coverage)
-              y: sealevel + @minOffset
+            .attr(
+              x: @x + (i * coverage) + (pos * coverage) - (@waterRadius * 2)
+              y: sealevel + @minOffset - (@waterRadius * 2)
               z: @z + 3
-              duration: @minSplashDuration + (Math.random() * 100)
-              radius: @waterRadius
+              w: @waterRadius * 4
+              h: @waterRadius * 4
+              alpha: @waterAlpha * (0.5 + (pos * 0.5))
               topDesaturation: @topDesaturation
               bottomDesaturation: @bottomDesaturation
-              alpha: @waterAlpha
-              gravity: 0.2
-            }
-            (prev, fd) ->
-              mul = fd.dt / 1000.0
-              @attr(
-                gravity: @gravity + (15 * mul)
-                alpha: Math.max(0.1, (@alpha - Math.random() * (1.5 * mul)))
-              )
-              return {
-                y: Math.min(prev.y - (Math.random() * @upwards * 50 * mul) + @gravity, sealevel - 10)
-                x: prev.x + ((-.5 + pos) * Math.random() * 200 * mul)
-                w: prev.w + (15 * mul)
-                h: prev.h + (15 * mul)
-              }
+              vy: (-10 - vy - vy) * factor * pos
+              ay: (30 + vy + vy) * (0.5 + (factor * 0.5)) * pos
+              vx: -flySpeed
+            )
+            .one('ParticleEnded', (e) -> splashPool.recycle(e))
+            .playExplode(duration)
+            .tween({
+              alpha: 0.2
+              w: (@waterRadius * 4) + (@waterRadius * 2 * pos)
+              h: (@waterRadius * 4) + (@waterRadius * 2 * pos)
+            }, duration * 5 * pos)
+            .particle(
+              duration: duration
             )
     @_lastWaterY = @y
