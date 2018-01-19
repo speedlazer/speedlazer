@@ -233,7 +233,8 @@ Entity =
       seaLevel = @_getSeaLevel()
 
       if @enemy.moveState is 'air'
-        if settings.y? and settings.y + @entity.h > seaLevel + Crafty.viewport.y
+        # transition from air to underwater? break movement in 2 parts
+        if settings.y? and settings.y + @entity.h > seaLevel
           airSettings = clone settings
           airSettings.y = seaLevel - @entity.h
           return @_moveAir(airSettings)
@@ -246,7 +247,8 @@ Entity =
           return @_moveAir(settings)
 
       if @enemy.moveState is 'water'
-        if settings.y? and settings.y + @entity.h < seaLevel + Crafty.viewport.y
+        # transition from underwater to air? break movement in 2 parts
+        if settings.y? and settings.y + @entity.h < seaLevel
           waterSettings = clone settings
           waterSettings.y = seaLevel - @entity.h
           return @_moveWater(waterSettings)
@@ -517,7 +519,6 @@ Entity =
         })
       else
         { x, y } = @location()()
-        #@decoy.removeComponent('ViewportFixed')
         @decoy.attr(
           x: x
           y: y
@@ -525,8 +526,10 @@ Entity =
           health: 1
           defaultSpeed: @entity.defaultSpeed
         )
-      @decoy.removeComponent('BurstShot')
-      @decoy.removeComponent('Hostile')
+
+      @decoy.removeComponent('BurstShot') if @decoy.has('BurstShot')
+      @decoy.removeComponent('Hostile') if @decoy.has('Hostile')
+
       @decoy.updatedHealth()
       if @entity.xFlipped
         @decoy.flipX()

@@ -41,13 +41,14 @@ class CameraCrew extends EntityScript
   crash: ->
     @sequence(
       @parallel(
-        @screenShake(5, duration: 400)
+        @addMajorScreenshake()
         @blast(@location(),
           duration: 480,
           z: -199
           topDesaturation: 0.3
           bottomDesaturation: 0.3
         )
+        @slowMotionMoment()
         => Crafty.audio.play("explosion")
       )
       => @entity.flip('Y')

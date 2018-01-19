@@ -12,11 +12,11 @@ Crafty.c 'PlayerSpaceship',
       35, 32
     ]
 
-    @bind 'Moved', (from) ->
+    @bind 'Move', (from) ->
       if @hit('Edge') or @hit('Solid') # Contain player within playfield
-        setBack = {}
-        setBack[from.axis] = from.oldValue
-        @attr setBack
+        delta = @motionDelta()
+        @shift(- delta.x, - delta.y)
+
     @primaryWeapon = undefined
     @primaryWeapons = []
     @secondaryWeapon = undefined
@@ -82,20 +82,21 @@ Crafty.c 'PlayerSpaceship',
 
     @backFire.colorOverride(c)
 
-    @addComponent('Invincible').invincibleDuration(2000)
+    @addComponent('Invincible').invincibleDuration(1500)
 
     @setDetectionOffset 60, 0
-    @onHit 'Hostile', (collision) ->
-      return if Game.paused
-      return if @has('Invincible')
-      hit = no
-      damage = 0
-      for e in collision
-        if e.obj.damage and e.obj.damage > damage and !e.obj.damageHandled
-          damage = e.obj.damage
-          e.obj.damageHandled = true
-        hit = yes unless e.obj.hidden
-      @trigger('Hit', { damage }) if hit
+    @onHit('Hostile',
+      (collision) ->
+        return if Game.paused
+        return if @has('Invincible')
+        hit = no
+        damage = 0
+        for e in collision
+          if e.obj.damage and e.obj.damage > damage and !e.obj.hidden
+            damage = e.obj.damage
+            hit = yes
+        @trigger('Hit', { damage }) if hit
+    )
 
     @onHit 'PowerUp', (e) ->
       return if Game.paused
@@ -103,14 +104,14 @@ Crafty.c 'PlayerSpaceship',
         @pickUp(pu.obj) unless pu.obj.pickedUp
 
     @bind 'Hit', ->
-      @addComponent('Invincible').invincibleDuration(1000)
+      @addComponent('Invincible').invincibleDuration(2000)
       Crafty.e('Blast, Explosion').explode(
         x: @x + (@w / 2)
         y: @y + (@h / 2)
         radius: @w / 3
       )
       Crafty.audio.play("explosion")
-      Crafty('ScrollWall').get(0).screenShake(10, 500)
+      Crafty('ScrollWall').get(0).addTrauma(0.3)
 
     @bind 'Die', ->
       Crafty.e('Blast, Explosion').explode(
@@ -119,8 +120,12 @@ Crafty.c 'PlayerSpaceship',
         radius: @w
       )
       Crafty.audio.play("explosion")
-      Crafty('ScrollWall').get(0).screenShake(20, 2000)
+      # this trauma is added upon the 'hit'
+      Crafty('ScrollWall').get(0).addTrauma(0.3)
       @trigger 'Destroyed', this
+
+    @bind 'CameraPan', ({ dx, dy }) ->
+      @shift(-dx, -dy)
 
     @bind 'GameLoop', (fd) ->
       if @has 'AnimationMode'

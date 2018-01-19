@@ -52,16 +52,17 @@ Crafty.c 'WaterSplashes',
               bottomDesaturation: @bottomDesaturation
               alpha: @waterAlpha
               gravity: 0.2
-              (prev) ->
+              (prev, fd) ->
+                mul = fd.dt / 1000.0
                 @attr(
-                  gravity: @gravity + 0.3
-                  alpha: Math.max(0.1, (@alpha - Math.random() * .03))
+                  gravity: @gravity + (15 * mul)
+                  alpha: Math.max(0.1, (@alpha - Math.random() * (1.5 * mul)))
                 )
                 return {
-                  y: Math.min(prev.y - (Math.random() * @upwards) + @gravity, sealevel - 10)
-                  x: prev.x + ((-.5 + pos) * Math.random() * 4.0)
-                  w: prev.w + .3
-                  h: prev.h + .3
+                  y: Math.min(prev.y - (Math.random() * @upwards * 50 * mul) + @gravity, sealevel - 10)
+                  x: prev.x + ((-.5 + pos) * Math.random() * 200 * mul)
+                  w: prev.w + (15 * mul)
+                  h: prev.h + (15 * mul)
                 }
             )
     @_lastWaterY = @y

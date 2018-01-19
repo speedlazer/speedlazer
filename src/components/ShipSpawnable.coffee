@@ -84,16 +84,33 @@ Crafty.c 'ShipSpawnable',
       @ship.destroy()
       stats = @ship.stats()
       @ship = null
-      Crafty.e('Delay').delay(
+      Game.setGameSpeed 0.3
+      Crafty.e('Delay, TimeManager').delay(
+        -> Game.setGameSpeed 0.1
+        500
+        0
+      ).delay(
+        -> Game.setGameSpeed 0.4
+        1200
+        0
+      ).delay(
+        -> Game.setGameSpeed 0.7
+        1600
+        0
+      ).delay(
         =>
           @loseLife()
+          Game.setGameSpeed 1.0
           @spawnShip(stats)
         2000
         0
+        -> @destroy()
       )
     this
 
+  # TODO: Make this a concern of the ship itself
   _updateShipSprite: ->
+    return unless @ship.has('Sprite')
     sprite = 0
     healthPerc = @health / @maxHealth
     sprite = 2 if healthPerc < .3

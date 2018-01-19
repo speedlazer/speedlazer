@@ -16,13 +16,13 @@ class Stage1Boss extends EntityScript
           [.9, .4]
           [.7, .1]
           [.6, .2]
-        ], speed: 200
+        ], speed: 250
       )
       @repeat 2, @sequence(
         @fireRockets(4)
         @wait 500
         @fireRockets(4)
-        @wait 500
+        @wait 400
         @fireRockets(2)
         @wait 200
       )
@@ -79,7 +79,7 @@ class Stage1Boss extends EntityScript
           location: @location()
       )
       @if(( -> amount > 2)
-        @async @placeSquad(Stage1BossRocket,
+        @async @placeSquad(script,
           options:
             z: -5
             offsetX: 30
@@ -90,7 +90,7 @@ class Stage1Boss extends EntityScript
         )
       )
       @if(( -> amount > 3)
-        @async @placeSquad(Stage1BossRocket,
+        @async @placeSquad(script,
           options:
             z: -5
             offsetX: 30
@@ -137,25 +137,13 @@ class Stage1Boss extends EntityScript
 
 class Stage1BossStage1 extends Stage1Boss
   spawn: ->
-    Crafty.e('LargeDrone, Horizon, BulletCircle').drone(
+    Crafty.e('LargeDrone, Horizon').drone(
       x: Crafty.viewport.width + 40
       y: Crafty.viewport.height * .35
       defaultSpeed: 100
-      health: 23000
+      health: 30000
       #defaultSpeed: 50
       pointsOnHit: 10
-    ).bulletCircle(
-      burstAmount: 16
-      projectile: (x, y, angle) =>
-        projectile = Crafty.e('Sphere, Hostile, Projectile')
-          .blink()
-          .attr(
-            w: 14
-            h: 14
-            speed: 200
-            damage: 1
-          )
-        projectile.shoot(x, y, angle)
     )
 
   execute: ->
@@ -182,17 +170,26 @@ class Stage1BossStage1 extends Stage1Boss
       @animate 'reload', 0, 'wing'
       @moveTo(y: .43, speed: 5)
 
-      # TODO: Add homing missile attack to the mix
-
       # fase 1
       @repeat @sequence(
-        @rocketStrikeDance()
-        @wait 100
+        @choose(
+          @homingMissileStrike()
+          @rocketStrikeDance()
+        )
+        @movePath([
+          [.9, .4]
+          [.7, .5]
+        ], speed: 150)
+
         @choose(
           @mineStomp()
           @searchMines()
+          @minePatterns()
         )
-        @wait 100
+        @movePath([
+          [.7, .5]
+          [.9, .4]
+        ], speed: 150)
       )
     )
 
@@ -200,37 +197,62 @@ class Stage1BossStage1 extends Stage1Boss
     # start at .7
     @bindSequence 'Hit', @fase3, => @entity.healthBelow .4
 
-    # TODO: Add screenshake and debris falling to the mix
-
-    # TODO: Add homing missile attack to the mix
-
     # fase 2
     @sequence(
       @mineFieldStrike('BridgeDamage')
+      @cancelBullets('Mine')
+      @cancelBullets('shadow')
       @repeat @sequence(
-        @wait 100
-        @rocketStrikeDance()
-        @wait 100
-        @choose(
+        @movePath([
+          [.7, .5]
+          [.9, .4]
+        ], speed: 300)
+        @withDebrisFalling(@choose(
+          @homingMissileStrike()
+          @rocketStrikeDance()
+          @debrisFalling()
+        ))
+        @movePath([
+          [.9, .4]
+          [.7, .5]
+        ], speed: 300)
+        @withDebrisFalling(@choose(
           @mineStomp()
           @searchMines()
-        )
+          @minePatterns()
+        ))
       )
+    )
+
+  withDebrisFalling: (attack) ->
+    @parallel(
+      attack
+      @placeSquad BridgeDebrisFalling,
+        amount: 2,
+        delay: 2000
+    )
+
+  debrisFalling: ->
+    @sequence(
+      @moveTo(x: 1.2, speed: 300, easing: 'easeInQuad')
+      @placeSquad BridgeDebrisFalling,
+        amount: 5,
+        delay: 700
     )
 
   fase3: ->
     # start at .4
     @bindSequence 'Hit', @endOfFight, => @entity.healthBelow .2
 
-    # TODO: Revise with drone attacks
-
     @sequence(
-      @mineFieldStrike('BridgeCollapse')
+      @withDebrisFalling(@mineFieldStrike('BridgeCollapse'))
       @wait 500
       @rocketStrikeDance()
       #@cancelBullets('Mine')
       #@cancelBullets('shadow')
       @setSpeed 200
+      # TODO: Revise with drone attacks
+
       @repeat @sequence(
         @bombRaid(yes)
         @repeat 2, @while(
@@ -244,12 +266,53 @@ class Stage1BossStage1 extends Stage1Boss
       )
     )
 
+  minePatterns: ->
+    @while(
+      @sequence(
+        @placeSquad(Stage1BossMinePattern,
+          amount: 5
+          delay: 50
+          options:
+            ringStartAngle: 0
+            location: @location()
+            gridConfig:
+              initial: [
+                { x: 0.2, y: 0.25 }
+                { x: 0.8, y: 0.25 }
+                { x: 0.5, y: 0.5 }
+                { x: 0.2, y: 0.75 }
+                { x: 0.8, y: 0.75 }
+              ]
+        )
+        @placeSquad(Stage1BossMinePattern,
+          amount: 5
+          delay: 50
+          options:
+            ringStartAngle: 0.5
+            location: @location()
+            gridConfig:
+              initial: [
+                { x: 0.2, y: 0.25 }
+                { x: 0.8, y: 0.25 }
+                { x: 0.5, y: 0.5 }
+                { x: 0.2, y: 0.75 }
+                { x: 0.8, y: 0.75 }
+              ]
+        )
+      )
+      @movePath([
+        [.95, .4]
+        [.95, .6]
+        [.85, .5]
+      ], speed: 100)
+    )
+
   mineStomp: ->
     @sequence(
       @animate 'fast', -1, 'eye'
 
       @while(
-        @repeat(3,
+        @repeat(2,
           @sequence(
             @async @placeSquad(Stage1BossMineStomp,
               amount: 8
@@ -284,8 +347,8 @@ class Stage1BossStage1 extends Stage1Boss
   searchMines: ->
     @while(
       @repeat 5, @sequence(
-         @async @runScript(Stage1BossMine, @location())
-         @wait 1500
+        @async @runScript(Stage1BossMine, @location())
+        @wait 1500
       )
       @movePath([
         [.7, .6]
@@ -294,9 +357,26 @@ class Stage1BossStage1 extends Stage1Boss
       ], speed: 200)
     )
 
+  homingMissileStrike: ->
+    @while(
+      @repeat 5, @sequence(
+        @fireRockets(4, true)
+        @wait 500
+      )
+      @movePath([
+        [.9, .2]
+        [.8, .4]
+        [.9, .7]
+      ], speed: 150)
+    )
 
   mineFieldStrike: (event) ->
     @sequence(
+      @movePath([
+        [.7, .6]
+        [.9, .7]
+        [.9, .5]
+      ], speed: 100)
       @parallel(
         @sequence(
           @moveTo(x: -.2, y: .8, speed: 600, easing: 'easeInQuad')
@@ -347,10 +427,6 @@ class Stage1BossStage1 extends Stage1Boss
           @wait 200
         )
       )
-      @repeat(5, @sequence(
-        => @entity.shootRing()
-        @wait 300
-      ))
 
       @moveTo(y: .1, speed: 200, easing: 'easeInOutQuad')
       @while(
@@ -399,13 +475,9 @@ class Stage1BossStage1 extends Stage1Boss
     @sequence(
       @cancelBullets('Mine')
       @cancelBullets('shadow')
-      @repeat(5, @sequence(
-        => @entity.shootRing()
-        @wait 300
-      ))
       @invincible yes
       @while(
-        @moveTo(x: .6, y: .90, speed: 50)
+        @moveTo(x: .6, y: .90, speed: 100, easing: 'easeInOutQuad')
         @sequence(
           @smallExplosion()
           @while(
@@ -414,7 +486,7 @@ class Stage1BossStage1 extends Stage1Boss
           )
         )
       )
-      @moveTo(y: 1.1, x: .4, speed: 50)
+      @moveTo(y: 1.1, x: .4, speed: 200, easing: 'easeInOutQuad')
       @moveTo(y: .6, x: .4, speed: 350, easing: 'easeOutQuad')
       @sendToBackground(0.9, -100)
       @parallel(
@@ -578,14 +650,15 @@ class Stage1BossRocket extends EntityScript
             lightness: 1.0
             gravity: (Math.random() * .2)
             vertical: 0
-          ->
+          (p, fd) ->
+            mul = fd.dt / 1000.0
             @attr(
-              vertical: @vertical + Math.random() * @gravity
-              rotation: @rotation + (Math.random() * 3)
-              alpha: Math.max(0.1, (@alpha - Math.random() * .02))
-              lightness: Math.max(.2, @lightness - .05)
+              vertical: @vertical + Math.random() * @gravity * 50 * mul
+              rotation: @rotation + (Math.random() * 150 * mul)
+              alpha: Math.max(0.1, (@alpha - Math.random() * mul))
+              lightness: Math.max(.2, @lightness - (2.5 * mul))
             )
-            y: @y - @vertical
+            y: @y - (@vertical * mul)
         )
         @wait 20
       )
@@ -619,7 +692,7 @@ class Stage1BossAimedRocket extends EntityScript
       scale: options.scale
       pointsOnHit: options.pointsOnHit
       pointsOnDestroy: options.pointsOnDestroy
-    )
+    ).colorOverride('#eeffee')
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
@@ -1056,6 +1129,56 @@ class Stage1BossMineStomp extends EntityScript
   onKilled: ->
     @bigExplosion(juice: @juice)
 
+class Stage1BossMinePattern extends EntityScript
+
+  assets: ->
+    @loadAssets('mine')
+
+  spawn: (options) ->
+    location = options.location()
+    @gridPos = options.grid.getLocation()
+
+    Crafty.e('Mine, BulletCircle').mine(
+      x: location.x
+      y: location.y + 36
+      health: 300
+      defaultSpeed: options.speed ? 250
+      pointsOnHit: if options.points then 10 else 0
+      pointsOnDestroy: if options.points then 50 else 0
+    ).bulletCircle(
+      angle: options.ringStartAngle
+      burstAmount: 4
+      projectile: (x, y, angle) =>
+        projectile = Crafty.e('Sphere, Hostile, Projectile')
+          .blink()
+          .attr(
+            w: 14
+            h: 14
+            speed: 400
+            damage: 1
+          )
+        projectile.shoot(x, y, angle)
+    )
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @moveTo(y: 1.05, speed: 400)
+      @moveTo(x: @gridPos.x, speed: 400, easing: 'easeOutQuad')
+      @synchronizeOn 'dropped'
+      @moveTo(y: @gridPos.y, easing: 'easeOutQuad', speed: 400)
+
+      @synchronizeOn 'splode'
+      @animate('blink', -1)
+      @wait 300
+      => @entity.absorbDamage damage: @entity.health
+      => @entity.shootRing()
+      @endSequence()
+    )
+
+  onKilled: ->
+    @bigExplosion(juice: @juice)
+
 class Stage1BossPopupMineField extends EntityScript
   assets: ->
     @loadAssets('mine')
@@ -1081,7 +1204,7 @@ class Stage1BossPopupMineField extends EntityScript
       @moveTo(x: @target.x, y: @target.y, easing: 'easeOutQuad')
       @synchronizeOn 'placed'
       @sequence(
-        @wait (1 - @target.xPerc) * 1000
+        @wait (1 - @target.x) * 1000
         @animate('blink', -1)
         @wait 1000
         => @entity.absorbDamage damage: @entity.health
@@ -1092,6 +1215,49 @@ class Stage1BossPopupMineField extends EntityScript
 
   onKilled: ->
     @bigExplosion(juice: @juice)
+
+class BridgeDebrisFalling extends EntityScript
+  spawn: (options) ->
+    Crafty.e('Debris').debris(
+      health: 700
+      x: (Math.random() * 0.8) + 0.1
+      y: -0.1
+      z: -4
+      defaultSpeed: options.speed ? 400
+      pointsOnHit: 0
+      pointsOnDestroy: 0
+    )
+
+  execute: ->
+    x = Math.random() * 0.8 + 0.1
+    @sequence(
+      @setLocation x: x, y: -0.1
+      @addMajorScreenshake()
+      @wait 300
+      # debris falling
+      @while(
+        @moveTo(y: 1.1, easing: 'easeInQuad')
+        @sequence(
+          @blast(@location(),
+            ->
+              radius: 50
+              duration: 235
+              z: 1
+              alpha: .3
+              lightness: 0.3
+              gravity: (Math.random() * .3)
+              vertical: 0
+            ->
+              vertical: @vertical + Math.random() * @gravity
+              rotation: @rotation + (Math.random() * 3)
+              alpha: Math.max(0.1, (@alpha - Math.random() * .03))
+              y: @y - @vertical
+          )
+          @wait 40
+        )
+      )
+    )
+
 
 module.exports = {
   Stage1BossAimedRocket

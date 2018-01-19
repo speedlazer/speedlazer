@@ -49,8 +49,8 @@ Crafty.c 'Blast',
         w: @w
         h: @h
       }
-      @bind 'GameLoop', =>
-        newProps = frameOptions.call(this, @blastProps)
+      @bind 'GameLoop', (fd) =>
+        newProps = frameOptions.call(this, @blastProps, fd)
         @shift(newProps.x - @blastProps.x, newProps.y - @blastProps.y, newProps.w - @blastProps.w, newProps.h - @blastProps.h)
         @blastProps = newProps
 

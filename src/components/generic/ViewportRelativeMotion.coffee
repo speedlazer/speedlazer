@@ -4,10 +4,6 @@ calculateY = (delta, speed) ->
   delta * (speed - (correction - (correction * speed)))
 
 Crafty.c 'ViewportRelativeMotion',
-  init: ->
-
-  remove: ->
-
   viewportRelativeMotion: ({ x, y, offsetY, speed }) ->
     @_speed = speed
     if x? and y?
@@ -22,9 +18,9 @@ Crafty.c 'ViewportRelativeMotion',
 
       @attr x: Math.floor(newX), y: Math.floor(newY)
 
-    @motion = Crafty.bind 'CameraMove', (coords) =>
-      x = - (coords.dx * @_speed)
-      y = - calculateY(coords.dy, @_speed)
+    @motion = Crafty.bind 'CameraMove', ({dx, dy}) =>
+      x = - (dx * @_speed)
+      y = - calculateY(dy, @_speed)
 
       #newX = @_location.sx - shifted + @dx
       #newY = @_location.sy - (-coords.y * (1 - ((@_speed - 0.225) * 1.2))) + @dy

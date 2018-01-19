@@ -2,12 +2,23 @@ CryptoJS = require('crypto-js')
 defaults = require('lodash/defaults')
 sortBy = require('lodash/sortBy')
 
+###
+# Destructure this file into multiple components
+#
+# - extract Pause functionality
+# - extract GameSpeed functionality
+# - extract Background color functionality
+#
+# Further: Check why so many parts need access to 'Game.paused'
+#
+###
+
 Game =
   paused: no
-  firstLevel: 'Game'
   togglePause: ->
     @paused = !@paused
     if @paused
+      @setGameSpeed(0.0)
       Crafty('Delay').each -> @pauseDelays()
       Crafty('Tween').each -> @pauseTweens()
       Crafty('Particles').each -> @pauseParticles()
@@ -19,6 +30,7 @@ Game =
 
       Crafty.trigger('GamePause', @paused)
     else
+      @setGameSpeed(1.0)
       Crafty('Delay').each -> @resumeDelays()
       Crafty('Tween').each -> @resumeTweens()
       Crafty('Particles').each -> @resumeParticles()
@@ -29,6 +41,18 @@ Game =
           @enableControl()
       Crafty.trigger('GamePause', @paused)
 
+  setGameSpeed: (speed) ->
+    @gameSpeed = speed
+    Crafty('SpriteAnimation').each ->
+      return if @has('TimeManager')
+      @animationSpeed = speed
+    Crafty('Delay').each ->
+      return if @has('TimeManager')
+      @delaySpeed = speed
+    Crafty('Tween').each ->
+      return if @has('TimeManager')
+      @tweenSpeed = speed
+
   # Initialize and start our game
   start: ->
     @resetCredits()
@@ -37,14 +61,25 @@ Game =
     if settings.sound is no
       Crafty.audio.mute()
 
-    start = (new Date()) * 1
-    gameTime = start
+    @gameTime = 0
+    @setGameSpeed(1.0)
 
-    Crafty.bind 'EnterFrame', (fd) ->
-      return if Game.paused
-      gameTime += fd.dt
+    Crafty.bind 'NewEntity', (data) =>
+      e = Crafty(data.id)
+      return if e.has('TimeManager')
+      if e.has('SpriteAnimation')
+        e.animationSpeed = @gameSpeed
+      if e.has('Delay')
+        e.delaySpeed = @gameSpeed
+      if e.has('Tween')
+        e.tweenSpeed = @gameSpeed
 
-      Crafty.trigger 'GameLoop', Object.assign({}, fd, { inGameTime: gameTime })
+    Crafty.bind 'UpdateFrame', (fd) =>
+      @gameTime += fd.dt unless Game.paused
+      fd.dt = fd.dt * @gameSpeed
+      fd.inGameTime = @gameTime
+
+      Crafty.trigger 'GameLoop', fd
 
     Crafty.paths(
       audio: '/'

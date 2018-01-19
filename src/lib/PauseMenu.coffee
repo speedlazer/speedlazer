@@ -29,7 +29,7 @@ class Game.PauseMenu
           Game.togglePause()
           Game.resetCredits()
           Crafty('Player').each -> @softReset()
-          Crafty.enterScene Game.firstLevel
+          Crafty.enterScene 'Game'
       }
       {
         text: 'Quit'

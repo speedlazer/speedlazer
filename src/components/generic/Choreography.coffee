@@ -1,6 +1,7 @@
 defaults = require('lodash/defaults')
 clone = require('lodash/clone')
 extend = require('lodash/extend')
+BezierPath = require('src/lib/BezierPath').default
 
 # TODO: Document
 #
@@ -142,7 +143,7 @@ Crafty.c 'Choreography',
     destinationX = @_currentPart.dx
     dx = 0
     if destinationX
-      @_currentPart.moveOriginX ?= @_currentPart.x - Crafty.viewport.xShift
+      @_currentPart.moveOriginX ?= @_currentPart.x
       diffX = destinationX - @_currentPart.moveOriginX
       motionX = (diffX * v)
       pmotionX = (diffX * prevv)
@@ -151,7 +152,7 @@ Crafty.c 'Choreography',
     destinationY = @_currentPart.dy
     dy = 0
     if destinationY
-      @_currentPart.moveOriginY ?= @_currentPart.y - Crafty.viewport.yShift
+      @_currentPart.moveOriginY ?= @_currentPart.y
       diffY = destinationY - @_currentPart.moveOriginY
       motionY = (diffY * v)
       pmotionY = (diffY * prevv)
@@ -171,7 +172,7 @@ Crafty.c 'Choreography',
     @y += dy
 
   _executeViewportBezier: (v, prevv, dt) ->
-    bp = new Game.BezierPath
+    bp = new BezierPath
     unless @_currentPart.bPath?
       p = @_currentPart.path
       if @_lastBezierPathPoint? and @_currentPart.continuePath

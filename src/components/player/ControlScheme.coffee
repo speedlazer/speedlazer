@@ -5,6 +5,6 @@ Crafty.c 'ControlScheme',
     Crafty.trigger('PlayerActivated')
 
   remove: ->
-    @removeComponent('Cheats')
+    @removeComponent('Cheats') if @has('Cheats')
     @trigger('Deactivated')
     Crafty.trigger('PlayerDeactivated')

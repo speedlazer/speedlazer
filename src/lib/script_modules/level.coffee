@@ -3,6 +3,8 @@ sample = require('lodash/sample')
 shuffle = require('lodash/shuffle')
 defaults = require('lodash/defaults')
 Synchronizer = require('src/lib/Synchronizer').default
+LocationGrid = require('src/lib/LocationGrid').default
+say = require('src/lib/Dialog').say
 
 # Actions to control the flow of a level
 #
@@ -52,7 +54,7 @@ Level =
         delay: 1000
       )
       if options.gridConfig?
-        options.grid = new Game.LocationGrid(options.gridConfig)
+        options.grid = new LocationGrid(options.gridConfig)
       settings.options = options
       scripts = (for i in [0...settings.amount]
         synchronizer.registerEntity(new scriptClass(@level))
@@ -143,7 +145,7 @@ Level =
         noise: 'none'
         bottom: @level.visibleHeight
       )
-      Game.say(speaker, text, options)
+      say(speaker, text, options)
 
   # Drop an item in the screen at a given location,
   #
@@ -164,19 +166,19 @@ Level =
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
       itemSettings = @inventory(options.item)
-      item = -> Crafty.e('PowerUp').powerUp(itemSettings)
+      item = (attrs) -> Crafty.e('PowerUp').attr(attrs).powerUp(itemSettings)
       unless itemSettings
         console.warn 'Item ', options.item, ' is not known'
         return WhenJS()
       if player = options.inFrontOf
         ship = player.ship()
         if ship
-          @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: player.ship().y + Crafty.viewport.y
+          item(z: -1, x: Crafty.viewport.width, y: player.ship().y + Crafty.viewport.y)
         else
           unless player.gameOver
             d = WhenJS.defer()
             player.entity.one 'ShipSpawned', (ship) =>
-              @level.addComponent item().attr(z: -1), x: Crafty.viewport.width, y: ship.y + Crafty.viewport.y
+              item(z: -1, x: Crafty.viewport.width, y: ship.y + Crafty.viewport.y)
               d.resolve()
             return d.promise
 
@@ -190,7 +192,7 @@ Level =
         else
           coords = pos
 
-        item().attr(x: coords.x, y: coords.y, z: -1)
+        item(x: coords.x, y: coords.y, z: -1)
 
   # Returns an object with information about a player
   #
@@ -273,14 +275,14 @@ Level =
   gainHeight: (height, options) ->
     (sequence) =>
       @_verify(sequence)
-      d = WhenJS.defer()
 
-      currentSpeed = @level._forcedSpeed?.x ? @level._forcedSpeed
       { duration } = options
       if @_skippingToCheckpoint() or duration is 0
         @level.setHeight -height
       else
+        d = WhenJS.defer()
         speedY = (height / duration) * 1000
+        currentSpeed = @level._forcedSpeed?.x ? @level._forcedSpeed
 
         @level.setForcedSpeed({ x: currentSpeed, y: -speedY }, accellerate: no)
         level = @level
@@ -418,18 +420,49 @@ Level =
   changeSeaLevel: (offsetY) ->
     (sequence) =>
       @_verify(sequence)
-      @level.sealevelOffset = offsetY
+      @level.sealevelOffset = -offsetY
       level = @level
       Crafty.s('SeaLevel').setOffset(level.sealevelOffset)
 
-  screenShake: (amount, options = {}) ->
+  panCamera: (settings, duration) ->
     (sequence) =>
       @_verify(sequence)
-      options = defaults(options, {
-        duration: 1000
-      })
-      @level.screenShake(amount, options)
-      @wait(options.duration)(sequence)
+      @level.panCamera(settings, duration)
+      #if @_skippingToCheckpoint() or duration is 0
+
+  addMinorScreenshake: ->
+    (sequence) =>
+      @_verify(sequence)
+      @level.addTrauma(0.2)
+
+  slowMotionMoment: ->
+    (sequence) =>
+      @_verify(sequence)
+      new Promise((resolve) ->
+        Game.setGameSpeed 0.3
+        Crafty.e('Delay, TimeManager').delay(
+          -> Game.setGameSpeed 0.1
+          500
+          0
+        ).delay(
+          -> Game.setGameSpeed 0.3
+          1500
+          0
+        ).delay(
+          ->
+            Game.setGameSpeed 1.0
+            @destroy()
+            resolve()
+          2000
+          0
+        )
+      )
+
+
+  addMajorScreenshake: ->
+    (sequence) =>
+      @_verify(sequence)
+      @level.addTrauma(0.5)
 
   screenFlash: (amount, options = {}) ->
     (sequence) =>
@@ -461,12 +494,6 @@ Level =
           defer.resolve()
       )
       defer.promise
-
-   moveCamera: (settings = {}) ->
-     (sequence) =>
-       # TODO: Figure out skipping
-       @level.cameraPan(settings)
-       @wait(settings.duration)(sequence)
 
   setWeapons: (newWeapons) ->
     (sequence) =>
