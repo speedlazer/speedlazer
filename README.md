@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/speedlazer/speedlazer.svg?branch=master)](https://travis-ci.org/speedlazer/speedlazer)
+
 # SpeedLazer SHMUP
 
 Development repo of a side scrolling shooter (SHMUP) made with Crafty.js and making use of the
@@ -9,6 +11,8 @@ HTML5 Gamepad API.
 
 To test if your gamepad is succesfully connected/working, use:
 http://html5gamepad.com/
+
+The latest `master` is automatically deployed to http://speedlazer.net/beta/
 
 # More info:
 
