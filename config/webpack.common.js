@@ -32,7 +32,7 @@ module.exports = {
     }),
     new webpack.ProvidePlugin({
       Crafty: ["src/crafty-loader", "default"],
-      Game: ["src/Game", "default"],
+      Game: ["src/game", "default"],
       WhenJS: ["src/when-loader", "default"]
     })
   ],
