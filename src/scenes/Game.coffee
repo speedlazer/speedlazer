@@ -90,7 +90,6 @@ Crafty.defineScene 'Game', (data = {}) ->
       console.log 'End of content!'
 
   wait.then ->
-    Crafty('LoadingText').destroy()
     executeScript(startScript, options)
 
   Crafty.bind 'GameOver', ->

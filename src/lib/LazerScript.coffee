@@ -27,6 +27,7 @@ class LazerScript
     @currentSequence = null
 
   initialize: (args...) ->
+    Crafty('LoadingText').destroy()
     Crafty.bind 'PlayerDied', @_endScriptOnGameOver
     WhenJS(@execute(args...)(@currentSequence)).finally =>
       Crafty.unbind 'PlayerDied', @_endScriptOnGameOver
