@@ -63,8 +63,8 @@ Crafty.c 'ScrollWall',
       x = 0
       y = 0
       if screenshake > 0
-        MAX_X_OFFSET = 40
-        MAX_Y_OFFSET = 30
+        MAX_X_OFFSET = 50
+        MAX_Y_OFFSET = 40
 
         @time += fd.dt
 
@@ -84,25 +84,6 @@ Crafty.c 'ScrollWall',
         dx: dx
         dy: dy
       )
-
-    # TODO: Verify correctness of these statements
-    #@onHit 'PlayerControlledShip', (el) ->
-      ## Push the player forward
-      #for e in el
-        #p = e.obj
-        #p.attr x: p.x + @_speed.x
-
-    #@wallTop.onHit 'PlayerControlledShip', (el) =>
-      ## Push the player downward
-      #for e in el
-        #p = e.obj
-        #p.attr y: p.y + @_speed.y
-
-    #@wallBottom.onHit 'PlayerControlledShip', (el) =>
-      ## Push the player upward
-      #for e in el
-        #p = e.obj
-        #p.attr y: @wallBottom.y - p.h
 
   addTrauma: (amount) ->
     @trauma = Math.min(1, @trauma + amount)
