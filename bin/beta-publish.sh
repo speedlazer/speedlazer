@@ -2,28 +2,22 @@
 set -e
 
 # Dry run
+COMMIT_MSG=$(TZ=UTC git log -n 1 --format=format:"beta built from commit %h (%cd)" --date=local)
 yarn build
-rm -r dist
 
 # Clean up for release
 git checkout gh-pages
-git rm -r beta
-git commit -m 'prepare for beta release'
+git rm -r --ignore-unmatch beta
 
-# Buid project
-git checkout -
-COMMIT_MSG = $(TZ=UTC git log -n 1 --format=format:"beta built from commit %h (%cd)" --date=local)
-yarn build
-git checkout -
+echo $COMMIT_MSG
 
 # Move files to root
-rm -r beta
 mv dist beta
 git add beta
 
 # publish
 
-git commit --amend -m 'Automatic beta release'
+git commit -m "$COMMIT_MSG"
 
 echo 'ready to be pushed / published!'
 
