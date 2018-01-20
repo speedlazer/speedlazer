@@ -30,7 +30,7 @@ Crafty.c 'PlayerSpaceship',
           yHitCorrection -= hitData.overlap * hitData.ny
         else # MBR
           obj = hitData.obj
-          d = obj.motionDelta?() || { x: 0, y: 0 }
+          d = obj.choreographyDelta?() || { x: 0, y: 0 }
           if obj.intersect(@x - delta.x, @y, @w, @h)
             yHitCorrection -= delta.y - d.y
 

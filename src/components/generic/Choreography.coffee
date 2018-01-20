@@ -94,7 +94,7 @@ Crafty.c 'Choreography',
       @trigger(part.event, { entity: this, data: part.data })
     @_setupPart part, number
 
-  motionDelta: ->
+  choreographyDelta: ->
     {
       x: @x - @_px
       y: @y - @_py
