@@ -9,3 +9,7 @@ deploy:
   skip_cleanup: true
   on:
     branch: feature/beta-releases
+
+env:
+  global:
+    secure: "egGP8k+Ob+SrOAMivlEFfsN4Q0is/afZUpij0O7wkJEAw/IBvkTNNyZX+3s5k+LptvZItc0Wwbhax5q52n2LZbMwbkk5IHgyqoGAEdXdKWsnXGVHvdAZOn4oeePHCbikI3rhEHr1nB3RFEluhEIDFj/rqMxNCDO1j8MfIZTJVjTmVuZpdFBpoUT2bYyrzxI7bxlbra/GVd97VioBKTMSzNF8pbVjiBn5yD2lv151MzERbbW0K/mGgcbywiW+Z/tBSAT5bPyjv5BORzmA7xTn8dPLc33BbbOLn8QgExNnK+M4/V+B8NIf9zGAsQ9DM3S0utvW1lAmz255DteiAT/ZJS9dynwP2FHgTBB5WERVNWFJLmAmpdLaXc/bxOYclfopm++IgMUU38ZtM+hY8lvceePR8mx4MdBFKjQBjO7XRb9A+p3SujSTxJL75V1tLZTtQHMw3hXD23GQ8E0Ac+mAyXp1YgeRQC+NL21xwrwtDjxsoDSPzC7LGcw5PRa/lrhp2EgLy+1+V8RNX9eR4KvyNO5nrSiSuJsJTdZTk/z/s+XGldy3bWYcGCtYjykFB+S6c4pYdnwovffijZWP2Hpj1YwM0H7cDiZiw29ubXvF4QQWZfRdd71tskrHKIynv/Vxh+E2KMtAeVXpxGLC+rxvk8jsLXu5TF7AoJrzUFM02XU="
