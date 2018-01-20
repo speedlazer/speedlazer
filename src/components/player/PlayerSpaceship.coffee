@@ -37,33 +37,25 @@ Crafty.c 'PlayerSpaceship',
           if obj.intersect(@x, @y - delta.y, @w, @h)
             xHitCorrection -= delta.x - d.x
 
-         if xHitCorrection > 0
-           if xDir < 0
-             @_squashShip()
-           else
-             xDir = 1
-             xCorrection = Math.max(xCorrection, xHitCorrection)
+        if xHitCorrection != 0
+          if xHitCorrection > 0
+            @_squashShip() if xDir < 0
+            xDir = 1
+            xCorrection = Math.max(xCorrection, xHitCorrection)
+          else
+            @_squashShip() if xDir > 0
+            xDir = -1
+            xCorrection = Math.min(xCorrection, xHitCorrection)
 
-         if xHitCorrection < 0
-           if xDir > 0
-             @_squashShip()
-           else
-             xDir = -1
-             xCorrection = Math.min(xCorrection, xHitCorrection)
-
-         if yHitCorrection < 0
-           if yDir > 0
-             @_squashShip()
-           else
-             yDir = -1
-             yCorrection = Math.min(yCorrection, yHitCorrection)
-
-         if yHitCorrection > 0
-           if yDir < 0
-             @_squashShip()
-           else
-             yDir = 1
-             yCorrection = Math.max(yCorrection, yHitCorrection)
+        if yHitCorrection != 0
+          if yHitCorrection < 0
+            @_squashShip() if yDir > 0
+            yDir = -1
+            yCorrection = Math.min(yCorrection, yHitCorrection)
+          else
+            @_squashShip() if yDir < 0
+            yDir = 1
+            yCorrection = Math.max(yCorrection, yHitCorrection)
       )
 
       @shift(xCorrection, yCorrection)
