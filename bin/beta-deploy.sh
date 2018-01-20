@@ -10,7 +10,7 @@ git status
 git branch -r
 
 # Clean up for release
-git checkout origin/gh-pages
+git checkout gh-pages
 git rm -r --ignore-unmatch beta
 
 echo $COMMIT_MSG
