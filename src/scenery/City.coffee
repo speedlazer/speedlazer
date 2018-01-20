@@ -83,7 +83,7 @@ levelGenerator.defineElement 'water', ->
 
 levelGenerator.defineElement 'waterFront', ->
   height = 65
-  @add(0, @level.visibleHeight - 45, Crafty.e('2D, Solid').attr(w: @delta.x, h: 45))
+  @add(0, @level.visibleHeight - 45, Crafty.e('2D, ShipSolid, BulletSolid').attr(w: @delta.x, h: 45))
 
   water1 = Crafty.e('2D, Delta2D, WebGL, waterFront1, Wave1')
     .attr(z: -20)
@@ -534,7 +534,7 @@ levelGenerator.defineBlock class extends CityScenery
         Crafty('carrierHatch').each ->
           @animate('open')
       @one 'lift', ->
-        block.outside.addComponent('Solid')
+        block.outside.addComponent('ShipSolid', 'BulletSolid')
         Crafty('carrierHatch').each ->
           @animate('close')
         Crafty('aircraftCarrierBottomFlat').each ->
@@ -667,7 +667,7 @@ levelGenerator.defineBlock class extends CityScenery
 
     @addBackground(0, 20,   @deck(0, no,  w: 900, z: -20).addComponent('BackDeck'), .9)
 
-    dh = Crafty.e('2D, Solid, Collision, BridgeCeiling').attr(w: 1000, h: 30).origin('middle middle')
+    dh = Crafty.e('2D, BulletSolid, ShipSolid, Collision, BridgeCeiling').attr(w: 1000, h: 30).origin('middle middle')
     @addBackground(0, -60, dh, 1.0)
 
     d1 = @deck(0, yes, w: 1000, z: -10).addComponent('MainDeck')
@@ -855,7 +855,7 @@ levelGenerator.defineBlock class extends CityScenery
     h3 = 400
     @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h3, z: -25).color('#333'))
     h3 = 40
-    @add(0, @level.visibleHeight + 170 - h3, Crafty.e('2D, Solid').attr(w: @delta.x, h: h3, z: 2))
+    @add(0, @level.visibleHeight + 170 - h3, Crafty.e('2D, ShipSolid, BulletSolid').attr(w: @delta.x, h: h3, z: 2))
 
 levelGenerator.defineBlock class extends LevelScenery
   name: 'City.TrainTunnel'
@@ -867,11 +867,11 @@ levelGenerator.defineBlock class extends LevelScenery
     super
 
     h = 150
-    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock, Solid').attr(w: @delta.x, h: h, z: -10).color('#505050'))
+    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock, ShipSolid, BulletSolid').attr(w: @delta.x, h: h, z: -10).color('#505050'))
     h2 = 400
     @add(0, @level.visibleHeight - 100 + h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h2, z: -10).color('#202020'))
     h = 150
-    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h + h2, z: -10).color('#505050'))
+    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, ShipSolid, BulletSolid, SunBlock').attr(w: @delta.x, h: h + h2, z: -10).color('#505050'))
 
 levelGenerator.defineBlock class extends LevelScenery
   name: 'City.SmallerTrainTunnel'
@@ -882,9 +882,9 @@ levelGenerator.defineBlock class extends LevelScenery
   generate: ->
     super
     h = 250
-    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock, Solid').attr(w: @delta.x, h: h, z: -10).color('#505050'))
+    @add(0, @level.visibleHeight - 100, Crafty.e('2D, WebGL, Color, SunBlock, ShipSolid, BulletSolid').attr(w: @delta.x, h: h, z: -10).color('#505050'))
     h2 = 300
     @add(0, @level.visibleHeight - 100 + h, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: h2, z: -10).color('#202020'))
     h3 = 350
-    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, Solid, SunBlock').attr(w: @delta.x, h: h3, z: -10).color('#505050'))
+    @add(0, @level.visibleHeight - 100 + h + h2, Crafty.e('2D, WebGL, Color, ShipSolid, BulletSolid, SunBlock').attr(w: @delta.x, h: h3, z: -10).color('#505050'))
 

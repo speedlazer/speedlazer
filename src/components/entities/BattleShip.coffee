@@ -1,18 +1,17 @@
 Crafty.c 'BattleShip',
   init: ->
-    @requires '2D, WebGL, Tween, Choreography, Solid, Collision,' +
-      'ViewportFixed, Hideable, Flipable, Scalable, SunBlock, WaterSplashes'
+    @requires '2D, WebGL, Tween, Choreography, ShipSolid, Collision,' +
+      'Hideable, Flipable, Scalable, SunBlock, WaterSplashes'
     width = 37
     @attr(
       w: 32 * width
       h: 32 * 7
       z: 6
       waterRadius: 10
-      minSplashDuration: 1200
-      defaultWaterCooldown: 500
+      minSplashDuration: 600
+      defaultWaterCooldown: 400
       waterSplashSpeed: 700
-      minOffset: 2
-      splashUpwards: false
+      minOffset: -20
     )
     @_topX = 0
     @_bottomX = 0

@@ -48,7 +48,6 @@ class CameraCrew extends EntityScript
           topDesaturation: 0.3
           bottomDesaturation: 0.3
         )
-        @slowMotionMoment()
         => Crafty.audio.play("explosion")
       )
       => @entity.flip('Y')

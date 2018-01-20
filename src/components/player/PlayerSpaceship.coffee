@@ -1,4 +1,5 @@
 defaults = require('lodash/defaults')
+createEntityPool = require('src/lib/entityPool').default
 
 Crafty.c 'PlayerSpaceship',
   init: ->
@@ -12,10 +13,52 @@ Crafty.c 'PlayerSpaceship',
       35, 32
     ]
 
-    @bind 'Move', (from) ->
-      if @hit('Edge') or @hit('Solid') # Contain player within playfield
-        delta = @motionDelta()
-        @shift(- delta.x, - delta.y)
+    @onHit 'ShipSolid', (hits) ->
+      console.log('on edge!')
+
+      delta = @motionDelta()
+      xCorrection = 0
+      yCorrection = 0
+      xDir = 0
+      yDir = 0
+
+      hits.map((hitData) =>
+        xHitCorrection = 0
+        yHitCorrection = 0
+        if hitData.type == 'SAT'
+          xHitCorrection -= hitData.overlap * hitData.nx
+          yHitCorrection -= hitData.overlap * hitData.ny
+        else # MBR
+          obj = hitData.obj
+          d = obj.choreographyDelta?() || { x: 0, y: 0 }
+          if obj.intersect(@x - delta.x, @y, @w, @h)
+            yHitCorrection -= delta.y - d.y
+
+          if obj.intersect(@x, @y - delta.y, @w, @h)
+            xHitCorrection -= delta.x - d.x
+
+        if xHitCorrection != 0
+          if xHitCorrection > 0
+            @_squashShip() if xDir < 0
+            xDir = 1
+            xCorrection = Math.max(xCorrection, xHitCorrection)
+          else
+            @_squashShip() if xDir > 0
+            xDir = -1
+            xCorrection = Math.min(xCorrection, xHitCorrection)
+
+        if yHitCorrection != 0
+          if yHitCorrection < 0
+            @_squashShip() if yDir > 0
+            yDir = -1
+            yCorrection = Math.min(yCorrection, yHitCorrection)
+          else
+            @_squashShip() if yDir < 0
+            yDir = 1
+            yCorrection = Math.max(yCorrection, yHitCorrection)
+      )
+
+      @shift(xCorrection, yCorrection)
 
     @primaryWeapon = undefined
     @primaryWeapons = []
@@ -24,10 +67,33 @@ Crafty.c 'PlayerSpaceship',
     @weaponsEnabled = yes
     @currentRenderedSpeed = 0
     @flip('X')
+    @emitCooldown = 0
 
-  updateMovementVisuals: (rotation, dx, dy, dt) ->
+  _squashShip: ->
+    @trigger('Hit', { damage: 1000 })
+
+  updateMovementVisuals: (rotation = 0, dx, dy, dt) ->
     velocity = Math.max(dx * (1000 / dt), 0)
+
+    if dy > 0
+      if @healthPerc < 0.3
+        @sprite(13, 5)
+      else
+        @sprite(7, 4)
+    else if dy < 0
+      if @healthPerc < 0.3
+        @sprite(13, 3)
+      else
+        @sprite(10, 4)
+    else
+      if @healthPerc < 0.3
+        @sprite(0, 2)
+      else
+        @sprite(0, 0)
+
+    @rotation = 0
     @_updateFlyingSpeed velocity, dt
+    @rotation = rotation
 
   _updateFlyingSpeed: (newSpeed, dt) ->
     if newSpeed < 30
@@ -51,11 +117,31 @@ Crafty.c 'PlayerSpaceship',
       w: w
       h: h
     )
+    @_emitTrail(dt)
+
+  _emitTrail: (dt) ->
+    @emitCooldown -= dt
+    if @emitCooldown < 0
+      w = @backFire.w / 4
+      h = 4
+      @trailEntPool.get().attr(
+        x: @x - w
+        dy: 0
+        y: Math.floor(@y + 21 - (Math.random() * 4))
+        w: w
+        h: h
+        z: -4
+        alpha: 0.3 + (Math.random() * 0.4)
+      ).tweenPromise({ alpha: 0, h: 2, dy: 2 }, 750, 'easeOutQuad').then((e) =>
+        @trailEntPool.recycle(e)
+      )
+      @emitCooldown = 30
 
   start: ->
-    @backFire = Crafty.e('2D, WebGL, shipEngineFire, ColorEffects')
-      .crop(28, 0, 68, 29)
+    @backFire = Crafty.e('2D, WebGL, shipEngineFire, ColorEffects, SpriteAnimation')
+    @backFire.reel 'burn', 300, [[4, 5, 3, 1], [3, 0, 3, 1]]
     @backFire.timing = 0
+    @backFire.animate('burn', -1)
     w = 68
     h = 10
 
@@ -80,11 +166,23 @@ Crafty.c 'PlayerSpaceship',
       newC = (c[comp] + basicC[comp] + basicC[comp]) / 3
       c[comp] = newC
 
+    @trailColor = c
     @backFire.colorOverride(c)
+    @trailEntPool = createEntityPool(
+      =>
+        Crafty.e(
+          '2D, WebGL, shipEngineFire, Delta2D, TweenPromise, ViewportRelativeMotion, ColorEffects'
+        ).colorOverride(
+          @trailColor
+        ).viewportRelativeMotion(
+          speed: 1
+        )
+      2
+    )
 
     @addComponent('Invincible').invincibleDuration(1500)
 
-    @setDetectionOffset 60, 0
+    @setDetectionOffset 60
     @onHit('Hostile',
       (collision) ->
         return if Game.paused
@@ -128,20 +226,18 @@ Crafty.c 'PlayerSpaceship',
       @shift(-dx, -dy)
 
     @bind 'GameLoop', (fd) ->
+      motionX = ((@vx + @_currentSpeed.x) / 1000.0) * fd.dt
+      motionY = ((@vy + @_currentSpeed.y) / 1000.0) * fd.dt
+
       if @has 'AnimationMode'
         if @_choreography?.length is 0
-          @_updateFlyingSpeed @_currentSpeed.x, fd.dt
+          @updateMovementVisuals(@rotation, motionX, motionY, fd.dt)
         return
 
-      motionX = (@_currentSpeed.x / 1000.0) * fd.dt
-      motionY = (@_currentSpeed.y / 1000.0) * fd.dt
-
-      shipSpeedX = @_currentSpeed.x + @vx
-      shipSpeedY = @_currentSpeed.y + @vy
       @updateAcceleration()
 
       r = @rotation
-      newR = shipSpeedY / 40
+      newR = motionY
       nr = r
       if r < newR
         nr += 1
@@ -149,20 +245,7 @@ Crafty.c 'PlayerSpaceship',
         nr -= 1
 
       @rotation = nr
-      nr = r if @hit('Edge') or @hit('Solid')
-
-      @rotation = 0
-      @_updateFlyingSpeed shipSpeedX, fd.dt
-      @rotation = nr
-
-      # Move player back if flying into an object
-      if @hit('Edge') or @hit('Solid')
-        @x -= motionX
-        @y -= motionY
-
-      # still hitting an object? then we where forced in
-      # and are crashed (squashed probably)
-      @trigger('Hit', { damage: 1000 }) if @hit('Edge') or @hit('Solid')
+      @updateMovementVisuals(@rotation, motionX, motionY, fd.dt)
 
     this
 
@@ -273,8 +356,6 @@ Crafty.c 'PlayerSpaceship',
       })
     if settings.attach
       @attach(t)
-    else
-      t.addComponent('ViewportFixed')
     t.delay(
       =>
         @detach(t) if settings.attach
@@ -282,4 +363,7 @@ Crafty.c 'PlayerSpaceship',
         t.one('TweenEnd', -> t.destroy())
       settings.delay
     )
+
+  remove: ->
+    @trailEntPool.clean()
 

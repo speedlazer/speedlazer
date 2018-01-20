@@ -38,7 +38,6 @@ class TankAttack extends EntityScript
       @wait 200
       @bigExplosion()
       =>
-        @entity.removeComponent('ViewportFixed')
         @entity.attr(lightness: .3)
         @entity.barrel.attr(lightness: .3)
       @wait 10000

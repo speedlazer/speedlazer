@@ -7,7 +7,7 @@ class PresentationLeaveScreen extends EntityScript
     Crafty('PlayerControlledShip').each ->
       ship = this if @playerNumber is options.index + 1
     if ship?
-      ship.addComponent 'Tween', 'Choreography', 'ViewportFixed', 'AnimationMode'
+      ship.addComponent 'Tween', 'Choreography', 'AnimationMode'
     ship
 
   execute: ->

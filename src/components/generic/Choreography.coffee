@@ -47,13 +47,8 @@ Crafty.c 'Choreography',
     @uniqueBind('GameLoop', @_choreographyTick)
     @_options = defaults(options, {
       repeat: 0
-      compensateCameraSpeed: no
       skip: 0
     })
-    if @_options.compensateCameraSpeed
-      @camera = Crafty(Crafty('ScrollWall')[0])
-      @_options.cameraLock =
-        x: @camera.x
 
     @_choreography = c
     @_repeated = 0
@@ -90,6 +85,8 @@ Crafty.c 'Choreography',
         @_choreography = []
         @unbind('GameLoop', @_choreographyTick)
         @trigger 'ChoreographyEnd'
+        @_px = @x
+        @_py = @y
         return
 
     part = @_choreography[number]
@@ -97,7 +94,15 @@ Crafty.c 'Choreography',
       @trigger(part.event, { entity: this, data: part.data })
     @_setupPart part, number
 
+  choreographyDelta: ->
+    {
+      x: @x - @_px
+      y: @y - @_py
+    }
+
   _choreographyTick: (frameData) ->
+    @_px = @x
+    @_py = @y
     return unless @_currentPart?
     prevv = @_currentPart.easing.value()
     dt = frameData.dt + @_toSkip
@@ -105,9 +110,6 @@ Crafty.c 'Choreography',
     @_toSkip = 0
     v = @_currentPart.easing.value()
     @_ctypes[@_currentPart.type].apply(this, [v, prevv, dt])
-
-    if @_options.compensateCameraSpeed
-      @x += ((@camera.x - @_options.cameraLock.x))
 
     if @_currentPart.easing.complete
       @_setupCPart @_currentPart.part + 1
@@ -132,9 +134,7 @@ Crafty.c 'Choreography',
   _executeLinear: (v, prevv) ->
     dx = (v * (@_currentPart.dx ? 0)) - (prevv * (@_currentPart.dx ? 0))
     dy = (v * (@_currentPart.dy ? 0)) - (prevv * (@_currentPart.dy ? 0))
-
-    @x += dx
-    @y += dy
+    @shift(dx, dy)
 
   _executeDelay: (v) ->
 
@@ -168,8 +168,7 @@ Crafty.c 'Choreography',
 
       @updateMovementVisuals(angle, dx, dy, dt)
 
-    @x += dx
-    @y += dy
+    @shift(dx, dy)
 
   _executeViewportBezier: (v, prevv, dt) ->
     bp = new BezierPath
@@ -227,6 +226,5 @@ Crafty.c 'Choreography',
     else
       @rotation = rotation if rotation?
 
-    @x += dx
-    @y += dy
+    @shift(dx, dy)
 

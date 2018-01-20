@@ -4,7 +4,7 @@ noise = new Noise(Math.random())
 
 Crafty.c 'ScrollWall',
   init: ->
-    @requires('2D, Edge, Collision, Acceleration')
+    @requires('2D, ShipSolid, Collision, Acceleration')
     @trauma = 0
     @time = 0
     @attr
@@ -17,15 +17,15 @@ Crafty.c 'ScrollWall',
         y: 0
       viewHeight: 0
 
-    @wallEnd = Crafty.e('2D, ScrollFront, Edge')
+    @wallEnd = Crafty.e('2D, ScrollFront, ShipSolid')
       .attr(x: - (Crafty.viewport.x - Crafty.viewport.width) - 3, y: 0, h: Crafty.viewport.height, w: 12)
     @attach @wallEnd
 
-    @wallTop = Crafty.e('2D, Edge, Collision')
+    @wallTop = Crafty.e('2D, ShipSolid, Collision')
       .attr(x: 0, y: 40, h: 2, w: Crafty.viewport.width)
     @attach @wallTop
 
-    @wallBottom = Crafty.e('2D, Edge, Collision')
+    @wallBottom = Crafty.e('2D, ShipSolid, Collision')
       .attr(x: 0, y: Crafty.viewport.height - 2, h: 2, w: Crafty.viewport.width)
     @attach @wallBottom
 
@@ -63,8 +63,8 @@ Crafty.c 'ScrollWall',
       x = 0
       y = 0
       if screenshake > 0
-        MAX_X_OFFSET = 40
-        MAX_Y_OFFSET = 30
+        MAX_X_OFFSET = 50
+        MAX_Y_OFFSET = 40
 
         @time += fd.dt
 
@@ -85,25 +85,6 @@ Crafty.c 'ScrollWall',
         dy: dy
       )
 
-    # TODO: Verify correctness of these statements
-    #@onHit 'PlayerControlledShip', (el) ->
-      ## Push the player forward
-      #for e in el
-        #p = e.obj
-        #p.attr x: p.x + @_speed.x
-
-    #@wallTop.onHit 'PlayerControlledShip', (el) =>
-      ## Push the player downward
-      #for e in el
-        #p = e.obj
-        #p.attr y: p.y + @_speed.y
-
-    #@wallBottom.onHit 'PlayerControlledShip', (el) =>
-      ## Push the player upward
-      #for e in el
-        #p = e.obj
-        #p.attr y: @wallBottom.y - p.h
-
   addTrauma: (amount) ->
     @trauma = Math.min(1, @trauma + amount)
 
@@ -113,7 +94,7 @@ Crafty.c 'ScrollWall',
   setAllowPushing: (@allowPushing) ->
 
   off: ->
-    @wallEnd.removeComponent('Edge')
+    @wallEnd.removeComponent('ShipSolid')
     @unbind('GameLoop')
 
   remove: ->

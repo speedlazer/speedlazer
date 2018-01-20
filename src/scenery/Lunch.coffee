@@ -51,7 +51,7 @@ levelGenerator.defineBlock class extends LevelScenery
     super
 
     height = 65
-    @add(0, @level.visibleHeight - 45, Crafty.e('2D, Solid').attr(w: @delta.x, h: 45))
+    @add(0, @level.visibleHeight - 45, Crafty.e('2D, ShipSolid, BulletSolid').attr(w: @delta.x, h: 45))
     @add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Color, SunBlock').attr(w: @delta.x, h: height, z: -300).color('#6262d2'))
     @addBackground(0, @level.visibleHeight - 225, Crafty.e('2D, WebGL, Color, SunBlock').color('#33337e').attr({ z: -600, w: (@delta.x * .25) + 1, h: 200 }), .25)
 
@@ -106,7 +106,7 @@ levelGenerator.defineBlock class extends CityScenery
     @addBackground(0, @level.visibleHeight + 50, wg, .5)
 
     height = 65
-    @add(0, @level.visibleHeight - 45, Crafty.e('2D, Solid').attr(w: @delta.x, h: 45))
+    @add(0, @level.visibleHeight - 45, Crafty.e('2D, ShipSolid, BulletSolid').attr(w: @delta.x, h: 45))
     #@add(0, @level.visibleHeight - height, Crafty.e('2D, WebGL, Image').image('images/water-front-old.png').attr(z: -300))
 
     water1 = Crafty.e('2D, WebGL, waterFront1, Wave1, SunBlock').attr(z: -300)
@@ -132,11 +132,11 @@ levelGenerator.defineBlock class extends LevelScenery
 
   generate: ->
     super
-    @add(0, 150, Crafty.e('2D, WebGL, Solid, Color').color('#505045').attr({ w: 42, h: 70 }))
-    @add(500, 50, Crafty.e('2D, WebGL, Solid, Color').color('#404045').attr({ w: 82, h: 70 }))
-    @add(200, 250, Crafty.e('2D, WebGL, Solid, Color').color('#505045').attr({ w: 52, h: 80 }))
-    @add(100, 450, Crafty.e('2D, WebGL, Solid, Color').color('#505045').attr({ w: 52, h: 40 }))
-    @add(400, 550, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 82, h: 30 }))
+    @add(0, 150, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#505045').attr({ w: 42, h: 70 }))
+    @add(500, 50, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404045').attr({ w: 82, h: 70 }))
+    @add(200, 250, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#505045').attr({ w: 52, h: 80 }))
+    @add(100, 450, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#505045').attr({ w: 52, h: 40 }))
+    @add(400, 550, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 82, h: 30 }))
 
 levelGenerator.defineBlock class extends LevelScenery
   name: 'City.TunnelStart'
@@ -151,9 +151,9 @@ levelGenerator.defineBlock class extends LevelScenery
     @addBackground(380, @level.visibleHeight - 90, Crafty.e('2D, WebGL, Color').color('#606060').attr({ z: -200, w: 40, h: 90 }), .25)
     @addBackground(380, @level.visibleHeight - 360, Crafty.e('2D, WebGL, Color').color('#303030').attr({ z: 22, w: 40, h: 360 }), 1.5)
 
-    @add(0, -40, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 350, h: 55 }))
-    @add(350, -40, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 100, h: 110 }))
-    @add(450, -40, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 550, h: 65 }))
+    @add(0, -40, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 350, h: 55 }))
+    @add(350, -40, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 100, h: 110 }))
+    @add(450, -40, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 550, h: 65 }))
     @add(380, -40, Crafty.e('2D, WebGL, Color').color('#202020').attr({ z: -10, w: @delta.x - 380, h: @level.visibleHeight + 40 }))
 
 
@@ -171,11 +171,11 @@ levelGenerator.defineBlock class extends LevelScenery
     @addBackground(380, @level.visibleHeight - 90, Crafty.e('2D, WebGL, Color').color('#606060').attr({ z: -800, w: 40, h: 90 }), .25)
 
     h = 15
-    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 350, h: h }))
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 350, h: h }))
     h = 70
-    @add(350, @level.visibleHeight - h, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 100, h: h }))
+    @add(350, @level.visibleHeight - h, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 100, h: h }))
     h = 25
-    @add(450, @level.visibleHeight - h, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 550, h: h }))
+    @add(450, @level.visibleHeight - h, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 550, h: h }))
     @add(0, -40, Crafty.e('2D, WebGL, Color').color('#202020').attr({ z: -10, w: 380, h: @level.visibleHeight + 40 }))
 
 levelGenerator.defineBlock class extends LevelScenery
@@ -186,18 +186,18 @@ levelGenerator.defineBlock class extends LevelScenery
 
   generate: ->
     super
-    @add(0, -40, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 350, h: 55 }))
-    @add(350, -40, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 100, h: 110 }))
-    @add(450, -40, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 550, h: 65 }))
+    @add(0, -40, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 350, h: 55 }))
+    @add(350, -40, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 100, h: 110 }))
+    @add(450, -40, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 550, h: 65 }))
 
     h = 15
-    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 350, h: h }))
+    @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 350, h: h }))
 
     h = 70
-    @add(350, @level.visibleHeight - h, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 100, h: h }))
+    @add(350, @level.visibleHeight - h, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 100, h: h }))
 
     h = 25
-    @add(450, @level.visibleHeight - h, Crafty.e('2D, WebGL, Solid, Color').color('#404040').attr({ w: 550, h: h }))
+    @add(450, @level.visibleHeight - h, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#404040').attr({ w: 550, h: h }))
 
     @add(0, -40, Crafty.e('2D, WebGL, Color').color('#202020').attr({ z: -1, w: @delta.x, h: @level.visibleHeight + 40 }))
 

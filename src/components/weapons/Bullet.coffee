@@ -54,7 +54,7 @@ Crafty.c 'Bullet',
       if @y > @_maxYforViewPort()
         # Maybe send a bullet miss event
         @destroy()
-    ).onHit 'Solid', ->
+    ).onHit 'BulletSolid', ->
       return if Game.paused
       @destroy()
     this

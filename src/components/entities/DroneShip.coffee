@@ -1,7 +1,7 @@
 Crafty.c 'DroneShip',
   init: ->
-    @requires '2D, WebGL, Tween, Choreography, Solid, Collision,' +
-      'ViewportFixed, Hideable, Flipable, Scalable, SunBlock, WaterSplashes'
+    @requires '2D, WebGL, Tween, Choreography, ShipSolid, Collision,' +
+      'Hideable, Flipable, Scalable, SunBlock, WaterSplashes'
     @attr(
       w: 32 * 12
       h: 32 * 5

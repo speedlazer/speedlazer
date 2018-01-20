@@ -349,7 +349,7 @@ Level =
       if y > @_getSeaLevel() - 60 and options.lightness is 1.0
         e.addComponent('WaterSplashes')
         e.attr waterSplashSpeed: 500, defaultWaterCooldown: 450
-        e.setDetectionOffset 40, 0
+        e.setDetectionOffset 40
 
       if options.damage
         e.ship = @entity.deathCause
@@ -431,6 +431,11 @@ Level =
       #if @_skippingToCheckpoint() or duration is 0
 
   addMinorScreenshake: ->
+    (sequence) =>
+      @_verify(sequence)
+      @level.addTrauma(0.3)
+
+  addTinyScreenshake: ->
     (sequence) =>
       @_verify(sequence)
       @level.addTrauma(0.2)

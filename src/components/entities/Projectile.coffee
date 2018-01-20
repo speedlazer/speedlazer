@@ -1,6 +1,6 @@
 Crafty.c 'Projectile',
   init: ->
-    @requires '2D, WebGL, ViewportFixed'
+    @requires '2D, WebGL'
 
   shoot: (x, y, angle) ->
     @attr(

@@ -36,7 +36,7 @@ Crafty.c 'ShipSpawnable',
     @ship.playerColor = @color()
     @ship.colorOverride?(@color(), 'partial') #if @has('ColorEffects')
     @ship.color?(@color()) if @has('Color')
-    @_updateShipSprite()
+    @ship.attr(healthPerc: @health / @maxHealth)
 
     @assignControls(@ship) if @has('ControlScheme')
 
@@ -61,7 +61,7 @@ Crafty.c 'ShipSpawnable',
         @healthBoost() if powerUp.contains is 'healthb'
         @addPoints(500) if powerUp.contains is 'points'
       @addPoints(20)
-      @_updateShipSprite()
+      @ship.attr(healthPerc: @health / @maxHealth)
 
     @listenTo @ship, 'Shoot', ->
       @stats.shotsFired += 1
@@ -75,7 +75,7 @@ Crafty.c 'ShipSpawnable',
     @ship.start()
     @listenTo @ship, 'Hit', (d) ->
       @loseHealth(d.damage)
-      @_updateShipSprite()
+      @ship.attr(healthPerc: @health / @maxHealth)
 
       if (@health < 0)
         @ship.trigger('Die')
@@ -86,23 +86,23 @@ Crafty.c 'ShipSpawnable',
       @ship = null
       Game.setGameSpeed 0.3
       Crafty.e('Delay, TimeManager').delay(
-        -> Game.setGameSpeed 0.1
+        -> Game.setGameSpeed 0.2
         500
         0
       ).delay(
         -> Game.setGameSpeed 0.4
-        1200
+        1000
         0
       ).delay(
         -> Game.setGameSpeed 0.7
-        1600
+        1400
         0
       ).delay(
         =>
           @loseLife()
           Game.setGameSpeed 1.0
           @spawnShip(stats)
-        2000
+        1800
         0
         -> @destroy()
       )

@@ -1,6 +1,7 @@
 { LazerScript } = require('src/lib/LazerScript')
 { StartOfDawn, DayBreak, Morning } = require('./stage1/sunrise')
-{ Swirler, Shooter } = require('./stage1/army_drone')
+{ Swirler, Shooter, Stalker } = require('./stage1/army_drone')
+ShipBoss = require('./benchmark/ship_boss').default
 
 class Benchmark extends LazerScript
   assets: ->
@@ -17,30 +18,35 @@ class Benchmark extends LazerScript
       @setWeapons(['lasers'])
       @setScenery 'Ocean'
       @setSpeed 0
+      @runScript(StartOfDawn, speed: 4)
+      #@placeSquad Stalker,
+        #drop: 'pool'
       @wait 1500
       => Crafty('DebugInfo').capture('start')
       @setSpeed 300
       @wait 15000
-      @setScenery('BayStart')
+      @setScenery('CoastStart')
       => Crafty('DebugInfo').capture('scrolling')
-      @runScript(StartOfDawn, speed: 5)
-      @runScript(DayBreak, speed: 5)
-      @runScript(Morning, speed: 5)
+      @runScript(DayBreak, speed: 8)
+      @runScript(Morning, speed: 8)
       => Crafty('DebugInfo').capture('recolor')
-      => Crafty('PlayerSpaceship').addComponent('Invincible').invincibleDuration(15000)
+      @placeSquad ShipBoss
+      => Crafty('DebugInfo').capture('ship particles')
+      @setScenery('BayStart')
+      => Crafty('PlayerSpaceship').each(-> @addComponent('Invincible').invincibleDuration(15000))
       @enemies()
       => Crafty('DebugInfo').capture('swirlers')
-      => Crafty('PlayerSpaceship').shoot(true)
+      => Crafty('PlayerSpaceship').each(-> @shoot(true))
       @enemies()
-      => Crafty('PlayerSpaceship').shoot(false)
+      => Crafty('PlayerSpaceship').each(-> @shoot(false))
       => Crafty('DebugInfo').capture('swirlers shooting')
       @parallel(
         @gainHeight(800, duration: 14000)
         @setScenery('Skyline')
       )
-      => Crafty('PlayerSpaceship').shoot(true)
+      => Crafty('PlayerSpaceship').each(-> @shoot(true))
       @enemies()
-      => Crafty('PlayerSpaceship').shoot(false)
+      => Crafty('PlayerSpaceship').each(-> @shoot(false))
       => Crafty('DebugInfo').capture('swirlers shooting skyline')
       @setScenery 'Ocean'
       @gainHeight(-800, duration: 14000)
@@ -63,7 +69,5 @@ class Benchmark extends LazerScript
         'Shooting aliens is important', noise: 'low'
     )
 
-
 module.exports =
   default: Benchmark
-

@@ -1,5 +1,3 @@
-Test = require('src/lazerscripts/test').default
-
 Crafty.defineScene 'Intro', ->
   # import from globals
   Game.resetCredits()
@@ -60,6 +58,7 @@ Crafty.defineScene 'Intro', ->
     @reset()
     @one 'Activated', ->
       Crafty.enterScene('Game') # checkpoint: value
+
   Crafty.e('Delay').delay ->
       Crafty.enterScene('Scores')
     , 20000
