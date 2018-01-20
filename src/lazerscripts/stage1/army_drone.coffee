@@ -7,6 +7,7 @@ class ArmyDrone extends EntityScript
   onKilled: ->
     @sequence(
       @deathDecoy()
+      @addTinyScreenshake()
       @smallExplosion(juice: @juice, offsetX: 20, offsetY: 20)
       @rotate 30, 60
       @smokePrint()

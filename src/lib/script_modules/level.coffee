@@ -433,6 +433,11 @@ Level =
   addMinorScreenshake: ->
     (sequence) =>
       @_verify(sequence)
+      @level.addTrauma(0.3)
+
+  addTinyScreenshake: ->
+    (sequence) =>
+      @_verify(sequence)
       @level.addTrauma(0.2)
 
   slowMotionMoment: ->
