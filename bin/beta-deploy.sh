@@ -6,8 +6,11 @@ COMMIT_MSG=$(TZ=UTC git log -n 1 --format=format:"beta built from commit %h (%cd
 yarn build
 mv dist dist_pub
 
+git status
+git branch -r
+
 # Clean up for release
-git checkout gh-pages
+git checkout origin/gh-pages
 git rm -r --ignore-unmatch beta
 
 echo $COMMIT_MSG
