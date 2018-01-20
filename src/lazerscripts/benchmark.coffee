@@ -1,6 +1,6 @@
 { LazerScript } = require('src/lib/LazerScript')
 { StartOfDawn, DayBreak, Morning } = require('./stage1/sunrise')
-{ Swirler, Shooter } = require('./stage1/army_drone')
+{ Swirler, Shooter, Stalker } = require('./stage1/army_drone')
 ShipBoss = require('./benchmark/ship_boss').default
 
 class Benchmark extends LazerScript
@@ -17,8 +17,10 @@ class Benchmark extends LazerScript
 
       @setWeapons(['lasers'])
       @setScenery 'Ocean'
-      @runScript(StartOfDawn, speed: 4)
       @setSpeed 0
+      @runScript(StartOfDawn, speed: 4)
+      #@placeSquad Stalker,
+        #drop: 'pool'
       @wait 1500
       => Crafty('DebugInfo').capture('start')
       @setSpeed 300
@@ -67,7 +69,5 @@ class Benchmark extends LazerScript
         'Shooting aliens is important', noise: 'low'
     )
 
-
 module.exports =
   default: Benchmark
-

@@ -13,10 +13,60 @@ Crafty.c 'PlayerSpaceship',
       35, 32
     ]
 
-    @bind 'Move', (from) ->
-      if @hit('Edge') or @hit('Solid') # Contain player within playfield
-        delta = @motionDelta()
-        @shift(- delta.x, - delta.y)
+    @onHit 'ShipSolid', (hits) ->
+      console.log('on edge!')
+
+      delta = @motionDelta()
+      xCorrection = 0
+      yCorrection = 0
+      xDir = 0
+      yDir = 0
+
+      hits.map((hitData) =>
+        xHitCorrection = 0
+        yHitCorrection = 0
+        if hitData.type == 'SAT'
+          xHitCorrection -= hitData.overlap * hitData.nx
+          yHitCorrection -= hitData.overlap * hitData.ny
+        else # MBR
+          obj = hitData.obj
+          d = obj.motionDelta?() || { x: 0, y: 0 }
+          if obj.intersect(@x - delta.x, @y, @w, @h)
+            yHitCorrection -= delta.y - d.y
+
+          if obj.intersect(@x, @y - delta.y, @w, @h)
+            xHitCorrection -= delta.x - d.x
+
+         if xHitCorrection > 0
+           if xDir < 0
+             @_squashShip()
+           else
+             xDir = 1
+             xCorrection = Math.max(xCorrection, xHitCorrection)
+
+         if xHitCorrection < 0
+           if xDir > 0
+             @_squashShip()
+           else
+             xDir = -1
+             xCorrection = Math.min(xCorrection, xHitCorrection)
+
+         if yHitCorrection < 0
+           if yDir > 0
+             @_squashShip()
+           else
+             yDir = -1
+             yCorrection = Math.min(yCorrection, yHitCorrection)
+
+         if yHitCorrection > 0
+           if yDir < 0
+             @_squashShip()
+           else
+             yDir = 1
+             yCorrection = Math.max(yCorrection, yHitCorrection)
+      )
+
+      @shift(xCorrection, yCorrection)
 
     @primaryWeapon = undefined
     @primaryWeapons = []
@@ -26,6 +76,9 @@ Crafty.c 'PlayerSpaceship',
     @currentRenderedSpeed = 0
     @flip('X')
     @emitCooldown = 0
+
+  _squashShip: ->
+    @trigger('Hit', { damage: 1000 })
 
   updateMovementVisuals: (rotation = 0, dx, dy, dt) ->
     velocity = Math.max(dx * (1000 / dt), 0)
@@ -200,18 +253,7 @@ Crafty.c 'PlayerSpaceship',
         nr -= 1
 
       @rotation = nr
-      nr = r if @hit('Edge') or @hit('Solid')
-
       @updateMovementVisuals(@rotation, motionX, motionY, fd.dt)
-
-      # Move player back if flying into an object
-      if @hit('Edge') or @hit('Solid')
-        @x -= motionX
-        @y -= motionY
-
-      # still hitting an object? then we where forced in
-      # and are crashed (squashed probably)
-      @trigger('Hit', { damage: 1000 }) if @hit('Edge') or @hit('Solid')
 
     this
 

@@ -1,6 +1,24 @@
-{ LazerScript } = require('src/lib/LazerScript')
+{ LazerScript, EntityScript } = require('src/lib/LazerScript')
 { StartOfDawn } = require('./stage1/sunrise')
 { Swirler } = require('./stage1/army_drone')
+
+class SolidTest extends EntityScript
+  spawn: ->
+    Crafty.e('2D, WebGL, Color, ShipSolid, BulletSolid, Choreography')
+      .attr(
+        x: Crafty.viewport.width + 200
+        y: Crafty.viewport.height * .3
+        w: 40
+        h: 200
+        defaultSpeed: 150
+      ).color('#808080')
+
+  execute: ->
+    @sequence(
+      @moveTo x: 0.4
+      @wait 5000
+      @moveTo x: -0.2
+    )
 
 class Test extends LazerScript
   assets: ->
@@ -22,6 +40,7 @@ class Test extends LazerScript
       @wait 1500
       #@panCamera(y: -120, 4000)
       #@wait 1500
+      @placeSquad SolidTest
       @setSpeed 300
       #@wait 15000
       #@gainHeight 20, duration: 1000
@@ -30,16 +49,16 @@ class Test extends LazerScript
 
       #@wait 10000
       #@gainHeight -80, duration: 4000
-      @repeat(8, @sequence(
-        @placeSquad(Swirler, {
-          amount: 4,
-          delay: 250,
-          options: {
-            shootOnSight: yes
-          }
-        }),
-        @wait(2000)
-      ))
+      #@repeat(8, @sequence(
+        #@placeSquad(Swirler, {
+          #amount: 4,
+          #delay: 250,
+          #options: {
+            #shootOnSight: yes
+          #}
+        #}),
+        #@wait(2000)
+      #))
 
     )
 
