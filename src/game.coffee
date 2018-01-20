@@ -82,8 +82,8 @@ Game =
       Crafty.trigger 'GameLoop', fd
 
     Crafty.paths(
-      audio: '/'
-      images: '/'
+      audio: './'
+      images: './'
     )
     # Start crafty and set a background color so that we can see it's working
     stage = document.getElementById('cr-stage')
