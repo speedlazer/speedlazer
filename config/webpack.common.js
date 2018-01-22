@@ -3,10 +3,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const webpack = require("webpack");
 const babel = require("./babel");
-const buildVersion = function() {
-  return require("../package.json").version;
-};
-
 const cleanOptions = {
   root: path.resolve(__dirname, "..")
 };

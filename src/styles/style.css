@@ -43,6 +43,12 @@ footer {
 .copyright {
   vertical-align: super;
 }
+#version {
+  vertical-align: super;
+}
+#version::before {
+  content: 'Ver: ';
+}
 
 a {
   color: #fff;

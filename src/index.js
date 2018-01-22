@@ -32,6 +32,8 @@ const scaleGame = () => {
 };
 
 window.addEventListener("resize", scaleGame);
+/* eslint-env node */
+document.getElementById("version").textContent = process.env.VERSION;
 
 // Handle the fullscreen button
 document.addEventListener("click", e => {
