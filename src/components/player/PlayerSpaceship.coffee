@@ -14,8 +14,6 @@ Crafty.c 'PlayerSpaceship',
     ]
 
     @onHit 'ShipSolid', (hits) ->
-      console.log('on edge!')
-
       delta = @motionDelta()
       xCorrection = 0
       yCorrection = 0
