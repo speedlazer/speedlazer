@@ -5,14 +5,23 @@ class ArmyDrone extends EntityScript
     @loadAssets('drone')
 
   onKilled: ->
+    @entVy = @entity.vy
     @sequence(
       @deathDecoy()
+      => @entity.removeComponent('ShootOnSight')
       @addTinyScreenshake()
-      @smallExplosion(juice: @juice, offsetX: 20, offsetY: 20)
+      @choose(
+        @smallExplosion(juice: @juice, offsetX: 20, offsetY: 20)
+        @smallExplosion(juice: @juice, offsetX: 20, offsetY: 20)
+        @blast(@location(), damage: 1, radius: 40)
+      )
       @rotate 30, 60
       @smokePrint()
       @moveTo(
-        y: 1000
+        @location({
+          offsetY: 800,
+          offsetX: (@entVy + 300) * Math.random()
+        }),
         speed: 600
         easing: 'easeInQuad'
       )
@@ -37,9 +46,10 @@ class ShipDrone extends ArmyDrone
           projectile = Crafty.e('Sphere, Hostile, Projectile')
             .blink()
             .attr(
-              w: 10
-              h: 10
+              w: 12
+              h: 12
               damage: 1
+              speed: 500
             )
           projectile.shoot(x, y, angle)
     d
@@ -65,23 +75,23 @@ class Swirler extends ArmyDrone
   spawn: (options) ->
     d = Crafty.e('Drone').drone(
       x: Crafty.viewport.width + 40
-      y: Crafty.viewport.height / 2
+      y: Crafty.viewport.height * .4
       defaultSpeed: options.speed ? 400
       juice: options.juice
     )
     @juice = options.juice
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 2000 + (Math.random() * 8000)
+        cooldown: 1000 + (Math.random() * 3000)
         sightAngle: 250
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Sphere, Hostile, Projectile')
             .blink()
             .attr(
-              w: 10
-              h: 10
+              w: 12
+              h: 12
               damage: 1
-              speed: 500
+              speed: 550
             )
           projectile.shoot(x, y, angle)
     d
@@ -89,6 +99,10 @@ class Swirler extends ArmyDrone
   execute: ->
     @bindSequence 'Destroyed', @onKilled
     @movePath [
+      [.9, .4]
+      [.85, .5]
+      [.9, .6]
+      [1.1, .5]
 
       [.5, .21]
       [.156, .5]
@@ -154,8 +168,10 @@ class ScraperFlyer extends ArmyDrone
         projectile = Crafty.e('Sphere, Hostile, Projectile')
           .blink()
           .attr(
-            w: 10
-            h: 10
+            w: 12
+            h: 12
+            damage: 1
+            speed: 500
           )
         projectile.shoot(x, y, angle)
 
@@ -197,14 +213,14 @@ class Shooter extends ArmyDrone
     @juice = options.juice
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 2000 + (Math.random() * 8000)
+        cooldown: 1000 + (Math.random() * 3000)
         sightAngle: 250
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Sphere, Hostile, Projectile')
             .blink()
             .attr(
-              w: 10
-              h: 10
+              w: 12
+              h: 12
               damage: 1
               speed: 500
             )
@@ -278,8 +294,8 @@ class CrewShooters extends ArmyDrone
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Sphere, Hostile, Projectile')
             .attr(
-              w: 10
-              h: 10
+              w: 12
+              h: 12
               damage: 1
               speed: 500
             )

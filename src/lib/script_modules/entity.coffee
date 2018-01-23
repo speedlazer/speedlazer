@@ -503,6 +503,7 @@ Entity =
           y: point.y
           z: point.z
           invincible: yes
+          deathDecoy: yes
           health: 1
           defaultSpeed: @entity.defaultSpeed
         })
@@ -512,6 +513,7 @@ Entity =
           x: x
           y: y
           invincible: yes
+          deathDecoy: yes
           health: 1
           defaultSpeed: @entity.defaultSpeed
         )
