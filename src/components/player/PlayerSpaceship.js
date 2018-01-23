@@ -32,11 +32,15 @@ Crafty.c("PlayerSpaceship", {
               ? obj.choreographyDelta()
               : { x: 0, y: 0 };
 
-          if (obj.intersect(this.x - delta.x + d.x, this.y + d.y, this.w, this.h)) {
+          if (
+            obj.intersect(this.x - delta.x + d.x, this.y + d.y, this.w, this.h)
+          ) {
             yHitCorrection -= delta.y - d.y;
           }
 
-          if (obj.intersect(this.x + d.y, this.y - delta.y + d.y, this.w, this.h)) {
+          if (
+            obj.intersect(this.x + d.y, this.y - delta.y + d.y, this.w, this.h)
+          ) {
             xHitCorrection -= delta.x - d.x;
           }
         }
@@ -324,12 +328,12 @@ Crafty.c("PlayerSpaceship", {
   },
 
   pickUp(powerUp) {
-    const contents = powerUp.settings.contains;
-    if (this.installItem(powerUp.settings)) {
-      Crafty.audio.play("powerup");
-      this.trigger("PowerUp", powerUp.settings);
-      powerUp.pickup();
+    if (!this.installItem(powerUp.settings)) {
+      return;
     }
+    Crafty.audio.play("powerup");
+    this.trigger("PowerUp", powerUp.settings);
+    powerUp.pickup();
   },
 
   clearItems() {
