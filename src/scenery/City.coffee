@@ -168,6 +168,21 @@ levelGenerator.defineElement 'cityDistance', (mode) ->
 
   @addBackground(0, @level.visibleHeight - 225 - 16, e, .25)
 
+levelGenerator.defineElement 'cityNoCollision', ->
+  bg = Crafty.e('2D, WebGL, cityLayer2, Horizon, Flipable')
+    .attr(z: -505) #, blur: 1.2)
+    .colorDesaturation(Game.backgroundColor)
+    .saturationGradient(.6, .6)
+  @addBackground(0, @level.visibleHeight - 350, bg, .375)
+
+  e = Crafty.e('2D, WebGL, city, Horizon')
+    .colorDesaturation(Game.backgroundColor)
+    .saturationGradient(.4, .4)
+    .crop(0, 0, 511, 288)
+    .attr(z: -305, w: 513)
+
+  @addBackground(0, @level.visibleHeight - 310, e, .5)
+
 levelGenerator.defineElement 'city', ->
   bg = Crafty.e('2D, WebGL, cityLayer2, Collision, SunBlock, Horizon, Flipable')
     .attr(z: -505) #, blur: 1.2)
@@ -794,10 +809,8 @@ levelGenerator.defineBlock class extends CityScenery
 
     @addElement 'cityFrontTop'
     @addElement 'cityFrontBlur'
-    @addElement 'water'
-
     @addElement 'cityDistance'
-    @addElement 'city'
+    @addElement 'cityNoCollision'
 
 levelGenerator.defineBlock class extends CityScenery
   name: 'City.SkylineBase'
