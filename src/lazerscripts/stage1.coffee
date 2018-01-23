@@ -37,18 +37,18 @@ class Stage1 extends LazerScript
     @inventoryAdd 'weaponBoost', 'damageb', marking: 'D', icon: 'damageBoost'
 
     @sequence(
-      @setPowerupPool 'rapidb', 'speed', 'points', 'rapidb'
+      #@setPowerupPool 'rapidb', 'speed', 'points', 'rapidb'
       @introText()
       @sunRise(0)
       @tutorial()
-      @setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
+      #@setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
       @droneTakeover()
       @sunRise(1)
       @oceanFighting()
-      @setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
+      #@setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
       @midStageBossFight()
       @cityBay()
-      @setPowerupPool 'speed', 'rapid', 'aim', 'speed', 'rapid', 'aim'
+      #@setPowerupPool 'speed', 'rapid', 'aim', 'speed', 'rapid', 'aim'
       @endStageBossfight()
     )
 
