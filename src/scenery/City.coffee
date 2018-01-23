@@ -211,12 +211,20 @@ levelGenerator.defineElement 'city', ->
   @addBackground(0, @level.visibleHeight - 310, d, .5)
 
 levelGenerator.defineElement 'cityFrontTop', ->
-  bb = Crafty.e('2D, WebGL, bigBuildingTop, ColorEffects, RiggedExplosion').attr(z: -20).crop(1, 1, 446, 6 * 32)
-  bb.colorOverride('#001fff', 'partial')
+  bb = Crafty.e('2D, WebGL, bigBuildingTop, RiggedExplosion').attr(z: -20).crop(1, 1, 446, 6 * 32)
   @add(0, @level.visibleHeight - 1200, bb)
+  cs = Crafty.e('2D, SunBlock')
+    .attr(
+      x: bb.x + 10
+      y: bb.y + 20
+      z: -10
+      h: 650
+      w: bb.w - 45
+    )
+  bb.attach(cs)
 
   for i in [0...3]
-    floor = Crafty.e('2D, WebGL, bigBuildingLayer, ColorEffects').attr(z: -20).crop(1, 0, 446, 4 * 32)
+    floor = Crafty.e('2D, WebGL, bigBuildingLayer').attr(z: -20).crop(1, 0, 446, 4 * 32)
     floor.attr(x: bb.x, y: bb.y + bb.h + (i * floor.h))
     bb.attach(floor)
 
@@ -755,7 +763,6 @@ levelGenerator.defineBlock class extends CityScenery
     super
     @unbind('BridgeDamage')
     @unbind('BridgeCollapse')
-
 
   deck: (gradient, flipped, attr) ->
     aspectR = 1024 / 180
