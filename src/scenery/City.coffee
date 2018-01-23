@@ -347,7 +347,8 @@ class CityScenery extends LevelScenery
           aircraftCarrierBottomSpace: [25, 45, 4, 3]
           aircraftCarrierTopFlat: [26, 43, 4, 2]
 
-          aircraftCarrierOpenHatch: [31, 40, 5, 1]
+          aircraftCarrierOpenHatch: [31, 39, 5, 1]
+          aircraftCarrierHatchLid: [31, 40, 5, 1]
 
           aircraftCarrierCabinEnd: [24, 38, 2, 7]
           aircraftCarrierCabin: [22, 38, 2, 7]
@@ -357,25 +358,6 @@ class CityScenery extends LevelScenery
           aircraftCarrierAntenna: [29, 38, 2, 3]
           boxes: [28, 39, 1, 1]
           boxesFalling: [28, 38, 1, 1]
-
-Crafty.c('carrierHatch', {
-  init: ->
-    @requires '2D, WebGL, aircraftCarrierOpenHatch, SpriteAnimation'
-    @attr(z: -10)
-    @crop 0, 2, 5*32, 32
-
-    @reel 'open', 600, [
-      [31, 40]
-      [31, 38]
-      [31, 39]
-    ]
-
-    @reel 'close', 600, [
-      [31, 39]
-      [31, 38]
-      [31, 40]
-    ]
-})
 
 levelGenerator.defineBlock class extends CityScenery
   name: 'City.Intro'
@@ -389,10 +371,10 @@ levelGenerator.defineBlock class extends CityScenery
 
     @addElement 'waterFront'
 
-    barrelLocator = Crafty.e('2D, BoxesLocation, WebGL, Color').color('FF0000')
+    barrelLocator = Crafty.e('2D, BoxesLocation').attr(z: 23)
     @add(550, @level.visibleHeight - 360 + (7*32), barrelLocator)
 
-    barrelLocator = Crafty.e('2D, BoxesLocation, WebGL, Color').color('0000FF')
+    barrelLocator = Crafty.e('2D, BoxesLocation').attr(z: 23)
     @add(550 + 64, @level.visibleHeight - 360 + (7*32), barrelLocator)
 
     barrelLocator = Crafty.e('2D, WebGL, boxes').attr(z: -8)
@@ -402,7 +384,7 @@ levelGenerator.defineBlock class extends CityScenery
       w: 25 * 32
       h: 4 * 32
     })
-    @add(0, @level.visibleHeight - 330 + (7 * 32), @outside)
+    @add(0, @level.visibleHeight - 340 + (7 * 32), @outside)
 
     end = Crafty.e('2D, WebGL, aircraftCarrierEnd').attr(z: -13)
     @add(22*32, @level.visibleHeight - 330 + (5*32), end)
@@ -425,11 +407,11 @@ levelGenerator.defineBlock class extends CityScenery
 
     @add(0, @level.visibleHeight - 330 + (5 * 32), water)
 
-    p1hatch = Crafty.e('carrierHatch')
-    @add((5*32) + 100, @level.visibleHeight - 330 + (6*32), p1hatch)
+    p1hatch = Crafty.e('CarrierHatch')
+    @add((5*32) + 100, @level.visibleHeight - 329 + (6*32), p1hatch)
 
-    p2hatch = Crafty.e('carrierHatch')
-    @add((5*32) - 100, @level.visibleHeight - 330 + (6*32), p2hatch)
+    p2hatch = Crafty.e('CarrierHatch')
+    @add((5*32) - 100, @level.visibleHeight - 329 + (6*32), p2hatch)
 
     for i in [0..3]
       bottom = Crafty.e('2D, WebGL, aircraftCarrierBottomFlat').attr(z: 20)
@@ -554,14 +536,10 @@ levelGenerator.defineBlock class extends CityScenery
         @enableControl()
         @weaponsEnabled = yes
       @one 'openHatch', ->
-        Crafty('carrierHatch').each ->
-          @animate('open')
+        Crafty('CarrierHatch').each -> @open()
       @one 'lift', ->
         block.outside.addComponent('ShipSolid', 'BulletSolid')
-        Crafty('carrierHatch').each ->
-          @animate('close')
-        Crafty('aircraftCarrierBottomFlat').each ->
-          @attr(z: -13)
+        Crafty('CarrierHatch').each -> @close()
         block.level.panCamera(y: -120, 2500)
       @one 'go', ->
         block.level.setForcedSpeed block.speed, accelerate: no

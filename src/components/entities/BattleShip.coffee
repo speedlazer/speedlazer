@@ -73,17 +73,15 @@ Crafty.c 'BattleShip',
       z: -10
     ).flip('X')
 
-    @hatch = Crafty.e('carrierHatch').attr(
+    @hatch = Crafty.e('CarrierHatch').attr(
       x: @x + 10 * 32
-      y: @y + 28
-      z: -5
+      y: @y + 29
     )
     @attach(@hatch)
 
-    @hatch2 = Crafty.e('carrierHatch').attr(
-      x: @x + 10 * 62
-      y: @y + 28
-      z: -5
+    @hatch2 = Crafty.e('CarrierHatch').attr(
+      x: @x + 20 * 32
+      y: @y + 29
     )
     @attach(@hatch2)
 
@@ -165,12 +163,12 @@ Crafty.c 'BattleShip',
     @_bottomX += width * 32
 
   open: (hatch) ->
-    @hatch.animate('open') if 0 in hatch
-    @hatch2.animate('open') if 1 in hatch
+    @hatch.open() if 0 in hatch
+    @hatch2.open() if 1 in hatch
 
   close: (hatch) ->
-    @hatch.animate('close') if 0 in hatch
-    @hatch2.animate('close') if 1 in hatch
+    @hatch.close() if 0 in hatch
+    @hatch2.close() if 1 in hatch
 
 
   execute: (action) ->

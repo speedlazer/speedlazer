@@ -49,18 +49,17 @@ Crafty.c 'DroneShip',
     ).crop(0, 60, 6*32, 5*32)
     @attach(end2)
 
-    @hatch = Crafty.e('carrierHatch').attr(
+    @hatch = Crafty.e('CarrierHatch').attr(
       x: @x + 3 * 32
-      y: @y + 28
-      z: -5
+      y: @y + 29
     )
     @attach(@hatch)
 
   open: ->
-    @hatch.animate('open')
+    @hatch.open()
 
   close: ->
-    @hatch.animate('close')
+    @hatch.close()
 
   execute: (action) ->
     switch action
