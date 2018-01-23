@@ -130,7 +130,7 @@ class Stage1Boss extends EntityScript
             alpha: Math.max(0, @alpha - .003)
             lightness: -> Math.max(.2, @lightness - .05)
           )
-          y: @y - (Math.random() * 2)
+          #y: @y - (Math.random() * 2)
       )
       @wait -> options.wait + (Math.random() * 50)
     )

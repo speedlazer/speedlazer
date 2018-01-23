@@ -9,17 +9,20 @@ Crafty.c 'Enemy',
       damage: 2
     @invincible = no
 
-  onProjectileHit: (e) ->
+  onProjectileHit: (collisions) ->
     return if Game.paused
     return if @hidden
-    bullet = e[0].obj
-    unless @invincible
-      unless @juice is no
-        @attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
-      @absorbDamage(bullet)
 
-      @trigger('Hit', entity: this, projectile: bullet)
-    bullet.trigger('BulletHit', bullet)
+    collisions.forEach((e) =>
+      bullet = e.obj
+      unless @invincible
+        unless @juice is no
+          @attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
+        @absorbDamage(bullet)
+
+        @trigger('Hit', entity: this, projectile: bullet)
+      bullet.trigger('BulletHit', bullet)
+    )
 
   onProjectileHitEnd: ->
     @attr hitFlash: no
