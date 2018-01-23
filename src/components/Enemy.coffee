@@ -15,7 +15,7 @@ Crafty.c 'Enemy',
     bullet = e[0].obj
     unless @invincible
       unless @juice is no
-        @attr hitFlash: { _red: 255, _green: 255, _blue: 0 }
+        @attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
       @absorbDamage(bullet)
 
       @trigger('Hit', entity: this, projectile: bullet)
@@ -33,7 +33,7 @@ Crafty.c 'Enemy',
       if splosion.damage > 0
         @trigger('Hit', entity: this, projectile: splosion)
         unless @juice is no
-          @attr hitFlash: { _red: 255, _green: 255, _blue: 128 }
+          @attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
         @absorbDamage(splosion)
         splosion.damage = 0
 

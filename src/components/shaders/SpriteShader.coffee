@@ -109,6 +109,9 @@ SPRITE_EFFECT_FRAGMENT_SHADER = """
     if (vOverrideColor.a == 1.0) {
       texelColor = vec4(vOverrideColor.rgb * (lightness * 1.3), texelColor.a);
     }
+    if (vOverrideColor.a == 3.0) {
+      texelColor = vec4(vOverrideColor.rgb, texelColor.a);
+    }
     if (vOverrideColor.a == 2.0) {
       vec3 texelHSV = rgb2hsv(texelColor.rgb);
       if ((texelHSV.x < .84) && (texelHSV.x > .82)) {
@@ -181,9 +184,9 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
     bottomSaturation = bds + ((1 - s) * 1.15)
 
     if ent.hitFlash
-      color = ent.hitFlash
-      topSaturation = 3.0
-      bottomSaturation = 3.0
+      ocolor = ent.hitFlash
+      topSaturation = 0.0
+      bottomSaturation = 0.0
 
     if Game.webGLMode is off
       topSaturation = 0.0
@@ -200,6 +203,7 @@ Crafty.defaultShader 'Sprite', new Crafty.WebGLShader(
     overrideMode = 0.0
     overrideMode = 1.0 if ent.overrideColor?
     overrideMode = 2.0 if ent.overrideColorMode is 'partial'
+    overrideMode = 3.0 if ent.hitFlash
 
     e.program.writeVector("aOverrideColor",
       ocolor._red/255,
