@@ -40,7 +40,7 @@ Crafty.c 'RapidWeaponLaser',
 
     @attr
       x: @ship.x + 38
-      y: @ship.y + 22
+      y: @ship.y + 19
       z: @ship.z + 1
       alpha: 0
     @ship.attach this
@@ -99,7 +99,7 @@ Crafty.c 'RapidWeaponLaser',
   shoot: (onOff) ->
     if onOff
       @shooting = yes
-      @attr alpha: 0
+      #@attr alpha: 0
     else
       @shooting = no
       @_clearPicked()
@@ -116,7 +116,9 @@ Crafty.c 'RapidWeaponLaser',
         @_determineWeaponSettings()
         @trigger('boostExpired', aspect: k)
 
-    @attr alpha: 0 if @lastShot >= 30
+    @attr alpha: 0.8 if @lastShot >= 20
+    @attr alpha: 0.6 if @lastShot >= 50
+    @attr alpha: 0 if @lastShot >= 80
     return unless @shooting
     allowBullet = (@shotsFired < @burstCount)
     return unless @ship.weaponsEnabled
