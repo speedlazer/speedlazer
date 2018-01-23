@@ -1,3 +1,5 @@
+createEntityPool = require("src/lib/entityPool").default
+
 Crafty.c 'RapidWeaponLaser',
   init: ->
     @requires '2D,WebGL,muzzleFlash,ColorEffects'
@@ -6,10 +8,10 @@ Crafty.c 'RapidWeaponLaser',
       h: 24
 
     @stats =
-      rapid: 0
+      rapid: 10
       damage: 0
       aim: 0
-      speed: 0
+      speed: 10
     @boosts = {}
     @boostTimings = {}
 
@@ -19,6 +21,7 @@ Crafty.c 'RapidWeaponLaser',
     @frontFire = yes
 
   remove: ->
+    @bulletPool.clean()
     @unbind 'GameLoop', @_autoFire
 
   install: (@ship) ->
@@ -44,6 +47,22 @@ Crafty.c 'RapidWeaponLaser',
 
     @shooting = no
     @_determineWeaponSettings()
+
+    @bulletPool = createEntityPool(=>
+      Crafty.e('Bullet')
+        .bullet(
+          ship: @ship
+        )
+        .bind('BulletWall', (b) =>
+          @bulletPool.recycle(b)
+        )
+        .bind('BulletMiss', (b) =>
+          @bulletPool.recycle(b)
+        )
+        .bind('BulletHit', (b) =>
+          @bulletPool.recycle(b)
+        )
+    , 20)
 
     @bind 'GameLoop', @_autoFire
 
@@ -122,7 +141,7 @@ Crafty.c 'RapidWeaponLaser',
     start =
       x: @x + @w
       y: @y + (@h / 2) - (settings.h / 2) + 10 + settings.o
-    Crafty.e('Bullet')
+    @bulletPool.get()
       .attr
         w: settings.w
         h: settings.h
@@ -131,7 +150,6 @@ Crafty.c 'RapidWeaponLaser',
         z: 1
       .updateCollision(settings.w, settings.h)
       .fire
-        ship: @ship
         damage: @damage
         speed: @ship._currentSpeed.x + settings.speed
         direction: @_bulletDirection(start)
@@ -143,7 +161,7 @@ Crafty.c 'RapidWeaponLaser',
     start =
       x: @x + @w
       y: @y + (@h / 2) - (settings.h / 2) - 10 - settings.o
-    Crafty.e('Bullet')
+    @bulletPool.get()
       .attr
         w: settings.w
         h: settings.h
@@ -152,7 +170,6 @@ Crafty.c 'RapidWeaponLaser',
         z: -1
       .updateCollision(settings.w, settings.h)
       .fire
-        ship: @ship
         damage: @damage
         speed: @ship._currentSpeed.x + settings.speed
         direction: @_bulletDirection(start)

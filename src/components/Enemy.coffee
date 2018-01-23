@@ -19,7 +19,7 @@ Crafty.c 'Enemy',
       @absorbDamage(bullet)
 
       @trigger('Hit', entity: this, projectile: bullet)
-    bullet.destroy()
+    bullet.trigger('BulletHit', bullet)
 
   onProjectileHitEnd: ->
     @attr hitFlash: no

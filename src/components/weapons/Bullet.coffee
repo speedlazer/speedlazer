@@ -18,7 +18,7 @@ Crafty.c 'Bullet',
     ]
     this
 
-  fire: (properties) ->
+  bullet: (properties) ->
     c = {}
     basicC = {
       _red: 255
@@ -32,32 +32,40 @@ Crafty.c 'Bullet',
 
     @colorOverride(c)
     @attr(
+      ship: properties.ship
+    )
+    @onHit 'BulletSolid', ->
+      return if Game.paused
+      @trigger('BulletWall', this)
+
+    @bind('Freeze', ->
+      @unbind('GameLoop', @_onGameLoop)
+    )
+    this
+
+  fire: (properties) ->
+    @xDir = Math.cos(properties.direction / 180 * Math.PI)
+    @yDir = Math.sin(properties.direction / 180 * Math.PI)
+    @attr(
       damage: properties.damage
       speed: properties.speed
       rotation: properties.direction
-      ship: properties.ship
-    ).bind('GameLoop', (fd) =>
-      dist = fd.dt * (@speed / 1000)
-
-      @x += Math.cos(properties.direction / 180 * Math.PI) * dist
-      @y += Math.sin(properties.direction / 180 * Math.PI) * dist
-
-      if @x > @_maxXforViewPort()
-        # Maybe send a bullet miss event
-        @destroy()
-      if @_minXforViewPort() > @x
-        # Maybe send a bullet miss event
-        @destroy()
-      if @_minYforViewPort() > @y
-        # Maybe send a bullet miss event
-        @destroy()
-      if @y > @_maxYforViewPort()
-        # Maybe send a bullet miss event
-        @destroy()
-    ).onHit 'BulletSolid', ->
-      return if Game.paused
-      @destroy()
+    )
+    @uniqueBind('GameLoop', @_onGameLoop)
     this
+
+  _onGameLoop: (fd) ->
+    dist = fd.dt * (@speed / 1000)
+
+    @shift(@xDir * dist, @yDir * dist)
+
+    if (
+      (@x > @_maxXforViewPort()) ||
+      (@_minXforViewPort() > @x) ||
+      (@_minYforViewPort() > @y) ||
+      (@y > @_maxYforViewPort())
+    )
+      @trigger('BulletMiss', this)
 
   _maxXforViewPort: ->
     maxX = -Crafty.viewport._x + Crafty.viewport._width / Crafty.viewport._scale
