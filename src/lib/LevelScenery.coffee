@@ -62,7 +62,8 @@ class LevelScenery
         x: @x + xOffset
         y: 40
         offsetY: (@y - 40)
-        speed: 1
+        xspeed: 1
+        speed: 0
       })
       .onHit 'ScrollFront', ->
         unless @triggeredFront
