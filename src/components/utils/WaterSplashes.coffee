@@ -28,6 +28,10 @@ Crafty.c('Explode', {
     ]
 
   playExplode: (duration) ->
+    reel = @getReel('explode')
+    if (reel && reel.duration == duration)
+      @animate 'explode'
+      return this
     @animate 'explodeReset'
     @reel 'explode', duration, [
       [0, 0]
