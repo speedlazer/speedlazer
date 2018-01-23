@@ -6,17 +6,18 @@ Crafty.c('GameParticle', {
       @shift(-dx, -dy)
 
   particle: (props) ->
-    duration = props.duration ? 100
-    running = 0
-    onGameLoop = (fd) =>
-      running += fd.dt
-      if running > duration
-        @unbind 'GameLoop', onGameLoop
-        @trigger('ParticleEnded', this)
+    @duration = props.duration ? 100
+    @running = 0
 
-
-    @bind 'GameLoop', onGameLoop
+    @uniqueBind 'GameLoop', @_onGameLoop
     this
+
+  _onGameLoop: (fd) ->
+    @running += fd.dt
+    if @running > @duration
+      @unbind 'GameLoop', @_onGameLoop
+      @trigger('ParticleEnded', this)
+
 })
 
 Crafty.c('Explode', {
