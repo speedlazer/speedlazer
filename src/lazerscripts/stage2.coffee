@@ -73,7 +73,7 @@ class Stage2 extends LazerScript
   bossfightReward: ->
     @sequence(
 
-      @setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
+      #@setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
 
       @parallel(
         @sequence(
@@ -114,7 +114,7 @@ class Stage2 extends LazerScript
       @checkpoint @checkpointMidStage('Skyline', 450000)
       @changeSeaLevel 500
 
-      @setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
+      #@setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
       @attackWaves(
         @parallel(
           @placeSquad ScraperFlyer,
