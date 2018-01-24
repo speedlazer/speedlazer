@@ -20,7 +20,7 @@ Crafty.c 'MineCannon',
     @barrel = Crafty.e('2D, WebGL, mineCannon, TweenPromise, Collision')
     @barrel.attr(
       x: @x - 64
-      y: @y - 16
+      y: @y - 32
       z: 20
       w: 96
       h: 32
@@ -81,7 +81,7 @@ Crafty.c 'MineCannon',
   get: (property) ->
     {
       xStart: @x
-      yStart: @y
+      yStart: @y - 24
       angle: @barrel.rotation
     }
 

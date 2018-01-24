@@ -88,7 +88,7 @@ Crafty.c 'BattleShip',
 
     @attach Crafty.e('2D, MineCannonPlace').attr(
       x: @x + 100
-      y: @y + 28
+      y: @y + 44
       z: 15
       w: 15
       h: 2
@@ -96,7 +96,7 @@ Crafty.c 'BattleShip',
 
     @attach Crafty.e('2D, TurretPlace').attr(
       x: @x + 550
-      y: @y + 28
+      y: @y + 44
       z: 15
       w: 15
       h: 2
@@ -104,7 +104,7 @@ Crafty.c 'BattleShip',
 
     @attach Crafty.e('2D, TurretPlace').attr(
       x: @x + 1050
-      y: @y + 28
+      y: @y + 44
       z: 15
       w: 15
       h: 2
