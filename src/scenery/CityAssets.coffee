@@ -68,6 +68,8 @@ levelGenerator.defineAssets(
         sphere1: [7, 3, 1, 1]
         laserTank: [0, 11, 6, 3]
         laserTankBarrel: [6, 11, 4, 2]
+        mineCannon: [13, 7, 3, 1]
+        turretFoot: [12, 7, 1, 1]
 )
 levelGenerator.defineAssets(
   'portraits'

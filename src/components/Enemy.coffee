@@ -8,6 +8,7 @@ Crafty.c 'Enemy',
       pointsOnDestroy: 50
       damage: 2
     @invincible = no
+    @bind 'HitFlash', @applyHitFlash
 
   onProjectileHit: (collisions) ->
     return if Game.paused
@@ -17,7 +18,7 @@ Crafty.c 'Enemy',
       bullet = e.obj
       unless @invincible
         unless @juice is no
-          @attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
+          @trigger('HitFlash', true)
         @absorbDamage(bullet)
 
         @trigger('Hit', entity: this, projectile: bullet)
@@ -25,7 +26,7 @@ Crafty.c 'Enemy',
     )
 
   onProjectileHitEnd: ->
-    @attr hitFlash: no
+    @trigger('HitFlash', false)
 
   onExplosionHit: (e) ->
     return if Game.paused
@@ -36,9 +37,15 @@ Crafty.c 'Enemy',
       if splosion.damage > 0
         @trigger('Hit', entity: this, projectile: splosion)
         unless @juice is no
-          @attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
+          @trigger('HitFlash', true)
         @absorbDamage(splosion)
         splosion.damage = 0
+
+  applyHitFlash: (onOff) ->
+    if onOff
+      @attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
+    else
+      @attr hitFlash: no
 
   enemy: (options = {}) ->
     options = defaults(options,

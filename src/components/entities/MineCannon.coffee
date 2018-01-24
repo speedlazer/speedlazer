@@ -2,12 +2,13 @@ defaults = require('lodash/defaults')
 
 Crafty.c 'MineCannon',
   init: ->
-    @requires 'Enemy, Color'
+    @requires 'Enemy, turretFoot'
     @attr(
       w: 32
       h: 32
     )
-    @color('#404040')
+    @bind 'HitFlash', @applyBarrelHitFlash
+    #@color('#404040')
 
   mineCannon: (attr = {}) ->
     defaultHealth = 1750
@@ -16,14 +17,14 @@ Crafty.c 'MineCannon',
       maxHealth: attr.health ? defaultHealth
       aimSpeed: 45
     )
-    @barrel = Crafty.e('2D, WebGL, Color, TweenPromise, Collision')
+    @barrel = Crafty.e('2D, WebGL, mineCannon, TweenPromise, Collision')
     @barrel.attr(
       x: @x - 64
       y: @y - 16
-      z: 11
+      z: 20
       w: 96
       h: 32
-    ).color('#505050')
+    )
     @barrel.origin(@barrel.w - 16, 16)
     @barrel.onHit(
       'Bullet',
@@ -40,6 +41,12 @@ Crafty.c 'MineCannon',
 
     @enemy()
     this
+
+  applyBarrelHitFlash: (onOff) ->
+    if onOff
+      @barrel.attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
+    else
+      @barrel.attr hitFlash: no
 
   updatedHealth: ->
     healthPerc = @health / @maxHealth
