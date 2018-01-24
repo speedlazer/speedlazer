@@ -575,28 +575,27 @@ class Stage1BossRocketStrike extends EntityScript
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @while(
-      @moveTo(x: -205, easing: 'easeInQuad')
-      @sequence(
-        @blast(@location(),
-          ->
-            radius: 5
-            duration: 135
-            z: 1
-            alpha: .8
-            lightness: 1.0
-            gravity: (Math.random() * .2)
-            vertical: 0
-          ->
-            vertical: @vertical + Math.random() * @gravity
-            rotation: @rotation + (Math.random() * 3)
-            alpha: Math.max(0.1, (@alpha - Math.random() * .03))
-            lightness: Math.max(.4, @lightness - .05)
-            y: @y - @vertical
-        )
-        @wait 20
-      )
-    )
+    #@while(
+    @moveTo(x: -205, easing: 'easeInQuad')
+      #@sequence(
+        #@blast(@location(),
+          #->
+            #radius: 5
+            #duration: 335
+            #z: 1
+            #alpha: .8
+            #lightness: 0
+            #gravity: (Math.random() * .2)
+            #vertical: 0
+          #->
+            #vertical: @vertical + Math.random() * @gravity
+            #alpha: Math.max(0.0, (@alpha - .13))
+            #y: @y - @vertical
+            #x: @x + 1
+        #)
+        #@wait 40
+      #)
+    #)
 
   onKilled: ->
     @bigExplosion()
@@ -632,37 +631,37 @@ class Stage1BossRocket extends EntityScript
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @while(
-      @sequence(
-        @moveTo @location(offsetY: @offsetY, offsetX: @offsetX)
-        @if((-> @offsetX isnt 0 or @offsetY isnt 0)
-          @wait 500
-        )
-        @moveTo(x: -205, easing: 'easeInQuad')
+    #@while(
+    @sequence(
+      @moveTo @location(offsetY: @offsetY, offsetX: @offsetX)
+      @if((-> @offsetX isnt 0 or @offsetY isnt 0)
+        @wait 500
       )
-      @sequence(
-        @blast(@location(),
-          ->
-            radius: 5
-            duration: 135
-            z: -1
-            alpha: .9
-            lightness: 1.0
-            gravity: (Math.random() * .2)
-            vertical: 0
-          (p, fd) ->
-            mul = fd.dt / 1000.0
-            @attr(
-              vertical: @vertical + Math.random() * @gravity * 50 * mul
-              rotation: @rotation + (Math.random() * 150 * mul)
-              alpha: Math.max(0.1, (@alpha - Math.random() * mul))
-              lightness: Math.max(.2, @lightness - (2.5 * mul))
-            )
-            y: @y - (@vertical * mul)
-        )
-        @wait 20
-      )
+      @moveTo(x: -205, easing: 'easeInQuad')
     )
+      #@sequence(
+        #@blast(@location(),
+          #->
+            #radius: 5
+            #duration: 135
+            #z: -1
+            #alpha: .9
+            #lightness: 1.0
+            #gravity: (Math.random() * .2)
+            #vertical: 0
+          #(p, fd) ->
+            #mul = fd.dt / 1000.0
+            #@attr(
+              #vertical: @vertical + Math.random() * @gravity * 50 * mul
+              #rotation: @rotation + (Math.random() * 150 * mul)
+              #alpha: Math.max(0.1, (@alpha - Math.random() * mul))
+              #lightness: Math.max(.2, @lightness - (2.5 * mul))
+            #)
+            #y: @y - (@vertical * mul)
+        #)
+        #@wait 20
+      #)
+    #)
 
   onKilled: ->
     @bigExplosion()
@@ -700,28 +699,28 @@ class Stage1BossAimedRocket extends EntityScript
       @pickTarget('PlayerControlledShip')
       @moveTo @location(offsetY: @offsetY)
       @wait @cooldown
-      @while(
-        @moveThrough @targetLocation()
-        @sequence(
-          @blast(@location(),
-            ->
-              radius: 5
-              duration: 135
-              z: 1
-              alpha: .8
-              lightness: 1.0
-              gravity: (Math.random() * .2)
-              vertical: 0
-            ->
-              vertical: @vertical + Math.random() * @gravity
-              rotation: @rotation + (Math.random() * 3)
-              alpha: Math.max(0.1, (@alpha - Math.random() * .03))
-              lightness: Math.max(.4, @lightness - .05)
-              y: @y - @vertical
-          )
-          @wait 20
-        )
-      )
+      #@while(
+      @moveThrough @targetLocation()
+        #@sequence(
+          #@blast(@location(),
+            #->
+              #radius: 5
+              #duration: 135
+              #z: 1
+              #alpha: .8
+              #lightness: 1.0
+              #gravity: (Math.random() * .2)
+              #vertical: 0
+            #->
+              #vertical: @vertical + Math.random() * @gravity
+              #rotation: @rotation + (Math.random() * 3)
+              #alpha: Math.max(0.1, (@alpha - Math.random() * .03))
+              #lightness: Math.max(.4, @lightness - .05)
+              #y: @y - @vertical
+          #)
+          #@wait 20
+        #)
+      #)
     )
 
   onKilled: ->
