@@ -201,15 +201,15 @@ class Stage1 extends LazerScript
   endStageBossfight: ->
     @sequence(
       @checkpoint @checkpointStart('BayFull', 2)
-      @parallel(
-        @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
-      )
+      #@parallel(
+        #@if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
+        #@if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
+      #)
       @mineSwarm direction: 'left'
-      @parallel(
-        @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
-      )
+      #@parallel(
+        #@if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
+        #@if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
+      #)
       @parallel(
         @mineSwarm()
         @sequence(
