@@ -60,9 +60,31 @@ Crafty.c('Explode', {
 
 })
 
+Crafty.c('PausableMotion', {
+  required: 'Motion'
+  events:
+    'GamePause': '_handlePause'
+
+  init: ->
+    @_pausingProps = {}
+
+  _handlePause: (pausing) ->
+    motionProps = ['_vx', '_vy', '_ax', '_ay']
+    if pausing
+      @_pausingProps = {}
+      motionProps.forEach((prop) =>
+        @_pausingProps[prop] = this[prop]
+      )
+      @resetMotion()
+    else
+      motionProps.forEach((prop) =>
+        this[prop] = @_pausingProps[prop] || 0
+      )
+})
+
 splashPool = createEntityPool(
   ->
-    Crafty.e('2D, WebGL, Explode, ColorEffects, GameParticle, Motion, Tween')
+    Crafty.e('2D, WebGL, Explode, ColorEffects, GameParticle, PausableMotion, Tween')
       .colorOverride('#FFFFFF')
   200
 )
