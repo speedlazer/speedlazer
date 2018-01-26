@@ -91,7 +91,6 @@ class Stage1 extends LazerScript
           @placeSquad Swirler,
             amount: 4
             delay: 250
-            drop: 'pool'
           @wait(1000)
         ))
       )
@@ -100,7 +99,6 @@ class Stage1 extends LazerScript
       @placeSquad Shooter,
         amount: 5
         delay: 200
-        drop: 'pool'
     )
 
   droneTakeover: ->
@@ -110,7 +108,6 @@ class Stage1 extends LazerScript
         @placeSquad CrewShooters,
           amount: 4
           delay: 600
-          drop: 'pool'
       )
       @say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!', noise: 'low')
       @async @chapterTitle(1, 'Hacked')
@@ -153,7 +150,6 @@ class Stage1 extends LazerScript
         @placeSquad CrewShooters,
           amount: 4
           delay: 250
-          drop: 'pool'
       )
       @shipBossFight()
       @setScenery('BayStart')
@@ -183,16 +179,14 @@ class Stage1 extends LazerScript
       @checkpoint @checkpointStart('Bay', 2)
       @setScenery('UnderBridge')
       @parallel(
-        @placeSquad Stalker,
-          drop: 'pool'
+        @placeSquad Stalker
         @mineSwarm direction: 'left'
       )
 
       @sequence(
         @stalkerShootout()
         @parallel(
-          @placeSquad Stalker,
-            drop: 'pool'
+          @placeSquad Stalker
           @mineSwarm direction: 'left'
         )
       )
@@ -271,13 +265,11 @@ class Stage1 extends LazerScript
           options:
             shootOnSight: yes
       )
-      drop: 'pool'
     )
 
   underWaterAttacks: ->
     @sequence(
-      @placeSquad Stalker,
-        drop: 'pool'
+      @placeSquad Stalker
       @repeat 2, @stalkerShootout()
     )
 
@@ -307,13 +299,11 @@ class Stage1 extends LazerScript
         direction: options.direction
 
   droneShip: ->
-    @placeSquad DroneShip,
-      drop: 'pool'
+    @placeSquad DroneShip
 
   stalkerShootout: ->
     @parallel(
-      @placeSquad Stalker,
-        drop: 'pool'
+      @placeSquad Stalker
       @attackWaves(
         @parallel(
           @placeSquad Shooter,
@@ -327,7 +317,6 @@ class Stage1 extends LazerScript
             options:
               shootOnSight: yes
         )
-        drop: 'pool'
       )
     )
 
