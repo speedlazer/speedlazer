@@ -313,7 +313,7 @@ class CityScenery extends LevelScenery
           waterMiddle: [32, 0, 16, 6]
           waterFront1: [0, 29, 16, 3]
           waterFront2: [16, 29, 16, 3]
-          coastStart: [8, 18, 8, 1]
+          coastStart: [18, 12, 8, 1]
           coast: [8, 17, 8, 1]
 
           cityBridge: [0, 24, 16, 5]
@@ -340,15 +340,15 @@ class CityScenery extends LevelScenery
           bridgePillarBroken: [42, 29, 6, 17]
           bigGlare: [0, 38, 7, 7]
           sun: [0, 22, 2, 2]
-          directGlare: [7, 38, 6, 6]
+          directGlare: [8, 18, 6, 6]
           aircraftCarrierEnd: [30, 43, 6, 5]
           aircraftCarrierStart: [13, 43, 6, 5]
           aircraftCarrierBottomFlat: [19, 45, 6, 3]
           aircraftCarrierBottomSpace: [25, 45, 4, 3]
           aircraftCarrierTopFlat: [26, 43, 4, 2]
 
-          aircraftCarrierOpenHatch: [31, 39, 5, 1]
-          aircraftCarrierHatchLid: [31, 40, 5, 1]
+          aircraftCarrierOpenHatch: [31, 38, 5, 1]
+          aircraftCarrierHatchLid: [31, 39, 5, 1]
 
           aircraftCarrierCabinEnd: [24, 38, 2, 7]
           aircraftCarrierCabin: [22, 38, 2, 7]

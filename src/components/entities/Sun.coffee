@@ -8,7 +8,7 @@ Crafty.c 'Sun',
     @origin 'center'
     @glare = []
     directGlare = Crafty.e('2D, WebGL, Glare, directGlare')
-      .crop(0, 0, 175, 175)
+      .crop(2, 2, 175, 175)
       .attr
         w: @w * 3
         h: @h * 3
