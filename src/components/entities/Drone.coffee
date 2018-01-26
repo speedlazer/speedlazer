@@ -33,6 +33,7 @@ Crafty.c 'Drone',
     @sprite(0, 4, 2, 2)
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
+    return if @deathDecoy
     @vx = dx * (1000 / dt)
     @vy = dy * (1000 / dt)
 

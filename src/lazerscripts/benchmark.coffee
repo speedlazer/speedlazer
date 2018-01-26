@@ -21,7 +21,9 @@ class Benchmark extends LazerScript
       @runScript(StartOfDawn, speed: 4)
       #@placeSquad Stalker,
         #drop: 'pool'
-      @wait 1500
+      @wait 1000
+      => Crafty('PlayerSpaceship').each(-> @shoot(true))
+      @wait 1000
       => Crafty('DebugInfo').capture('start')
       @setSpeed 300
       @wait 15000
@@ -34,6 +36,7 @@ class Benchmark extends LazerScript
       => Crafty('DebugInfo').capture('ship particles')
       @setScenery('BayStart')
       => Crafty('PlayerSpaceship').each(-> @addComponent('Invincible').invincibleDuration(15000))
+      => Crafty('PlayerSpaceship').each(-> @shoot(false))
       @enemies()
       => Crafty('DebugInfo').capture('swirlers')
       => Crafty('PlayerSpaceship').each(-> @shoot(true))

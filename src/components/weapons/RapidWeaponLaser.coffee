@@ -1,3 +1,5 @@
+createEntityPool = require("src/lib/entityPool").default
+
 Crafty.c 'RapidWeaponLaser',
   init: ->
     @requires '2D,WebGL,muzzleFlash,ColorEffects'
@@ -6,10 +8,10 @@ Crafty.c 'RapidWeaponLaser',
       h: 24
 
     @stats =
-      rapid: 0
+      rapid: 10
       damage: 0
       aim: 0
-      speed: 0
+      speed: 10
     @boosts = {}
     @boostTimings = {}
 
@@ -19,6 +21,7 @@ Crafty.c 'RapidWeaponLaser',
     @frontFire = yes
 
   remove: ->
+    @bulletPool.clean()
     @unbind 'GameLoop', @_autoFire
 
   install: (@ship) ->
@@ -37,13 +40,29 @@ Crafty.c 'RapidWeaponLaser',
 
     @attr
       x: @ship.x + 38
-      y: @ship.y + 22
+      y: @ship.y + 19
       z: @ship.z + 1
       alpha: 0
     @ship.attach this
 
     @shooting = no
     @_determineWeaponSettings()
+
+    @bulletPool = createEntityPool(=>
+      Crafty.e('Bullet')
+        .bullet(
+          ship: @ship
+        )
+        .bind('BulletWall', (b) =>
+          @bulletPool.recycle(b)
+        )
+        .bind('BulletMiss', (b) =>
+          @bulletPool.recycle(b)
+        )
+        .bind('BulletHit', (b) =>
+          @bulletPool.recycle(b)
+        )
+    , 20)
 
     @bind 'GameLoop', @_autoFire
 
@@ -80,7 +99,7 @@ Crafty.c 'RapidWeaponLaser',
   shoot: (onOff) ->
     if onOff
       @shooting = yes
-      @attr alpha: 0
+      #@attr alpha: 0
     else
       @shooting = no
       @_clearPicked()
@@ -97,7 +116,9 @@ Crafty.c 'RapidWeaponLaser',
         @_determineWeaponSettings()
         @trigger('boostExpired', aspect: k)
 
-    @attr alpha: 0 if @lastShot >= 30
+    @attr alpha: 0.8 if @lastShot >= 20
+    @attr alpha: 0.6 if @lastShot >= 50
+    @attr alpha: 0 if @lastShot >= 80
     return unless @shooting
     allowBullet = (@shotsFired < @burstCount)
     return unless @ship.weaponsEnabled
@@ -122,7 +143,7 @@ Crafty.c 'RapidWeaponLaser',
     start =
       x: @x + @w
       y: @y + (@h / 2) - (settings.h / 2) + 10 + settings.o
-    Crafty.e('Bullet')
+    @bulletPool.get()
       .attr
         w: settings.w
         h: settings.h
@@ -131,7 +152,6 @@ Crafty.c 'RapidWeaponLaser',
         z: 1
       .updateCollision(settings.w, settings.h)
       .fire
-        ship: @ship
         damage: @damage
         speed: @ship._currentSpeed.x + settings.speed
         direction: @_bulletDirection(start)
@@ -143,7 +163,7 @@ Crafty.c 'RapidWeaponLaser',
     start =
       x: @x + @w
       y: @y + (@h / 2) - (settings.h / 2) - 10 - settings.o
-    Crafty.e('Bullet')
+    @bulletPool.get()
       .attr
         w: settings.w
         h: settings.h
@@ -152,7 +172,6 @@ Crafty.c 'RapidWeaponLaser',
         z: -1
       .updateCollision(settings.w, settings.h)
       .fire
-        ship: @ship
         damage: @damage
         speed: @ship._currentSpeed.x + settings.speed
         direction: @_bulletDirection(start)

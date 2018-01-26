@@ -80,7 +80,7 @@ class CannonMine extends EntityScript
           [@locationInfo.endX - 400, 0.9]
         ], rotate: no, speed: 600
         @sequence(
-          @wait(100)
+          @wait(250)
           @blast(@location())
         )
       )

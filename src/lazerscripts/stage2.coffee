@@ -73,7 +73,7 @@ class Stage2 extends LazerScript
   bossfightReward: ->
     @sequence(
 
-      @setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
+      #@setPowerupPool 'rapidb', 'speedb', 'aimb', 'speed', 'rapidb'
 
       @parallel(
         @sequence(
@@ -86,7 +86,6 @@ class Stage2 extends LazerScript
           @placeSquad Shooter,
             amount: 8
             delay: 500
-            drop: 'pool'
             options:
               shootOnSight: yes
           @attackWaves(
@@ -102,7 +101,6 @@ class Stage2 extends LazerScript
                 options:
                   shootOnSight: yes
             )
-            drop: 'pool'
           )
         )
       )
@@ -114,7 +112,7 @@ class Stage2 extends LazerScript
       @checkpoint @checkpointMidStage('Skyline', 450000)
       @changeSeaLevel 500
 
-      @setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
+      #@setPowerupPool 'damageb', 'damage', 'aimb', 'rapidb', 'damage', 'damageb'
       @attackWaves(
         @parallel(
           @placeSquad ScraperFlyer,
@@ -126,7 +124,6 @@ class Stage2 extends LazerScript
             options:
               shootOnSight: yes
         )
-        drop: 'pool'
       )
       @sunRise()
       @parallel(
@@ -141,7 +138,6 @@ class Stage2 extends LazerScript
               options:
                 shootOnSight: yes
           )
-          drop: 'pool'
         )
         @cloneEncounter()
       )
@@ -157,18 +153,15 @@ class Stage2 extends LazerScript
               amount: 8
               delay: 500
           )
-          drop: 'pool'
         )
         @sequence(
           @wait 3000
           @placeSquad Shooter,
             amount: 4
             delay: 750
-            drop: 'pool'
             options:
               shootOnSight: yes
-          @placeSquad HeliAttack,
-            drop: 'pool'
+          @placeSquad HeliAttack
         )
       )
     )
@@ -185,8 +178,7 @@ class Stage2 extends LazerScript
 
       @parallel(
         @repeat 2, @cloneEncounter()
-        @placeSquad HeliAttack,
-          drop: 'pool'
+        @placeSquad HeliAttack
           amount: 2
           delay: 5000
       )
@@ -214,7 +206,6 @@ class Stage2 extends LazerScript
           options:
             from: 'bottom'
       )
-      drop: 'pool'
     )
 
   checkpointMidStage: (scenery, sunSkip) ->
@@ -244,8 +235,7 @@ class Stage2 extends LazerScript
 
   stalkerShootout: ->
     @parallel(
-      @placeSquad Stalker,
-        drop: 'pool'
+      @placeSquad Stalker
       @attackWaves(
         @parallel(
           @placeSquad Shooter,
@@ -259,7 +249,6 @@ class Stage2 extends LazerScript
             options:
               shootOnSight: yes
         )
-        drop: 'pool'
       )
     )
 

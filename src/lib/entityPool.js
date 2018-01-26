@@ -14,8 +14,8 @@ const createEntityPool = (createFunction, poolSize) => {
       return createFunction();
     },
     recycle(ent) {
-      if (this._pool.length > this._maxSize) {
-        Crafty.log(`pool size of ${this._maxSize} is not sufficient`);
+      if (this._pool.length >= this._maxSize) {
+        //Crafty.log(`pool size of ${this._maxSize} is not sufficient`);
         ent.destroy();
         return;
       }

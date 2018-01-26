@@ -6,17 +6,18 @@ Crafty.c('GameParticle', {
       @shift(-dx, -dy)
 
   particle: (props) ->
-    duration = props.duration ? 100
-    running = 0
-    onGameLoop = (fd) =>
-      running += fd.dt
-      if running > duration
-        @unbind 'GameLoop', onGameLoop
-        @trigger('ParticleEnded', this)
+    @duration = props.duration ? 100
+    @running = 0
 
-
-    @bind 'GameLoop', onGameLoop
+    @uniqueBind 'GameLoop', @_onGameLoop
     this
+
+  _onGameLoop: (fd) ->
+    @running += fd.dt
+    if @running > @duration
+      @unbind 'GameLoop', @_onGameLoop
+      @trigger('ParticleEnded', this)
+
 })
 
 Crafty.c('Explode', {
@@ -27,6 +28,10 @@ Crafty.c('Explode', {
     ]
 
   playExplode: (duration) ->
+    reel = @getReel('explode')
+    if (reel && reel.duration == duration)
+      @animate 'explode'
+      return this
     @animate 'explodeReset'
     @reel 'explode', duration, [
       [0, 0]
@@ -55,9 +60,31 @@ Crafty.c('Explode', {
 
 })
 
+Crafty.c('PausableMotion', {
+  required: 'Motion'
+  events:
+    'GamePause': '_handlePause'
+
+  init: ->
+    @_pausingProps = {}
+
+  _handlePause: (pausing) ->
+    motionProps = ['_vx', '_vy', '_ax', '_ay']
+    if pausing
+      @_pausingProps = {}
+      motionProps.forEach((prop) =>
+        @_pausingProps[prop] = this[prop]
+      )
+      @resetMotion()
+    else
+      motionProps.forEach((prop) =>
+        this[prop] = @_pausingProps[prop] || 0
+      )
+})
+
 splashPool = createEntityPool(
   ->
-    Crafty.e('2D, WebGL, Explode, ColorEffects, GameParticle, Motion, Tween')
+    Crafty.e('2D, WebGL, Explode, ColorEffects, GameParticle, PausableMotion, Tween')
       .colorOverride('#FFFFFF')
   200
 )
@@ -104,10 +131,24 @@ Crafty.c 'WaterSplashes',
           pos = Math.random()
           duration = (@minSplashDuration + (vy * 4) + (pos * 100)) * 3
           factor = 210 / @minSplashDuration
+
+          particleX = @x + (i * coverage) + (pos * coverage) - (@waterRadius * 2)
+          particleY = sealevel + @minOffset - (@waterRadius * 2)
+
+          # Prevent particles to spawn to far out of screen.
+          OFFSET = 100
+          if (
+            particleX + OFFSET < Crafty.viewport.x ||
+            particleX - OFFSET > Crafty.viewport.x + Crafty.viewport.width ||
+            particleY + OFFSET < Crafty.viewport.y ||
+            particleY - OFFSET > Crafty.viewport.y + Crafty.viewport.height
+          )
+            continue
+
           splashPool.get()
             .attr(
-              x: @x + (i * coverage) + (pos * coverage) - (@waterRadius * 2)
-              y: sealevel + @minOffset - (@waterRadius * 2)
+              x: particleX
+              y: particleY
               z: @z + 3
               w: @waterRadius * 4
               h: @waterRadius * 4
@@ -128,4 +169,5 @@ Crafty.c 'WaterSplashes',
             .particle(
               duration: duration
             )
+
     @_lastWaterY = @y

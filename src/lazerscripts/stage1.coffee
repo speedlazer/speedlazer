@@ -37,18 +37,18 @@ class Stage1 extends LazerScript
     @inventoryAdd 'weaponBoost', 'damageb', marking: 'D', icon: 'damageBoost'
 
     @sequence(
-      @setPowerupPool 'rapidb', 'speed', 'points', 'rapidb'
+      #@setPowerupPool 'rapidb', 'speed', 'points', 'rapidb'
       @introText()
       @sunRise(0)
       @tutorial()
-      @setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
+      #@setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
       @droneTakeover()
       @sunRise(1)
       @oceanFighting()
-      @setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
+      #@setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
       @midStageBossFight()
       @cityBay()
-      @setPowerupPool 'speed', 'rapid', 'aim', 'speed', 'rapid', 'aim'
+      #@setPowerupPool 'speed', 'rapid', 'aim', 'speed', 'rapid', 'aim'
       @endStageBossfight()
     )
 
@@ -91,7 +91,6 @@ class Stage1 extends LazerScript
           @placeSquad Swirler,
             amount: 4
             delay: 250
-            drop: 'pool'
           @wait(1000)
         ))
       )
@@ -100,7 +99,6 @@ class Stage1 extends LazerScript
       @placeSquad Shooter,
         amount: 5
         delay: 200
-        drop: 'pool'
     )
 
   droneTakeover: ->
@@ -110,7 +108,6 @@ class Stage1 extends LazerScript
         @placeSquad CrewShooters,
           amount: 4
           delay: 600
-          drop: 'pool'
       )
       @say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!', noise: 'low')
       @async @chapterTitle(1, 'Hacked')
@@ -153,7 +150,6 @@ class Stage1 extends LazerScript
         @placeSquad CrewShooters,
           amount: 4
           delay: 250
-          drop: 'pool'
       )
       @shipBossFight()
       @setScenery('BayStart')
@@ -183,16 +179,14 @@ class Stage1 extends LazerScript
       @checkpoint @checkpointStart('Bay', 2)
       @setScenery('UnderBridge')
       @parallel(
-        @placeSquad Stalker,
-          drop: 'pool'
+        @placeSquad Stalker
         @mineSwarm direction: 'left'
       )
 
       @sequence(
         @stalkerShootout()
         @parallel(
-          @placeSquad Stalker,
-            drop: 'pool'
+          @placeSquad Stalker
           @mineSwarm direction: 'left'
         )
       )
@@ -201,15 +195,15 @@ class Stage1 extends LazerScript
   endStageBossfight: ->
     @sequence(
       @checkpoint @checkpointStart('BayFull', 2)
-      @parallel(
-        @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
-      )
+      #@parallel(
+        #@if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
+        #@if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
+      #)
       @mineSwarm direction: 'left'
-      @parallel(
-        @if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
-      )
+      #@parallel(
+        #@if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
+        #@if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
+      #)
       @parallel(
         @mineSwarm()
         @sequence(
@@ -234,13 +228,8 @@ class Stage1 extends LazerScript
       @setSpeed 200
       @wait 500
       @parallel(
-        @if((-> @player(1).active), @drop(item: 'rapidb', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'rapidb', inFrontOf: @player(2)))
-      )
-      @wait 500
-      @parallel(
-        @if((-> @player(1).active), @drop(item: 'speedb', inFrontOf: @player(1)))
-        @if((-> @player(2).active), @drop(item: 'speedb', inFrontOf: @player(2)))
+        @if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
+        @if((-> @player(2).active), @drop(item: 'life', inFrontOf: @player(2)))
       )
     )
 
@@ -276,13 +265,11 @@ class Stage1 extends LazerScript
           options:
             shootOnSight: yes
       )
-      drop: 'pool'
     )
 
   underWaterAttacks: ->
     @sequence(
-      @placeSquad Stalker,
-        drop: 'pool'
+      @placeSquad Stalker
       @repeat 2, @stalkerShootout()
     )
 
@@ -312,13 +299,11 @@ class Stage1 extends LazerScript
         direction: options.direction
 
   droneShip: ->
-    @placeSquad DroneShip,
-      drop: 'pool'
+    @placeSquad DroneShip
 
   stalkerShootout: ->
     @parallel(
-      @placeSquad Stalker,
-        drop: 'pool'
+      @placeSquad Stalker
       @attackWaves(
         @parallel(
           @placeSquad Shooter,
@@ -332,7 +317,6 @@ class Stage1 extends LazerScript
             options:
               shootOnSight: yes
         )
-        drop: 'pool'
       )
     )
 
