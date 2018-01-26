@@ -28,7 +28,6 @@ Game =
           @disabledThroughPause = yes
           @disableControl()
 
-      Crafty.trigger('GamePause', @paused)
     else
       @setGameSpeed(1.0)
       Crafty('Delay').each -> @resumeDelays()
@@ -39,7 +38,7 @@ Game =
         if @disabledThroughPause
           @disabledThroughPause = null
           @enableControl()
-      Crafty.trigger('GamePause', @paused)
+    Crafty.trigger('GamePause', @paused)
 
   setGameSpeed: (speed) ->
     @gameSpeed = speed
