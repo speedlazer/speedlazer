@@ -25,19 +25,37 @@ Crafty.c 'BattleShip',
       'Start'
       'TopFlat'
       'TopFlat'
-      'CabinEnd'
-      'Cabin'
-      'Cabin'
-      'CabinStart'
       'TopFlat'
-      'CabinEnd'
-      'Cabin'
-      'Cabin'
-      'Cabin'
-      'CabinStart'
+      'TopFlat'
+      'TopFlat'
+      'TopFlat'
+      'TopFlat'
+      'TopFlat'
       'End'
     ]
-    @_addTopParts(p) for p in topParts
+    for p in topParts
+      @_topX += @_addTopParts(p, @_topX)
+
+    cabin1 = [
+      'CabinEnd'
+      'Cabin'
+      'Cabin'
+      'CabinStart'
+    ]
+    c1x = 416
+    for p in cabin1
+      c1x += @_addTopParts(p, c1x)
+
+    cabin2 = [
+      'CabinEnd'
+      'Cabin'
+      'Cabin'
+      'Cabin'
+      'CabinStart'
+    ]
+    c2x = 800
+    for p in cabin2
+      c2x += @_addTopParts(p, c2x)
 
     bottomParts = [
       'BottomSpace'
@@ -45,18 +63,18 @@ Crafty.c 'BattleShip',
       'BottomFlat'
       'BottomSpace'
       'BottomFlat'
-      'BottomSpace'
+      'BottomFlat'
     ]
     @_addBottomParts(p) for p in bottomParts
 
     @attach Crafty.e("2D, WebGL, aircraftCarrierRadar").attr(
-      x: @x + (16 * 32)
+      x: @x + (15 * 32)
       y: @y - (4 * 32)
       z: -10
     )
 
     @attach Crafty.e("2D, WebGL, aircraftCarrierAntenna").attr(
-      x: @x + (18 * 32)
+      x: @x + (17 * 32)
       y: @y - (5.5 * 32)
       z: -10
     ).flip('X')
@@ -117,7 +135,7 @@ Crafty.c 'BattleShip',
       20, 188
     ]
 
-  _addTopParts: (name) ->
+  _addTopParts: (name, x) ->
     cabin = ['CabinEnd', 'Cabin', 'CabinStart']
     flip = ['CabinEnd', 'CabinStart']
 
@@ -134,24 +152,27 @@ Crafty.c 'BattleShip',
     y = -5 * 32 if name in cabin
 
     part = Crafty.e("2D, WebGL, aircraftCarrier#{name}").attr(
-      x: @x + @_topX
+      x: @x + x
       y: @y + y
       z: -13
     )
 
     part.flip('X') if name in flip
+    topCrop = 2
     if name in cabin
       part.addComponent('ColorEffects')
       part.addComponent('SunBlock')
+      part.crop(0, topCrop, part.w, part.h - topCrop)
+      part.shift(0, 2)
       part.colorOverride(@_color, 'partial')
 
     @attach part
-    @_topX += width * 32
+    return width * 32
 
   _addBottomParts: (name) ->
     width = {
       BottomFlat: 6
-      BottomSpace: 3
+      BottomSpace: 4
     }[name]
 
     @attach Crafty.e("2D, WebGL, aircraftCarrier#{name}").attr(
