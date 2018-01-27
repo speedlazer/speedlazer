@@ -1,0 +1,12 @@
+Changes:
+### Added / Fixed / Changed / Removed / Deprecated
+- Entry points for CHANGELOG.md
+
+> Make sure those changes are added to the CHANGELOG.md
+
+Impact: Major/Minor/Patch
+
+- Increase version number in Changelog for 'Upcoming changes' to reflect this impact,
+  if not already done (relative to latest release)
+- Update `package.json` to this version number, suffixed with `-pre`
+

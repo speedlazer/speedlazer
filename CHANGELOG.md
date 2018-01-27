@@ -22,9 +22,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   under the bridge
 - Water particles are rewritten, resulting in a better performance
 - Updated Crafty to 0.9.0-rc.1
+- Starting weapon is now maxed out by default
+- Hitflashes on enemies are now full white
 
 ### Removed
 - Bullet patterns of boss, it didn't fit with the character
+- Powerups, does not add anything with new weapon settings
 
 ## [1.2.0] - 2017-12-12
 ### Added
