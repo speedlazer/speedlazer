@@ -1,7 +1,8 @@
 Crafty.c 'BattleShip',
+  required: '2D, WebGL, Tween, Choreography, ShipSolid, Collision,' +
+    'Hideable, Flipable, Scalable, SunBlock, WaterSplashes, ShipCabin'
+
   init: ->
-    @requires '2D, WebGL, Tween, Choreography, ShipSolid, Collision,' +
-      'Hideable, Flipable, Scalable, SunBlock, WaterSplashes'
     width = 37
     @attr(
       w: 32 * width
@@ -36,15 +37,16 @@ Crafty.c 'BattleShip',
     for p in topParts
       @_topX += @_addTopParts(p, @_topX)
 
-    cabin1 = [
-      'CabinEnd'
-      'Cabin'
-      'Cabin'
-      'CabinStart'
+    bottomParts = [
+      'BottomSpace'
+      'BottomFlat'
+      'BottomFlat'
+      'BottomSpace'
+      'BottomFlat'
+      'BottomFlat'
     ]
-    c1x = 416
-    for p in cabin1
-      c1x += @_addTopParts(p, c1x)
+    @_addBottomParts(p) for p in bottomParts
+
 
     cabin2 = [
       'CabinEnd'
@@ -56,28 +58,6 @@ Crafty.c 'BattleShip',
     c2x = 800
     for p in cabin2
       c2x += @_addTopParts(p, c2x)
-
-    bottomParts = [
-      'BottomSpace'
-      'BottomFlat'
-      'BottomFlat'
-      'BottomSpace'
-      'BottomFlat'
-      'BottomFlat'
-    ]
-    @_addBottomParts(p) for p in bottomParts
-
-    @attach Crafty.e("2D, WebGL, aircraftCarrierRadar").attr(
-      x: @x + (15 * 32)
-      y: @y - (4 * 32)
-      z: -10
-    )
-
-    @attach Crafty.e("2D, WebGL, aircraftCarrierAntenna").attr(
-      x: @x + (17 * 32)
-      y: @y - (5.5 * 32)
-      z: -10
-    ).flip('X')
 
     @attach Crafty.e("2D, WebGL, aircraftCarrierAntenna").attr(
       x: @x + (27 * 32)
@@ -103,6 +83,13 @@ Crafty.c 'BattleShip',
     )
     @attach(@hatch2)
 
+    @attach Crafty.e('2D, Cabin1Place').attr(
+      x: @x + 416
+      y: @y + 100
+      z: -8
+      w: 15
+      h: 2
+    )
 
     @attach Crafty.e('2D, MineCannonPlace').attr(
       x: @x + 100
@@ -135,39 +122,6 @@ Crafty.c 'BattleShip',
       20, 188
     ]
 
-  _addTopParts: (name, x) ->
-    cabin = ['CabinEnd', 'Cabin', 'CabinStart']
-    flip = ['CabinEnd', 'CabinStart']
-
-    width = {
-      Start: 6
-      TopFlat: 4
-      CabinEnd: 2
-      Cabin: 2
-      CabinStart: 1
-      End: 6
-    }[name]
-
-    y = 0
-    y = -5 * 32 if name in cabin
-
-    part = Crafty.e("2D, WebGL, aircraftCarrier#{name}").attr(
-      x: @x + x
-      y: @y + y
-      z: -13
-    )
-
-    part.flip('X') if name in flip
-    topCrop = 2
-    if name in cabin
-      part.addComponent('ColorEffects')
-      part.addComponent('SunBlock')
-      part.crop(0, topCrop, part.w, part.h - topCrop)
-      part.shift(0, 2)
-      part.colorOverride(@_color, 'partial')
-
-    @attach part
-    return width * 32
 
   _addBottomParts: (name) ->
     width = {
@@ -200,3 +154,116 @@ Crafty.c 'BattleShip',
       when 'close2' then @close([1])
       when 'open' then @open([0,1])
       when 'close' then @close([0,1])
+
+Crafty.c 'ShipCabin', {
+  init: ->
+    @cabinParts = []
+
+  _addTopParts: (name, x, dy = @y) ->
+    cabin = ['CabinEnd', 'Cabin', 'CabinStart']
+    flip = ['CabinEnd', 'CabinStart']
+
+    width = {
+      Start: 6
+      TopFlat: 4
+      CabinEnd: 2
+      Cabin: 2
+      CabinStart: 1
+      End: 6
+    }[name]
+
+    y = 0
+    y = -5 * 32 if name in cabin
+
+    part = Crafty.e("2D, WebGL, aircraftCarrier#{name}").attr(
+      x: @x + x
+      y: dy + y
+      z: -13
+    )
+
+    part.flip('X') if name in flip
+    topCrop = 2
+    if name in cabin
+      part.attr(z: -8)
+      part.addComponent('ColorEffects')
+      part.addComponent('SunBlock')
+      part.crop(0, topCrop, part.w, part.h - topCrop)
+      part.shift(0, 2)
+      part.colorOverride(@_color, 'partial')
+
+    @cabinParts.push part
+    @attach part
+    return width * 32
+}
+
+Crafty.c 'FirstShipCabin', {
+  required: 'Enemy, ShipCabin'
+
+  init: ->
+    @_color = {
+      _red: 128,
+      _green: 0,
+      _blue: 0
+    }
+
+    @attr(
+      w: 10
+      h: 10
+      z: -8
+      health: 2000
+    )
+    @hitBox = Crafty.e('2D, WebGL, Collision')
+    @hitBox.attr(
+      x: @x + 10
+      y: @y - 100 - 110
+      w: 200
+      h: 130
+    )
+    cabin1 = [
+      'CabinEnd'
+      'Cabin'
+      'Cabin'
+      'CabinStart'
+    ]
+    c1x = 0
+    for p in cabin1
+      c1x += @_addTopParts(p, c1x, @y - 100)
+    @radar = Crafty.e("2D, WebGL, aircraftCarrierRadar").attr(
+      x: @x + (2 * 32)
+      y: @y - (4 * 32) - 100
+      z: -8
+    )
+    @attach @radar
+
+    @antenna = Crafty.e("2D, WebGL, aircraftCarrierAntenna").attr(
+      x: @x + (4 * 32)
+      y: @y - (5.5 * 32) - 100
+      z: -8
+    ).flip('X')
+    @attach @antenna
+
+    @attach(@hitBox)
+    @bind 'HitFlash', @applyCabinHitFlash
+
+  shipCabin: ->
+    @hitBox.onHit(
+      'Bullet',
+      (e) => @onProjectileHit(e)
+      => @onProjectileHitEnd()
+    )
+    @hitBox.onHit(
+      'Explosion'
+      (e) => @onExplosionHit(e)
+      => @onProjectileHitEnd()
+    )
+    @enemy()
+
+  applyCabinHitFlash: (onOff) ->
+    [@cabinParts..., @antenna, @radar].forEach((part) ->
+      if onOff
+        part.attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
+      else
+        part.attr hitFlash: no
+    )
+
+}

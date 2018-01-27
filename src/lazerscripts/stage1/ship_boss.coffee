@@ -3,6 +3,26 @@ MineCannon = require('./mine_cannon').default
 { TurretInActive } = require('./turret')
 { Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer } = require('../stage1/army_drone')
 
+class Cabin1Inactive extends EntityScript
+  spawn: (options) ->
+    Crafty.e('FirstShipCabin, KeepAlive')
+      .shipCabin()
+      .sendToBackground(1.0, -8)
+
+  execute: ->
+    @invincible yes
+
+class Cabin1Active extends EntityScript
+  spawn: (options) ->
+    Crafty('FirstShipCabin')
+      .reveal()
+
+  execute: ->
+    @sequence(
+      @invincible no
+      @wait(20000)
+    )
+
 class ShipBoss extends EntityScript
 
   spawn: (options) ->
@@ -16,10 +36,12 @@ class ShipBoss extends EntityScript
   execute: ->
     @sequence(
       @parallel(
-
         @placeSquad MineCannon,
           options:
             attach: 'MineCannonPlace'
+        @placeSquad Cabin1Inactive,
+          options:
+            attach: 'Cabin1Place'
         @placeSquad TurretInActive, # Turret
           amount: 2
           delay: 0
