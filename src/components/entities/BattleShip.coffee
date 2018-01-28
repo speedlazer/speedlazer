@@ -47,30 +47,6 @@ Crafty.c 'BattleShip',
     ]
     @_addBottomParts(p) for p in bottomParts
 
-
-    cabin2 = [
-      'CabinEnd'
-      'Cabin'
-      'Cabin'
-      'Cabin'
-      'CabinStart'
-    ]
-    c2x = 800
-    for p in cabin2
-      c2x += @_addTopParts(p, c2x)
-
-    @attach Crafty.e("2D, WebGL, aircraftCarrierAntenna").attr(
-      x: @x + (27 * 32)
-      y: @y - (5.5 * 32)
-      z: -10
-    ).flip('X')
-
-    @attach Crafty.e("2D, WebGL, aircraftCarrierAntenna").attr(
-      x: @x + (30 * 32)
-      y: @y - (5.5 * 32)
-      z: -10
-    ).flip('X')
-
     @hatch = Crafty.e('CarrierHatch').attr(
       x: @x + 10 * 32
       y: @y + 29
@@ -85,6 +61,14 @@ Crafty.c 'BattleShip',
 
     @attach Crafty.e('2D, Cabin1Place').attr(
       x: @x + 416
+      y: @y + 100
+      z: -8
+      w: 15
+      h: 2
+    )
+
+    @attach Crafty.e('2D, Cabin2Place').attr(
+      x: @x + 800
       y: @y + 100
       z: -8
       w: 15
@@ -256,10 +240,92 @@ Crafty.c 'FirstShipCabin', {
       (e) => @onExplosionHit(e)
       => @onProjectileHitEnd()
     )
-    @enemy()
+    @enemy({
+      pointsLocation: {
+        x: 3 * 32
+        y: - (5 * 32)
+      }
+    })
 
   applyCabinHitFlash: (onOff) ->
     [@cabinParts..., @antenna, @radar].forEach((part) ->
+      if onOff
+        part.attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
+      else
+        part.attr hitFlash: no
+    )
+}
+
+Crafty.c 'SecondShipCabin', {
+  required: 'Enemy, ShipCabin'
+
+  init: ->
+    @_color = {
+      _red: 128,
+      _green: 0,
+      _blue: 0
+    }
+
+    @attr(
+      w: 10
+      h: 10
+      z: -8
+      health: 2000
+    )
+    @hitBox = Crafty.e('2D, WebGL, Collision')
+    @hitBox.attr(
+      x: @x + 10
+      y: @y - 100 - 110
+      w: 200
+      h: 130
+    )
+    cabin1 = [
+      'CabinEnd'
+      'Cabin'
+      'Cabin'
+      'Cabin'
+      'CabinStart'
+    ]
+    c1x = 0
+    for p in cabin1
+      c1x += @_addTopParts(p, c1x, @y - 100)
+    @antenna1 = Crafty.e("2D, WebGL, aircraftCarrierAntenna").attr(
+      x: @x + (2 * 32)
+      y: @y - (5.5 * 32) - 100
+      z: -8
+    ).flip('X')
+    @attach @antenna1
+
+    @antenna2 = Crafty.e("2D, WebGL, aircraftCarrierAntenna").attr(
+      x: @x + (5 * 32)
+      y: @y - (5.5 * 32) - 100
+      z: -8
+    ).flip('X')
+    @attach @antenna2
+
+    @attach(@hitBox)
+    @bind 'HitFlash', @applyCabinHitFlash
+
+  shipCabin: ->
+    @hitBox.onHit(
+      'Bullet',
+      (e) => @onProjectileHit(e)
+      => @onProjectileHitEnd()
+    )
+    @hitBox.onHit(
+      'Explosion'
+      (e) => @onExplosionHit(e)
+      => @onProjectileHitEnd()
+    )
+    @enemy({
+      pointsLocation: {
+        x: 3 * 32
+        y: - (5 * 32)
+      }
+    })
+
+  applyCabinHitFlash: (onOff) ->
+    [@cabinParts..., @antenna1, @antenna2].forEach((part) ->
       if onOff
         part.attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
       else

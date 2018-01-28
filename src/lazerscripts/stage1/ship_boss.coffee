@@ -23,6 +23,25 @@ class Cabin1Active extends EntityScript
       @wait(20000)
     )
 
+class Cabin2Inactive extends EntityScript
+  spawn: (options) ->
+    Crafty.e('SecondShipCabin, KeepAlive')
+      .shipCabin()
+      .sendToBackground(1.0, -8)
+
+  execute: ->
+    @invincible yes
+
+class Cabin2Active extends EntityScript
+  spawn: (options) ->
+    Crafty('SecondShipCabin')
+      .reveal()
+
+  execute: ->
+    @sequence(
+      @invincible no
+      @wait(20000)
+    )
 class ShipBoss extends EntityScript
 
   spawn: (options) ->
@@ -42,6 +61,9 @@ class ShipBoss extends EntityScript
         @placeSquad Cabin1Inactive,
           options:
             attach: 'Cabin1Place'
+        @placeSquad Cabin2Inactive,
+          options:
+            attach: 'Cabin2Place'
         @placeSquad TurretInActive, # Turret
           amount: 2
           delay: 0
