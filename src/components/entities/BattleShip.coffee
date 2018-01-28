@@ -3,7 +3,7 @@ Crafty.c 'BattleShip',
     'Hideable, Flipable, Scalable, SunBlock, WaterSplashes, ShipCabin'
 
   init: ->
-    width = 37
+    width = 40
     @attr(
       w: 32 * width
       h: 32 * 7
@@ -38,7 +38,9 @@ Crafty.c 'BattleShip',
       @_topX += @_addTopParts(p, @_topX)
 
     bottomParts = [
+      'BottomFlat'
       'BottomSpace'
+      'BottomFlat'
       'BottomFlat'
       'BottomFlat'
       'BottomSpace'
@@ -109,7 +111,7 @@ Crafty.c 'BattleShip',
 
   _addBottomParts: (name) ->
     width = {
-      BottomFlat: 6
+      BottomFlat: 4
       BottomSpace: 4
     }[name]
 

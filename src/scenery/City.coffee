@@ -342,9 +342,9 @@ class CityScenery extends LevelScenery
           sun: [0, 22, 2, 2]
           directGlare: [8, 18, 6, 6]
           aircraftCarrierEnd: [30, 43, 6, 5]
-          aircraftCarrierStart: [13, 43, 6, 5]
-          aircraftCarrierBottomFlat: [19, 45, 6, 3]
-          aircraftCarrierBottomSpace: [25, 45, 4, 3]
+          aircraftCarrierStart: [19, 43, 6, 5]
+          aircraftCarrierBottomFlat: [22, 45, 4, 3]
+          aircraftCarrierBottomSpace: [26, 45, 4, 3]
           aircraftCarrierTopFlat: [26, 43, 4, 2]
 
           aircraftCarrierOpenHatch: [31, 38, 5, 1]
