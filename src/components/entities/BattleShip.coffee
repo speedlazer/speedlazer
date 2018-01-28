@@ -180,6 +180,20 @@ Crafty.c 'ShipCabin', {
     @cabinParts.push part
     @attach part
     return width * 32
+
+  _replaceByDestroyed: ->
+    for p in @cabinParts
+      if p.has('aircraftCarrierCabinStart')
+        p.sprite(14, 37)
+      if p.has('aircraftCarrierCabinEnd')
+        p.sprite(19, 37)
+      if p.has('aircraftCarrierCabinRadar')
+        p.sprite(15, 37)
+      if p.has('aircraftCarrierCabin')
+        p.sprite(17, 37)
+      p.crop(0, 32 * 3, p.w, p.h - (3 * 32))
+      p.shift(0, 3 * 32)
+
 }
 
 Crafty.c 'FirstShipCabin', {
@@ -256,6 +270,13 @@ Crafty.c 'FirstShipCabin', {
       else
         part.attr hitFlash: no
     )
+
+  updatedHealth: ->
+    healthPerc = @health / @maxHealth
+    if @health == 1
+      @antenna.alpha = 0
+      @radar.alpha = 0
+      @_replaceByDestroyed()
 }
 
 Crafty.c 'SecondShipCabin', {
@@ -333,5 +354,12 @@ Crafty.c 'SecondShipCabin', {
       else
         part.attr hitFlash: no
     )
+
+  updatedHealth: ->
+    healthPerc = @health / @maxHealth
+    if @health == 1
+      @antenna1.alpha = 0
+      @antenna2.alpha = 0
+      @_replaceByDestroyed()
 
 }

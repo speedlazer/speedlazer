@@ -14,10 +14,19 @@ class Cabin1Inactive extends EntityScript
 
 class Cabin1Active extends EntityScript
   spawn: (options) ->
-    Crafty('FirstShipCabin')
-      .reveal()
+    item = Crafty('FirstShipCabin').get(0)
+    if item and item.health > 10
+      item.reveal()
+      return item
+    Crafty.e('FirstShipCabin, KeepAlive')
+      .shipCabin()
+      .sendToBackground(1.0, -8)
+
+  onKilled: ->
+    @deathDecoy()
 
   execute: ->
+    @bindSequence 'Destroyed', @onKilled
     @sequence(
       @invincible no
       @wait(20000)
@@ -34,14 +43,24 @@ class Cabin2Inactive extends EntityScript
 
 class Cabin2Active extends EntityScript
   spawn: (options) ->
-    Crafty('SecondShipCabin')
-      .reveal()
+    item = Crafty('SecondShipCabin').get(0)
+    if item and item.health > 10
+      item.reveal()
+      return item
+    Crafty.e('SecondShipCabin, KeepAlive')
+      .shipCabin()
+      .sendToBackground(1.0, -8)
+
+  onKilled: ->
+    @deathDecoy()
 
   execute: ->
+    @bindSequence 'Destroyed', @onKilled
     @sequence(
       @invincible no
       @wait(20000)
     )
+
 class ShipBoss extends EntityScript
 
   spawn: (options) ->
