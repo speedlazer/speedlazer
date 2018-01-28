@@ -413,9 +413,9 @@ levelGenerator.defineBlock class extends CityScenery
     p2hatch = Crafty.e('CarrierHatch')
     @add((5*32) - 100, @level.visibleHeight - 329 + (6*32), p2hatch)
 
-    for i in [0..3]
+    for i in [0..5]
       bottom = Crafty.e('2D, WebGL, aircraftCarrierBottomFlat').attr(z: 20)
-      @add(((i * 6)*32) - 64, @level.visibleHeight - 330 + (7*32), bottom)
+      @add(((i * 4)*32) - 64, @level.visibleHeight - 330 + (7*32), bottom)
 
     for i in [0..5]
       top = Crafty.e('2D, WebGL, aircraftCarrierTopFlat').attr(z: -13)
