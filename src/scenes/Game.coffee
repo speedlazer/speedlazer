@@ -102,10 +102,13 @@ Crafty.defineScene 'Game', (data = {}) ->
 
   new Game.PauseMenu
 
+  Crafty.s('Wind').emitWindParticles()
+
 , ->
   # destructor
   script.end()
   level.stop()
+  Crafty.s('Wind').stopWindParticles()
   Crafty('Player').each -> @removeComponent('ShipSpawnable')
   Crafty.unbind('GameOver')
   Crafty.unbind('ScriptFinished')
