@@ -3,6 +3,64 @@ MineCannon = require('./mine_cannon').default
 { TurretInActive } = require('./turret')
 { Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer } = require('../stage1/army_drone')
 
+class Cabin1Inactive extends EntityScript
+  spawn: (options) ->
+    Crafty.e('FirstShipCabin, KeepAlive')
+      .shipCabin()
+      .sendToBackground(1.0, -8)
+
+  execute: ->
+    @invincible yes
+
+class Cabin1Active extends EntityScript
+  spawn: (options) ->
+    item = Crafty('FirstShipCabin').get(0)
+    if item and item.health > 10
+      item.reveal()
+      return item
+    Crafty.e('FirstShipCabin, KeepAlive')
+      .shipCabin()
+      .sendToBackground(1.0, -8)
+
+  onKilled: ->
+    @deathDecoy()
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @invincible no
+      @wait(20000)
+    )
+
+class Cabin2Inactive extends EntityScript
+  spawn: (options) ->
+    Crafty.e('SecondShipCabin, KeepAlive')
+      .shipCabin()
+      .sendToBackground(1.0, -8)
+
+  execute: ->
+    @invincible yes
+
+class Cabin2Active extends EntityScript
+  spawn: (options) ->
+    item = Crafty('SecondShipCabin').get(0)
+    if item and item.health > 10
+      item.reveal()
+      return item
+    Crafty.e('SecondShipCabin, KeepAlive')
+      .shipCabin()
+      .sendToBackground(1.0, -8)
+
+  onKilled: ->
+    @deathDecoy()
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @invincible no
+      @wait(20000)
+    )
+
 class ShipBoss extends EntityScript
 
   spawn: (options) ->
@@ -16,10 +74,15 @@ class ShipBoss extends EntityScript
   execute: ->
     @sequence(
       @parallel(
-
         @placeSquad MineCannon,
           options:
             attach: 'MineCannonPlace'
+        @placeSquad Cabin1Inactive,
+          options:
+            attach: 'Cabin1Place'
+        @placeSquad Cabin2Inactive,
+          options:
+            attach: 'Cabin2Place'
         @placeSquad TurretInActive, # Turret
           amount: 2
           delay: 0

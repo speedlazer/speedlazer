@@ -5,7 +5,6 @@ class TurretInActive extends EntityScript
   spawn: (options) ->
     Crafty.e('MineCannon, KeepAlive').mineCannon()
 
-
   execute: ->
     @invincible yes
 

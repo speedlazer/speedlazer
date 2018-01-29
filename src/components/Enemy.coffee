@@ -50,7 +50,12 @@ Crafty.c 'Enemy',
   enemy: (options = {}) ->
     options = defaults(options,
       projectile: 'Bullet'
+      pointsLocation: {
+        x: @w / 2
+        y: @h / 2
+      }
     )
+    @pointsLocation = options.pointsLocation
     Crafty.trigger('EnemySpawned', this)
     @onHit(
       options.projectile
@@ -66,8 +71,8 @@ Crafty.c 'Enemy',
 
   absorbDamage: (cause) ->
     return unless cause?
-    x = @x + @w / 2
-    y = @y + @h / 2
+    x = @x + @pointsLocation.x
+    y = @y + @pointsLocation.y
     data = { @pointsOnHit, @pointsOnDestroy, location: { x, y }}
     @health -= cause.damage
     @updatedHealth?()

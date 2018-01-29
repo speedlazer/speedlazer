@@ -1,6 +1,8 @@
 { LazerScript, EntityScript } = require('src/lib/LazerScript')
-{ StartOfDawn } = require('./stage1/sunrise')
-{ Swirler } = require('./stage1/army_drone')
+{ StartOfDawn, Morning } = require('./stage1/sunrise')
+{ Swirler, Shooter } = require('./stage1/army_drone')
+{ Stage1BossRocketStrike } = require('./stage1/stage1boss')
+ShipBoss = require('./benchmark/ship_boss').default
 
 class SolidTest extends EntityScript
   spawn: ->
@@ -16,7 +18,7 @@ class SolidTest extends EntityScript
   execute: ->
     @sequence(
       @moveTo x: 0.4
-      @wait 5000
+      @wait 15000
       @moveTo x: -0.2
     )
 
@@ -33,33 +35,82 @@ class Test extends LazerScript
       #@setShipType('PlayerControlledCube')
 
       @setWeapons(['lasers'])
+      @setSpeed 300
       @setScenery 'Ocean'
-      @setSpeed 0
       #@panCamera(y: 120, 0)
-      @async @runScript(StartOfDawn, speed: 1)
+      @async @runScript(Morning, speed: 1)
       @wait 1500
       #@panCamera(y: -120, 4000)
       #@wait 1500
-      @placeSquad SolidTest
-      @setSpeed 300
-      #@wait 15000
+      #@placeSquad SolidTest
+      @setScenery 'CoastStart'
       #@gainHeight 20, duration: 1000
-      #@wait 5000
       #@gainHeight 60, duration: 4000
+      @placeSquad ShipBoss,
+        options:
+          speed: 100
 
       #@wait 10000
       #@gainHeight -80, duration: 4000
-      #@repeat(8, @sequence(
-        #@placeSquad(Swirler, {
-          #amount: 4,
-          #delay: 250,
-          #options: {
-            #shootOnSight: yes
-          #}
-        #}),
-        #@wait(2000)
-      #))
+      @repeat(8, @waitingRocketStrike())
+      @repeat(8, @sequence(
+        @placeSquad(Swirler, {
+          amount: 4,
+          delay: 250,
+          options: {
+            shootOnSight: yes
+          }
+        }),
+        @wait(2000)
+      ))
+      @repeat(8, @sequence(
+        @placeSquad(Shooter, {
+          amount: 4,
+          delay: 250,
+          options: {
+            shootOnSight: yes
+          }
+        }),
+        @wait(2000)
+      ))
+      @repeat(8, @sequence(
+        @parallel(
+          @placeSquad(Shooter, {
+            amount: 4,
+            delay: 250,
+            options: {
+              shootOnSight: yes
+            }
+          })
+          @placeSquad(Swirler, {
+            amount: 4,
+            delay: 250,
+            options: {
+              shootOnSight: yes
+            }
+          })
+        )
+        @wait(2000)
+      ))
 
+    )
+
+  waitingRocketStrike: ->
+    @sequence(
+      @placeSquad Stage1BossRocketStrike,
+        amount: 6
+        delay: 150
+        options:
+          gridConfig:
+            x:
+              start: 1.1
+              steps: 1
+              stepSize: 0.05
+            y:
+              start: 0.125
+              steps: 12
+              stepSize: 0.05
+      @wait 200
     )
 
 module.exports =

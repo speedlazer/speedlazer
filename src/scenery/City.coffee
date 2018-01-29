@@ -313,7 +313,7 @@ class CityScenery extends LevelScenery
           waterMiddle: [32, 0, 16, 6]
           waterFront1: [0, 29, 16, 3]
           waterFront2: [16, 29, 16, 3]
-          coastStart: [8, 18, 8, 1]
+          coastStart: [18, 12, 8, 1]
           coast: [8, 17, 8, 1]
 
           cityBridge: [0, 24, 16, 5]
@@ -340,20 +340,20 @@ class CityScenery extends LevelScenery
           bridgePillarBroken: [42, 29, 6, 17]
           bigGlare: [0, 38, 7, 7]
           sun: [0, 22, 2, 2]
-          directGlare: [7, 38, 6, 6]
+          directGlare: [8, 18, 6, 6]
           aircraftCarrierEnd: [30, 43, 6, 5]
-          aircraftCarrierStart: [13, 43, 6, 5]
-          aircraftCarrierBottomFlat: [19, 45, 6, 3]
-          aircraftCarrierBottomSpace: [25, 45, 4, 3]
+          aircraftCarrierStart: [19, 43, 6, 5]
+          aircraftCarrierBottomFlat: [22, 45, 4, 3]
+          aircraftCarrierBottomSpace: [26, 45, 4, 3]
           aircraftCarrierTopFlat: [26, 43, 4, 2]
 
-          aircraftCarrierOpenHatch: [31, 39, 5, 1]
-          aircraftCarrierHatchLid: [31, 40, 5, 1]
+          aircraftCarrierOpenHatch: [31, 38, 5, 1]
+          aircraftCarrierHatchLid: [31, 39, 5, 1]
 
-          aircraftCarrierCabinEnd: [24, 38, 2, 7]
-          aircraftCarrierCabin: [22, 38, 2, 7]
-          aircraftCarrierCabinRadar: [20, 38, 2, 7]
-          aircraftCarrierCabinStart: [19, 38, 1, 7]
+          aircraftCarrierCabinEnd: [12, 37, 2, 7]
+          aircraftCarrierCabin: [10, 37, 2, 7]
+          aircraftCarrierCabinRadar: [8, 37, 2, 7]
+          aircraftCarrierCabinStart: [7, 37, 1, 7]
           aircraftCarrierRadar: [26, 38, 2, 2]
           aircraftCarrierAntenna: [29, 38, 2, 3]
           boxes: [28, 39, 1, 1]
@@ -413,46 +413,34 @@ levelGenerator.defineBlock class extends CityScenery
     p2hatch = Crafty.e('CarrierHatch')
     @add((5*32) - 100, @level.visibleHeight - 329 + (6*32), p2hatch)
 
-    for i in [0..3]
+    for i in [0..5]
       bottom = Crafty.e('2D, WebGL, aircraftCarrierBottomFlat').attr(z: 20)
-      @add(((i * 6)*32) - 64, @level.visibleHeight - 330 + (7*32), bottom)
+      @add(((i * 4)*32) - 64, @level.visibleHeight - 330 + (7*32), bottom)
 
-    for i in [4, 5]
+    for i in [0..5]
       top = Crafty.e('2D, WebGL, aircraftCarrierTopFlat').attr(z: -13)
       @add(((i * 4)*32) - 64, @level.visibleHeight - 330 + (5*32), top)
 
-    top = Crafty.e('2D, WebGL, aircraftCarrierTopFlat').attr(z: -13)
-    @add(-32, @level.visibleHeight - 330 + (5*32), top)
+    topCrop = 2
 
-    cEnd = Crafty.e('2D, WebGL, aircraftCarrierCabinEnd, ColorEffects').attr(z: -13)
-    cEnd.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
-    @add((32 * 12), @level.visibleHeight - 330, cEnd)
+    addCabin = (sprite, x) =>
+      cEnd = Crafty.e("2D, WebGL, #{sprite}, ColorEffects").attr(z: -13)
+      cEnd.crop(0, topCrop, cEnd.w, cEnd.h - topCrop)
+      cEnd.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
+      @add((32 * x), @level.visibleHeight - 330 + topCrop + 1, cEnd)
 
-    c3 = Crafty.e('2D, WebGL, aircraftCarrierCabin, ColorEffects').attr(z: -13)
-    c3.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
-    @add((32 * 10), @level.visibleHeight - 330, c3)
-
-    c2 = Crafty.e('2D, WebGL, aircraftCarrierCabinRadar, ColorEffects').attr(z: -13)
-    c2.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
-    @add((32 * 8), @level.visibleHeight - 330, c2)
+    addCabin('aircraftCarrierCabinStart', 3)
+    addCabin('aircraftCarrierCabin', 4)
+    addCabin('aircraftCarrierCabinRadar', 6)
+    addCabin('aircraftCarrierCabinRadar', 8)
+    addCabin('aircraftCarrierCabin', 10)
+    addCabin('aircraftCarrierCabinEnd', 12)
 
     radar = Crafty.e('2D, WebGL, aircraftCarrierRadar').attr(z: -11)
     @add((32 * 6), @level.visibleHeight - 330 + 22, radar)
 
     antenna = Crafty.e('2D, WebGL, aircraftCarrierAntenna').attr(z: -11)
     @add((32 * 9), @level.visibleHeight - 318 - 32, antenna)
-
-    c1 = Crafty.e('2D, WebGL, aircraftCarrierCabin, ColorEffects').attr(z: -13)
-    c1.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
-    @add((32 * 4), @level.visibleHeight - 330, c1)
-
-    cRadar = Crafty.e('2D, WebGL, aircraftCarrierCabinRadar, ColorEffects').attr(z: -13)
-    cRadar.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
-    @add((32 * 6), @level.visibleHeight - 330, cRadar)
-
-    cStart = Crafty.e('2D, WebGL, aircraftCarrierCabinStart, ColorEffects').attr(z: -13)
-    cStart.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
-    @add((32 * 3), @level.visibleHeight - 330, cStart)
 
     @addElement 'water'
     @addElement 'waterHorizon'

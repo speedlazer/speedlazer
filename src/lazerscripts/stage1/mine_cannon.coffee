@@ -32,8 +32,6 @@ class MineCannon extends EntityScript
       @bigExplosion()
       @wait(400)
       @bigExplosion()
-      @wait(10000)
-      @endDecoy()
     )
 
 class CannonMine extends EntityScript
