@@ -49,13 +49,13 @@ Crafty.c 'BattleShip',
     ]
     @_addBottomParts(p) for p in bottomParts
 
-    @hatch = Crafty.e('CarrierHatch').attr(
+    @hatch = Crafty.e('CarrierHatch, ShipHatch1').attr(
       x: @x + 10 * 32
       y: @y + 29
     )
     @attach(@hatch)
 
-    @hatch2 = Crafty.e('CarrierHatch').attr(
+    @hatch2 = Crafty.e('CarrierHatch, ShipHatch2').attr(
       x: @x + 20 * 32
       y: @y + 29
     )
