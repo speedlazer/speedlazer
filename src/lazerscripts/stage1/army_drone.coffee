@@ -204,12 +204,27 @@ class ScraperFlyer extends ArmyDrone
 class Shooter extends ArmyDrone
 
   spawn: (options) ->
+    x = Crafty.viewport.width + 40
+    x = options.x if options.x
+    x = Crafty(options.startAt).get(0).x if options.startAt
+    x += options.dx if options.dx
+
+    y = Crafty.viewport.height * .71
+    y = options.y if options.y
+    y = Crafty(options.startAt).get(0).y if options.startAt
+    y += options.dy if options.dy
+
     d = Crafty.e('Drone').drone(
-      x: if options.x then options.x else Crafty.viewport.width + 40
-      y: if options.y then options.y else Crafty.viewport.height * .71
+      x: x
+      y: y
       defaultSpeed: options.speed ? 400
       juice: options.juice
     )
+
+    if options.hatchReveal
+      hatch = Crafty(options.startAt).get(0)
+      d.hideAt = hatch.y + hatch.h - 2
+
     @juice = options.juice
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
@@ -229,19 +244,25 @@ class Shooter extends ArmyDrone
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @movePath [
-      [.5, .625]
-      [.2, .5]
-      [.53, .21]
-      [.90, .54]
+    @parallel(
+      @sequence(
+        @wait 1200
+        @reveal()
+      )
+      @movePath [
+        [.5, .625]
+        [.2, .5]
+        [.53, .21]
+        [.90, .54]
 
-      [.5, .625]
-      [.2, .5]
-      [.53, .21]
-      [.90, .54]
+        [.5, .625]
+        [.2, .5]
+        [.53, .21]
+        [.90, .54]
 
-      [-20, .625]
-    ]
+        [-20, .625]
+      ]
+    )
 
 class CrewShooters extends ArmyDrone
 

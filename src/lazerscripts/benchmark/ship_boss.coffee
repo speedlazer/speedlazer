@@ -1,4 +1,5 @@
 { EntityScript } = require('src/lib/LazerScript')
+{ Shooter } = require('../stage1/army_drone')
 
 
 class Cabin1Inactive extends EntityScript
@@ -76,11 +77,42 @@ class ShipBoss extends EntityScript
       @placeSquad Cabin2Inactive,
         options:
           attach: 'Cabin2Place'
-      @moveTo(x: 0.2)
+      @moveTo(x: 0.4)
+      @parallel(
+        @moveTo(x: 0.01)
+        @sequence(
+          @action 'open1'
+          @wait 1000
+          @placeSquad Shooter,
+            amount: 5,
+            delay: 400
+            options: {
+              startAt: 'ShipHatch1'
+              hatchReveal: 'ShipHatch1'
+              dx: 25
+              dy: 20
+            }
+        )
+      )
       @placeSquad Cabin1Active,
         options:
           attach: 'Cabin1Place'
       @moveTo(x: -.2)
+      @action 'close1'
+      @action 'open2'
+      @wait 1000
+      @parallel(
+        @moveTo(x: 0.5)
+        @placeSquad Shooter,
+          amount: 5,
+          delay: 400
+          options: {
+            startAt: 'ShipHatch2'
+            hatchReveal: 'ShipHatch2'
+            dx: 25
+            dy: 20
+          }
+      )
       @placeSquad Cabin2Active,
         options:
           attach: 'Cabin2Place'

@@ -414,7 +414,7 @@ levelGenerator.defineBlock class extends CityScenery
     @add((5*32) - 100, @level.visibleHeight - 329 + (6*32), p2hatch)
 
     for i in [0..5]
-      bottom = Crafty.e('2D, WebGL, aircraftCarrierBottomFlat').attr(z: 20)
+      bottom = Crafty.e('2D, WebGL, aircraftCarrierBottomFlat').attr(z: -8)
       @add(((i * 4)*32) - 64, @level.visibleHeight - 330 + (7*32), bottom)
 
     for i in [0..5]
@@ -497,7 +497,7 @@ levelGenerator.defineBlock class extends CityScenery
     fixOtherShips = (newShip) ->
       return unless leadAnimated
       return unless leadAnimated.has 'Choreography'
-      newShip.attr(x: leadAnimated.x - 200, y: leadAnimated.y)
+      newShip.attr(x: leadAnimated.x - 200, y: leadAnimated.y, z: -10)
       newShip.disableControl() if leadAnimated.disableControls
       newShip.addComponent 'Choreography'
       newShip.synchChoreography leadAnimated
@@ -513,7 +513,7 @@ levelGenerator.defineBlock class extends CityScenery
       return fixOtherShips(this) unless index is 0
       leadAnimated = this
       @addComponent 'Choreography'
-      @attr x: 300 - (200 * index), y: Crafty.viewport.height - 50 - @h
+      @attr x: 300 - (200 * index), y: Crafty.viewport.height - 50 - @h, z: -10
       @disableControl()
       @weaponsEnabled = no
       @choreography c
@@ -528,6 +528,8 @@ levelGenerator.defineBlock class extends CityScenery
       @one 'lift', ->
         block.outside.addComponent('ShipSolid', 'BulletSolid')
         Crafty('CarrierHatch').each -> @close()
+        Crafty('PlayerControlledShip').each ->
+          @z = (@playerNumber - 1) * 10
         block.level.panCamera(y: -120, 2500)
       @one 'go', ->
         block.level.setForcedSpeed block.speed, accelerate: no

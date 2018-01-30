@@ -49,13 +49,13 @@ Crafty.c 'BattleShip',
     ]
     @_addBottomParts(p) for p in bottomParts
 
-    @hatch = Crafty.e('CarrierHatch').attr(
+    @hatch = Crafty.e('CarrierHatch, ShipHatch1').attr(
       x: @x + 10 * 32
       y: @y + 29
     )
     @attach(@hatch)
 
-    @hatch2 = Crafty.e('CarrierHatch').attr(
+    @hatch2 = Crafty.e('CarrierHatch, ShipHatch2').attr(
       x: @x + 20 * 32
       y: @y + 29
     )
@@ -118,7 +118,7 @@ Crafty.c 'BattleShip',
     @attach Crafty.e("2D, WebGL, aircraftCarrier#{name}").attr(
       x: @x + (6 * 32) + @_bottomX
       y: @y + 64
-      z: 3
+      z: -8
     )
 
     @_bottomX += width * 32
@@ -170,7 +170,10 @@ Crafty.c 'ShipCabin', {
     part.flip('X') if name in flip
     topCrop = 2
     if name in cabin
-      part.attr(z: -8)
+      part.attr(
+        z: -8
+        y: dy + y + 2
+      )
       part.addComponent('ColorEffects')
       part.addComponent('SunBlock')
       part.crop(0, topCrop, part.w, part.h - topCrop)
