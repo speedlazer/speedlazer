@@ -128,20 +128,22 @@ class ShipBoss extends EntityScript
           @parallel(
             # Open hatch 1
             @action 'open1'
-              @placeSquad Shooter,
-                amount: 5,
-                delay: 200
-                options: {
-                  x: 545
-                  y: Crafty.viewport.height + 100
-                }
-              @sequence(
-                @wait(3000)
-                # close hatch 1
-                @action 'close1'
-                @moveTo(x: -2)
-              )
+            @placeSquad Shooter,
+              amount: 5,
+              delay: 200
+              options: {
+                startAt: 'ShipHatch1'
+                hatchReveal: 'ShipHatch1'
+                dx: 25
+                dy: 20
+              }
+            @sequence(
               @wait(3000)
+              # close hatch 1
+              @action 'close1'
+              @moveTo(x: -2)
+            )
+            @wait(3000)
 
           )
           @sequence(
@@ -153,8 +155,10 @@ class ShipBoss extends EntityScript
                 amount: 3,
                 delay: 200
                 options: {
-                  x: 615
-                  y: Crafty.viewport.height + 100
+                  startAt: 'ShipHatch2'
+                  hatchReveal: 'ShipHatch2'
+                  dx: 25
+                  dy: 20
                 }
               @placeSquad CrewShooters,
                 amount: 8,
@@ -168,8 +172,10 @@ class ShipBoss extends EntityScript
                 amount: 3,
                 delay: 200
                 options: {
-                  x: 615
-                  y: Crafty.viewport.height + 100
+                  startAt: 'ShipHatch2'
+                  hatchReveal: 'ShipHatch2'
+                  dx: 25
+                  dy: 20
                 }
               @placeSquad ScraperFlyer,
                 amount: 8,
@@ -207,8 +213,10 @@ class ShipBoss extends EntityScript
               amount: 6,
               delay: 200
               options: {
-                x: 565
-                y: Crafty.viewport.height + 100
+                startAt: 'ShipHatch2'
+                hatchReveal: 'ShipHatch2'
+                dx: 25
+                dy: 20
               }
             @wait(2000)
             @action 'open1'
@@ -216,16 +224,20 @@ class ShipBoss extends EntityScript
               amount: 3,
               delay: 200
               options: {
-                x: 565
-                y: Crafty.viewport.height + 100
+                startAt: 'ShipHatch1'
+                hatchReveal: 'ShipHatch1'
+                dx: 25
+                dy: 20
               }
             @wait(1000)
             @placeSquad Shooter, # 1
               amount: 6,
               delay: 200
               options: {
-                x: 565
-                y: Crafty.viewport.height + 100
+                startAt: 'ShipHatch1'
+                hatchReveal: 'ShipHatch1'
+                dx: 25
+                dy: 20
               }
               @wait(1000)
               @action 'close1'
