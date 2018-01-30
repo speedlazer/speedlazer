@@ -7,7 +7,9 @@ Crafty.c("CarrierHatch", {
     this.attr({ z: -10 });
     this.crop(0, 2, 5 * 32, 32);
 
-    this.lid = Crafty.e("2D, WebGL, aircraftCarrierHatchLid, Hideable, Tween, Delta2D");
+    this.lid = Crafty.e(
+      "2D, WebGL, aircraftCarrierHatchLid, Hideable, Tween, Delta2D"
+    );
     this.lid.crop(0, 2, 5 * 32, 32);
     this.lid.attr({
       z: -4,
