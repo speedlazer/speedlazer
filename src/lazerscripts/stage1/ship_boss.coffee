@@ -96,7 +96,7 @@ class ShipBoss extends EntityScript
         @moveTo(x: -1.5)
         @placeSquad ScraperFlyer,
           amount: 4
-          delay: 500
+          delay: 200
           options: {
             x: 20
             y: -20
@@ -123,7 +123,7 @@ class ShipBoss extends EntityScript
         @sequence(
           @placeSquad Swirler,
             amount: 4
-            delay: 400
+            delay: 200
           @wait(6000)
           @parallel(
             # Open hatch 1
@@ -132,86 +132,121 @@ class ShipBoss extends EntityScript
                 amount: 5,
                 delay: 200
                 options: {
-                  x: 525
+                  x: 545
                   y: Crafty.viewport.height + 100
                 }
               @sequence(
                 @wait(3000)
                 # close hatch 1
                 @action 'close1'
-                @moveTo(x: -0.5)
+                @moveTo(x: -2)
               )
-              @sequence(
-                @wait(3000)
-                # close hatch 1
-                @action 'open2'
-                @moveTo(x: -0.1)
-              )
+              @wait(3000)
 
-            # @placeSquad ScraperFlyer,
-            #   amount: 6
-            #   delay: 800
-            # @action 'open'
-            #   @placeSquad Shooter,
-            #     amount: 3,
-            #     delay: 200
-            #     options: {
-            #       x: 850
-            #       y: Crafty.viewport.height + 100
-            #     }
-            #   @sequence(
-            #     # Close hatch 1
-            #     @wait(2000)
-            #     @action 'close'
-            #     @moveTo(x: 0.2)
-            #   )
+          )
+          @sequence(
+            # open hatch 2
+            @action 'open2'
+
+            @parallel(
+              @placeSquad Shooter,
+                amount: 3,
+                delay: 200
+                options: {
+                  x: 615
+                  y: Crafty.viewport.height + 100
+                }
+              @placeSquad CrewShooters,
+                amount: 8,
+                delay: 200
+                options: {
+                  x: 115
+                  y: -900
+                }
+
+              @placeSquad Shooter,
+                amount: 3,
+                delay: 200
+                options: {
+                  x: 615
+                  y: Crafty.viewport.height + 100
+                }
+              @placeSquad ScraperFlyer,
+                amount: 8,
+                delay: 700
+                options: {
+                  x: 915
+                  y: 0
+                }
+            )
+            @action 'close2'
+            @parallel(
+                @moveTo(x: -.5) # Move the boat out of view
+
+                # Show some aircrafts here
+                @placeSquad Shooter,
+                  amount: 8,
+                  delay: 600
+                  options: {
+                    x: -15
+                    y: 100
+                  }
+
+                @placeSquad Swirler,
+                  amount: 6,
+                  delay: 200
+                  options: {
+                    x: -15
+                    y: 100
+                  }
+            )
+            @moveTo(x: -2) # move back!
+
+            @action 'open2'
+            @placeSquad Shooter, # 2
+              amount: 6,
+              delay: 200
+              options: {
+                x: 565
+                y: Crafty.viewport.height + 100
+              }
+            @wait(2000)
+            @action 'open1'
+            @placeSquad Shooter, # 1
+              amount: 3,
+              delay: 200
+              options: {
+                x: 565
+                y: Crafty.viewport.height + 100
+              }
+            @wait(1000)
+            @placeSquad Shooter, # 1
+              amount: 6,
+              delay: 200
+              options: {
+                x: 565
+                y: Crafty.viewport.height + 100
+              }
+              @wait(1000)
+              @action 'close1'
+              @placeSquad Shooter, # 2
+                amount: 7,
+                delay: 200
+                options: {
+                  x: 565
+                  y: Crafty.viewport.height + 100
+                }
+              @wait(1000)
+              @action 'close2'
+
+            @wait(5000)
+            @moveTo(x: -5) # move forward!
+
+
           )
 
-          # @wait(6000)
-          # @placeSquad ScraperFlyer,
-          #   amount: 4
-          #   delay: 200
-          # @placeSquad Stalker,
-          #   amount: 6
-          #   delay: 200
         )
-        # @parallel(
-        #   @moveTo(x: -0.8)
-        #
-        #   @sequence(
-        #     @placeSquad ScraperFlyer,
-        #       amount: 4
-        #       delay: 50
-        #
-        #   )
-        # )
-        # @wait(3000)
-        # @sequence(
-        #   @placeSquad CrewShooters,
-        #     amount: 10
-        #     delay: 1200
-        #   @wait(6000)
-        #   @placeSquad Shooter,
-        #     amount: 6
-        #     delay: 200
-        # )
-        # @placeSquad CrewShooters,
-        #   amount: 10
-        #   delay: 600
-        # @placeSquad Shooter,
-        #   amount: 7
-        #   delay: 600
-        # @placeSquad CrewShooters,
-        #   amount: 10
-        #   delay: 600
-
       )
-
-
-
-      # @placeSquad Stalker,
-      #   amount: 1
-      #   delay: 600
     )
 
 module.exports =
