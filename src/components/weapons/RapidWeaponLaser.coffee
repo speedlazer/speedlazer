@@ -8,10 +8,10 @@ Crafty.c 'RapidWeaponLaser',
       h: 24
 
     @stats =
-      rapid: 10
+      rapid: 5
       damage: 0
       aim: 0
-      speed: 10
+      speed: 5
     @boosts = {}
     @boostTimings = {}
 
@@ -138,11 +138,11 @@ Crafty.c 'RapidWeaponLaser',
 
   _createFrontBullet: ->
     settings =
-      w: (@speed // 25), speed: @speed, h: 10 + @overallLevel, o: @overallLevel
+      w: (@speed // 40), speed: @speed, h: 4 + @overallLevel, o: @overallLevel
 
     start =
       x: @x + @w
-      y: @y + (@h / 2) - (settings.h / 2) + 10 + settings.o
+      y: @y + (@h / 2) - (settings.h / 2) + 5 + settings.o
     @bulletPool.get()
       .attr
         w: settings.w
@@ -158,11 +158,11 @@ Crafty.c 'RapidWeaponLaser',
 
   _createBackBullet: ->
     settings =
-      w: (@speed // 35), speed: @speed, h: 9 + @overallLevel, o: @overallLevel
+      w: (@speed // 50), speed: @speed, h: 3 + @overallLevel, o: @overallLevel
 
     start =
       x: @x + @w
-      y: @y + (@h / 2) - (settings.h / 2) - 10 - settings.o
+      y: @y + (@h / 2) - (settings.h / 2) - 5 - settings.o
     @bulletPool.get()
       .attr
         w: settings.w
