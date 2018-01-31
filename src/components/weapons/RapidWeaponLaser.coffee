@@ -138,7 +138,7 @@ Crafty.c 'RapidWeaponLaser',
 
   _createFrontBullet: ->
     settings =
-      w: (@speed // 40), speed: @speed, h: 4 + @overallLevel, o: @overallLevel
+      w: (@speed // 30), speed: @speed, h: 6 + @overallLevel, o: @overallLevel
 
     start =
       x: @x + @w
@@ -158,7 +158,7 @@ Crafty.c 'RapidWeaponLaser',
 
   _createBackBullet: ->
     settings =
-      w: (@speed // 50), speed: @speed, h: 3 + @overallLevel, o: @overallLevel
+      w: (@speed // 40), speed: @speed, h: 4 + @overallLevel, o: @overallLevel
 
     start =
       x: @x + @w

@@ -1,7 +1,7 @@
 Crafty.c 'Bullet',
   init: ->
     @requires '2D, WebGL, sphere1, Collision, ColorEffects'
-    @crop 6, 21, 18, 7
+    @crop 4, 19, 24, 11
     @collision [
       0, 0,
       18, 0,
