@@ -46,8 +46,6 @@ class ShipDrone extends ArmyDrone
           projectile = Crafty.e('Sphere, Hostile, Projectile')
             .blink()
             .attr(
-              w: 12
-              h: 12
               damage: 1
               speed: 500
             )
@@ -70,12 +68,22 @@ class ShipDrone extends ArmyDrone
       [-20, .21]
     ], rotate: no
 
-class Swirler extends ArmyDrone
+class DroneFlyer extends ArmyDrone
 
   spawn: (options) ->
+    x = Crafty.viewport.width + 40
+    x = options.x if options.x
+    x = Crafty(options.startAt).get(0).x if options.startAt
+    x += options.dx if options.dx
+
+    y = Crafty.viewport.height * .4
+    y = options.y if options.y
+    y = Crafty(options.startAt).get(0).y if options.startAt
+    y += options.dy if options.dy
+
     d = Crafty.e('Drone').drone(
-      x: Crafty.viewport.width + 40
-      y: Crafty.viewport.height * .4
+      x: x
+      y: y
       defaultSpeed: options.speed ? 400
       juice: options.juice
     )
@@ -88,40 +96,79 @@ class Swirler extends ArmyDrone
           projectile = Crafty.e('Sphere, Hostile, Projectile')
             .blink()
             .attr(
-              w: 12
-              h: 12
               damage: 1
-              speed: 550
+              speed: 500
             )
           projectile.shoot(x, y, angle)
     d
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @movePath [
-      [.9, .4]
-      [.85, .5]
-      [.9, .6]
-      [1.1, .5]
+    @movePath(@options.path, rotate: no)
 
-      [.5, .21]
-      [.156, .5]
-      [.5, .833]
-      [.86, .52]
 
-      [.5, .21]
-      [.156, .5]
-      [.5, .833]
-      [.86, .52]
+class Swirler extends ArmyDrone
 
-      [.5, .21]
-      [.156, .5]
-      [.5, .833]
-      [.86, .52]
+  spawn: (options) ->
+    x = Crafty.viewport.width + 40
+    x = options.x if options.x
+    x = Crafty(options.startAt).get(0).x if options.startAt
+    x += options.dx if options.dx
 
-      [-20, .21]
-    ], rotate: no
+    y = Crafty.viewport.height * .4
+    y = options.y if options.y
+    y = Crafty(options.startAt).get(0).y if options.startAt
+    y += options.dy if options.dy
 
+    d = Crafty.e('Drone').drone(
+      x: x
+      y: y
+      defaultSpeed: options.speed ? 400
+      juice: options.juice
+    )
+    @juice = options.juice
+    if options.shootOnSight
+      d.addComponent('ShootOnSight').shootOnSight
+        cooldown: 1000 + (Math.random() * 3000)
+        sightAngle: 250
+        projectile: (x, y, angle) =>
+          projectile = Crafty.e('Sphere, Hostile, Projectile')
+            .blink()
+            .attr(
+              damage: 1
+              speed: 500
+            )
+          projectile.shoot(x, y, angle)
+    d
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @movePath(
+      @options.path || [
+        [.9, .4]
+        [.85, .5]
+        [.9, .6]
+        [1.1, .5]
+
+        [.5, .21]
+        [.156, .5]
+        [.5, .833]
+        [.86, .52]
+
+        [.5, .21]
+        [.156, .5]
+        [.5, .833]
+        [.86, .52]
+
+        [.5, .21]
+        [.156, .5]
+        [.5, .833]
+        [.86, .52]
+
+        [-20, .21]
+      ],
+      rotate: no
+    )
 
 class Stalker extends ArmyDrone
 
@@ -168,8 +215,6 @@ class ScraperFlyer extends ArmyDrone
         projectile = Crafty.e('Sphere, Hostile, Projectile')
           .blink()
           .attr(
-            w: 12
-            h: 12
             damage: 1
             speed: 500
           )
@@ -234,8 +279,6 @@ class Shooter extends ArmyDrone
           projectile = Crafty.e('Sphere, Hostile, Projectile')
             .blink()
             .attr(
-              w: 12
-              h: 12
               damage: 1
               speed: 500
             )
@@ -315,8 +358,6 @@ class CrewShooters extends ArmyDrone
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Sphere, Hostile, Projectile')
             .attr(
-              w: 12
-              h: 12
               damage: 1
               speed: 500
             )
@@ -330,4 +371,5 @@ module.exports = {
   Stalker
   ScraperFlyer
   ShipDrone
+  DroneFlyer
 }

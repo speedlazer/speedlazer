@@ -497,7 +497,7 @@ levelGenerator.defineBlock class extends CityScenery
     fixOtherShips = (newShip) ->
       return unless leadAnimated
       return unless leadAnimated.has 'Choreography'
-      newShip.attr(x: leadAnimated.x - 200, y: leadAnimated.y, z: -10)
+      newShip.attr(x: leadAnimated.x - 200, y: leadAnimated.y, z: -8)
       newShip.disableControl() if leadAnimated.disableControls
       newShip.addComponent 'Choreography'
       newShip.synchChoreography leadAnimated
@@ -513,7 +513,7 @@ levelGenerator.defineBlock class extends CityScenery
       return fixOtherShips(this) unless index is 0
       leadAnimated = this
       @addComponent 'Choreography'
-      @attr x: 300 - (200 * index), y: Crafty.viewport.height - 50 - @h, z: -10
+      @attr x: 300 - (200 * index), y: Crafty.viewport.height - 50 - @h, z: -8
       @disableControl()
       @weaponsEnabled = no
       @choreography c
