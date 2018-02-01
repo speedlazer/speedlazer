@@ -42,9 +42,9 @@ class Stage1 extends LazerScript
       @sunRise(0)
       @tutorial()
       #@setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
-      #@droneTakeover()
-      #@sunRise(1)
-      #@oceanFighting()
+      @droneTakeover()
+      @sunRise(1)
+      @oceanFighting()
       #@setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
       #@midStageBossFight()
       #@cityBay()
@@ -95,16 +95,19 @@ class Stage1 extends LazerScript
             [.16, -0.1]
           ]
 
-      @placeSquad DroneFlyer,
-        amount: 6
-        delay: 250
-        options:
-          path: [
-            [.9, .3]
-            [.65, .3]
-            [.35, .7]
-            [-.1, .7]
-          ]
+      @parallel(
+        @gainHeight(150, duration: 4000)
+        @placeSquad DroneFlyer,
+          amount: 6
+          delay: 250
+          options:
+            path: [
+              [.9, .3]
+              [.65, .3]
+              [.35, .7]
+              [-.1, .7]
+            ]
+      )
 
       @say('General', 'Great job, now get the ship to the defence factory in the city\n' +
        'We will send some more target practice', noise: 'low')
@@ -131,7 +134,52 @@ class Stage1 extends LazerScript
       )
       @say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!', noise: 'low')
       @async @chapterTitle(1, 'Hacked')
+    )
 
+  oceanFighting: ->
+    @sequence(
+      @parallel(
+        @sequence(
+          @wait 2000
+          @say 'General', 'We\'re under attack!?!', noise: 'low'
+        )
+
+        @attackWaves(
+          @parallel(
+            @repeat 2, @placeSquad DroneFlyer,
+              amount: 6
+              delay: 250
+              options:
+                x: .5
+                y: -.01
+                path: [
+                  [.5, .2]
+                  [.7, .2]
+                  [.93, .31]
+                  [.8, .5]
+                  [.5, .5]
+                  [-.1, .3]
+                ]
+            @repeat 2, @placeSquad DroneFlyer,
+              amount: 6
+              delay: 250
+              options:
+                x: .5
+                y: 1.11
+                path: [
+                  [.5, .8]
+                  [.7, .8]
+                  [.93, .69]
+                  [.8, .5]
+                  [.5, .5]
+                  [-.1, .7]
+                ]
+          )
+        )
+      )
+      # temp end
+      @gainHeight(-150, duration: 4000)
+      @wait 2000
     )
 
   #oceanFighting: ->

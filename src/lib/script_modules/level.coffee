@@ -284,11 +284,11 @@ Level =
         speedY = (height / duration) * 1000
         currentSpeed = @level._forcedSpeed?.x ? @level._forcedSpeed
 
-        @level.setForcedSpeed({ x: currentSpeed, y: -speedY }, accellerate: no)
+        @level.setForcedSpeed({ x: currentSpeed, y: -speedY }, accellerate: yes)
         level = @level
         Crafty.e('Delay').delay(
           ->
-            level.setForcedSpeed(currentSpeed, accellerate: no)
+            level.setForcedSpeed(currentSpeed, accellerate: yes)
             d.resolve()
           duration
         )

@@ -71,13 +71,16 @@ class ShipDrone extends ArmyDrone
 class DroneFlyer extends ArmyDrone
 
   spawn: (options) ->
+
     x = Crafty.viewport.width + 40
     x = options.x if options.x
+    x = x * Crafty.viewport.width if x < 2 and x > -2
     x = Crafty(options.startAt).get(0).x if options.startAt
     x += options.dx if options.dx
 
     y = Crafty.viewport.height * .4
     y = options.y if options.y
+    y = y * Crafty.viewport.height if y < 2 and y > -2
     y = Crafty(options.startAt).get(0).y if options.startAt
     y += options.dy if options.dy
 
