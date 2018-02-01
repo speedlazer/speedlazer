@@ -39,6 +39,12 @@ Crafty.c 'AnalogKeyboardControls',
 
     yDir = 0
     xDir = 0
+    pressed = {
+      up: false,
+      down: false,
+      left: false,
+      right: false
+    }
 
     ship.addComponent('Keyboard, Motion')
       .bind('GamePause', (paused) ->
@@ -89,31 +95,45 @@ Crafty.c 'AnalogKeyboardControls',
       @vx = @prevSets.vx
       @vy = @prevSets.vy
 
-    @listenTo ship, 'KeyDown', (e) ->
-      Game.togglePause() if e.key is controlMap.pause
-
-      return if ship.disableControls
-      ship.shoot(true) if e.key is controlMap.fire
-      ship.switchWeapon(true) if e.key is controlMap.switchWeapon
-      ship.superWeapon(true) if e.key is controlMap.super
-
-      yDir -= 1 if e.key is controlMap.up
-      yDir += 1 if e.key is controlMap.down
+    updateAcceleration = =>
+      yDir = 0
+      yDir -= 1 if pressed.up
+      yDir += 1 if pressed.down
       yDir = Math.min(1, Math.max(-1, yDir))
+
       ship.ay += (ACCELLERATE_Y * yDir)
       if (ship.vy > 0 and ship.ay == 0) # decellerate
         ship.ay -= (ACCELLERATE_Y * 2)
       if (ship.vy < 0 and ship.ay == 0) # decellerate
         ship.ay += (ACCELLERATE_Y * 2)
 
-      xDir -= 1 if e.key is controlMap.left
-      xDir += 1 if e.key is controlMap.right
+      xDir = 0
+      xDir -= 1 if pressed.left
+      xDir += 1 if pressed.right
       xDir = Math.min(1, Math.max(-1, xDir))
       ship.ax += (ACCELLERATE_X * xDir)
       if (ship.vx > 0 and ship.ax == 0) # decellerate
         ship.ax -= (ACCELLERATE_X * 2)
       if (ship.vx < 0 and ship.ax == 0) # decellerate
         ship.ax += (ACCELLERATE_X * 2)
+
+    @listenTo ship, 'KeyDown', (e) ->
+      Game.togglePause() if e.key is controlMap.pause
+      return if ship.disableControls
+      ship.shoot(true) if e.key is controlMap.fire
+      ship.switchWeapon(true) if e.key is controlMap.switchWeapon
+      ship.superWeapon(true) if e.key is controlMap.super
+
+      if e.key is controlMap.up
+        pressed.up = true
+      if e.key is controlMap.down
+        pressed.down = true
+      if e.key is controlMap.left
+        pressed.left = true
+      if e.key is controlMap.right
+        pressed.right = true
+
+      updateAcceleration()
 
     @listenTo ship, 'KeyUp', (e) ->
       return if ship.disableControls
@@ -121,20 +141,13 @@ Crafty.c 'AnalogKeyboardControls',
       ship.switchWeapon(false) if e.key is controlMap.switchWeapon
       ship.superWeapon(false) if e.key is controlMap.super
 
-      yDir += 1 if e.key is controlMap.up
-      yDir -= 1 if e.key is controlMap.down
-      yDir = Math.min(1, Math.max(-1, yDir))
-      ship.ay += (ACCELLERATE_Y * yDir)
-      if (ship.vy > 0 and ship.ay == 0) # decellerate
-        ship.ay -= (ACCELLERATE_Y * 2)
-      if (ship.vy < 0 and ship.ay == 0) # decellerate
-        ship.ay += (ACCELLERATE_Y * 2)
+      if e.key is controlMap.up
+        pressed.up = false
+      if e.key is controlMap.down
+        pressed.down = false
+      if e.key is controlMap.left
+        pressed.left = false
+      if e.key is controlMap.right
+        pressed.right = false
 
-      xDir += 1 if e.key is controlMap.left
-      xDir -= 1 if e.key is controlMap.right
-      xDir = Math.min(1, Math.max(-1, xDir))
-      ship.ax += (ACCELLERATE_X * xDir)
-      if (ship.vx > 0 and ship.ax == 0) # decellerate
-        ship.ax -= (ACCELLERATE_X * 2)
-      if (ship.vx < 0 and ship.ax == 0) # decellerate
-        ship.ax += (ACCELLERATE_X * 2)
+      updateAcceleration()
