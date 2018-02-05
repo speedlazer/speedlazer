@@ -85,7 +85,7 @@ class HeliAttack extends EntityScript
         @moveTo(
           x: .6
           y: @ground
-          speed: 250
+          speed: 150
           easing: 'easeInQuad'
           positionType: 'absoluteY'
         )

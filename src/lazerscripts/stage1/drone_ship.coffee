@@ -40,7 +40,7 @@ class DroneShip extends EntityScript
         @sequence(
           @wait(3000)
           @action 'close'
-          @moveTo(x: -0.5)
+          @moveTo(x: -0.55)
         )
       )
     )
