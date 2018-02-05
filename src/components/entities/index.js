@@ -7,6 +7,7 @@ import "./Drone";
 import "./DroneShip";
 import "./Helicopter";
 import "./LargeDrone";
+import "./MediumDrone";
 import "./Mine";
 import "./MineCannon";
 

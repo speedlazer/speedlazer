@@ -340,6 +340,7 @@ class CityScenery extends LevelScenery
           bridgePillarBroken: [42, 29, 6, 17]
           bigGlare: [0, 38, 7, 7]
           sun: [0, 22, 2, 2]
+          chute: [2, 22, 1, 1]
           directGlare: [8, 18, 6, 6]
           aircraftCarrierEnd: [30, 43, 6, 5]
           aircraftCarrierStart: [19, 43, 6, 5]

@@ -19,7 +19,6 @@ Crafty.c 'Helicopter',
     )
 
     @origin 'center'
-    @flip('x')
     @animate 'fly', -1
     #@colorOverride '#808080', 'partial'
 

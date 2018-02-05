@@ -18,7 +18,6 @@ class DroneShip extends EntityScript
       @parallel(
         @placeSquad ShipDrone,
           amount: 5,
-          drop: 'pool'
           delay: 500
           options:
             shootOnSight: yes

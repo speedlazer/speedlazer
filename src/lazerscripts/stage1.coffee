@@ -1,6 +1,8 @@
 extend = require('lodash/extend')
 { LazerScript } = require('src/lib/LazerScript')
-{ Swirler, Shooter, DroneFlyer, CrewShooters, Stalker } = require('./stage1/army_drone')
+{ Swirler, Shooter, DroneFlyer, Stalker } = require('./stage1/army_drone')
+{ CrewShooters } = require('./stage1/takeover_drone')
+{ HeliAttack } = require('./stage1/heli_attack')
 { Stage1BossRocketStrike, Stage1BossStage1 } = require('./stage1/stage1boss')
 { StartOfDawn, DayBreak, Morning } = require('./stage1/sunrise')
 
@@ -65,12 +67,8 @@ class Stage1 extends LazerScript
         options:
           attach: 'BoxesLocation'
       )
-      @if((-> @player(1).active and @player(2).active)
-        @say 'General', 'Time to get the last 2 ships to the factory\n' +
-          'to install the AI controlled defence systems', noise: 'low'
-        @say 'General', 'Time to get the last ship to the factory\n' +
-          'to install the AI controlled defence systems', noise: 'low'
-      )
+      @say 'General', 'Let us escort you to the factory to install\n' +
+        'the AI controlled defence systems. You are the last ship.', noise: 'low'
       #@say 'General', 'It saves lives when you no longer need soldiers,\n' +
       #'AI technology is the future after all.'
       #@wait 1500
@@ -109,8 +107,7 @@ class Stage1 extends LazerScript
             ]
       )
 
-      @say('General', 'Great job, now get the ship to the defence factory in the city\n' +
-       'We will send some more target practice', noise: 'low')
+      @say('General', 'Great job!', noise: 'low')
 
       @placeSquad DroneFlyer,
         amount: 6
@@ -126,13 +123,12 @@ class Stage1 extends LazerScript
 
   droneTakeover: ->
     @sequence(
+      @say('John', 'What is that for drone!??')
       @parallel(
-        @say('John', 'What are those drones doing there!?')
-        @placeSquad CrewShooters,
-          amount: 4
-          delay: 600
+        @say('General', 'We need to get out of this chopper!', noise: 'low')
+        #@say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!', noise: 'low')
+        @placeSquad CrewShooters
       )
-      @say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!', noise: 'low')
       @async @chapterTitle(1, 'Hacked')
     )
 
@@ -141,46 +137,83 @@ class Stage1 extends LazerScript
       @parallel(
         @sequence(
           @wait 2000
-          @say 'General', 'We\'re under attack!?!', noise: 'low'
+          @say 'John', 'We\'re under attack!?!', noise: 'none'
         )
 
         @attackWaves(
           @parallel(
-            @repeat 2, @placeSquad DroneFlyer,
-              amount: 6
-              delay: 250
-              options:
-                x: .5
-                y: -.01
-                path: [
-                  [.5, .2]
-                  [.7, .2]
-                  [.93, .31]
-                  [.8, .5]
-                  [.5, .5]
-                  [-.1, .3]
-                ]
-            @repeat 2, @placeSquad DroneFlyer,
-              amount: 6
-              delay: 250
-              options:
-                x: .5
-                y: 1.11
-                path: [
-                  [.5, .8]
-                  [.7, .8]
-                  [.93, .69]
-                  [.8, .5]
-                  [.5, .5]
-                  [-.1, .7]
-                ]
+            @repeat 2, @sequence(
+              @parallel(
+                @placeSquad DroneFlyer,
+                  amount: 3
+                  delay: 400
+                  options:
+                    x: .5
+                    y: -.01
+                    path: [
+                      [.5, .2]
+                      [.7, .2]
+                      [.93, .31]
+                      [.8, .5]
+                      [.5, .5]
+                      [-.1, .3]
+                    ]
+                 @placeSquad DroneFlyer,
+                  amount: 3
+                  delay: 400
+                  options:
+                    x: .5
+                    y: 1.11
+                    path: [
+                      [.5, .8]
+                      [.7, .8]
+                      [.93, .69]
+                      [.8, .5]
+                      [.5, .5]
+                      [-.1, .7]
+                    ]
+              )
+              @wait 1000
+            )
           )
         )
       )
+      @parallel(
+        @placeSquad HeliAttack
+        @gainHeight(-150, duration: 4000)
+      )
+      @wait 5000
+      @parallel(
+        @burstFlight(.2, 0)
+        @burstFlight(.4, 2000)
+        @burstFlight(.6, 4000)
+      )
+      @placeSquad DroneShip
+
       # temp end
-      @gainHeight(-150, duration: 4000)
       @wait 2000
     )
+
+  burstFlight: (height, delay) ->
+    repeatPattern = (height) ->
+      [
+        [.2, height]
+        [.1, height + .1]
+        [.2, height + .2]
+        [.4, height + .1]
+        [.6, height]
+        [1.1, height]
+      ]
+    @sequence(
+      @wait(delay)
+      @placeSquad DroneFlyer,
+        amount: 4
+        delay: 250
+        options:
+          path: repeatPattern(height)
+          y: height
+    )
+
 
   #oceanFighting: ->
     #@sequence(
@@ -365,8 +398,6 @@ class Stage1 extends LazerScript
         #points: options.points ? yes
         #direction: options.direction
 
-  droneShip: ->
-    @placeSquad DroneShip
 
   stalkerShootout: ->
     @parallel(

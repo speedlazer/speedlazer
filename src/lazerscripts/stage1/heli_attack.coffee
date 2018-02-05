@@ -20,8 +20,8 @@ class HeliAttack extends EntityScript
       pointsOnDestroy: 200
     )
     p.addComponent('BurstShot').burstShot
-      burstCooldown: 2500
-      burstAmount: 4
+      burstCooldown: 1500
+      burstAmount: 6
       angle: -15
       angleDeviation: 10
       aim: 45
@@ -47,7 +47,7 @@ class HeliAttack extends EntityScript
       @flightPath()
       @sequence(
         @fireRockets()
-        @wait 5000
+        @wait 4000
       )
     )
 
@@ -90,17 +90,22 @@ class HeliAttack extends EntityScript
           positionType: 'absoluteY'
         )
         @sequence(
-          @blast(@location(),
-            radius: 10,
-            duration: 480,
-            z: -1
-            lightness: .2
-            alpha: .5
-          )
-          @blast(@location(offsetX: 10, offsetY: 5),
-            radius: 5,
-            duration: 180,
-            z: -1
+          @if(
+            => !@entity.hidden
+            @sequence(
+              @blast(@location(),
+                radius: 10,
+                duration: 480,
+                z: -1
+                lightness: .2
+                alpha: .5
+              )
+              @blast(@location(offsetX: 10, offsetY: 5),
+                radius: 5,
+                duration: 180,
+                z: -1
+              )
+            )
           )
           @wait 100
         )
@@ -151,5 +156,6 @@ class HeliAttack extends EntityScript
       @wait 500
     )
 
-module.exports =
-  default: HeliAttack
+module.exports = {
+  HeliAttack
+}
