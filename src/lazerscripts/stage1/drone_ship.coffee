@@ -1,5 +1,5 @@
 { EntityScript } = require('src/lib/LazerScript')
-{ ShipDrone } = require('./army_drone')
+{ DroneFlyer } = require('./army_drone')
 
 class DroneShip extends EntityScript
 
@@ -7,7 +7,7 @@ class DroneShip extends EntityScript
     Crafty.e('DroneShip').attr(
       x: Crafty.viewport.width + 180
       y: 450
-      defaultSpeed: options.speed ? 350
+      defaultSpeed: options.speed ? 150
     )
 
   execute: ->
@@ -16,11 +16,27 @@ class DroneShip extends EntityScript
       @action 'open'
       @wait(1000)
       @parallel(
-        @placeSquad ShipDrone,
+        @placeSquad DroneFlyer,
           amount: 5,
           delay: 500
           options:
-            shootOnSight: yes
+            startAt: 'ShipHatch1'
+            hatchReveal: 'ShipHatch1'
+            dx: 25
+            dy: 20
+            path: [
+              [.156, .5]
+              [.5, .833]
+              [.86, .52]
+
+              [.5, .21]
+              [.156, .5]
+              [.5, .833]
+              [.86, .52]
+
+              [-20, .21]
+            ]
+
         @sequence(
           @wait(3000)
           @action 'close'

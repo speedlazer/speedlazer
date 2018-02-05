@@ -27,6 +27,7 @@ class MediumDrone extends EntityScript
       )
       @endDecoy()
     )
+
 class CrewShooters extends MediumDrone
 
   spawn: ->

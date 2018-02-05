@@ -10,10 +10,9 @@ class ArmyDrone extends EntityScript
       @deathDecoy()
       => @entity.removeComponent('ShootOnSight')
       @addTinyScreenshake()
-      @choose(
+      @chance(.8,
         @smallExplosion(juice: @juice, offsetX: 20, offsetY: 20)
-        @smallExplosion(juice: @juice, offsetX: 20, offsetY: 20)
-        @blast(@location(), damage: 1, radius: 40)
+        @blast(@location(), damage: 1, radius: 30)
       )
       @rotate 30, 60
       @smokePrint()
@@ -28,50 +27,9 @@ class ArmyDrone extends EntityScript
       @endDecoy()
     )
 
-class ShipDrone extends ArmyDrone
-
-  spawn: (options) ->
-    d = Crafty.e('Drone').drone(
-      x: Crafty.viewport.width * .15
-      y: Crafty.viewport.height * .9
-      defaultSpeed: options.speed ? 300
-      juice: options.juice
-    )
-    @juice = options.juice
-    if options.shootOnSight
-      d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 1000 + (Math.random() * 8000)
-        sightAngle: 250
-        projectile: (x, y, angle) =>
-          projectile = Crafty.e('Sphere, Hostile, Projectile')
-            .blink()
-            .attr(
-              damage: 1
-              speed: 500
-            )
-          projectile.shoot(x, y, angle)
-    d
-
-  execute: ->
-    @bindSequence 'Destroyed', @onKilled
-    @movePath [
-      [.15, .21]
-      [.156, .5]
-      [.5, .833]
-      [.86, .52]
-
-      [.5, .21]
-      [.156, .5]
-      [.5, .833]
-      [.86, .52]
-
-      [-20, .21]
-    ], rotate: no
-
 class DroneFlyer extends ArmyDrone
 
   spawn: (options) ->
-
     x = Crafty.viewport.width + 40
     x = options.x if options.x
     x = x * Crafty.viewport.width if x < 2 and x > -2
@@ -315,6 +273,5 @@ module.exports = {
   Shooter
   Stalker
   ScraperFlyer
-  ShipDrone
   DroneFlyer
 }
