@@ -55,22 +55,23 @@ class CameraCrew extends EntityScript
       @parallel(
         @placeSquad EjectionChute,
           amount: 3
-          delay: 400
+          delay: 800
           options:
             startAt: 'CameraCrew'
             dx: 32
-            dy: 10
+            dy: 20
 
-        @movePath [
-          [.6, .7]
-          [.5, .6]
-          [.5, .7]
-          [.7, .6]
-          [.8, .65]
-          [.9, .6]
-          [1.0, .65]
-          [1.2, .7]
-        ], rotate: no, speed: 150
+        @sequence(
+          @moveTo(x: .55)
+          @movePath [
+            [.65, .75]
+            [.6, .69]
+            [.9, .6]
+            [1.0, .65]
+            [1.2, .7]
+          ], rotate: no, speed: 150
+
+        )
       )
     )
 
@@ -97,7 +98,7 @@ class EjectionChute extends EntityScript
       x: x
       y: y
       z: 100
-      defaultSpeed: options.speed ? 50
+      defaultSpeed: options.speed ? 40
       juice: options.juice
     )
 
@@ -106,11 +107,11 @@ class EjectionChute extends EntityScript
       @sendToBackground(0.8, -102)
       @while(
         @moveTo(
-          y: 1.05
+          y: 1.15
         )
         @sequence(
-          @rotate(10, 350)
-          @rotate(-10, 350)
+          @rotate(10, 1200)
+          @rotate(-10, 1200)
         )
       )
     )

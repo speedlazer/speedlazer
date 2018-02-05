@@ -121,6 +121,15 @@ Core =
       pick = Math.floor(Math.random() * sequences.length)
       sequences[pick](sequence)
 
+  chance: (perc, sequences...) ->
+    (sequence) =>
+      @_verify(sequence)
+      if Math.random() < perc
+        sequences[0](sequence)
+      else
+        pick = Math.floor(Math.random() * (sequences.length - 1))
+        sequences[1 + pick](sequence)
+
   # Run a subscript, and continue after completion.
   # example:
   #
