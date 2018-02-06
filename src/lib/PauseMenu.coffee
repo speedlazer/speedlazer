@@ -41,7 +41,7 @@ class Game.PauseMenu
     ])
 
   _buildMenu: (@options) ->
-    menu = Crafty.e('2D, DOM, Color, PauseMenu')
+    menu = Crafty.e('2D, UILayerDOM, Color, PauseMenu')
       .attr(
         x: (.35 * Crafty.viewport.width),
         y: (Crafty.viewport.height * .3),
@@ -52,7 +52,7 @@ class Game.PauseMenu
       )
       .color('#000000')
 
-    title = Crafty.e('2D, DOM, Text')
+    title = Crafty.e('2D, UILayerDOM, Text')
       .attr(
         x: menu.x
         y: menu.y + 20
@@ -70,7 +70,7 @@ class Game.PauseMenu
     menu.attach title
 
     for o, i in @options
-      menuItem = Crafty.e('2D, DOM, Text')
+      menuItem = Crafty.e('2D, UILayerDOM, Text')
         .attr(
           x: menu.x + 60
           y: menu.y + 50 + (35 * i)
@@ -90,7 +90,7 @@ class Game.PauseMenu
 
     @selected = 0
 
-    @selectionChar = Crafty.e('2D, DOM, Text')
+    @selectionChar = Crafty.e('2D, UILayerDOM, Text')
       .attr(
         x: menu.x + 20
         w: 40
@@ -168,7 +168,7 @@ class Game.PauseMenu
         )
         .color('#000')
       for o, i in statList
-        stat = Crafty.e('2D, DOM, Text')
+        stat = Crafty.e('2D, UILayerDOM, Text')
           .attr(
             x: stats.x + 20
             y: stats.y + 85 + (20 * i)

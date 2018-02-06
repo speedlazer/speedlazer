@@ -29,6 +29,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Bullet patterns of boss, it didn't fit with the character
 - Powerups, does not add anything with new weapon settings
 
+### Fixed
+- Issue where chapter titles where shown over the pause menu
+
 ## [1.2.0] - 2017-12-12
 ### Added
 - Added a graphical ship for intro section
