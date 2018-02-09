@@ -23,7 +23,7 @@ class HeliAttack extends EntityScript
       burstCooldown: 1500
       burstAmount: 6
       angle: -15
-      angleDeviation: 10
+      angleDeviation: 5
       aim: 45
       cooldown: 50
       projectile: (x, y, angle) =>

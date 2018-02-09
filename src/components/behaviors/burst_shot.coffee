@@ -33,10 +33,10 @@ Crafty.c 'BurstShot',
       aimAngle *= 180 / Math.PI
 
     angle = aimAngle
-    if angle > (@shootConfig.angle + @shootConfig.aim)
-      angle = @shootConfig.angle + @shootConfig.aim
-    else if angle < (@shootConfig.angle - @shootConfig.aim)
-      angle = @shootConfig.angle - @shootConfig.aim
+    if angle > (@shootConfig.angle + @shootConfig.aim + @rotation)
+      angle = @shootConfig.angle + @shootConfig.aim + @rotation
+    else if angle < (@shootConfig.angle - @shootConfig.aim + @rotation)
+      angle = @shootConfig.angle - @shootConfig.aim + @rotation
 
     # Add random deviation
     angle = angle - (@shootConfig.angleDeviation // 2) + (Math.random() * @shootConfig.angleDeviation)

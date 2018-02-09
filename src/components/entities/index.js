@@ -1,5 +1,6 @@
 import "./BattleShip";
 import "./Blast";
+import "./BulletCannon";
 import "./CameraCrew";
 import "./CarrierHatch";
 import "./Debris";

@@ -3,6 +3,7 @@
 { Swirler, Shooter } = require('./stage1/army_drone')
 { Stage1BossRocketStrike } = require('./stage1/stage1boss')
 ShipBoss = require('./benchmark/ship_boss').default
+DroneShip   = require('./stage1/drone_ship').default
 
 class SolidTest extends EntityScript
   spawn: ->
@@ -39,6 +40,8 @@ class Test extends LazerScript
       @setScenery 'Ocean'
       #@panCamera(y: 120, 0)
       @async @runScript(Morning, speed: 1)
+      @placeSquad DroneShip
+
       @wait 1500
       #@panCamera(y: -120, 4000)
       #@wait 1500

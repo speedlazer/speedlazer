@@ -66,6 +66,14 @@ Crafty.c 'DroneShip',
     )
     @attach(@hatch)
 
+    @attach Crafty.e('2D, TurretPlace').attr(
+      x: @x + 370
+      y: @y + 84
+      z: 15
+      w: 15
+      h: 2
+    )
+
   open: ->
     @hatch.open()
 
