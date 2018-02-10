@@ -30,7 +30,7 @@ Crafty.c("BezierMove", {
     const dx = point.x - this.x;
     const dy = point.y - this.y;
     if (this.updateMovementVisuals) {
-      const rotation = 0;
+      const rotation = this.bezierPath.rotationAt(pt);
       this.updateMovementVisuals(rotation, dx, dy, fd.dt);
     }
     this.shift(dx, dy);

@@ -8,7 +8,7 @@ class ArmyDrone extends EntityScript
     @entVy = @entity.vy
     @sequence(
       @deathDecoy()
-      => @entity.removeComponent('ShootOnSight')
+      => @entity.removeComponent('ShootOnSight') if @entity.has('ShootOnSight')
       @addTinyScreenshake()
       @chance(.8,
         @smallExplosion(juice: @juice, offsetX: 20, offsetY: 20)
@@ -65,7 +65,7 @@ class DroneFlyer extends ArmyDrone
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @movePath(@options.path, rotate: no) #, debug: yes)
+    @movePath(@options.path, rotate: no, debug: (@options.index == 0) && @options.debug)
 
 class Swirler extends ArmyDrone
 

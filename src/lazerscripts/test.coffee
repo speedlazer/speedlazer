@@ -44,9 +44,11 @@ class Test extends LazerScript
 
      @wait 1500
      @placeSquad DroneFlyer,
-        amount: 1
-        delay: 250
+        amount: 4
+        delay: 500
         options:
+          speed: 200
+          debug: true
           path: [
             [.9, .6]
             [.25, .4]

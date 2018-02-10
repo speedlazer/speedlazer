@@ -166,15 +166,22 @@ export class BezierPath {
     const localT = (t - c.min) / (c.max - c.min);
     return c.curve.get(localT);
   }
+
+  rotationAt(t) {
+    const c = this.curves.find(c => c.min <= t && c.max >= t);
+    const localT = (t - c.min) / (c.max - c.min);
+    const vector = c.curve.derivative(localT);
+    const atan = Math.atan2(vector.y, vector.x);
+    return atan * 180 / Math.PI;
+  }
 }
 
-export const getPathId = path =>
-  path.map(p => `${p.x}|${p.y}|`).join()
+export const getPathId = path => path.map(p => `${p.x}|${p.y}|`).join();
 
-const pathStorage = {}
+const pathStorage = {};
 
 export const getBezierPath = normalizedPath => {
   const id = getPathId(normalizedPath);
   pathStorage[id] = pathStorage[id] || new BezierPath(normalizedPath);
   return pathStorage[id];
-}
+};
