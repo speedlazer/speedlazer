@@ -4,6 +4,8 @@ isObject = require('lodash/isObject')
 extend = require('lodash/extend')
 clone = require('lodash/clone')
 
+{ normalizeInputPath, getBezierPath } = require('src/lib/BezierPath2')
+
 # Actions to control an entity in the game
 #
 # - bindSequence
@@ -116,6 +118,61 @@ Entity =
     (sequence) =>
       @_verify(sequence)
       if not @enemy.alive and not @decoyingEntity?
+        return Promise.resolve()
+
+      settings = defaults(settings,
+        rotate: yes
+        skip: 0
+        speed: @entity.defaultSpeed
+        continuePath: no
+        easing: 'linear'
+        autoAccellerate: yes
+        debug: no
+      )
+
+      path = [].concat inputPath
+      path.unshift [
+        @entity.x
+        @entity.y
+      ]
+
+      normalized = normalizeInputPath(path)
+      bp = getBezierPath(normalized)
+
+      debugPoints = []
+      if settings.debug
+        debugPoints = debugPoints.concat normalized.map((point) ->
+          Crafty.e("2D, DOM, Color, MovePathDebug")
+            .attr({
+              x: point.x,
+              y: point.y,
+              w: 5,
+              h: 5,
+              z: -50
+            }).color("#FFFFFF")
+        )
+        debugPoints = debugPoints.concat bp.getLUT(50).map((point) ->
+          Crafty.e("2D, DOM, Color, MovePathDebug")
+            .attr({
+              x: point.x,
+              y: point.y,
+              w: 3,
+              h: 3,
+              z: -50
+            }).color("#00FF00")
+        )
+
+      new Promise((resolve) =>
+        @entity.addComponent("BezierMove")
+        @entity.one('BezierMoveEnd', resolve)
+        @entity.bezierMove(bp, settings)
+      ).then ->
+        debugPoints.forEach((p) -> p.destroy())
+
+  movePathOld: (inputPath, settings = {}) ->
+    (sequence) =>
+      @_verify(sequence)
+      if not @enemy.alive and not @decoyingEntity?
         return WhenJS.resolve()
       settings = defaults(settings,
         rotate: yes
@@ -158,6 +215,7 @@ Entity =
         pp = pn
         { x, y }
       )
+
       duration = (d / settings.speed) * 1000
 
       defer = WhenJS.defer()

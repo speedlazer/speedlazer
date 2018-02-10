@@ -65,8 +65,7 @@ class DroneFlyer extends ArmyDrone
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @movePath(@options.path, rotate: no)
-
+    @movePath(@options.path, rotate: no) #, debug: yes)
 
 class Swirler extends ArmyDrone
 

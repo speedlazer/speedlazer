@@ -7,6 +7,7 @@ import "./shaders";
 import "./utils";
 import "./weapons";
 
+import "./BezierMove";
 import "./BigText";
 import "./DebugInfo";
 import "./Enemy";
