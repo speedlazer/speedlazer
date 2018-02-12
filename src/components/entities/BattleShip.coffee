@@ -259,6 +259,9 @@ Crafty.c 'FirstShipCabin', {
       (e) => @onExplosionHit(e)
       => @onProjectileHitEnd()
     )
+
+    @hitParts = [@cabinParts..., @antenna, @radar]
+
     @enemy({
       pointsLocation: {
         x: 3 * 32
@@ -266,8 +269,12 @@ Crafty.c 'FirstShipCabin', {
       }
     })
 
+  linkHatch: (linkedHatch) ->
+    @hitParts = @hitParts.concat(linkedHatch.hitFlashParts())
+    this
+
   applyCabinHitFlash: (onOff) ->
-    [@cabinParts..., @antenna, @radar].forEach((part) ->
+    @hitParts.forEach((part) ->
       if onOff
         part.attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
       else

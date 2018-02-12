@@ -14,11 +14,15 @@ class Cabin1Inactive extends EntityScript
 class Cabin1Active extends EntityScript
   spawn: (options) ->
     item = Crafty('FirstShipCabin').get(0)
+
+    hatch = Crafty('ShipHatch1')
     if item and item.health > 10
+      item.linkHatch(hatch)
       item.reveal()
       return item
     Crafty.e('FirstShipCabin, KeepAlive')
       .shipCabin()
+      .linkHatch(hatch)
       .sendToBackground(1.0, -8)
 
   onKilled: ->
@@ -43,11 +47,14 @@ class Cabin2Inactive extends EntityScript
 class Cabin2Active extends EntityScript
   spawn: (options) ->
     item = Crafty('SecondShipCabin').get(0)
+    hatch = Crafty('ShipHatch2')
     if item and item.health > 10
       item.reveal()
+      item.linkHatch(hatch)
       return item
     Crafty.e('SecondShipCabin, KeepAlive')
       .shipCabin()
+      .linkHatch(hatch)
       .sendToBackground(1.0, -8)
 
   onKilled: ->
