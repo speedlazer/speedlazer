@@ -22,6 +22,8 @@ Crafty.c 'Helicopter',
     @origin 'center'
     if @rotors is on
       @animate 'fly', -1
+    else
+      @sprite(12, 8)
     #@colorOverride '#808080', 'partial'
 
     @enemy()
