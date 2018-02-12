@@ -32,31 +32,31 @@ Crafty.c 'DroneShip',
     @attach Crafty.e("2D, WebGL, aircraftCarrierBottomFlat").attr(
       x: @x + 6 * 32
       y: @y + 64
-      z: -13
+      z: -15
     )
 
     @attach Crafty.e("2D, WebGL, aircraftCarrierTopFlat").attr(
       x: @x + 6 * 32
       y: @y
-      z: -13
+      z: -15
     )
 
     @attach Crafty.e("2D, WebGL, aircraftCarrierBottomSpace").attr(
       x: @x + 10 * 32
       y: @y + 64
-      z: -13
+      z: -15
     )
 
     @attach Crafty.e("2D, WebGL, aircraftCarrierTopFlat").attr(
       x: @x + 10 * 32
       y: @y
-      z: -13
+      z: -15
     )
 
     end = Crafty.e('2D, WebGL, aircraftCarrierEnd').attr(
       x: @x + 14 * 32
       y: @y
-      z: -13
+      z: -15
     )
     @attach(end)
 

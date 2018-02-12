@@ -357,6 +357,7 @@ class CityScenery extends LevelScenery
           aircraftCarrierCabinStart: [7, 37, 1, 6]
           aircraftCarrierRadar: [26, 38, 2, 2]
           aircraftCarrierAntenna: [29, 38, 2, 3]
+          aircraftCarrierWires: [25, 38, 1, 2]
           boxes: [28, 39, 1, 1]
           boxesFalling: [28, 38, 1, 1]
 
@@ -419,7 +420,7 @@ levelGenerator.defineBlock class extends CityScenery
       @add(((i * 4)*32) - 64, @level.visibleHeight - 330 + (7*32), bottom)
 
     for i in [0..5]
-      top = Crafty.e('2D, WebGL, aircraftCarrierTopFlat').attr(z: -13)
+      top = Crafty.e('2D, WebGL, aircraftCarrierTopFlat').attr(z: -15)
       @add(((i * 4)*32) - 64, @level.visibleHeight - 330 + (5*32), top)
 
     topCrop = 2

@@ -164,7 +164,7 @@ Crafty.c 'ShipCabin', {
     part = Crafty.e("2D, WebGL, aircraftCarrier#{name}").attr(
       x: @x + x
       y: dy + y
-      z: -13
+      z: -15
     )
 
     part.flip('X') if name in flip
