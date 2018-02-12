@@ -4,7 +4,7 @@ isObject = require('lodash/isObject')
 extend = require('lodash/extend')
 clone = require('lodash/clone')
 
-{ normalizeInputPath, getBezierPath } = require('src/lib/BezierPath2')
+{ normalizeInputPath, getBezierPath } = require('src/lib/BezierPath')
 
 # Actions to control an entity in the game
 #
@@ -168,70 +168,6 @@ Entity =
         @entity.bezierMove(bp, settings)
       ).then ->
         debugPoints.forEach((p) -> p.destroy())
-
-  movePathOld: (inputPath, settings = {}) ->
-    (sequence) =>
-      @_verify(sequence)
-      if not @enemy.alive and not @decoyingEntity?
-        return WhenJS.resolve()
-      settings = defaults(settings,
-        rotate: yes
-        skip: 0
-        speed: @entity.defaultSpeed
-        continuePath: no
-        easing: 'linear'
-        autoAccellerate: yes
-      )
-      path = [].concat inputPath
-
-      path.unshift [
-        @entity.x
-        @entity.y
-      ]
-
-      pp = path[0]
-
-      d = 0
-      bezierPath = (for p in path
-        if res = p?()
-          x = res.x
-          y = res.y
-        else
-          [x, y] = p
-
-        if (-1 < x < 2)
-          x *= Crafty.viewport.width
-
-        if (-1 < y < 2)
-          y *= Crafty.viewport.height
-
-        pn = [x, y]
-
-        [px, py] = pp
-        a = Math.abs(x - px)
-        b = Math.abs(y - py)
-        c = Math.sqrt(a**2 + b**2)
-        d += c
-        pp = pn
-        { x, y }
-      )
-
-      duration = (d / settings.speed) * 1000
-
-      defer = WhenJS.defer()
-      @entity.choreography(
-        [
-          type: 'viewportBezier'
-          rotation: settings.rotate
-          continuePath: settings.continuePath
-          path: bezierPath
-          duration: duration
-          easingFn: settings.easing
-        ], skip: settings.skip
-      ).one('ChoreographyEnd', ->
-        defer.resolve()
-      )
-      defer.promise
 
   _isFloat: (n) ->
     n is +n and n isnt (n|0)
