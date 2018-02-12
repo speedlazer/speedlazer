@@ -1,6 +1,6 @@
 { LazerScript, EntityScript } = require('src/lib/LazerScript')
 { StartOfDawn, Morning } = require('./stage1/sunrise')
-{ Swirler, Shooter } = require('./stage1/army_drone')
+{ DroneFlyer } = require('./stage1/army_drone')
 { Stage1BossRocketStrike } = require('./stage1/stage1boss')
 ShipBoss = require('./benchmark/ship_boss').default
 DroneShip   = require('./stage1/drone_ship').default
@@ -40,61 +40,73 @@ class Test extends LazerScript
       @setScenery 'Ocean'
       #@panCamera(y: 120, 0)
       @async @runScript(Morning, speed: 1)
-      @placeSquad DroneShip
+      #@placeSquad DroneShip
 
-      @wait 1500
+     @wait 1500
+     @placeSquad DroneFlyer,
+        amount: 4
+        delay: 500
+        options:
+          speed: 200
+          debug: true
+          path: [
+            [.9, .6]
+            [.25, .4]
+            [.16, -0.1]
+          ]
+
       #@panCamera(y: -120, 4000)
       #@wait 1500
       #@placeSquad SolidTest
-      @setScenery 'CoastStart'
+      #@setScenery 'CoastStart'
       #@gainHeight 20, duration: 1000
       #@gainHeight 60, duration: 4000
-      @placeSquad ShipBoss,
-        options:
-          speed: 100
+      #@placeSquad ShipBoss,
+        #options:
+          #speed: 100
 
       #@wait 10000
       #@gainHeight -80, duration: 4000
-      @repeat(8, @waitingRocketStrike())
-      @repeat(8, @sequence(
-        @placeSquad(Swirler, {
-          amount: 4,
-          delay: 250,
-          options: {
-            shootOnSight: yes
-          }
-        }),
-        @wait(2000)
-      ))
-      @repeat(8, @sequence(
-        @placeSquad(Shooter, {
-          amount: 4,
-          delay: 250,
-          options: {
-            shootOnSight: yes
-          }
-        }),
-        @wait(2000)
-      ))
-      @repeat(8, @sequence(
-        @parallel(
-          @placeSquad(Shooter, {
-            amount: 4,
-            delay: 250,
-            options: {
-              shootOnSight: yes
-            }
-          })
-          @placeSquad(Swirler, {
-            amount: 4,
-            delay: 250,
-            options: {
-              shootOnSight: yes
-            }
-          })
-        )
-        @wait(2000)
-      ))
+      #@repeat(8, @waitingRocketStrike())
+      #@repeat(8, @sequence(
+        #@placeSquad(Swirler, {
+          #amount: 4,
+          #delay: 250,
+          #options: {
+            #shootOnSight: yes
+          #}
+        #}),
+        #@wait(2000)
+      #))
+      #@repeat(8, @sequence(
+        #@placeSquad(Shooter, {
+          #amount: 4,
+          #delay: 250,
+          #options: {
+            #shootOnSight: yes
+          #}
+        #}),
+        #@wait(2000)
+      #))
+      #@repeat(8, @sequence(
+        #@parallel(
+          #@placeSquad(Shooter, {
+            #amount: 4,
+            #delay: 250,
+            #options: {
+              #shootOnSight: yes
+            #}
+          #})
+          #@placeSquad(Swirler, {
+            #amount: 4,
+            #delay: 250,
+            #options: {
+              #shootOnSight: yes
+            #}
+          #})
+        #)
+        #@wait(2000)
+      #))
 
     )
 

@@ -4,6 +4,8 @@ isObject = require('lodash/isObject')
 extend = require('lodash/extend')
 clone = require('lodash/clone')
 
+{ normalizeInputPath, getBezierPath } = require('src/lib/BezierPath')
+
 # Actions to control an entity in the game
 #
 # - bindSequence
@@ -116,7 +118,8 @@ Entity =
     (sequence) =>
       @_verify(sequence)
       if not @enemy.alive and not @decoyingEntity?
-        return WhenJS.resolve()
+        return Promise.resolve()
+
       settings = defaults(settings,
         rotate: yes
         skip: 0
@@ -124,56 +127,47 @@ Entity =
         continuePath: no
         easing: 'linear'
         autoAccellerate: yes
+        debug: no
       )
-      path = [].concat inputPath
 
+      path = [].concat inputPath
       path.unshift [
         @entity.x
         @entity.y
       ]
 
-      pp = path[0]
+      normalized = normalizeInputPath(path)
+      bp = getBezierPath(normalized)
 
-      d = 0
-      bezierPath = (for p in path
-        if res = p?()
-          x = res.x
-          y = res.y
-        else
-          [x, y] = p
+      debugPoints = []
+      if settings.debug
+        debugPoints = debugPoints.concat normalized.map((point) ->
+          Crafty.e("2D, DOM, Color, MovePathDebug")
+            .attr({
+              x: point.x,
+              y: point.y,
+              w: 5,
+              h: 5,
+              z: -50
+            }).color("#FFFFFF")
+        )
+        debugPoints = debugPoints.concat bp.getLUT(50).map((point) ->
+          Crafty.e("2D, DOM, Color, MovePathDebug")
+            .attr({
+              x: point.x,
+              y: point.y,
+              w: 3,
+              h: 3,
+              z: -50
+            }).color("#00FF00")
+        )
 
-        if (-1 < x < 2)
-          x *= Crafty.viewport.width
-
-        if (-1 < y < 2)
-          y *= Crafty.viewport.height
-
-        pn = [x, y]
-
-        [px, py] = pp
-        a = Math.abs(x - px)
-        b = Math.abs(y - py)
-        c = Math.sqrt(a**2 + b**2)
-        d += c
-        pp = pn
-        { x, y }
-      )
-      duration = (d / settings.speed) * 1000
-
-      defer = WhenJS.defer()
-      @entity.choreography(
-        [
-          type: 'viewportBezier'
-          rotation: settings.rotate
-          continuePath: settings.continuePath
-          path: bezierPath
-          duration: duration
-          easingFn: settings.easing
-        ], skip: settings.skip
-      ).one('ChoreographyEnd', ->
-        defer.resolve()
-      )
-      defer.promise
+      new Promise((resolve) =>
+        @entity.addComponent("BezierMove")
+        @entity.one('BezierMoveEnd', resolve)
+        @entity.bezierMove(bp, settings)
+      ).then ->
+        debugPoints.forEach((p) -> p.destroy())
 
   _isFloat: (n) ->
     n is +n and n isnt (n|0)

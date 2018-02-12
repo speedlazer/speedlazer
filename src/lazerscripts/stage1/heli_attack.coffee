@@ -6,7 +6,6 @@ class HeliAttack extends EntityScript
     @loadAssets('helicopter')
 
   spawn: (options) ->
-    @dir = options.from ? 'top'
     @ground = options.ground ? 660
     @corpseKeep = options.corpseKeep ? 10000
 
@@ -44,38 +43,12 @@ class HeliAttack extends EntityScript
     @bindSequence 'Destroyed', @onKilled
 
     @while(
-      @flightPath()
+      @movePath(@options.path, rotate: no) #, debug: yes)
       @sequence(
         @fireRockets()
         @wait 4000
       )
     )
-
-  flightPath: ->
-    if @dir is 'top'
-      @movePath [
-        [.9, .4]
-        [.7, .25]
-        [.65, .2]
-        [.4, .6]
-        [.6, .7]
-        [.8, .5]
-        [.4, .8]
-        [.2, .3]
-        [-.2, .5]
-      ]
-    else
-      @movePath [
-        [.9, .6]
-        [.7, .75]
-        [.65, .8]
-        [.4, .4]
-        [.6, .3]
-        [.8, .5]
-        [.4, .2]
-        [.2, .7]
-        [-.2, .5]
-      ]
 
   onKilled: ->
     @leaveAnimation @sequence(

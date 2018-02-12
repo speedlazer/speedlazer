@@ -1,6 +1,7 @@
 extend = require('lodash/extend')
 { LazerScript } = require('src/lib/LazerScript')
-{ Swirler, Shooter, DroneFlyer, Stalker } = require('./stage1/army_drone')
+#{ Swirler, Shooter, DroneFlyer, Stalker } = require('./stage1/army_drone')
+{ DroneFlyer } = require('./stage1/army_drone')
 { CrewShooters } = require('./stage1/takeover_drone')
 { HeliAttack } = require('./stage1/heli_attack')
 { Stage1BossRocketStrike, Stage1BossStage1 } = require('./stage1/stage1boss')
@@ -43,10 +44,13 @@ class Stage1 extends LazerScript
       @introText()
       @sunRise(0)
       @tutorial()
+
       #@setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
+
       @droneTakeover()
       @sunRise(1)
       @oceanFighting()
+
       #@setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
       #@midStageBossFight()
       #@cityBay()
@@ -106,19 +110,19 @@ class Stage1 extends LazerScript
               [-.1, .7]
             ]
       )
-
-      @say('General', 'Great job!', noise: 'low')
-
-      @placeSquad DroneFlyer,
-        amount: 6
-        delay: 250
-        options:
-          path: [
-            [.5, .625]
-            [.2, .5]
-            [.53, .21]
-            [.8, -.02]
-          ]
+      @parallel(
+        @say('General', 'Great job!', noise: 'low')
+        @placeSquad DroneFlyer,
+          amount: 6
+          delay: 250
+          options:
+            path: [
+              [.5, .625]
+              [.2, .5]
+              [.53, .21]
+              [.8, -.02]
+            ]
+      )
     )
 
   droneTakeover: ->
@@ -179,7 +183,19 @@ class Stage1 extends LazerScript
         )
       )
       @parallel(
-        @placeSquad HeliAttack
+        @placeSquad HeliAttack,
+          options:
+            path: [
+              [.9, .4]
+              [.7, .25]
+              [.65, .2]
+              [.4, .6]
+              [.6, .7]
+              [.8, .5]
+              [.4, .8]
+              [.2, .3]
+              [-.2, .5]
+            ]
         @gainHeight(-150, duration: 4000)
       )
       @wait 5000
@@ -188,6 +204,20 @@ class Stage1 extends LazerScript
         @burstFlight(.4, 2000)
         @burstFlight(.6, 4000)
       )
+     @placeSquad DroneFlyer,
+      amount: 3
+      delay: 400
+      options:
+        x: -.2
+        y: 0.5
+        path: [
+          [.5, .8]
+          [.7, .8]
+          [.93, .69]
+          [.8, .5]
+          [.5, .5]
+          [-.1, .7]
+        ]
       @placeSquad DroneShip
 
       # temp end
@@ -351,21 +381,21 @@ class Stage1 extends LazerScript
       #@wait 200
     #)
 
-  swirlAttacks: ->
-    @attackWaves(
-      @parallel(
-        @repeat 2, @placeSquad Swirler,
-          amount: 4
-          delay: 250
-          options:
-            shootOnSight: yes
-        @repeat 2, @placeSquad Shooter,
-          amount: 4
-          delay: 250
-          options:
-            shootOnSight: yes
-      )
-    )
+  #swirlAttacks: ->
+    #@attackWaves(
+      #@parallel(
+        #@repeat 2, @placeSquad Swirler,
+          #amount: 4
+          #delay: 250
+          #options:
+            #shootOnSight: yes
+        #@repeat 2, @placeSquad Shooter,
+          #amount: 4
+          #delay: 250
+          #options:
+            #shootOnSight: yes
+      #)
+    #)
 
   #underWaterAttacks: ->
     #@sequence(
@@ -399,24 +429,24 @@ class Stage1 extends LazerScript
         #direction: options.direction
 
 
-  stalkerShootout: ->
-    @parallel(
-      @placeSquad Stalker
-      @attackWaves(
-        @parallel(
-          @placeSquad Shooter,
-            amount: 4
-            delay: 250
-            options:
-              shootOnSight: yes
-          @placeSquad Swirler,
-            amount: 4
-            delay: 250
-            options:
-              shootOnSight: yes
-        )
-      )
-    )
+  #stalkerShootout: ->
+    #@parallel(
+      #@placeSquad Stalker
+      #@attackWaves(
+        #@parallel(
+          #@placeSquad Shooter,
+            #amount: 4
+            #delay: 250
+            #options:
+              #shootOnSight: yes
+          #@placeSquad Swirler,
+            #amount: 4
+            #delay: 250
+            #options:
+              #shootOnSight: yes
+        #)
+      #)
+    #)
 
   checkpointStart: (scenery, step) ->
     @sequence(

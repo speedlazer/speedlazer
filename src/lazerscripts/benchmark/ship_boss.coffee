@@ -1,5 +1,5 @@
 { EntityScript } = require('src/lib/LazerScript')
-{ Shooter } = require('../stage1/army_drone')
+{ DroneFlyer } = require('../stage1/army_drone')
 
 
 class Cabin1Inactive extends EntityScript
@@ -83,7 +83,7 @@ class ShipBoss extends EntityScript
         @sequence(
           @action 'open1'
           @wait 1000
-          @placeSquad Shooter,
+          @placeSquad DroneFlyer,
             amount: 5,
             delay: 400
             options: {
@@ -91,6 +91,20 @@ class ShipBoss extends EntityScript
               hatchReveal: 'ShipHatch1'
               dx: 25
               dy: 20
+              debug: true
+              path: [
+                [.5, .625]
+                [.2, .5]
+                [.53, .21]
+                [.90, .54]
+
+                [.5, .625]
+                [.2, .5]
+                [.53, .21]
+                [.90, .54]
+
+                [-20, .625]
+              ]
             }
         )
       )
@@ -103,7 +117,7 @@ class ShipBoss extends EntityScript
       @wait 1000
       @parallel(
         @moveTo(x: 0.5)
-        @placeSquad Shooter,
+        @placeSquad DroneFlyer,
           amount: 5,
           delay: 400
           options: {
@@ -111,6 +125,20 @@ class ShipBoss extends EntityScript
             hatchReveal: 'ShipHatch2'
             dx: 25
             dy: 20
+            debug: true
+            path: [
+              [.5, .625]
+              [.2, .5]
+              [.53, .21]
+              [.90, .54]
+
+              [.5, .625]
+              [.2, .5]
+              [.53, .21]
+              [.90, .54]
+
+              [-20, .625]
+            ]
           }
       )
       @placeSquad Cabin2Active,

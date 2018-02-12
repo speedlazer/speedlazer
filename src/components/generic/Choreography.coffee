@@ -1,7 +1,6 @@
 defaults = require('lodash/defaults')
 clone = require('lodash/clone')
 extend = require('lodash/extend')
-BezierPath = require('src/lib/BezierPath').default
 
 # TODO: Document
 #
@@ -23,7 +22,6 @@ BezierPath = require('src/lib/BezierPath').default
 # - viewportBezier
 #
 # The rest of the app uses the following: (entity script)
-# - viewportBezier (non-chained)
 # - viewport (non-chained)
 #
 #
@@ -34,7 +32,6 @@ Crafty.c 'Choreography',
       delay: @_executeDelay
       linear: @_executeLinear
       viewport: @_executeMoveIntoViewport
-      viewportBezier: @_executeViewportBezier
 
   remove: ->
     @unbind('GameLoop', @_choreographyTick)
@@ -167,64 +164,6 @@ Crafty.c 'Choreography',
         angle = undefined
 
       @updateMovementVisuals(angle, dx, dy, dt)
-
-    @shift(dx, dy)
-
-  _executeViewportBezier: (v, prevv, dt) ->
-    bp = new BezierPath
-    unless @_currentPart.bPath?
-      p = @_currentPart.path
-      if @_lastBezierPathPoint? and @_currentPart.continuePath
-        p.unshift {
-          x: @_lastBezierPathPoint.x
-          y: @_lastBezierPathPoint.y
-        }
-      @_currentPart.bPath = bp.buildPathFrom p
-
-      if @_lastBezierPathPoint? and @_currentPart.continuePath
-        firstCurve = @_currentPart.bPath.curves.shift()
-        # We need to recalculate the distance. If we would just
-        # subtract the distance of the first curve of the total,
-        # somehow JS manages to be off at 10 decimals at the fragment.
-        # ... Which breaks the determining of points at the curve
-        recalcDist = 0.0
-        recalcDist += c.distance for c in @_currentPart.bPath.curves
-        @_currentPart.bPath.distance = recalcDist
-        @_lastBezierPathPoint = null
-
-      # We always remember the single-last point for bending of the next curve,
-      # if the next curve has `continuePath` enabled.
-      #
-      #     ,--B-,.
-      #   ,`       `';.
-      #  :             `C
-      # A
-      #
-      # In the path from A to B, B is the last point. The new path is
-      # a continuation, so B is its starting point. To have the line
-      # from B to C bend in a natural manner, Point A must be evaluated
-      # as well for the bending of B towards C. So for the proper curve for
-      # B to C, we do not need the last point of the previous path (since it
-      # is the same as the first of the new path, but we actually need the
-      # single-last one. (length - 2)
-      @_lastBezierPathPoint = @_currentPart.path[@_currentPart.path.length - 2]
-
-    point = bp.pointOnPath(@_currentPart.bPath, v)
-    ppoint = bp.pointOnPath(@_currentPart.bPath, prevv)
-    @shiftedX ?= 0
-    dShiftX = @shiftedX
-    @shiftedX = Math.max(0, @shiftedX - .5)
-
-    dx = point.x - ppoint.x + (@shiftedX - dShiftX)
-    dy = point.y - ppoint.y
-
-    if @_currentPart.rotation
-      rotation = bp.angleOnPath(@_currentPart.bPath, v)
-
-    if @updateMovementVisuals?
-      @updateMovementVisuals(rotation, dx, dy, dt)
-    else
-      @rotation = rotation if rotation?
 
     @shift(dx, dy)
 

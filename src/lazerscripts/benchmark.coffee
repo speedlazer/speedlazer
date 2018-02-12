@@ -1,6 +1,6 @@
 { LazerScript } = require('src/lib/LazerScript')
 { StartOfDawn, DayBreak, Morning } = require('./stage1/sunrise')
-{ Swirler, Shooter, Stalker } = require('./stage1/army_drone')
+{ Swirler, DroneFlyer, Stalker } = require('./stage1/army_drone')
 ShipBoss = require('./benchmark/ship_boss').default
 
 class Benchmark extends LazerScript
@@ -58,11 +58,26 @@ class Benchmark extends LazerScript
 
   enemies: ->
     @parallel(
-      @placeSquad Shooter,
+      @placeSquad DroneFlyer,
         amount: 4
         delay: 250
         options:
           shootOnSight: yes
+          debug: true
+          speed: 320
+          path: [
+            [.5, .625]
+            [.2, .5]
+            [.53, .21]
+            [.90, .54]
+
+            [.5, .625]
+            [.2, .5]
+            [.53, .21]
+            [.90, .54]
+
+            [-20, .625]
+          ]
       @placeSquad Swirler,
         amount: 4
         delay: 250
