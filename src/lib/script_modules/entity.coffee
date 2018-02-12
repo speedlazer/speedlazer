@@ -51,9 +51,11 @@ Entity =
   # remove an entity from the current gameplay. This means it cannot shoot
   # the player, and the player cannot shoot the entity. This is useful
   # for moving entities behind scenery.
-  sendToBackground: (scale, z) ->
+  sendToBackground: (scale, z = null) ->
     (sequence) =>
       @_verify(sequence)
+      if z is null
+        z = @entity.z
       @entity.sendToBackground(scale, z)
 
   reveal: ->
