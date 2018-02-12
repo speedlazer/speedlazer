@@ -1,6 +1,5 @@
 extend = require('lodash/extend')
 { LazerScript } = require('src/lib/LazerScript')
-#{ Swirler, Shooter, DroneFlyer, Stalker } = require('./stage1/army_drone')
 { DroneFlyer } = require('./stage1/army_drone')
 { CrewShooters } = require('./stage1/takeover_drone')
 { HeliAttack } = require('./stage1/heli_attack')
@@ -50,6 +49,7 @@ class Stage1 extends LazerScript
       @droneTakeover()
       @sunRise(1)
       @oceanFighting()
+      @midStageBossFight()
 
       #@setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
       #@midStageBossFight()
@@ -204,24 +204,63 @@ class Stage1 extends LazerScript
         @burstFlight(.4, 2000)
         @burstFlight(.6, 4000)
       )
-     @placeSquad DroneFlyer,
-      amount: 3
-      delay: 400
-      options:
-        x: -.2
-        y: 0.5
-        path: [
-          [.5, .8]
-          [.7, .8]
-          [.93, .69]
-          [.8, .5]
-          [.5, .5]
-          [-.1, .7]
-        ]
+      @placeSquad DroneFlyer,
+        amount: 3
+        delay: 400
+        options:
+          x: -.2
+          y: 0.5
+          path: [
+            [.5, .8]
+            [.7, .8]
+            [.93, .69]
+            [.8, .5]
+            [.5, .5]
+            [-.1, .7]
+          ]
+      @placeSquad DroneFlyer,
+        amount: 3
+        delay: 400
+        options:
+          x: -.2
+          y: 0.2
+          path: [
+            [.5, .5]
+            [.7, .5]
+            [.93, .39]
+            [.8, .2]
+            [.5, .2]
+            [-.1, .4]
+          ]
       @placeSquad DroneShip
+      @parallel(
+        @placeSquad DroneFlyer,
+          amount: 3
+          delay: 400
+          options:
+            x: -.2
+            y: 0.2
+            path: [
+              [.5, .5]
+              [.7, .5]
+              [.93, .39]
+              [.8, .2]
+              [.5, .2]
+              [-.1, .4]
+            ]
+        @burstFlight(.6, 4000)
+      )
+      @placeSquad DroneFlyer,
+        amount: 6
+        delay: 400
+        options:
+          x: 0.9
+          y: -0.1
+          path: [
+            [.5, .5]
+            [-.1, .3]
+          ]
 
-      # temp end
-      @wait 2000
     )
 
   burstFlight: (height, delay) ->
@@ -268,7 +307,18 @@ class Stage1 extends LazerScript
       #)
     #)
 
-  #midStageBossFight: ->
+  midStageBossFight: ->
+    @sequence(
+      @setScenery('CoastStart')
+      @sunRise(2)
+      @checkpoint @checkpointStart('CoastStart', 2)
+      @say('John', 'Enemy Navy Mothership approaching! Stay alert!')
+      @placeSquad ShipBoss
+
+      # temp end
+      @wait 2000
+    )
+
     #@sequence(
       #@checkpoint @checkpointStart('CoastStart', 1)
       #@mineSwarm()

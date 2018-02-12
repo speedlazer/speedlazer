@@ -8,7 +8,7 @@ class DroneShip extends EntityScript
     Crafty.e('DroneShip').attr(
       x: Crafty.viewport.width + 180
       y: 430
-      defaultSpeed: options.speed ? 50
+      defaultSpeed: options.speed ? 150
     )
 
   execute: ->
@@ -17,7 +17,7 @@ class DroneShip extends EntityScript
         options:
           attach: 'TurretPlace'
       @parallel(
-        @moveTo(x: 0.4)
+        @moveTo(x: 0.6)
         @sequence(
           @wait(1000)
           @async @placeSquad TurretActive,
@@ -26,7 +26,6 @@ class DroneShip extends EntityScript
         )
       )
       @action 'open'
-      @wait(1000)
       @parallel(
         @placeSquad DroneFlyer,
           amount: 5,
@@ -49,7 +48,7 @@ class DroneShip extends EntityScript
               [-20, .21]
             ]
 
-        @moveTo(x: -1.25)
+        @moveTo(x: -0.75)
         @sequence(
           @wait(3000)
           @action 'close'

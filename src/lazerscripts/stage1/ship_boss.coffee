@@ -1,7 +1,7 @@
 { EntityScript } = require('src/lib/LazerScript')
 MineCannon = require('./mine_cannon').default
 { TurretInActive } = require('./turret')
-{ Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer } = require('../stage1/army_drone')
+{ Swirler, Shooter, Stalker, ScraperFlyer } = require('../stage1/army_drone')
 
 class Cabin1Inactive extends EntityScript
   spawn: (options) ->
@@ -159,13 +159,6 @@ class ShipBoss extends EntityScript
                   hatchReveal: 'ShipHatch2'
                   dx: 25
                   dy: 20
-                }
-              @placeSquad CrewShooters,
-                amount: 8,
-                delay: 200
-                options: {
-                  x: 115
-                  y: -900
                 }
 
               @placeSquad Shooter,

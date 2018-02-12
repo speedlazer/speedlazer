@@ -13,8 +13,8 @@ Crafty.c("CarrierHatch", {
     this.lid.crop(0, 2, 5 * 32, 32);
     this.lid.attr({
       z: -4,
-      x: this.x,
-      y: this.y
+      x: this.x + 1,
+      y: this.y - 2
     });
     this.attach(this.lid);
 
