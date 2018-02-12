@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 { DroneFlyer } = require('../stage1/army_drone')
-
+{ HeliInactive } = require('../stage1/heli_attack')
 
 class Cabin1Inactive extends EntityScript
   spawn: (options) ->
@@ -49,8 +49,8 @@ class Cabin2Active extends EntityScript
     item = Crafty('SecondShipCabin').get(0)
     hatch = Crafty('ShipHatch2')
     if item and item.health > 10
-      item.reveal()
       item.linkHatch(hatch)
+      item.reveal()
       return item
     Crafty.e('SecondShipCabin, KeepAlive')
       .shipCabin()
@@ -81,6 +81,11 @@ class ShipBoss extends EntityScript
       @placeSquad Cabin1Inactive,
         options:
           attach: 'Cabin1Place'
+      @placeSquad HeliInactive,
+        amount: 2
+        delay: 0
+        options:
+          attach: 'HeliPlace'
       @placeSquad Cabin2Inactive,
         options:
           attach: 'Cabin2Place'

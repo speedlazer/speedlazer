@@ -62,8 +62,23 @@ Crafty.c 'BattleShip',
     @attach(@hatch2)
 
     @attach Crafty.e('2D, Cabin1Place').attr(
-      x: @x + 416
+      x: @x + 316
       y: @y + 100
+      z: -8
+      w: 15
+      h: 2
+    )
+
+    @attach Crafty.e('2D, HeliPlace').attr(
+      x: @x + 546
+      y: @y - 32
+      z: -8
+      w: 15
+      h: 2
+    )
+    @attach Crafty.e('2D, HeliPlace').attr(
+      x: @x + 636
+      y: @y - 32
       z: -8
       w: 15
       h: 2
@@ -350,6 +365,9 @@ Crafty.c 'SecondShipCabin', {
       (e) => @onExplosionHit(e)
       => @onProjectileHitEnd()
     )
+
+    @hitParts = [@cabinParts..., @antenna1, @antenna2]
+
     @enemy({
       pointsLocation: {
         x: 3 * 32
@@ -357,8 +375,12 @@ Crafty.c 'SecondShipCabin', {
       }
     })
 
+  linkHatch: (linkedHatch) ->
+    @hitParts = @hitParts.concat(linkedHatch.hitFlashParts())
+    this
+
   applyCabinHitFlash: (onOff) ->
-    [@cabinParts..., @antenna1, @antenna2].forEach((part) ->
+    @hitParts.forEach((part) ->
       if onOff
         part.attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
       else

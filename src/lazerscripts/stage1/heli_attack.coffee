@@ -1,6 +1,29 @@
 { EntityScript } = require('src/lib/LazerScript')
 { Stage1BossRocket } = require('./stage1boss')
 
+class HeliInactive extends EntityScript
+  assets: ->
+    @loadAssets('helicopter')
+
+  spawn: (options) ->
+    Crafty.e('Helicopter, KeepAlive').attr(
+      x: Crafty.viewport.width + 40
+      y: .6 * Crafty.viewport.height
+      defaultSpeed: options.speed ? 40
+      weaponOrigin: [0, 25]
+    ).helicopter(
+      pointsOnHit: 25
+      pointsOnDestroy: 200
+      rotors: off
+    )
+
+  execute: ->
+    @sequence(
+      @invincible yes
+      @sendToBackground(0.8)
+    )
+
+
 class HeliAttack extends EntityScript
   assets: ->
     @loadAssets('helicopter')
@@ -17,6 +40,7 @@ class HeliAttack extends EntityScript
     ).helicopter(
       pointsOnHit: 25
       pointsOnDestroy: 200
+      rotors: on
     )
     p.addComponent('BurstShot').burstShot
       burstCooldown: 1500
@@ -130,5 +154,6 @@ class HeliAttack extends EntityScript
     )
 
 module.exports = {
-  HeliAttack
+  HeliAttack,
+  HeliInactive
 }

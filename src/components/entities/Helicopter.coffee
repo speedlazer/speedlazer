@@ -14,12 +14,14 @@ Crafty.c 'Helicopter',
       w: 128,
       h: 55,
       health: defaultHealth
+      rotors: on
       maxHealth: attr.health ? defaultHealth
       weaponOrigin: [5, 46]
     )
 
     @origin 'center'
-    @animate 'fly', -1
+    if @rotors is on
+      @animate 'fly', -1
     #@colorOverride '#808080', 'partial'
 
     @enemy()
