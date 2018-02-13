@@ -116,6 +116,7 @@ Crafty.c 'BattleShip',
       h: 2
     )
 
+
     @collision [
       20, 60,
       32 * width, 60,

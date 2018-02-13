@@ -84,4 +84,3 @@ Crafty.c 'DroneShip',
     switch action
       when 'open' then @open()
       when 'close' then @close()
-

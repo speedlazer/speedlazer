@@ -71,60 +71,75 @@ class ShipBoss extends EntityScript
     )
     # .setSealevel(@level.visibleHeight - 10)
 
-  execute: ->
-    # Start stage 1
+
+  placeEnemiesOnShip: ->
     @sequence(
+      @placeSquad Cabin1Inactive,
+        options:
+          attach: 'Cabin1Place'
+      @placeSquad Cabin2Inactive,
+        options:
+          attach: 'Cabin2Place'
+      @placeSquad TurretInActive, # Turret
+        amount: 2
+        delay: 0
+        options:
+          attach: 'TurretPlace'
+
+      # Add Heli's
+    )
+
+  executeStageOne: ->
+    @parallel(
+      @moveTo(x: 0.8)
+      @placeSquad MineCannon,
+        options:
+          attach: 'MineCannonPlace'
+    )
+
+  releaseDronesFromHatchOne: ->
+    @sequence(
+      @action 'open1'
+      @wait(500)
+
       @parallel(
-        @placeSquad MineCannon,
-          options:
-            amount: 1
-            attach: 'MineCannonPlace'
-        @placeSquad Cabin1Inactive,
-          options:
-            attach: 'Cabin1Place'
-        @placeSquad Cabin2Inactive,
-          options:
-            attach: 'Cabin2Place'
-        @placeSquad MineCannon,
-          options:
-            amount: 1
-            attach: 'MineCannonPlace'
-        @placeSquad TurretInActive, # Turret
+        @placeSquad Shooter,
+          amount: 5,
+          delay: 200
+          options: {
+            startAt: 'ShipHatch1'
+            hatchReveal: 'ShipHatch1'
+            dx: 25
+            dy: 20
+          }
+
+        @sequence(
+          @wait(1200)
+          @action 'close1'
+        )
+      )
+    )
+
+  executeStageTwo: ->
+    @sequence(
+      @moveTo(x: -0.1)
+      @while(
+        @placeSquad TurretActive,
           amount: 1
           delay: 0
           options:
             attach: 'TurretPlace'
-
-        @moveTo(x: 0.8)
+        @releaseDronesFromHatchOne()
       )
-      # If parallel has resolved, move on to the next block
-      #
-      # Start stage 2
+    )
 
-      @moveTo(x: -0.1)
-      @sequence(
-        @parallel(
-          # open hatch 1
-          @action 'open1'
-          @placeSquad Shooter,
-            amount: 10,
-            delay: 400
-            options: {
-              startAt: 'ShipHatch1'
-              hatchReveal: 'ShipHatch1'
-              dx: 25
-              dy: 20
-            }
-
-          # ACTIVATE TURRET HERE
-          @placeSquad TurretActive, # Turret
-            amount: 1
-            delay: 0
-            options:
-              attach: 'TurretPlace'
-
-        )
-
+  execute: ->
+    # Start stage 1
+    @sequence(
+      @placeEnemiesOnShip()
+      @executeStageOne()
+      @executeStageTwo()
+    )
 
         # @sequence(
         #   @placeSquad Swirler,
@@ -320,8 +335,8 @@ class ShipBoss extends EntityScript
         #   )
         #
         # )
-      )
-    )
+      # )
+  #   )
 
 module.exports =
   default: ShipBoss
