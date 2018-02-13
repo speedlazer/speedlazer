@@ -221,6 +221,12 @@ Entity =
       if settings.y? and (-2 < settings.y < 2)
         settings.y *= Crafty.viewport.height
 
+      if settings.dy?
+        settings.y = (settings.y || @entity.y) + settings.dy
+
+      if settings.dx?
+        settings.x = (settings.x || @entity.x) + settings.dx
+
       #if settings.positionType is 'absoluteY'
         #settings.y += Crafty.viewport.y
 
@@ -411,6 +417,13 @@ Entity =
         resolve()
       )
     )
+
+  detach: ->
+    (sequence) =>
+      @_verify(sequence)
+      if @entity._parent
+        @entity._parent.detach(@entity)
+
 
   # Rotate the entity a given set of degrees over an amount of time
   rotate: (degrees, duration) ->

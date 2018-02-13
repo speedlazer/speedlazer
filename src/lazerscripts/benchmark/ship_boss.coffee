@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 { DroneFlyer } = require('../stage1/army_drone')
-{ HeliInactive } = require('../stage1/heli_attack')
+{ HeliInactive, HeliFlyAway } = require('../stage1/heli_attack')
 
 class Cabin1Inactive extends EntityScript
   spawn: (options) ->
@@ -73,7 +73,7 @@ class ShipBoss extends EntityScript
     Crafty.e('BattleShip').attr(
       x: Crafty.viewport.width + 180
       y: 400
-      defaultSpeed: options.speed ? 45
+      defaultSpeed: options.speed ? 145
     )
 
   execute: ->
@@ -89,70 +89,48 @@ class ShipBoss extends EntityScript
       @placeSquad Cabin2Inactive,
         options:
           attach: 'Cabin2Place'
-      @moveTo(x: 0.4)
-      @parallel(
-        @moveTo(x: 0.01)
-        @sequence(
-          @action 'open1'
-          @wait 1000
-          @placeSquad DroneFlyer,
-            amount: 5,
-            delay: 400
-            options: {
-              startAt: 'ShipHatch1'
-              hatchReveal: 'ShipHatch1'
-              dx: 25
-              dy: 20
-              debug: true
-              path: [
-                [.5, .625]
-                [.2, .5]
-                [.53, .21]
-                [.90, .54]
+      @moveTo(x: -0.4)
+      #@parallel(
+        #@moveTo(x: 0.01)
+        #@sequence(
+          #@action 'open1'
+          #@wait 1000
+          #@placeSquad DroneFlyer,
+            #amount: 5,
+            #delay: 400
+            #options: {
+              #startAt: 'ShipHatch1'
+              #hatchReveal: 'ShipHatch1'
+              #dx: 25
+              #dy: 20
+              #debug: true
+              #path: [
+                #[.5, .625]
+                #[.2, .5]
+                #[.53, .21]
+                #[.90, .54]
 
-                [.5, .625]
-                [.2, .5]
-                [.53, .21]
-                [.90, .54]
+                #[.5, .625]
+                #[.2, .5]
+                #[.53, .21]
+                #[.90, .54]
 
-                [-20, .625]
-              ]
-            }
-        )
-      )
-      @placeSquad Cabin1Active,
-        options:
-          attach: 'Cabin1Place'
-      @moveTo(x: -.2)
+                #[-20, .625]
+              #]
+            #}
+        #)
+      #)
+      #@placeSquad Cabin1Active,
+        #options:
+          #attach: 'Cabin1Place'
+      #@moveTo(x: -.2)
       @action 'close1'
-      @action 'open2'
+      # Lift off helicopters
+      @placeSquad HeliFlyAway,
+        amount: 2
+        delay: 1000
+
       @wait 1000
-      @parallel(
-        @moveTo(x: 0.5)
-        @placeSquad DroneFlyer,
-          amount: 5,
-          delay: 400
-          options: {
-            startAt: 'ShipHatch2'
-            hatchReveal: 'ShipHatch2'
-            dx: 25
-            dy: 20
-            debug: true
-            path: [
-              [.5, .625]
-              [.2, .5]
-              [.53, .21]
-              [.90, .54]
-
-              [.5, .625]
-              [.2, .5]
-              [.53, .21]
-              [.90, .54]
-
-              [-20, .625]
-            ]
-          }
-      )
       @moveTo(x: -.2)
       @placeSquad Cabin2Active,
         options:

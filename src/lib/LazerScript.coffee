@@ -60,12 +60,12 @@ class EntityScript extends LazerScript
 
     @entity = @spawn(args...)
     if @options.attach
-      @attachPoint = Crafty(@options.attach).get(@options.index)
-      @attachPoint.attach(@entity)
+      attachPoint = Crafty(@options.attach).get(@options.index)
+      attachPoint.attach(@entity)
       @entity.attr({
-        x: @attachPoint.x
-        y: @attachPoint.y
-        z: @attachPoint.z
+        x: attachPoint.x
+        y: attachPoint.y
+        z: attachPoint.z
       })
 
     if isObject(args[0]) and args[0].identifier?

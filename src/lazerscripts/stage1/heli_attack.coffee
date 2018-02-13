@@ -6,23 +6,47 @@ class HeliInactive extends EntityScript
     @loadAssets('helicopter')
 
   spawn: (options) ->
-    Crafty.e('Helicopter, KeepAlive').attr(
+    Crafty.e('Helicopter, KeepAlive, ParkedHeli').attr(
       x: Crafty.viewport.width + 40
       y: .6 * Crafty.viewport.height
-      defaultSpeed: options.speed ? 40
+      defaultSpeed: options.speed ? 100
       weaponOrigin: [0, 25]
     ).helicopter(
-      pointsOnHit: 25
-      pointsOnDestroy: 200
       rotors: off
     )
 
   execute: ->
     @sequence(
+      @turnAround()
       @invincible yes
       @sendToBackground(0.8)
     )
 
+
+class HeliFlyAway extends EntityScript
+  assets: ->
+    @loadAssets('helicopter')
+
+  spawn: (options) ->
+    helicopter = Crafty('ParkedHeli').get(0)
+    helicopter.removeComponent('ParkedHeli')
+    helicopter.removeComponent('KeepAlive')
+    helicopter
+
+  execute: ->
+    @sequence(
+      @invincible yes
+      @sendToBackground(0.8)
+      @action 'start-rotors'
+      @wait 100
+      @moveTo(dy: -30 + (-30 * @options.index))
+      @rotate(5, 100)
+      @detach()
+      @parallel(
+        @sendToBackground(0.75, -50)
+        @moveTo(x: 1.02, { easing: "easeInQuad" })
+      )
+    )
 
 class HeliAttack extends EntityScript
   assets: ->
@@ -157,4 +181,5 @@ class HeliAttack extends EntityScript
 module.exports = {
   HeliAttack,
   HeliInactive
+  HeliFlyAway
 }

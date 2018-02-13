@@ -40,6 +40,14 @@ Crafty.c 'Helicopter',
 
     this
 
+  execute: (action) ->
+    switch action
+      when 'start-rotors'
+        @animate 'fly', -1
+      when 'stop-rotors'
+        @pauseAnimation()
+        @sprite(12, 8)
+
   updatedHealth: ->
     healthPerc = @health / @maxHealth
     if healthPerc < .01
