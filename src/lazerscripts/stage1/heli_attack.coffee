@@ -50,7 +50,7 @@ class HeliAttack extends EntityScript
       aim: 45
       cooldown: 50
       projectile: (x, y, angle) =>
-        projectile = Crafty.e('Projectile, sphere1, Hostile')
+        projectile = Crafty.e('Projectile, sphere1, Hostile, Collision')
           .crop(6, 21, 18, 7)
           .collision(0, 0, 20, 0, 20, 5, 0, 5)
           .flip()
