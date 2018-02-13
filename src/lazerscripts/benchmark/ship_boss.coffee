@@ -153,10 +153,10 @@ class ShipBoss extends EntityScript
             ]
           }
       )
+      @moveTo(x: -.2)
       @placeSquad Cabin2Active,
         options:
           attach: 'Cabin2Place'
-      @wait(15000)
       @moveTo(x: -1.5)
       @moveTo(x: -0.8)
       @moveTo(x: -1.9)

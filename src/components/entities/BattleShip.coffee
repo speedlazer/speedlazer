@@ -62,7 +62,7 @@ Crafty.c 'BattleShip',
     @attach(@hatch2)
 
     @attach Crafty.e('2D, Cabin1Place').attr(
-      x: @x + 316
+      x: @x + 416
       y: @y + 100
       z: -8
       w: 15
@@ -70,14 +70,14 @@ Crafty.c 'BattleShip',
     )
 
     @attach Crafty.e('2D, HeliPlace').attr(
-      x: @x + 546
+      x: @x + 646
       y: @y - 32
       z: -8
       w: 15
       h: 2
     )
     @attach Crafty.e('2D, HeliPlace').attr(
-      x: @x + 636
+      x: @x + 756
       y: @y - 32
       z: -8
       w: 15
@@ -85,7 +85,7 @@ Crafty.c 'BattleShip',
     )
 
     @attach Crafty.e('2D, Cabin2Place').attr(
-      x: @x + 800
+      x: @x + 900
       y: @y + 100
       z: -8
       w: 15
