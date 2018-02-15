@@ -78,7 +78,7 @@ Crafty.c 'MineCannon',
     t = [target.x + (target.w / 2), target.y + (target.h / 2)]
     Math.atan2(b[1] - t[1], b[0] - t[0]) * 180 / Math.PI
 
-  get: (property) ->
+  getProperty: (property) ->
     {
       xStart: @x
       yStart: @y - 24

@@ -483,7 +483,7 @@ Entity =
 
   get: (property) ->
     =>
-      @entity.get(property)
+      @entity.getProperty(property)
 
   invincible: (yesNo) ->
     (sequence) =>
