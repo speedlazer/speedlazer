@@ -149,7 +149,7 @@ Crafty.c 'WaterSplashes',
             .attr(
               x: particleX
               y: particleY
-              z: @z + 3
+              z: 3
               w: @waterRadius * 4
               h: @waterRadius * 4
               alpha: @waterAlpha * (0.5 + (pos * 0.5))

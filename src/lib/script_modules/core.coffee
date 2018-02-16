@@ -80,15 +80,18 @@ Core =
 
       whileResolved = no
       condition(sequence)
-        .then -> whileResolved = yes
+        .then ->
+          console.log('resolved')
+          whileResolved = yes
         .catch (e) ->
+          console.log('rejected')
           whileResolved = yes
           throw e unless e.message is 'sequence mismatch'
         .finally -> whileResolved = yes
       WhenJS.iterate(
         -> 1
         -> whileResolved
-        -> block(sequence)
+        -> !whileResolved && block(sequence)
         1
       )
 

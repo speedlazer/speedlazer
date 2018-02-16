@@ -1,13 +1,13 @@
 Crafty.c 'BattleShip',
   required: '2D, WebGL, Tween, Choreography, ShipSolid, Collision,' +
-    'Hideable, Flipable, Scalable, SunBlock, WaterSplashes, ShipCabin'
+    'Hideable, Flipable, Scalable, SunBlock, WaterSplashes, ShipCabin, Sprite'
 
   init: ->
     width = 40
     @attr(
       w: 32 * width
       h: 32 * 7
-      z: 6
+      z: -20
       waterRadius: 10
       minSplashDuration: 600
       defaultWaterCooldown: 400
@@ -130,7 +130,7 @@ Crafty.c 'BattleShip',
       BottomSpace: 4
     }[name]
 
-    @attach Crafty.e("2D, WebGL, aircraftCarrier#{name}").attr(
+    @attach Crafty.e("2D, WebGL, Hideable, aircraftCarrier#{name}").attr(
       x: @x + (6 * 32) + @_bottomX
       y: @y + 64
       z: -8

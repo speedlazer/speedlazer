@@ -248,7 +248,7 @@ Entity =
         # transition from air to underwater? break movement in 2 parts
         if settings.y? and settings.y + @entity.h > seaLevel
           airSettings = clone settings
-          airSettings.y = seaLevel - @entity.h
+          airSettings.y = Math.max(seaLevel - @entity.h, @entity.y)
           return @_moveAir(airSettings)
             .then =>
               @enemy.moveState = 'water'

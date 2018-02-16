@@ -68,7 +68,7 @@ class HeliAttack extends EntityScript
     )
     p.addComponent('BurstShot').burstShot
       burstCooldown: 1500
-      burstAmount: 6
+      burstAmount: 4
       angle: -15
       angleDeviation: 5
       aim: 45
@@ -81,7 +81,7 @@ class HeliAttack extends EntityScript
           .attr(
             w: 20
             h: 8
-            speed: 350
+            speed: 250
             damage: 1
           )
 

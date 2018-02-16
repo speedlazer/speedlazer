@@ -40,16 +40,16 @@ class Stage1 extends LazerScript
 
     @sequence(
       #@setPowerupPool 'rapidb', 'speed', 'points', 'rapidb'
-      @introText()
-      @sunRise(0)
-      @tutorial()
+      @lazy @introText
+      @lazy @sunRise, 0
+      @lazy @tutorial
 
       #@setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
 
-      @droneTakeover()
-      @sunRise(1)
-      @oceanFighting()
-      @midStageBossFight()
+      @lazy @droneTakeover
+      @lazy @sunRise, 1
+      @lazy @oceanFighting
+      @lazy @midStageBossFight
 
       #@setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
       #@midStageBossFight()

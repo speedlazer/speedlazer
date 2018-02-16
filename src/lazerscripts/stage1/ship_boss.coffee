@@ -171,8 +171,6 @@ class ShipBoss extends EntityScript
       @moveTo(x: -0.1, easing: "easeInOutQuad")
       @while(
         @placeSquad TurretActive,
-          amount: 1
-          delay: 0
           options:
             attach: 'TurretPlace'
         @lazy(
@@ -183,16 +181,96 @@ class ShipBoss extends EntityScript
     )
 
   executeStageThree: ->
-    @sequence(
+    @while(
       @placeSquad TurretActive,
-        amount: 1
-        delay: 0
         options:
           attach: 'TurretPlace'
           attachOffset: 1
       @lazy(
         @releaseDronesFromHatchTwo,
         -> Math.round(Math.random() * 3 + 1)
+      )
+    )
+
+  executeStageFour: ->
+    @sequence(
+      @moveTo(x: 0.1, easing: "easeInOutQuad")
+      @while(
+        @placeSquad Cabin1Active,
+          options:
+            attach: 'Cabin1Place'
+        @lazy(
+          @releaseDronesFromHatchOne,
+          -> Math.round(Math.random() * 3 + 1)
+        )
+      )
+    )
+
+  executeStageFive: ->
+    @sequence(
+      @parallel(
+        @moveTo(x: -0.2, easing: "easeInOutQuad")
+        @placeSquad HeliFlyAway,
+          amount: 2
+          delay: 1000
+      )
+      @parallel(
+        @placeSquad HeliAttack,
+          options:
+            speed: 80
+            path: [
+              [.9, .6]
+              [.7, .45]
+              [.55, .4]
+              [.4, .6]
+              [.6, .8]
+              [.8, .6]
+              [.4, .8]
+              [.2, .4]
+              [-.2, .7]
+            ]
+        @placeSquad HeliAttack,
+          options:
+            speed: 80
+            path: [
+              [.9, .3]
+              [.7, .25]
+              [.55, .2]
+              [.4, .4]
+              [.6, .3]
+              [.8, .3]
+              [.4, .6]
+              [.2, .3]
+              [-.2, .4]
+            ]
+        @moveTo(x: -0.5, easing: "easeInOutQuad", speed: 30)
+      )
+    )
+
+  executeStageSix: ->
+    @sequence(
+      @parallel(
+        @while(
+          @placeSquad Cabin2Active,
+            options:
+              attach: 'Cabin2Place'
+          @lazy(
+            @releaseDronesFromHatchTwo,
+            -> Math.round(Math.random() * 3 + 1)
+          )
+        )
+      )
+      @moveTo(x: -0.6, easing: "easeInOutQuad")
+      @while(
+        @sequence(
+          @moveTo(y: 450, easing: "easeInOutQuad", speed: 20)
+          @moveTo(x: -1.40, easing: "easeInOutQuad")
+        )
+        @sequence(
+          @smallExplosion(offsetX: 600, offsetY: -50)
+          @smallExplosion(offsetX: 500, offsetY: -20)
+          @wait(300)
+        )
       )
     )
 
@@ -203,6 +281,9 @@ class ShipBoss extends EntityScript
       @lazy @executeStageOne
       @lazy @executeStageTwo
       @lazy @executeStageThree
+      @lazy @executeStageFour
+      @lazy @executeStageFive
+      @lazy @executeStageSix
     )
 
         # @sequence(

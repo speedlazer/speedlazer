@@ -9,7 +9,7 @@ Crafty.c 'Helicopter',
     @collision [8, 5, 120, 5, 112, 35, 12, 47]
 
   helicopter: (attr = {}) ->
-    defaultHealth = 2750
+    defaultHealth = 1750
     @attr defaults(attr,
       w: 128,
       h: 55,
