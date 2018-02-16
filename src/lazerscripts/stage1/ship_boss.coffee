@@ -1,7 +1,7 @@
 { EntityScript } = require('src/lib/LazerScript')
 MineCannon = require('./mine_cannon').default
 { TurretInActive, TurretActive } = require('./turret')
-{ Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer } = require('../stage1/army_drone')
+{ Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer, DroneFlyer } = require('../stage1/army_drone')
 
 class Cabin1Inactive extends EntityScript
   spawn: (options) ->
@@ -67,10 +67,28 @@ class ShipBoss extends EntityScript
     Crafty.e('BattleShip').attr(
       x: Crafty.viewport.width + 180
       y: 400
-      defaultSpeed: options.speed ? 45
+      defaultSpeed: options.speed ? 85
     )
     # .setSealevel(@level.visibleHeight - 10)
 
+  getPath: (pattern) ->
+    console.log('pattern', pattern)
+    return [
+      [.156, .5]
+      [.5, .833]
+      [.86, .52]
+
+      [.5, .21]
+      [.156, .5]
+      [.5, .833]
+      [.86, .52]
+
+      [-20, .21]
+    ]
+
+  randomAmountSpawnedDrones: ->
+    console.log(Math.round(Math.random() * 5))
+    return Math.round(Math.random() * 5)
 
   placeEnemiesOnShip: ->
     @sequence(
@@ -91,28 +109,27 @@ class ShipBoss extends EntityScript
 
   executeStageOne: ->
     @parallel(
-      @moveTo(x: 0.8)
+      @moveTo(x: 0.8, easing: "easeInOutQuad")
       @placeSquad MineCannon,
         options:
           attach: 'MineCannonPlace'
     )
 
-  releaseDronesFromHatchOne: ->
+  releaseDronesFromHatchOne: (dronePattern) ->
     @sequence(
       @action 'open1'
       @wait(500)
-
       @parallel(
-        @placeSquad Shooter,
+        @placeSquad DroneFlyer,
           amount: 5,
-          delay: 200
-          options: {
+          delay: 500
+          options:
             startAt: 'ShipHatch1'
             hatchReveal: 'ShipHatch1'
             dx: 25
             dy: 20
-          }
-
+            debug: true,
+            path: @getPath(dronePattern)
         @sequence(
           @wait(1200)
           @action 'close1'
@@ -120,17 +137,50 @@ class ShipBoss extends EntityScript
       )
     )
 
+  releaseDronesFromHatchTwo: (dronePattern) ->
+    @sequence(
+      @action 'open2'
+      @wait(500)
+      @parallel(
+        @placeSquad DroneFlyer,
+          amount: 8,
+          delay: 500
+          options:
+            startAt: 'ShipHatch1'
+            hatchReveal: 'ShipHatch1'
+            dx: 25
+            dy: 20
+            debug: true,
+            path: @getPath(dronePattern)
+        @sequence(
+          @wait(1200)
+          @action 'close2'
+        )
+      )
+    )
+
+
   executeStageTwo: ->
     @sequence(
-      @moveTo(x: -0.1)
+      @moveTo(x: -0.1, easing: "easeInOutQuad")
       @while(
         @placeSquad TurretActive,
           amount: 1
           delay: 0
           options:
             attach: 'TurretPlace'
-        @releaseDronesFromHatchOne()
+        @releaseDronesFromHatchOne(Math.round(Math.random() * 3 + 1))
       )
+    )
+
+  executeStageThree: =>
+    @sequence(
+      @placeSquad TurretActive,
+        amount: 1
+        delay: 0
+        options:
+          attach: 'TurretPlace'
+      @releaseDronesFromHatchTwo() 
     )
 
   execute: ->
@@ -139,6 +189,7 @@ class ShipBoss extends EntityScript
       @placeEnemiesOnShip()
       @executeStageOne()
       @executeStageTwo()
+      @executeStageThree()
     )
 
         # @sequence(
