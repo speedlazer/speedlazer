@@ -1,5 +1,5 @@
 { EntityScript } = require('src/lib/LazerScript')
-MineCannon = require('./mine_cannon').default
+{ MineCannonInActive, MineCannonActive } = require('./mine_cannon')
 { TurretInActive, TurretActive } = require('./turret')
 { Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer } = require('../stage1/army_drone')
 
@@ -85,14 +85,17 @@ class ShipBoss extends EntityScript
         delay: 0
         options:
           attach: 'TurretPlace'
+      @placeSquad MineCannonInActive, # MineCannon
+        options:
+          attach: 'MineCannonPlace'
 
       # Add Heli's
     )
 
   executeStageOne: ->
-    @parallel(
+    @sequence(
       @moveTo(x: 0.8)
-      @placeSquad MineCannon,
+      @placeSquad MineCannonActive,
         options:
           attach: 'MineCannonPlace'
     )

@@ -1,15 +1,27 @@
 { EntityScript } = require('src/lib/LazerScript')
 
-class MineCannon extends EntityScript
+class MineCannonInActive extends EntityScript
 
   spawn: (options) ->
-    Crafty.e('MineCannon, KeepAlive').mineCannon()
+    Crafty.e('MineCannonInactive, MineCannon, KeepAlive').mineCannon()
+
+  execute: ->
+    @invincible yes
+
+class MineCannonActive extends EntityScript
+
+  spawn: (options) ->
+    entity = Crafty('MineCannonInactive').get(0)
+    if entity
+      entity.removeComponent('MineCannonInactive')
+    else
+      entity = Crafty.e('MineCannon, KeepAlive').mineCannon()
+
+    entity
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
     @sequence(
-      @invincible yes
-      @wait 1000
       @invincible no
       @repeat @sequence(
         @async @placeSquad CannonMine,
@@ -99,5 +111,8 @@ class CannonMine extends EntityScript
   onKilled: ->
     @bigExplosion()
 
-module.exports =
-  default: MineCannon
+
+module.exports = {
+  MineCannonInActive,
+  MineCannonActive
+}
