@@ -290,9 +290,7 @@ class Stage1 extends LazerScript
     repeatPattern = (height) ->
       [
         [.2, height]
-        [.1, height + .1]
         [.2, height + .2]
-        [.4, height + .1]
         [.6, height]
         [1.1, height]
       ]
