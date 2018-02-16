@@ -11,7 +11,8 @@ class MineCannonInActive extends EntityScript
 class MineCannonActive extends EntityScript
 
   spawn: (options) ->
-    entity = Crafty('MineCannonInactive').get(0)
+    if !options.decoy
+      entity = Crafty('MineCannonInactive').get(0)
     if entity
       entity.removeComponent('MineCannonInactive')
     else

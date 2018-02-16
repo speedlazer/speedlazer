@@ -513,14 +513,16 @@ Entity =
   deathDecoy: ->
     (sequence) =>
       @_verify(sequence)
-      @decoy = @spawn(@options)
+      decoyOpts = Object.assign({}, @options, { decoy: true })
+      @decoy = @spawn(decoyOpts)
       if @options.attach
-        point = Crafty(@options.attach).get(@options.index)
-        point.attach(@decoy)
+        attachIndex = (@options.attachOffset || 0) + @options.index
+        attachPoint = Crafty(@options.attach).get(attachIndex)
+        attachPoint.attach(@decoy)
         @decoy.attr({
-          x: point.x
-          y: point.y
-          z: point.z
+          x: attachPoint.x
+          y: attachPoint.y
+          z: attachPoint.z
           invincible: yes
           deathDecoy: yes
           health: 1
