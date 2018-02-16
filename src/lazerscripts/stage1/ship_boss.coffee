@@ -180,23 +180,24 @@ class ShipBoss extends EntityScript
       )
     )
 
-  executeStageThree: =>
+  executeStageThree: ->
     @sequence(
       @placeSquad TurretActive,
         amount: 1
         delay: 0
         options:
           attach: 'TurretPlace'
-      @releaseDronesFromHatchTwo() 
+          attachOffset: 1
+      @releaseDronesFromHatchTwo()
     )
 
   execute: ->
     # Start stage 1
     @sequence(
-      @placeEnemiesOnShip()
-      @executeStageOne()
-      @executeStageTwo()
-      @executeStageThree()
+      @lazy @placeEnemiesOnShip
+      @lazy @executeStageOne
+      @lazy @executeStageTwo
+      @lazy @executeStageThree
     )
 
         # @sequence(

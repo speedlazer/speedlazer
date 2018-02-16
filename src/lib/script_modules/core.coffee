@@ -150,6 +150,10 @@ Core =
       )
       return
 
+  lazy: (func, args) ->
+    (sequence) =>
+      return func.apply(this, args)(sequence)
+
   # Wait an amount of milliseconds.
   wait: (amount) ->
     (sequence) =>
