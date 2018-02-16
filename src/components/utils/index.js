@@ -1,4 +1,4 @@
 import "./flipable";
 import "./hideable";
-import "./scalable";
+import "./Scalable";
 import "./WaterSplashes";
