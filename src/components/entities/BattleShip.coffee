@@ -69,8 +69,23 @@ Crafty.c 'BattleShip',
       h: 2
     )
 
+    @attach Crafty.e('2D, HeliPlace').attr(
+      x: @x + 646
+      y: @y - 32
+      z: -8
+      w: 15
+      h: 2
+    )
+    @attach Crafty.e('2D, HeliPlace').attr(
+      x: @x + 756
+      y: @y - 32
+      z: -8
+      w: 15
+      h: 2
+    )
+
     @attach Crafty.e('2D, Cabin2Place').attr(
-      x: @x + 800
+      x: @x + 900
       y: @y + 100
       z: -8
       w: 15
@@ -100,6 +115,7 @@ Crafty.c 'BattleShip',
       w: 15
       h: 2
     )
+
 
     @collision [
       20, 60,
@@ -164,7 +180,7 @@ Crafty.c 'ShipCabin', {
     part = Crafty.e("2D, WebGL, aircraftCarrier#{name}").attr(
       x: @x + x
       y: dy + y
-      z: -13
+      z: -15
     )
 
     part.flip('X') if name in flip
@@ -259,6 +275,9 @@ Crafty.c 'FirstShipCabin', {
       (e) => @onExplosionHit(e)
       => @onProjectileHitEnd()
     )
+
+    @hitParts = [@cabinParts..., @antenna, @radar]
+
     @enemy({
       pointsLocation: {
         x: 3 * 32
@@ -266,8 +285,12 @@ Crafty.c 'FirstShipCabin', {
       }
     })
 
+  linkHatch: (linkedHatch) ->
+    @hitParts = @hitParts.concat(linkedHatch.hitFlashParts())
+    this
+
   applyCabinHitFlash: (onOff) ->
-    [@cabinParts..., @antenna, @radar].forEach((part) ->
+    @hitParts.forEach((part) ->
       if onOff
         part.attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
       else
@@ -343,6 +366,9 @@ Crafty.c 'SecondShipCabin', {
       (e) => @onExplosionHit(e)
       => @onProjectileHitEnd()
     )
+
+    @hitParts = [@cabinParts..., @antenna1, @antenna2]
+
     @enemy({
       pointsLocation: {
         x: 3 * 32
@@ -350,8 +376,12 @@ Crafty.c 'SecondShipCabin', {
       }
     })
 
+  linkHatch: (linkedHatch) ->
+    @hitParts = @hitParts.concat(linkedHatch.hitFlashParts())
+    this
+
   applyCabinHitFlash: (onOff) ->
-    [@cabinParts..., @antenna1, @antenna2].forEach((part) ->
+    @hitParts.forEach((part) ->
       if onOff
         part.attr hitFlash: { _red: 255, _green: 255, _blue: 255 }
       else

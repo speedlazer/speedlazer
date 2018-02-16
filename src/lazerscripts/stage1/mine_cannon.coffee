@@ -29,6 +29,7 @@ class MineCannon extends EntityScript
   onKilled: ->
     @leaveAnimation @sequence(
       @deathDecoy()
+      @sendToBackground(1.0)
       @bigExplosion()
       @wait(400)
       @bigExplosion()

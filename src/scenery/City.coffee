@@ -339,7 +339,8 @@ class CityScenery extends LevelScenery
           bridgePillar: [36, 29, 6, 17]
           bridgePillarBroken: [42, 29, 6, 17]
           bigGlare: [0, 38, 7, 7]
-          sun: [0, 22, 2, 2]
+          sun: [12, 13, 3, 3]
+          chute: [12, 12, 1, 1]
           directGlare: [8, 18, 6, 6]
           aircraftCarrierEnd: [30, 43, 6, 5]
           aircraftCarrierStart: [19, 43, 6, 5]
@@ -350,12 +351,13 @@ class CityScenery extends LevelScenery
           aircraftCarrierOpenHatch: [31, 38, 5, 1]
           aircraftCarrierHatchLid: [31, 39, 5, 1]
 
-          aircraftCarrierCabinEnd: [12, 37, 2, 7]
-          aircraftCarrierCabin: [10, 37, 2, 7]
-          aircraftCarrierCabinRadar: [8, 37, 2, 7]
-          aircraftCarrierCabinStart: [7, 37, 1, 7]
+          aircraftCarrierCabinEnd: [12, 37, 2, 6]
+          aircraftCarrierCabin: [10, 37, 2, 6]
+          aircraftCarrierCabinRadar: [8, 37, 2, 6]
+          aircraftCarrierCabinStart: [7, 37, 1, 6]
           aircraftCarrierRadar: [26, 38, 2, 2]
           aircraftCarrierAntenna: [29, 38, 2, 3]
+          aircraftCarrierWires: [25, 38, 1, 2]
           boxes: [28, 39, 1, 1]
           boxesFalling: [28, 38, 1, 1]
 
@@ -418,7 +420,7 @@ levelGenerator.defineBlock class extends CityScenery
       @add(((i * 4)*32) - 64, @level.visibleHeight - 330 + (7*32), bottom)
 
     for i in [0..5]
-      top = Crafty.e('2D, WebGL, aircraftCarrierTopFlat').attr(z: -13)
+      top = Crafty.e('2D, WebGL, aircraftCarrierTopFlat').attr(z: -15)
       @add(((i * 4)*32) - 64, @level.visibleHeight - 330 + (5*32), top)
 
     topCrop = 2
@@ -497,7 +499,7 @@ levelGenerator.defineBlock class extends CityScenery
     fixOtherShips = (newShip) ->
       return unless leadAnimated
       return unless leadAnimated.has 'Choreography'
-      newShip.attr(x: leadAnimated.x - 200, y: leadAnimated.y, z: -10)
+      newShip.attr(x: leadAnimated.x - 200, y: leadAnimated.y, z: -8)
       newShip.disableControl() if leadAnimated.disableControls
       newShip.addComponent 'Choreography'
       newShip.synchChoreography leadAnimated
@@ -513,7 +515,7 @@ levelGenerator.defineBlock class extends CityScenery
       return fixOtherShips(this) unless index is 0
       leadAnimated = this
       @addComponent 'Choreography'
-      @attr x: 300 - (200 * index), y: Crafty.viewport.height - 50 - @h, z: -10
+      @attr x: 300 - (200 * index), y: Crafty.viewport.height - 50 - @h, z: -8
       @disableControl()
       @weaponsEnabled = no
       @choreography c

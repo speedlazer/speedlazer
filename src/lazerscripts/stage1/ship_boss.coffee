@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 MineCannon = require('./mine_cannon').default
-{ TurretInActive } = require('./turret')
+{ TurretInActive, TurretActive } = require('./turret')
 { Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer } = require('../stage1/army_drone')
 
 class Cabin1Inactive extends EntityScript
@@ -71,195 +71,272 @@ class ShipBoss extends EntityScript
     )
     # .setSealevel(@level.visibleHeight - 10)
 
-  execute: ->
-    @sequence(
-      @parallel(
-        @placeSquad MineCannon,
-          options:
-            attach: 'MineCannonPlace'
-        @placeSquad Cabin1Inactive,
-          options:
-            attach: 'Cabin1Place'
-        @placeSquad Cabin2Inactive,
-          options:
-            attach: 'Cabin2Place'
-        @placeSquad TurretInActive, # Turret
-          amount: 2
-          delay: 0
-          options:
-            attach: 'TurretPlace'
 
-        @moveTo(x: 0.8)
-      )
+  placeEnemiesOnShip: ->
+    @sequence(
+      @placeSquad Cabin1Inactive,
+        options:
+          attach: 'Cabin1Place'
+      @placeSquad Cabin2Inactive,
+        options:
+          attach: 'Cabin2Place'
+      @placeSquad TurretInActive, # Turret
+        amount: 2
+        delay: 0
+        options:
+          attach: 'TurretPlace'
+
+      # Add Heli's
+    )
+
+  executeStageOne: ->
+    @parallel(
+      @moveTo(x: 0.8)
+      @placeSquad MineCannon,
+        options:
+          attach: 'MineCannonPlace'
+    )
+
+  releaseDronesFromHatchOne: ->
+    @sequence(
+      @action 'open1'
       @wait(500)
+
       @parallel(
-        @moveTo(x: -1.5)
-        @placeSquad ScraperFlyer,
-          amount: 4
+        @placeSquad Shooter,
+          amount: 5,
           delay: 200
           options: {
-            x: 20
-            y: -20
+            startAt: 'ShipHatch1'
+            hatchReveal: 'ShipHatch1'
+            dx: 25
+            dy: 20
           }
-      # Fix sequencing
-      #
-      # Fix hatches
-      #
+
         @sequence(
-          @wait(8000)
-          @placeSquad Shooter,
-            amount: 3
-            delay: 250
-            options: {
-              x: 20
-              y: 300
-            }
-          #
-          # @placeSquad Shooter,
-          #   amount: 6
-          #   delay: 200
-        )
-        @wait(8000)
-        @sequence(
-          @placeSquad Swirler,
-            amount: 4
-            delay: 200
-          @wait(6000)
-          @parallel(
-            # Open hatch 1
-            @action 'open1'
-            @placeSquad Shooter,
-              amount: 5,
-              delay: 200
-              options: {
-                startAt: 'ShipHatch1'
-                hatchReveal: 'ShipHatch1'
-                dx: 25
-                dy: 20
-              }
-            @sequence(
-              @wait(3000)
-              # close hatch 1
-              @action 'close1'
-              @moveTo(x: -2)
-            )
-            @wait(3000)
-
-          )
-          @sequence(
-            # open hatch 2
-            @action 'open2'
-
-            @parallel(
-              @placeSquad Shooter,
-                amount: 3,
-                delay: 200
-                options: {
-                  startAt: 'ShipHatch2'
-                  hatchReveal: 'ShipHatch2'
-                  dx: 25
-                  dy: 20
-                }
-              @placeSquad CrewShooters,
-                amount: 8,
-                delay: 200
-                options: {
-                  x: 115
-                  y: -900
-                }
-
-              @placeSquad Shooter,
-                amount: 3,
-                delay: 200
-                options: {
-                  startAt: 'ShipHatch2'
-                  hatchReveal: 'ShipHatch2'
-                  dx: 25
-                  dy: 20
-                }
-              @placeSquad ScraperFlyer,
-                amount: 8,
-                delay: 700
-                options: {
-                  x: 915
-                  y: 0
-                }
-            )
-            @action 'close2'
-            @parallel(
-                @moveTo(x: -.5) # Move the boat out of view
-
-                # Show some aircrafts here
-                @placeSquad Shooter,
-                  amount: 8,
-                  delay: 600
-                  options: {
-                    x: -15
-                    y: 100
-                  }
-
-                @placeSquad Swirler,
-                  amount: 6,
-                  delay: 200
-                  options: {
-                    x: -15
-                    y: 100
-                  }
-            )
-            @moveTo(x: -2) # move back!
-
-            @action 'open2'
-            @placeSquad Shooter, # 2
-              amount: 6,
-              delay: 200
-              options: {
-                startAt: 'ShipHatch2'
-                hatchReveal: 'ShipHatch2'
-                dx: 25
-                dy: 20
-              }
-            @wait(2000)
-            @action 'open1'
-            @placeSquad Shooter, # 1
-              amount: 3,
-              delay: 200
-              options: {
-                startAt: 'ShipHatch1'
-                hatchReveal: 'ShipHatch1'
-                dx: 25
-                dy: 20
-              }
-            @wait(1000)
-            @placeSquad Shooter, # 1
-              amount: 6,
-              delay: 200
-              options: {
-                startAt: 'ShipHatch1'
-                hatchReveal: 'ShipHatch1'
-                dx: 25
-                dy: 20
-              }
-              @wait(1000)
-              @action 'close1'
-              @placeSquad Shooter, # 2
-                amount: 7,
-                delay: 200
-                options: {
-                  x: 565
-                  y: Crafty.viewport.height + 100
-                }
-              @wait(1000)
-              @action 'close2'
-
-            @wait(5000)
-            @moveTo(x: -5) # move forward!
-
-
-          )
-
+          @wait(1200)
+          @action 'close1'
         )
       )
     )
+
+  executeStageTwo: ->
+    @sequence(
+      @moveTo(x: -0.1)
+      @while(
+        @placeSquad TurretActive,
+          amount: 1
+          delay: 0
+          options:
+            attach: 'TurretPlace'
+        @releaseDronesFromHatchOne()
+      )
+    )
+
+  execute: ->
+    # Start stage 1
+    @sequence(
+      @placeEnemiesOnShip()
+      @executeStageOne()
+      @executeStageTwo()
+    )
+
+        # @sequence(
+        #   @placeSquad Swirler,
+        #     amount: 4
+        #     delay: 200
+        #   @wait(3000)
+        #   @parallel(
+        #     # Open hatch 1
+        #     @action 'open1'
+        #     @placeSquad Shooter,
+        #       amount: 9,
+        #       delay: 400
+        #       options: {
+        #         startAt: 'ShipHatch1'
+        #         hatchReveal: 'ShipHatch1'
+        #         dx: 25
+        #         dy: 20
+        #       }
+        #     @sequence(
+        #       @wait(3000)
+        #       @placeSquad Shooter,
+        #         amount: 5,
+        #         delay: 200
+        #         options: {
+        #           startAt: 'ShipHatch1'
+        #           hatchReveal: 'ShipHatch1'
+        #           dx: 25
+        #           dy: 20
+        #         }
+        #       @wait(2000)
+        #       @placeSquad Shooter,
+        #         amount: 7,
+        #         delay: 600
+        #         options: {
+        #           startAt: 'ShipHatch1'
+        #           hatchReveal: 'ShipHatch1'
+        #           dx: 25
+        #           dy: 20
+        #         }
+        #       # close hatch 1
+        #       @action 'close1'
+        #       @moveTo(x: -2)
+        #     )
+        #     @wait(2000)
+        #   )
+        #   @sequence(
+        #     # open hatch 2
+        #     @action 'open2'
+        #
+        #     @parallel(
+        #       @placeSquad Shooter,
+        #         amount: 3,
+        #         delay: 200
+        #         options: {
+        #           startAt: 'ShipHatch2'
+        #           hatchReveal: 'ShipHatch2'
+        #           dx: 25
+        #           dy: 20
+        #         }
+        #       @placeSquad CrewShooters,
+        #         amount: 8,
+        #         delay: 200
+        #         options: {
+        #           x: 115
+        #           y: -900
+        #         }
+        #
+        #       @placeSquad Shooter,
+        #         amount: 3,
+        #         delay: 200
+        #         options: {
+        #           startAt: 'ShipHatch2'
+        #           hatchReveal: 'ShipHatch2'
+        #           dx: 25
+        #           dy: 20
+        #         }
+        #       @placeSquad ScraperFlyer,
+        #         amount: 8,
+        #         delay: 700
+        #         options: {
+        #           x: 915
+        #           y: 0
+        #         }
+        #     )
+        #
+        #     @action 'close2'
+        #     @sequence(
+        #       @parallel(
+        #         @moveTo(x: -1.5) # Move the boat out of view
+        #         @placeSquad CrewShooters,
+        #           amount: 12,
+        #           delay: 100
+        #           options: {
+        #             x: 515
+        #             y: 0
+        #           }
+        #       )
+        #
+        #     )
+        #
+        #     # Boat moves but somehow doesn't show enemies yet.
+        #     # TO FIX!!
+        #     @placeSquad CrewShooters,
+        #       amount: 2,
+        #       delay: 100
+        #       options: {
+        #         x: 515
+        #         y: 0
+        #       }
+        #     @placeSquad CrewShooters,
+        #       amount: 12,
+        #       delay: 600
+        #       options: {
+        #         x: 515
+        #         y: 0
+        #       }
+        #     @parallel(
+        #       @moveTo(x: -2) # move back!
+        #       # Show some aircrafts here
+        #       @placeSquad Shooter,
+        #         amount: 8,
+        #         delay: 600
+        #         options: {
+        #           x: -15
+        #           y: 100
+        #         }
+        #
+        #       @placeSquad Swirler,
+        #         amount: 6,
+        #         delay: 200
+        #         options: {
+        #           x: -15
+        #           y: 100
+        #         }
+        #     )
+        #     @action 'open2'
+        #     @placeSquad Shooter, # 2
+        #       amount: 6,
+        #       delay: 200
+        #       options: {
+        #         startAt: 'ShipHatch2'
+        #         hatchReveal: 'ShipHatch2'
+        #         dx: 25
+        #         dy: 20
+        #       }
+        #     @action 'open1'
+        #     @placeSquad Shooter, # 1
+        #       amount: 3,
+        #       delay: 200
+        #       options: {
+        #         startAt: 'ShipHatch1'
+        #         hatchReveal: 'ShipHatch1'
+        #         dx: 25
+        #         dy: 20
+        #       }
+        #     @wait(1000)
+        #       @parallel(
+        #         @placeSquad Shooter, # 1
+        #           amount: 6,
+        #           delay: 200
+        #           options: {
+        #             startAt: 'ShipHatch1'
+        #             hatchReveal: 'ShipHatch1'
+        #             dx: 25
+        #             dy: 20
+        #           }
+        #         @placeSquad Shooter, # 2
+        #           amount: 6,
+        #           delay: 200
+        #           options: {
+        #             startAt: 'ShipHatch2'
+        #             hatchReveal: 'ShipHatch2'
+        #             dx: 25
+        #             dy: 20
+        #           }
+        #       )
+        #       @wait(1000)
+        #       @action 'close1'
+        #       @placeSquad Shooter, # 2
+        #         amount: 7,
+        #         delay: 900
+        #         options: {
+        #           x: 565
+        #           y: Crafty.viewport.height + 100
+        #         }
+        #       @wait(1000)
+        #       @action 'close2'
+        #
+        #     @wait(5000)
+        #     @moveTo(x: -5) # move forward!
+        #
+        #
+        #   )
+        #
+        # )
+      # )
+  #   )
 
 module.exports =
   default: ShipBoss

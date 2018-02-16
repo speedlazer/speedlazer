@@ -7,6 +7,14 @@ Crafty.c("CarrierHatch", {
     this.attr({ z: -10 });
     this.crop(0, 2, 5 * 32, 32);
 
+    this.wire = Crafty.e("2D, WebGL, aircraftCarrierWires");
+    this.wire.attr({
+      z: -14,
+      x: this.x + 80,
+      y: this.y - 20
+    });
+    this.attach(this.wire);
+
     this.lid = Crafty.e(
       "2D, WebGL, aircraftCarrierHatchLid, Hideable, Tween, Delta2D"
     );
@@ -28,6 +36,10 @@ Crafty.c("CarrierHatch", {
       y: this.y
     });
     this.attach(this.dust);
+  },
+
+  hitFlashParts() {
+    return [this.lid, this.wire];
   },
 
   open() {

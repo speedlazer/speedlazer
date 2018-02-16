@@ -118,7 +118,14 @@ Crafty.c 'AnalogKeyboardControls',
         ship.ax += (ACCELLERATE_X * 2)
 
     @listenTo ship, 'KeyDown', (e) ->
-      Game.togglePause() if e.key is controlMap.pause
+      if e.key is controlMap.pause
+        Game.togglePause()
+        pressed = {
+          up: false,
+          down: false,
+          left: false,
+          right: false
+        }
       return if ship.disableControls
       ship.shoot(true) if e.key is controlMap.fire
       ship.switchWeapon(true) if e.key is controlMap.switchWeapon

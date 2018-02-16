@@ -8,12 +8,11 @@ class ArmyDrone extends EntityScript
     @entVy = @entity.vy
     @sequence(
       @deathDecoy()
-      => @entity.removeComponent('ShootOnSight')
+      => @entity.removeComponent('ShootOnSight') if @entity.has('ShootOnSight')
       @addTinyScreenshake()
-      @choose(
+      @chance(.8,
         @smallExplosion(juice: @juice, offsetX: 20, offsetY: 20)
-        @smallExplosion(juice: @juice, offsetX: 20, offsetY: 20)
-        @blast(@location(), damage: 1, radius: 40)
+        @blast(@location(), damage: 1, radius: 30)
       )
       @rotate 30, 60
       @smokePrint()
@@ -28,54 +27,24 @@ class ArmyDrone extends EntityScript
       @endDecoy()
     )
 
-class ShipDrone extends ArmyDrone
+class DroneFlyer extends ArmyDrone
 
   spawn: (options) ->
+    x = Crafty.viewport.width + 40
+    x = options.x if options.x
+    x = x * Crafty.viewport.width if x < 2 and x > -2
+    x = Crafty(options.startAt).get(0).x if options.startAt
+    x += options.dx if options.dx
+
+    y = Crafty.viewport.height * .4
+    y = options.y if options.y
+    y = y * Crafty.viewport.height if y < 2 and y > -2
+    y = Crafty(options.startAt).get(0).y if options.startAt
+    y += options.dy if options.dy
+
     d = Crafty.e('Drone').drone(
-      x: Crafty.viewport.width * .15
-      y: Crafty.viewport.height * .9
-      defaultSpeed: options.speed ? 300
-      juice: options.juice
-    )
-    @juice = options.juice
-    if options.shootOnSight
-      d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 1000 + (Math.random() * 8000)
-        sightAngle: 250
-        projectile: (x, y, angle) =>
-          projectile = Crafty.e('Sphere, Hostile, Projectile')
-            .blink()
-            .attr(
-              w: 12
-              h: 12
-              damage: 1
-              speed: 500
-            )
-          projectile.shoot(x, y, angle)
-    d
-
-  execute: ->
-    @bindSequence 'Destroyed', @onKilled
-    @movePath [
-      [.15, .21]
-      [.156, .5]
-      [.5, .833]
-      [.86, .52]
-
-      [.5, .21]
-      [.156, .5]
-      [.5, .833]
-      [.86, .52]
-
-      [-20, .21]
-    ], rotate: no
-
-class Swirler extends ArmyDrone
-
-  spawn: (options) ->
-    d = Crafty.e('Drone').drone(
-      x: Crafty.viewport.width + 40
-      y: Crafty.viewport.height * .4
+      x: x
+      y: y
       defaultSpeed: options.speed ? 400
       juice: options.juice
     )
@@ -88,40 +57,78 @@ class Swirler extends ArmyDrone
           projectile = Crafty.e('Sphere, Hostile, Projectile')
             .blink()
             .attr(
-              w: 12
-              h: 12
               damage: 1
-              speed: 550
+              speed: 500
             )
           projectile.shoot(x, y, angle)
     d
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
-    @movePath [
-      [.9, .4]
-      [.85, .5]
-      [.9, .6]
-      [1.1, .5]
+    @movePath(@options.path, rotate: no, debug: (@options.index == 0) && @options.debug)
 
-      [.5, .21]
-      [.156, .5]
-      [.5, .833]
-      [.86, .52]
+class Swirler extends ArmyDrone
 
-      [.5, .21]
-      [.156, .5]
-      [.5, .833]
-      [.86, .52]
+  spawn: (options) ->
+    x = Crafty.viewport.width + 40
+    x = options.x if options.x
+    x = Crafty(options.startAt).get(0).x if options.startAt
+    x += options.dx if options.dx
 
-      [.5, .21]
-      [.156, .5]
-      [.5, .833]
-      [.86, .52]
+    y = Crafty.viewport.height * .4
+    y = options.y if options.y
+    y = Crafty(options.startAt).get(0).y if options.startAt
+    y += options.dy if options.dy
 
-      [-20, .21]
-    ], rotate: no
+    d = Crafty.e('Drone').drone(
+      x: x
+      y: y
+      defaultSpeed: options.speed ? 400
+      juice: options.juice
+    )
+    @juice = options.juice
+    if options.shootOnSight
+      d.addComponent('ShootOnSight').shootOnSight
+        cooldown: 1000 + (Math.random() * 3000)
+        sightAngle: 250
+        projectile: (x, y, angle) =>
+          projectile = Crafty.e('Sphere, Hostile, Projectile')
+            .blink()
+            .attr(
+              damage: 1
+              speed: 500
+            )
+          projectile.shoot(x, y, angle)
+    d
 
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @movePath(
+      @options.path || [
+        [.9, .4]
+        [.85, .5]
+        [.9, .6]
+        [1.1, .5]
+
+        [.5, .21]
+        [.156, .5]
+        [.5, .833]
+        [.86, .52]
+
+        [.5, .21]
+        [.156, .5]
+        [.5, .833]
+        [.86, .52]
+
+        [.5, .21]
+        [.156, .5]
+        [.5, .833]
+        [.86, .52]
+
+        [-20, .21]
+      ],
+      rotate: no
+    )
 
 class Stalker extends ArmyDrone
 
@@ -168,8 +175,6 @@ class ScraperFlyer extends ArmyDrone
         projectile = Crafty.e('Sphere, Hostile, Projectile')
           .blink()
           .attr(
-            w: 12
-            h: 12
             damage: 1
             speed: 500
           )
@@ -234,8 +239,6 @@ class Shooter extends ArmyDrone
           projectile = Crafty.e('Sphere, Hostile, Projectile')
             .blink()
             .attr(
-              w: 12
-              h: 12
               damage: 1
               speed: 500
             )
@@ -264,70 +267,10 @@ class Shooter extends ArmyDrone
       ]
     )
 
-class CrewShooters extends ArmyDrone
-
-  spawn: ->
-    Crafty.e('Drone, ShootOnSight, Horizon').drone(
-      x: Crafty.viewport.width + 40
-      y: Crafty.viewport.height * .23
-      defaultSpeed: 350
-    ).shootOnSight
-      targetType: 'CameraCrew'
-      shootWhenHidden: yes
-      projectile: (x, y, angle) =>
-        projectile = Crafty.e('Projectile, Color, BackgroundBullet, Horizon').attr(
-          w: 3
-          h: 3
-          z: -200
-          speed: 400
-          topDesaturation: 0.5
-          bottomDesaturation: 0.5
-        ).color('#FFFF00')
-        projectile.shoot(x, y, angle)
-
-  execute: ->
-    @bindSequence 'Destroyed', @onKilled
-    @sequence(
-      @sendToBackground(0.50, -200)
-      @parallel(
-        @movePath [
-          [.96, .64]
-          [.30, .35]
-          [.65, .23]
-          [.93, .43]
-          [.33, .63]
-          [-.33, .23]
-        ]
-        @sequence(
-          @wait 1500
-          @scale(1.0, duration: 4000)
-          @reveal()
-          @shootPlayer()
-        )
-      )
-    )
-
-  shootPlayer: ->
-    =>
-      @entity.shootOnSight
-        cooldown: 1000 + (Math.random() * 8000)
-        sightAngle: 360
-        projectile: (x, y, angle) =>
-          projectile = Crafty.e('Sphere, Hostile, Projectile')
-            .attr(
-              w: 12
-              h: 12
-              damage: 1
-              speed: 500
-            )
-            .blink()
-          projectile.shoot(x, y, angle)
-
 module.exports = {
   Swirler
   Shooter
-  CrewShooters
   Stalker
   ScraperFlyer
-  ShipDrone
+  DroneFlyer
 }

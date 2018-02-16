@@ -1,12 +1,58 @@
 { EntityScript } = require('src/lib/LazerScript')
 { Stage1BossRocket } = require('./stage1boss')
 
+class HeliInactive extends EntityScript
+  assets: ->
+    @loadAssets('helicopter')
+
+  spawn: (options) ->
+    Crafty.e('Helicopter, KeepAlive, ParkedHeli').attr(
+      x: Crafty.viewport.width + 40
+      y: .6 * Crafty.viewport.height
+      defaultSpeed: options.speed ? 100
+      weaponOrigin: [0, 25]
+    ).helicopter(
+      rotors: off
+    )
+
+  execute: ->
+    @sequence(
+      @turnAround()
+      @invincible yes
+      @sendToBackground(0.8)
+    )
+
+
+class HeliFlyAway extends EntityScript
+  assets: ->
+    @loadAssets('helicopter')
+
+  spawn: (options) ->
+    helicopter = Crafty('ParkedHeli').get(0)
+    helicopter.removeComponent('ParkedHeli')
+    helicopter.removeComponent('KeepAlive')
+    helicopter
+
+  execute: ->
+    @sequence(
+      @invincible yes
+      @sendToBackground(0.8)
+      @action 'start-rotors'
+      @wait 100
+      @moveTo(dy: -30 + (-30 * @options.index))
+      @rotate(5, 100)
+      @detach()
+      @parallel(
+        @sendToBackground(0.75, -50)
+        @moveTo(x: 1.02, { easing: "easeInQuad" })
+      )
+    )
+
 class HeliAttack extends EntityScript
   assets: ->
     @loadAssets('helicopter')
 
   spawn: (options) ->
-    @dir = options.from ? 'top'
     @ground = options.ground ? 660
     @corpseKeep = options.corpseKeep ? 10000
 
@@ -18,17 +64,19 @@ class HeliAttack extends EntityScript
     ).helicopter(
       pointsOnHit: 25
       pointsOnDestroy: 200
+      rotors: on
     )
     p.addComponent('BurstShot').burstShot
-      burstCooldown: 2500
-      burstAmount: 4
+      burstCooldown: 1500
+      burstAmount: 6
       angle: -15
-      angleDeviation: 10
+      angleDeviation: 5
       aim: 45
       cooldown: 50
       projectile: (x, y, angle) =>
-        projectile = Crafty.e('Projectile, sphere1, Hostile')
+        projectile = Crafty.e('Projectile, sphere1, Hostile, Collision')
           .crop(6, 21, 18, 7)
+          .collision(0, 0, 20, 0, 20, 5, 0, 5)
           .flip()
           .attr(
             w: 20
@@ -44,38 +92,12 @@ class HeliAttack extends EntityScript
     @bindSequence 'Destroyed', @onKilled
 
     @while(
-      @flightPath()
+      @movePath(@options.path, rotate: no) #, debug: yes)
       @sequence(
         @fireRockets()
-        @wait 5000
+        @wait 4000
       )
     )
-
-  flightPath: ->
-    if @dir is 'top'
-      @movePath [
-        [.9, .4]
-        [.7, .25]
-        [.65, .2]
-        [.4, .6]
-        [.6, .7]
-        [.8, .5]
-        [.4, .8]
-        [.2, .3]
-        [-.2, .5]
-      ]
-    else
-      @movePath [
-        [.9, .6]
-        [.7, .75]
-        [.65, .8]
-        [.4, .4]
-        [.6, .3]
-        [.8, .5]
-        [.4, .2]
-        [.2, .7]
-        [-.2, .5]
-      ]
 
   onKilled: ->
     @leaveAnimation @sequence(
@@ -85,22 +107,27 @@ class HeliAttack extends EntityScript
         @moveTo(
           x: .6
           y: @ground
-          speed: 250
+          speed: 150
           easing: 'easeInQuad'
           positionType: 'absoluteY'
         )
         @sequence(
-          @blast(@location(),
-            radius: 10,
-            duration: 480,
-            z: -1
-            lightness: .2
-            alpha: .5
-          )
-          @blast(@location(offsetX: 10, offsetY: 5),
-            radius: 5,
-            duration: 180,
-            z: -1
+          @if(
+            => !@entity.hidden
+            @sequence(
+              @blast(@location(),
+                radius: 10,
+                duration: 480,
+                z: -1
+                lightness: .2
+                alpha: .5
+              )
+              @blast(@location(offsetX: 10, offsetY: 5),
+                radius: 5,
+                duration: 180,
+                z: -1
+              )
+            )
           )
           @wait 100
         )
@@ -151,5 +178,8 @@ class HeliAttack extends EntityScript
       @wait 500
     )
 
-module.exports =
-  default: HeliAttack
+module.exports = {
+  HeliAttack,
+  HeliInactive
+  HeliFlyAway
+}

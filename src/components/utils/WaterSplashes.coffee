@@ -121,7 +121,7 @@ Crafty.c 'WaterSplashes',
 
       upwards *= @scale ? 1
 
-      coverage = 65
+      coverage = 45
       parts = (@w / coverage)
       r = 0
       vy = Math.min(Math.abs((@vy || 0) / 3), 100)

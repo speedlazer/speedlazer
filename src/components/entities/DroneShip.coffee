@@ -3,7 +3,7 @@ Crafty.c 'DroneShip',
     @requires '2D, WebGL, Tween, Choreography, ShipSolid, Collision,' +
       'Hideable, Flipable, Scalable, SunBlock, WaterSplashes'
     @attr(
-      w: 32 * 12
+      w: 32 * 20
       h: 32 * 5
       z: 6
       waterRadius: 8
@@ -13,7 +13,7 @@ Crafty.c 'DroneShip',
       minOffset: 2
       splashUpwards: false
     )
-    @collision [20, 50, 11*32, 50, 11*32, 128, 20, 128]
+    @collision [20, 50, 19*32, 50, 19*32, 128, 20, 128]
 
     start = Crafty.e('2D, WebGL, aircraftCarrierStart').attr(
       x: @x
@@ -29,31 +29,50 @@ Crafty.c 'DroneShip',
     )
     @attach(radar)
 
-    end = Crafty.e('2D, WebGL, aircraftCarrierEnd').attr(
+    @attach Crafty.e("2D, WebGL, aircraftCarrierBottomFlat").attr(
+      x: @x + 6 * 32
+      y: @y + 64
+      z: -15
+    )
+
+    @attach Crafty.e("2D, WebGL, aircraftCarrierTopFlat").attr(
       x: @x + 6 * 32
       y: @y
-      z: -13
+      z: -15
+    )
+
+    @attach Crafty.e("2D, WebGL, aircraftCarrierBottomSpace").attr(
+      x: @x + 10 * 32
+      y: @y + 64
+      z: -15
+    )
+
+    @attach Crafty.e("2D, WebGL, aircraftCarrierTopFlat").attr(
+      x: @x + 10 * 32
+      y: @y
+      z: -15
+    )
+
+    end = Crafty.e('2D, WebGL, aircraftCarrierEnd').attr(
+      x: @x + 14 * 32
+      y: @y
+      z: -15
     )
     @attach(end)
 
-    start2 = Crafty.e('2D, WebGL, aircraftCarrierStart').attr(
-      x: @x
-      y: @y + 60
-      z: 3
-    ).crop(0, 60, 6*32, 5*32)
-    @attach(start2)
-    end2 = Crafty.e('2D, WebGL, aircraftCarrierEnd').attr(
-      x: @x + 6 * 32
-      y: @y + 60
-      z: 3
-    ).crop(0, 60, 6*32, 5*32)
-    @attach(end2)
-
-    @hatch = Crafty.e('CarrierHatch').attr(
+    @hatch = Crafty.e('CarrierHatch, ShipHatch1').attr(
       x: @x + 3 * 32
       y: @y + 29
     )
     @attach(@hatch)
+
+    @attach Crafty.e('2D, TurretPlace').attr(
+      x: @x + 370
+      y: @y + 84
+      z: 15
+      w: 15
+      h: 2
+    )
 
   open: ->
     @hatch.open()
@@ -65,4 +84,3 @@ Crafty.c 'DroneShip',
     switch action
       when 'open' then @open()
       when 'close' then @close()
-

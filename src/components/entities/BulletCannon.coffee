@@ -1,6 +1,6 @@
 defaults = require('lodash/defaults')
 
-Crafty.c 'MineCannon',
+Crafty.c 'BulletCannon',
   init: ->
     @requires 'Enemy, turretFoot'
     @attr(
@@ -10,7 +10,7 @@ Crafty.c 'MineCannon',
     @bind 'HitFlash', @applyBarrelHitFlash
     #@color('#404040')
 
-  mineCannon: (attr = {}) ->
+  bulletCannon: (attr = {}) ->
     defaultHealth = 1750
     @attr defaults(attr,
       health: defaultHealth
@@ -36,6 +36,14 @@ Crafty.c 'MineCannon',
       (e) => @onExplosionHit(e)
       => @onProjectileHitEnd()
     )
+    @tip = Crafty.e('2D')
+    @tip.attr(
+      x: @x - 64
+      y: @y - 27
+      w: 1
+      h: 1
+    )
+    @barrel.attach(@tip)
 
     @attach(@barrel)
 
@@ -59,6 +67,28 @@ Crafty.c 'MineCannon',
     switch action
       when 'aim'
         @aimAt(level.player('anyActive'))
+      when 'start-shooting'
+        @tip.addComponent('BurstShot').burstShot
+          burstCooldown: 1500
+          burstAmount: 6
+          angleDeviation: 5
+          aim: 0
+          cooldown: 50
+          projectile: (x, y, angle) =>
+            projectile = Crafty.e('Projectile, sphere1, Hostile, Collision')
+              .crop(6, 21, 18, 7)
+              .collision(0, 0, 20, 0, 20, 5, 0, 5)
+              .flip()
+              .attr(
+                w: 20
+                h: 8
+                speed: 350
+                damage: 1
+              )
+
+            projectile.shoot(x - 5, y + 10, angle)
+      when 'stop-shooting'
+        @tip.removeComponent('BurstShot')
 
   aimAt: (player) ->
     angle = @aimAngle(player)

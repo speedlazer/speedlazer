@@ -1,9 +1,9 @@
 Crafty.c 'Sun',
   init: ->
     @requires '2D, WebGL, Collision, Choreography, sun'
-    @crop(0, 1, 64, 64)
+    @crop(1, 0, 96, 96)
 
-    @attr(w: 20, h: 20, z: -1000)
+    @attr(w: 22, h: 22, z: -1000)
 
     @origin 'center'
     @glare = []
@@ -121,9 +121,9 @@ Crafty.c 'Sun',
     # For sunrise / set on water
     horizonDistance = (Crafty.viewport.height - 225) - @y
 
-    size = 65.0 - (30.0 * (Math.min(Math.max(horizonDistance, 0), 200.0) / 200.0))
-    blur = 2 - (2.0 * (Math.min(Math.max(horizonDistance, 0), 200.0) / 200.0))
-    @attr blur: blur
+    size = 85.0 - (40.0 * (Math.min(Math.max(horizonDistance, 0), 200.0) / 200.0))
+    #blur = 2 - (2.0 * (Math.min(Math.max(horizonDistance, 0), 200.0) / 200.0))
+    #@attr blur: blur
     @w = size
     @h = size
 

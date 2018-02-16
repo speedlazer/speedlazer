@@ -39,7 +39,7 @@ Level =
         @blast(@location({
           offsetX: options.offsetX
           offsetY: options.offsetY
-        }), alpha: .85)
+        }, radius: 10), alpha: .85)
         => Crafty.audio.play("explosion", 1, .25)
       )
 

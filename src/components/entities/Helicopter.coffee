@@ -14,13 +14,16 @@ Crafty.c 'Helicopter',
       w: 128,
       h: 55,
       health: defaultHealth
+      rotors: on
       maxHealth: attr.health ? defaultHealth
       weaponOrigin: [5, 46]
     )
 
     @origin 'center'
-    @flip('x')
-    @animate 'fly', -1
+    if @rotors is on
+      @animate 'fly', -1
+    else
+      @sprite(12, 8)
     #@colorOverride '#808080', 'partial'
 
     @enemy()
@@ -36,6 +39,14 @@ Crafty.c 'Helicopter',
         )
 
     this
+
+  execute: (action) ->
+    switch action
+      when 'start-rotors'
+        @animate 'fly', -1
+      when 'stop-rotors'
+        @pauseAnimation()
+        @sprite(12, 8)
 
   updatedHealth: ->
     healthPerc = @health / @maxHealth
