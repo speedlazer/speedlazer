@@ -80,7 +80,9 @@ Core =
 
       whileResolved = no
       condition(sequence)
+        .then -> whileResolved = yes
         .catch (e) ->
+          whileResolved = yes
           throw e unless e.message is 'sequence mismatch'
         .finally -> whileResolved = yes
       WhenJS.iterate(
