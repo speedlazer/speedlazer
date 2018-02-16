@@ -73,7 +73,7 @@ class ShipBoss extends EntityScript
     # .setSealevel(@level.visibleHeight - 10)
 
   getPath: (pattern) ->
-    console.log('pattern', pattern)
+    console.log('pattern', pattern())
     return [
       [.156, .5]
       [.5, .833]
@@ -166,7 +166,6 @@ class ShipBoss extends EntityScript
       )
     )
 
-
   executeStageTwo: ->
     @sequence(
       @moveTo(x: -0.1, easing: "easeInOutQuad")
@@ -176,7 +175,10 @@ class ShipBoss extends EntityScript
           delay: 0
           options:
             attach: 'TurretPlace'
-        @releaseDronesFromHatchOne(Math.round(Math.random() * 3 + 1))
+        @lazy(
+          @releaseDronesFromHatchOne,
+          -> Math.round(Math.random() * 3 + 1)
+        )
       )
     )
 
@@ -188,7 +190,10 @@ class ShipBoss extends EntityScript
         options:
           attach: 'TurretPlace'
           attachOffset: 1
-      @releaseDronesFromHatchTwo()
+      @lazy(
+        @releaseDronesFromHatchTwo,
+        -> Math.round(Math.random() * 3 + 1)
+      )
     )
 
   execute: ->

@@ -150,7 +150,7 @@ Core =
       )
       return
 
-  lazy: (func, args) ->
+  lazy: (func, args...) ->
     (sequence) =>
       return func.apply(this, args)(sequence)
 
