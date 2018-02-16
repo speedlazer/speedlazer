@@ -149,7 +149,7 @@ class Stage1 extends LazerScript
             @repeat 2, @sequence(
               @parallel(
                 @placeSquad DroneFlyer,
-                  amount: 3
+                  amount: 4
                   delay: 400
                   options:
                     x: .5
@@ -163,7 +163,7 @@ class Stage1 extends LazerScript
                       [-.1, .3]
                     ]
                  @placeSquad DroneFlyer,
-                  amount: 3
+                  amount: 4
                   delay: 400
                   options:
                     x: .5
@@ -185,11 +185,12 @@ class Stage1 extends LazerScript
       @parallel(
         @placeSquad HeliAttack,
           options:
+            speed: 80
             path: [
               [.9, .4]
               [.7, .25]
-              [.65, .2]
-              [.4, .6]
+              [.55, .2]
+              [.4, .5]
               [.6, .7]
               [.8, .5]
               [.4, .8]
@@ -201,11 +202,11 @@ class Stage1 extends LazerScript
       @wait 5000
       @parallel(
         @burstFlight(.2, 0)
-        @burstFlight(.4, 2000)
-        @burstFlight(.6, 4000)
+        @burstFlight(.4, 1000)
+        @burstFlight(.6, 2000)
       )
       @placeSquad DroneFlyer,
-        amount: 3
+        amount: 4
         delay: 400
         options:
           x: -.2
@@ -219,7 +220,7 @@ class Stage1 extends LazerScript
             [-.1, .7]
           ]
       @placeSquad DroneFlyer,
-        amount: 3
+        amount: 4
         delay: 400
         options:
           x: -.2
@@ -232,34 +233,56 @@ class Stage1 extends LazerScript
             [.5, .2]
             [-.1, .4]
           ]
-      @placeSquad DroneShip
+      @parallel(
+        @placeSquad DroneShip
+        @sequence(
+          @wait 5000
+          @parallel(
+            @placeSquad DroneFlyer,
+              amount: 4
+              delay: 400
+              options:
+                x: -.2
+                y: 0.2
+                path: [
+                  [.5, .5]
+                  [.7, .5]
+                  [.93, .39]
+                  [.8, .2]
+                  [.5, .2]
+                  [-.1, .4]
+                ]
+            @burstFlight(.6, 3000)
+          )
+        )
+      )
       @parallel(
         @placeSquad DroneFlyer,
-          amount: 3
+          amount: 6
           delay: 400
           options:
-            x: -.2
-            y: 0.2
+            x: 0.9
+            y: -0.1
             path: [
               [.5, .5]
-              [.7, .5]
-              [.93, .39]
-              [.8, .2]
-              [.5, .2]
-              [-.1, .4]
+              [-.1, .3]
             ]
-        @burstFlight(.6, 4000)
+        @placeSquad DroneFlyer,
+          amount: 6
+          delay: 400
+          options:
+            x: 0.8
+            y: -0.1
+            path: [
+              [.4, .5]
+              [-.2, .3]
+            ]
       )
-      @placeSquad DroneFlyer,
-        amount: 6
-        delay: 400
-        options:
-          x: 0.9
-          y: -0.1
-          path: [
-            [.5, .5]
-            [-.1, .3]
-          ]
+      @parallel(
+        @burstFlight(.1, 0)
+        @burstFlight(.4, 800)
+        @burstFlight(.7, 1600)
+      )
 
     )
 
@@ -267,9 +290,7 @@ class Stage1 extends LazerScript
     repeatPattern = (height) ->
       [
         [.2, height]
-        [.1, height + .1]
         [.2, height + .2]
-        [.4, height + .1]
         [.6, height]
         [1.1, height]
       ]

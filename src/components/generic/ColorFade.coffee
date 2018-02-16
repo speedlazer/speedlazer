@@ -1,6 +1,9 @@
 Crafty.c 'ColorFade',
-  colorFade: (options, @bottomColors, @topColors) ->
+  colorFade: (options, bottomColors, topColors) ->
     { @duration, skip } = options
+    @_bottomColors = bottomColors.map(@_strToColor)
+    @_topColors = topColors.map(@_strToColor)
+
     @v = 0
     @v += Math.max(skip, 0) ? 0
     @bind 'GameLoop', @_recolor
@@ -17,10 +20,12 @@ Crafty.c 'ColorFade',
       @trigger 'ColorFadeFinished'
       pos = 1
 
-    bcolor = @_buildColor(pos, @bottomColors)
-    tcolor = @_buildColor(pos, @topColors)
-    Crafty.trigger('BackgroundColor', bcolor)
-    Crafty.background bcolor
+    bcolor = @_buildColor(pos, @_bottomColors)
+    tcolor = @_buildColor(pos, @_topColors)
+
+    stringColor = @_colorToStr(bcolor)
+    Crafty.trigger('BackgroundColor', stringColor)
+    Crafty.background stringColor
 
     @bottomColor bcolor
     @topColor tcolor
@@ -35,20 +40,21 @@ Crafty.c 'ColorFade',
     @_mix(localV, from, to)
 
   _mix: (v, from, to) ->
-    f = @_strToColor from
-    t = @_strToColor to
+    [
+      Math.round(from[0] * (1 - v) + to[0] * v)
+      Math.round(from[1] * (1 - v) + to[1] * v)
+      Math.round(from[2] * (1 - v) + to[2] * v)
+    ]
 
-    c =
-      r: Math.round(f.r * (1 - v) + t.r * v)
-      g: Math.round(f.g * (1 - v) + t.g * v)
-      b: Math.round(f.b * (1 - v) + t.b * v)
-    "##{(('0' + i.toString(16)).slice(-2) for k, i of c).join ''}"
+
+  _colorToStr: (color) ->
+    '#' + color.map((value) -> ('0' + value.toString(16)).slice(-2)).join('')
 
   _strToColor: (string) ->
-    {
-      r: parseInt(string[1..2], 16)
-      g: parseInt(string[3..4], 16)
-      b: parseInt(string[5..6], 16)
-    }
+    [
+      parseInt(string[1..2], 16),
+      parseInt(string[3..4], 16),
+      parseInt(string[5..6], 16)
+    ]
 
 

@@ -92,10 +92,10 @@ class HeliAttack extends EntityScript
     @bindSequence 'Destroyed', @onKilled
 
     @while(
-      @movePath(@options.path, rotate: no) #, debug: yes)
+      @movePath(@options.path, rotate: no, debug: @options.debug)
       @sequence(
-        @fireRockets()
         @wait 4000
+        @fireRockets()
       )
     )
 
