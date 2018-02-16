@@ -2,6 +2,7 @@
 { MineCannonInActive, MineCannonActive } = require('./mine_cannon')
 { TurretInActive, TurretActive } = require('./turret')
 { Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer, DroneFlyer } = require('../stage1/army_drone')
+{ HeliInactive, HeliFlyAway, HeliAttack } = require('./heli_attack')
 
 class Cabin1Inactive extends EntityScript
   spawn: (options) ->
@@ -106,8 +107,11 @@ class ShipBoss extends EntityScript
       @placeSquad MineCannonInActive, # MineCannon
         options:
           attach: 'MineCannonPlace'
-
-      # Add Heli's
+      @placeSquad HeliInactive,
+        amount: 2
+        delay: 0
+        options:
+          attach: 'HeliPlace'
     )
 
   executeStageOne: ->
