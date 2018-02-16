@@ -143,7 +143,7 @@ Entity =
 
       debugPoints = []
       if settings.debug
-        debugPoints = debugPoints.concat normalized.map((point) ->
+        debugPoints = debugPoints.concat normalized.map((point, i) ->
           Crafty.e("2D, DOM, Color, MovePathDebug")
             .attr({
               x: point.x,
@@ -152,6 +152,16 @@ Entity =
               h: 5,
               z: -50
             }).color("#FFFFFF")
+        )
+        debugPoints = debugPoints.concat normalized.map((point, i) ->
+          Crafty.e("2D, DOM, Text, MovePathDebug")
+            .attr({
+              x: point.x + 8,
+              y: point.y,
+              w: 50,
+              h: 20,
+              z: -50
+            }).text(i)
         )
         debugPoints = debugPoints.concat bp.getLUT(50).map((point) ->
           Crafty.e("2D, DOM, Color, MovePathDebug")
