@@ -154,26 +154,26 @@ Core =
   wait: (amount) ->
     (sequence) =>
       @_verify(sequence)
-      return WhenJS() if @_skippingToCheckpoint()
-      d = WhenJS.defer()
-
+      return Promise.resolve() if @_skippingToCheckpoint()
+      level = this
       duration = Math.max(amount?() ? amount, 0)
       parts = duration // 40
-      level = this
-      Crafty.e('Delay').delay(
-        ->
-          try
-            level._verify(sequence)
-          catch e
-            d.reject(e)
+      new Promise((resolve, reject) ->
+        Crafty.e('Delay').delay(
+          ->
+            try
+              level._verify(sequence)
+            catch e
+              reject(e)
+              @destroy()
+            null
+          40
+          parts
+          ->
+            resolve()
             @destroy()
-        40
-        parts
-        ->
-          d.resolve()
-          @destroy()
+        )
       )
-      d.promise
 
   # Stops the current script chain.
   endSequence: ->

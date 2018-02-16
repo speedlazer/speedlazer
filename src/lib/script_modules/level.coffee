@@ -42,7 +42,7 @@ Level =
   placeSquad: (scriptClass, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
-      return WhenJS() if @_skippingToCheckpoint()
+      return Promise.resolve() if @_skippingToCheckpoint()
       synchronizer = new Synchronizer
       settings = clone settings
 
@@ -59,19 +59,18 @@ Level =
       scripts = (for i in [0...settings.amount]
         synchronizer.registerEntity(new scriptClass(@level))
       )
-      loadingAssets = WhenJS(true)
+      loadingAssets = Promise.resolve()
 
       if scripts[0]?.assets?
         loadingAssets = scripts[0].assets(clone(settings.options))(sequence)
 
       loadingAssets.then =>
-        promises = (for script, i in scripts
-          do (script, i) =>
-            @wait(i * settings.delay)(sequence).then =>
-              @_verify(sequence)
-              s = clone(settings.options)
-              s.index = i
-              script.run(s)
+        promises = scripts.map((script, i) =>
+          @wait(i * settings.delay)(sequence).then =>
+            @_verify(sequence)
+            s = clone(settings.options)
+            s.index = i
+            script.run(s)
         )
         WhenJS.all(promises).then (results) =>
           @attackWaveResults = (@attackWaveResults || []).concat(results)
@@ -100,7 +99,7 @@ Level =
   attackWaves: (promise, settings = {}) ->
     (sequence) =>
       @_verify(sequence)
-      return WhenJS() if @_skippingToCheckpoint()
+      return Promise.resolve() if @_skippingToCheckpoint()
       @attackWaveResults = []
 
       promise(sequence).then =>
@@ -136,7 +135,7 @@ Level =
   say: (speaker, text, options = {}) ->
     (sequence) =>
       @_verify(sequence)
-      return WhenJS() if @_skippingToCheckpoint()
+      return Promise.resolve() if @_skippingToCheckpoint()
       unless text?
         text = speaker
         speaker = undefined
@@ -164,12 +163,12 @@ Level =
   drop: (options) ->
     (sequence) =>
       @_verify(sequence)
-      return WhenJS() if @_skippingToCheckpoint()
+      return Promise.resolve() if @_skippingToCheckpoint()
       itemSettings = @inventory(options.item)
       item = (attrs) -> Crafty.e('PowerUp').attr(attrs).powerUp(itemSettings)
       unless itemSettings
         console.warn 'Item ', options.item, ' is not known'
-        return WhenJS()
+        return Promise.resolve()
       if player = options.inFrontOf
         ship = player.ship()
         if ship
@@ -246,7 +245,7 @@ Level =
   setScenery: (scenery) ->
     (sequence) =>
       @_verify(sequence)
-      return WhenJS() if @_skippingToCheckpoint()
+      return Promise.resolve() if @_skippingToCheckpoint()
       @level.setScenery scenery
 
   # Supported eventTypes:
@@ -262,7 +261,7 @@ Level =
       options = defaults(options,
         event: 'enter'
       )
-      return WhenJS() if @_skippingToCheckpoint()
+      return Promise.resolve() if @_skippingToCheckpoint()
       d = WhenJS.defer()
       @level.notifyScenery options.event, sceneryType, -> d.resolve()
       d.promise
@@ -368,13 +367,13 @@ Level =
     (sequence) =>
       @_verify(sequence)
       Crafty('LevelTitle').text "#{number}: #{text}"
-      return WhenJS() if @_skippingToCheckpoint()
+      return Promise.resolve() if @_skippingToCheckpoint()
       Crafty.e('BigText').bigText(text, super: "Chapter #{number}:")
 
   showText: (text, options = {}) ->
     (sequence) =>
       @_verify(sequence)
-      return WhenJS() if @_skippingToCheckpoint()
+      return Promise.resolve() if @_skippingToCheckpoint()
       Crafty.e('BigText').bigText(text, options)
 
   pickTarget: (selection, index = null) ->
