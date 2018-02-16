@@ -153,8 +153,8 @@ class ShipBoss extends EntityScript
           amount: 8,
           delay: 500
           options:
-            startAt: 'ShipHatch1'
-            hatchReveal: 'ShipHatch1'
+            startAt: 'ShipHatch2'
+            hatchReveal: 'ShipHatch2'
             dx: 25
             dy: 20
             debug: true,
