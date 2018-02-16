@@ -11,9 +11,8 @@ class TurretInActive extends EntityScript
 class TurretActive extends EntityScript
 
   spawn: (options) ->
-    item = Crafty('TurretInactive')[0]
-    if item
-      entity = Crafty(item)
+    entity = Crafty('TurretInactive').get(0)
+    if entity
       entity.removeComponent('TurretInactive')
     else
       entity = Crafty.e('BulletCannon, KeepAlive').bulletCannon()
