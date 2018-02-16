@@ -45,6 +45,10 @@ module.exports = {
         use: ["style-loader", "css-loader"]
       },
       {
+        test: /\.(frag|vert)$/,
+        use: ["raw-loader"]
+      },
+      {
         test: /\.(png|svg|jpg|gif)$/,
         use: [
           {
