@@ -1,9 +1,8 @@
 extend = require('lodash/extend')
 { LazerScript } = require('src/lib/LazerScript')
 { DroneFlyer } = require('./stage1/army_drone')
-{ CrewShooters } = require('./stage1/takeover_drone')
 { HeliAttack } = require('./stage1/heli_attack')
-{ Stage1BossRocketStrike, Stage1BossStage1 } = require('./stage1/stage1boss')
+{ Stage1BossRocketStrike, Stage1BossStage1, BossHeliAttack } = require('./stage1/stage1boss')
 { StartOfDawn, DayBreak, Morning } = require('./stage1/sunrise')
 
 CameraCrew  = require('./stage1/camera_crew').default
@@ -131,7 +130,7 @@ class Stage1 extends LazerScript
       @parallel(
         @say('General', 'We need to get out of this chopper!', noise: 'low')
         #@say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!', noise: 'low')
-        @placeSquad CrewShooters
+        @placeSquad BossHeliAttack
       )
       @async @chapterTitle(1, 'Hacked')
     )
