@@ -109,9 +109,17 @@ Crafty.c 'BattleShip',
     )
 
     @attach Crafty.e('2D, TurretPlace').attr(
-      x: @x + 1050
+      x: @x + 800
       y: @y + 44
       z: -6
+      w: 15
+      h: 2
+    )
+
+    @attach Crafty.e('2D, DroneShipCorePlace').attr(
+      x: @x + 900
+      y: @y + 50
+      z: -8
       w: 15
       h: 2
     )

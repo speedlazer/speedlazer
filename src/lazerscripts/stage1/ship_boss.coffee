@@ -1,9 +1,11 @@
 { EntityScript } = require('src/lib/LazerScript')
 { MineCannonInActive, MineCannonActive } = require('./mine_cannon')
+{ DroneShipCore } = require('./drone_ship_core');
 { TurretInActive, TurretActive } = require('./turret')
 { Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer, DroneFlyer } = require('../stage1/army_drone')
 { HeliInactive, HeliFlyAway, HeliAttack } = require('./heli_attack')
 
+console.log(DroneShipCore)
 class Cabin1Inactive extends EntityScript
   spawn: (options) ->
     Crafty.e('FirstShipCabin, KeepAlive')
@@ -73,7 +75,6 @@ class ShipBoss extends EntityScript
     # .setSealevel(@level.visibleHeight - 10)
 
   getPath: (pattern) ->
-    console.log('pattern', pattern())
     return [
       [.156, .5]
       [.5, .833]
@@ -112,6 +113,9 @@ class ShipBoss extends EntityScript
         delay: 0
         options:
           attach: 'HeliPlace'
+      @placeSquad DroneShipCore,
+        options:
+          attach: 'DroneShipCorePlace'
     )
 
   executeStageOne: ->
