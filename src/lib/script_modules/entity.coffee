@@ -408,7 +408,7 @@ Entity =
 
     deltaX = if settings.x? then Math.abs(settings.x - @entity.x) else 0
     deltaY = if settings.y? then Math.abs(settings.y - @entity.y) else 0
-    delta = Math.sqrt((deltaX ** 2) + (deltaY ** 2))
+    delta = Math.sqrt(((deltaX || 0) ** 2) + ((deltaY || 0) ** 2))
     return Promise.resolve() if delta == 0
 
     return new Promise((resolve) =>
