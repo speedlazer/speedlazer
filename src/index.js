@@ -36,20 +36,19 @@ window.addEventListener("resize", scaleGame);
 document.getElementById("version").textContent = process.env.VERSION;
 
 // Handle the fullscreen button
-document.addEventListener("click", e => {
-  if (e.target.matches("#cr-stage,#cr-stage *")) {
-    const theater = document.getElementById("theater");
-    screenfull.request(theater);
-    document.body.classList.add("fullscreen");
-    scaleGame();
-    document.addEventListener(screenfull.raw.fullscreenchange, () => {
-      if (!screenfull.isFullscreen) {
-        // exit fullscreen code here
-        document.body.classList.remove("fullscreen");
-        scaleGame();
-      }
-    });
-  }
+const button = document.querySelector("button");
+button.addEventListener("click", () => {
+  const theater = document.getElementById("theater");
+  screenfull.request(theater);
+  document.body.classList.add("fullscreen");
+  scaleGame();
+  document.addEventListener(screenfull.raw.fullscreenchange, () => {
+    if (!screenfull.isFullscreen) {
+      // exit fullscreen code here
+      document.body.classList.remove("fullscreen");
+      scaleGame();
+    }
+  });
 });
 
 setTimeout(scaleGame, 0);
