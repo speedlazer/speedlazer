@@ -332,8 +332,17 @@ class Stage1 extends LazerScript
       @setScenery('CoastStart')
       @sunRise(2)
       @checkpoint @checkpointStart('CoastStart', 2)
+
       @say('John', 'Enemy Navy Mothership approaching! Stay alert!')
-      @placeSquad ShipBoss
+      @async @showText 'Warning!', color: '#FF0000', mode: 'blink', blink_amount: 6, blink_speed: 100
+      @mineSwarm()
+      @parallel(
+        @sequence(
+          @wait 3000
+          @placeSquad ShipBoss
+        )
+        @mineSwarm()
+      )
 
       # temp end
       @wait 2000
@@ -481,22 +490,22 @@ class Stage1 extends LazerScript
 
     @async @runScript(script)
 
-  #mineSwarm: (options = { direction: 'right' })->
-    #@placeSquad JumpMine,
-      #amount: 10
-      #delay: 100
-      #options:
-        #gridConfig:
-          #x:
-            #start: 0.2
-            #steps: 8
-            #stepSize: 0.10
-          #y:
-            #start: 0.125
-            #steps: 6
-            #stepSize: 0.10
-        #points: options.points ? yes
-        #direction: options.direction
+  mineSwarm: (options = { direction: 'right' })->
+    @placeSquad JumpMine,
+      amount: 10
+      delay: 100
+      options:
+        gridConfig:
+          x:
+            start: 0.2
+            steps: 8
+            stepSize: 0.10
+          y:
+            start: 0.125
+            steps: 6
+            stepSize: 0.10
+        points: options.points ? yes
+        direction: options.direction
 
 
   #stalkerShootout: ->

@@ -22,9 +22,9 @@ class JumpMine extends EntityScript
         projectile = Crafty.e('Sphere, Hostile, Projectile')
           .blink()
           .attr(
-            w: 14
-            h: 14
-            speed: 400
+            w: 20
+            h: 20
+            speed: 300
             damage: 1
           )
         projectile.shoot(x, y, angle)

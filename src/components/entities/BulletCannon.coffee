@@ -15,8 +15,9 @@ Crafty.c 'BulletCannon',
     @attr defaults(attr,
       health: defaultHealth
       maxHealth: attr.health ? defaultHealth
-      aimSpeed: 45
+      aimSpeed: 90
     )
+    @enemy()
     @barrel = Crafty.e('2D, WebGL, mineCannon, TweenPromise, Collision')
     @barrel.attr(
       x: @x - 64
@@ -47,7 +48,6 @@ Crafty.c 'BulletCannon',
 
     @attach(@barrel)
 
-    @enemy()
     this
 
   applyBarrelHitFlash: (onOff) ->
