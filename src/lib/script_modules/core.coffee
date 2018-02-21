@@ -81,10 +81,8 @@ Core =
       whileResolved = no
       condition(sequence)
         .then ->
-          console.log('resolved')
           whileResolved = yes
         .catch (e) ->
-          console.log('rejected')
           whileResolved = yes
           throw e unless e.message is 'sequence mismatch'
         .finally -> whileResolved = yes
