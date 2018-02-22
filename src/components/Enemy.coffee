@@ -4,8 +4,8 @@ Crafty.c 'Enemy',
   init: ->
     @requires '2D, WebGL, Collision, Tween, Choreography, Hideable, Flipable, Scalable, SunBlock, Hostile'
     @attr
-      pointsOnHit: 10
-      pointsOnDestroy: 50
+      pointsOnHit: 0
+      pointsOnDestroy: 0
       damage: 2
     @invincible = no
     @bind 'HitFlash', @applyHitFlash
