@@ -1,6 +1,6 @@
 # Crude extraction of logic. It needs more refactoring,
 # and could be extracted more to a generic Menu class
-class Game.PauseMenu
+class PauseMenu
   constructor: ->
     Crafty.bind 'GamePause', (state) =>
       if state
@@ -207,3 +207,7 @@ class Game.PauseMenu
       @unbind 'Fire', self._handleFire
 
     Crafty('PauseMenu').each -> @destroy()
+
+module.exports = {
+  default: PauseMenu
+}

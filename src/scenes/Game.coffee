@@ -1,6 +1,7 @@
 Stage1 = require('src/lazerscripts/stage1').default
 Test = require('src/lazerscripts/Test').default
 Benchmark = require('src/lazerscripts/benchmark').default
+PauseMenu = require('src/lib/PauseMenu').default
 
 levelGenerator = require('src/lib/LevelGenerator').default
 
@@ -100,7 +101,7 @@ Crafty.defineScene 'Game', (data = {}) ->
       script: startScript
     )
 
-  new Game.PauseMenu
+  new PauseMenu
 
 , ->
   # destructor

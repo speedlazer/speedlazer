@@ -2,7 +2,6 @@ import "babel-polyfill";
 import "./styles/normalize.css";
 import "./styles/style.css";
 import "./components";
-import "./lib";
 import "./scenery";
 import "./scenes";
 import "./systems/SeaLevel";
