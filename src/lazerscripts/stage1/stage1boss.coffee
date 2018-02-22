@@ -603,8 +603,8 @@ class Stage1BossRocketStrike extends EntityScript
 class Stage1BossRocket extends EntityScript
   spawn: (options) ->
     options = defaults(options,
-      pointsOnHit: 125
-      pointsOnDestroy: 50
+      pointsOnHit: 0
+      pointsOnDestroy: 0
       offsetY: 0
       offsetX: 0
       scale: 1.0

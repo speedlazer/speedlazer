@@ -62,8 +62,8 @@ class HeliAttack extends EntityScript
       defaultSpeed: options.speed ? 40
       weaponOrigin: [0, 25]
     ).helicopter(
-      pointsOnHit: 25
-      pointsOnDestroy: 200
+      pointsOnHit: 10
+      pointsOnDestroy: 70
       rotors: on
     )
     p.addComponent('BurstShot').burstShot

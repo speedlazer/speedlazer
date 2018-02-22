@@ -46,6 +46,7 @@ class Stage1 extends LazerScript
       #@setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
 
       @lazy @droneTakeover
+      @async @chapterTitle(1, 'Hacked')
       @lazy @sunRise, 1
       @lazy @oceanFighting
       @lazy @midStageBossFight
@@ -88,7 +89,7 @@ class Stage1 extends LazerScript
       )
       @placeSquad DroneFlyer,
         amount: 6
-        delay: 250
+        delay: 500
         options:
           path: [
             [.9, .6]
@@ -100,7 +101,7 @@ class Stage1 extends LazerScript
         @gainHeight(150, duration: 4000)
         @placeSquad DroneFlyer,
           amount: 6
-          delay: 250
+          delay: 500
           options:
             path: [
               [.9, .3]
@@ -113,7 +114,7 @@ class Stage1 extends LazerScript
         @say('General', 'Great job!', noise: 'low')
         @placeSquad DroneFlyer,
           amount: 6
-          delay: 250
+          delay: 500
           options:
             path: [
               [.5, .625]
@@ -125,14 +126,13 @@ class Stage1 extends LazerScript
     )
 
   droneTakeover: ->
-    @sequence(
-      @say('John', 'What is that for drone!??')
-      @parallel(
+    @parallel(
+      @sequence(
+        @say('John', 'What is that for drone!??')
         @say('General', 'We need to get out of this chopper!', noise: 'low')
         #@say('General', 'They do not respond to our commands anymore!\nOur defence AI has been hacked!', noise: 'low')
-        @placeSquad BossHeliAttack
       )
-      @async @chapterTitle(1, 'Hacked')
+      @placeSquad BossHeliAttack
     )
 
   oceanFighting: ->
@@ -149,7 +149,7 @@ class Stage1 extends LazerScript
               @parallel(
                 @placeSquad DroneFlyer,
                   amount: 4
-                  delay: 400
+                  delay: 500
                   options:
                     x: .5
                     y: -.01
@@ -163,7 +163,7 @@ class Stage1 extends LazerScript
                     ]
                  @placeSquad DroneFlyer,
                   amount: 4
-                  delay: 400
+                  delay: 500
                   options:
                     x: .5
                     y: 1.11
@@ -201,12 +201,12 @@ class Stage1 extends LazerScript
       @wait 5000
       @parallel(
         @burstFlight(.2, 0)
-        @burstFlight(.4, 1000)
-        @burstFlight(.6, 2000)
+        @burstFlight(.4, 2000)
+        @burstFlight(.6, 4000)
       )
       @placeSquad DroneFlyer,
         amount: 4
-        delay: 400
+        delay: 500
         options:
           x: -.2
           y: 0.5
@@ -220,7 +220,7 @@ class Stage1 extends LazerScript
           ]
       @placeSquad DroneFlyer,
         amount: 4
-        delay: 400
+        delay: 500
         options:
           x: -.2
           y: 0.2
@@ -232,33 +232,28 @@ class Stage1 extends LazerScript
             [.5, .2]
             [-.1, .4]
           ]
+      @placeSquad DroneShip
       @parallel(
-        @placeSquad DroneShip
-        @sequence(
-          @wait 5000
-          @parallel(
-            @placeSquad DroneFlyer,
-              amount: 4
-              delay: 400
-              options:
-                x: -.2
-                y: 0.2
-                path: [
-                  [.5, .5]
-                  [.7, .5]
-                  [.93, .39]
-                  [.8, .2]
-                  [.5, .2]
-                  [-.1, .4]
-                ]
-            @burstFlight(.6, 3000)
-          )
-        )
+        @placeSquad DroneFlyer,
+          amount: 4
+          delay: 500
+          options:
+            x: -.2
+            y: 0.2
+            path: [
+              [.5, .5]
+              [.7, .5]
+              [.93, .39]
+              [.8, .2]
+              [.5, .2]
+              [-.1, .4]
+            ]
+        @burstFlight(.6, 3000)
       )
       @parallel(
         @placeSquad DroneFlyer,
           amount: 6
-          delay: 400
+          delay: 500
           options:
             x: 0.9
             y: -0.1
@@ -268,7 +263,7 @@ class Stage1 extends LazerScript
             ]
         @placeSquad DroneFlyer,
           amount: 6
-          delay: 400
+          delay: 500
           options:
             x: 0.8
             y: -0.1
@@ -297,7 +292,7 @@ class Stage1 extends LazerScript
       @wait(delay)
       @placeSquad DroneFlyer,
         amount: 4
-        delay: 250
+        delay: 500
         options:
           path: repeatPattern(height)
           y: height
