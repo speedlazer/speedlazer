@@ -96,10 +96,10 @@ Game =
       .setName('Player 1')
       .color('#FF0000')
 
-    Crafty.e('Player, Color')
-      .attr(name: 'Player 2', z: 10, playerNumber: 2)
-      .setName('Player 2')
-      .color('#00FF00')
+    #Crafty.e('Player, Color')
+      #.attr(name: 'Player 2', z: 10, playerNumber: 2)
+      #.setName('Player 2')
+      #.color('#00FF00')
 
     Crafty.e('AnalogKeyboardControls, PlayerAssignable')
       .controls
