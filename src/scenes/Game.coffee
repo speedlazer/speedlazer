@@ -1,5 +1,5 @@
 Stage1 = require('src/lazerscripts/stage1').default
-Test = require('src/lazerscripts/test').default
+Test = require('src/lazerscripts/Test').default
 Benchmark = require('src/lazerscripts/benchmark').default
 
 levelGenerator = require('src/lib/LevelGenerator').default
