@@ -3,7 +3,7 @@ import defaults from "lodash/defaults";
 Crafty.c("Drone", {
   required: "Enemy, standardDrone",
   events: {
-    "Hit": "_handleHit"
+    Hit: "_handleHit"
   },
 
   drone(attr = {}) {
