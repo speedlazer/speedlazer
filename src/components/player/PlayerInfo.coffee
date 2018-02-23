@@ -6,6 +6,7 @@ Crafty.c 'PlayerInfo',
 
   playerInfo: (x, player) ->
     @player = player
+    @displayedScore = player.points
     @score = Crafty.e('2D, Text, UILayerDOM')
       .attr(
         w: 220, h: 20
@@ -50,12 +51,8 @@ Crafty.c 'PlayerInfo',
     @updatePlayerInfo()
     @createBoostsVisuals(x)
 
-    @listenTo player, 'UpdateLives', @updatePlayerInfo
-    @listenTo player, 'UpdatePoints', @updatePlayerInfo
-    @listenTo player, 'UpdateHealth', @updatePlayerInfo
-    @listenTo player, 'Activated', @updatePlayerInfo
-    @listenTo player, 'Deactivated', @updatePlayerInfo
     @listenTo player, 'GameLoop', (fd) =>
+      @updatePlayerInfo()
       @updateBoostInfo()
       @updateHealthInfo(fd)
     this
@@ -105,8 +102,11 @@ Crafty.c 'PlayerInfo',
       @health.attr(alpha: alpha)
 
   updatePlayerInfo: ->
+    if @displayedScore < @player.points
+      @displayedScore += 1
+
     if @player.has('ControlScheme')
-      @score.text('Score: ' + @player.points)
+      @score.text('Score: ' + @displayedScore)
     else
       @score.text(@player.name)
 
