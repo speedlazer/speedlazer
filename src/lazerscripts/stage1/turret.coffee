@@ -13,14 +13,24 @@ class TurretActive extends EntityScript
   spawn: (options) ->
     if !options.decoy
       entity = Crafty('TurretInactive').get(0)
+
     if entity
       entity.removeComponent('TurretInactive')
+      if options.hatchReveal
+        hatch = Crafty(options.startAt).get(0)
+        entity.hideAt = hatch.y + hatch.h - 2
+
+
     else
       entity = Crafty.e('BulletCannon, KeepAlive').bulletCannon()
 
     entity
 
+
   execute: ->
+      @movePath(
+        rotate: no
+      )
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @invincible no
@@ -28,6 +38,7 @@ class TurretActive extends EntityScript
       @repeat @sequence(
         @wait 100
         @action 'aim'
+
       )
     )
 

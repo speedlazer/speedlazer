@@ -19,11 +19,7 @@ Crafty.c("CarrierHatch", {
       "2D, WebGL, aircraftCarrierHatchLid, Hideable, Tween, Delta2D"
     );
     this.lid.crop(0, 2, 5 * 32, 32);
-    this.lid.attr({
-      z: -4,
-      x: this.x,
-      y: this.y
-    });
+
     this.attach(this.lid);
 
     this.dust = Crafty.e("2D, WebGL, Explode, ColorEffects");
@@ -42,6 +38,31 @@ Crafty.c("CarrierHatch", {
     return [this.lid, this.wire];
   },
 
+  hatch() {
+    this.lid.attr({
+      z: -4,
+      x: this.x,
+      y: this.y
+    });
+
+    if (this.floorOffset) {
+      this.floor = Crafty.e(
+        "2D, WebGL, aircraftCarrierHatchLid, Hideable, Tween, Delta2D"
+      );
+      this.floor.crop(0, 2, 5 * 32, 32);
+
+      this.floor.attr({
+        z: -5,
+        x: this.x - 4,
+        y: this.y + 3,
+        hideAt: this.y + 30
+      });
+      this.attach(this.floor);
+    }
+
+    return this;
+  },
+
   open() {
     this.dust.alpha = 0.2;
     this.lid.attr({ dy: 0, dx: 0 });
@@ -57,6 +78,10 @@ Crafty.c("CarrierHatch", {
       this.dust.alpha = 0;
     });
     this.dust.playExplode(800);
+
+    if (this.floor) {
+      this.rise();
+    }
   },
 
   close() {
@@ -79,5 +104,16 @@ Crafty.c("CarrierHatch", {
       });
       this.dust.playExplode(800);
     });
-  }
+  },
+
+  rise() {
+    this.floor.attr({ dy: this.floorOffset });
+    this.floor.tween(
+      {
+        dy: 0
+      },
+      1500,
+      "easeInOutQuad"
+    );
+  },
 });

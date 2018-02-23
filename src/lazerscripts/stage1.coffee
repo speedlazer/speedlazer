@@ -1,5 +1,5 @@
 extend = require('lodash/extend')
-{ LazerScript } = require('src/lib/LazerScript')
+{ LazerScript, EntityScript } = require('src/lib/LazerScript')
 { DroneFlyer } = require('./stage1/army_drone')
 { HeliAttack } = require('./stage1/heli_attack')
 { Stage1BossRocketStrike, Stage1BossStage1, BossHeliAttack } = require('./stage1/stage1boss')
@@ -12,6 +12,29 @@ JumpMine    = require('./stage1/jump_mine').default
 ShipBoss    = require('./stage1/ship_boss').default
 StageEnd    = require('./stage1end').default
 
+class MyNewEnemy extends EntityScript
+
+  spawn: ->
+    Crafty.e("Enemy, Color")
+    .attr({
+      health: 300,
+      x: 150,
+      y: 150,
+      w: 20,
+      h: 20,
+      defaultSpeed: 20,
+      pointsOnDestroy: 1000
+      }).enemy().color("#0000FF")
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @moveTo(x: 580)
+    )
+
+  onKilled: ->
+    @smallExplosion()
+
 class Stage1 extends LazerScript
   nextScript: StageEnd
 
@@ -19,7 +42,7 @@ class Stage1 extends LazerScript
     @loadAssets('explosion', 'playerShip', 'general')
 
   execute: ->
-    Crafty.e('DebugInfo')
+    #Crafty.e('DebugInfo')
     @inventoryAdd 'weapon', 'lasers', marking: 'L'
 
     @inventoryAdd 'ship', 'life', marking: '❤', icon: 'heart'
@@ -41,6 +64,7 @@ class Stage1 extends LazerScript
       #@setPowerupPool 'rapidb', 'speed', 'points', 'rapidb'
       @lazy @introText
       @lazy @sunRise, 0
+      @placeSquad MyNewEnemy
       @lazy @tutorial
 
       #@setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'

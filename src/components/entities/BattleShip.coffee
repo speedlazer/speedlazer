@@ -52,14 +52,21 @@ Crafty.c 'BattleShip',
     @hatch = Crafty.e('CarrierHatch, ShipHatch1').attr(
       x: @x + 10 * 32
       y: @y + 29
+      floorOffset: 200
     )
     @attach(@hatch)
 
     @hatch2 = Crafty.e('CarrierHatch, ShipHatch2').attr(
-      x: @x + 20 * 32
+      x: @x + 16 * 32
       y: @y + 29
     )
     @attach(@hatch2)
+
+    @hatch3 = Crafty.e('CarrierHatch, ShipHatch3').attr(
+      x: @x + 22 * 32
+      y: @y + 29
+    )
+    @attach(@hatch3)
 
     @attach Crafty.e('2D, Cabin1Place').attr(
       x: @x + 416
@@ -88,30 +95,6 @@ Crafty.c 'BattleShip',
       x: @x + 900
       y: @y + 100
       z: -8
-      w: 15
-      h: 2
-    )
-
-    @attach Crafty.e('2D, MineCannonPlace').attr(
-      x: @x + 100
-      y: @y + 44
-      z: -6
-      w: 15
-      h: 2
-    )
-
-    @attach Crafty.e('2D, TurretPlace').attr(
-      x: @x + 550
-      y: @y + 44
-      z: -6
-      w: 15
-      h: 2
-    )
-
-    @attach Crafty.e('2D, TurretPlace').attr(
-      x: @x + 800
-      y: @y + 44
-      z: -6
       w: 15
       h: 2
     )
@@ -146,13 +129,21 @@ Crafty.c 'BattleShip',
 
     @_bottomX += width * 32
 
+  ship: () ->
+    @hatch.hatch()
+    @hatch2.hatch()
+    @hatch3.hatch()
+    return this
+
   open: (hatch) ->
     @hatch.open() if 0 in hatch
     @hatch2.open() if 1 in hatch
+    @hatch3.open() if 2 in hatch
 
   close: (hatch) ->
     @hatch.close() if 0 in hatch
     @hatch2.close() if 1 in hatch
+    @hatch3.close() if 2 in hatch
 
 
   execute: (action) ->
@@ -161,8 +152,10 @@ Crafty.c 'BattleShip',
       when 'close1' then @close([0])
       when 'open2' then @open([1])
       when 'close2' then @close([1])
-      when 'open' then @open([0,1])
-      when 'close' then @close([0,1])
+      when 'open3' then @open([2])
+      when 'close3' then @close([2])
+      when 'open' then @open([0,1,2])
+      when 'close' then @close([0,1,2])
 
 Crafty.c 'ShipCabin', {
   init: ->
