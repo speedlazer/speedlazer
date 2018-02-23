@@ -53,6 +53,7 @@ Entity =
     @_boundSequences.push([eventName, eventHandler])
 
   _unbindSequences: ->
+    @_boundSequences ||= []
     while (info = @_boundSequences.shift())
       @_boundEntity.unbind(info[0], info[1])
 
