@@ -34,6 +34,7 @@ Entity =
   # the entity. So the sequence will always be started once. When a new
   # sequence is started, a current running one will be aborted.
   bindSequence: (eventName, sequenceFunction, filter) ->
+    @_boundSequences ||= []
     return unless sequenceFunction?
     filter ?= -> true
     eventHandler = (args...) =>
@@ -46,7 +47,14 @@ Entity =
 
       @currentSequence = sequence = Math.random()
       @alternatePath = p(sequence)
+
     @entity.bind(eventName, eventHandler)
+    @_boundEntity = @entity
+    @_boundSequences.push([eventName, eventHandler])
+
+  _unbindSequences: ->
+    while (info = @_boundSequences.shift())
+      @_boundEntity.unbind(info[0], info[1])
 
   # remove an entity from the current gameplay. This means it cannot shoot
   # the player, and the player cannot shoot the entity. This is useful
@@ -514,7 +522,7 @@ Entity =
     (sequence) =>
       @_verify(sequence)
       decoyOpts = Object.assign({}, @options, { decoy: true })
-      @decoy = @spawn(decoyOpts)
+      @decoy = @spawnDecoy(decoyOpts)
       if @options.attach
         attachIndex = (@options.attachOffset || 0) + @options.index
         attachPoint = Crafty(@options.attach).get(attachIndex)
@@ -535,10 +543,11 @@ Entity =
           y: y
           invincible: yes
           deathDecoy: yes
-          health: 1
+          health: 1 # TODO: looks should be determined by 'deathDecoy' flag.
           defaultSpeed: @entity.defaultSpeed
         )
 
+      # TODO: Fix this in the spawn logic
       @decoy.removeComponent('BurstShot') if @decoy.has('BurstShot')
       @decoy.removeComponent('Hostile') if @decoy.has('Hostile')
 
@@ -552,7 +561,8 @@ Entity =
 
   endDecoy: ->
     (sequence) =>
-      @decoy?.destroy()
+      if @decoy
+        @cleanupDecoy @decoy
       @decoy = null
       @entity = @decoyingEntity
       @decoyingEntity = undefined
@@ -564,7 +574,7 @@ Entity =
       @entity.addComponent('KeepAlive')
       task(sequence).then =>
         if @enemy.alive
-          @entity.destroy()
+          @cleanup(entity)
       return
 
   action: (name, args) ->

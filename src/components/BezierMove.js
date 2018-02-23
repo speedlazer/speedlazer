@@ -1,6 +1,7 @@
 Crafty.c("BezierMove", {
   events: {
-    GameLoop: "_moveBezierTick"
+    GameLoop: "_moveBezierTick",
+    Freeze: "remove"
   },
 
   remove() {

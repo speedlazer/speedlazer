@@ -55,6 +55,7 @@ Crafty.c 'Enemy',
         y: @h / 2
       }
     )
+    @reveal()
     @pointsLocation = options.pointsLocation
     Crafty.trigger('EnemySpawned', this)
     @onHit(
@@ -67,6 +68,7 @@ Crafty.c 'Enemy',
       (e) => @onExplosionHit(e)
       => @onProjectileHitEnd()
     )
+    @updatedHealth?()
     this
 
   absorbDamage: (cause) ->
@@ -80,7 +82,9 @@ Crafty.c 'Enemy',
     if @health <= 0
       Crafty.trigger('EnemyDestroyed', this)
       @trigger('Destroyed', this)
-      @destroy()
+      @trigger('Cleanup', this)
+      unless @__frozen
+        @destroy()
 
       cause.ship?.trigger 'DestroyTarget', data
       @deathCause = cause.ship

@@ -84,6 +84,14 @@ class EntityScript extends LazerScript
         x: @entity.x
         y: @entity.y
 
+    @entity.unbind('Cleanup')
+    @entity.unbind('Destroyed')
+    @entity.bind 'Cleanup', =>
+      if @entity.deathDecoy
+        @cleanupDecoy(@entity)
+      else
+        @cleanup(@entity)
+
     @entity.bind 'Destroyed', =>
       @currentSequence = null
       @synchronizer.unregisterEntity(this)
@@ -108,12 +116,20 @@ class EntityScript extends LazerScript
         # Only wait for alternate path if still alive
         @alternatePath if @enemy.alive
       .finally =>
+        @_unbindSequences()
         if @enemy.alive and !@entity.has('KeepAlive')
-          @entity.destroy()
+          @cleanup(@entity)
       .then =>
         @enemy
 
   spawn: ->
+  spawnDecoy: (options) -> @spawn(options)
+
+  cleanup: (entity) ->
+    entity.destroy()
+
+  cleanupDecoy: (entity) ->
+    @cleanup(entity)
 
 extend(
   EntityScript::

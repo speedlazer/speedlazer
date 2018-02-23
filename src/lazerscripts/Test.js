@@ -16,11 +16,9 @@ class Test extends LazerScript {
       //@setShipType('PlayerControlledCube')
 
       this.setWeapons(["lasers"]),
-      this.setSpeed(300),
+      this.setSpeed(0),
       this.setScenery("Ocean"),
-      //@panCamera(y: 120, 0)
-      this.async(this.runScript(Morning, { speed: 1 })),
-      //@placeSquad DroneShip
+      //this.async(this.runScript(Morning, { speed: 1 })),
 
       this.repeat(
         this.placeSquad(DroneFlyer, {
@@ -28,7 +26,8 @@ class Test extends LazerScript {
           delay: 500,
           options: {
             speed: 200,
-            path: [[0.9, 0.6], [0.25, 0.4], [0.16, -0.1]]
+            //debug: true,
+            path: [[0.8, 0.6], [0.25, 0.4], [0.16, -0.1]]
           }
         })
       )
