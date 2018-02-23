@@ -115,5 +115,5 @@ Crafty.c("CarrierHatch", {
       1500,
       "easeInOutQuad"
     );
-  },
+  }
 });

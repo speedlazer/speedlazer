@@ -89,7 +89,6 @@ class ShipBoss extends EntityScript
     ]
 
   randomAmountSpawnedDrones: ->
-    console.log(Math.round(Math.random() * 5))
     return Math.round(Math.random() * 5)
 
   placeEnemiesOnShip: ->
