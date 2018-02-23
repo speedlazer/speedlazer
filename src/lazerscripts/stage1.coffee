@@ -12,29 +12,6 @@ JumpMine    = require('./stage1/jump_mine').default
 ShipBoss    = require('./stage1/ship_boss').default
 StageEnd    = require('./stage1end').default
 
-class MyNewEnemy extends EntityScript
-
-  spawn: ->
-    Crafty.e("Enemy, Color")
-    .attr({
-      health: 300,
-      x: 150,
-      y: 150,
-      w: 20,
-      h: 20,
-      defaultSpeed: 20,
-      pointsOnDestroy: 1000
-      }).enemy().color("#0000FF")
-
-  execute: ->
-    @bindSequence 'Destroyed', @onKilled
-    @sequence(
-      @moveTo(x: 580)
-    )
-
-  onKilled: ->
-    @smallExplosion()
-
 class Stage1 extends LazerScript
   nextScript: StageEnd
 
@@ -42,7 +19,7 @@ class Stage1 extends LazerScript
     @loadAssets('explosion', 'playerShip', 'general')
 
   execute: ->
-    #Crafty.e('DebugInfo')
+    Crafty.e('DebugInfo')
     @inventoryAdd 'weapon', 'lasers', marking: 'L'
 
     @inventoryAdd 'ship', 'life', marking: '❤', icon: 'heart'
@@ -64,7 +41,6 @@ class Stage1 extends LazerScript
       #@setPowerupPool 'rapidb', 'speed', 'points', 'rapidb'
       @lazy @introText
       @lazy @sunRise, 0
-      @placeSquad MyNewEnemy
       @lazy @tutorial
 
       #@setPowerupPool 'aimb', 'speedb', 'rapidb', 'speed', 'aim', 'rapid'
@@ -76,7 +52,6 @@ class Stage1 extends LazerScript
       @lazy @midStageBossFight
 
       #@setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
-      #@midStageBossFight()
       #@cityBay()
       #@setPowerupPool 'speed', 'rapid', 'aim', 'speed', 'rapid', 'aim'
       #@endStageBossfight()
@@ -322,30 +297,6 @@ class Stage1 extends LazerScript
           y: height
     )
 
-
-  #oceanFighting: ->
-    #@sequence(
-      #@checkpoint @checkpointStart('Ocean', 0)
-
-      #@parallel(
-        #@sequence(
-          #@wait 2000
-          #@say 'General', 'We\'re under attack!?!', noise: 'low'
-        #)
-        #@swirlAttacks()
-      #)
-      #@swirlAttacks()
-      #@parallel(
-        #@gainHeight(-150, duration: 4000)
-        #@wait 2000
-        #@sequence(
-          #@stalkerShootout()
-          #@droneShip()
-          #@stalkerShootout()
-        #)
-      #)
-    #)
-
   midStageBossFight: ->
     @sequence(
       @setScenery('CoastStart')
@@ -366,59 +317,6 @@ class Stage1 extends LazerScript
       # temp end
       @wait 2000
     )
-
-    #@sequence(
-      #@checkpoint @checkpointStart('CoastStart', 1)
-      #@mineSwarm()
-      #@droneShip()
-      #@sunRise(2)
-      #@mineSwarm()
-      #@parallel(
-        #@say('John', 'Enemy Navy Mothership approaching! Stay alert!')
-        #@placeSquad CrewShooters,
-          #amount: 4
-          #delay: 250
-      #)
-      #@shipBossFight()
-      #@setScenery('BayStart')
-      #@underWaterAttacks()
-    #)
-
-  #shipBossFight: ->
-    #@sequence(
-      #@checkpoint @checkpointStart('Ocean', 1)
-
-      #@parallel(
-        #@say('John', 'Time to show these monkeys who\'s boss')
-        #@sequence(
-          #@wait 30000
-          #@setScenery('CoastStart')
-          #@wait 5000
-        #)
-        #@placeSquad ShipBoss
-        #@placeSquad CrewShooters,
-          #amount: 5
-          #delay: 2500
-      #)
-    #)
-
-  #cityBay: ->
-    #@sequence(
-      #@checkpoint @checkpointStart('Bay', 2)
-      #@setScenery('UnderBridge')
-      #@parallel(
-        #@placeSquad Stalker
-        #@mineSwarm direction: 'left'
-      #)
-
-      #@sequence(
-        #@stalkerShootout()
-        #@parallel(
-          #@placeSquad Stalker
-          #@mineSwarm direction: 'left'
-        #)
-      #)
-    #)
 
   #endStageBossfight: ->
     #@sequence(
@@ -479,28 +377,6 @@ class Stage1 extends LazerScript
       #@wait 200
     #)
 
-  #swirlAttacks: ->
-    #@attackWaves(
-      #@parallel(
-        #@repeat 2, @placeSquad Swirler,
-          #amount: 4
-          #delay: 250
-          #options:
-            #shootOnSight: yes
-        #@repeat 2, @placeSquad Shooter,
-          #amount: 4
-          #delay: 250
-          #options:
-            #shootOnSight: yes
-      #)
-    #)
-
-  #underWaterAttacks: ->
-    #@sequence(
-      #@placeSquad Stalker
-      #@repeat 2, @stalkerShootout()
-    #)
-
   sunRise: (fase = 0) ->
     script = switch fase
       when 0 then StartOfDawn
@@ -525,26 +401,6 @@ class Stage1 extends LazerScript
             stepSize: 0.10
         points: options.points ? yes
         direction: options.direction
-
-
-  #stalkerShootout: ->
-    #@parallel(
-      #@placeSquad Stalker
-      #@attackWaves(
-        #@parallel(
-          #@placeSquad Shooter,
-            #amount: 4
-            #delay: 250
-            #options:
-              #shootOnSight: yes
-          #@placeSquad Swirler,
-            #amount: 4
-            #delay: 250
-            #options:
-              #shootOnSight: yes
-        #)
-      #)
-    #)
 
   checkpointStart: (scenery, step) ->
     @sequence(

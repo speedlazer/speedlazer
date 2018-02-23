@@ -5,7 +5,6 @@
 { Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer, DroneFlyer } = require('../stage1/army_drone')
 { HeliInactive, HeliFlyAway, HeliAttack } = require('./heli_attack')
 
-console.log(DroneShipCore)
 class Cabin1Inactive extends EntityScript
   spawn: (options) ->
     Crafty.e('FirstShipCabin, KeepAlive')

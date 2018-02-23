@@ -3,13 +3,13 @@
 class SunRise extends EntityScript
 
   spawn: (options) ->
-    sky = Crafty('Sky').get(0) || Crafty.e('2D, StaticBackground, Gradient, Sky, ColorFade').attr(
+    sky = Crafty('Sky').get(0) || Crafty.e('2D, WebGL, Gradient, Sky, ColorFade').attr(
       w: Crafty.viewport.width
       h: Crafty.viewport.height * .7
     ).attr(
       x: 0
       y: 0
-      z: 0
+      z: -1000
     )
 
     sun = Crafty('Sun')
