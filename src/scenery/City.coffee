@@ -366,7 +366,7 @@ levelGenerator.defineBlock class extends CityScenery
   delta:
     x: 1024
     y: 0
-  autoNext: 'Ocean'
+  autoNext: 'City.Ocean'
 
   generate: ->
     super
@@ -545,19 +545,19 @@ levelGenerator.defineBlock class extends CityScenery
   generate: ->
     super
 
-    @addElement 'cloud'
-    @addElement 'cloud'
+    #@addElement 'cloud'
+    #@addElement 'cloud'
     @addElement 'waterHorizon'
-    @addElement 'water'
-    @addElement 'waterFront'
+    #@addElement 'water'
+    #@addElement 'waterFront'
 
 levelGenerator.defineBlock class extends CityScenery
   name: 'City.CoastStart'
   delta:
     x: 1024
     y: 0
-  autoNext: 'Coast'
-  autoPrevious: 'Ocean'
+  autoNext: 'City.Coast'
+  autoPrevious: 'City.Ocean'
 
   generate: ->
     super
@@ -584,8 +584,8 @@ levelGenerator.defineBlock class extends CityScenery
   delta:
     x: 1024
     y: 0
-  autoNext: 'Bay'
-  autoPrevious: 'Coast'
+  autoNext: 'City.Bay'
+  autoPrevious: 'City.Coast'
 
   generate: ->
     super
@@ -628,7 +628,7 @@ levelGenerator.defineBlock class extends CityScenery
   delta:
     x: 1024
     y: 0
-  autoNext: 'BayFull'
+  autoNext: 'City.BayFull'
 
   generate: ->
     super
@@ -794,7 +794,7 @@ levelGenerator.defineBlock class extends CityScenery
   delta:
     x: 1024
     y: 0
-  autoNext: 'Skyline2'
+  autoNext: 'City.Skyline2'
 
   generate: ->
     super

@@ -146,7 +146,7 @@ Crafty.c("PlayerSpaceship", {
       this.trailEntPool
         .get()
         .attr({
-          x: this.x - w,
+          x: this.x - w + 8,
           dy: 0,
           y: Math.floor(this.y + 21 - Math.random() * 4),
           w,

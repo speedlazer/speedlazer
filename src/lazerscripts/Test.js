@@ -16,16 +16,17 @@ class Test extends LazerScript {
       //@setShipType('PlayerControlledCube')
 
       this.setWeapons(["lasers"]),
-      this.setSpeed(0),
-      this.setScenery("Ocean"),
+      this.setSpeed(300),
+      this.setScenery("City.Ocean"),
+      () => Crafty('PlayerSpaceship').each(function() { this.shoot(true) }),
       //this.async(this.runScript(Morning, { speed: 1 })),
 
       this.repeat(
         this.placeSquad(DroneFlyer, {
-          amount: 4,
-          delay: 500,
+          amount: 8,
+          delay: 300,
           options: {
-            speed: 200,
+            speed: 400,
             //debug: true,
             path: [[0.8, 0.6], [0.25, 0.4], [0.16, -0.1]]
           }

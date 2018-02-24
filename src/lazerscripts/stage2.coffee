@@ -48,7 +48,7 @@ class Stage2 extends LazerScript
             'that\'s classified info!', noise: 'low'
         )
       )
-      @setScenery 'Skyline2'
+      @setScenery 'City.Skyline2'
       # Add enemies during decent
       @parallel(
         @gainHeight(-1300, duration: 30000)
@@ -56,7 +56,7 @@ class Stage2 extends LazerScript
           amount: 3
           delay: 6000
       )
-      @checkpoint @checkpointStreets('Skyline2')
+      @checkpoint @checkpointStreets('City.Skyline2')
       @placeSquad TankAttack
       @placeSquad HeliAttack
       @wait 8000
@@ -82,7 +82,7 @@ class Stage2 extends LazerScript
         )
         @sequence(
           @stalkerShootout()
-          @setScenery('Skyline')
+          @setScenery('City.Skyline')
           @placeSquad Shooter,
             amount: 8
             delay: 500
@@ -142,7 +142,7 @@ class Stage2 extends LazerScript
         @cloneEncounter()
       )
       @placeSquad Stage1BossPopup
-      @setScenery('Skyline')
+      @setScenery('City.Skyline')
       @parallel(
         @attackWaves(
           @sequence(
@@ -174,7 +174,7 @@ class Stage2 extends LazerScript
       )
 
       @gainHeight(300, duration: 4000)
-      @checkpoint @checkpointEndStage('Skyline', 500000)
+      @checkpoint @checkpointEndStage('City.Skyline', 500000)
 
       @parallel(
         @repeat 2, @cloneEncounter()
@@ -184,7 +184,7 @@ class Stage2 extends LazerScript
       )
 
       @async @showText 'Warning!', color: '#FF0000', mode: 'blink'
-      @setScenery 'SkylineBase'
+      @setScenery 'City.SkylineBase'
       @while(
         @wait 3000
         @waitingRocketStrike()

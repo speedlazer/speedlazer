@@ -61,7 +61,7 @@ class Stage1 extends LazerScript
     @sequence(
       @setWeapons(['lasers'])
       @setSpeed 200, accellerate: no
-      @setScenery('Intro')
+      @setScenery('City.Intro')
       @async @placeSquad(CameraCrew)
       @async @placeSquad(
         IntroBarrel,
@@ -79,7 +79,7 @@ class Stage1 extends LazerScript
 
   tutorial: ->
     @sequence(
-      @setScenery('Ocean')
+      @setScenery('City.Ocean')
       @say('General', 'We send some drones for some last manual target practice', noise: 'low')
       @setSpeed 200
       @parallel(
@@ -299,9 +299,9 @@ class Stage1 extends LazerScript
 
   midStageBossFight: ->
     @sequence(
-      @setScenery('CoastStart')
+      @setScenery('City.CoastStart')
       @sunRise(2)
-      @checkpoint @checkpointStart('CoastStart', 2)
+      @checkpoint @checkpointStart('City.CoastStart', 2)
 
       @say('John', 'Enemy Navy Mothership approaching! Stay alert!')
       @async @showText 'Warning!', color: '#FF0000', mode: 'blink', blink_amount: 6, blink_speed: 100
@@ -320,7 +320,7 @@ class Stage1 extends LazerScript
 
   #endStageBossfight: ->
     #@sequence(
-      #@checkpoint @checkpointStart('BayFull', 2)
+      #@checkpoint @checkpointStart('City.BayFull', 2)
       ##@parallel(
         ##@if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
         ##@if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
@@ -334,18 +334,18 @@ class Stage1 extends LazerScript
         #@mineSwarm()
         #@sequence(
           #@wait 5000
-          #@setScenery('UnderBridge')
+          #@setScenery('City.UnderBridge')
         #)
       #)
       #@async @showText 'Warning!', color: '#FF0000', mode: 'blink', blink_amount: 6, blink_speed: 100
       #@while(
-        #@waitForScenery('UnderBridge', event: 'enter')
+        #@waitForScenery('City.UnderBridge', event: 'enter')
         #@waitingRocketStrike()
       #)
       #@setSpeed 75
-      #@waitForScenery('UnderBridge', event: 'inScreen')
+      #@waitForScenery('City.UnderBridge', event: 'inScreen')
       #@setSpeed 0
-      #@checkpoint @checkpointStart('UnderBridge', 2)
+      #@checkpoint @checkpointStart('City.UnderBridge', 2)
       #@placeSquad Stage1BossStage1
       #@parallel(
         #@if((-> @player(1).active), @drop(item: 'healthu', inFrontOf: @player(1)))
