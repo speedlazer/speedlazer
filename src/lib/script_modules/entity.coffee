@@ -3,7 +3,7 @@ isFunction = require('lodash/isFunction')
 isObject = require('lodash/isObject')
 extend = require('lodash/extend')
 clone = require('lodash/clone')
-
+{ lookup } = require('src/lib/random')
 { normalizeInputPath, getBezierPath } = require('src/lib/BezierPath')
 
 # Actions to control an entity in the game
@@ -45,7 +45,7 @@ Entity =
         WhenJS(sequenceFunction.apply(this, args)(sequence)).catch =>
           @alternatePath
 
-      @currentSequence = sequence = Math.random()
+      @currentSequence = sequence = lookup()
       @alternatePath = p(sequence)
 
     @entity.bind(eventName, eventHandler)

@@ -7,12 +7,13 @@ Entity = require('./script_modules/entity').default
 Colors = require('./script_modules/colors').default
 LevelTemplate = require('./script_templates/level').default
 Synchronizer = require('src/lib/Synchronizer').default
+{ lookup } = require('src/lib/random')
 
 class LazerScript
   constructor: (@level) ->
 
   run: (args...) ->
-    @currentSequence = Math.random()
+    @currentSequence = lookup()
     @options = args[0] ? {}
     @startAtCheckpoint = @options.startAtCheckpoint
     @currentCheckpoint = 0

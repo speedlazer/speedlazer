@@ -1,5 +1,5 @@
 import { LazerScript } from "src/lib/LazerScript";
-//import { Morning } from "./stage1/sunrise";
+import { Morning } from "./stage1/sunrise";
 import { DroneFlyer } from "./stage1/army_drone";
 
 class Test extends LazerScript {
@@ -22,7 +22,7 @@ class Test extends LazerScript {
         Crafty("PlayerSpaceship").each(function() {
           this.shoot(true);
         }),
-      //this.async(this.runScript(Morning, { speed: 1 })),
+      this.async(this.runScript(Morning, { speed: 1 })),
 
       this.repeat(
         this.placeSquad(DroneFlyer, {

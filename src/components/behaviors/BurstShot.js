@@ -1,4 +1,5 @@
 import defaults from "lodash/defaults";
+import { lookup } from "src/lib/random";
 
 Crafty.c("BurstShot", {
   remove() {
@@ -57,7 +58,7 @@ Crafty.c("BurstShot", {
     angle =
       angle -
       Math.floor(this.shootConfig.angleDeviation / 2) +
-      Math.random() * this.shootConfig.angleDeviation;
+      lookup() * this.shootConfig.angleDeviation;
 
     angle = (angle + 360) % 360;
     if (this.currentBurst < this.shootConfig.burstAmount) {

@@ -1,5 +1,6 @@
 import defaults from "lodash/defaults";
 import createEntityPool from "src/lib/entityPool";
+import { lookup } from "src/lib/random";
 
 Crafty.c("PlayerSpaceship", {
   required:
@@ -148,11 +149,11 @@ Crafty.c("PlayerSpaceship", {
         .attr({
           x: this.x - w + 8,
           dy: 0,
-          y: Math.floor(this.y + 21 - Math.random() * 4),
+          y: Math.floor(this.y + 21 - lookup() * 4),
           w,
           h,
           z: -4,
-          alpha: 0.3 + Math.random() * 0.4
+          alpha: 0.3 + lookup() * 0.4
         })
         .tweenPromise({ alpha: 0, h: 2, dy: 2 }, 750, "easeOutQuad")
         .then(e => {

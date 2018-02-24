@@ -1,4 +1,5 @@
 createEntityPool = require('src/lib/entityPool').default
+{ lookup } = require('src/lib/random')
 
 Crafty.c('GameParticle', {
   events:
@@ -128,7 +129,7 @@ Crafty.c 'WaterSplashes',
       for i in [0...parts]
         for d in [0...Math.min(upwards, 3)]
           r += 1
-          pos = Math.random()
+          pos = lookup()
           duration = (@minSplashDuration + (vy * 4) + (pos * 100)) * 3
           factor = 210 / @minSplashDuration
 
