@@ -17,7 +17,6 @@ Crafty.c 'BulletCannon',
       maxHealth: attr.health ? defaultHealth
       aimSpeed: 90
     )
-    @enemy()
     @barrel = Crafty.e('2D, WebGL, mineCannon, TweenPromise, Collision')
     @barrel.attr(
       x: @x - 64
@@ -27,6 +26,7 @@ Crafty.c 'BulletCannon',
       h: 32
     )
     @barrel.origin(@barrel.w - 16, 16)
+    @enemy()
     @barrel.onHit(
       'Bullet',
       (e) => @onProjectileHit(e)
@@ -45,9 +45,7 @@ Crafty.c 'BulletCannon',
       h: 1
     )
     @barrel.attach(@tip)
-
     @attach(@barrel)
-
     this
 
   applyBarrelHitFlash: (onOff) ->
