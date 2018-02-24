@@ -335,7 +335,7 @@ class Level
 
   _cleanupBuildBlocks: ->
     first = @blocks[0]
-    while first.canCleanup()
+    while first && first.canCleanup()
       @blocks.shift().clean()
       first = @blocks[0]
 
