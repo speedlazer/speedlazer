@@ -31,6 +31,7 @@ Crafty.c("DebugInfo", {
       let gametime = Math.floor(Game.gameTime / 1000);
       if (gametime % 10 === 0 && gametime > threshold) {
         threshold = gametime;
+        /* eslint-disable no-console */
         console.log(
           `T: ${gametime}s ` +
             `RT: ${renderTime}ms ` +
@@ -40,6 +41,7 @@ Crafty.c("DebugInfo", {
             `E: ${Crafty("*").length} ` +
             `FPS: ${Math.round(1000 / fd.dt)}`
         );
+        /* eslint-enable no-console */
       }
       this.text(
         `T: ${gametime}s ` +
