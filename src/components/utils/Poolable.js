@@ -11,5 +11,4 @@ Crafty.c("Poolable", {
   recycle() {
     this.pool.recycle(this);
   }
-
 });
