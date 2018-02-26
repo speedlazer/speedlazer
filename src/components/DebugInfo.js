@@ -26,15 +26,30 @@ Crafty.c("DebugInfo", {
       if (ms > 5) slowRenderCount++;
       renderTime = ms;
     });
+    let threshold = 0;
     this.bind("EnterFrame", fd => {
-      this.text(
-        `T: ${Math.round(Game.gameTime / 1000)}s ` +
+      let gametime = Math.floor(Game.gameTime / 1000)
+      if ((gametime % 10) === 0 && gametime > threshold) {
+        threshold = gametime;
+        console.log(
+          `T: ${gametime}s ` +
           `RT: ${renderTime}ms ` +
           `SRT: ${slowestRenderTime}ms (${slowRenderCount}) ` +
           `FT: ${frameTime}ms ` +
           `SFT: ${slowestFrameTime}ms (${slowFrameCount}) ` +
           `E: ${Crafty("*").length} ` +
           `FPS: ${Math.round(1000 / fd.dt)}`
+        );
+
+      }
+      this.text(
+        `T: ${gametime}s ` +
+        `RT: ${renderTime}ms ` +
+        `SRT: ${slowestRenderTime}ms (${slowRenderCount}) ` +
+        `FT: ${frameTime}ms ` +
+        `SFT: ${slowestFrameTime}ms (${slowFrameCount}) ` +
+        `E: ${Crafty("*").length} ` +
+        `FPS: ${Math.round(1000 / fd.dt)}`
       );
     });
   },
