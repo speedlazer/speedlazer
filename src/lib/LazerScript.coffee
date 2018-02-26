@@ -121,6 +121,7 @@ class EntityScript extends LazerScript
         if @enemy.alive and !@entity.has('KeepAlive')
           @cleanup(@entity)
       .then =>
+        Crafty.trigger('EntityEndState', @enemy)
         @enemy
 
   spawn: ->

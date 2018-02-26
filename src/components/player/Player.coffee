@@ -1,6 +1,11 @@
 EXTRA_LIFE_POINT_BOUNDARY = 15000
+{ determineLevel, levelInfo } = require("src/lib/chainLevel")
 
 Crafty.c 'Player',
+  events: {
+    EntityEndState: '_processEnemyState'
+  }
+
   init: ->
     @reset()
 
@@ -20,6 +25,7 @@ Crafty.c 'Player',
       health: 5
       maxHealth: 5
       points: 0
+      chain: 0
     })
 
   loseHealth: (damage) ->
@@ -71,3 +77,35 @@ Crafty.c 'Player',
 
     @points += amount
     @trigger 'UpdatePoints', points: @points
+
+  addChainXP: (amount) ->
+    currentLevel = determineLevel(@chain)
+    @chain += amount
+    newLevel = determineLevel(@chain)
+    if newLevel > currentLevel
+      levelData = levelInfo(newLevel)
+      @points += levelData.reward
+      @trigger 'UpdatePoints', points: @points
+
+      @ship.scoreText(
+        "#{levelData.name}! +#{levelData.reward}",
+        attach: no
+        duration: 2000
+        distance: 30
+        delay: 40
+      )
+
+  _processEnemyState: (enemy) ->
+    if (enemy.alive) # && count as enemy
+      currentLevel = determineLevel(@chain)
+      @chain = 0
+      if currentLevel > 0
+        @ship.scoreText(
+          "Chain lost!"
+          attach: no
+          positive: no
+          duration: 2000
+          distance: 30
+          delay: 40
+        )
+
