@@ -5,6 +5,13 @@ extend = require('lodash/extend')
 clone = require('lodash/clone')
 { lookup } = require('src/lib/random')
 { normalizeInputPath, getBezierPath } = require('src/lib/BezierPath')
+createEntityPool = require('src/lib/entityPool').default
+
+shadowPool = createEntityPool(
+  ->
+    Crafty.e('2D, WebGL, shadow, Choreography, Tween')
+  10
+)
 
 # Actions to control an entity in the game
 #
@@ -315,29 +322,15 @@ Entity =
       @moveTo(opts)(sequence)
 
   _setupWaterSpot: ->
-    if Game.explosionMode?
-      waterSpot = Crafty.e('2D, WebGL, Color, Choreography, Tween')
-        .color('#000040')
-        .attr(
-          w: @entity.w + 10
-          x: @entity.x - 5
-          y: @entity.y + @entity.h
-          h: 20
-          alpha: 0.7
-          z: @entity.z - 1
-        )
-    else
-      waterSpot = Crafty.e('2D, WebGL, shadow, Choreography, Tween')
-        .attr(
-          w: @entity.w + 10
-          x: @entity.x - 5
-          y: @_getSeaLevel() - 10
-          h: 20
-          z: @entity.z - 1
-        )
+    waterSpot = shadowPool.get()
+      .attr(
+        w: @entity.w + 10
+        x: @entity.x - 5
+        y: @_getSeaLevel() - 10
+        h: 20
+        z: @entity.z - 1
+      )
 
-    if Game.explosionMode?
-      @_waterSplash()
     @entity.addComponent('WaterSplashes')
 
     @entity.hide(waterSpot, below: @_getSeaLevel())
@@ -348,17 +341,6 @@ Entity =
       @_waterSplash()
     else
       @entity.removeComponent('WaterSplashes')
-
-  _waterSplash: ->
-    defer = WhenJS.defer()
-    Crafty.e('WaterSplash').waterSplash(
-      x: @entity.x
-      y: @_getSeaLevel()
-      size: @entity.w
-    ).one 'ParticleEnd', ->
-      defer.resolve()
-
-    defer.promise
 
   _moveWater: (settings) ->
     defaultValues =

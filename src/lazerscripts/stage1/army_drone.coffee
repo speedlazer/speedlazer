@@ -1,5 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 createEntityPool = require('src/lib/entityPool').default
+{ lookup } = require("src/lib/random")
 
 dronePool = createEntityPool(
   -> Crafty.e('Drone')
@@ -48,7 +49,7 @@ class DroneFlyer extends EntityScript
     )
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
-        cooldown: 1000 + (Math.random() * 3000)
+        cooldown: 1000 + (lookup() * 3000)
         sightAngle: 250
         projectile: (x, y, angle) =>
           projectile = Crafty.e('Sphere, Hostile, Projectile')
@@ -59,12 +60,6 @@ class DroneFlyer extends EntityScript
             )
           projectile.shoot(x, y, angle)
     d
-
-  cleanup: (entity) ->
-    dronePool.recycle(entity)
-
-  cleanupDecoy: (entity) ->
-    droneDecoyPool.recycle(entity)
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
@@ -85,7 +80,7 @@ class DroneFlyer extends EntityScript
       @moveTo(
         @location({
           offsetY: 800,
-          offsetX: (@entVy + 300) * Math.random()
+          offsetX: (@entVy + 300) * lookup()
         }),
         speed: 600
         easing: 'easeInQuad'

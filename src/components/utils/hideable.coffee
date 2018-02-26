@@ -53,5 +53,9 @@ Crafty.c 'Hideable',
     this
 
   remove: ->
-    @hideMarker?.destroy()
+    if @hideMarker
+      if @hideMarker.hasPool
+        @hideMarker.recycle()
+      else
+        @hideMarker.destroy()
 

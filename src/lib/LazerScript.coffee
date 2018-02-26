@@ -128,7 +128,10 @@ class EntityScript extends LazerScript
   spawnDecoy: (options) -> @spawn(options)
 
   cleanup: (entity) ->
-    entity.destroy()
+    if entity.hasPool
+      entity.recycle()
+    else
+      entity.destroy()
 
   cleanupDecoy: (entity) ->
     @cleanup(entity)

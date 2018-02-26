@@ -1,3 +1,5 @@
+import "src/components/utils/Poolable";
+
 const createEntityPool = (createFunction, poolSize) => {
   return {
     _pool: [],
@@ -11,7 +13,10 @@ const createEntityPool = (createFunction, poolSize) => {
         return ent;
       }
 
-      return createFunction();
+      var entity = createFunction();
+      entity.addComponent("Poolable");
+      entity.setupPool(this);
+      return entity;
     },
     recycle(ent) {
       if (this._pool.length >= this._maxSize) {
