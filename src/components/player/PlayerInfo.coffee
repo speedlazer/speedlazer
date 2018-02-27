@@ -1,4 +1,4 @@
-{ levelProgress } = require('src/lib/chainLevel')
+{ levelProgress, levelInfo, determineLevel } = require('src/lib/chainLevel')
 
 Crafty.c 'PlayerInfo',
   init: ->
@@ -9,6 +9,7 @@ Crafty.c 'PlayerInfo',
   playerInfo: (x, player) ->
     @player = player
     @displayedScore = player.points
+    @displayedChain = player.chain
     @score = Crafty.e('2D, Text, UILayerDOM')
       .attr(
         w: 220, h: 20
@@ -50,13 +51,26 @@ Crafty.c 'PlayerInfo',
       .attr(
         w: 190, h: 2
         x: x, y: 28, z: 200
+        alpha: 0.2
       ).color('#000000')
+
+    @chainName = Crafty.e('2D, Text, UILayerDOM')
+      .attr(
+        w: 220, h: 20
+        x: x, y: 34, z: 200
+      )
+      .textFont(
+        size: '8px'
+        family: 'Press Start 2P'
+      )
+    if @player.has('Color')
+      @chainName.textColor @player.color()
 
     @chainProgress = Crafty.e('2D, Color, UILayerWebGL')
       .attr(
         w: 0, h: 2
         x: x, y: 28, z: 200
-      ).color('#FFFFFF')
+      ).color(@player.color())
 
     if @player.has('Color')
       @lives.textColor player.color()
@@ -126,7 +140,15 @@ Crafty.c 'PlayerInfo',
 
       @displayedScore += 1
 
-    @chainProgress.attr(w: 190 * levelProgress(@player.chain))
+    if @displayedChain != @player.chain
+      lvl = determineLevel(@player.chain)
+      @chainProgress.attr(w: 190 * levelProgress(@player.chain))
+      if (lvl == 0)
+        @chainName.text('')
+      else
+        info = levelInfo(lvl)
+        @chainName.text(info.name)
+      @displayedChain = @player.chain
 
     if @player.has('ControlScheme')
       @score.text('Score: ' + @displayedScore)
