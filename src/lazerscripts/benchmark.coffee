@@ -16,7 +16,7 @@ class Benchmark extends LazerScript
       #@setShipType('PlayerControlledCube')
 
       @setWeapons(['lasers'])
-      @setScenery 'Ocean'
+      @setScenery 'City.Ocean'
       @setSpeed 0
       @runScript(StartOfDawn, speed: 4)
       #@placeSquad Stalker,
@@ -27,14 +27,14 @@ class Benchmark extends LazerScript
       => Crafty('DebugInfo').capture('start')
       @setSpeed 300
       @wait 15000
-      @setScenery('CoastStart')
+      @setScenery('City.CoastStart')
       => Crafty('DebugInfo').capture('scrolling')
       @runScript(DayBreak, speed: 8)
       @runScript(Morning, speed: 8)
       => Crafty('DebugInfo').capture('recolor')
       @placeSquad ShipBoss
       => Crafty('DebugInfo').capture('ship particles')
-      @setScenery('BayStart')
+      @setScenery('City.BayStart')
       => Crafty('PlayerSpaceship').each(-> @addComponent('Invincible').invincibleDuration(15000))
       => Crafty('PlayerSpaceship').each(-> @shoot(false))
       @enemies()
@@ -45,13 +45,13 @@ class Benchmark extends LazerScript
       => Crafty('DebugInfo').capture('swirlers shooting')
       @parallel(
         @gainHeight(800, duration: 14000)
-        @setScenery('Skyline')
+        @setScenery('City.Skyline')
       )
       => Crafty('PlayerSpaceship').each(-> @shoot(true))
       @enemies()
       => Crafty('PlayerSpaceship').each(-> @shoot(false))
       => Crafty('DebugInfo').capture('swirlers shooting skyline')
-      @setScenery 'Ocean'
+      @setScenery 'City.Ocean'
       @gainHeight(-800, duration: 14000)
       => Crafty('DebugInfo').capture('end')
     )

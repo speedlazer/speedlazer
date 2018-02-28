@@ -70,7 +70,7 @@ Level =
             @_verify(sequence)
             s = clone(settings.options)
             s.index = i
-            script.run(s)
+            return script.run(s)
         )
         WhenJS.all(promises).then (results) =>
           @attackWaveResults = (@attackWaveResults || []).concat(results)

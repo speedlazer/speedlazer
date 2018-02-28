@@ -1,4 +1,5 @@
 import defaults from "lodash/defaults";
+import { lookup } from "src/lib/random";
 
 Crafty.c("BulletCircle", {
   bulletCircle(options) {
@@ -22,7 +23,7 @@ Crafty.c("BulletCircle", {
     wo[1] *= this.scale != null ? this.scale : 1;
 
     const angleRange = 360 / settings.burstAmount;
-    const ang = settings.angle === "random" ? Math.random() : settings.angle;
+    const ang = settings.angle === "random" ? lookup() : settings.angle;
     const startAngle = ang * angleRange;
 
     for (let i = 0; i < settings.burstAmount; i++) {

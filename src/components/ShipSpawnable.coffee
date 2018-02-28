@@ -50,6 +50,7 @@ Crafty.c 'ShipSpawnable',
       points = (data.pointsOnDestroy ? 0) +
         (data.pointsOnHit ? 0)
       @addPoints(points, data.location) if data?
+      @addChainXP(points) if data.chainable
 
     @listenTo @ship, 'BonusPoints', (data) ->
       @addPoints(data.points, data.location)

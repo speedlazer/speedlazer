@@ -7,12 +7,13 @@ Entity = require('./script_modules/entity').default
 Colors = require('./script_modules/colors').default
 LevelTemplate = require('./script_templates/level').default
 Synchronizer = require('src/lib/Synchronizer').default
+{ lookup } = require('src/lib/random')
 
 class LazerScript
   constructor: (@level) ->
 
   run: (args...) ->
-    @currentSequence = Math.random()
+    @currentSequence = lookup()
     @options = args[0] ? {}
     @startAtCheckpoint = @options.startAtCheckpoint
     @currentCheckpoint = 0
@@ -84,6 +85,14 @@ class EntityScript extends LazerScript
         x: @entity.x
         y: @entity.y
 
+    @entity.unbind('Cleanup')
+    @entity.unbind('Destroyed')
+    @entity.bind 'Cleanup', =>
+      if @entity.deathDecoy
+        @cleanupDecoy(@entity)
+      else
+        @cleanup(@entity)
+
     @entity.bind 'Destroyed', =>
       @currentSequence = null
       @synchronizer.unregisterEntity(this)
@@ -96,6 +105,7 @@ class EntityScript extends LazerScript
       moveState: 'air'
       alive: yes
       location: {}
+      chainable: @entity.chainable
     #else
       #@enemy =
         #moveState: 'air'
@@ -108,12 +118,24 @@ class EntityScript extends LazerScript
         # Only wait for alternate path if still alive
         @alternatePath if @enemy.alive
       .finally =>
+        @_unbindSequences()
         if @enemy.alive and !@entity.has('KeepAlive')
-          @entity.destroy()
+          @cleanup(@entity)
       .then =>
+        Crafty.trigger('EntityEndState', @enemy)
         @enemy
 
   spawn: ->
+  spawnDecoy: (options) -> @spawn(options)
+
+  cleanup: (entity) ->
+    if entity.hasPool
+      entity.recycle()
+    else
+      entity.destroy()
+
+  cleanupDecoy: (entity) ->
+    @cleanup(entity)
 
 extend(
   EntityScript::

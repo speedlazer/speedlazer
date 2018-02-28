@@ -1,6 +1,7 @@
 { Noise } = require('noisejs')
+{ lookup } = require('src/lib/random')
 
-noise = new Noise(Math.random())
+noise = new Noise(lookup())
 
 Crafty.c 'ScrollWall',
   init: ->

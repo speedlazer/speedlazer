@@ -16,7 +16,7 @@ export const say = (speaker, text, settings) =>
     const w = Crafty.viewport.width * 0.8;
     const h = Math.max(avatar ? 4 : 0, lines.length + 1 + (speaker ? 1 : 0));
 
-    const back = Crafty.e("2D, WebGL, Color, Tween, Dialog")
+    const back = Crafty.e("2D, UILayerWebGL, Color, Tween, Dialog")
       .attr({ w, h: h * 20, alpha: 0.7 })
       .color("#000000")
       .attr({
@@ -28,7 +28,7 @@ export const say = (speaker, text, settings) =>
 
     const avatarOffset = avatar ? 100 : 0;
     if (avatar) {
-      const portrait = Crafty.e("2D, WebGL, SpriteAnimation")
+      const portrait = Crafty.e("2D, UILayerWebGL, SpriteAnimation")
         .addComponent(avatar.n)
         .sprite(avatar.l, 4, 4)
         .attr({

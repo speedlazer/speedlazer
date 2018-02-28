@@ -27,7 +27,7 @@ class Lunch extends LazerScript
     @sequence(
       => Crafty.audio.mute()
       @setShipType('PlayerControlledCube')
-      @setScenery('Blackness')
+      @setScenery('City.Blackness')
       @hideHud(duration: 0)
       @setWeapons([])
       @enableWeapons()
@@ -46,7 +46,7 @@ class Lunch extends LazerScript
       @updateTitle '2 Players'
       @nextSlide()
       @updateTitle 'More enemies'
-      @setScenery('OpenSpace')
+      @setScenery('City.OpenSpace')
       @setSpeed 150, accellerate: no
       @parallel(
         @placeSquad Slider,
@@ -77,8 +77,8 @@ class Lunch extends LazerScript
 
       @nextSlide()
       @updateTitle 'Backgrounds'
-      @checkpoint @setScenery 'OpenSpace'
-      @setScenery('TunnelStart')
+      @checkpoint @setScenery 'City.OpenSpace'
+      @setScenery('City.TunnelStart')
       @waitForScenery 'TunnelStart'
       @setSpeed 50, accellerate: no
       @nextSlide()
@@ -117,12 +117,12 @@ class Lunch extends LazerScript
       )
 
       @updateTitle 'Start stage 1'
-      @setScenery('TunnelEnd')
+      @setScenery('City.TunnelEnd')
       @setSpeed 450, accellerate: no
 
       @waitForScenery 'OceanOld', event: 'leave'
       @setSpeed 50, accellerate: no
-      @checkpoint @setScenery 'OceanOld'
+      @checkpoint @setScenery 'City.OceanOld'
       @nextSlide()
       @updateTitle 'Bezier, powerups'
       @nextSlide @sequence(
@@ -151,7 +151,7 @@ class Lunch extends LazerScript
             delay: 500
         )
       )
-      @checkpoint @setScenery 'OceanOld'
+      @checkpoint @setScenery 'City.OceanOld'
       @updateTitle 'Lazerscript enemies'
       @disableWeapons()
 
@@ -170,8 +170,8 @@ class Lunch extends LazerScript
       => Game.explosionMode = 'particles'
       => Game.webGLMode = off
 
-      @checkpoint @setScenery('OceanOld')
-      @setScenery('OceanToNew')
+      @checkpoint @setScenery('City.OceanOld')
+      @setScenery('City.OceanToNew')
       @async @runScript(PresentationSunRise, skipTo: 0, speed: 10)
       @repeat 4, @sequence(
         @placeSquad PresentationSwirler,
@@ -183,12 +183,12 @@ class Lunch extends LazerScript
       @updateTitle 'Graphics!'
       @swirlAttacks()
       @swirlAttacks()
-      @setScenery('CoastStart')
+      @setScenery('City.CoastStart')
 
       @nextSlide @sequence(
         @mineSwarm(juice: no)
       )
-      @checkpoint @sunriseCheckpoint(PresentationSunRise, 90000, 10, 'CoastStart')
+      @checkpoint @sunriseCheckpoint(PresentationSunRise, 90000, 10, 'City.CoastStart')
       @parallel(
         @runScript(PresentationSunSet, skipTo: 0, speed: 50)
         @sequence(
@@ -206,7 +206,7 @@ class Lunch extends LazerScript
         Crafty('waterHorizon').each -> @attr lightness: 1.0
       @chapterTitle(1, 'WebGL Shaders')
       @async @runScript(SunRise, skipTo: 0, speed: 2)
-      @setScenery('BayStart')
+      @setScenery('City.BayStart')
       @nextSlide @sequence(
         @swirlAttacks2()
       )
@@ -243,8 +243,8 @@ class Lunch extends LazerScript
           options:
             juice: yes
       )
-      @checkpoint @sunriseCheckpoint(SunRise, 120000, 2, 'Bay')
-      @setScenery 'UnderBridge'
+      @checkpoint @sunriseCheckpoint(SunRise, 120000, 2, 'City.Bay')
+      @setScenery 'City.UnderBridge'
       @updateTitle 'Player ship'
       @setWeapons(['lasers'])
       @setShipType('PlayerSpaceship')
@@ -260,14 +260,14 @@ class Lunch extends LazerScript
       )
       @setSpeed 50, accellerate: yes
       @waitForScenery('UnderBridge', event: 'inScreen')
-      @checkpoint @sunriseCheckpoint(SunRise, 140000, 2, 'UnderBridge')
+      @checkpoint @sunriseCheckpoint(SunRise, 140000, 2, 'City.UnderBridge')
       @setSpeed 0
       @nextSlide()
       @chapterTitle(4, 'Bossfight!')
       @placeSquad LunchBossStage1
       @checkpoint @parallel(
         @async @runScript(SunRise, skipTo: 450000, speed: 2)
-        @setScenery 'Skyline'
+        @setScenery 'City.Skyline'
         @gainHeight(600, duration: 0)
         @setSpeed 150
       )

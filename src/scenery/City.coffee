@@ -2,47 +2,48 @@ extend = require('lodash/extend')
 levelGenerator = require('src/lib/LevelGenerator').default
 cityScenery = require('src/images/city-scenery.png')
 LevelScenery = require('src/lib/LevelScenery').default
+{ lookup } = require('src/lib/random')
 
 levelGenerator.defineElement 'cloud', ->
-  v = Math.random()
-  blur = (Math.random() * 4.0)
+  v = lookup()
+  blur = (lookup() * 4.0)
   if v > .2
-    y = (Math.random() * 20) + 30
-    w = (Math.random() * 20) + 125
-    h = (Math.random() * 10) + 50
+    y = (lookup() * 20) + 30
+    w = (lookup() * 20) + 125
+    h = (lookup() * 10) + 50
     c1 = Crafty.e('2D, WebGL, cloud, Hideable, Horizon').attr(
       z: -300
       w: w
       h: h
       topDesaturation: 0.6
       bottomDesaturation: 0.6
-      alpha: (Math.random() * 0.8) + 0.2
+      alpha: (lookup() * 0.8) + 0.2
       lightness: .4
-      blur: blur
+      #blur: blur
     )
-    if Math.random() < 0.7
+    if lookup() < 0.7
       c1 = c1.flip('X')
-    @addBackground(300 + (Math.random() * 300), y, c1, .375)
+    @addBackground(300 + (lookup() * 300), y, c1, .375)
 
   if v < .6
-    s = (Math.random() * .20) + .15
+    s = (lookup() * .20) + .15
 
     y = 230 - (s * 150)
-    w = ((Math.random() * 10) + 70) - (s * 20)
-    h = ((Math.random() * 5) + 20) - (s * 10)
+    w = ((lookup() * 10) + 70) - (s * 20)
+    h = ((lookup() * 5) + 20) - (s * 10)
     c2 = Crafty.e('2D, WebGL, cloud, Hideable, Horizon').attr(
       z: -570
       w: w
       h: h
       topDesaturation: 1.0 - s
       bottomDesaturation: 1.0 - s
-      alpha: (Math.random() * 0.8) + 0.2
+      alpha: (lookup() * 0.8) + 0.2
       lightness: .4
-      blur: blur
+      #blur: blur
     )
-    if Math.random() < 0.2
+    if lookup() < 0.2
       c2 = c2.flip('X')
-    @addBackground(360 + Math.random() * 300, y, c2, s)
+    @addBackground(360 + lookup() * 300, y, c2, s)
 
 levelGenerator.defineElement 'waterHorizon', ->
   h = Crafty.e('2D, WebGL, waterHorizon, SunBlock, Horizon, ColorEffects')
@@ -366,7 +367,7 @@ levelGenerator.defineBlock class extends CityScenery
   delta:
     x: 1024
     y: 0
-  autoNext: 'Ocean'
+  autoNext: 'City.Ocean'
 
   generate: ->
     super
@@ -544,7 +545,6 @@ levelGenerator.defineBlock class extends CityScenery
 
   generate: ->
     super
-
     @addElement 'cloud'
     @addElement 'cloud'
     @addElement 'waterHorizon'
@@ -556,8 +556,8 @@ levelGenerator.defineBlock class extends CityScenery
   delta:
     x: 1024
     y: 0
-  autoNext: 'Coast'
-  autoPrevious: 'Ocean'
+  autoNext: 'City.Coast'
+  autoPrevious: 'City.Ocean'
 
   generate: ->
     super
@@ -584,8 +584,8 @@ levelGenerator.defineBlock class extends CityScenery
   delta:
     x: 1024
     y: 0
-  autoNext: 'Bay'
-  autoPrevious: 'Coast'
+  autoNext: 'City.Bay'
+  autoPrevious: 'City.Coast'
 
   generate: ->
     super
@@ -628,7 +628,7 @@ levelGenerator.defineBlock class extends CityScenery
   delta:
     x: 1024
     y: 0
-  autoNext: 'BayFull'
+  autoNext: 'City.BayFull'
 
   generate: ->
     super
@@ -794,7 +794,7 @@ levelGenerator.defineBlock class extends CityScenery
   delta:
     x: 1024
     y: 0
-  autoNext: 'Skyline2'
+  autoNext: 'City.Skyline2'
 
   generate: ->
     super

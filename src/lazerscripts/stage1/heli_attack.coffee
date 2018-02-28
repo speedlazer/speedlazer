@@ -61,6 +61,7 @@ class HeliAttack extends EntityScript
       y: .6 * Crafty.viewport.height
       defaultSpeed: options.speed ? 40
       weaponOrigin: [0, 25]
+      chainable: !options.deathDecoy
     ).helicopter(
       pointsOnHit: 10
       pointsOnDestroy: 70
@@ -72,7 +73,7 @@ class HeliAttack extends EntityScript
       angle: -15
       angleDeviation: 5
       aim: 45
-      cooldown: 50
+      cooldown: 100
       projectile: (x, y, angle) =>
         projectile = Crafty.e('Projectile, sphere1, Hostile, Collision')
           .crop(6, 21, 18, 7)
@@ -81,7 +82,7 @@ class HeliAttack extends EntityScript
           .attr(
             w: 20
             h: 8
-            speed: 250
+            speed: 200
             damage: 1
           )
 
