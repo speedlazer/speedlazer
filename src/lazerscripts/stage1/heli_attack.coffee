@@ -61,7 +61,7 @@ class HeliAttack extends EntityScript
       y: .6 * Crafty.viewport.height
       defaultSpeed: options.speed ? 40
       weaponOrigin: [0, 25]
-      chainable: !!options.deathDecoy
+      chainable: !options.deathDecoy
     ).helicopter(
       pointsOnHit: 10
       pointsOnDestroy: 70
