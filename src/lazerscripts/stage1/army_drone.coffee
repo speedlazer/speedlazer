@@ -47,6 +47,7 @@ class DroneFlyer extends EntityScript
       y: location.y
       defaultSpeed: options.speed ? 400
     )
+    d.chainable = options.chainable
     if options.shootOnSight
       d.addComponent('ShootOnSight').shootOnSight
         cooldown: 1000 + (lookup() * 3000)

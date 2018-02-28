@@ -96,7 +96,7 @@ Crafty.c 'Player',
       )
 
   _processEnemyState: (enemy) ->
-    if (enemy.alive) # && count as enemy
+    if (enemy.alive && enemy.chainable)
       currentLevel = determineLevel(@chain)
       @chain = 0
       if currentLevel > 0

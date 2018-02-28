@@ -1,51 +1,51 @@
 export const levels = [
   {
-    xp: 500,
+    xp: 200,
     reward: 100,
     name: "Nice"
   },
   {
-    xp: 1800,
+    xp: 700,
     reward: 500,
     name: "Good"
   },
   {
-    xp: 3500,
+    xp: 1400,
     reward: 1000,
     name: "Great"
   },
   {
-    xp: 7200,
+    xp: 3000,
     reward: 2000,
     name: "Excellent"
   },
   {
-    xp: 18000,
+    xp: 7000,
     reward: 5000,
     name: "Wondeful"
   },
   {
-    xp: 36000,
+    xp: 15000,
     reward: 10000,
     name: "Superb"
   },
   {
-    xp: 72000,
+    xp: 30000,
     reward: 20000,
     name: "Godlike"
   },
   {
-    xp: 145000,
+    xp: 55000,
     reward: 40000,
     name: "Funky"
   },
   {
-    xp: 290000,
+    xp: 115000,
     reward: 80000,
     name: "Fantastic"
   },
   {
-    xp: 350000,
+    xp: 145000,
     reward: 100000,
     name: "Amazing"
   }

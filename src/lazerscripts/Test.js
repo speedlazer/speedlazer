@@ -29,9 +29,10 @@ class Test extends LazerScript {
           amount: 8,
           delay: 300,
           options: {
+            chainable: true,
             speed: 400,
             //debug: true,
-            path: [[0.8, 0.6], [0.25, 0.4], [0.16, -0.1]]
+            path: [[0.8, 0.5], [0.25, 0.4], [0.16, -0.1]]
           }
         })
       )

@@ -105,6 +105,7 @@ class EntityScript extends LazerScript
       moveState: 'air'
       alive: yes
       location: {}
+      chainable: @entity.chainable
     #else
       #@enemy =
         #moveState: 'air'

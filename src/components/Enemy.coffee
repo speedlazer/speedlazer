@@ -85,7 +85,7 @@ Crafty.c 'Enemy',
       @trigger('Cleanup', this)
       unless @__frozen
         @destroy()
-
+      data.chainable = @chainable
       cause.ship?.trigger 'DestroyTarget', data
       @deathCause = cause.ship
     else

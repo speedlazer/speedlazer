@@ -90,6 +90,7 @@ class Stage1 extends LazerScript
         amount: 6
         delay: 500
         options:
+          chainable: true
           path: [
             [.9, .6]
             [.25, .4]
@@ -102,6 +103,7 @@ class Stage1 extends LazerScript
           amount: 6
           delay: 500
           options:
+            chainable: true
             path: [
               [.9, .3]
               [.65, .3]
@@ -115,6 +117,7 @@ class Stage1 extends LazerScript
           amount: 6
           delay: 500
           options:
+            chainable: true
             path: [
               [.5, .625]
               [.2, .5]
@@ -150,6 +153,7 @@ class Stage1 extends LazerScript
                   amount: 4
                   delay: 500
                   options:
+                    chainable: true
                     x: .5
                     y: -.01
                     path: [
@@ -164,6 +168,7 @@ class Stage1 extends LazerScript
                   amount: 4
                   delay: 500
                   options:
+                    chainable: true
                     x: .5
                     y: 1.11
                     path: [
@@ -183,6 +188,7 @@ class Stage1 extends LazerScript
       @parallel(
         @placeSquad HeliAttack,
           options:
+            chainable: true
             speed: 80
             path: [
               [.9, .4]
@@ -207,6 +213,7 @@ class Stage1 extends LazerScript
         amount: 4
         delay: 500
         options:
+          chainable: true
           x: -.2
           y: 0.5
           path: [
@@ -221,6 +228,7 @@ class Stage1 extends LazerScript
         amount: 4
         delay: 500
         options:
+          chainable: true
           x: -.2
           y: 0.2
           path: [
@@ -237,6 +245,7 @@ class Stage1 extends LazerScript
           amount: 4
           delay: 500
           options:
+            chainable: true
             x: -.2
             y: 0.2
             path: [
@@ -254,6 +263,7 @@ class Stage1 extends LazerScript
           amount: 6
           delay: 500
           options:
+            chainable: true
             x: 0.9
             y: -0.1
             path: [
@@ -264,6 +274,7 @@ class Stage1 extends LazerScript
           amount: 6
           delay: 500
           options:
+            chainable: true
             x: 0.8
             y: -0.1
             path: [
@@ -293,6 +304,7 @@ class Stage1 extends LazerScript
         amount: 4
         delay: 500
         options:
+          chainable: true
           path: repeatPattern(height)
           y: height
     )
