@@ -1,31 +1,39 @@
 defaults = require('lodash/defaults')
 
 Crafty.c 'Enemy',
+  required: '2D, WebGL, Collision, Tween, Choreography, Hideable, Flipable, Scalable, SunBlock, Hostile'
+  events:
+    HitOn: '_onCollisonHit'
+    HitOff: '_onCollisonHitOff'
+    HitFlash: 'applyHitFlash'
+
   init: ->
-    @requires '2D, WebGL, Collision, Tween, Choreography, Hideable, Flipable, Scalable, SunBlock, Hostile'
     @attr
       pointsOnHit: 0
       pointsOnDestroy: 0
       damage: 2
     @invincible = no
-    @bind 'HitFlash', @applyHitFlash
 
-  onProjectileHit: (collisions) ->
+  _onCollisonHit: (collisions) ->
     return if Game.paused
     return if @hidden
 
     collisions.forEach((e) =>
-      bullet = e.obj
+      bulletOrExplosion = e.obj
       unless @invincible
-        unless @juice is no
-          @trigger('HitFlash', true)
-        @absorbDamage(bullet)
+        if bulletOrExplosion.damage > 0
+          unless @juice is no
+            @trigger('HitFlash', true)
+          @absorbDamage(bulletOrExplosion)
+          bulletOrExplosion.damage = 0
 
-        @trigger('Hit', entity: this, projectile: bullet)
-      bullet.trigger('BulletHit', bullet)
+          @trigger('Hit', entity: this, projectile: bulletOrExplosion)
+
+      if bulletOrExplosion.has('Bullet')
+        bulletOrExplosion.trigger('BulletHit', bulletOrExplosion)
     )
 
-  onProjectileHitEnd: ->
+  _onCollisonHitOff: (component) ->
     @trigger('HitFlash', false)
 
   onExplosionHit: (e) ->
@@ -58,16 +66,7 @@ Crafty.c 'Enemy',
     @reveal()
     @pointsLocation = options.pointsLocation
     Crafty.trigger('EnemySpawned', this)
-    @onHit(
-      options.projectile
-      (e) => @onProjectileHit(e)
-      => @onProjectileHitEnd()
-    )
-    @onHit(
-      'Explosion'
-      (e) => @onExplosionHit(e)
-      => @onProjectileHitEnd()
-    )
+    @checkHits(options.projectile, 'Explosion')
     @updatedHealth?()
     this
 
