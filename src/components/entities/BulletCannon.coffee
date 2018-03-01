@@ -31,13 +31,13 @@ Crafty.c 'BulletCannon',
     @enemy()
     @barrel.onHit(
       'Bullet',
-      (e) => @onProjectileHit(e)
-      => @onProjectileHitEnd()
+      (e) => @trigger('HitOn', e)
+      (c) => @trigger('HitOff', c)
     )
     @barrel.onHit(
       'Explosion'
-      (e) => @onExplosionHit(e)
-      => @onProjectileHitEnd()
+      (e) => @trigger('HitOn', e)
+      (c) => @trigger('HitOff', c)
     )
     @tip = Crafty.e('2D')
     @tip.attr(
