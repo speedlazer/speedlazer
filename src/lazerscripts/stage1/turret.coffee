@@ -16,9 +16,11 @@ class TurretActive extends EntityScript
 
     if entity
       entity.removeComponent('TurretInactive')
-
     else
       entity = Crafty.e('BulletCannon, KeepAlive').bulletCannon()
+
+    if !options.deathDecoy
+      entity.chainable = options.chainable
 
     entity
 

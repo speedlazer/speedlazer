@@ -36,6 +36,7 @@ Crafty.c 'Player',
     return unless @lives > 0
     @lives -= 1
     @health = @maxHealth
+    @chain = 0
     @trigger 'UpdateLives', lives: @lives
 
     if @lives <= 0

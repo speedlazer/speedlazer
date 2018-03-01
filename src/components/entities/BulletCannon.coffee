@@ -15,6 +15,8 @@ Crafty.c 'BulletCannon',
     @attr defaults(attr,
       health: defaultHealth
       maxHealth: attr.health ? defaultHealth
+      pointsOnHit: 5
+      pointsOnDestroy: 100
       aimSpeed: 90
     )
     @barrel = Crafty.e('2D, WebGL, mineCannon, TweenPromise, Collision')
