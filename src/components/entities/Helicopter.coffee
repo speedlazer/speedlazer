@@ -54,7 +54,12 @@ Crafty.c 'Helicopter',
       @pauseAnimation()
       @sprite(8, 6)
     else
-      @animate('fly', -1) unless @isPlaying('fly')
+      if @rotors is on
+        @animate('fly', -1) unless @isPlaying('fly')
+      else
+        @pauseAnimation()
+        @sprite(12, 8)
+
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
     @vx = dx * (1000 / dt)
