@@ -59,12 +59,14 @@ Crafty.c 'BattleShip',
     @hatch2 = Crafty.e('CarrierHatch, ShipHatch2').attr(
       x: @x + 16 * 32
       y: @y + 29
+      floorOffset: 65
     )
     @attach(@hatch2)
 
     @hatch3 = Crafty.e('CarrierHatch, ShipHatch3').attr(
       x: @x + 22 * 32
       y: @y + 29
+      floorOffset: 65
     )
     @attach(@hatch3)
 
@@ -159,8 +161,11 @@ Crafty.c 'BattleShip',
       when 'activateCannon1'
         Crafty('BulletCannon').get(0).trigger('Activate')
       when 'deactivateCannon1'
-        console.log('deactivating cannon')
         Crafty('BulletCannon').get(0).trigger('Deactivate')
+      when 'activateCannon2'
+        Crafty('BulletCannon').get(1).trigger('Activate')
+      when 'deactivateCannon2'
+        Crafty('BulletCannon').get(1).trigger('Deactivate')
 
 Crafty.c 'ShipCabin', {
   init: ->
@@ -272,13 +277,13 @@ Crafty.c 'FirstShipCabin', {
   shipCabin: ->
     @hitBox.onHit(
       'Bullet',
-      (e) => @onProjectileHit(e)
-      => @onProjectileHitEnd()
+      (e) => @trigger('HitOn', e)
+      (c) => @trigger('HitOff', c)
     )
     @hitBox.onHit(
       'Explosion'
-      (e) => @onExplosionHit(e)
-      => @onProjectileHitEnd()
+      (e) => @trigger('HitOn', e)
+      (c) => @trigger('HitOff', c)
     )
 
     @hitParts = [@cabinParts..., @antenna, @radar]
@@ -363,13 +368,13 @@ Crafty.c 'SecondShipCabin', {
   shipCabin: ->
     @hitBox.onHit(
       'Bullet',
-      (e) => @onProjectileHit(e)
-      => @onProjectileHitEnd()
+      (e) => @trigger('HitOn', e)
+      (c) => @trigger('HitOff', c)
     )
     @hitBox.onHit(
       'Explosion'
-      (e) => @onExplosionHit(e)
-      => @onProjectileHitEnd()
+      (e) => @trigger('HitOn', e)
+      (c) => @trigger('HitOff', c)
     )
 
     @hitParts = [@cabinParts..., @antenna1, @antenna2]

@@ -96,6 +96,10 @@ class ShipBoss extends EntityScript
         options:
           attach: 'HatchFloor1'
           attachDx: 90
+      @async @placeSquad TurretActive,
+        options:
+          attach: 'HatchFloor2'
+          attachDx: 90
 
       @placeSquad Cabin1Inactive,
         options:
@@ -113,6 +117,7 @@ class ShipBoss extends EntityScript
           attach: 'DroneShipCorePlace'
 
       @action 'deactivateCannon1'
+      @action 'deactivateCannon2'
     )
 
   executeStageOne: ->
@@ -148,10 +153,19 @@ class ShipBoss extends EntityScript
       @action 'open1'
       @wait(1500)
       @action 'activateCannon1'
-      @wait(15000)
+      @wait(5000)
       @action 'deactivateCannon1'
-      @wait(1500)
+      @wait(500)
       @action 'close1'
+      @wait(500)
+
+      @action 'open2'
+      @wait(1500)
+      @action 'activateCannon2'
+      @wait(5000)
+      @action 'deactivateCannon2'
+      @wait(500)
+      @action 'close2'
       @wait(500)
     )
 

@@ -27,7 +27,7 @@ Crafty.c 'BulletCannon',
       w: 96
       h: 32
     )
-    @barrel.origin(@barrel.w - 16, 16)
+    @barrel.origin(@barrel.w - 16, 20)
     @enemy()
     @barrel.onHit(
       'Bullet',
@@ -67,6 +67,9 @@ Crafty.c 'BulletCannon',
     switch action
       when 'aim'
         @aimAt(level.player('anyActive'))
+      when 'reset-aim'
+        duration = Math.abs(@barrel.rotation) * 1000 / @aimSpeed
+        @barrel.tweenPromise(rotation: 0, duration)
       when 'start-shooting'
         @tip.addComponent('BurstShot').burstShot
           burstCooldown: 1500

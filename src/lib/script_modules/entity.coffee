@@ -511,8 +511,8 @@ Entity =
         attachPoint = Crafty(@options.attach).get(attachIndex)
         attachPoint.attach(@decoy)
         @decoy.attr({
-          x: attachPoint.x
-          y: attachPoint.y
+          x: attachPoint.x + (@options.attachDx || 0)
+          y: attachPoint.y + (@options.attachDy || 0)
           z: attachPoint.z
           invincible: yes
           deathDecoy: yes

@@ -47,7 +47,7 @@ class TurretActive extends EntityScript
     @bindSequence 'Activate', @activate
     @sequence(
       @action 'stop-shooting'
-      @rotate 0, 500
+      @action 'reset-aim'
       @repeat(
         @wait 500
       )

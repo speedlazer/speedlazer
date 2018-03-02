@@ -59,10 +59,15 @@ class EntityScript extends LazerScript
     @boundEvents = []
     args.push {} if isEmpty args
 
-    @entity = @spawn(args...)
     if @options.attach
       attachIndex = (@options.attachOffset || 0) + @options.index
       attachPoint = Crafty(@options.attach).get(attachIndex)
+      unless attachPoint
+        Crafty.log('Cannot find attach target:', @options.attach, attachIndex)
+        return WhenJS({ alive: no, killedAt: (new Date), location: null })
+
+    @entity = @spawn(args...)
+    if @options.attach
       attachPoint.attach(@entity)
       @entity.attr({
         x: attachPoint.x + (@options.attachDx || 0)
