@@ -31,6 +31,11 @@ Crafty.c 'Hideable',
     @trigger 'Hiding', this
     this
 
+  hideBelow: (yValue) ->
+    @hideAt = yValue
+    for c in @_children
+      c.attr?(hideAt: yValue)
+
   reveal: ->
     @hideMarker?.destroy()
     @hidden = no

@@ -92,6 +92,11 @@ class ShipBoss extends EntityScript
 
   placeEnemiesOnShip: ->
     @sequence(
+      @async @placeSquad TurretActive,
+        options:
+          attach: 'HatchFloor1'
+          attachDx: 90
+
       @placeSquad Cabin1Inactive,
         options:
           attach: 'Cabin1Place'
@@ -106,35 +111,13 @@ class ShipBoss extends EntityScript
       @placeSquad DroneShipCore,
         options:
           attach: 'DroneShipCorePlace'
+
+      @action 'deactivateCannon1'
     )
 
   executeStageOne: ->
     @sequence(
       @moveTo(x: 0.8, easing: "easeInOutQuad")
-    )
-
-  releaseDronesFromHatchOne: (dronePattern) ->
-    @sequence(
-      @action 'open1'
-      @wait(500)
-      @parallel(
-        # Place Turret lqter
-
-        # @placeSquad DroneFlyer,
-        #   amount: 5,
-        #   delay: 500
-        #   options:
-        #     startAt: 'ShipHatch1'
-        #     hatchReveal: 'ShipHatch1'
-        #     dx: 25
-        #     dy: 20
-        #     debug: true,
-        #     path: @getPath(dronePattern)
-        @sequence(
-          @wait(1200)
-          @action 'close1'
-        )
-      )
     )
 
   releaseDronesFromHatchTwo: (dronePattern) ->
@@ -162,15 +145,14 @@ class ShipBoss extends EntityScript
   executeStageTwo: ->
     @sequence(
       @moveTo(x: -0.1, easing: "easeInOutQuad")
-      @while(
-        # @placeSquad TurretActive,
-        #   options:
-        #     attach: 'TurretPlace'
-        @lazy(
-          @releaseDronesFromHatchOne,
-          -> Math.round(Math.random() * 3 + 1)
-        )
-      )
+      @action 'open1'
+      @wait(1500)
+      @action 'activateCannon1'
+      @wait(15000)
+      @action 'deactivateCannon1'
+      @wait(1500)
+      @action 'close1'
+      @wait(500)
     )
 
   executeStageThree: ->
@@ -193,8 +175,7 @@ class ShipBoss extends EntityScript
           options:
             attach: 'Cabin1Place'
         @lazy(
-          @releaseDronesFromHatchOne,
-          -> Math.round(Math.random() * 3 + 1)
+          @releaseDronesFromHatchOne
         )
       )
     )
@@ -273,10 +254,11 @@ class ShipBoss extends EntityScript
       @lazy @placeEnemiesOnShip
       @lazy @executeStageOne
       @lazy @executeStageTwo
-      @lazy @executeStageThree
-      @lazy @executeStageFour
-      @lazy @executeStageFive
-      @lazy @executeStageSix
+      #@lazy @executeStageThree
+      #@lazy @executeStageFour
+      #@lazy @executeStageFive
+      #@lazy @executeStageSix
+      @wait 30e3
     )
 
 module.exports =

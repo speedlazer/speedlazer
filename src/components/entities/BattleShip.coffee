@@ -52,7 +52,7 @@ Crafty.c 'BattleShip',
     @hatch = Crafty.e('CarrierHatch, ShipHatch1').attr(
       x: @x + 10 * 32
       y: @y + 29
-      floorOffset: 200
+      floorOffset: 65
     )
     @attach(@hatch)
 
@@ -130,9 +130,9 @@ Crafty.c 'BattleShip',
     @_bottomX += width * 32
 
   ship: () ->
-    @hatch.hatch()
-    @hatch2.hatch()
-    @hatch3.hatch()
+    @hatch.hatch('HatchFloor1')
+    @hatch2.hatch('HatchFloor2')
+    @hatch3.hatch('HatchFloor3')
     return this
 
   open: (hatch) ->
@@ -156,6 +156,11 @@ Crafty.c 'BattleShip',
       when 'close3' then @close([2])
       when 'open' then @open([0,1,2])
       when 'close' then @close([0,1,2])
+      when 'activateCannon1'
+        Crafty('BulletCannon').get(0).trigger('Activate')
+      when 'deactivateCannon1'
+        console.log('deactivating cannon')
+        Crafty('BulletCannon').get(0).trigger('Deactivate')
 
 Crafty.c 'ShipCabin', {
   init: ->

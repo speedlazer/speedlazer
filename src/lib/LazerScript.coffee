@@ -65,8 +65,8 @@ class EntityScript extends LazerScript
       attachPoint = Crafty(@options.attach).get(attachIndex)
       attachPoint.attach(@entity)
       @entity.attr({
-        x: attachPoint.x
-        y: attachPoint.y
+        x: attachPoint.x + (@options.attachDx || 0)
+        y: attachPoint.y + (@options.attachDy || 0)
         z: attachPoint.z
       })
 

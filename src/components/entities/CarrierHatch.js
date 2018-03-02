@@ -38,7 +38,7 @@ Crafty.c("CarrierHatch", {
     return [this.lid, this.wire];
   },
 
-  hatch() {
+  hatch(label) {
     this.lid.attr({
       z: -4,
       x: this.x,
@@ -49,14 +49,16 @@ Crafty.c("CarrierHatch", {
       this.floor = Crafty.e(
         "2D, WebGL, aircraftCarrierHatchLid, Hideable, Tween, Delta2D"
       );
+      this.floor.addComponent(label);
       this.floor.crop(0, 2, 5 * 32, 32);
 
       this.floor.attr({
         z: -5,
         x: this.x - 4,
         y: this.y + 3,
-        hideAt: this.y + 30
+        dy: this.floorOffset,
       });
+      this.floor.hideBelow(this.y + 30)
       this.attach(this.floor);
     }
 
