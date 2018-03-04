@@ -4,7 +4,8 @@ class TurretInActive extends EntityScript
 
   spawn: (options) ->
     e = Crafty.e('TurretInactive, BulletCannon, KeepAlive').bulletCannon()
-    e.hideBelow(459)
+    if options.onHatch
+      e.hideBelow(459)
     return e
 
   execute: ->
@@ -23,11 +24,12 @@ class TurretActive extends EntityScript
 
     if !options.deathDecoy
       entity.chainable = options.chainable
-    entity.hideBelow(459)
+    if options.onHatch
+      entity.hideBelow(459)
     entity
 
   execute: ->
-    @bindSequence 'Deactivate', @deactivate
+    #@bindSequence 'Deactivate', @deactivate
     @bindSequence 'Destroyed', @onKilled
     @activate()
 

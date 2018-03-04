@@ -95,10 +95,12 @@ class ShipBoss extends EntityScript
       @async @placeSquad TurretActive,
         options:
           attach: 'HatchFloor1'
+          onHatch: true
           attachDx: 90
       @async @placeSquad TurretActive,
         options:
           attach: 'HatchFloor2'
+          onHatch: true
           attachDx: 90
 
       @placeSquad Cabin1Inactive,
