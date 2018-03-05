@@ -1,3 +1,5 @@
+{ togglePause } = require('src/lib/core/pauseToggle')
+
 Crafty.c 'GamepadControls',
   init: ->
     @requires 'Listener'
@@ -98,5 +100,5 @@ Crafty.c 'GamepadControls',
       # when the game is paused,
       # so unpausing is not possible!
       if e.button is @controlMap.pause
-        Game.togglePause() if e.pressed
+        togglePause() if e.pressed
 

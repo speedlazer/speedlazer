@@ -1,3 +1,5 @@
+{ togglePause } = require('src/lib/core/pauseToggle')
+
 Crafty.c 'AnalogKeyboardControls',
   init: ->
     @requires 'Listener'
@@ -119,7 +121,7 @@ Crafty.c 'AnalogKeyboardControls',
 
     @listenTo ship, 'KeyDown', (e) ->
       if e.key is controlMap.pause
-        Game.togglePause()
+        togglePause()
         pressed = {
           up: false,
           down: false,

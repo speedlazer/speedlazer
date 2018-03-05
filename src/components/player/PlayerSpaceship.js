@@ -1,5 +1,6 @@
 import defaults from "lodash/defaults";
 import createEntityPool from "src/lib/entityPool";
+import { isPaused } from "src/lib/core/pauseToggle";
 import { lookup } from "src/lib/random";
 
 Crafty.c("PlayerSpaceship", {
@@ -211,7 +212,7 @@ Crafty.c("PlayerSpaceship", {
 
     this.setDetectionOffset(60);
     this.onHit("Hostile", collision => {
-      if (Game.paused || this.has("Invincible")) return;
+      if (isPaused() || this.has("Invincible")) return;
       let hit = false;
       let damage = 0;
       for (let e of collision) {
@@ -226,7 +227,7 @@ Crafty.c("PlayerSpaceship", {
     });
 
     this.onHit("PowerUp", collision => {
-      if (Game.paused) return;
+      if (isPaused()) return;
       collision
         .filter(pu => !pu.obj.pickedUp)
         .forEach(pu => this.pickUp(pu.obj));

@@ -5,6 +5,7 @@ defaults = require('lodash/defaults')
 Synchronizer = require('src/lib/Synchronizer').default
 LocationGrid = require('src/lib/LocationGrid').default
 say = require('src/lib/Dialog').say
+{ setGameSpeed } = require("src/lib/core/gameSpeed")
 
 # Actions to control the flow of a level
 #
@@ -443,18 +444,18 @@ Level =
     (sequence) =>
       @_verify(sequence)
       new Promise((resolve) ->
-        Game.setGameSpeed 0.3
+        setGameSpeed 0.3
         Crafty.e('Delay, TimeManager').delay(
-          -> Game.setGameSpeed 0.1
+          -> setGameSpeed 0.1
           500
           0
         ).delay(
-          -> Game.setGameSpeed 0.3
+          -> setGameSpeed 0.3
           1500
           0
         ).delay(
           ->
-            Game.setGameSpeed 1.0
+            setGameSpeed 1.0
             @destroy()
             resolve()
           2000

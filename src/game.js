@@ -1,6 +1,8 @@
 import CryptoJS from "crypto-js";
 import defaults from "lodash/defaults";
 import sortBy from "lodash/sortBy";
+import { setGameSpeed, getGameSpeed } from "./lib/core/gameSpeed";
+import { isPaused } from "./lib/core/pauseToggle";
 
 /*
  * Destructure this file into multiple components
@@ -14,76 +16,6 @@ import sortBy from "lodash/sortBy";
  */
 
 const Game = {
-  paused: false,
-  togglePause() {
-    this.paused = !this.paused;
-
-    if (this.paused) {
-      this.setGameSpeed(0.0);
-
-      Crafty("Delay").each(function() {
-        return this.pauseDelays();
-      });
-      Crafty("Tween").each(function() {
-        return this.pauseTweens();
-      });
-      Crafty("Particles").each(function() {
-        return this.pauseParticles();
-      });
-      Crafty("SpriteAnimation").each(function() {
-        return this.pauseAnimation();
-      });
-      Crafty("PlayerControlledShip").each(function() {
-        if (this.disableControls) return;
-        this.disabledThroughPause = true;
-        this.disableControl();
-      });
-    } else {
-      this.setGameSpeed(1.0);
-      Crafty("Delay").each(function() {
-        return this.resumeDelays();
-      });
-      Crafty("Tween").each(function() {
-        return this.resumeTweens();
-      });
-      Crafty("Particles").each(function() {
-        return this.resumeParticles();
-      });
-      Crafty("SpriteAnimation").each(function() {
-        return this.resumeAnimation();
-      });
-      Crafty("PlayerControlledShip").each(function() {
-        if (!this.disabledThroughPause) return;
-        this.disabledThroughPause = null;
-        this.enableControl();
-      });
-    }
-
-    Crafty.trigger("GamePause", this.paused);
-  },
-
-  setGameSpeed(speed) {
-    this.gameSpeed = speed;
-    Crafty("SpriteAnimation").each(function() {
-      if (this.has("TimeManager")) {
-        return;
-      }
-      return (this.animationSpeed = speed);
-    });
-    Crafty("Delay").each(function() {
-      if (this.has("TimeManager")) {
-        return;
-      }
-      return (this.delaySpeed = speed);
-    });
-    return Crafty("Tween").each(function() {
-      if (this.has("TimeManager")) {
-        return;
-      }
-      return (this.tweenSpeed = speed);
-    });
-  },
-
   // Initialize and start our game
   start() {
     this.resetCredits();
@@ -94,32 +26,16 @@ const Game = {
     }
 
     this.gameTime = 0;
-    this.setGameSpeed(1.0);
-
-    Crafty.bind("NewEntity", data => {
-      const entity = Crafty(data.id);
-      if (entity.has("TimeManager")) {
-        return;
-      }
-      if (entity.has("SpriteAnimation")) {
-        entity.animationSpeed = this.gameSpeed;
-      }
-      if (entity.has("Delay")) {
-        entity.delaySpeed = this.gameSpeed;
-      }
-      if (entity.has("Tween")) {
-        entity.tweenSpeed = this.gameSpeed;
-      }
-    });
+    setGameSpeed(1.0);
 
     Crafty.bind("UpdateFrame", fd => {
-      if (!Game.paused) {
+      if (!isPaused()) {
         this.gameTime += fd.dt;
       }
-      fd.dt = fd.dt * this.gameSpeed;
+      fd.dt = fd.dt * getGameSpeed();
       fd.inGameTime = this.gameTime;
 
-      return Crafty.trigger("GameLoop", fd);
+      Crafty.trigger("GameLoop", fd);
     });
 
     Crafty.paths({

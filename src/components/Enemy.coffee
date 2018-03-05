@@ -1,4 +1,5 @@
 defaults = require('lodash/defaults')
+{ isPaused } = require('src/lib/core/pauseToggle')
 
 Crafty.c 'Enemy',
   required: '2D, WebGL, Collision, Tween, Choreography, Hideable, Flipable, Scalable, SunBlock, Hostile'
@@ -15,7 +16,7 @@ Crafty.c 'Enemy',
     @invincible = no
 
   _onCollisonHit: (collisions) ->
-    return if Game.paused
+    return if isPaused()
     return if @hidden
 
     collisions.forEach((e) =>
@@ -37,7 +38,7 @@ Crafty.c 'Enemy',
     @trigger('HitFlash', false)
 
   onExplosionHit: (e) ->
-    return if Game.paused
+    return if isPaused()
     return if @hidden
     return if @invincible
     for c in e
