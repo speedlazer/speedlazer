@@ -58,7 +58,7 @@ export const say = (speaker, text, settings) =>
 
     let offset = 15;
     if (speaker) {
-      const speakerText = Crafty.e("2D, DOM, Text")
+      const speakerText = Crafty.e("2D, UILayerDOM, Text")
         .attr({
           w: w - 20,
           x: back.x + 10 + avatarOffset,
