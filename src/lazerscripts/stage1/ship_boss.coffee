@@ -102,6 +102,11 @@ class ShipBoss extends EntityScript
           attach: 'HatchFloor2'
           onHatch: true
           attachDx: 90
+      @async @placeSquad TurretActive,
+        options:
+          attach: 'HatchFloor3'
+          onHatch: true
+          attachDx: 90
 
       @placeSquad Cabin1Inactive,
         options:
@@ -120,6 +125,7 @@ class ShipBoss extends EntityScript
 
       @action 'deactivateCannon1'
       @action 'deactivateCannon2'
+      @action 'deactivateCannon3'
     )
 
   executeStageOne: ->
@@ -148,27 +154,39 @@ class ShipBoss extends EntityScript
         )
       )
     )
+  
 
   executeStageTwo: ->
-    @sequence(
-      @moveTo(x: -0.1, easing: "easeInOutQuad")
-      @action 'open1'
-      @wait(1500)
-      @action 'activateCannon1'
-      @wait(5000)
-      @action 'deactivateCannon1'
-      @wait(500)
-      @action 'close1'
-      @wait(500)
+    @while(
+      @sequence(
+        @moveTo(x: -0.1, easing: "easeInOutQuad")
+        @action 'open1'
+        @wait(1500)
+        @action 'activateCannon1'
+        @wait(5000)
+        @action 'deactivateCannon1'
+        @wait(500)
+        @action 'close1'
+        @wait(500)
 
-      @action 'open2'
-      @wait(1500)
-      @action 'activateCannon2'
-      @wait(5000)
-      @action 'deactivateCannon2'
-      @wait(500)
-      @action 'close2'
-      @wait(500)
+        @action 'open2'
+        @wait(1500)
+        @action 'activateCannon2'
+        @wait(5000)
+        @action 'deactivateCannon2'
+        @wait(500)
+        @action 'close2'
+        @wait(500)
+
+        @action 'open3'
+        @wait(1500)
+        @action 'activateCannon3'
+        @wait(5000)
+        @action 'deactivateCannon3'
+        @wait(500)
+        @action 'close3'
+        @wait(500)
+      )
     )
 
   executeStageThree: ->

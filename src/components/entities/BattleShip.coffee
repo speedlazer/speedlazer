@@ -166,6 +166,10 @@ Crafty.c 'BattleShip',
         Crafty('BulletCannon').get(1).trigger('Activate')
       when 'deactivateCannon2'
         Crafty('BulletCannon').get(1).trigger('Deactivate')
+      when 'activateCannon3'
+        Crafty('BulletCannon').get(2).trigger('Activate')
+      when 'deactivateCannon3'
+        Crafty('BulletCannon').get(2).trigger('Deactivate')
 
 Crafty.c 'ShipCabin', {
   init: ->
