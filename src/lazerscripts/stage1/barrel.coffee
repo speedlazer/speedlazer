@@ -1,11 +1,12 @@
 { EntityScript } = require('src/lib/LazerScript')
+{ isPaused } = require('src/lib/core/pauseToggle')
 
 class IntroBarrel extends EntityScript
   spawn: (@options = {}) ->
     Crafty.e('2D, WebGL, Tween, boxes, Collision, Choreography, Hideable')
       .attr({ z: 23, defaultSpeed: 150 })
       .onHit 'PlayerControlledShip', (c) ->
-        return if Game.paused
+        return if isPaused()
         @trigger('Knock', c[0].obj)
 
   execute: ->

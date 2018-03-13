@@ -1,3 +1,5 @@
+{ setGameSpeed } = require("src/lib/core/gameSpeed")
+
 Crafty.c 'ShipSpawnable',
   init: ->
     @requires('Listener')
@@ -85,23 +87,23 @@ Crafty.c 'ShipSpawnable',
       @ship.destroy()
       stats = @ship.stats()
       @ship = null
-      Game.setGameSpeed 0.3
+      setGameSpeed 0.3
       Crafty.e('Delay, TimeManager').delay(
-        -> Game.setGameSpeed 0.2
+        -> setGameSpeed 0.2
         500
         0
       ).delay(
-        -> Game.setGameSpeed 0.4
+        -> setGameSpeed 0.4
         1000
         0
       ).delay(
-        -> Game.setGameSpeed 0.7
+        -> setGameSpeed 0.7
         1400
         0
       ).delay(
         =>
           @loseLife()
-          Game.setGameSpeed 1.0
+          setGameSpeed 1.0
           @spawnShip(stats)
         1800
         0

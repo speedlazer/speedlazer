@@ -1,3 +1,5 @@
+{ isPaused } = require("src/lib/core/pauseToggle")
+
 Crafty.c 'Bullet',
   required: '2D, WebGL, sphere1, Collision, ColorEffects'
   events:
@@ -14,7 +16,7 @@ Crafty.c 'Bullet',
     ]
 
   _onWallHit: ->
-    return if Game.paused
+    return if isPaused()
     @trigger('BulletWall', this)
 
   _onFreeze: ->

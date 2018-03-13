@@ -1,3 +1,5 @@
+{ isPaused } = require("src/lib/core/pauseToggle")
+
 Crafty.c 'Cheats',
   init: ->
     @addCheat('Freddie',
@@ -89,7 +91,7 @@ Crafty.c 'Freddy',
 
     @onHit 'Hostile',
       (collision) =>
-        return if Game.paused
+        return if isPaused()
 
         # Only count collisions once
         ids = (e.obj[0] for e in collision)

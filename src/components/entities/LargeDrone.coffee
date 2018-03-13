@@ -1,4 +1,5 @@
 defaults = require('lodash/defaults')
+{ isPaused } = require('src/lib/core/pauseToggle')
 
 Crafty.c 'LargeDrone',
   init: ->
@@ -44,7 +45,7 @@ Crafty.c 'LargeDrone',
 
     @enemy()
     @onHit 'Mine', (e) ->
-      return if Game.paused
+      return if isPaused()
       return if @hidden
       for c in e
         mine = c.obj

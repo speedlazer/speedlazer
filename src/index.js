@@ -5,14 +5,17 @@ import "./components";
 import "./scenery";
 import "./scenes";
 import "./systems/SeaLevel";
-
 import screenfull from "screenfull";
+
 /* eslint-env node */
 window.ga("create", process.env.GA_TRACKER, "auto");
 window.ga("send", "pageview");
 
 Game.start(false);
 
+/**
+ * Screen size management
+ */
 const scaleGame = () => {
   const stage = document.getElementById("cr-stage");
   const stageHeight = stage.clientHeight;
@@ -31,8 +34,6 @@ const scaleGame = () => {
 };
 
 window.addEventListener("resize", scaleGame);
-/* eslint-env node */
-document.getElementById("version").textContent = process.env.VERSION;
 
 // Handle the fullscreen button
 const button = document.querySelector("button");
@@ -51,3 +52,6 @@ button.addEventListener("click", () => {
 });
 
 setTimeout(scaleGame, 0);
+
+/* eslint-env node */
+document.getElementById("version").textContent = process.env.VERSION;

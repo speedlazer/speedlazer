@@ -56,9 +56,9 @@ Crafty.c("CarrierHatch", {
         z: -5,
         x: this.x - 4,
         y: this.y + 3,
-        dy: this.floorOffset,
+        dy: this.floorOffset
       });
-      this.floor.hideBelow(this.y + 30)
+      this.floor.hideBelow(this.y + 30);
       this.attach(this.floor);
     }
 
@@ -123,7 +123,7 @@ Crafty.c("CarrierHatch", {
     this.floor.attr({ dy: 0 });
     await this.floor.tweenPromise(
       {
-        dy: this.floorOffset,
+        dy: this.floorOffset
       },
       1500,
       "easeInOutQuad"
