@@ -148,28 +148,22 @@ Crafty.c 'BattleShip',
     @hatch3.close() if 2 in hatch
 
 
-  execute: (action) ->
+  execute: (action, index = 'all') ->
     switch action
-      when 'open1' then @open([0])
-      when 'close1' then @close([0])
-      when 'open2' then @open([1])
-      when 'close2' then @close([1])
-      when 'open3' then @open([2])
-      when 'close3' then @close([2])
-      when 'open' then @open([0,1,2])
-      when 'close' then @close([0,1,2])
-      when 'activateCannon1'
-        Crafty('BulletCannon').get(0).trigger('Activate')
-      when 'deactivateCannon1'
-        Crafty('BulletCannon').get(0).trigger('Deactivate')
-      when 'activateCannon2'
-        Crafty('BulletCannon').get(1).trigger('Activate')
-      when 'deactivateCannon2'
-        Crafty('BulletCannon').get(1).trigger('Deactivate')
-      when 'activateCannon3'
-        Crafty('BulletCannon').get(2).trigger('Activate')
-      when 'deactivateCannon3'
-        Crafty('BulletCannon').get(2).trigger('Deactivate')
+      when 'open'
+        if index == 'all'
+          @open([0,1,2])
+        else
+          @open([index])
+      when 'close'
+        if index == 'all'
+          @close([0,1,2])
+        else
+          @close([index])
+      when 'activateCannon'
+        Crafty('BulletCannon').get(index).trigger('Activate')
+      when 'deactivateCannon'
+        Crafty('BulletCannon').get(index).trigger('Deactivate')
 
 Crafty.c 'ShipCabin', {
   init: ->

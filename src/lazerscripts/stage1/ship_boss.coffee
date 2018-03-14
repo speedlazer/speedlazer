@@ -94,16 +94,19 @@ class ShipBoss extends EntityScript
     @sequence(
       @async @placeSquad TurretActive,
         options:
+          health: 40000
           attach: 'HatchFloor1'
           onHatch: true
           attachDx: 90
       @async @placeSquad TurretActive,
         options:
+          health: 40000
           attach: 'HatchFloor2'
           onHatch: true
           attachDx: 90
       @async @placeSquad TurretActive,
         options:
+          health: 40000
           attach: 'HatchFloor3'
           onHatch: true
           attachDx: 90
@@ -123,9 +126,9 @@ class ShipBoss extends EntityScript
         options:
           attach: 'DroneShipCorePlace'
 
-      @action 'deactivateCannon1'
-      @action 'deactivateCannon2'
-      @action 'deactivateCannon3'
+      @action 'deactivateCannon', 0
+      @action 'deactivateCannon', 1
+      @action 'deactivateCannon', 2
     )
 
   executeStageOne: ->
@@ -135,7 +138,7 @@ class ShipBoss extends EntityScript
 
   releaseDronesFromHatchTwo: (dronePattern) ->
     @sequence(
-      @action 'open2'
+      @action 'open', 1
       @wait(500)
       @parallel(
         @placeSquad DroneFlyer,
@@ -154,38 +157,28 @@ class ShipBoss extends EntityScript
         )
       )
     )
-  
+
+  popupCannon: (getIndex) ->
+    index = getIndex()
+    @sequence(
+      @action 'open', index
+      @wait(500)
+      @action 'activateCannon', index
+      @wait(5000)
+      @action 'deactivateCannon', index
+      @wait(500)
+      @action 'close', index
+      @wait(500)
+    )
 
   executeStageTwo: ->
-    @while(
-      @sequence(
-        @moveTo(x: -0.1, easing: "easeInOutQuad")
-        @action 'open1'
-        @wait(1500)
-        @action 'activateCannon1'
-        @wait(5000)
-        @action 'deactivateCannon1'
-        @wait(500)
-        @action 'close1'
-        @wait(500)
-
-        @action 'open2'
-        @wait(1500)
-        @action 'activateCannon2'
-        @wait(5000)
-        @action 'deactivateCannon2'
-        @wait(500)
-        @action 'close2'
-        @wait(500)
-
-        @action 'open3'
-        @wait(1500)
-        @action 'activateCannon3'
-        @wait(5000)
-        @action 'deactivateCannon3'
-        @wait(500)
-        @action 'close3'
-        @wait(500)
+    @sequence(
+      @moveTo(x: -0.1, easing: "easeInOutQuad")
+      @repeat(
+        @lazy(
+          @popupCannon
+          -> Math.round(Math.random() * 3)
+        )
       )
     )
 

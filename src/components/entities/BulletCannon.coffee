@@ -68,11 +68,11 @@ Crafty.c 'BulletCannon',
       when 'aim'
         @aimAt(level.player('anyActive'))
       when 'reset-aim'
-        duration = Math.abs(@barrel.rotation) * 1000 / @aimSpeed
+        duration = Math.abs(@barrel.rotation) * 1000 / (@aimSpeed * 3)
         @barrel.tweenPromise(rotation: 0, duration)
       when 'start-shooting'
         @tip.addComponent('BurstShot').burstShot
-          burstCooldown: 1500
+          burstCooldown: 500
           burstAmount: 6
           angleDeviation: 5
           aim: 0

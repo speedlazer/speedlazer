@@ -114,7 +114,7 @@ Crafty.c("CarrierHatch", {
       {
         dy: 0
       },
-      1500,
+      500,
       "easeInOutQuad"
     );
   },
@@ -125,7 +125,7 @@ Crafty.c("CarrierHatch", {
       {
         dy: this.floorOffset
       },
-      1500,
+      500,
       "easeInOutQuad"
     );
   }
