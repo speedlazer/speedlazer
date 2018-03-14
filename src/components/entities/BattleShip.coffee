@@ -71,7 +71,7 @@ Crafty.c 'BattleShip',
     @attach(@hatch3)
 
     @attach Crafty.e('2D, Cabin1Place').attr(
-      x: @x + 416
+      x: @x + 290
       y: @y + 100
       z: -8
       w: 15
@@ -79,14 +79,14 @@ Crafty.c 'BattleShip',
     )
 
     @attach Crafty.e('2D, HeliPlace').attr(
-      x: @x + 646
+      x: @x + 561
       y: @y - 32
       z: -8
       w: 15
       h: 2
     )
     @attach Crafty.e('2D, HeliPlace').attr(
-      x: @x + 756
+      x: @x + 686
       y: @y - 32
       z: -8
       w: 15
@@ -94,7 +94,7 @@ Crafty.c 'BattleShip',
     )
 
     @attach Crafty.e('2D, Cabin2Place').attr(
-      x: @x + 900
+      x: @x + 816
       y: @y + 100
       z: -8
       w: 15
@@ -161,9 +161,9 @@ Crafty.c 'BattleShip',
         else
           @close([index])
       when 'activateCannon'
-        Crafty('BulletCannon').get(index).trigger('Activate')
+        Crafty("Turret#{index + 1}").trigger('Activate')
       when 'deactivateCannon'
-        Crafty('BulletCannon').get(index).trigger('Deactivate')
+        Crafty("Turret#{index + 1}").trigger('Deactivate')
 
 Crafty.c 'ShipCabin', {
   init: ->

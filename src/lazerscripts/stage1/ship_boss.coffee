@@ -95,18 +95,21 @@ class ShipBoss extends EntityScript
       @async @placeSquad TurretActive,
         options:
           health: 40000
+          label: 'Turret1'
           attach: 'HatchFloor1'
           onHatch: true
           attachDx: 90
       @async @placeSquad TurretActive,
         options:
           health: 40000
+          label: 'Turret2'
           attach: 'HatchFloor2'
           onHatch: true
           attachDx: 90
       @async @placeSquad TurretActive,
         options:
           health: 40000
+          label: 'Turret3'
           attach: 'HatchFloor3'
           onHatch: true
           attachDx: 90
@@ -162,7 +165,7 @@ class ShipBoss extends EntityScript
     index = getIndex()
     @sequence(
       @action 'open', index
-      @wait(500)
+      @wait(1000)
       @action 'activateCannon', index
       @wait(5000)
       @action 'deactivateCannon', index
@@ -173,7 +176,7 @@ class ShipBoss extends EntityScript
 
   executeStageTwo: ->
     @sequence(
-      @moveTo(x: -0.1, easing: "easeInOutQuad")
+      @moveTo(x: -0.05, easing: "easeInOutQuad")
       @repeat(
         @lazy(
           @popupCannon

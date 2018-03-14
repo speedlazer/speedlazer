@@ -24,6 +24,8 @@ class TurretActive extends EntityScript
         health: options.health
       })
 
+    if options.label
+      entity.addComponent(options.label)
     if !options.deathDecoy
       entity.chainable = options.chainable
     if options.onHatch
