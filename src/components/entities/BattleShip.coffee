@@ -103,7 +103,7 @@ Crafty.c 'BattleShip',
 
     @attach Crafty.e('2D, DroneShipCorePlace').attr(
       x: @x + 900
-      y: @y - 125
+      y: @y - 25
       z: -8
       w: 15
       h: 2
@@ -327,7 +327,7 @@ Crafty.c 'SecondShipCabin', {
       w: 10
       h: 10
       z: -8
-      health: 2000
+      health: 4000
     )
     @hitBox = Crafty.e('2D, WebGL, Collision')
     @hitBox.attr(

@@ -72,11 +72,11 @@ Crafty.c 'BulletCannon',
         @barrel.tweenPromise(rotation: 0, duration)
       when 'start-shooting'
         @tip.addComponent('BurstShot').burstShot
-          burstCooldown: 500
+          burstCooldown: 1500
           burstAmount: 6
           angleDeviation: 5
           aim: 0
-          cooldown: 50
+          cooldown: 150
           projectile: (x, y, angle) =>
             projectile = Crafty.e('Projectile, sphere1, Hostile, Collision')
               .crop(6, 21, 18, 7)
@@ -85,7 +85,7 @@ Crafty.c 'BulletCannon',
               .attr(
                 w: 20
                 h: 8
-                speed: 350
+                speed: 150
                 damage: 1
               )
 

@@ -54,7 +54,15 @@ class Cabin2Active extends EntityScript
       .sendToBackground(1.0, -8)
 
   onKilled: ->
-    @deathDecoy()
+    @sequence(
+      @deathDecoy()
+      @bigExplosion(offsetX: 40, offsetY: -200)
+      @wait 200
+      @bigExplosion(offsetX: 50, offsetY: -300)
+      @wait 200
+      @bigExplosion(offsetX: 150, offsetY: -100)
+      @wait 200
+    )
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
@@ -125,9 +133,6 @@ class ShipBoss extends EntityScript
         delay: 0
         options:
           attach: 'HeliPlace'
-      @placeSquad DroneShipCore,
-        options:
-          attach: 'DroneShipCorePlace'
 
       @action 'deactivateCannon', 0
       @action 'deactivateCannon', 1
@@ -177,23 +182,65 @@ class ShipBoss extends EntityScript
   executeStageTwo: ->
     @sequence(
       @moveTo(x: -0.05, easing: "easeInOutQuad")
-      @repeat(
+      @while(
+        @sequence(
+          @placeSquad Cabin2Active,
+            options:
+              attach: 'Cabin2Place'
+          @placeSquad Cabin2Inactive,
+            options:
+              attach: 'Cabin2Place'
+          # TODO: Reveal core / add explosions / smoke
+
+          @async @placeSquad DroneShipCore,
+            options:
+              attach: 'DroneShipCorePlace'
+        )
         @lazy(
           @popupCannon
-          -> Math.round(Math.random() * 3)
+          -> Math.floor(Math.random() * 3)
         )
       )
     )
 
   executeStageThree: ->
-    @while(
-      @placeSquad TurretActive,
-        options:
-          attach: 'TurretPlace'
-          attachOffset: 1
-      @lazy(
-        @releaseDronesFromHatchTwo,
-        -> Math.round(Math.random() * 3 + 1)
+    @sequence(
+      @parallel(
+        @moveTo(x: -0.2, easing: "easeInOutQuad")
+        @placeSquad HeliFlyAway,
+          amount: 2
+          delay: 1000
+      )
+      @parallel(
+        @placeSquad HeliAttack,
+          options:
+            speed: 80
+            path: [
+              [.9, .6]
+              [.7, .45]
+              [.55, .4]
+              [.4, .6]
+              [.6, .8]
+              [.8, .6]
+              [.4, .8]
+              [.2, .4]
+              [-.2, .7]
+            ]
+        @placeSquad HeliAttack,
+          options:
+            speed: 80
+            path: [
+              [.9, .3]
+              [.7, .25]
+              [.55, .2]
+              [.4, .4]
+              [.6, .3]
+              [.8, .3]
+              [.4, .6]
+              [.2, .3]
+              [-.2, .4]
+            ]
+        @moveTo(x: -0.05, easing: "easeInOutQuad", speed: 130)
       )
     )
 
@@ -247,7 +294,7 @@ class ShipBoss extends EntityScript
               [.2, .3]
               [-.2, .4]
             ]
-        @moveTo(x: -0.5, easing: "easeInOutQuad", speed: 30)
+        @moveTo(x: -0.5, easing: "easeInOutQuad", speed: 130)
       )
     )
 
@@ -284,7 +331,7 @@ class ShipBoss extends EntityScript
       @lazy @placeEnemiesOnShip
       @lazy @executeStageOne
       @lazy @executeStageTwo
-      #@lazy @executeStageThree
+      @lazy @executeStageThree
       #@lazy @executeStageFour
       #@lazy @executeStageFive
       #@lazy @executeStageSix
