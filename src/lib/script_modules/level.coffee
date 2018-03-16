@@ -572,6 +572,11 @@ Level =
       @_verify(sequence)
       Crafty('PlayerControlledShip').each -> @disableControl()
 
+  enableControls: ->
+    (sequence) =>
+      @_verify(sequence)
+      Crafty('PlayerControlledShip').each -> @enableControl()
+
   screenFadeOut: ->
     (sequence) =>
       @_verify(sequence)
