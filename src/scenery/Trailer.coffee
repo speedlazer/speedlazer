@@ -36,4 +36,8 @@ levelGenerator.defineAssets(
         dinoJaw: [0, 2, 3, 2]
         dinoTopLeg: [5, 4, 2, 2]
         dinoTail: [2, 6, 4, 2]
+        dinoLowerLeg: [1, 6, 1, 2]
+        dinoFeet: [0, 6, 1, 1]
+        dinoToes: [0, 5, 1, 1]
+        dinoTongue: [0, 4, 1, 1]
 )

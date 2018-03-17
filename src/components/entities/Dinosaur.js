@@ -47,6 +47,13 @@ Crafty.c("Dinosaur", {
     }).origin(70, 40)
     this.neck.attach(this.head);
 
+    this.tail = Crafty.e("2D, WebGL, dinoTail, TweenPromise").attr({
+      x: this.x + 124,
+      y: this.y + 24,
+      z: this.z + 1,
+    }).origin(10, 22)
+    this.body.attach(this.tail);
+
     this.topLeg = Crafty.e("2D, WebGL, dinoTopLeg, TweenPromise").attr({
       x: this.x + 116,
       y: this.y + 46,
@@ -54,12 +61,29 @@ Crafty.c("Dinosaur", {
     }).origin(32, 16)
     this.body.attach(this.topLeg);
 
-    this.tail = Crafty.e("2D, WebGL, dinoTail, TweenPromise").attr({
-      x: this.x + 124,
-      y: this.y + 24,
-      z: this.z + 1
-    }).origin(10, 22)
-    this.body.attach(this.tail);
+    this.bottomLeg = Crafty.e("2D, WebGL, dinoLowerLeg, TweenPromise").attr({
+      x: this.topLeg.x + 28,
+      y: this.topLeg.y + 40,
+      z: this.topLeg.z + 1,
+      rotation: -55
+    }).origin(16, 16)
+    this.topLeg.attach(this.bottomLeg);
+
+    this.feet = Crafty.e("2D, WebGL, dinoFeet, TweenPromise").attr({
+      x: this.bottomLeg.x + 28,
+      y: this.bottomLeg.y + 30,
+      z: this.bottomLeg.z + 1,
+      rotation: 0
+    }).origin(26, 8)
+    this.bottomLeg.attach(this.feet);
+
+    this.toes = Crafty.e("2D, WebGL, dinoToes, TweenPromise").attr({
+      x: this.feet.x - 22,
+      y: this.feet.y + 2,
+      z: this.feet.z + 1,
+      rotation: 0
+    }).origin(22, 20)
+    this.feet.attach(this.toes);
 
     return this
   },
@@ -70,19 +94,33 @@ Crafty.c("Dinosaur", {
     }
   },
 
-  poseStand() {
-    return Promise.all([
-      this.body.tweenPromise({ rotation: 60 }, 2000),
-      this.arm.tweenPromise({ rotation: -25 }, 2000),
-      this.neck.tweenPromise({ rotation: 40 }, 2000),
-      this.jaw.tweenPromise({ rotation: 1 }, 2000),
-      this.head.tweenPromise({ rotation: 1 }, 2000),
-      this.topLeg.tweenPromise({ rotation: 50 }, 2000),
-      this.tail.tweenPromise({ rotation: 1 }, 2000)
-    ]).then(() => {
-      console.log('open jaw')
-      return this.jaw.tweenPromise({ rotation: -30 }, 1000)
-    })
+  async setPose(rotations, duration) {
+    const elements = Object.keys(rotations)
+    await Promise.all(
+      elements.map(element =>
+        this[element].tweenPromise({ rotation: rotations[element] }, duration)
+      )
+    )
+  },
+
+  async poseStand() {
+    await this.setPose({
+      body: 60,
+      arm: -25,
+      neck: 40,
+      jaw: 1,
+      head: 1,
+      topLeg: 50,
+      tail: 20,
+      bottomLeg: -60,
+      feet: -10,
+      toes: 10
+    }, 2000)
+
+    await this.setPose({
+      jaw: -30,
+      head: 20,
+    }, 1000)
   }
 
 });
