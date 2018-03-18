@@ -1,11 +1,10 @@
 Crafty.c("Dinosaur", {
-  required: "2D, WebGL", //, Color",
+  required: "2D, WebGL, Choreography, Delta2D, TweenPromise",
 
   init() {
-    //this.color("#FFFFFF");
     this.attr({
       w: 200,
-      h: 200
+      h: 153
     });
   },
 
@@ -54,24 +53,24 @@ Crafty.c("Dinosaur", {
     }).origin(10, 22)
     this.body.attach(this.tail);
 
-    this.topLeg = Crafty.e("2D, WebGL, dinoTopLeg, TweenPromise").attr({
+    this.topLeg = Crafty.e("2D, WebGL, dinoUpperLeg, TweenPromise").attr({
       x: this.x + 116,
       y: this.y + 46,
-      z: this.z + 2
+      z: this.z + 3
     }).origin(32, 16)
     this.body.attach(this.topLeg);
 
     this.bottomLeg = Crafty.e("2D, WebGL, dinoLowerLeg, TweenPromise").attr({
       x: this.topLeg.x + 28,
       y: this.topLeg.y + 40,
-      z: this.topLeg.z + 1,
+      z: this.topLeg.z + 2,
       rotation: -55
     }).origin(16, 16)
     this.topLeg.attach(this.bottomLeg);
 
     this.feet = Crafty.e("2D, WebGL, dinoFeet, TweenPromise").attr({
       x: this.bottomLeg.x + 28,
-      y: this.bottomLeg.y + 30,
+      y: this.bottomLeg.y + 24,
       z: this.bottomLeg.z + 1,
       rotation: 0
     }).origin(26, 8)
@@ -85,22 +84,185 @@ Crafty.c("Dinosaur", {
     }).origin(22, 20)
     this.feet.attach(this.toes);
 
+    this.upperLegBack = Crafty.e("2D, WebGL, dinoBackUpperLeg, TweenPromise").attr({
+      x: this.body.x + 92,
+      y: this.body.y + 60,
+      z: this.body.z - 1,
+      rotation: 0
+    }).origin(22, 20)
+    this.body.attach(this.upperLegBack);
+
+    this.lowerLegBack = Crafty.e("2D, WebGL, dinoBackLowerLeg, TweenPromise").attr({
+      x: this.upperLegBack.x - 4,
+      y: this.upperLegBack.y + 32,
+      z: this.upperLegBack.z + 1,
+      rotation: 0
+    }).origin(16, 20)
+    this.upperLegBack.attach(this.lowerLegBack);
+
+    this.feetBack = Crafty.e("2D, WebGL, dinoBackFeet, TweenPromise").attr({
+      x: this.lowerLegBack.x - 16,
+      y: this.lowerLegBack.y + 32,
+      z: this.lowerLegBack.z + 1,
+      rotation: 0
+    }).origin(24, 16)
+    this.lowerLegBack.attach(this.feetBack);
+
+    this.toesBack = Crafty.e("2D, WebGL, dinoBackToes, TweenPromise").attr({
+      x: this.feetBack.x - 16,
+      y: this.feetBack.y,
+      z: this.feetBack.z + 1,
+      rotation: 0
+    }).origin(26, 11)
+    this.feetBack.attach(this.toesBack);
+
     return this
   },
 
   execute(pose) {
     switch(pose) {
-      case "stand": return this.poseStand()
+      //case "stand": return this.poseStand()
+      case "run": return this.run()
     }
   },
 
-  async setPose(rotations, duration) {
-    const elements = Object.keys(rotations)
-    await Promise.all(
-      elements.map(element =>
-        this[element].tweenPromise({ rotation: rotations[element] }, duration)
-      )
+  async setPose(rotations, overall, duration) {
+    const elements = Object.keys(rotations).map(element =>
+      this[element].tweenPromise({ rotation: rotations[element] }, duration)
     )
+    await Promise.all([
+      ...elements,
+      this.tweenPromise(overall, duration)
+    ])
+  },
+
+  async run() {
+    const FRAMESPEED = 1000;
+
+    await this.setPose({
+      head: 0,
+      jaw: -20,
+      body: 10,
+      neck: 10,
+      tail: 0,
+      arm: 0,
+      topLeg: 60,
+      bottomLeg: -10,
+      feet: 0,
+      toes: 0,
+      upperLegBack: 0,
+      lowerLegBack: 10,
+    }, { dy: 0 }, FRAMESPEED)
+
+    await this.setPose({
+      head: 0,
+      jaw: -20,
+      body: 20,
+      neck: 10,
+      tail: 0,
+      arm: -15,
+      topLeg: 40,
+      bottomLeg: -30,
+      feet: -10,
+      toes: -10,
+      upperLegBack: 10,
+    }, { dy: -8 }, FRAMESPEED)
+
+    await this.setPose({
+      head: 20,
+      jaw: -40,
+      body: 15,
+      neck: 10,
+      tail: 0,
+      arm: -25,
+      topLeg: 10,
+      bottomLeg: -80,
+      lowerLegBack: 0,
+      feet: -80,
+      toes: -150
+    }, { dy: -25 }, FRAMESPEED)
+
+    await this.setPose({
+      head: 10,
+      jaw: -30,
+      body: 15,
+      neck: 10,
+      tail: 0,
+      arm: -5,
+      topLeg: -10,
+      bottomLeg: -90,
+      feet: -100,
+      toes: -150,
+      lowerLegBack: -30,
+      feetBack: -45,
+      toesBack: 10
+    }, { dy: 4 }, FRAMESPEED)
+
+    await this.setPose({
+        body: 10,
+        upperLegBack: 20,
+        lowerLegBack: -60,
+        feetBack: -45,
+        toesBack: 10,
+        topLeg: -40,
+        tail: 10,
+        head: -10,
+        neck: 20,
+        jaw: -10,
+        arm: -20
+    }, { dy: 14 }, FRAMESPEED)
+
+    await this.setPose({
+        body: 20,
+        upperLegBack: 0,
+        lowerLegBack: -40,
+        feetBack: -65,
+        toesBack: 0,
+        topLeg: -10,
+        bottomLeg: -110,
+        feet: -70,
+        toes: -20,
+        tail: 10,
+        head: -10,
+        neck: 20,
+        jaw: -10,
+        arm: -20
+    }, { dy: 2 }, FRAMESPEED)
+
+    await this.setPose({
+        body: 20,
+        upperLegBack: -20,
+        lowerLegBack: -90,
+        feetBack: -85,
+        toesBack: -30,
+        topLeg: 40,
+        bottomLeg: -90,
+        feet: -90,
+        toes: -40,
+        tail: 10,
+        head: -0,
+        neck: 30,
+        jaw: -20,
+        arm: -20
+    }, { dy: -4 }, FRAMESPEED)
+
+    await this.setPose({
+        body: 20,
+        upperLegBack: -80,
+        lowerLegBack: -60,
+        feetBack: -65,
+        toesBack: -40,
+        topLeg: 70,
+        bottomLeg: -60,
+        feet: -20,
+        toes: -30,
+        tail: 0,
+        head: -20,
+        neck: 20,
+        jaw: -30,
+        arm: -10
+    }, { dy: 2 }, FRAMESPEED)
+
   },
 
   async poseStand() {
@@ -113,6 +275,7 @@ Crafty.c("Dinosaur", {
       topLeg: 50,
       tail: 20,
       bottomLeg: -60,
+      lowerLegBack: 10,
       feet: -10,
       toes: 10
     }, 2000)
