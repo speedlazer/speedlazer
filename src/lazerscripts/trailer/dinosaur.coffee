@@ -20,7 +20,8 @@ class Dinosaur extends EntityScript
     return { x, y}
 
   spawn: (options) ->
-    location = @spawnLocation({ x: .9, y: 350 })
+    location = @spawnLocation({ x: 1.2, y: 350 })
+    #location = @spawnLocation({ x: .5, y: 350 })
 
     #floor = Crafty.e('2D, WebGL, Color').color('#FFFFFF')
       #.attr(x: 50, y: 502, w: 800, h: 40)
@@ -28,7 +29,7 @@ class Dinosaur extends EntityScript
     dino = Crafty.e('Dinosaur, KeepAlive').dinosaur(
       x: location.x
       y: location.y
-      defaultSpeed: 80
+      defaultSpeed: 190
     )
     #window.dino = dino
     dino
@@ -36,9 +37,8 @@ class Dinosaur extends EntityScript
   execute: ->
     @sequence(
       @invincible yes
-
       @while(
-        @moveTo x: -.2
+        @moveTo x: -.3
         @action 'run'
       )
     )

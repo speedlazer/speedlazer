@@ -87,7 +87,7 @@ Crafty.c("Dinosaur", {
     this.upperLegBack = Crafty.e("2D, WebGL, dinoBackUpperLeg, TweenPromise").attr({
       x: this.body.x + 92,
       y: this.body.y + 60,
-      z: this.body.z - 1,
+      z: this.body.z - 5,
       rotation: 0
     }).origin(22, 20)
     this.body.attach(this.upperLegBack);
@@ -137,131 +137,129 @@ Crafty.c("Dinosaur", {
   },
 
   async run() {
-    const FRAMESPEED = 1000;
-
+    const FRAMESPEED = 200;
+    // 1
     await this.setPose({
       head: 0,
-      jaw: -20,
-      body: 10,
-      neck: 10,
-      tail: 0,
-      arm: 0,
-      topLeg: 60,
-      bottomLeg: -10,
-      feet: 0,
-      toes: 0,
-      upperLegBack: 0,
-      lowerLegBack: 10,
-    }, { dy: 0 }, FRAMESPEED)
-
-    await this.setPose({
-      head: 0,
-      jaw: -20,
+      jaw: 0,
       body: 20,
-      neck: 10,
-      tail: 0,
-      arm: -15,
-      topLeg: 40,
-      bottomLeg: -30,
-      feet: -10,
+      neck: 0,
+      tail: 20,
+      arm: 20,
+      topLeg: 90,
+      bottomLeg: 20,
+      feet: 20,
+      toes: 0,
+      upperLegBack: -90,
+      lowerLegBack: -90,
+      feetBack: -120
+    }, { dy: -20, dx: -10 }, FRAMESPEED)
+
+    // 2
+    await this.setPose({
+      head: 0,
+      jaw: -5,
+      body: 20,
+      neck: 5,
+      tail: 10,
+      arm: 0,
+      topLeg: 70,
+      bottomLeg: 10,
+      feet: 0,
       toes: -10,
+      upperLegBack: -50,
+      lowerLegBack: -110,
+      feetBack: -140
+    }, { dy: 0, dx: 0 }, FRAMESPEED)
+
+    // 3
+    await this.setPose({
+      head: 0,
+      jaw: -10,
+      body: 20,
+      neck: 15,
+      tail: 0,
+      arm: -30,
+      topLeg: 40,
+      bottomLeg: -10,
+      feet: -10,
+      toes: -20,
+      upperLegBack: -20,
+      lowerLegBack: -100,
+      feetBack: -120
+    }, { dy: -15, dx: -25 }, FRAMESPEED)
+
+    // 4
+    await this.setPose({
+      head: 0,
+      jaw: -5,
+      body: 20,
+      neck: 5,
+      tail: 10,
+      arm: -50,
+      topLeg: 0,
+      bottomLeg: -60,
+      feet: -50,
+      toes: -20,
       upperLegBack: 10,
-    }, { dy: -8 }, FRAMESPEED)
+      lowerLegBack: -20,
+      feetBack: 0
+    }, { dy: -20, dx: -10 }, FRAMESPEED)
 
+    // 5 (flip back / front leg)
     await this.setPose({
-      head: 20,
-      jaw: -40,
-      body: 15,
-      neck: 10,
-      tail: 0,
-      arm: -25,
-      topLeg: 10,
+      head: 0,
+      jaw: -5,
+      body: 20,
+      neck: 5,
+      tail: 20,
+      arm: -30,
+      topLeg: -20,
       bottomLeg: -80,
-      lowerLegBack: 0,
       feet: -80,
-      toes: -150
-    }, { dy: -25 }, FRAMESPEED)
+      toes: -100,
+      upperLegBack: 0,
+      lowerLegBack: -20,
+      feetBack: -50,
+      toesBack: 10
+    }, { dy: -10, dx: 0 }, FRAMESPEED)
 
+    // 6
     await this.setPose({
-      head: 10,
-      jaw: -30,
-      body: 15,
-      neck: 10,
-      tail: 0,
-      arm: -5,
-      topLeg: -10,
+      head: 0,
+      jaw: -10,
+      body: 20,
+      neck: 15,
+      tail: 10,
+      arm: 0,
+      topLeg: 10,
       bottomLeg: -90,
       feet: -100,
-      toes: -150,
-      lowerLegBack: -30,
-      feetBack: -45,
-      toesBack: 10
-    }, { dy: 4 }, FRAMESPEED)
+      toes: -140,
+      upperLegBack: -10,
+      lowerLegBack: -20,
+      feetBack: -70,
+      toesBack: 20
+    }, { dy: 0, dx: 0 }, FRAMESPEED)
 
+    // 7
     await this.setPose({
-        body: 10,
-        upperLegBack: 20,
-        lowerLegBack: -60,
-        feetBack: -45,
-        toesBack: 10,
-        topLeg: -40,
-        tail: 10,
-        head: -10,
-        neck: 20,
-        jaw: -10,
-        arm: -20
-    }, { dy: 14 }, FRAMESPEED)
+      head: 0,
+      jaw: -5,
+      body: 20,
+      neck: 5,
+      tail: 0,
+      arm: -10,
+      topLeg: 50,
+      bottomLeg: -80,
+      feet: -80,
+      toes: -140,
+      upperLegBack: -30,
+      lowerLegBack: -40,
+      feetBack: -90,
+      toesBack: -10
+    }, { dy: -3, dx: -25 }, FRAMESPEED)
 
-    await this.setPose({
-        body: 20,
-        upperLegBack: 0,
-        lowerLegBack: -40,
-        feetBack: -65,
-        toesBack: 0,
-        topLeg: -10,
-        bottomLeg: -110,
-        feet: -70,
-        toes: -20,
-        tail: 10,
-        head: -10,
-        neck: 20,
-        jaw: -10,
-        arm: -20
-    }, { dy: 2 }, FRAMESPEED)
-
-    await this.setPose({
-        body: 20,
-        upperLegBack: -20,
-        lowerLegBack: -90,
-        feetBack: -85,
-        toesBack: -30,
-        topLeg: 40,
-        bottomLeg: -90,
-        feet: -90,
-        toes: -40,
-        tail: 10,
-        head: -0,
-        neck: 30,
-        jaw: -20,
-        arm: -20
-    }, { dy: -4 }, FRAMESPEED)
-
-    await this.setPose({
-        body: 20,
-        upperLegBack: -80,
-        lowerLegBack: -60,
-        feetBack: -65,
-        toesBack: -40,
-        topLeg: 70,
-        bottomLeg: -60,
-        feet: -20,
-        toes: -30,
-        tail: 0,
-        head: -20,
-        neck: 20,
-        jaw: -30,
-        arm: -10
-    }, { dy: 2 }, FRAMESPEED)
 
   },
 
