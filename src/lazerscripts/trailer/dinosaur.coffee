@@ -29,7 +29,7 @@ class Dinosaur extends EntityScript
     dino = Crafty.e('Dinosaur, KeepAlive').dinosaur(
       x: location.x
       y: location.y
-      defaultSpeed: 190
+      defaultSpeed: 300
     )
     #window.dino = dino
     dino
@@ -37,10 +37,37 @@ class Dinosaur extends EntityScript
   execute: ->
     @sequence(
       @invincible yes
+      @runTo(0.55)
+      @idle(2000)
+      @roar()
+      @runTo(-0.3)
+    )
+
+  runTo: (location) ->
+    @sequence(
+      (seq) => @animateSeq = seq
       @while(
-        @moveTo x: -.3
-        @action 'run'
+        @moveTo x: location
+        @action('run', {
+          onStep: =>
+            @addMinorScreenshake()(@animateSeq)
+        })
       )
+    )
+
+  roar: ->
+    @sequence(
+      @while(
+        @wait(1500)
+        @action 'roar'
+      )
+      @action 'stand'
+    )
+
+  idle: (duration) ->
+    @while(
+      @wait(duration)
+      @action 'stand'
     )
 
 module.exports = {
