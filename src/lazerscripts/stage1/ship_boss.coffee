@@ -4,6 +4,7 @@
 { TurretInActive, TurretActive } = require('./turret')
 { Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer, DroneFlyer } = require('../stage1/army_drone')
 { HeliInactive, HeliFlyAway, HeliAttack } = require('./heli_attack')
+JumpMine    = require('../stage1/jump_mine').default
 
 class Cabin1Inactive extends EntityScript
   spawn: (options) ->
@@ -144,6 +145,30 @@ class ShipBoss extends EntityScript
       @moveTo(x: 0.8, easing: "easeInOutQuad")
     )
 
+  releaseMinesFromShip: (index) ->
+    @sequence(
+      @wait(2000)
+      @moveTo(y: 350, easing: "linear")
+      @wait(1000)
+      @placeSquad JumpMine,
+        amount: Math.floor(Math.random() * 10) + 3
+        delay: 100
+        options:
+          gridConfig:
+            x:
+              start: 0.2
+              steps: 8
+              stepSize: 0.10
+            y:
+              start: 0.125
+              steps: 6
+              stepSize: 0.10
+          points: yes
+          direction: 'right'
+      @wait(1000)
+      @moveTo(y: 400, easing: "linear")
+    )
+
   releaseDronesFromHatchTwo: (dronePattern) ->
     @sequence(
       @action 'open', 1
@@ -182,6 +207,9 @@ class ShipBoss extends EntityScript
   executeStageTwo: ->
     @sequence(
       @moveTo(x: -0.05, easing: "easeInOutQuad")
+
+
+
       @while(
         @sequence(
           @placeSquad Cabin2Active,
@@ -196,6 +224,12 @@ class ShipBoss extends EntityScript
             options:
               attach: 'DroneShipCorePlace'
         )
+
+        @lazy(
+          @releaseMinesFromShip
+          -> Math.floor(Math.random() * 2)
+        )
+
         @lazy(
           @popupCannon
           -> Math.floor(Math.random() * 3)
@@ -210,6 +244,10 @@ class ShipBoss extends EntityScript
         @placeSquad HeliFlyAway,
           amount: 2
           delay: 1000
+      )
+      @lazy(
+        @releaseMinesFromShip
+        -> Math.floor(Math.random() * 2)
       )
       @parallel(
         @placeSquad HeliAttack,
