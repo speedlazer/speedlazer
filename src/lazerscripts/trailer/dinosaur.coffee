@@ -37,7 +37,7 @@ class Dinosaur extends EntityScript
   execute: ->
     @sequence(
       @invincible yes
-      @runTo(0.55)
+      @runTo(0.57)
       @idle(2000)
       @roar()
       @runTo(-0.3)

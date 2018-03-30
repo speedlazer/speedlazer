@@ -8,6 +8,10 @@ Crafty.c("Dinosaur", {
     });
   },
 
+  remove() {
+    this._isDestroyed = true;
+  },
+
   dinosaur(props) {
     this.attr(props);
 
@@ -19,6 +23,16 @@ Crafty.c("Dinosaur", {
       })
       .origin(132, 64);
     this.attach(this.body);
+
+    this.tentacles = Crafty.e("2D, WebGL, dinoTentacles, TweenPromise")
+      .attr({
+        x: this.x + 26,
+        y: this.y + 37,
+        z: this.z + 2,
+        rotation: 0
+      })
+      .origin(16, 16);
+    this.body.attach(this.tentacles);
 
     this.arm = Crafty.e("2D, WebGL, dinoArm, TweenPromise")
       .attr({
@@ -59,10 +73,10 @@ Crafty.c("Dinosaur", {
     this.head = Crafty.e("2D, WebGL, dinoHead, TweenPromise")
       .attr({
         x: this.x - 94,
-        y: this.y + 26,
+        y: this.y + 23,
         z: this.z + 2
       })
-      .origin(70, 40);
+      .origin(70, 37);
     this.neck.attach(this.head);
 
     this.tail = Crafty.e("2D, WebGL, dinoTail, TweenPromise")
@@ -115,8 +129,8 @@ Crafty.c("Dinosaur", {
 
     this.upperLegBack = Crafty.e("2D, WebGL, dinoBackUpperLeg, TweenPromise")
       .attr({
-        x: this.body.x + 92,
-        y: this.body.y + 60,
+        x: this.body.x + 82,
+        y: this.body.y + 70,
         z: this.body.z - 5,
         rotation: 0
       })
@@ -125,8 +139,8 @@ Crafty.c("Dinosaur", {
 
     this.lowerLegBack = Crafty.e("2D, WebGL, dinoBackLowerLeg, TweenPromise")
       .attr({
-        x: this.upperLegBack.x - 4,
-        y: this.upperLegBack.y + 32,
+        x: this.upperLegBack.x,
+        y: this.upperLegBack.y + 27,
         z: this.upperLegBack.z + 1,
         rotation: 0
       })
@@ -154,6 +168,8 @@ Crafty.c("Dinosaur", {
     this.feetBack.attach(this.toesBack);
     //this.scale = 2
 
+    this.moveTentacles()
+
     return this;
   },
 
@@ -176,6 +192,13 @@ Crafty.c("Dinosaur", {
       )
     );
     await Promise.all([...elements, this.tweenPromise(overall, duration)]);
+  },
+
+  async moveTentacles() {
+    await this.tentacles.tweenPromise({ w: 80 }, 1000)
+    await this.tentacles.tweenPromise({ w: 60 }, 1000)
+    if (this._isDestroyed) return;
+    this.moveTentacles()
   },
 
   convertToProps(desc) {

@@ -11,7 +11,6 @@ class TrailerDino extends LazerScript
 
   execute: ->
     @sequence(
-
       @parallel(
         @sequence(
           @disableControls()
