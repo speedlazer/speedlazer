@@ -168,7 +168,7 @@ Crafty.c("Dinosaur", {
     this.feetBack.attach(this.toesBack);
     //this.scale = 2
 
-    this.moveTentacles()
+    this.moveTentacles();
 
     return this;
   },
@@ -195,10 +195,10 @@ Crafty.c("Dinosaur", {
   },
 
   async moveTentacles() {
-    await this.tentacles.tweenPromise({ w: 80 }, 1000)
-    await this.tentacles.tweenPromise({ w: 60 }, 1000)
+    await this.tentacles.tweenPromise({ w: 80 }, 1000);
+    await this.tentacles.tweenPromise({ w: 60 }, 1000);
     if (this._isDestroyed) return;
-    this.moveTentacles()
+    this.moveTentacles();
   },
 
   convertToProps(desc) {
