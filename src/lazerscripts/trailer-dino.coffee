@@ -46,8 +46,6 @@ class TrailerDino extends LazerScript
 
       @setSpeed 0
       @placeSquad(Dinosaur)
-
-      @wait 10e3
     )
 
 
