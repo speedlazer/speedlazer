@@ -52,21 +52,21 @@ Crafty.c 'BattleShip',
     @hatch = Crafty.e('CarrierHatch, ShipHatch1').attr(
       x: @x + 10 * 32
       y: @y + 29
-      floorOffset: 65
+      floorOffset: 75
     )
     @attach(@hatch)
 
     @hatch2 = Crafty.e('CarrierHatch, ShipHatch2').attr(
       x: @x + 16 * 32
       y: @y + 29
-      floorOffset: 65
+      floorOffset: 75
     )
     @attach(@hatch2)
 
     @hatch3 = Crafty.e('CarrierHatch, ShipHatch3').attr(
       x: @x + 22 * 32
       y: @y + 29
-      floorOffset: 65
+      floorOffset: 75
     )
     @attach(@hatch3)
 
