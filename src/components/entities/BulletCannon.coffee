@@ -85,7 +85,7 @@ Crafty.c 'BulletCannon',
               .attr(
                 w: 20
                 h: 8
-                speed: 150
+                speed: 350
                 damage: 1
               )
 
