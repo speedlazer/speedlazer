@@ -1,6 +1,6 @@
 { EntityScript } = require('src/lib/LazerScript')
 { MineCannonInActive, MineCannonActive } = require('./mine_cannon')
-{ DroneShipCore } = require('./drone_ship_core');
+{ DroneShipCore } = require('./drone_ship_core')
 { TurretInActive, TurretActive } = require('./turret')
 { Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer, DroneFlyer } = require('../stage1/army_drone')
 { HeliInactive, HeliFlyAway, HeliAttack } = require('./heli_attack')

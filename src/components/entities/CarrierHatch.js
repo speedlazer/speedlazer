@@ -1,6 +1,24 @@
 const MOVE_X = -32;
 const MOVE_Y = 16;
 
+Crafty.c("OnHatch", {
+  required: "Hideable",
+  events: {
+    Move: '_updateHatchHiding'
+  },
+
+  onAttach(parent) {
+    this.hideBelow(parent.y - 48)
+  },
+
+  _updateHatchHiding(old) {
+    if (old._y !== this._y) {
+      this.hideBelow(this._parent.y - 48)
+    }
+  }
+
+});
+
 Crafty.c("CarrierHatch", {
   init() {
     this.requires("2D, WebGL, aircraftCarrierOpenHatch");

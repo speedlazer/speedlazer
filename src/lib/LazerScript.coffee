@@ -69,6 +69,7 @@ class EntityScript extends LazerScript
     @entity = @spawn(args...)
     if @options.attach
       attachPoint.attach(@entity)
+      @entity.onAttach?(attachPoint)
       @entity.attr({
         x: attachPoint.x + (@options.attachDx || 0)
         y: attachPoint.y + (@options.attachDy || 0)

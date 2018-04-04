@@ -29,7 +29,7 @@ class TurretActive extends EntityScript
     if !options.deathDecoy
       entity.chainable = options.chainable
     if options.onHatch
-      entity.hideBelow(459)
+      entity.addComponent("OnHatch")
     entity
 
   execute: ->
