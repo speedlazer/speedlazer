@@ -577,7 +577,7 @@ Level =
       @_verify(sequence)
       Crafty('PlayerControlledShip').each -> @enableControl()
 
-  screenFadeOut: ->
+  screenFadeOut: (duration = 4000) ->
     (sequence) =>
       @_verify(sequence)
       fader = @_fader()
@@ -590,14 +590,14 @@ Level =
         '#000000'
       ).tween(
         alpha: 1
-        4000
+        duration
       ).bind('TweenEnd', ->
         defer.resolve()
       )
 
       defer.promise
 
-  screenFadeIn: ->
+  screenFadeIn: (duration = 4000) ->
     (sequence) =>
       @_verify(sequence)
       fader = @_fader()
@@ -610,7 +610,7 @@ Level =
         '#000000'
       ).tween(
         alpha: 0
-        4000
+        duration
       ).bind('TweenEnd', ->
         @destroy()
         defer.resolve()

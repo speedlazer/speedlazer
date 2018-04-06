@@ -35,16 +35,16 @@ class TrailerDino extends LazerScript
       )
       @changeSeaLevel 500
       @wait 100
-      @setSpeed 100, accellerate: no
-      @screenFadeIn()
+      @setSpeed 200, accellerate: no
+      @screenFadeIn(1000)
       @enableControls()
       @enableWeapons()
-      @repeat(5, @sequence(
-        @addMinorScreenshake()
-        @wait 1000
-      ))
+      @wait 2000
+      @setScenery('Trailer.DinoVulcano')
+      @waitForScenery('Trailer.DinoVulcano', event: 'enter')
 
       @setSpeed 0
+      @wait 2000 # start shakes?
       @placeSquad(Dinosaur)
     )
 
