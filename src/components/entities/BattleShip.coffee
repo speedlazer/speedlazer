@@ -108,6 +108,7 @@ Crafty.c 'BattleShip',
       w: 15
       h: 2
     )
+    @hideBelow(540)
 
     @collision [
       20, 60,
@@ -115,7 +116,8 @@ Crafty.c 'BattleShip',
       32 * width, 188,
       20, 188
     ]
-
+    @bind 'Revealing', => @hideBelow(540)
+    @bind 'Hiding', => @hideBelow(540)
 
   _addBottomParts: (name) ->
     width = {

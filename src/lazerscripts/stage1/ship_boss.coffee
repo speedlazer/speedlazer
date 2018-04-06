@@ -148,8 +148,7 @@ class ShipBoss extends EntityScript
   releaseMinesFromShip: (index) ->
     @sequence(
       @wait(2000)
-      @moveTo(y: 350, easing: "linear")
-      @wait(1000)
+      @moveTo(y: 375, easing: "linear")
       @placeSquad JumpMine,
         amount: Math.floor(Math.random() * 10) + 3
         delay: 100
