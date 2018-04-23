@@ -4,19 +4,18 @@ const MOVE_Y = 16;
 Crafty.c("OnHatch", {
   required: "Hideable",
   events: {
-    Move: '_updateHatchHiding'
+    Move: "_updateHatchHiding"
   },
 
   onAttach(parent) {
-    this.hideBelow(parent._parent.y + 30)
+    this.hideBelow(parent._parent.y + 30);
   },
 
   _updateHatchHiding(old) {
     if (old._y !== this._y) {
-      this.hideBelow(this._parent._parent.y + 30)
+      this.hideBelow(this._parent._parent.y + 30);
     }
   }
-
 });
 
 Crafty.c("CarrierHatch", {
