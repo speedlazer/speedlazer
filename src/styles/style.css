@@ -8,11 +8,13 @@ body {
 html {
   box-sizing: border-box;
 }
+
 *,
 *::before,
 *::after {
   box-sizing: inherit;
 }
+
 #cr-stage {
   image-rendering: -moz-crisp-edges;         /* Firefox */
   image-rendering:   -o-crisp-edges;         /* Opera */
@@ -22,30 +24,39 @@ html {
 
   transform-origin: top left;
 }
+
 h1 {
   font-size: 1.2em;
 }
+
 h2 {
   font-size: 1.1em;
 }
+
 footer {
   color: #DDD;
-  text-align: center;
   padding: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   position: absolute;
   top: 0;
   left: 0;
-  font-size: 0.8em;
-  vertical-align: super;
+  font-family: "Press Start 2P";
+  font-size: 8px;
   width: 100%
 }
-.copyright {
-  vertical-align: super;
+
+footer * {
+  margin-right: 1em;
 }
-#version {
-  vertical-align: super;
+
+footer button {
+  padding: 1em;
+  background: #DDD;
 }
+
 #version::before {
   content: 'Ver: ';
 }
@@ -53,8 +64,10 @@ footer {
 a {
   color: #fff;
 }
+
 .fullscreen #theater {
   position: absolute;
   top: 0;
   left: 0;
+  background: #000;
 }

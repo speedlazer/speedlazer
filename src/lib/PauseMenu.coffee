@@ -1,6 +1,8 @@
+{ togglePause } = require('src/lib/core/pauseToggle')
+
 # Crude extraction of logic. It needs more refactoring,
 # and could be extracted more to a generic Menu class
-class Game.PauseMenu
+class PauseMenu
   constructor: ->
     Crafty.bind 'GamePause', (state) =>
       if state
@@ -14,7 +16,7 @@ class Game.PauseMenu
       {
         text: 'Resume'
         execute: ->
-          Game.togglePause()
+          togglePause()
       }
       {
         text: ->
@@ -26,7 +28,7 @@ class Game.PauseMenu
       {
         text: 'Restart'
         execute: ->
-          Game.togglePause()
+          togglePause()
           Game.resetCredits()
           Crafty('Player').each -> @softReset()
           Crafty.enterScene 'Game'
@@ -34,7 +36,7 @@ class Game.PauseMenu
       {
         text: 'Quit'
         execute: ->
-          Game.togglePause()
+          togglePause()
           Crafty('Player').each -> @reset()
           Crafty.enterScene 'Intro'
       }
@@ -207,3 +209,7 @@ class Game.PauseMenu
       @unbind 'Fire', self._handleFire
 
     Crafty('PauseMenu').each -> @destroy()
+
+module.exports = {
+  default: PauseMenu
+}

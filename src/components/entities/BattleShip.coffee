@@ -1,13 +1,13 @@
 Crafty.c 'BattleShip',
   required: '2D, WebGL, Tween, Choreography, ShipSolid, Collision,' +
-    'Hideable, Flipable, Scalable, SunBlock, WaterSplashes, ShipCabin'
+    'Hideable, Flipable, Scalable, SunBlock, WaterSplashes, ShipCabin, Sprite'
 
   init: ->
     width = 40
     @attr(
       w: 32 * width
       h: 32 * 7
-      z: 6
+      z: -20
       waterRadius: 10
       minSplashDuration: 600
       defaultWaterCooldown: 400
@@ -52,17 +52,26 @@ Crafty.c 'BattleShip',
     @hatch = Crafty.e('CarrierHatch, ShipHatch1').attr(
       x: @x + 10 * 32
       y: @y + 29
+      floorOffset: 75
     )
     @attach(@hatch)
 
     @hatch2 = Crafty.e('CarrierHatch, ShipHatch2').attr(
-      x: @x + 20 * 32
+      x: @x + 16 * 32
       y: @y + 29
+      floorOffset: 75
     )
     @attach(@hatch2)
 
+    @hatch3 = Crafty.e('CarrierHatch, ShipHatch3').attr(
+      x: @x + 22 * 32
+      y: @y + 29
+      floorOffset: 75
+    )
+    @attach(@hatch3)
+
     @attach Crafty.e('2D, Cabin1Place').attr(
-      x: @x + 416
+      x: @x + 290
       y: @y + 100
       z: -8
       w: 15
@@ -70,14 +79,14 @@ Crafty.c 'BattleShip',
     )
 
     @attach Crafty.e('2D, HeliPlace').attr(
-      x: @x + 646
+      x: @x + 561
       y: @y - 32
       z: -8
       w: 15
       h: 2
     )
     @attach Crafty.e('2D, HeliPlace').attr(
-      x: @x + 756
+      x: @x + 686
       y: @y - 32
       z: -8
       w: 15
@@ -85,36 +94,21 @@ Crafty.c 'BattleShip',
     )
 
     @attach Crafty.e('2D, Cabin2Place').attr(
-      x: @x + 900
+      x: @x + 816
       y: @y + 100
       z: -8
       w: 15
       h: 2
     )
 
-    @attach Crafty.e('2D, MineCannonPlace').attr(
-      x: @x + 100
-      y: @y + 44
-      z: -6
+    @attach Crafty.e('2D, DroneShipCorePlace').attr(
+      x: @x + 900
+      y: @y - 100
+      z: -8
       w: 15
       h: 2
     )
-
-    @attach Crafty.e('2D, TurretPlace').attr(
-      x: @x + 550
-      y: @y + 44
-      z: -6
-      w: 15
-      h: 2
-    )
-
-    @attach Crafty.e('2D, TurretPlace').attr(
-      x: @x + 1050
-      y: @y + 44
-      z: -6
-      w: 15
-      h: 2
-    )
+    @hideBelow(540)
 
     @collision [
       20, 60,
@@ -122,7 +116,8 @@ Crafty.c 'BattleShip',
       32 * width, 188,
       20, 188
     ]
-
+    @bind 'Revealing', => @hideBelow(540)
+    @bind 'Hiding', => @hideBelow(540)
 
   _addBottomParts: (name) ->
     width = {
@@ -130,7 +125,7 @@ Crafty.c 'BattleShip',
       BottomSpace: 4
     }[name]
 
-    @attach Crafty.e("2D, WebGL, aircraftCarrier#{name}").attr(
+    @attach Crafty.e("2D, WebGL, Hideable, aircraftCarrier#{name}").attr(
       x: @x + (6 * 32) + @_bottomX
       y: @y + 64
       z: -8
@@ -138,23 +133,39 @@ Crafty.c 'BattleShip',
 
     @_bottomX += width * 32
 
+  ship: () ->
+    @hatch.hatch('HatchFloor1')
+    @hatch2.hatch('HatchFloor2')
+    @hatch3.hatch('HatchFloor3')
+    return this
+
   open: (hatch) ->
     @hatch.open() if 0 in hatch
     @hatch2.open() if 1 in hatch
+    @hatch3.open() if 2 in hatch
 
   close: (hatch) ->
     @hatch.close() if 0 in hatch
     @hatch2.close() if 1 in hatch
+    @hatch3.close() if 2 in hatch
 
 
-  execute: (action) ->
+  execute: (action, index = 'all') ->
     switch action
-      when 'open1' then @open([0])
-      when 'close1' then @close([0])
-      when 'open2' then @open([1])
-      when 'close2' then @close([1])
-      when 'open' then @open([0,1])
-      when 'close' then @close([0,1])
+      when 'open'
+        if index == 'all'
+          @open([0,1,2])
+        else
+          @open([index])
+      when 'close'
+        if index == 'all'
+          @close([0,1,2])
+        else
+          @close([index])
+      when 'activateCannon'
+        Crafty("Turret#{index + 1}").trigger('Activate')
+      when 'deactivateCannon'
+        Crafty("Turret#{index + 1}").trigger('Deactivate')
 
 Crafty.c 'ShipCabin', {
   init: ->
@@ -266,13 +277,13 @@ Crafty.c 'FirstShipCabin', {
   shipCabin: ->
     @hitBox.onHit(
       'Bullet',
-      (e) => @onProjectileHit(e)
-      => @onProjectileHitEnd()
+      (e) => @trigger('HitOn', e)
+      (c) => @trigger('HitOff', c)
     )
     @hitBox.onHit(
       'Explosion'
-      (e) => @onExplosionHit(e)
-      => @onProjectileHitEnd()
+      (e) => @trigger('HitOn', e)
+      (c) => @trigger('HitOff', c)
     )
 
     @hitParts = [@cabinParts..., @antenna, @radar]
@@ -318,7 +329,7 @@ Crafty.c 'SecondShipCabin', {
       w: 10
       h: 10
       z: -8
-      health: 2000
+      health: 4000
     )
     @hitBox = Crafty.e('2D, WebGL, Collision')
     @hitBox.attr(
@@ -357,13 +368,13 @@ Crafty.c 'SecondShipCabin', {
   shipCabin: ->
     @hitBox.onHit(
       'Bullet',
-      (e) => @onProjectileHit(e)
-      => @onProjectileHitEnd()
+      (e) => @trigger('HitOn', e)
+      (c) => @trigger('HitOff', c)
     )
     @hitBox.onHit(
       'Explosion'
-      (e) => @onExplosionHit(e)
-      => @onProjectileHitEnd()
+      (e) => @trigger('HitOn', e)
+      (c) => @trigger('HitOff', c)
     )
 
     @hitParts = [@cabinParts..., @antenna1, @antenna2]

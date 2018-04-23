@@ -1,3 +1,5 @@
+{ isPaused } = require('src/lib/core/pauseToggle')
+
 Crafty.c 'PlayerControlledCube',
   init: ->
     @requires '2D, WebGL, Color, Listener, Collision, SunBlock, PlayerControlledShip, Acceleration, InventoryWeapons'
@@ -19,7 +21,7 @@ Crafty.c 'PlayerControlledCube',
     @addComponent('Invincible').invincibleDuration(2000)
 
     @onHit 'Enemy', (collision) ->
-      return if Game.paused
+      return if isPaused()
       return if @has('Invincible')
       hit = no
       for e in collision
@@ -27,7 +29,7 @@ Crafty.c 'PlayerControlledCube',
       @trigger('Hit') if hit
 
     @onHit 'PowerUp', (e) ->
-      return if Game.paused
+      return if isPaused()
       for pu in e
         @pickUp(pu.obj)
         @trigger('PowerUp', pu.obj)

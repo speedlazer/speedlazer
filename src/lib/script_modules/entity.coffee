@@ -3,8 +3,15 @@ isFunction = require('lodash/isFunction')
 isObject = require('lodash/isObject')
 extend = require('lodash/extend')
 clone = require('lodash/clone')
-
+{ lookup } = require('src/lib/random')
 { normalizeInputPath, getBezierPath } = require('src/lib/BezierPath')
+createEntityPool = require('src/lib/entityPool').default
+
+shadowPool = createEntityPool(
+  ->
+    Crafty.e('2D, WebGL, shadow, Choreography, Tween')
+  10
+)
 
 # Actions to control an entity in the game
 #
@@ -34,6 +41,7 @@ Entity =
   # the entity. So the sequence will always be started once. When a new
   # sequence is started, a current running one will be aborted.
   bindSequence: (eventName, sequenceFunction, filter) ->
+    @_boundSequences ||= []
     return unless sequenceFunction?
     filter ?= -> true
     eventHandler = (args...) =>
@@ -44,9 +52,17 @@ Entity =
         WhenJS(sequenceFunction.apply(this, args)(sequence)).catch =>
           @alternatePath
 
-      @currentSequence = sequence = Math.random()
+      @currentSequence = sequence = lookup()
       @alternatePath = p(sequence)
+
     @entity.bind(eventName, eventHandler)
+    @_boundEntity = @entity
+    @_boundSequences.push([eventName, eventHandler])
+
+  _unbindSequences: ->
+    @_boundSequences ||= []
+    while (info = @_boundSequences.shift())
+      @_boundEntity.unbind(info[0], info[1])
 
   # remove an entity from the current gameplay. This means it cannot shoot
   # the player, and the player cannot shoot the entity. This is useful
@@ -248,7 +264,7 @@ Entity =
         # transition from air to underwater? break movement in 2 parts
         if settings.y? and settings.y + @entity.h > seaLevel
           airSettings = clone settings
-          airSettings.y = seaLevel - @entity.h
+          airSettings.y = Math.max(seaLevel - @entity.h, @entity.y)
           return @_moveAir(airSettings)
             .then =>
               @enemy.moveState = 'water'
@@ -306,29 +322,15 @@ Entity =
       @moveTo(opts)(sequence)
 
   _setupWaterSpot: ->
-    if Game.explosionMode?
-      waterSpot = Crafty.e('2D, WebGL, Color, Choreography, Tween')
-        .color('#000040')
-        .attr(
-          w: @entity.w + 10
-          x: @entity.x - 5
-          y: @entity.y + @entity.h
-          h: 20
-          alpha: 0.7
-          z: @entity.z - 1
-        )
-    else
-      waterSpot = Crafty.e('2D, WebGL, shadow, Choreography, Tween')
-        .attr(
-          w: @entity.w + 10
-          x: @entity.x - 5
-          y: @_getSeaLevel() - 10
-          h: 20
-          z: @entity.z - 1
-        )
+    waterSpot = shadowPool.get()
+      .attr(
+        w: @entity.w + 10
+        x: @entity.x - 5
+        y: @_getSeaLevel() - 10
+        h: 20
+        z: @entity.z - 1
+      )
 
-    if Game.explosionMode?
-      @_waterSplash()
     @entity.addComponent('WaterSplashes')
 
     @entity.hide(waterSpot, below: @_getSeaLevel())
@@ -339,17 +341,6 @@ Entity =
       @_waterSplash()
     else
       @entity.removeComponent('WaterSplashes')
-
-  _waterSplash: ->
-    defer = WhenJS.defer()
-    Crafty.e('WaterSplash').waterSplash(
-      x: @entity.x
-      y: @_getSeaLevel()
-      size: @entity.w
-    ).one 'ParticleEnd', ->
-      defer.resolve()
-
-    defer.promise
 
   _moveWater: (settings) ->
     defaultValues =
@@ -408,7 +399,7 @@ Entity =
 
     deltaX = if settings.x? then Math.abs(settings.x - @entity.x) else 0
     deltaY = if settings.y? then Math.abs(settings.y - @entity.y) else 0
-    delta = Math.sqrt((deltaX ** 2) + (deltaY ** 2))
+    delta = Math.sqrt(((deltaX || 0) ** 2) + ((deltaY || 0) ** 2))
     return Promise.resolve() if delta == 0
 
     return new Promise((resolve) =>
@@ -513,14 +504,16 @@ Entity =
   deathDecoy: ->
     (sequence) =>
       @_verify(sequence)
-      @decoy = @spawn(@options)
+      decoyOpts = Object.assign({}, @options, { decoy: true })
+      @decoy = @spawnDecoy(decoyOpts)
       if @options.attach
-        point = Crafty(@options.attach).get(@options.index)
-        point.attach(@decoy)
+        attachIndex = (@options.attachOffset || 0) + @options.index
+        attachPoint = Crafty(@options.attach).get(attachIndex)
+        attachPoint.attach(@decoy)
         @decoy.attr({
-          x: point.x
-          y: point.y
-          z: point.z
+          x: attachPoint.x + (@options.attachDx || 0)
+          y: attachPoint.y + (@options.attachDy || 0)
+          z: attachPoint.z
           invincible: yes
           deathDecoy: yes
           health: 1
@@ -533,10 +526,11 @@ Entity =
           y: y
           invincible: yes
           deathDecoy: yes
-          health: 1
+          health: 1 # TODO: looks should be determined by 'deathDecoy' flag.
           defaultSpeed: @entity.defaultSpeed
         )
 
+      # TODO: Fix this in the spawn logic
       @decoy.removeComponent('BurstShot') if @decoy.has('BurstShot')
       @decoy.removeComponent('Hostile') if @decoy.has('Hostile')
 
@@ -550,7 +544,8 @@ Entity =
 
   endDecoy: ->
     (sequence) =>
-      @decoy?.destroy()
+      if @decoy
+        @cleanupDecoy @decoy
       @decoy = null
       @entity = @decoyingEntity
       @decoyingEntity = undefined
@@ -562,7 +557,7 @@ Entity =
       @entity.addComponent('KeepAlive')
       task(sequence).then =>
         if @enemy.alive
-          @entity.destroy()
+          @cleanup(entity)
       return
 
   action: (name, args) ->

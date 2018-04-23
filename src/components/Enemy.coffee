@@ -1,35 +1,44 @@
 defaults = require('lodash/defaults')
+{ isPaused } = require('src/lib/core/pauseToggle')
 
 Crafty.c 'Enemy',
+  required: '2D, WebGL, Collision, Tween, Choreography, Hideable, Flipable, Scalable, SunBlock, Hostile'
+  events:
+    HitOn: '_onCollisonHit'
+    HitOff: '_onCollisonHitOff'
+    HitFlash: 'applyHitFlash'
+
   init: ->
-    @requires '2D, WebGL, Collision, Tween, Choreography, Hideable, Flipable, Scalable, SunBlock, Hostile'
     @attr
-      pointsOnHit: 10
-      pointsOnDestroy: 50
+      pointsOnHit: 0
+      pointsOnDestroy: 0
       damage: 2
     @invincible = no
-    @bind 'HitFlash', @applyHitFlash
 
-  onProjectileHit: (collisions) ->
-    return if Game.paused
+  _onCollisonHit: (collisions) ->
+    return if isPaused()
     return if @hidden
 
     collisions.forEach((e) =>
-      bullet = e.obj
+      bulletOrExplosion = e.obj
       unless @invincible
-        unless @juice is no
-          @trigger('HitFlash', true)
-        @absorbDamage(bullet)
+        if bulletOrExplosion.damage > 0
+          unless @juice is no
+            @trigger('HitFlash', true)
+          @absorbDamage(bulletOrExplosion)
+          bulletOrExplosion.damage = 0
 
-        @trigger('Hit', entity: this, projectile: bullet)
-      bullet.trigger('BulletHit', bullet)
+          @trigger('Hit', entity: this, projectile: bulletOrExplosion)
+
+      if bulletOrExplosion.has('Bullet')
+        bulletOrExplosion.trigger('BulletHit', bulletOrExplosion)
     )
 
-  onProjectileHitEnd: ->
+  _onCollisonHitOff: (component) ->
     @trigger('HitFlash', false)
 
   onExplosionHit: (e) ->
-    return if Game.paused
+    return if isPaused()
     return if @hidden
     return if @invincible
     for c in e
@@ -55,18 +64,11 @@ Crafty.c 'Enemy',
         y: @h / 2
       }
     )
+    @reveal()
     @pointsLocation = options.pointsLocation
     Crafty.trigger('EnemySpawned', this)
-    @onHit(
-      options.projectile
-      (e) => @onProjectileHit(e)
-      => @onProjectileHitEnd()
-    )
-    @onHit(
-      'Explosion'
-      (e) => @onExplosionHit(e)
-      => @onProjectileHitEnd()
-    )
+    @checkHits(options.projectile, 'Explosion')
+    @updatedHealth?()
     this
 
   absorbDamage: (cause) ->
@@ -80,8 +82,10 @@ Crafty.c 'Enemy',
     if @health <= 0
       Crafty.trigger('EnemyDestroyed', this)
       @trigger('Destroyed', this)
-      @destroy()
-
+      @trigger('Cleanup', this)
+      unless @__frozen
+        @destroy()
+      data.chainable = @chainable
       cause.ship?.trigger 'DestroyTarget', data
       @deathCause = cause.ship
     else

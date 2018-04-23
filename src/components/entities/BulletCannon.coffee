@@ -15,7 +15,9 @@ Crafty.c 'BulletCannon',
     @attr defaults(attr,
       health: defaultHealth
       maxHealth: attr.health ? defaultHealth
-      aimSpeed: 45
+      pointsOnHit: 5
+      pointsOnDestroy: 100
+      aimSpeed: 90
     )
     @barrel = Crafty.e('2D, WebGL, mineCannon, TweenPromise, Collision')
     @barrel.attr(
@@ -25,16 +27,17 @@ Crafty.c 'BulletCannon',
       w: 96
       h: 32
     )
-    @barrel.origin(@barrel.w - 16, 16)
+    @barrel.origin(@barrel.w - 16, 20)
+    @enemy()
     @barrel.onHit(
       'Bullet',
-      (e) => @onProjectileHit(e)
-      => @onProjectileHitEnd()
+      (e) => @trigger('HitOn', e)
+      (c) => @trigger('HitOff', c)
     )
     @barrel.onHit(
       'Explosion'
-      (e) => @onExplosionHit(e)
-      => @onProjectileHitEnd()
+      (e) => @trigger('HitOn', e)
+      (c) => @trigger('HitOff', c)
     )
     @tip = Crafty.e('2D')
     @tip.attr(
@@ -44,10 +47,7 @@ Crafty.c 'BulletCannon',
       h: 1
     )
     @barrel.attach(@tip)
-
     @attach(@barrel)
-
-    @enemy()
     this
 
   applyBarrelHitFlash: (onOff) ->
@@ -67,13 +67,16 @@ Crafty.c 'BulletCannon',
     switch action
       when 'aim'
         @aimAt(level.player('anyActive'))
+      when 'reset-aim'
+        duration = Math.abs(@barrel.rotation) * 1000 / (@aimSpeed * 3)
+        @barrel.tweenPromise(rotation: 0, duration)
       when 'start-shooting'
         @tip.addComponent('BurstShot').burstShot
           burstCooldown: 1500
           burstAmount: 6
           angleDeviation: 5
           aim: 0
-          cooldown: 50
+          cooldown: 100
           projectile: (x, y, angle) =>
             projectile = Crafty.e('Projectile, sphere1, Hostile, Collision')
               .crop(6, 21, 18, 7)
@@ -82,7 +85,7 @@ Crafty.c 'BulletCannon',
               .attr(
                 w: 20
                 h: 8
-                speed: 350
+                speed: 380
                 damage: 1
               )
 

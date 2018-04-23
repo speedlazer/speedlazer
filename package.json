@@ -26,6 +26,7 @@
     "babel-preset-minify": "^0.2.0",
     "babel-preset-stage-2": "^6.24.1",
     "babel-preset-stage-3": "^6.24.1",
+    "chai": "^4.1.2",
     "clean-webpack-plugin": "^0.1.17",
     "coffee-loader": "^0.9.0",
     "coffeescript": "1.12.7",
@@ -37,6 +38,7 @@
     "file-loader": "^1.1.5",
     "html-loader": "^0.5.1",
     "html-webpack-plugin": "^2.30.1",
+    "mocha": "^5.0.1",
     "prettier": "^1.9.2",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.19.1",
@@ -49,8 +51,14 @@
     "build": "webpack --config ./config/webpack.prod.js",
     "start": "webpack-dev-server --open --config ./config/webpack.dev.js",
     "lint": "eslint src/",
-    "test": "eslint src/",
+    "test": "mocha --recursive --require babel-core/register",
     "prettier": "prettier '{,!(node_modules|dist|.tmp)/**/}*.js' --write"
+  },
+  "babel": {
+    "presets": [
+      "stage-3",
+      "env"
+    ]
   },
   "dependencies": {
     "Crafty-Distro": "craftyjs/Crafty-Distro#nightlies",

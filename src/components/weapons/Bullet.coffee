@@ -1,6 +1,12 @@
+{ isPaused } = require("src/lib/core/pauseToggle")
+
 Crafty.c 'Bullet',
+  required: '2D, WebGL, sphere1, Collision, ColorEffects'
+  events:
+    HitOn: '_onWallHit'
+    Freeze: '_onFreeze'
+
   init: ->
-    @requires '2D, WebGL, sphere1, Collision, ColorEffects'
     @crop 4, 19, 24, 11
     @collision [
       0, 0,
@@ -8,6 +14,13 @@ Crafty.c 'Bullet',
       18, 7,
       0, 7
     ]
+
+  _onWallHit: ->
+    return if isPaused()
+    @trigger('BulletWall', this)
+
+  _onFreeze: ->
+    @unbind('GameLoop', @_onGameLoop)
 
   updateCollision: (w, h) ->
     @collision [
@@ -34,13 +47,7 @@ Crafty.c 'Bullet',
     @attr(
       ship: properties.ship
     )
-    @onHit 'BulletSolid', ->
-      return if Game.paused
-      @trigger('BulletWall', this)
-
-    @bind('Freeze', ->
-      @unbind('GameLoop', @_onGameLoop)
-    )
+    @checkHits('BulletSolid')
     this
 
   fire: (properties) ->

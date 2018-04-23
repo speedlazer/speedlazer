@@ -48,7 +48,7 @@ class LunchBossStage1 extends LunchBoss
     @bindSequence 'Hit', @fase2, => @entity.healthBelow .8
 
     @sequence(
-      @setScenery('UnderBridge')
+      @setScenery('City.UnderBridge')
       @invincible yes
       @animate 'slow', -1, 'eye'
       @disableWeapons()
@@ -125,7 +125,7 @@ class LunchBossStage1 extends LunchBoss
       @bombRaid(yes)
       @parallel(
         @sequence(
-          @setScenery 'Skyline'
+          @setScenery 'City.Skyline'
           @gainHeight(300, duration: 4000)
         )
         @repeat @sequence(

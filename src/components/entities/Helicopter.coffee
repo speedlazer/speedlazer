@@ -9,7 +9,7 @@ Crafty.c 'Helicopter',
     @collision [8, 5, 120, 5, 112, 35, 12, 47]
 
   helicopter: (attr = {}) ->
-    defaultHealth = 2750
+    defaultHealth = 1750
     @attr defaults(attr,
       w: 128,
       h: 55,
@@ -54,7 +54,12 @@ Crafty.c 'Helicopter',
       @pauseAnimation()
       @sprite(8, 6)
     else
-      @animate('fly', -1) unless @isPlaying('fly')
+      if @rotors is on
+        @animate('fly', -1) unless @isPlaying('fly')
+      else
+        @pauseAnimation()
+        @sprite(12, 8)
+
 
   updateMovementVisuals: (rotation, dx, dy, dt) ->
     @vx = dx * (1000 / dt)

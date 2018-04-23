@@ -23,8 +23,10 @@ class DroneShip extends EntityScript
           @async @placeSquad TurretActive,
             options:
               attach: 'TurretPlace'
+              chainable: yes
         )
       )
+      @wait(2000)
       @action 'open'
       @parallel(
         @placeSquad DroneFlyer,
@@ -35,6 +37,7 @@ class DroneShip extends EntityScript
             hatchReveal: 'ShipHatch1'
             dx: 25
             dy: 20
+            chainable: yes
             path: [
               [.156, .5]
               [.5, .833]

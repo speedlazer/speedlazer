@@ -31,6 +31,11 @@ Crafty.c 'Hideable',
     @trigger 'Hiding', this
     this
 
+  hideBelow: (yValue) ->
+    @hideAt = yValue
+    for c in @_children
+      c.attr?(hideAt: yValue)
+
   reveal: ->
     @hideMarker?.destroy()
     @hidden = no
@@ -53,5 +58,9 @@ Crafty.c 'Hideable',
     this
 
   remove: ->
-    @hideMarker?.destroy()
+    if @hideMarker
+      if @hideMarker.hasPool
+        @hideMarker.recycle()
+      else
+        @hideMarker.destroy()
 

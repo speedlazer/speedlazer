@@ -25,7 +25,6 @@ class Level
     @visibleHeight = Crafty.viewport.height - @generationPosition.y
     @shipType = 'PlayerSpaceship'
 
-    { @namespace } = @data
     @currentScenery = @data.startScenery
 
   setScenery: (scenery) ->
@@ -34,7 +33,7 @@ class Level
       @_setupLevelScenery()
 
   _loadAssetsForScenery: (scenery) ->
-    blockType = "#{@namespace}.#{scenery}"
+    blockType = scenery
     blockKlass = @generator.buildingBlocks[blockType]
     blockKlass::loadAssets().then =>
       nextLoading = []
@@ -146,7 +145,7 @@ class Level
     return unless block?
     block[eventType]()
     for event, index in @sceneryEvents by -1
-      if block.name is "#{@namespace}.#{event.sceneryType}" and eventType is event.eventType
+      if block.name is event.sceneryType and eventType is event.eventType
         event.callback.apply this
         @sceneryEvents.splice(index, 1)
 
@@ -308,7 +307,7 @@ class Level
       counter += 1
 
   _generateLevel: ->
-    blockType = "#{@namespace}.#{@currentScenery}"
+    blockType = @currentScenery
     @_addBlockToLevel(blockType, {})
     blockKlass = @generator.buildingBlocks[blockType]
     if next = blockKlass::autoNext
@@ -336,17 +335,17 @@ class Level
 
   _cleanupBuildBlocks: ->
     first = @blocks[0]
-    while first.canCleanup()
+    while first && first.canCleanup()
       @blocks.shift().clean()
       first = @blocks[0]
 
   _seedPreceedingGeometry: ->
-    blockType = "#{@namespace}.#{@currentScenery}"
+    blockType = @currentScenery
     blockKlass = @generator.buildingBlocks[blockType]
     if next = blockKlass::autoNext
-      blockType = "#{@namespace}.#{next}"
+      blockType = next
     if prev = blockKlass::autoPrevious
-      blockType = "#{@namespace}.#{prev}"
+      blockType = prev
 
     p = clone @generationPosition
     @_insertBlockToLevel(blockType, {})

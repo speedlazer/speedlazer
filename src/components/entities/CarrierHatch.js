@@ -1,6 +1,23 @@
 const MOVE_X = -32;
 const MOVE_Y = 16;
 
+Crafty.c("OnHatch", {
+  required: "Hideable",
+  events: {
+    Move: "_updateHatchHiding"
+  },
+
+  onAttach(parent) {
+    this.hideBelow(parent._parent.y + 30);
+  },
+
+  _updateHatchHiding(old) {
+    if (old._y !== this._y) {
+      this.hideBelow(this._parent._parent.y + 30);
+    }
+  }
+});
+
 Crafty.c("CarrierHatch", {
   init() {
     this.requires("2D, WebGL, aircraftCarrierOpenHatch");
@@ -16,14 +33,10 @@ Crafty.c("CarrierHatch", {
     this.attach(this.wire);
 
     this.lid = Crafty.e(
-      "2D, WebGL, aircraftCarrierHatchLid, Hideable, Tween, Delta2D"
+      "2D, WebGL, aircraftCarrierHatchLid, Hideable, TweenPromise, Delta2D"
     );
     this.lid.crop(0, 2, 5 * 32, 32);
-    this.lid.attr({
-      z: -4,
-      x: this.x,
-      y: this.y
-    });
+
     this.attach(this.lid);
 
     this.dust = Crafty.e("2D, WebGL, Explode, ColorEffects");
@@ -42,10 +55,41 @@ Crafty.c("CarrierHatch", {
     return [this.lid, this.wire];
   },
 
-  open() {
+  hatch(label) {
+    this.lid.attr({
+      z: -4,
+      x: this.x,
+      y: this.y
+    });
+
+    if (this.floorOffset) {
+      this.floor = Crafty.e(
+        "2D, WebGL, aircraftCarrierHatchLid, Hideable, TweenPromise, Delta2D"
+      );
+      this.floor.addComponent(label);
+      this.floor.crop(0, 2, 5 * 32, 32);
+
+      this.floor.attr({
+        z: -5,
+        x: this.x - 4,
+        y: this.y + 3,
+        dy: this.floorOffset
+      });
+      this.floor.hideBelow(this.y + 30);
+      this.attach(this.floor);
+    }
+
+    return this;
+  },
+
+  async open() {
     this.dust.alpha = 0.2;
     this.lid.attr({ dy: 0, dx: 0 });
-    this.lid.tween(
+    this.dust.one("TweenEnd", () => {
+      this.dust.alpha = 0;
+    });
+    this.dust.playExplode(800);
+    await this.lid.tweenPromise(
       {
         dx: MOVE_X,
         dy: MOVE_Y
@@ -53,18 +97,20 @@ Crafty.c("CarrierHatch", {
       600,
       "easeInOutQuad"
     );
-    this.dust.one("TweenEnd", () => {
-      this.dust.alpha = 0;
-    });
-    this.dust.playExplode(800);
+    if (this.floor) {
+      await this.rise();
+    }
   },
 
-  close() {
+  async close() {
+    if (this.floor) {
+      await this.lower();
+    }
     this.lid.attr({
       dx: MOVE_X,
       dy: MOVE_Y
     });
-    this.lid.tween(
+    await this.lid.tweenPromise(
       {
         dy: 0,
         dx: 0
@@ -72,12 +118,32 @@ Crafty.c("CarrierHatch", {
       600,
       "easeInOutQuad"
     );
-    this.lid.one("TweenEnd", () => {
-      this.dust.alpha = 0.2;
-      this.dust.one("AnimationEnd", () => {
-        this.dust.alpha = 0;
-      });
-      this.dust.playExplode(800);
+    this.dust.alpha = 0.2;
+    this.dust.one("AnimationEnd", () => {
+      this.dust.alpha = 0;
     });
+    this.dust.playExplode(800);
+  },
+
+  async rise() {
+    this.floor.attr({ dy: this.floorOffset });
+    await this.floor.tweenPromise(
+      {
+        dy: 0
+      },
+      500,
+      "easeInOutQuad"
+    );
+  },
+
+  async lower() {
+    this.floor.attr({ dy: 0 });
+    await this.floor.tweenPromise(
+      {
+        dy: this.floorOffset
+      },
+      500,
+      "easeInOutQuad"
+    );
   }
 });

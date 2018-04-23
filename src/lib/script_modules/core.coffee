@@ -80,13 +80,16 @@ Core =
 
       whileResolved = no
       condition(sequence)
+        .then ->
+          whileResolved = yes
         .catch (e) ->
+          whileResolved = yes
           throw e unless e.message is 'sequence mismatch'
         .finally -> whileResolved = yes
       WhenJS.iterate(
         -> 1
         -> whileResolved
-        -> block(sequence)
+        -> !whileResolved && block(sequence)
         1
       )
 
@@ -145,33 +148,39 @@ Core =
     (sequence) =>
       @_verify(sequence)
       return WhenJS() if @_skippingToCheckpoint()
-      task(sequence)
+      task(sequence).catch((e) ->
+        throw e unless e.message is 'sequence mismatch'
+      )
       return
+
+  lazy: (func, args...) ->
+    (sequence) =>
+      return func.apply(this, args)(sequence)
 
   # Wait an amount of milliseconds.
   wait: (amount) ->
     (sequence) =>
       @_verify(sequence)
-      return WhenJS() if @_skippingToCheckpoint()
-      d = WhenJS.defer()
-
+      return Promise.resolve() if @_skippingToCheckpoint()
+      level = this
       duration = Math.max(amount?() ? amount, 0)
       parts = duration // 40
-      level = this
-      Crafty.e('Delay').delay(
-        ->
-          try
-            level._verify(sequence)
-          catch e
-            d.reject(e)
+      new Promise((resolve, reject) ->
+        Crafty.e('Delay').delay(
+          ->
+            try
+              level._verify(sequence)
+            catch e
+              reject(e)
+              @destroy()
+            null
+          40
+          parts
+          ->
+            resolve()
             @destroy()
-        40
-        parts
-        ->
-          d.resolve()
-          @destroy()
+        )
       )
-      d.promise
 
   # Stops the current script chain.
   endSequence: ->

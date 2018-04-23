@@ -22,19 +22,28 @@ class JumpMine extends EntityScript
         projectile = Crafty.e('Sphere, Hostile, Projectile')
           .blink()
           .attr(
-            w: 14
-            h: 14
-            speed: 400
+            w: 20
+            h: 20
+            speed: 300
             damage: 1
           )
         projectile.shoot(x, y, angle)
     )
 
   execute: ->
+    xSpeed = if @options.direction is 'bottom'
+      4000
+    else
+      @entity.defaultSpeed
+
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @moveTo(y: 1.05, speed: 400)
-      @moveTo(x: @target.x, easing: if @juice then 'easeOutQuad' else 'linear')
+      @moveTo(
+        x: @target.x,
+        easing: if @juice then 'easeOutQuad' else 'linear',
+        speed: xSpeed
+      )
       @moveTo(y: @target.y, easing: if @juice then 'easeOutQuad' else 'linear')
       @parallel(
         @sequence(

@@ -3,6 +3,10 @@ cache: yarn
 node_js:
   - "node"
 
+script:
+  - yarn test
+  - yarn lint
+
 deploy:
   provider: script
   script: .travis/beta-deploy.sh

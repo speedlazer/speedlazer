@@ -603,8 +603,8 @@ class Stage1BossRocketStrike extends EntityScript
 class Stage1BossRocket extends EntityScript
   spawn: (options) ->
     options = defaults(options,
-      pointsOnHit: 125
-      pointsOnDestroy: 50
+      pointsOnHit: 0
+      pointsOnDestroy: 0
       offsetY: 0
       offsetX: 0
       scale: 1.0
@@ -1257,6 +1257,43 @@ class BridgeDebrisFalling extends EntityScript
       )
     )
 
+class BossHeliAttack extends Stage1Boss
+
+  spawn: ->
+    Crafty.e('LargeDrone, ShootOnSight, Horizon').drone(
+      x: Crafty.viewport.width + 40
+      y: Crafty.viewport.height * .23
+      defaultSpeed: 250
+      health: 30000
+      pointsOnHit: 10
+      turnOnPath: true
+    ).shootOnSight
+      targetType: 'Unconverted'
+      shootWhenHidden: yes
+      sightAngle: 200
+      projectile: (x, y, angle) =>
+        projectile = Crafty.e('Projectile, Color, BackgroundBullet, Horizon').attr(
+          w: 8
+          h: 8
+          z: -200
+          speed: 400
+          topDesaturation: 0.5
+          bottomDesaturation: 0.5
+        ).color("#DDDDFF")
+        projectile.shoot(x, y, angle)
+
+  execute: ->
+    @bindSequence 'Destroyed', @onKilled
+    @sequence(
+      @sendToBackground(0.50, -200)
+      @movePath [
+        [.96, .64]
+        [.30, .35]
+        [.65, .23]
+        [.93, .43]
+        [1.13, .63]
+      ]
+    )
 
 module.exports = {
   Stage1BossAimedRocket
@@ -1268,4 +1305,5 @@ module.exports = {
   Stage1BossRocket
   Stage1BossRocketStrike
   Stage1BossStage1
+  BossHeliAttack
 }

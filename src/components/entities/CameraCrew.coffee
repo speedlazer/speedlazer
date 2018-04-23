@@ -1,4 +1,6 @@
- Crafty.c 'CameraCrew',
+{ isPaused } = require('src/lib/core/pauseToggle')
+
+Crafty.c 'CameraCrew',
   init: ->
     @requires '2D, WebGL, Choreography, Unconverted, Collision, Hideable, helicopter, SpriteAnimation, Flipable, Scalable, Tween'
     @reel 'fly', 200, [[0, 6, 4, 2], [4, 6, 4, 2]]
@@ -12,7 +14,7 @@
   cameraCrew: ->
     @animate 'fly', -1
     @onHit 'BackgroundBullet', (e) ->
-      return if Game.paused
+      return if isPaused()
       @removeComponent('Unconverted')
       #@pauseAnimation()
       #@sprite(8,6)

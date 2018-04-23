@@ -1,3 +1,5 @@
+{ levelProgress, levelInfo, determineLevel } = require('src/lib/chainLevel')
+
 Crafty.c 'PlayerInfo',
   init: ->
     @requires '2D, Listener'
@@ -6,10 +8,12 @@ Crafty.c 'PlayerInfo',
 
   playerInfo: (x, player) ->
     @player = player
+    @displayedScore = player.points
+    @displayedChain = player.chain
     @score = Crafty.e('2D, Text, UILayerDOM')
       .attr(
         w: 220, h: 20
-        x: x, y: 10, z: 200
+        x: x + 200, y: 10, z: 200
       )
       .textFont(
         size: '10px'
@@ -21,7 +25,7 @@ Crafty.c 'PlayerInfo',
     @lives = Crafty.e('2D, Text, UILayerDOM')
       .attr(
         w: 220, h: 20
-        x: x, y: 30, z: 200
+        x: x, y: 10, z: 200
       )
       .textFont(
         size: '10px'
@@ -30,7 +34,7 @@ Crafty.c 'PlayerInfo',
     @health = Crafty.e('2D, Text, UILayerDOM')
       .attr(
         w: 220, h: 20
-        x: x + 70, y: 28, z: 200
+        x: x + 70, y: 8, z: 200
       )
       .textFont(
         size: '10px'
@@ -39,9 +43,34 @@ Crafty.c 'PlayerInfo',
     @heart = Crafty.e('2D, ColorEffects, heart, UILayerWebGL')
       .attr(
         w: 16, h: 16
-        x: x - 2, y: 26, z: 200
+        x: x - 2, y: 6, z: 200
       )
       .colorOverride(player.color(), 'partial')
+
+    @chain = Crafty.e('2D, Color, UILayerWebGL')
+      .attr(
+        w: 190, h: 2
+        x: x, y: 28, z: 200
+        alpha: 0.2
+      ).color('#000000')
+
+    @chainName = Crafty.e('2D, Text, UILayerDOM')
+      .attr(
+        w: 220, h: 20
+        x: x, y: 34, z: 200
+      )
+      .textFont(
+        size: '8px'
+        family: 'Press Start 2P'
+      )
+    if @player.has('Color')
+      @chainName.textColor @player.color()
+
+    @chainProgress = Crafty.e('2D, Color, UILayerWebGL')
+      .attr(
+        w: 0, h: 2
+        x: x, y: 28, z: 200
+      ).color(@player.color())
 
     if @player.has('Color')
       @lives.textColor player.color()
@@ -50,12 +79,8 @@ Crafty.c 'PlayerInfo',
     @updatePlayerInfo()
     @createBoostsVisuals(x)
 
-    @listenTo player, 'UpdateLives', @updatePlayerInfo
-    @listenTo player, 'UpdatePoints', @updatePlayerInfo
-    @listenTo player, 'UpdateHealth', @updatePlayerInfo
-    @listenTo player, 'Activated', @updatePlayerInfo
-    @listenTo player, 'Deactivated', @updatePlayerInfo
     @listenTo player, 'GameLoop', (fd) =>
+      @updatePlayerInfo()
       @updateBoostInfo()
       @updateHealthInfo(fd)
     this
@@ -67,19 +92,19 @@ Crafty.c 'PlayerInfo',
     playerColor = @player.color()
     @boosts['speedb'] = Crafty.e('2D, UILayerWebGL, speedBoost, ColorEffects')
       .attr(w: 16, h: 16)
-      .attr(x: x, y: 45, z: 200)
+      .attr(x: x, y: 25, z: 200)
       .colorOverride(playerColor, 'partial')
     @boosts['rapidb'] = Crafty.e('2D, UILayerWebGL, rapidFireBoost, ColorEffects')
       .attr(w: 16, h: 16)
-      .attr(x: x + 20, y: 44, z: 200)
+      .attr(x: x + 20, y: 24, z: 200)
       .colorOverride(playerColor, 'partial')
     @boosts['aimb'] = Crafty.e('2D, UILayerWebGL, aimBoost, ColorEffects')
       .attr(w: 16, h: 16)
-      .attr(x: x + 40, y: 44, z: 200)
+      .attr(x: x + 40, y: 24, z: 200)
       .colorOverride(playerColor, 'partial')
     @boosts['damageb'] = Crafty.e('2D, UILayerWebGL, damageBoost, ColorEffects')
       .attr(w: 16, h: 16)
-      .attr(x: x + 50, y: 44, z: 200)
+      .attr(x: x + 50, y: 24, z: 200)
       .colorOverride(playerColor, 'partial')
 
   updateBoostInfo: ->
@@ -105,8 +130,28 @@ Crafty.c 'PlayerInfo',
       @health.attr(alpha: alpha)
 
   updatePlayerInfo: ->
+    if @displayedScore < @player.points
+      if (@player.points - @displayedScore) > 1000
+        @displayedScore += 24
+      if (@player.points - @displayedScore) > 100
+        @displayedScore += 8
+      if (@player.points - @displayedScore) > 50
+        @displayedScore += 4
+
+      @displayedScore += 1
+
+    if @displayedChain != @player.chain
+      lvl = determineLevel(@player.chain)
+      @chainProgress.attr(w: 190 * levelProgress(@player.chain))
+      if (lvl == 0)
+        @chainName.text('')
+      else
+        info = levelInfo(lvl)
+        @chainName.text(info.name)
+      @displayedChain = @player.chain
+
     if @player.has('ControlScheme')
-      @score.text('Score: ' + @player.points)
+      @score.text('Score: ' + @displayedScore)
     else
       @score.text(@player.name)
 
