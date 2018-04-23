@@ -69,7 +69,9 @@ class Cabin2Active extends EntityScript
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @invincible no
-      @wait(20000)
+      @repeat(
+        @wait(500)
+      )
     )
 
 class ShipBoss extends EntityScript
@@ -150,7 +152,7 @@ class ShipBoss extends EntityScript
       @wait(2000)
       @moveTo(y: 375, easing: "linear")
       @placeSquad JumpMine,
-        amount: Math.floor(Math.random() * 10) + 3
+        amount: Math.floor(Math.random() * 4) + 8
         delay: 100
         options:
           gridConfig:
@@ -163,7 +165,7 @@ class ShipBoss extends EntityScript
               steps: 6
               stepSize: 0.10
           points: yes
-          direction: 'right'
+          direction: 'bottom'
       @wait(1000)
       @moveTo(y: 400, easing: "linear")
     )
@@ -203,11 +205,16 @@ class ShipBoss extends EntityScript
       @wait(500)
     )
 
+  popupCannon2: (getIndex) ->
+    index = getIndex()
+    @parallel(
+      @popupCannon(-> index)
+      @popupCannon(-> (index + 1) % 3)
+    )
+
   executeStageTwo: ->
     @sequence(
       @moveTo(x: -0.05, easing: "easeInOutQuad")
-
-
 
       @while(
         @sequence(
@@ -225,11 +232,6 @@ class ShipBoss extends EntityScript
         )
 
         @lazy(
-          @releaseMinesFromShip
-          -> Math.floor(Math.random() * 2)
-        )
-
-        @lazy(
           @popupCannon
           -> Math.floor(Math.random() * 3)
         )
@@ -238,15 +240,15 @@ class ShipBoss extends EntityScript
 
   executeStageThree: ->
     @sequence(
+      @lazy(
+        @releaseMinesFromShip
+        -> Math.floor(Math.random() * 2)
+      )
       @parallel(
         @moveTo(x: -0.2, easing: "easeInOutQuad")
         @placeSquad HeliFlyAway,
           amount: 2
           delay: 1000
-      )
-      @lazy(
-        @releaseMinesFromShip
-        -> Math.floor(Math.random() * 2)
       )
       @parallel(
         @placeSquad HeliAttack,
@@ -281,57 +283,26 @@ class ShipBoss extends EntityScript
       )
     )
 
+
   executeStageFour: ->
     @sequence(
-      @moveTo(x: 0.1, easing: "easeInOutQuad")
-      @while(
-        @placeSquad Cabin1Active,
-          options:
-            attach: 'Cabin1Place'
-        @lazy(
-          @releaseDronesFromHatchOne
-        )
+      @lazy(
+        @releaseMinesFromShip
+        -> Math.floor(Math.random() * 2)
       )
-    )
+      @moveTo(x: -0.05, easing: "easeInOutQuad")
 
-  executeStageFive: ->
-    @sequence(
-      @parallel(
-        @moveTo(x: -0.2, easing: "easeInOutQuad")
-        @placeSquad HeliFlyAway,
-          amount: 2
-          delay: 1000
-      )
-      @parallel(
-        @placeSquad HeliAttack,
-          options:
-            speed: 80
-            path: [
-              [.9, .6]
-              [.7, .45]
-              [.55, .4]
-              [.4, .6]
-              [.6, .8]
-              [.8, .6]
-              [.4, .8]
-              [.2, .4]
-              [-.2, .7]
-            ]
-        @placeSquad HeliAttack,
-          options:
-            speed: 80
-            path: [
-              [.9, .3]
-              [.7, .25]
-              [.55, .2]
-              [.4, .4]
-              [.6, .3]
-              [.8, .3]
-              [.4, .6]
-              [.2, .3]
-              [-.2, .4]
-            ]
-        @moveTo(x: -0.5, easing: "easeInOutQuad", speed: 130)
+      @while(
+        @sequence(
+          @placeSquad Cabin2Active,
+            options:
+              attach: 'Cabin2Place'
+        )
+
+        @lazy(
+          @popupCannon2
+          -> Math.floor(Math.random() * 3)
+        )
       )
     )
 
@@ -369,9 +340,8 @@ class ShipBoss extends EntityScript
       @lazy @executeStageOne
       @lazy @executeStageTwo
       @lazy @executeStageThree
-      #@lazy @executeStageFour
-      #@lazy @executeStageFive
-      #@lazy @executeStageSix
+      @lazy @executeStageFour
+      @lazy @executeStageSix
       @wait 30e3
     )
 

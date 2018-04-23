@@ -76,7 +76,7 @@ Crafty.c 'BulletCannon',
           burstAmount: 6
           angleDeviation: 5
           aim: 0
-          cooldown: 150
+          cooldown: 100
           projectile: (x, y, angle) =>
             projectile = Crafty.e('Projectile, sphere1, Hostile, Collision')
               .crop(6, 21, 18, 7)
@@ -85,7 +85,7 @@ Crafty.c 'BulletCannon',
               .attr(
                 w: 20
                 h: 8
-                speed: 350
+                speed: 380
                 damage: 1
               )
 

@@ -8,12 +8,12 @@ Crafty.c("OnHatch", {
   },
 
   onAttach(parent) {
-    this.hideBelow(parent.y - 48)
+    this.hideBelow(parent._parent.y + 30)
   },
 
   _updateHatchHiding(old) {
     if (old._y !== this._y) {
-      this.hideBelow(this._parent.y - 48)
+      this.hideBelow(this._parent._parent.y + 30)
     }
   }
 

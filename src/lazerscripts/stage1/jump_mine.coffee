@@ -31,10 +31,19 @@ class JumpMine extends EntityScript
     )
 
   execute: ->
+    xSpeed = if @options.direction is 'bottom'
+      4000
+    else
+      @entity.defaultSpeed
+
     @bindSequence 'Destroyed', @onKilled
     @sequence(
       @moveTo(y: 1.05, speed: 400)
-      @moveTo(x: @target.x, easing: if @juice then 'easeOutQuad' else 'linear')
+      @moveTo(
+        x: @target.x,
+        easing: if @juice then 'easeOutQuad' else 'linear',
+        speed: xSpeed
+      )
       @moveTo(y: @target.y, easing: if @juice then 'easeOutQuad' else 'linear')
       @parallel(
         @sequence(

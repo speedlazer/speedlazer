@@ -43,7 +43,7 @@ class TurretActive extends EntityScript
       @invincible no
       @action 'start-shooting'
       @repeat @sequence(
-        @wait 100
+        @wait 80
         @action 'aim'
 
       )

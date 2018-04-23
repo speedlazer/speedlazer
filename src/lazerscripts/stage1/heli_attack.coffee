@@ -44,7 +44,7 @@ class HeliFlyAway extends EntityScript
       @detach()
       @parallel(
         @sendToBackground(0.75, -50)
-        @moveTo(x: 1.02, { easing: "easeInQuad" })
+        @moveTo(x: 1.02, { easing: "easeInQuad", speed: 200 })
       )
     )
 
