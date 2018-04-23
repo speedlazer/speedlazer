@@ -2,8 +2,6 @@
 require('src/components/entities/Dinosaur')
 
 class Dinosaur extends EntityScript
-  assets: ->
-    @loadAssets('dinosaur')
 
   spawnLocation: (options) ->
     x = Crafty.viewport.width + 40
