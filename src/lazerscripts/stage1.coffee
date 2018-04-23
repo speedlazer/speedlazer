@@ -353,19 +353,16 @@ class Stage1 extends LazerScript
       @setSpeed 0
       @checkpoint @checkpointStart('City.UnderBridge', 2)
       @placeSquad Stage1BossStage1
-      => console.log('boss fight finished')
       @parallel(
         @if((-> @player(1).active), @drop(item: 'healthu', inFrontOf: @player(1)))
         #@if((-> @player(2).active), @drop(item: 'healthu', inFrontOf: @player(2)))
       )
       @setSpeed 200
       @wait 500
-      => console.log('rewards')
       @parallel(
         @if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
         #@if((-> @player(2).active), @drop(item: 'life', inFrontOf: @player(2)))
       )
-      => console.log('end of level')
     )
 
   waitingRocketStrike: ->
