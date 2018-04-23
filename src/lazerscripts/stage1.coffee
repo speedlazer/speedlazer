@@ -3,7 +3,7 @@ extend = require('lodash/extend')
 { DroneFlyer } = require('./stage1/army_drone')
 { HeliAttack } = require('./stage1/heli_attack')
 { Stage1BossRocketStrike, Stage1BossStage1, BossHeliAttack } = require('./stage1/stage1boss')
-{ StartOfDawn, DayBreak, Morning } = require('./stage1/sunrise')
+{ StartOfDawn, DayBreak, Morning, MorningEnd } = require('./stage1/sunrise')
 
 CameraCrew  = require('./stage1/camera_crew').default
 DroneShip   = require('./stage1/drone_ship').default
@@ -51,9 +51,9 @@ class Stage1 extends LazerScript
       @lazy @midStageBossFight
 
       #@setPowerupPool 'aim', 'speedb', 'rapidb', 'rapid', 'rapidb', 'aimb'
-      #@cityBay()
+      @lazy @cityBay
       #@setPowerupPool 'speed', 'rapid', 'aim', 'speed', 'rapid', 'aim'
-      #@endStageBossfight()
+      @endStageBossfight()
     )
 
   introText: ->
@@ -145,42 +145,40 @@ class Stage1 extends LazerScript
         )
 
         @attackWaves(
-          @parallel(
-            @repeat 2, @sequence(
-              @parallel(
-                @placeSquad DroneFlyer,
-                  amount: 4
-                  delay: 500
-                  options:
-                    chainable: true
-                    x: .5
-                    y: -.01
-                    path: [
-                      [.5, .2]
-                      [.7, .2]
-                      [.93, .31]
-                      [.8, .5]
-                      [.5, .5]
-                      [-.1, .3]
-                    ]
-                 @placeSquad DroneFlyer,
-                  amount: 4
-                  delay: 500
-                  options:
-                    chainable: true
-                    x: .5
-                    y: 1.11
-                    path: [
-                      [.5, .8]
-                      [.7, .8]
-                      [.93, .69]
-                      [.8, .5]
-                      [.5, .5]
-                      [-.1, .7]
-                    ]
-              )
-              @wait 1000
+          @repeat 2, @sequence(
+            @parallel(
+              @placeSquad DroneFlyer,
+                amount: 4
+                delay: 500
+                options:
+                  chainable: true
+                  x: .5
+                  y: -.01
+                  path: [
+                    [.5, .2]
+                    [.7, .2]
+                    [.93, .31]
+                    [.8, .5]
+                    [.5, .5]
+                    [-.1, .3]
+                  ]
+               @placeSquad DroneFlyer,
+                amount: 4
+                delay: 500
+                options:
+                  chainable: true
+                  x: .5
+                  y: 1.11
+                  path: [
+                    [.5, .8]
+                    [.7, .8]
+                    [.93, .69]
+                    [.8, .5]
+                    [.5, .5]
+                    [-.1, .7]
+                  ]
             )
+            @wait 1000
           )
         )
       )
@@ -324,75 +322,76 @@ class Stage1 extends LazerScript
         )
         @mineSwarm()
       )
-
-      # temp end
-      @wait 2000
     )
 
-  #endStageBossfight: ->
-    #@sequence(
-      #@checkpoint @checkpointStart('City.BayFull', 2)
-      ##@parallel(
-        ##@if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
-        ##@if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
-      ##)
-      #@mineSwarm direction: 'left'
-      ##@parallel(
-        ##@if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
-        ##@if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
-      ##)
+  endStageBossfight: ->
+    @sequence(
+      @checkpoint @checkpointStart('City.BayFull', 3)
       #@parallel(
-        #@mineSwarm()
-        #@sequence(
-          #@wait 5000
-          #@setScenery('City.UnderBridge')
-        #)
+        #@if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
+        #@if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
       #)
-      #@async @showText 'Warning!', color: '#FF0000', mode: 'blink', blink_amount: 6, blink_speed: 100
-      #@while(
-        #@waitForScenery('City.UnderBridge', event: 'enter')
-        #@waitingRocketStrike()
-      #)
-      #@setSpeed 75
-      #@waitForScenery('City.UnderBridge', event: 'inScreen')
-      #@setSpeed 0
-      #@checkpoint @checkpointStart('City.UnderBridge', 2)
-      #@placeSquad Stage1BossStage1
+      @mineSwarm direction: 'left'
       #@parallel(
-        #@if((-> @player(1).active), @drop(item: 'healthu', inFrontOf: @player(1)))
+        #@if((-> @player(1).active), @drop(item: 'pool', inFrontOf: @player(1)))
+        #@if((-> @player(2).active), @drop(item: 'pool', inFrontOf: @player(2)))
+      #)
+      @parallel(
+        @mineSwarm()
+        @sequence(
+          @wait 5000
+          @setScenery('City.UnderBridge')
+        )
+      )
+      @async @showText 'Warning!', color: '#FF0000', mode: 'blink', blink_amount: 6, blink_speed: 100
+      @while(
+        @waitForScenery('City.UnderBridge', event: 'enter')
+        @waitingRocketStrike()
+      )
+      @setSpeed 75
+      @waitForScenery('City.UnderBridge', event: 'inScreen')
+      @setSpeed 0
+      @checkpoint @checkpointStart('City.UnderBridge', 2)
+      @placeSquad Stage1BossStage1
+      => console.log('boss fight finished')
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'healthu', inFrontOf: @player(1)))
         #@if((-> @player(2).active), @drop(item: 'healthu', inFrontOf: @player(2)))
-      #)
-      #@setSpeed 200
-      #@wait 500
-      #@parallel(
-        #@if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
+      )
+      @setSpeed 200
+      @wait 500
+      => console.log('rewards')
+      @parallel(
+        @if((-> @player(1).active), @drop(item: 'life', inFrontOf: @player(1)))
         #@if((-> @player(2).active), @drop(item: 'life', inFrontOf: @player(2)))
-      #)
-    #)
+      )
+      => console.log('end of level')
+    )
 
-  #waitingRocketStrike: ->
-    #@sequence(
-      #@placeSquad Stage1BossRocketStrike,
-        #amount: 6
-        #delay: 150
-        #options:
-          #gridConfig:
-            #x:
-              #start: 1.1
-              #steps: 1
-              #stepSize: 0.05
-            #y:
-              #start: 0.125
-              #steps: 12
-              #stepSize: 0.05
-      #@wait 200
-    #)
+  waitingRocketStrike: ->
+    @sequence(
+      @placeSquad Stage1BossRocketStrike,
+        amount: 6
+        delay: 150
+        options:
+          gridConfig:
+            x:
+              start: 1.1
+              steps: 1
+              stepSize: 0.05
+            y:
+              start: 0.125
+              steps: 12
+              stepSize: 0.05
+      @wait 200
+    )
 
   sunRise: (fase = 0) ->
     script = switch fase
       when 0 then StartOfDawn
       when 1 then DayBreak
       when 2 then Morning
+      when 3 then MorningEnd
 
     @async @runScript(script)
 
@@ -412,6 +411,110 @@ class Stage1 extends LazerScript
             stepSize: 0.10
         points: options.points ? yes
         direction: options.direction
+
+  cityBay: ->
+    @sequence(
+      @setScenery('City.BayStart')
+      @sunRise(3)
+      @checkpoint @checkpointStart('City.BayStart', 3)
+
+      @repeat 2, @sequence(
+        @parallel(
+          @placeSquad DroneFlyer,
+            amount: 4
+            delay: 500
+            options:
+              chainable: true
+              x: .5
+              y: -.01
+              path: [
+                [.5, .2]
+                [.7, .2]
+                [.93, .31]
+                [.8, .5]
+                [.5, .5]
+                [-.1, .3]
+              ]
+           @placeSquad DroneFlyer,
+            amount: 4
+            delay: 500
+            options:
+              chainable: true
+              x: .5
+              y: 1.11
+              path: [
+                [.5, .8]
+                [.7, .8]
+                [.93, .69]
+                [.8, .5]
+                [.5, .5]
+                [-.1, .7]
+              ]
+        )
+      )
+      @parallel(
+        @placeSquad HeliAttack,
+          options:
+            speed: 80
+            path: [
+              [.9, .6]
+              [.7, .45]
+              [.55, .4]
+              [.4, .6]
+              [.6, .8]
+              [.8, .6]
+              [.4, .8]
+              [.2, .4]
+              [-.2, .7]
+            ]
+        @placeSquad HeliAttack,
+          options:
+            speed: 80
+            path: [
+              [.9, .3]
+              [.7, .25]
+              [.55, .2]
+              [.4, .4]
+              [.6, .3]
+              [.8, .3]
+              [.4, .6]
+              [.2, .3]
+              [-.2, .4]
+            ]
+      )
+      @parallel(
+        @placeSquad DroneFlyer,
+          amount: 4
+          delay: 500
+          options:
+            chainable: true
+            x: .5
+            y: -.01
+            path: [
+              [.5, .2]
+              [.7, .2]
+              [.93, .31]
+              [.8, .5]
+              [.5, .5]
+              [-.1, .3]
+            ]
+        @placeSquad DroneFlyer,
+          amount: 4
+          delay: 500
+          options:
+            chainable: true
+            x: .5
+            y: 1.11
+            path: [
+              [.5, .8]
+              [.7, .8]
+              [.93, .69]
+              [.8, .5]
+              [.5, .5]
+              [-.1, .7]
+            ]
+      )
+    )
 
   checkpointStart: (scenery, step) ->
     @sequence(

@@ -116,6 +116,22 @@ class Morning extends SunRise
       )
     )
 
+class MorningEnd extends SunRise
+  execute: ->
+    speed = @options.speed ? 1
+    @options.skipTo ?= 0
+
+    colorDuration = (80000 / speed)
+    @parallel(
+      @setLocation x: .71, y: .45
+      @backgroundColorFade(
+        duration: colorDuration,
+        skip: (@options.skipTo),
+        ['#f0b722', '#f0b722']
+        ['#c099cc', '#c099cc']
+      )
+    )
+
 class Noon extends SunRise
 
   execute: ->
@@ -140,5 +156,6 @@ module.exports = {
   StartOfDawn
   DayBreak
   Morning
+  MorningEnd
   Noon
 }

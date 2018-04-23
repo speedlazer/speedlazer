@@ -1,9 +1,10 @@
 { EntityScript } = require('src/lib/LazerScript')
 { MineCannonInActive, MineCannonActive } = require('./mine_cannon')
-{ DroneShipCore } = require('./drone_ship_core')
+{ DroneShipCore, DroneShipCoreInactive } = require('./drone_ship_core')
 { TurretInActive, TurretActive } = require('./turret')
 { Swirler, Shooter, CrewShooters, Stalker, ScraperFlyer, DroneFlyer } = require('../stage1/army_drone')
 { HeliInactive, HeliFlyAway, HeliAttack } = require('./heli_attack')
+{ lookup } = require('src/lib/random')
 JumpMine    = require('../stage1/jump_mine').default
 
 class Cabin1Inactive extends EntityScript
@@ -99,7 +100,7 @@ class ShipBoss extends EntityScript
     ]
 
   randomAmountSpawnedDrones: ->
-    return Math.round(Math.random() * 5)
+    return Math.round(lookup() * 5)
 
   placeEnemiesOnShip: ->
     @sequence(
@@ -152,7 +153,7 @@ class ShipBoss extends EntityScript
       @wait(2000)
       @moveTo(y: 375, easing: "linear")
       @placeSquad JumpMine,
-        amount: Math.floor(Math.random() * 4) + 8
+        amount: Math.floor(lookup() * 4) + 8
         delay: 100
         options:
           gridConfig:
@@ -224,16 +225,15 @@ class ShipBoss extends EntityScript
           @placeSquad Cabin2Inactive,
             options:
               attach: 'Cabin2Place'
-          # TODO: Reveal core / add explosions / smoke
 
-          @async @placeSquad DroneShipCore,
+          @placeSquad DroneShipCoreInactive,
             options:
               attach: 'DroneShipCorePlace'
         )
 
         @lazy(
           @popupCannon
-          -> Math.floor(Math.random() * 3)
+          -> Math.floor(lookup() * 3)
         )
       )
     )
@@ -242,7 +242,7 @@ class ShipBoss extends EntityScript
     @sequence(
       @lazy(
         @releaseMinesFromShip
-        -> Math.floor(Math.random() * 2)
+        -> Math.floor(lookup() * 2)
       )
       @parallel(
         @moveTo(x: -0.2, easing: "easeInOutQuad")
@@ -288,49 +288,43 @@ class ShipBoss extends EntityScript
     @sequence(
       @lazy(
         @releaseMinesFromShip
-        -> Math.floor(Math.random() * 2)
+        -> Math.floor(lookup() * 2)
       )
       @moveTo(x: -0.05, easing: "easeInOutQuad")
 
       @while(
         @sequence(
-          @placeSquad Cabin2Active,
+          @placeSquad DroneShipCore,
             options:
-              attach: 'Cabin2Place'
+              attach: 'DroneShipCorePlace'
         )
 
         @lazy(
           @popupCannon2
-          -> Math.floor(Math.random() * 3)
+          -> Math.floor(lookup() * 3)
         )
       )
     )
 
+  explosions: ->
+    a = lookup()
+    b = lookup()
+    c = lookup()
+    @sequence(
+      @smallExplosion(offsetX: 400 + (a * 300), offsetY: -50)
+      @bigExplosion(offsetX: 200 + (b * 250), offsetY: -50)
+      @smallExplosion(offsetX: 200 + (c * 350), offsetY: -20)
+      @wait(100)
+    )
+
   executeStageSix: ->
     @sequence(
-      @parallel(
-        @while(
-          @placeSquad Cabin2Active,
-            options:
-              attach: 'Cabin2Place'
-          @lazy(
-            @releaseDronesFromHatchTwo,
-            -> Math.round(Math.random() * 3 + 1)
-          )
-        )
-      )
       @moveTo(x: -0.6, easing: "easeInOutQuad")
       @while(
-        @sequence(
-          @moveTo(y: 450, easing: "easeInOutQuad", speed: 20)
-          @moveTo(x: -1.40, easing: "easeInOutQuad")
-        )
-        @sequence(
-          @smallExplosion(offsetX: 600, offsetY: -50)
-          @smallExplosion(offsetX: 500, offsetY: -20)
-          @wait(300)
-        )
+        @moveTo(y: 450, easing: "easeInOutQuad", speed: 20)
+        @lazy(@explosions)
       )
+      @moveTo(x: -1.40, easing: "easeInOutQuad", speed: 130)
     )
 
   execute: ->
@@ -342,7 +336,6 @@ class ShipBoss extends EntityScript
       @lazy @executeStageThree
       @lazy @executeStageFour
       @lazy @executeStageSix
-      @wait 30e3
     )
 
 module.exports =

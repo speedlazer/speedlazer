@@ -1,11 +1,21 @@
 levelGenerator = require('src/lib/LevelGenerator').default
+trailerScenery = require('src/images/dino.png')
 LevelScenery = require('src/lib/LevelScenery').default
+
+class TrailerScenery extends LevelScenery
+  assets: ->
+    sprites:
+      "#{trailerScenery}":
+        tile: 32
+        tileh: 32
+        map:
+          backgroundPlanet: [10, 0, 8, 8]
 
 levelGenerator.defineElement 'jurassicGrass', ->
   h = 64
-  @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, ShipSolid, BulletSolid, Color').color('#1fb93c').attr({ w: 1024, h: h }))
+  @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, SunBlock, ShipSolid, BulletSolid, Color').color('#1fb93c').attr({ w: 1024, h: h }))
   h = 160
-  @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').color('#1fb93c').attr({ w: 1024, h: h, z: -10 }))
+  @add(0, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color, SunBlock').color('#1fb93c').attr({ w: 1024, h: h, z: -10 }))
 
   h2 = 64
   @addBackground(
@@ -30,7 +40,7 @@ levelGenerator.defineElement 'jurassicGrass', ->
     .25
   )
 
-levelGenerator.defineBlock class extends LevelScenery
+levelGenerator.defineBlock class extends TrailerScenery
   name: 'Trailer.Dino'
   autoNext: 'Trailer.DinoWoods'
   delta:
@@ -39,14 +49,12 @@ levelGenerator.defineBlock class extends LevelScenery
 
   generate: ->
     super
-
-    @addBackground(0, @level.visibleHeight - 500, Crafty.e('2D, WebGL, Color')
-      .color('#4f4fce')
+    @addBackground(0, @level.visibleHeight - 500, Crafty.e('2D, WebGL, backgroundPlanet')
       .attr({ w: 256, h: 256, z: -400, alpha: 0.3 }),
         .01
     )
 
-levelGenerator.defineBlock class extends LevelScenery
+levelGenerator.defineBlock class extends TrailerScenery
   name: 'Trailer.DinoWoods'
   delta:
     x: 1024
@@ -57,12 +65,12 @@ levelGenerator.defineBlock class extends LevelScenery
     @addElement 'jurassicGrass'
 
     h = 576
-    @add(50, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').color('#8e5605').attr({ w: 196, h: h - 128, z: -10 }))
+    @add(50, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color, SunBlock').color('#8e5605').attr({ w: 196, h: h - 128, z: -10 }))
 
     h = 576
-    @add(550, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color').color('#8e5605').attr({ w: 196, h: h - 128, z: -10 }))
+    @add(550, @level.visibleHeight - h, Crafty.e('2D, WebGL, Color, SunBlock').color('#8e5605').attr({ w: 196, h: h - 128, z: -10 }))
 
-levelGenerator.defineBlock class extends LevelScenery
+levelGenerator.defineBlock class extends TrailerScenery
   name: 'Trailer.DinoVulcano'
   autoNext: 'Trailer.DinoPlains'
   delta:
@@ -81,7 +89,7 @@ levelGenerator.defineBlock class extends LevelScenery
       .25
     )
 
-levelGenerator.defineBlock class extends LevelScenery
+levelGenerator.defineBlock class extends TrailerScenery
   name: 'Trailer.DinoPlains'
   delta:
     x: 1024
