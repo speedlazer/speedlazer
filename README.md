@@ -7,12 +7,12 @@ HTML5 Gamepad API.
 
 # Play
 
-[Click here to play!](http://speedlazer.net)
+[Click here to play!](https://speedlazer.net)
 
 To test if your gamepad is succesfully connected/working, use:
 http://html5gamepad.com/
 
-The latest `master` is automatically deployed to http://speedlazer.net/beta/
+The latest `master` is automatically deployed to https://speedlazer.net/beta/
 
 # More info:
 
