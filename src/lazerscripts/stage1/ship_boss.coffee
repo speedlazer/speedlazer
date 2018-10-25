@@ -75,6 +75,16 @@ class Cabin2Active extends EntityScript
       )
     )
 
+class Cabin2Destroyed extends EntityScript
+  spawn: (options) ->
+    Crafty.e('SecondShipCabinDestroyed, KeepAlive')
+      .shipCabin()
+      .sendToBackground(1.0, -8)
+
+  execute: ->
+    @invincible yes
+
+
 class ShipBoss extends EntityScript
 
   spawn: (options) ->
@@ -304,6 +314,7 @@ class ShipBoss extends EntityScript
           -> Math.floor(lookup() * 3)
         )
       )
+
     )
 
   explosions: ->
@@ -316,6 +327,14 @@ class ShipBoss extends EntityScript
       @smallExplosion(offsetX: 200 + (c * 350), offsetY: -20)
       @wait(100)
     )
+
+  executeStageFive: ->
+    # Blow up cabin of core
+    # Move ship slowly backwards, releasing drones in the process
+    # Destroy first cabin
+    # -- six, sinking ship
+    @wait(100)
+
 
   executeStageSix: ->
     @sequence(
@@ -335,6 +354,7 @@ class ShipBoss extends EntityScript
       @lazy @executeStageTwo
       @lazy @executeStageThree
       @lazy @executeStageFour
+      @lazy @executeStageFive
       @lazy @executeStageSix
     )
 

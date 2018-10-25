@@ -8,9 +8,6 @@ import "./systems/SeaLevel";
 import screenfull from "screenfull";
 
 /* eslint-env node */
-window.ga("create", process.env.GA_TRACKER, "auto");
-window.ga("send", "pageview");
-
 Game.start(false);
 
 /**

@@ -56,15 +56,13 @@ Crafty.defineScene 'Game', (data = {}) ->
   Crafty('Player').each -> @level = level
 
   options =
-    startAtCheckpoint: data.checkpoint ? 0
+    startAtCheckpoint: data.checkpoint ? 1
   startScript = data?.script ? Stage1
 
   if data.checkpoint
     label = "Checkpoint #{data.checkpoint}"
-    window.ga?('send', 'event', 'Game', 'CheckpointStart', label)
   else
     label = 'Begin'
-    window.ga?('send', 'event', 'Game', 'Start', label)
 
   executeScript = (scriptClass, options) ->
     unless scriptClass?
@@ -94,7 +92,6 @@ Crafty.defineScene 'Game', (data = {}) ->
     executeScript(startScript, options)
 
   Crafty.bind 'GameOver', ->
-    window.ga('send', 'event', 'Game', 'End', "Checkpoint #{script.currentCheckpoint}")
 
     Crafty.enterScene('GameOver',
       checkpoint: checkpointsPassed + script.currentCheckpoint
