@@ -56,7 +56,7 @@ Crafty.defineScene 'Game', (data = {}) ->
   Crafty('Player').each -> @level = level
 
   options =
-    startAtCheckpoint: data.checkpoint ? 1
+    startAtCheckpoint: data.checkpoint ? 0
   startScript = data?.script ? Stage1
 
   if data.checkpoint
