@@ -47,8 +47,8 @@ Crafty.c("Enemy", {
     });
   },
 
-  _onCollisonHitOff(component) {
-    return this.trigger("HitFlash", false);
+  _onCollisonHitOff() {
+    this.trigger("HitFlash", false);
   },
 
   onExplosionHit(e) {
