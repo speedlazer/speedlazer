@@ -110,7 +110,6 @@ Crafty.defineScene 'GameOver', (data) ->
       player: this
       color: @color()
     })
-    window.ga('send', 'event', 'Game', 'Score', undefined, @points)
 
   hs = sortBy(hs, 'score').reverse()
 

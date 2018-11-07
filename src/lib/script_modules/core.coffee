@@ -202,8 +202,6 @@ Core =
       return WhenJS() if @_skippingToCheckpoint()
       if @currentCheckpoint is @startAtCheckpoint and task?
         task(sequence)
-      else
-        window.ga('send', 'event', 'Game', "Checkpoint #{@currentCheckpoint}")
 
 module.exports =
   default: Core
