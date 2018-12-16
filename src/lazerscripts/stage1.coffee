@@ -80,7 +80,7 @@ class Stage1 extends LazerScript
     @sequence(
       @setScenery('City.Ocean')
       @say('General', 'We send some drones for some last manual target practice', noise: 'low')
-      @setSpeed 200
+      @setSpeed 600
       @parallel(
         @showText 'Get Ready', color: '#00FF00', mode: 'blink', blink_amount: 6, blink_speed: 100
         @say('John', 'Let\'s go!')
@@ -343,6 +343,7 @@ class Stage1 extends LazerScript
           @setScenery('City.UnderBridge')
         )
       )
+      @setSpeed 200
       @async @showText 'Warning!', color: '#FF0000', mode: 'blink', blink_amount: 6, blink_speed: 100
       @while(
         @waitForScenery('City.UnderBridge', event: 'enter')
@@ -415,6 +416,7 @@ class Stage1 extends LazerScript
       @sunRise(3)
       @checkpoint @checkpointStart('City.BayStart', 3)
 
+      @setSpeed 600
       @repeat 2, @sequence(
         @parallel(
           @placeSquad DroneFlyer,
@@ -449,6 +451,7 @@ class Stage1 extends LazerScript
               ]
         )
       )
+      @setSpeed 400
       @parallel(
         @placeSquad HeliAttack,
           options:

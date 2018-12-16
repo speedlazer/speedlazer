@@ -82,7 +82,7 @@ class HeliAttack extends EntityScript
           .attr(
             w: 20
             h: 8
-            speed: 200
+            speed: 400
             damage: 1
           )
 
