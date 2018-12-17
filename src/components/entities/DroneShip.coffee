@@ -6,12 +6,11 @@ Crafty.c 'DroneShip',
       w: 32 * 20
       h: 32 * 5
       z: 6
-      waterRadius: 8
-      minSplashDuration: 1700
-      defaultWaterCooldown: 800
+      waterRadius: 10
+      minSplashDuration: 600
+      defaultWaterCooldown: 400
       waterSplashSpeed: 700
-      minOffset: 2
-      splashUpwards: false
+      minOffset: -20
     )
     @collision [20, 50, 19*32, 50, 19*32, 128, 20, 128]
 
@@ -65,6 +64,7 @@ Crafty.c 'DroneShip',
       y: @y + 29
     )
     @attach(@hatch)
+    @hideBelow(560)
 
     @attach Crafty.e('2D, TurretPlace').attr(
       x: @x + 370
