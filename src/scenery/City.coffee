@@ -348,6 +348,11 @@ class CityScenery extends LevelScenery
           aircraftCarrierBottomFlat: [22, 45, 4, 3]
           aircraftCarrierBottomSpace: [26, 45, 4, 3]
           aircraftCarrierTopFlat: [26, 43, 4, 2]
+          aircraftCarrierClosed: [8, 44, 4, 3]
+          aircraftCarrierOpened: [12, 44, 5, 3]
+          aircraftCarrier5: [14, 41, 1, 1]
+          aircraftCarrier7: [14, 40, 1, 1]
+          aircraftCarrierEngine: [15, 40, 3, 3]
 
           aircraftCarrierOpenHatch: [31, 38, 5, 1]
           aircraftCarrierHatchLid: [31, 39, 5, 1]
@@ -361,6 +366,7 @@ class CityScenery extends LevelScenery
           aircraftCarrierWires: [25, 38, 1, 2]
           boxes: [28, 39, 1, 1]
           boxesFalling: [28, 38, 1, 1]
+          debris1: [44, 13, 4, 4]
 
 levelGenerator.defineBlock class extends CityScenery
   name: 'City.Intro'

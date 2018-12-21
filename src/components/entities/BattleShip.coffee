@@ -102,8 +102,8 @@ Crafty.c 'BattleShip',
     )
 
     @attach Crafty.e('2D, DroneShipCorePlace').attr(
-      x: @x + 900
-      y: @y - 100
+      x: @x + 960
+      y: @y - 64
       z: -8
       w: 15
       h: 2
@@ -365,7 +365,16 @@ Crafty.c 'SecondShipCabin', {
     @attach(@hitBox)
     @bind 'HitFlash', @applyCabinHitFlash
 
-  shipCabin: ->
+  shipCabin: (open) ->
+    doorType = if open then "aircraftCarrierOpened" else "aircraftCarrierClosed"
+    doorX = @x + if open then (3.5 * 32) else (4 * 32)
+    @door = Crafty.e("2D, WebGL, #{doorType}").attr(
+      x: doorX
+      y: @y - (5 * 32) - 4
+      z: -8
+    )
+    @attach @door
+
     @hitBox.onHit(
       'Bullet',
       (e) => @trigger('HitOn', e)
@@ -377,7 +386,7 @@ Crafty.c 'SecondShipCabin', {
       (c) => @trigger('HitOff', c)
     )
 
-    @hitParts = [@cabinParts..., @antenna1, @antenna2]
+    @hitParts = [@cabinParts..., @antenna1, @antenna2, @door]
 
     @enemy({
       pointsLocation: {

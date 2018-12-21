@@ -39,7 +39,7 @@ class Cabin1Active extends EntityScript
 class Cabin2Inactive extends EntityScript
   spawn: (options) ->
     Crafty.e('SecondShipCabin, KeepAlive')
-      .shipCabin()
+      .shipCabin(options.status == 'open')
       .sendToBackground(1.0, -8)
 
   execute: ->
@@ -142,6 +142,7 @@ class ShipBoss extends EntityScript
       @placeSquad Cabin2Inactive,
         options:
           attach: 'Cabin2Place'
+          status: 'closed'
       @placeSquad HeliInactive,
         amount: 2
         delay: 0
@@ -235,6 +236,7 @@ class ShipBoss extends EntityScript
           @placeSquad Cabin2Inactive,
             options:
               attach: 'Cabin2Place'
+              status: 'open'
 
           @placeSquad DroneShipCoreInactive,
             options:
