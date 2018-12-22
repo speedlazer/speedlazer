@@ -5,7 +5,6 @@ import "./components";
 import "./scenery";
 import "./scenes";
 import "./systems/SeaLevel";
-import screenfull from "screenfull";
 
 /* eslint-env node */
 Game.start(false);
@@ -36,11 +35,11 @@ window.addEventListener("resize", scaleGame);
 const button = document.querySelector("button");
 button.addEventListener("click", () => {
   const theater = document.getElementById("theater");
-  screenfull.request(theater);
+  theater.requestFullscreen();
   document.body.classList.add("fullscreen");
   scaleGame();
-  document.addEventListener(screenfull.raw.fullscreenchange, () => {
-    if (!screenfull.isFullscreen) {
+  document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) {
       // exit fullscreen code here
       document.body.classList.remove("fullscreen");
       scaleGame();
