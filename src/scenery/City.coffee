@@ -1,6 +1,7 @@
 extend = require('lodash/extend')
 levelGenerator = require('src/lib/LevelGenerator').default
 cityScenery = require('src/images/city-scenery.png')
+citySceneryMap = require('src/images/city-scenery.map.json')
 LevelScenery = require('src/lib/LevelScenery').default
 { lookup } = require('src/lib/random')
 
@@ -306,67 +307,7 @@ levelGenerator.defineElement 'cityStart', ->
 class CityScenery extends LevelScenery
   assets: ->
     sprites:
-      "#{cityScenery}":
-        tile: 32
-        tileh: 32
-        map:
-          waterHorizon: [0, 17, 8, 5]
-          waterMiddle: [32, 0, 16, 6]
-          waterFront1: [0, 29, 16, 3]
-          waterFront2: [16, 29, 16, 3]
-          coastStart: [18, 12, 8, 1]
-          coast: [8, 17, 8, 1]
-
-          cityBridge: [0, 24, 16, 5]
-          cityStart: [0, 0, 16, 9]
-          city: [16, 0, 16, 9]
-          cityLayer2: [0, 9, 12, 8]
-          cityDistance: [32, 6, 8, 7]
-          cityDistanceBaseBottom: [32, 9, 8, 4]
-          cityDistanceBaseTop: [40, 6, 8, 7]
-
-          bigBuildingTop: [16, 13, 16, 6]
-          bigBuildingBrokenTop: [30, 13, 16, 6]
-
-          bigBuildingLayer: [16, 19, 16, 4]
-          bigBuildingBottom: [16, 23, 16, 6]
-          bigBuildingBottom2: [30, 23, 16, 6]
-
-          glass: [12, 9, 4, 3]
-          cloud: [16, 9, 8, 3]
-          shadow: [16, 12, 2, 1]
-          bridgeDeck: [0, 32, 16, 6]
-          damagedBridgeDeck: [0, 48, 16, 6]
-          bridgePillar: [36, 29, 6, 17]
-          bridgePillarBroken: [42, 29, 6, 17]
-          bigGlare: [0, 38, 7, 7]
-          sun: [12, 13, 3, 3]
-          chute: [12, 12, 1, 1]
-          directGlare: [8, 18, 6, 6]
-          aircraftCarrierEnd: [30, 43, 6, 5]
-          aircraftCarrierStart: [19, 43, 6, 5]
-          aircraftCarrierBottomFlat: [22, 45, 4, 3]
-          aircraftCarrierBottomSpace: [26, 45, 4, 3]
-          aircraftCarrierTopFlat: [26, 43, 4, 2]
-          aircraftCarrierClosed: [8, 44, 4, 3]
-          aircraftCarrierOpened: [12, 44, 5, 3]
-          aircraftCarrier5: [14, 41, 1, 1]
-          aircraftCarrier7: [14, 40, 1, 1]
-          aircraftCarrierEngine: [15, 40, 3, 3]
-
-          aircraftCarrierOpenHatch: [31, 38, 5, 1]
-          aircraftCarrierHatchLid: [31, 39, 5, 1]
-
-          aircraftCarrierCabinEnd: [12, 37, 2, 6]
-          aircraftCarrierCabin: [10, 37, 2, 6]
-          aircraftCarrierCabinRadar: [8, 37, 2, 6]
-          aircraftCarrierCabinStart: [7, 37, 1, 6]
-          aircraftCarrierRadar: [26, 38, 2, 2]
-          aircraftCarrierAntenna: [29, 38, 2, 3]
-          aircraftCarrierWires: [25, 38, 1, 2]
-          boxes: [28, 39, 1, 1]
-          boxesFalling: [28, 38, 1, 1]
-          debris1: [44, 13, 4, 4]
+      "#{cityScenery}": citySceneryMap
 
 levelGenerator.defineBlock class extends CityScenery
   name: 'City.Intro'
@@ -439,8 +380,8 @@ levelGenerator.defineBlock class extends CityScenery
       @add((32 * x), @level.visibleHeight - 330 + topCrop + 1, cEnd)
 
     addCabin('aircraftCarrierCabinStart', 3)
-    addCabin('aircraftCarrierCabin', 4)
-    addCabin('aircraftCarrierCabinRadar', 6)
+    addCabin('aircraftCarrierCabinRadar', 4)
+    addCabin('aircraftCarrierCabin', 6)
     addCabin('aircraftCarrierCabinRadar', 8)
     addCabin('aircraftCarrierCabin', 10)
     addCabin('aircraftCarrierCabinEnd', 12)
