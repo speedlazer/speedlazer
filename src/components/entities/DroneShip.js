@@ -1,4 +1,3 @@
-import "src/components/Composable";
 import droneShipComposition from "src/components/entities/droneShip.composition.json";
 
 Crafty.c("DroneShip", {
