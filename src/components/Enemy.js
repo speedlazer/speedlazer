@@ -1,4 +1,3 @@
-import defaults from "lodash/defaults";
 import { isPaused } from "src/lib/core/pauseToggle";
 
 Crafty.c("Enemy", {
@@ -82,21 +81,19 @@ Crafty.c("Enemy", {
     }
   },
 
-  enemy(options) {
-    if (options == null) {
-      options = {};
-    }
-    options = defaults(options, {
+  enemy(options = {}) {
+    const enemyOptions = {
       projectile: "Bullet",
       pointsLocation: {
         x: this.w / 2,
         y: this.h / 2
-      }
-    });
+      },
+      ...options
+    };
     this.reveal();
-    this.pointsLocation = options.pointsLocation;
+    this.pointsLocation = enemyOptions.pointsLocation;
     Crafty.trigger("EnemySpawned", this);
-    this.checkHits(options.projectile, "Explosion");
+    this.checkHits(enemyOptions.projectile, "Explosion");
     if (typeof this.updatedHealth === "function") {
       this.updatedHealth();
     }
@@ -104,7 +101,7 @@ Crafty.c("Enemy", {
   },
 
   absorbDamage(cause) {
-    if (cause == null) {
+    if (cause === null) {
       return;
     }
     const x = this.x + this.pointsLocation.x;
