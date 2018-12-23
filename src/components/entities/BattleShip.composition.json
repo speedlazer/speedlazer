@@ -1,0 +1,30 @@
+{
+  "sprites": [
+    ["aircraftCarrierStart", { "x": 0 }],
+    ["aircraftCarrierTopFlat", { "x": 192 }],
+    ["aircraftCarrierTopFlat", { "x": 320 }],
+    ["aircraftCarrierTopFlat", { "x": 448 }],
+    ["aircraftCarrierTopFlat", { "x": 576 }],
+    ["aircraftCarrierTopFlat", { "x": 704 }],
+    ["aircraftCarrierTopFlat", { "x": 832 }],
+    ["aircraftCarrierTopFlat", { "x": 960 }],
+    ["aircraftCarrierTopFlat", { "x": 1088 }],
+    ["aircraftCarrierEnd", { "x": 1216 }],
+
+    ["aircraftCarrierBottomFlat", { "x": 192, "y": 64 }],
+    ["aircraftCarrierBottomSpace", { "x": 320, "y": 64 }],
+    ["aircraftCarrierBottomFlat", { "x": 448, "y": 64 }],
+    ["aircraftCarrierBottomFlat", { "x": 576, "y": 64 }],
+    ["aircraftCarrierBottomFlat", { "x": 704, "y": 64 }],
+    ["aircraftCarrierBottomSpace", { "x": 832, "y": 64 }],
+    ["aircraftCarrierBottomFlat", { "x": 960, "y": 64 }],
+    ["aircraftCarrierBottomFlat", { "x": 1088, "y": 64 }]
+  ],
+  "attachHooks": [
+    ["Cabin1Place", { "x": 290, "y": -124, "z": 1 }],
+    ["HeliPlace", { "x": 561, "y": -32, "z": 1 }],
+    ["HeliPlace", { "x": 686, "y": -32, "z": 1 }],
+    ["Cabin2Place", { "x": 816, "y": -124, "z": 1 }],
+    ["DroneShipCorePlace", { "x": 960, "y": -64, "z": 12 }]
+  ]
+}

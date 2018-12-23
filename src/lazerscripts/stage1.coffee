@@ -9,7 +9,7 @@ CameraCrew  = require('./stage1/camera_crew').default
 DroneShip   = require('./stage1/drone_ship').default
 IntroBarrel = require('./stage1/barrel').default
 JumpMine    = require('./stage1/jump_mine').default
-ShipBoss    = require('./stage1/ship_boss').default
+ShipBoss    = require('./stage1/ship_boss')
 TrailerDino = require('./trailer-dino').default
 
 class Stage1 extends LazerScript

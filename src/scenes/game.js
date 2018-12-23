@@ -1,6 +1,4 @@
 import Stage1 from "src/lazerscripts/stage1";
-//const Test = require("src/lazerscripts/Test").default;
-//const Benchmark = require("src/lazerscripts/benchmark").default;
 import PauseMenu from "src/lib/PauseMenu";
 import levelGenerator from "src/lib/LevelGenerator";
 

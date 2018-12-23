@@ -360,5 +360,4 @@ class ShipBoss extends EntityScript
       @lazy @executeStageSix
     )
 
-module.exports =
-  default: ShipBoss
+module.exports = ShipBoss

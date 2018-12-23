@@ -1,0 +1,12 @@
+{
+  "sprites": [
+    ["aircraftCarrierCabinEnd", { "x": 0, "y": 0, "flipX": true }],
+    ["aircraftCarrierCabin", { "x": 64, "y": 0 }],
+    ["aircraftCarrierCabin", { "x": 128, "y": 0 }],
+    ["aircraftCarrierCabin", { "x": 192, "y": 0 }],
+    ["aircraftCarrierCabinStart", { "x": 256, "y": 0, "flipX": true }],
+    ["aircraftCarrierAntenna", { "x": 64, "y": -56, "z": 1, "flipX": true }],
+    ["aircraftCarrierAntenna", { "x": 128, "y": -56, "z": 1, "flipX": true }],
+    ["aircraftCarrierClosed", { "x": 128, "y": 64, "z": 1 }]
+  ]
+}

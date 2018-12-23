@@ -1,3 +1,5 @@
+import Test from "src/lazerscripts/Test";
+
 Crafty.defineScene(
   "Intro",
   () => {
@@ -69,7 +71,11 @@ Crafty.defineScene(
 
     Crafty("Player").each(function() {
       this.reset();
-      this.one("Activated", () => Crafty.enterScene("Game")); // checkpoint: value
+      this.one("Activated", () =>
+        Crafty.enterScene("Game", {
+          script: Test
+        })
+      ); // checkpoint: value
     });
 
     Crafty.e("Delay").delay(() => Crafty.enterScene("Scores"), 20000);
