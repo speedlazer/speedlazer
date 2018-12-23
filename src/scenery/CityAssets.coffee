@@ -1,4 +1,4 @@
-levelGenerator = require('src/lib/LevelGenerator').default
+levelGenerator = require('src/lib/LevelGenerator')
 
 cityEnemies = require('src/images/city-enemies.png')
 cityEnemiesMap = require('src/images/city-enemies.map.json')

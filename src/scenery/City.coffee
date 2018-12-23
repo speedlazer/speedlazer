@@ -1,5 +1,5 @@
 extend = require('lodash/extend')
-levelGenerator = require('src/lib/LevelGenerator').default
+levelGenerator = require('src/lib/LevelGenerator')
 cityScenery = require('src/images/city-scenery.png')
 citySceneryMap = require('src/images/city-scenery.map.json')
 LevelScenery = require('src/lib/LevelScenery').default

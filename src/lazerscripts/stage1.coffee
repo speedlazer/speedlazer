@@ -523,5 +523,4 @@ class Stage1 extends LazerScript
       @wait 2000
     )
 
-module.exports =
-  default: Stage1
+module.exports = Stage1

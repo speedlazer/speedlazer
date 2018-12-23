@@ -97,5 +97,4 @@ class LevelGenerator
 
 levelGenerator = new LevelGenerator
 
-module.exports =
-  default: levelGenerator
+module.exports = levelGenerator

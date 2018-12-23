@@ -1,4 +1,4 @@
-import "./Game";
+import "./game";
 import "./GameOver";
 import "./intro";
 import "./New";

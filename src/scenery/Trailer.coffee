@@ -1,4 +1,4 @@
-levelGenerator = require('src/lib/LevelGenerator').default
+levelGenerator = require('src/lib/LevelGenerator')
 trailerScenery = require('src/images/dino.png')
 LevelScenery = require('src/lib/LevelScenery').default
 
