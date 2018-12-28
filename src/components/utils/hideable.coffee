@@ -1,25 +1,39 @@
-Crafty.c 'Hideable',
+Crafty.c('Hideable', {
+  _hidden: false,
+
+  properties: {
+    hidden: {
+      set: (v) -> this._updateHidden(v)
+      get: () -> this._hidden
+      configurable: true,
+      enumerable: true
+    },
+    _hidden: { enumerable: false },
+  },
+
   init: ->
     @requires 'ColorEffects'
-    @hidden = no
 
   sendToBackground: (scale, z) ->
     @_originalZ = @z
-    @attr
-      scale: scale
-      z: z
+    @attr({ scale, z })
     for c in @_children
       if c.attr?
         zOff = c.z - @_originalZ
         c.attr z: z + zOff
 
-    @trigger('Hiding', this) unless @hidden
     @hidden = yes
     this
 
-  hide: (@hideMarker, options) ->
-    @hidden = yes
+  _updateHidden: (newHidden) ->
+    return if (this._hidden is newHidden)
+    this._hidden = newHidden
+    if newHidden
+      @trigger('Hiding', this)
+    else
+      @trigger 'Revealing', this
 
+  hide: (@hideMarker, options) ->
     if options.below and @has('Sprite') and @rotation == 0
       @hideAt = options.below
       for c in @_children
@@ -28,7 +42,8 @@ Crafty.c 'Hideable',
       @attr alpha: .0
       for c in @_children
         c.attr?(alpha: .0)
-    @trigger 'Hiding', this
+
+    @hidden = yes
     this
 
   hideBelow: (yValue) ->
@@ -38,7 +53,6 @@ Crafty.c 'Hideable',
 
   reveal: ->
     @hideMarker?.destroy()
-    @hidden = no
     currentScale = @scale ? 1.0
     scale = 1.0
 
@@ -54,7 +68,8 @@ Crafty.c 'Hideable',
 
     for c in @_children
       c.attr?(alpha: 1.0, hideAt: null)
-    @trigger 'Revealing', this
+
+    @hidden = no
     this
 
   remove: ->
@@ -63,4 +78,5 @@ Crafty.c 'Hideable',
         @hideMarker.recycle()
       else
         @hideMarker.destroy()
+})
 

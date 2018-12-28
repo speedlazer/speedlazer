@@ -20,11 +20,11 @@ class Cabin1Active extends EntityScript
   spawn: (options) ->
     item = Crafty('FirstShipCabin').get(0)
     if item and item.health > 10
-      item.reveal()
+      item.attr({ hidden: false })
       return item
     Crafty.e('FirstShipCabin, KeepAlive')
       .shipCabin()
-      .sendToBackground(1.0, -8)
+      .attr({ hidden: true })
 
   onKilled: ->
     @deathDecoy()
@@ -38,9 +38,10 @@ class Cabin1Active extends EntityScript
 
 class Cabin2Inactive extends EntityScript
   spawn: (options) ->
-    Crafty.e('SecondShipCabin, KeepAlive')
-      .shipCabin(options.status == 'open')
-      .sendToBackground(1.0, -8)
+    entity = Crafty('SecondShipCabin').get(0) || Crafty.e('SecondShipCabin, KeepAlive').shipCabin()
+    entity
+      .attr({ hidden: true })
+      .displayState(options.status == 'open')
 
   execute: ->
     @invincible yes
@@ -49,11 +50,13 @@ class Cabin2Active extends EntityScript
   spawn: (options) ->
     item = Crafty('SecondShipCabin').get(0)
     if item and item.health > 10
-      item.reveal()
+      item
+        .displayState(options.status == 'open')
+        .attr({ hidden: false })
       return item
     Crafty.e('SecondShipCabin, KeepAlive')
       .shipCabin()
-      .sendToBackground(1.0, -8)
+      .displayState(options.status == 'open')
 
   onKilled: ->
     @sequence(
@@ -79,7 +82,7 @@ class Cabin2Destroyed extends EntityScript
   spawn: (options) ->
     Crafty.e('SecondShipCabinDestroyed, KeepAlive')
       .shipCabin()
-      .sendToBackground(1.0, -8)
+      .attr({ hidden: true })
 
   execute: ->
     @invincible yes

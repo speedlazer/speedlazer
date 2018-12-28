@@ -140,13 +140,6 @@ Crafty.c("FirstShipCabin", {
         part.attr({ hitFlash: false });
       }
     });
-  },
-
-  updatedHealth() {
-    if (this.health === 1) {
-      this.antenna.alpha = 0;
-      this.radar.alpha = 0;
-    }
   }
 });
 
@@ -158,11 +151,10 @@ Crafty.c("SecondShipCabin", {
       z: -8,
       health: 4000
     });
-    this.compose(battleShipComposition.secondCabin);
-    this.bind("HitFlash", this.applyCabinHitFlash);
   },
 
   shipCabin() {
+    this.bind("HitFlash", this.applyCabinHitFlash);
     this.onHit(
       "Bullet",
       e => this.trigger("HitOn", e),
@@ -183,6 +175,17 @@ Crafty.c("SecondShipCabin", {
     return this;
   },
 
+  displayState(openDoor) {
+    this.attr({ z: -8 });
+    console.log("displayState", openDoor);
+    this.compose(
+      openDoor
+        ? battleShipComposition.secondCabinOpen
+        : battleShipComposition.secondCabin
+    );
+    return this;
+  },
+
   applyCabinHitFlash(onOff) {
     this.forEachPart(part => {
       if (onOff) {
@@ -191,12 +194,5 @@ Crafty.c("SecondShipCabin", {
         part.attr({ hitFlash: false });
       }
     });
-  },
-
-  updatedHealth() {
-    if (this.health === 1) {
-      this.antenna1.alpha = 0;
-      this.antenna2.alpha = 0;
-    }
   }
 });
