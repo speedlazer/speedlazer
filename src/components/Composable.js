@@ -9,6 +9,8 @@ Crafty.c("Composable", {
   init() {
     this.appliedDefinition = definitionStructure;
     this.composableParts = [];
+    this.currentZ = this.z;
+    this.bind("Reorder", this.updateChildrenOrder);
   },
 
   compose(proposedDefinition) {
@@ -28,6 +30,15 @@ Crafty.c("Composable", {
 
     this.appliedDefinition = definition;
     return this;
+  },
+
+  updateChildrenOrder() {
+    const newZ = this.z;
+    this.forEachPart(part => {
+      const zDelta = part.z - this.currentZ;
+      part.z = newZ + zDelta;
+    });
+    this.currentZ = newZ;
   },
 
   setOwnAttributes(attributes) {

@@ -10,7 +10,7 @@ class DroneShipCoreInactive extends EntityScript
       pointsOnDestroy: 1000
     })
     .enemy()
-    .sendToBackground(1.0, -5)
+    .attr({ hidden: true })
 
   execute: ->
     @sequence(
@@ -25,7 +25,7 @@ class DroneShipCore extends EntityScript
   spawn: ->
     item = Crafty('BattleShipCore').get(0)
     if item and item.health > 10
-      item.reveal()
+      item.attr({ hidden: false })
       return item
     Crafty.e("Enemy, aircraftCarrierEngine, KeepAlive, BattleShipCore")
       .attr({
@@ -34,7 +34,7 @@ class DroneShipCore extends EntityScript
         pointsOnDestroy: 1000
       })
       .enemy()
-      .sendToBackground(1.0, -5)
+      .attr({ hidden: false })
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled
