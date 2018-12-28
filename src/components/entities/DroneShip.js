@@ -1,4 +1,4 @@
-import droneShipComposition from "src/components/entities/DroneShip.composition.json";
+import droneShipComposition from "./DroneShip.composition.json";
 
 Crafty.c("DroneShip", {
   init() {
@@ -18,7 +18,7 @@ Crafty.c("DroneShip", {
       minOffset: -20
     });
     this.collision([20, 50, 19 * 32, 50, 19 * 32, 128, 20, 128]);
-    this.compose(droneShipComposition);
+    this.compose(droneShipComposition.droneShip);
     this.hatch = Crafty.e("CarrierHatch, ShipHatch1").attr({
       x: this.x + 3 * 32,
       y: this.y + 29

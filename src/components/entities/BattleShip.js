@@ -1,10 +1,8 @@
-import battleShipComposition from "src/components/entities/BattleShip.composition.json";
-import firstCabinComposition from "src/components/entities/FirstCabin.composition.json";
-import secondCabinComposition from "src/components/entities/SecondCabin.composition.json";
+import battleShipComposition from "./BattleShip.composition.json";
 
 Crafty.c("BattleShip", {
   required:
-    "2D, WebGL, Tween, Choreography, ShipSolid, Collision," +
+    "2D, WebGL, Tween, Choreography, ShipSolid," +
     "Hideable, Flipable, Scalable, SunBlock, WaterSplashes," +
     "Sprite, Composable",
 
@@ -17,7 +15,7 @@ Crafty.c("BattleShip", {
       waterSplashSpeed: 700,
       minOffset: -20
     });
-    this.compose(battleShipComposition);
+    this.compose(battleShipComposition.deck);
 
     this.hatch = Crafty.e("CarrierHatch, ShipHatch1").attr({
       x: this.x + 10 * 32,
@@ -109,7 +107,7 @@ Crafty.c("FirstShipCabin", {
       z: -8,
       health: 2000
     });
-    this.compose(firstCabinComposition);
+    this.compose(battleShipComposition.firstCabin);
     this.bind("HitFlash", this.applyCabinHitFlash);
   },
 
@@ -148,7 +146,6 @@ Crafty.c("FirstShipCabin", {
     if (this.health === 1) {
       this.antenna.alpha = 0;
       this.radar.alpha = 0;
-      this._replaceByDestroyed();
     }
   }
 });
@@ -161,22 +158,11 @@ Crafty.c("SecondShipCabin", {
       z: -8,
       health: 4000
     });
-    this.compose(secondCabinComposition);
+    this.compose(battleShipComposition.secondCabin);
     this.bind("HitFlash", this.applyCabinHitFlash);
   },
 
   shipCabin() {
-    /*
-    const doorType = open ? "aircraftCarrierOpened" : "aircraftCarrierClosed";
-    const doorX = this.x + (open ? 3.5 * 32 : 4 * 32);
-    this.door = Crafty.e(`2D, WebGL, ${doorType}`).attr({
-      x: doorX,
-      y: this.y - 5 * 32 - 4,
-      z: -8
-    });
-    this.attach(this.door);
-    */
-
     this.onHit(
       "Bullet",
       e => this.trigger("HitOn", e),
