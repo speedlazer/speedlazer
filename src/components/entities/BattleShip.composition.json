@@ -1,4 +1,9 @@
 {
+  "attributes": {
+    "width": 1280,
+    "height": 224
+  },
+  "hitbox": [20, 60, 1280, 60, 1280, 188, 20, 188],
   "sprites": [
     ["aircraftCarrierStart", { "x": 0 }],
     ["aircraftCarrierTopFlat", { "x": 192 }],

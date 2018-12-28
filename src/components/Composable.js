@@ -1,6 +1,8 @@
 const definitionStructure = {
   sprites: [],
-  attachHooks: []
+  attachHooks: [],
+  attributes: {},
+  hitbox: []
 };
 
 Crafty.c("Composable", {
@@ -11,13 +13,25 @@ Crafty.c("Composable", {
       ...definitionStructure,
       ...proposedDefinition
     };
+    this.setOwnAttributes(definition.attributes);
     this.buildSprites(definition.sprites);
     this.buildAttachHooks(definition.attachHooks);
+    if (definition.hitbox.length > 0) {
+      this.addComponent("Collision");
+      this.collision(definition.hitbox);
+    }
     return this;
   },
 
+  setOwnAttributes(attributes) {
+    const attrs = {};
+    if (attributes.width) attrs.w = attributes.width;
+    if (attributes.height) attrs.h = attributes.height;
+    this.attr(attrs);
+  },
+
   buildSprites(spriteList) {
-    spriteList.forEach(([spriteName, options]) => {
+    this.composableParts = spriteList.map(([spriteName, options]) => {
       const subElem = Crafty.e(`2D, WebGL, ${spriteName}`).attr({
         x: this.x + (options.x || 0),
         y: this.y + (options.y || 0),
@@ -25,7 +39,14 @@ Crafty.c("Composable", {
       });
       if (options.flipX) subElem.flip("X");
       this.attach(subElem);
+      return subElem;
     });
+  },
+
+  forEachPart(callback) {
+    this.composableParts.forEach((elem, idx, list) =>
+      callback(elem, idx, list)
+    );
   },
 
   buildAttachHooks(attachHooks) {

@@ -9,10 +9,7 @@ Crafty.c("BattleShip", {
     "Sprite, Composable",
 
   init() {
-    const width = 40;
     this.attr({
-      w: 32 * width,
-      h: 32 * 7,
       z: -20,
       waterRadius: 10,
       minSplashDuration: 600,
@@ -45,7 +42,6 @@ Crafty.c("BattleShip", {
 
     this.hideBelow(540);
 
-    this.collision([20, 60, 32 * width, 60, 32 * width, 188, 20, 188]);
     this.bind("Revealing", () => this.hideBelow(540));
     this.bind("Hiding", () => this.hideBelow(540));
   },
@@ -113,32 +109,21 @@ Crafty.c("FirstShipCabin", {
       z: -8,
       health: 2000
     });
-    this.hitBox = Crafty.e("2D, WebGL, Collision, SunBlock");
-    this.hitBox.attr({
-      x: this.x + 10,
-      y: this.y - 100 - 110,
-      w: 200,
-      h: 130
-    });
     this.compose(firstCabinComposition);
-
-    this.attach(this.hitBox);
     this.bind("HitFlash", this.applyCabinHitFlash);
   },
 
   shipCabin() {
-    this.hitBox.onHit(
+    this.onHit(
       "Bullet",
       e => this.trigger("HitOn", e),
       c => this.trigger("HitOff", c)
     );
-    this.hitBox.onHit(
+    this.onHit(
       "Explosion",
       e => this.trigger("HitOn", e),
       c => this.trigger("HitOff", c)
     );
-
-    this.hitParts = [];
 
     this.enemy({
       pointsLocation: {
@@ -149,17 +134,12 @@ Crafty.c("FirstShipCabin", {
     return this;
   },
 
-  linkHatch(linkedHatch) {
-    this.hitParts = this.hitParts.concat(linkedHatch.hitFlashParts());
-    return this;
-  },
-
   applyCabinHitFlash(onOff) {
-    this.hitParts.forEach(function(part) {
+    this.forEachPart(part => {
       if (onOff) {
-        return part.attr({ hitFlash: { _red: 255, _green: 255, _blue: 255 } });
+        part.attr({ hitFlash: { _red: 255, _green: 255, _blue: 255 } });
       } else {
-        return part.attr({ hitFlash: false });
+        part.attr({ hitFlash: false });
       }
     });
   },
@@ -178,21 +158,10 @@ Crafty.c("SecondShipCabin", {
 
   init() {
     this.attr({
-      w: 10,
-      h: 10,
       z: -8,
       health: 4000
     });
-    this.hitBox = Crafty.e("2D, WebGL, Collision");
-    this.hitBox.attr({
-      x: this.x + 10,
-      y: this.y - 100 - 110,
-      w: 200,
-      h: 130
-    });
     this.compose(secondCabinComposition);
-
-    this.attach(this.hitBox);
     this.bind("HitFlash", this.applyCabinHitFlash);
   },
 
@@ -208,26 +177,16 @@ Crafty.c("SecondShipCabin", {
     this.attach(this.door);
     */
 
-    this.hitBox.onHit(
+    this.onHit(
       "Bullet",
       e => this.trigger("HitOn", e),
       c => this.trigger("HitOff", c)
     );
-    this.hitBox.onHit(
+    this.onHit(
       "Explosion",
       e => this.trigger("HitOn", e),
       c => this.trigger("HitOff", c)
     );
-
-    this.hitParts = [];
-    /*
-    this.hitParts = [
-      ...this.cabinParts,
-      this.antenna1,
-      this.antenna2,
-      this.door
-    ];
-    */
 
     this.enemy({
       pointsLocation: {
@@ -238,17 +197,12 @@ Crafty.c("SecondShipCabin", {
     return this;
   },
 
-  linkHatch(linkedHatch) {
-    this.hitParts = this.hitParts.concat(linkedHatch.hitFlashParts());
-    return this;
-  },
-
   applyCabinHitFlash(onOff) {
-    return this.hitParts.forEach(function(part) {
+    this.forEachPart(part => {
       if (onOff) {
-        return part.attr({ hitFlash: { _red: 255, _green: 255, _blue: 255 } });
+        part.attr({ hitFlash: { _red: 255, _green: 255, _blue: 255 } });
       } else {
-        return part.attr({ hitFlash: false });
+        part.attr({ hitFlash: false });
       }
     });
   },

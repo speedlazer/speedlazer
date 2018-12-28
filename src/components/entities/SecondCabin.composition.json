@@ -1,4 +1,9 @@
 {
+  "attributes": {
+    "width": 224,
+    "height": 130
+  },
+  "hitbox": [10, -10, 200, -10, 200, 120, 10, 120],
   "sprites": [
     ["aircraftCarrierCabinEnd", { "x": 0, "y": 0, "flipX": true }],
     ["aircraftCarrierCabin", { "x": 64, "y": 0 }],
