@@ -177,7 +177,6 @@ Crafty.c("SecondShipCabin", {
 
   displayState(openDoor) {
     this.attr({ z: -8 });
-    console.log("displayState", openDoor);
     this.compose(
       openDoor
         ? battleShipComposition.secondCabinOpen
