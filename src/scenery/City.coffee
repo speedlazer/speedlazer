@@ -1,8 +1,9 @@
-extend = require('lodash/extend')
-levelGenerator = require('src/lib/LevelGenerator')
+LevelScenery = require('src/lib/LevelScenery').default
 cityScenery = require('src/images/city-scenery.png')
 citySceneryMap = require('src/images/city-scenery.map.json')
-LevelScenery = require('src/lib/LevelScenery').default
+extend = require('lodash/extend')
+introShipComposition = require('src/components/entities/IntroShip.composition.json')
+levelGenerator = require('src/lib/LevelGenerator')
 { lookup } = require('src/lib/random')
 
 levelGenerator.defineElement 'cloud', ->
@@ -321,24 +322,6 @@ levelGenerator.defineBlock class extends CityScenery
 
     @addElement 'waterFront'
 
-    barrelLocator = Crafty.e('2D, BoxesLocation').attr(z: 23)
-    @add(550, @level.visibleHeight - 360 + (7*32), barrelLocator)
-
-    barrelLocator = Crafty.e('2D, BoxesLocation').attr(z: 23)
-    @add(550 + 64, @level.visibleHeight - 360 + (7*32), barrelLocator)
-
-    barrelLocator = Crafty.e('2D, WebGL, boxes').attr(z: -8)
-    @add(550 + 72, @level.visibleHeight - 340 + (5*32), barrelLocator)
-
-    @outside = Crafty.e('2D, WebGL').attr({
-      w: 25 * 32
-      h: 4 * 32
-    })
-    @add(0, @level.visibleHeight - 340 + (7 * 32), @outside)
-
-    end = Crafty.e('2D, WebGL, aircraftCarrierEnd').attr(z: -13)
-    @add(22*32, @level.visibleHeight - 330 + (5*32), end)
-
     water = Crafty.e('2D, WebGL, WaterSplashes')
       .attr(
         z: 30
@@ -363,34 +346,10 @@ levelGenerator.defineBlock class extends CityScenery
     p2hatch = Crafty.e('CarrierHatch')
     @add((5*32) - 100, @level.visibleHeight - 329 + (6*32), p2hatch)
 
-    for i in [0..5]
-      bottom = Crafty.e('2D, WebGL, aircraftCarrierBottomFlat').attr(z: -8)
-      @add(((i * 4)*32) - 64, @level.visibleHeight - 330 + (7*32), bottom)
-
-    for i in [0..5]
-      top = Crafty.e('2D, WebGL, aircraftCarrierTopFlat').attr(z: -15)
-      @add(((i * 4)*32) - 64, @level.visibleHeight - 330 + (5*32), top)
-
-    topCrop = 2
-
-    addCabin = (sprite, x) =>
-      cEnd = Crafty.e("2D, WebGL, #{sprite}, ColorEffects").attr(z: -13)
-      cEnd.crop(0, topCrop, cEnd.w, cEnd.h - topCrop)
-      cEnd.colorOverride({ _red: 255, _green: 255, _blue: 255 }, 'partial')
-      @add((32 * x), @level.visibleHeight - 330 + topCrop + 1, cEnd)
-
-    addCabin('aircraftCarrierCabinStart', 3)
-    addCabin('aircraftCarrierCabinRadar', 4)
-    addCabin('aircraftCarrierCabin', 6)
-    addCabin('aircraftCarrierCabinRadar', 8)
-    addCabin('aircraftCarrierCabin', 10)
-    addCabin('aircraftCarrierCabinEnd', 12)
-
-    radar = Crafty.e('2D, WebGL, aircraftCarrierRadar').attr(z: -11)
-    @add((32 * 6), @level.visibleHeight - 330 + 22, radar)
-
-    antenna = Crafty.e('2D, WebGL, aircraftCarrierAntenna').attr(z: -11)
-    @add((32 * 9), @level.visibleHeight - 318 - 32, antenna)
+    @ship = Crafty.e('2D, Composable')
+      .attr({ z: -13 })
+      .compose(introShipComposition.introShip)
+    @add(0, @level.visibleHeight - 116, @ship)
 
     @addElement 'water'
     @addElement 'waterHorizon'
@@ -476,7 +435,7 @@ levelGenerator.defineBlock class extends CityScenery
       @one 'openHatch', ->
         Crafty('CarrierHatch').each -> @open()
       @one 'lift', ->
-        block.outside.addComponent('ShipSolid', 'BulletSolid')
+        block.ship.addComponent('ShipSolid', 'BulletSolid')
         Crafty('CarrierHatch').each -> @close()
         Crafty('PlayerControlledShip').each ->
           @z = (@playerNumber - 1) * 10

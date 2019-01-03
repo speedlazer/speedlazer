@@ -1,4 +1,4 @@
-import Test from "src/lazerscripts/Test";
+//import Test from "src/lazerscripts/Test";
 
 Crafty.defineScene(
   "Intro",
@@ -73,7 +73,7 @@ Crafty.defineScene(
       this.reset();
       this.one("Activated", () =>
         Crafty.enterScene("Game", {
-          script: Test
+          //script: Test
         })
       ); // checkpoint: value
     });

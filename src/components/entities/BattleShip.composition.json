@@ -27,10 +27,10 @@
       ["aircraftCarrierBottomFlat", { "x": 1088, "y": 64 }]
     ],
     "attachHooks": [
-      ["Cabin1Place", { "x": 290, "y": -124, "z": 1 }],
+      ["Cabin1Place", { "x": 290, "y": -124, "z": 7 }],
       ["HeliPlace", { "x": 561, "y": -32, "z": 1 }],
       ["HeliPlace", { "x": 686, "y": -32, "z": 1 }],
-      ["Cabin2Place", { "x": 816, "y": -124, "z": 1 }],
+      ["Cabin2Place", { "x": 816, "y": -124, "z": 7 }],
       ["DroneShipCorePlace", { "x": 960, "y": -64, "z": 12 }]
     ]
   },
@@ -42,11 +42,12 @@
     "hitbox": [10, -10, 200, -10, 200, 120, 10, 120],
     "sprites": [
       ["aircraftCarrierCabinEnd", { "x": 0, "y": 0, "flipX": true }],
-      ["aircraftCarrierCabin", { "x": 64, "y": 0 }],
+      ["aircraftCarrierCabinRadar", { "x": 64, "y": 0, "flipX": true }],
       ["aircraftCarrierCabin", { "x": 128, "y": 0 }],
       ["aircraftCarrierCabinStart", { "x": 192, "y": 0, "flipX": true }],
       ["aircraftCarrierRadar", { "x": 64, "y": -8, "z": 1 }],
-      ["aircraftCarrierAntenna", { "x": 128, "y": -56, "z": 1, "flipX": true }]
+      ["aircraftCarrierAntenna", { "x": 128, "y": -48, "z": 1, "flipX": true }],
+      ["aircraftCarrier5", { "x": 155, "y": 55, "z": 1 }]
     ]
   },
   "secondCabin": {
@@ -57,13 +58,14 @@
     "hitbox": [10, -10, 200, -10, 200, 120, 10, 120],
     "sprites": [
       ["aircraftCarrierCabinEnd", { "x": 0, "y": 0, "flipX": true }],
-      ["aircraftCarrierCabin", { "x": 64, "y": 0 }],
+      ["aircraftCarrierCabinRadar", { "x": 64, "y": 0, "flipX": true }],
       ["aircraftCarrierCabin", { "x": 128, "y": 0 }],
       ["aircraftCarrierCabin", { "x": 192, "y": 0 }],
       ["aircraftCarrierCabinStart", { "x": 256, "y": 0, "flipX": true }],
-      ["aircraftCarrierAntenna", { "x": 64, "y": -56, "z": 1, "flipX": true }],
-      ["aircraftCarrierAntenna", { "x": 128, "y": -56, "z": 1, "flipX": true }],
-      ["aircraftCarrierClosed", { "x": 128, "y": 64, "z": 1 }]
+      ["aircraftCarrierAntenna", { "x": 64, "y": -48, "z": 1, "flipX": true }],
+      ["aircraftCarrierAntenna", { "x": 160, "y": -48, "z": 1, "flipX": true }],
+      ["aircraftCarrierClosed", { "x": 128, "y": 64, "z": 1 }],
+      ["aircraftCarrier5", { "x": 76, "y": 55, "z": 1 }]
     ]
   },
   "secondCabinOpen": {
@@ -74,13 +76,14 @@
     "hitbox": [10, -10, 200, -10, 200, 120, 10, 120],
     "sprites": [
       ["aircraftCarrierCabinEnd", { "x": 0, "y": 0, "flipX": true }],
-      ["aircraftCarrierCabin", { "x": 64, "y": 0 }],
+      ["aircraftCarrierCabinRadar", { "x": 64, "y": 0, "flipX": true }],
       ["aircraftCarrierCabin", { "x": 128, "y": 0 }],
       ["aircraftCarrierCabin", { "x": 192, "y": 0 }],
       ["aircraftCarrierCabinStart", { "x": 256, "y": 0, "flipX": true }],
       ["aircraftCarrierAntenna", { "x": 64, "y": -56, "z": 1, "flipX": true }],
-      ["aircraftCarrierAntenna", { "x": 128, "y": -56, "z": 1, "flipX": true }],
-      ["aircraftCarrierOpened", { "x": 114, "y": 62, "z": 1 }]
+      ["aircraftCarrierAntenna", { "x": 160, "y": -56, "z": 1, "flipX": true }],
+      ["aircraftCarrierOpened", { "x": 114, "y": 62, "z": 1 }],
+      ["aircraftCarrier5", { "x": 76, "y": 55, "z": 1 }]
     ]
   }
 }
