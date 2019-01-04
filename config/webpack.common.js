@@ -24,7 +24,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(["dist"], cleanOptions),
     new HtmlWebpackPlugin({
-      template: "src/index.html"
+      template: "src/index.html",
+      excludeChunks: ["editor"]
     }),
     new webpack.ProvidePlugin({
       Crafty: ["src/crafty-loader", "default"],
