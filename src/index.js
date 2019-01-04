@@ -6,7 +6,6 @@ import "./scenery";
 import "./scenes";
 import "./systems/SeaLevel";
 
-/* eslint-env node */
 Game.start(false);
 
 /**
