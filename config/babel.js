@@ -13,5 +13,6 @@ module.exports = {
         debug: true
       }
     ]
-  ]
+  ],
+  plugins: [["@babel/plugin-transform-react-jsx", { pragma: "h" }]]
 };
