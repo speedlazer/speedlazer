@@ -15,8 +15,7 @@ module.exports = merge(common, {
   plugins: [
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("production"),
-      "process.env.VERSION": JSON.stringify(buildVersion()),
-      "process.env.GA_TRACKER": JSON.stringify("UA-71899181-1")
+      "process.env.VERSION": JSON.stringify(buildVersion())
     }),
     new UglifyJSPlugin(uglifyConfig)
   ]

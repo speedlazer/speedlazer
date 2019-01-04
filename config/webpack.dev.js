@@ -10,8 +10,7 @@ module.exports = merge(common, {
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      "process.env.VERSION": JSON.stringify(`${buildVersion()} DEV`),
-      "process.env.GA_TRACKER": JSON.stringify("UA-Tracker")
+      "process.env.VERSION": JSON.stringify(`${buildVersion()} DEV`)
     })
   ],
   devtool: "inline-source-map",
