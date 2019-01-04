@@ -1,4 +1,4 @@
-import "babel-polyfill";
+import "@babel/polyfill";
 import "./styles/normalize.css";
 import "./styles/style.css";
 import "./components";

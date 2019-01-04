@@ -7,9 +7,6 @@ const buildVersion = function() {
   return require("../package.json").version;
 };
 
-const babel = require("./babel");
-babel.presets.push("babel-preset-minify");
-
 module.exports = merge(common, {
   devtool: "source-map",
   plugins: [

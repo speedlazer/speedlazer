@@ -2,9 +2,8 @@ const supportedBrowsers = require("./supported-browsers");
 
 module.exports = {
   presets: [
-    ["stage-3"],
     [
-      "env",
+      "@babel/env",
       {
         targets: {
           browsers: supportedBrowsers
@@ -14,6 +13,5 @@ module.exports = {
         debug: true
       }
     ]
-  ],
-  plugins: ["transform-class-properties"]
+  ]
 };

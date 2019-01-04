@@ -1,2 +1,2 @@
-import "babel-polyfill";
+import "@babel/polyfill";
 import "./styles/editor.css";
