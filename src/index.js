@@ -1,6 +1,6 @@
 import "@babel/polyfill";
-import "./styles/normalize.css";
-import "./styles/style.css";
+import "!style-loader!css-loader!postcss-loader!sass-loader!./styles/normalize.css";
+import "!style-loader!css-loader!postcss-loader!sass-loader!./styles/style.css";
 import "./components";
 import "./scenery";
 import "./scenes";
