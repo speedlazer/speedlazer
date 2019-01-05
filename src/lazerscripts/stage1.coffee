@@ -10,10 +10,11 @@ DroneShip   = require('./stage1/drone_ship').default
 IntroBarrel = require('./stage1/barrel').default
 JumpMine    = require('./stage1/jump_mine').default
 ShipBoss    = require('./stage1/ship_boss')
-TrailerDino = require('./trailer-dino').default
+#TrailerDino = require('./trailer-dino').default
+Stage1End = require('./stage1end').default
 
 class Stage1 extends LazerScript
-  nextScript: TrailerDino
+  nextScript: Stage1End
 
   assets: ->
     @loadAssets('explosion', 'playerShip', 'general')
