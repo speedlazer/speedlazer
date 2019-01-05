@@ -9,11 +9,12 @@ CameraCrew  = require('./stage1/camera_crew').default
 DroneShip   = require('./stage1/drone_ship').default
 IntroBarrel = require('./stage1/barrel').default
 JumpMine    = require('./stage1/jump_mine').default
-ShipBoss    = require('./stage1/ship_boss').default
-TrailerDino = require('./trailer-dino').default
+ShipBoss    = require('./stage1/ship_boss')
+#TrailerDino = require('./trailer-dino').default
+Stage1End = require('./stage1end').default
 
 class Stage1 extends LazerScript
-  nextScript: TrailerDino
+  nextScript: Stage1End
 
   assets: ->
     @loadAssets('explosion', 'playerShip', 'general')
@@ -80,7 +81,7 @@ class Stage1 extends LazerScript
     @sequence(
       @setScenery('City.Ocean')
       @say('General', 'We send some drones for some last manual target practice', noise: 'low')
-      @setSpeed 200
+      @setSpeed 600
       @parallel(
         @showText 'Get Ready', color: '#00FF00', mode: 'blink', blink_amount: 6, blink_speed: 100
         @say('John', 'Let\'s go!')
@@ -343,6 +344,7 @@ class Stage1 extends LazerScript
           @setScenery('City.UnderBridge')
         )
       )
+      @setSpeed 200
       @async @showText 'Warning!', color: '#FF0000', mode: 'blink', blink_amount: 6, blink_speed: 100
       @while(
         @waitForScenery('City.UnderBridge', event: 'enter')
@@ -415,6 +417,7 @@ class Stage1 extends LazerScript
       @sunRise(3)
       @checkpoint @checkpointStart('City.BayStart', 3)
 
+      @setSpeed 600
       @repeat 2, @sequence(
         @parallel(
           @placeSquad DroneFlyer,
@@ -449,6 +452,7 @@ class Stage1 extends LazerScript
               ]
         )
       )
+      @setSpeed 400
       @parallel(
         @placeSquad HeliAttack,
           options:
@@ -520,5 +524,4 @@ class Stage1 extends LazerScript
       @wait 2000
     )
 
-module.exports =
-  default: Stage1
+module.exports = Stage1

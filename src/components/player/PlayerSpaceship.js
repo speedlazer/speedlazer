@@ -198,15 +198,17 @@ Crafty.c("PlayerSpaceship", {
 
     this.trailColor = c;
     this.backFire.colorOverride(c);
-    this.trailEntPool = createEntityPool(() => {
-      return Crafty.e(
-        "2D, WebGL, shipEngineFire, Delta2D, TweenPromise, ViewportRelativeMotion, ColorEffects"
-      )
-        .colorOverride(this.trailColor)
-        .viewportRelativeMotion({
-          speed: 1
-        });
-    }, 2);
+    this.trailEntPool = createEntityPool(
+      () =>
+        Crafty.e(
+          "2D, WebGL, shipEngineFire, Delta2D, TweenPromise, ViewportRelativeMotion, ColorEffects"
+        )
+          .colorOverride(this.trailColor)
+          .viewportRelativeMotion({
+            speed: 1
+          }),
+      2
+    );
 
     this.addComponent("Invincible").invincibleDuration(1500);
 
@@ -365,17 +367,17 @@ Crafty.c("PlayerSpaceship", {
       this.primaryWeapon.uninstall();
     }
     this.primaryWeapon = weapon;
-    this.listenTo(weapon, "levelUp", info => {
-      return this.scoreText(`${text[info.aspect]} +${info.level}`);
-    });
-    this.listenTo(weapon, "boost", info => {
-      return this.scoreText(`${text[info.aspect]} Boost!`);
-    });
-    this.listenTo(weapon, "boostExpired", info => {
-      return this.scoreText(`${text[info.aspect]} Boost expired`, {
+    this.listenTo(weapon, "levelUp", info =>
+      this.scoreText(`${text[info.aspect]} +${info.level}`)
+    );
+    this.listenTo(weapon, "boost", info =>
+      this.scoreText(`${text[info.aspect]} Boost!`)
+    );
+    this.listenTo(weapon, "boostExpired", info =>
+      this.scoreText(`${text[info.aspect]} Boost expired`, {
         positive: false
-      });
-    });
+      })
+    );
 
     this.primaryWeapons.push(weapon);
     this.currentPrimary = this.primaryWeapons.length - 1;

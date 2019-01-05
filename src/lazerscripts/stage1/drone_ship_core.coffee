@@ -3,17 +3,14 @@
 class DroneShipCoreInactive extends EntityScript
 
   spawn: ->
-    Crafty.e("Enemy, Color, KeepAlive, BattleShipCore")
+    Crafty.e("Enemy, aircraftCarrierEngine, KeepAlive, BattleShipCore")
     .attr({
       health: 10000,
-      w: 160,
-      h: 110,
       defaultSpeed: 20,
       pointsOnDestroy: 1000
     })
     .enemy()
-    .color("#0000FF")
-    .sendToBackground(1.0, -5)
+    .attr({ hidden: true })
 
   execute: ->
     @sequence(
@@ -28,19 +25,16 @@ class DroneShipCore extends EntityScript
   spawn: ->
     item = Crafty('BattleShipCore').get(0)
     if item and item.health > 10
-      item.reveal()
+      item.attr({ hidden: false })
       return item
-    Crafty.e("Enemy, Color, KeepAlive, BattleShipCore")
+    Crafty.e("Enemy, aircraftCarrierEngine, KeepAlive, BattleShipCore")
       .attr({
         health: 10000,
-        w: 160,
-        h: 110,
         defaultSpeed: 20,
         pointsOnDestroy: 1000
       })
       .enemy()
-      .color("#0000FF")
-      .sendToBackground(1.0, -5)
+      .attr({ hidden: false })
 
   execute: ->
     @bindSequence 'Destroyed', @onKilled

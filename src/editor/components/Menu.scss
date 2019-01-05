@@ -1,0 +1,11 @@
+.menu {
+  list-style-type: none;
+
+  > li > a {
+    color: #ffffff;
+  }
+}
+
+.active {
+  font-weight: bold;
+}

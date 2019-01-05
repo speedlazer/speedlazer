@@ -210,6 +210,4 @@ class PauseMenu
 
     Crafty('PauseMenu').each -> @destroy()
 
-module.exports = {
-  default: PauseMenu
-}
+module.exports = PauseMenu

@@ -526,8 +526,8 @@ class Stage1BossMine extends EntityScript
         projectile = Crafty.e('Sphere, Hostile, Projectile')
           .blink()
           .attr(
-            w: 14
-            h: 14
+            w: 20
+            h: 20
             speed: 400
             damage: 1
           )
@@ -1151,8 +1151,8 @@ class Stage1BossMinePattern extends EntityScript
         projectile = Crafty.e('Sphere, Hostile, Projectile')
           .blink()
           .attr(
-            w: 14
-            h: 14
+            w: 20
+            h: 20
             speed: 400
             damage: 1
           )

@@ -4,21 +4,37 @@ const webpack = require("webpack");
 const buildVersion = function() {
   return require("../package.json").version;
 };
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = merge(common, {
+  mode: "development",
+  entry: {
+    editor: "./src/editor.js"
+  },
+  output: {
+    publicPath: "/"
+  },
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      "process.env.VERSION": JSON.stringify(`${buildVersion()} DEV`),
-      "process.env.GA_TRACKER": JSON.stringify("UA-Tracker")
+      "process.env.VERSION": JSON.stringify(`${buildVersion()} DEV`)
+    }),
+    new HtmlWebpackPlugin({
+      template: "src/editor.html",
+      filename: "editor.html",
+      chunks: ["editor"]
     })
   ],
   devtool: "inline-source-map",
   devServer: {
     contentBase: "../dist",
+    publicPath: "/",
     hot: true,
     host: "0.0.0.0",
+    historyApiFallback: {
+      rewrites: [{ from: /^\/editor\//, to: "/editor.html" }]
+    },
     port: 9000
   }
 });

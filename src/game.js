@@ -1,5 +1,4 @@
 import CryptoJS from "crypto-js";
-import defaults from "lodash/defaults";
 import sortBy from "lodash/sortBy";
 import { setGameSpeed, getGameSpeed } from "./lib/core/gameSpeed";
 import { isPaused } from "./lib/core/pauseToggle";
@@ -151,11 +150,14 @@ const Game = {
     if (data) {
       settings = JSON.parse(data);
     }
-    return defaults(settings, { sound: true });
+    return { sound: true, ...settings };
   },
 
   changeSettings(changes = {}) {
-    const newSettings = defaults(changes, this.settings());
+    const newSettings = {
+      ...this.settings(),
+      ...changes
+    };
     const str = JSON.stringify(newSettings);
     return localStorage.setItem("SPDLZRS", str);
   }

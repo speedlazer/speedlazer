@@ -59,10 +59,11 @@ Level =
         }),
         =>
           viewportFixed: no
-          alpha: 0.3
+          alpha: 0.2
           z: @entity.z - 3
           lightness: 0.1
           duration: 200
+          radius: 10
       )
 
   bigExplosion: (options = {}) ->

@@ -2,13 +2,14 @@ defaults = require('lodash/defaults')
 
 Crafty.c 'Debris',
   init: ->
-    @requires 'Enemy, WebGL, Color'
+    @requires 'Enemy, WebGL, debris1'
 
     @bind 'GameLoop', (fd) ->
       delta = (360 / 4000) * fd.dt
       @attr rotation: @rotation + delta
 
   debris: (attr = {}) ->
+    @crop 1, 1, 126, 126
     @attr defaults(attr,
       w: 100
       h: 100
@@ -17,7 +18,6 @@ Crafty.c 'Debris',
     )
     @origin 'center'
 
-    @color('#303030')
     @enemy()
     this
 

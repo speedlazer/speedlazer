@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Analog control feel for keyboard controls
 - Lots of extra attack patterns in bossfight under the bridge
 - New mid-stage bossfight against big navy battleship
+- Editor to speed up development (View spritemaps)
 
 ### Changed
 - Way the game world is build up. Scenery is now moving, and
@@ -21,9 +22,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Redevided the stage boundaries. Stage 1 now ends after bossfight
   under the bridge
 - Water particles are rewritten, resulting in a better performance
-- Updated Crafty to 0.9.0-rc.1
+- Updated Crafty to 0.9.0
 - Starting weapon is now maxed out by default
 - Hitflashes on enemies are now full white
+- Water splashes and water 'level' on drone spawn ship
+- Flying speed at beginning in level is increased
+- Extraction of entity buildup into datafiles (Composable)
 
 ### Removed
 - Bullet patterns of boss, it didn't fit with the character

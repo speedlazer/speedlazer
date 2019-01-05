@@ -24,7 +24,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(["dist"], cleanOptions),
     new HtmlWebpackPlugin({
-      template: "src/index.html"
+      template: "src/index.html",
+      excludeChunks: ["editor"]
     }),
     new webpack.ProvidePlugin({
       Crafty: ["src/crafty-loader", "default"],
@@ -41,8 +42,13 @@ module.exports = {
         options: babel
       },
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        test: /\.s?css$/,
+        use: [
+          "style-loader",
+          "css-loader?modules=true",
+          "postcss-loader",
+          "sass-loader"
+        ]
       },
       {
         test: /\.(frag|vert)$/,
