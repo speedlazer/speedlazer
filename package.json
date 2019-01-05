@@ -1,7 +1,8 @@
 {
   "name": "SpeedLazer",
   "version": "2.0.0-pre",
-  "description": "SpeedLazer is a HTML5 Side scrolling shoot-em-up made with Crafty.js",
+  "description":
+    "SpeedLazer is a HTML5 Side scrolling shoot-em-up made with Crafty.js",
   "license": "MIT",
   "homepage": "http://speedlazer.net",
   "repository": {
@@ -20,6 +21,7 @@
     "@babel/core": "^7.2.2",
     "@babel/plugin-transform-react-jsx": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
+    "@babel/register": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
     "babel-preset-minify": "^0.5.0",
@@ -49,13 +51,12 @@
     "build": "webpack --config ./config/webpack.prod.js",
     "start": "webpack-dev-server --open --config ./config/webpack.dev.js",
     "lint": "eslint src/",
-    "test": "mocha --recursive --require babel-core/register",
+    "test":
+      "mocha --recursive --require @babel/polyfill --require @babel/register",
     "prettier": "prettier '{,!(node_modules|dist|.tmp)/**/}*.js' --write"
   },
   "babel": {
-    "presets": [
-      "@babel/env"
-    ],
+    "presets": ["@babel/env"],
     "plugins": [
       [
         "@babel/plugin-transform-react-jsx",
