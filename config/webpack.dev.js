@@ -10,6 +10,9 @@ module.exports = merge(common, {
   entry: {
     editor: "./src/editor.js"
   },
+  output: {
+    publicPath: "/"
+  },
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -25,8 +28,12 @@ module.exports = merge(common, {
   devtool: "inline-source-map",
   devServer: {
     contentBase: "../dist",
+    publicPath: "/",
     hot: true,
     host: "0.0.0.0",
+    historyApiFallback: {
+      rewrites: [{ from: /^\/editor\//, to: "/editor.html" }]
+    },
     port: 9000
   }
 });
