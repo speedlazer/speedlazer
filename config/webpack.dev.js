@@ -7,6 +7,7 @@ const buildVersion = function() {
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = merge(common, {
+  mode: "development",
   entry: {
     editor: "./src/editor.js"
   },

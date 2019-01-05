@@ -8,6 +8,7 @@ const buildVersion = function() {
 };
 
 module.exports = merge(common, {
+  mode: "production",
   devtool: "source-map",
   plugins: [
     new webpack.DefinePlugin({
