@@ -42,8 +42,13 @@ module.exports = {
         options: babel
       },
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        test: /\.s?css$/,
+        use: [
+          "style-loader",
+          "css-loader?modules=true",
+          "postcss-loader",
+          "sass-loader"
+        ]
       },
       {
         test: /\.(frag|vert)$/,

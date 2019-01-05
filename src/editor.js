@@ -1,11 +1,6 @@
 import "@babel/polyfill";
 import "./styles/editor.css";
 import { h, render } from "preact";
+import { App } from "src/editor/layout/components/App";
 
-render(
-  <div id="foo">
-    <span>Hello, world!</span>
-    <button onClick={() => alert("hi!")}>Click Me</button>
-  </div>,
-  document.body
-);
+render(<App />, document.body);
