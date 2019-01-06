@@ -80,8 +80,8 @@
       ["aircraftCarrierCabin", { "x": 128, "y": 0 }],
       ["aircraftCarrierCabin", { "x": 192, "y": 0 }],
       ["aircraftCarrierCabinStart", { "x": 256, "y": 0, "flipX": true }],
-      ["aircraftCarrierAntenna", { "x": 64, "y": -56, "z": 1, "flipX": true }],
-      ["aircraftCarrierAntenna", { "x": 160, "y": -56, "z": 1, "flipX": true }],
+      ["aircraftCarrierAntenna", { "x": 64, "y": -48, "z": 1, "flipX": true }],
+      ["aircraftCarrierAntenna", { "x": 160, "y": -48, "z": 1, "flipX": true }],
       ["aircraftCarrierOpened", { "x": 114, "y": 62, "z": 1 }],
       ["aircraftCarrier5", { "x": 76, "y": 55, "z": 1 }]
     ]
