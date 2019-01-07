@@ -1,28 +1,11 @@
-import { Divider } from "./components/Divider";
+import { Divider } from "../../components/Divider";
 import { Grid } from "../../components/Grid";
 import { LayerBox } from "../../components/LayerBox";
 import { Menu } from "../../components/Menu";
 import { ScrollBox } from "../../components/ScrollBox";
 import { Highlight } from "./components/Highlight";
 import { h, Component } from "preact";
-
-import cityEnemies from "src/images/city-enemies.png";
-import cityEnemiesMap from "src/images/city-enemies.map.json";
-import cityScenery from "src/images/city-scenery.png";
-import citySceneryMap from "src/images/city-scenery.map.json";
-
-const imageMaps = [
-  {
-    name: "city-enemies",
-    image: cityEnemies,
-    map: cityEnemiesMap
-  },
-  {
-    name: "city-scenery",
-    image: cityScenery,
-    map: citySceneryMap
-  }
-];
+import spritesheets from "src/editor/data/spritesheets";
 
 class Spritesheets extends Component {
   constructor() {
@@ -34,7 +17,7 @@ class Spritesheets extends Component {
   }
 
   render({ map, activeSprite }, { width, height }) {
-    const activeMap = imageMaps.find(m => m.name === map) || imageMaps[0];
+    const activeMap = spritesheets.find(m => m.name === map) || spritesheets[0];
     const highlight = (activeSprite && activeMap.map.map[activeSprite]) || null;
 
     const tileWidth = activeMap.map.tile;
@@ -45,7 +28,7 @@ class Spritesheets extends Component {
           Spritesheets - {activeMap.name} {width}x{height}
         </h1>
         <Menu
-          items={imageMaps.map(map => [map.name, `/sprites/${map.name}`])}
+          items={spritesheets.map(map => [map.name, `/sprites/${map.name}`])}
         />
         <Divider>
           <div>

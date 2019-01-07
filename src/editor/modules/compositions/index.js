@@ -1,20 +1,16 @@
-import { h, Component } from "preact";
+import { Divider } from "../../components/Divider";
 import { Menu } from "../../components/Menu";
-
-import BattleShipCompositions from "src/components/entities/BattleShip.composition.json";
-import DroneShipCompositions from "src/components/entities/DroneShip.composition.json";
-import IntroShipCompositions from "src/components/entities/IntroShip.composition.json";
-
-const compositions = [
-  { name: "BattleShip", content: BattleShipCompositions },
-  { name: "DroneShip", content: DroneShipCompositions },
-  { name: "IntroShip", content: IntroShipCompositions }
-];
+import { h, Component } from "preact";
+import { CompositionPreview } from "./components/CompositionPreview";
+import compositions from "src/editor/data/compositions";
 
 class Compositions extends Component {
-  render({ file }) {
+  render({ file, compositionName }) {
     const activeFile =
       compositions.find(m => m.name === file) || compositions[0];
+    const activeComposition = compositionName
+      ? activeFile.content[compositionName]
+      : null;
 
     return (
       <section>
@@ -25,12 +21,21 @@ class Compositions extends Component {
             `/compositions/${map.name}`
           ])}
         />
-        <Menu
-          items={Object.keys(activeFile.content).map(key => [
-            key,
-            `/compositions/${activeFile.name}/${key}`
-          ])}
-        />
+        <Divider>
+          <div>
+            <Menu
+              items={Object.keys(activeFile.content).map(key => [
+                key,
+                `/compositions/${activeFile.name}/${key}`
+              ])}
+            />
+          </div>
+          <div>
+            {activeComposition && (
+              <CompositionPreview composition={activeComposition} />
+            )}
+          </div>
+        </Divider>
       </section>
     );
   }

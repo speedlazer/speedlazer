@@ -13,7 +13,7 @@ export const App = () => (
       <Spritesheets path="/editor/sprites/:map?" />
       <Spritesheets path="/editor/sprites/:map/:activeSprite" />
       <Compositions path="/editor/compositions/:file?" />
-      <Compositions path="/editor/compositions/:file/:activeComposition" />
+      <Compositions path="/editor/compositions/:file/:compositionName" />
     </Router>
   </div>
 );
