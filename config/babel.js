@@ -10,9 +10,13 @@ module.exports = {
         },
         modules: false,
         loose: true,
+        useBuiltIns: "usage",
         debug: true
       }
     ]
   ],
-  plugins: [["@babel/plugin-transform-react-jsx", { pragma: "h" }]]
+  plugins: [
+    ["@babel/plugin-transform-react-jsx", { pragma: "h" }],
+    "@babel/proposal-class-properties"
+  ]
 };

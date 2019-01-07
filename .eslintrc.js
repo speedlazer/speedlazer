@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es6: true
   },
-  plugins: ["compat", "prettier", "react"],
+  plugins: ["compat", "prettier", "react", "babel"],
   extends: ["eslint:recommended", "prettier", "plugin:react/recommended"],
   parser: "babel-eslint",
   parserOptions: {
