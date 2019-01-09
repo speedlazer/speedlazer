@@ -9,6 +9,7 @@ Crafty.c("Composable", {
   init() {
     this.appliedDefinition = definitionStructure;
     this.composableParts = [];
+    this.currentAttachHooks = {};
     this.currentZ = this.z;
     this.bind("Reorder", this.updateChildrenOrder);
   },
@@ -126,12 +127,14 @@ Crafty.c("Composable", {
 
   buildAttachHooks(attachHooks) {
     attachHooks.forEach(([label, options]) => {
-      const hook = Crafty.e(`2D, ${label}`).attr({
+      const hook = this.currentAttachHooks[label] || Crafty.e(`2D, ${label}`);
+      hook.attr({
         x: this.x + (options.x || 0),
         y: this.y + (options.y || 0),
         z: this.z + (options.z || 0)
       });
       this.attach(hook);
+      this.currentAttachHooks[label] = hook;
     });
   }
 });

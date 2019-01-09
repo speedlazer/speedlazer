@@ -21,21 +21,15 @@ class Compositions extends Component {
             `/compositions/${map.name}`
           ])}
         />
-        <Divider>
-          <div>
-            <Menu
-              items={Object.keys(activeFile.content).map(key => [
-                key,
-                `/compositions/${activeFile.name}/${key}`
-              ])}
-            />
-          </div>
-          <div>
-            {activeComposition && (
-              <CompositionPreview composition={activeComposition} />
-            )}
-          </div>
-        </Divider>
+        <Menu
+          items={Object.keys(activeFile.content).map(key => [
+            key,
+            `/compositions/${activeFile.name}/${key}`
+          ])}
+        />
+        {activeComposition && (
+          <CompositionPreview composition={activeComposition} />
+        )}
       </section>
     );
   }

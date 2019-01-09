@@ -36,54 +36,53 @@
   },
   "firstCabin": {
     "attributes": {
-      "width": 224,
+      "width": 192,
       "height": 130
     },
-    "hitbox": [10, -10, 200, -10, 200, 120, 10, 120],
     "sprites": [
-      ["aircraftCarrierCabinEnd", { "x": 0, "y": 0, "flipX": true }],
-      ["aircraftCarrierCabinRadar", { "x": 64, "y": 0, "flipX": true }],
-      ["aircraftCarrierCabin", { "x": 128, "y": 0 }],
-      ["aircraftCarrierCabinStart", { "x": 192, "y": 0, "flipX": true }],
-      ["aircraftCarrierRadar", { "x": 64, "y": -8, "z": 1 }],
-      ["aircraftCarrierAntenna", { "x": 128, "y": -48, "z": 1, "flipX": true }],
+      ["aircraftCarrierCabinEnd", { "x": -16, "y": -15, "flipX": true }],
+      ["aircraftCarrierCabinRadar", { "x": 48, "y": -15, "flipX": true }],
+      ["aircraftCarrierCabin", { "x": 112, "y": -15 }],
+      ["aircraftCarrierCabinStart", { "x": 176, "y": -15, "flipX": true }],
+      ["aircraftCarrierRadar", { "x": 64, "y": -23, "z": 1 }],
+      ["aircraftCarrierAntenna", { "x": 128, "y": -65, "z": 1, "flipX": true }],
       ["aircraftCarrier5", { "x": 155, "y": 55, "z": 1 }]
     ]
   },
   "secondCabin": {
     "attributes": {
-      "width": 224,
+      "width": 256,
       "height": 130
     },
-    "hitbox": [10, -10, 200, -10, 200, 120, 10, 120],
+    "hitbox": [0, 45, 32, 30, 32, 0, 260, 0, 260, 128, 0, 128],
     "sprites": [
-      ["aircraftCarrierCabinEnd", { "x": 0, "y": 0, "flipX": true }],
-      ["aircraftCarrierCabinRadar", { "x": 64, "y": 0, "flipX": true }],
-      ["aircraftCarrierCabin", { "x": 128, "y": 0 }],
-      ["aircraftCarrierCabin", { "x": 192, "y": 0 }],
-      ["aircraftCarrierCabinStart", { "x": 256, "y": 0, "flipX": true }],
-      ["aircraftCarrierAntenna", { "x": 64, "y": -48, "z": 1, "flipX": true }],
-      ["aircraftCarrierAntenna", { "x": 160, "y": -48, "z": 1, "flipX": true }],
-      ["aircraftCarrierClosed", { "x": 128, "y": 64, "z": 1 }],
-      ["aircraftCarrier5", { "x": 76, "y": 55, "z": 1 }]
+      ["aircraftCarrierCabinEnd", { "x": -16, "y": -15, "flipX": true }],
+      ["aircraftCarrierCabinRadar", { "x": 48, "y": -15, "flipX": true }],
+      ["aircraftCarrierCabin", { "x": 112, "y": -15 }],
+      ["aircraftCarrierCabin", { "x": 176, "y": -15 }],
+      ["aircraftCarrierCabinStart", { "x": 240, "y": -15, "flipX": true }],
+      ["aircraftCarrierAntenna", { "x": 64, "y": -63, "z": 1, "flipX": true }],
+      ["aircraftCarrierAntenna", { "x": 160, "y": -63, "z": 1, "flipX": true }],
+      ["aircraftCarrierClosed", { "x": 128, "y": 49, "z": 1 }],
+      ["aircraftCarrier5", { "x": 76, "y": 40, "z": 1 }]
     ]
   },
   "secondCabinOpen": {
     "attributes": {
-      "width": 224,
+      "width": 256,
       "height": 130
     },
-    "hitbox": [10, -10, 200, -10, 200, 120, 10, 120],
+    "hitbox": [0, 45, 32, 30, 32, 0, 260, 0, 260, 128, 0, 128],
     "sprites": [
-      ["aircraftCarrierCabinEnd", { "x": 0, "y": 0, "flipX": true }],
-      ["aircraftCarrierCabinRadar", { "x": 64, "y": 0, "flipX": true }],
-      ["aircraftCarrierCabin", { "x": 128, "y": 0 }],
-      ["aircraftCarrierCabin", { "x": 192, "y": 0 }],
-      ["aircraftCarrierCabinStart", { "x": 256, "y": 0, "flipX": true }],
-      ["aircraftCarrierAntenna", { "x": 64, "y": -48, "z": 1, "flipX": true }],
-      ["aircraftCarrierAntenna", { "x": 160, "y": -48, "z": 1, "flipX": true }],
-      ["aircraftCarrierOpened", { "x": 114, "y": 62, "z": 1 }],
-      ["aircraftCarrier5", { "x": 76, "y": 55, "z": 1 }]
+      ["aircraftCarrierCabinEnd", { "x": -16, "y": -15, "flipX": true }],
+      ["aircraftCarrierCabinRadar", { "x": 48, "y": -15, "flipX": true }],
+      ["aircraftCarrierCabin", { "x": 112, "y": -15 }],
+      ["aircraftCarrierCabin", { "x": 176, "y": -15 }],
+      ["aircraftCarrierCabinStart", { "x": 240, "y": -15, "flipX": true }],
+      ["aircraftCarrierAntenna", { "x": 64, "y": -63, "z": 1, "flipX": true }],
+      ["aircraftCarrierAntenna", { "x": 160, "y": -63, "z": 1, "flipX": true }],
+      ["aircraftCarrierOpened", { "x": 114, "y": 47, "z": 1 }],
+      ["aircraftCarrier5", { "x": 76, "y": 40, "z": 1 }]
     ]
   }
 }

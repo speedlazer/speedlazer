@@ -25,7 +25,7 @@ Crafty.c 'ColorFade',
 
     stringColor = @_colorToStr(bcolor)
     Crafty.trigger('BackgroundColor', stringColor)
-    #Crafty.gameBackgroundColor = stringColor
+    #Crafty.background stringColor
 
     @bottomColor bcolor
     @topColor tcolor

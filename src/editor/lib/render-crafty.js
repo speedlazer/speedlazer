@@ -9,12 +9,12 @@ Crafty.paths({
 
 export const mount = domElem => {
   if (!domElem) return;
-  Crafty.init(800, 600, domElem);
+  Crafty.init(700, 600, domElem);
   Crafty.background("#000000");
 };
 
 Crafty.defineScene("ComposablePreview", data => {
-  const composable = Crafty.e("2D, WebGL, Composable, Color")
+  const composable = Crafty.e("2D, WebGL, Composable, Color, SolidHitBox")
     .attr({ x: 0, y: 0, w: 40, h: 40 })
     .compose(data.composition)
     .color("#FF0000");
@@ -38,7 +38,7 @@ Crafty.defineScene("ComposablePreview", data => {
     x: 0 + (composable.x - actualSize.minX),
     y: 0 + (composable.y - actualSize.minY)
   });
-  const scale = Math.min(800 / width, 600 / height, 1);
+  const scale = Math.min(700 / width, 600 / height, 1);
 
   Crafty.viewport.scale(scale);
 });
