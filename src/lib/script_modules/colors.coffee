@@ -1,7 +1,7 @@
 Colors =
   backgroundColorFade: (settings, bottomColors, topColors) ->
     (sequence) =>
-      Crafty.background(bottomColors[0])
+      #Crafty.background(bottomColors[0])
       Crafty.bind('BackgroundColor', @_colorHorizon)
       Crafty.trigger('BackgroundColor', bottomColors[0])
       d = WhenJS.defer()
