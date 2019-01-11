@@ -1,4 +1,3 @@
-import { Divider } from "../../components/Divider";
 import { Menu } from "../../components/Menu";
 import { h, Component } from "preact";
 import { CompositionPreview } from "./components/CompositionPreview";
@@ -28,7 +27,10 @@ class Compositions extends Component {
           ])}
         />
         {activeComposition && (
-          <CompositionPreview composition={activeComposition} />
+          <CompositionPreview
+            file={activeFile.content}
+            composition={activeComposition}
+          />
         )}
       </section>
     );

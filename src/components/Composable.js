@@ -5,6 +5,18 @@ const definitionStructure = {
   hitbox: []
 };
 
+const heightFactor = {
+  top: 0,
+  center: 0.5,
+  bottom: 1
+};
+
+const widthFactor = {
+  left: 0,
+  center: 0.5,
+  right: 1
+};
+
 Crafty.c("Composable", {
   init() {
     this.appliedDefinition = definitionStructure;
@@ -125,13 +137,30 @@ Crafty.c("Composable", {
     );
   },
 
+  attachEntity(targetHookName, entity) {
+    const hookSettings =
+      (this.appliedDefinition.attachHooks.find(
+        ([hookName]) => hookName === targetHookName
+      ) || [])[1] || {};
+    const hook = this.currentAttachHooks[targetHookName];
+    const alignment = hookSettings.attachAlign || ["top", "left"];
+    console.log(alignment, hookSettings);
+
+    const targetX = hook.x - widthFactor[alignment[1]] * entity.w;
+    const targetY = hook.y - heightFactor[alignment[0]] * entity.h;
+    entity.attr({ x: targetX, y: targetY, z: hook.z });
+    this.attach(entity);
+  },
+
   buildAttachHooks(attachHooks) {
     attachHooks.forEach(([label, options]) => {
       const hook = this.currentAttachHooks[label] || Crafty.e(`2D, ${label}`);
       hook.attr({
         x: this.x + (options.x || 0),
         y: this.y + (options.y || 0),
-        z: this.z + (options.z || 0)
+        z: this.z + (options.z || 0),
+        w: 20,
+        h: 20
       });
       this.attach(hook);
       this.currentAttachHooks[label] = hook;

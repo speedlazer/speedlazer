@@ -27,10 +27,28 @@
       ["aircraftCarrierBottomFlat", { "x": 1088, "y": 64 }]
     ],
     "attachHooks": [
-      ["Cabin1Place", { "x": 290, "y": -124, "z": 7 }],
+      [
+        "Cabin1Place",
+        {
+          "x": 290,
+          "y": -124,
+          "z": 7,
+          "attachAlign": ["bottom", "left"],
+          "testAttach": "firstCabin"
+        }
+      ],
       ["HeliPlace", { "x": 561, "y": -32, "z": 1 }],
       ["HeliPlace", { "x": 686, "y": -32, "z": 1 }],
-      ["Cabin2Place", { "x": 816, "y": -124, "z": 7 }],
+      [
+        "Cabin2Place",
+        {
+          "x": 816,
+          "y": -124,
+          "z": 7,
+          "attachAlign": ["bottom", "left"],
+          "testAttach": "secondCabin"
+        }
+      ],
       ["DroneShipCorePlace", { "x": 960, "y": -64, "z": 12 }]
     ]
   },
