@@ -30,26 +30,53 @@
       [
         "Cabin1Place",
         {
-          "x": 290,
-          "y": -124,
+          "x": 294,
+          "y": 24,
           "z": 7,
           "attachAlign": ["bottom", "left"],
           "testAttach": "firstCabin"
         }
       ],
-      ["HeliPlace", { "x": 561, "y": -32, "z": 1 }],
-      ["HeliPlace", { "x": 686, "y": -32, "z": 1 }],
+      [
+        "HeliPlace1",
+        {
+          "x": 496,
+          "y": 24,
+          "z": 2,
+          "attachAlign": ["bottom", "left"],
+          "testAttach": "heli"
+        }
+      ],
+      [
+        "HeliPlace2",
+        {
+          "x": 616,
+          "y": 24,
+          "z": 1,
+          "attachAlign": ["bottom", "left"],
+          "testAttach": "heli"
+        }
+      ],
       [
         "Cabin2Place",
         {
-          "x": 816,
-          "y": -124,
+          "x": 832,
+          "y": 24,
           "z": 7,
           "attachAlign": ["bottom", "left"],
-          "testAttach": "secondCabin"
+          "testAttach": "secondCabinOpen"
         }
       ],
-      ["DroneShipCorePlace", { "x": 960, "y": -64, "z": 12 }]
+      [
+        "DroneShipCorePlace",
+        {
+          "x": 976,
+          "y": -60,
+          "z": 12,
+          "attachAlign": ["top", "left"],
+          "testAttach": "engine"
+        }
+      ]
     ]
   },
   "firstCabin": {
@@ -64,7 +91,7 @@
       ["aircraftCarrierCabinStart", { "x": 176, "y": -15, "flipX": true }],
       ["aircraftCarrierRadar", { "x": 64, "y": -23, "z": 1 }],
       ["aircraftCarrierAntenna", { "x": 128, "y": -65, "z": 1, "flipX": true }],
-      ["aircraftCarrier5", { "x": 155, "y": 55, "z": 1 }]
+      ["aircraftCarrier5", { "x": 128, "y": 55, "z": 1 }]
     ]
   },
   "secondCabin": {
@@ -102,5 +129,21 @@
       ["aircraftCarrierOpened", { "x": 114, "y": 47, "z": 1 }],
       ["aircraftCarrier5", { "x": 76, "y": 40, "z": 1 }]
     ]
+  },
+  "engine": {
+    "attributes": {
+      "width": 96,
+      "height": 96
+    },
+    "hitbox": [16, 16, 80, 16, 80, 80, 16, 80],
+    "sprites": [["aircraftCarrierEngine", { "x": 0, "y": 0 }]]
+  },
+  "heli": {
+    "attributes": {
+      "width": 128,
+      "height": 64,
+      "scale": 0.8
+    },
+    "sprites": [["helicopterLanded", { "x": 0, "y": 0 }]]
   }
 }

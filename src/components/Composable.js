@@ -1,3 +1,5 @@
+import "src/components/utils/Scalable";
+
 const definitionStructure = {
   sprites: [],
   attachHooks: [],
@@ -41,6 +43,12 @@ Crafty.c("Composable", {
       this.collision(definition.hitbox);
     }
 
+    if (definition.attributes.scale) {
+      this.addComponent("Scalable");
+      this.attr({
+        scale: definition.attributes.scale
+      });
+    }
     this.appliedDefinition = definition;
     return this;
   },
@@ -144,7 +152,6 @@ Crafty.c("Composable", {
       ) || [])[1] || {};
     const hook = this.currentAttachHooks[targetHookName];
     const alignment = hookSettings.attachAlign || ["top", "left"];
-    console.log(alignment, hookSettings);
 
     const targetX = hook.x - widthFactor[alignment[1]] * entity.w;
     const targetY = hook.y - heightFactor[alignment[0]] * entity.h;
@@ -159,8 +166,8 @@ Crafty.c("Composable", {
         x: this.x + (options.x || 0),
         y: this.y + (options.y || 0),
         z: this.z + (options.z || 0),
-        w: 20,
-        h: 20
+        w: 10,
+        h: 10
       });
       this.attach(hook);
       this.currentAttachHooks[label] = hook;

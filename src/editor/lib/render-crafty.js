@@ -9,7 +9,7 @@ Crafty.paths({
 
 export const mount = domElem => {
   if (!domElem) return;
-  Crafty.init(700, 600, domElem);
+  Crafty.init(900, 600, domElem);
   Crafty.background("#000000");
 };
 
@@ -69,7 +69,7 @@ Crafty.defineScene("ComposablePreview", data => {
     x: 0 + (composable.x - actualSize.minX),
     y: 0 + (composable.y - actualSize.minY)
   });
-  const scale = Math.min(700 / width, 600 / height, 1);
+  const scale = Math.min(900 / width, 600 / height, 1);
 
   Crafty.viewport.scale(scale);
 });
