@@ -7,9 +7,12 @@ Crafty.paths({
   images: ""
 });
 
+const SCREEN_WIDTH = 900;
+const SCREEN_HEIGHT = 600;
+
 export const mount = domElem => {
   if (!domElem) return;
-  Crafty.init(900, 600, domElem);
+  Crafty.init(SCREEN_WIDTH, SCREEN_HEIGHT, domElem);
   Crafty.background("#000000");
 };
 
@@ -65,11 +68,17 @@ Crafty.defineScene("ComposablePreview", data => {
 
   const width = actualSize.maxX - actualSize.minX;
   const height = actualSize.maxY - actualSize.minY;
+  const offset = {
+    x: composable.x - actualSize.minX,
+    y: composable.y - actualSize.minY
+  };
+  const scale = Math.min(SCREEN_WIDTH / width, SCREEN_HEIGHT / height, 1);
+  const maxWidth = Math.max(width, SCREEN_WIDTH / scale);
+  const maxHeight = Math.max(height, SCREEN_HEIGHT / scale);
   composable.attr({
-    x: 0 + (composable.x - actualSize.minX),
-    y: 0 + (composable.y - actualSize.minY)
+    x: (maxWidth - width) / 2 + offset.x,
+    y: (maxHeight - height) / 2 + offset.y
   });
-  const scale = Math.min(900 / width, 600 / height, 1);
 
   Crafty.viewport.scale(scale);
 });
