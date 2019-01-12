@@ -1,0 +1,24 @@
+{
+  "shipHatchClosed": {
+    "attributes": {
+      "width": 128,
+      "height": 32
+    },
+    "sprites": [
+      ["aircraftCarrierOpenHatch", { "y": -4 }],
+      ["aircraftCarrierHatchLid", { "y": -4 }],
+      ["aircraftCarrierWires", { "x": 80, "y": -20, "z": -4 }]
+    ]
+  },
+  "shipHatchOpen": {
+    "attributes": {
+      "width": 128,
+      "height": 32
+    },
+    "sprites": [
+      ["aircraftCarrierOpenHatch", { "y": -4 }],
+      ["aircraftCarrierHatchLid", { "x": -32, "y": 12 }],
+      ["aircraftCarrierWires", { "x": 80, "y": -20, "z": -4 }]
+    ]
+  }
+}

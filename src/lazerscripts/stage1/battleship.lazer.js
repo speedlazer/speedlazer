@@ -1,4 +1,3 @@
-import battleship from "./battleship.json";
 import { getOne, pickOne } from "src/utils";
 import { EASE_IN_OUT } from "src/constants/easing";
 
@@ -88,7 +87,7 @@ const script = async ({ spawn, exec, move, when, call }) => {
   //
 
   // spawn ship off screen
-  const ship = spawn(battleship, {
+  const ship = spawn("BattleShip", {
     location: {
       rx: 1.1,
       ry: 0.7

@@ -17,6 +17,7 @@ export const createEntity = entityName =>
   Crafty.e("2D, WebGL, EntityDefinition")
     .attr({ x: 0, y: 0, w: 40, h: 40 })
     .applyDefinition(entityName);
+
 const setEntityState = (entity, state) => {
   if (state.composition) {
     const composition = compositions[state.composition];
@@ -43,6 +44,8 @@ const setEntityState = (entity, state) => {
         const attachment = Crafty.e("2D, WebGL");
         setEntityState(attachment, attachDefinition);
         entity.attachEntity(attachPoint, attachment);
+        const itemName = attachDefinition.name || attachPoint;
+        entity[itemName] = attachment;
       }
     );
   }
@@ -60,7 +63,6 @@ Crafty.c("EntityDefinition", {
     const defaultState = getEntityState(definition, "default");
     setEntityState(this, defaultState);
 
-    console.log(defaultState);
     console.log(this.__c);
 
     this.appliedDefinition = definition;

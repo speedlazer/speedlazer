@@ -1,0 +1,11 @@
+{
+  "name": "ShipHatch",
+  "states": {
+    "default": {
+      "composition": "shipHatchClosed"
+    },
+    "open": {
+      "composition": "shipHatchOpen"
+    }
+  }
+}
