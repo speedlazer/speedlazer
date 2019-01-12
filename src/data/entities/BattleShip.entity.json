@@ -27,7 +27,7 @@
         },
         "hatch1": {
           "entity": "ShipHatch",
-          "attachments": {
+          "aattachments": {
             "floor": {
               "name": "turret",
               "entity": "BulletTurret"
@@ -36,7 +36,7 @@
         },
         "hatch2": {
           "entity": "ShipHatch",
-          "attachments": {
+          "aattachments": {
             "floor": {
               "name": "turret",
               "entity": "BulletTurret"
@@ -45,7 +45,7 @@
         },
         "hatch3": {
           "entity": "ShipHatch",
-          "attachments": {
+          "aattachments": {
             "floor": {
               "name": "turret",
               "entity": "BulletTurret"

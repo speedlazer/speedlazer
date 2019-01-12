@@ -46,7 +46,10 @@
       [
         "engineCore",
         { "x": 976, "y": -60, "z": 12, "attachAlign": ["top", "left"] }
-      ]
+      ],
+      ["hatch1", { "x": 320, "y": 32, "z": 1, "attachAlign": ["top", "left"] }],
+      ["hatch2", { "x": 512, "y": 32, "z": 1, "attachAlign": ["top", "left"] }],
+      ["hatch3", { "x": 704, "y": 32, "z": 1, "attachAlign": ["top", "left"] }]
     ]
   },
   "battleship.firstCabin": {

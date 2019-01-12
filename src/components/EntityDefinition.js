@@ -24,7 +24,7 @@ const setEntityState = (entity, state) => {
     entity.addComponent("Composable").compose(composition);
   }
   if (state.entity) {
-    console.log("Entity base:", state.entity);
+    entity.addComponent("EntityDefinition").applyDefinition(state.entity);
   }
 
   if (state.components) {
@@ -62,8 +62,6 @@ Crafty.c("EntityDefinition", {
     this.addComponent(entityName);
     const defaultState = getEntityState(definition, "default");
     setEntityState(this, defaultState);
-
-    console.log(this.__c);
 
     this.appliedDefinition = definition;
     return this;
