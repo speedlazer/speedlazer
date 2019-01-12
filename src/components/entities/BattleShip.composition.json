@@ -29,53 +29,23 @@
     "attachHooks": [
       [
         "Cabin1Place",
-        {
-          "x": 294,
-          "y": 24,
-          "z": 7,
-          "attachAlign": ["bottom", "left"],
-          "testAttach": "firstCabin"
-        }
+        { "x": 294, "y": 24, "z": 7, "attachAlign": ["bottom", "left"] }
       ],
       [
         "HeliPlace1",
-        {
-          "x": 496,
-          "y": 24,
-          "z": 2,
-          "attachAlign": ["bottom", "left"],
-          "testAttach": "heli"
-        }
+        { "x": 496, "y": 24, "z": 2, "attachAlign": ["bottom", "left"] }
       ],
       [
         "HeliPlace2",
-        {
-          "x": 616,
-          "y": 24,
-          "z": 1,
-          "attachAlign": ["bottom", "left"],
-          "testAttach": "heli"
-        }
+        { "x": 616, "y": 24, "z": 1, "attachAlign": ["bottom", "left"] }
       ],
       [
         "Cabin2Place",
-        {
-          "x": 832,
-          "y": 24,
-          "z": 7,
-          "attachAlign": ["bottom", "left"],
-          "testAttach": "secondCabinOpen"
-        }
+        { "x": 832, "y": 24, "z": 7, "attachAlign": ["bottom", "left"] }
       ],
       [
         "DroneShipCorePlace",
-        {
-          "x": 976,
-          "y": -60,
-          "z": 12,
-          "attachAlign": ["top", "left"],
-          "testAttach": "engine"
-        }
+        { "x": 976, "y": -60, "z": 12, "attachAlign": ["top", "left"] }
       ]
     ]
   },
