@@ -1,8 +1,8 @@
 import { h, Component } from "preact";
-import { mount, showComposition } from "src/editor/lib/render-crafty";
-import styles from "./CompositionPreview.scss";
+import { mount, showEntity } from "src/editor/lib/render-crafty";
+import styles from "./EntityPreview.scss";
 
-export class CompositionPreview extends Component {
+export class EntityPreview extends Component {
   constructor() {
     super();
     this.state = { craftyMounted: false };
@@ -13,9 +13,9 @@ export class CompositionPreview extends Component {
     this.setState({ craftyMounted: true });
   };
 
-  render({ composition }, { craftyMounted }) {
+  render({ entity }, { craftyMounted }) {
     if (craftyMounted) {
-      showComposition(composition);
+      showEntity(entity);
     }
     return <div class={styles.preview} ref={this.mountCrafty} />;
   }

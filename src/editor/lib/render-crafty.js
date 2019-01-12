@@ -1,6 +1,7 @@
 import Crafty from "src/crafty-loader";
 import spritesheets from "src/data/spritesheets";
 import "src/components/Composable";
+import { createEntity } from "src/components/EntityDefinition";
 
 Crafty.paths({
   audio: "",
@@ -34,8 +35,8 @@ const addColor = (entity, color) =>
     .addComponent("Color")
     .color(color);
 
-Crafty.defineScene("ComposablePreview", data => {
-  const composable = createComposable(data.composition);
+Crafty.defineScene("ComposablePreview", ({ composition }) => {
+  const composable = createComposable(composition);
 
   composable.addComponent("SolidHitBox");
   addColor(composable, "#FF0000");
@@ -71,6 +72,10 @@ Crafty.defineScene("ComposablePreview", data => {
   Crafty.viewport.scale(scale);
 });
 
+Crafty.defineScene("EntityPreview", ({ entityName }) => {
+  createEntity(entityName);
+});
+
 export const showComposition = composition => {
   // load sprites
   const loader = {
@@ -81,5 +86,18 @@ export const showComposition = composition => {
   });
   Crafty.load(loader, () => {
     Crafty.enterScene("ComposablePreview", { composition });
+  });
+};
+
+export const showEntity = entityName => {
+  // load sprites
+  const loader = {
+    sprites: {}
+  };
+  spritesheets.forEach(sheet => {
+    loader.sprites[sheet.image] = sheet.map;
+  });
+  Crafty.load(loader, () => {
+    Crafty.enterScene("EntityPreview", { entityName });
   });
 };

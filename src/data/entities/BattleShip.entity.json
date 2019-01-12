@@ -26,7 +26,7 @@
           "components": ["DamageSupport"]
         },
         "hatch1": {
-          "entity": "CarrierHatch",
+          "entity": "ShipHatch",
           "attachments": {
             "floor": {
               "name": "turret",
@@ -35,7 +35,7 @@
           }
         },
         "hatch2": {
-          "entity": "CarrierHatch",
+          "entity": "ShipHatch",
           "attachments": {
             "floor": {
               "name": "turret",
@@ -44,7 +44,7 @@
           }
         },
         "hatch3": {
-          "entity": "CarrierHatch",
+          "entity": "ShipHatch",
           "attachments": {
             "floor": {
               "name": "turret",

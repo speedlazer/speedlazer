@@ -151,6 +151,7 @@ Crafty.c("Composable", {
         ([hookName]) => hookName === targetHookName
       ) || [])[1] || {};
     const hook = this.currentAttachHooks[targetHookName];
+    if (!hook) return;
     const alignment = hookSettings.attachAlign || ["top", "left"];
 
     const targetX = hook.x - widthFactor[alignment[1]] * entity.w;
