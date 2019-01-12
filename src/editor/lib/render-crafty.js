@@ -1,5 +1,5 @@
 import Crafty from "src/crafty-loader";
-import spritesheets from "src/editor/data/spritesheets";
+import spritesheets from "src/data/spritesheets";
 import "src/components/Composable";
 
 Crafty.paths({
@@ -52,18 +52,6 @@ Crafty.defineScene("ComposablePreview", data => {
     updateActualSize(actualSize, hook);
   });
 
-  composable.appliedDefinition.attachHooks
-    .filter(([, options]) => options.testAttach)
-    .forEach(([name, options]) => {
-      //const hook = composable.currentAttachHooks[name];
-      const attachComposition = data.file[options.testAttach];
-      const attachEntity = createComposable(attachComposition);
-
-      composable.attachEntity(name, attachEntity);
-
-      attachEntity.forEachPart(entity => updateActualSize(actualSize, entity));
-    });
-
   composable.forEachPart(entity => updateActualSize(actualSize, entity));
 
   const width = actualSize.maxX - actualSize.minX;
@@ -83,7 +71,7 @@ Crafty.defineScene("ComposablePreview", data => {
   Crafty.viewport.scale(scale);
 });
 
-export const showComposition = (composition, file) => {
+export const showComposition = composition => {
   // load sprites
   const loader = {
     sprites: {}
@@ -92,6 +80,6 @@ export const showComposition = (composition, file) => {
     loader.sprites[sheet.image] = sheet.map;
   });
   Crafty.load(loader, () => {
-    Crafty.enterScene("ComposablePreview", { composition, file });
+    Crafty.enterScene("ComposablePreview", { composition });
   });
 };

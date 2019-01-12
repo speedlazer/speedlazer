@@ -13,9 +13,9 @@ export class CompositionPreview extends Component {
     this.setState({ craftyMounted: true });
   };
 
-  render({ file, composition }, { craftyMounted }) {
+  render({ composition }, { craftyMounted }) {
     if (craftyMounted) {
-      showComposition(composition, file);
+      showComposition(composition);
     }
     return <div class={styles.preview} ref={this.mountCrafty} />;
   }

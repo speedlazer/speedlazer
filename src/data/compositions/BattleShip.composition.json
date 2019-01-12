@@ -1,5 +1,5 @@
 {
-  "deck": {
+  "battleship.deck": {
     "attributes": {
       "width": 1280,
       "height": 224
@@ -28,28 +28,28 @@
     ],
     "attachHooks": [
       [
-        "Cabin1Place",
+        "cabin1",
         { "x": 294, "y": 24, "z": 7, "attachAlign": ["bottom", "left"] }
       ],
       [
-        "HeliPlace1",
+        "heliPlace1",
         { "x": 496, "y": 24, "z": 2, "attachAlign": ["bottom", "left"] }
       ],
       [
-        "HeliPlace2",
+        "heliPlace2",
         { "x": 616, "y": 24, "z": 1, "attachAlign": ["bottom", "left"] }
       ],
       [
-        "Cabin2Place",
+        "cabin2",
         { "x": 832, "y": 24, "z": 7, "attachAlign": ["bottom", "left"] }
       ],
       [
-        "DroneShipCorePlace",
+        "engineCore",
         { "x": 976, "y": -60, "z": 12, "attachAlign": ["top", "left"] }
       ]
     ]
   },
-  "firstCabin": {
+  "battleship.firstCabin": {
     "attributes": {
       "width": 192,
       "height": 130
@@ -64,7 +64,7 @@
       ["aircraftCarrier5", { "x": 128, "y": 55, "z": 1 }]
     ]
   },
-  "secondCabin": {
+  "battleship.secondCabin": {
     "attributes": {
       "width": 256,
       "height": 130
@@ -82,7 +82,7 @@
       ["aircraftCarrier5", { "x": 76, "y": 40, "z": 1 }]
     ]
   },
-  "secondCabinOpen": {
+  "battleship.secondCabinOpen": {
     "attributes": {
       "width": 256,
       "height": 130
@@ -100,7 +100,7 @@
       ["aircraftCarrier5", { "x": 76, "y": 40, "z": 1 }]
     ]
   },
-  "engine": {
+  "battleship.engine": {
     "attributes": {
       "width": 96,
       "height": 96
@@ -108,7 +108,7 @@
     "hitbox": [16, 16, 80, 16, 80, 80, 16, 80],
     "sprites": [["aircraftCarrierEngine", { "x": 0, "y": 0 }]]
   },
-  "heli": {
+  "battleship.heli": {
     "attributes": {
       "width": 128,
       "height": 64,

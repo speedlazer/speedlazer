@@ -1,4 +1,4 @@
-import battleShipComposition from "./BattleShip.composition.json";
+import battleShipComposition from "src/data/compositions/BattleShip.composition.json";
 
 Crafty.c("BattleShip", {
   required:

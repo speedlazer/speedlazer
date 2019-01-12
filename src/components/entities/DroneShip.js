@@ -1,4 +1,4 @@
-import droneShipComposition from "./DroneShip.composition.json";
+import droneShipComposition from "src/data/compositions/DroneShip.composition.json";
 
 Crafty.c("DroneShip", {
   init() {

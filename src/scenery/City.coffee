@@ -2,7 +2,7 @@ LevelScenery = require('src/lib/LevelScenery').default
 cityScenery = require('src/images/city-scenery.png')
 citySceneryMap = require('src/images/city-scenery.map.json')
 extend = require('lodash/extend')
-introShipComposition = require('src/components/entities/IntroShip.composition.json')
+introShipComposition = require('src/data/compositions/IntroShip.composition.json')
 levelGenerator = require('src/lib/LevelGenerator')
 { lookup } = require('src/lib/random')
 

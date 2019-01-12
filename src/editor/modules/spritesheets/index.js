@@ -5,7 +5,7 @@ import { Menu } from "../../components/Menu";
 import { ScrollBox } from "../../components/ScrollBox";
 import { Highlight } from "./components/Highlight";
 import { h, Component } from "preact";
-import spritesheets from "src/editor/data/spritesheets";
+import spritesheets from "src/data/spritesheets";
 
 class Spritesheets extends Component {
   constructor() {
