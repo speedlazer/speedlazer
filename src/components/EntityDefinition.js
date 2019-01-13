@@ -2,10 +2,21 @@ import "src/components/Composable";
 import entities from "src/data/entities";
 import compositions from "src/data/compositions";
 
-export const createEntity = entityName =>
+const convertLocation = location => {
+  if (!location) return {};
+  let x = location.x;
+  let y = location.y;
+  if (location.rx) x = Crafty.viewport.width * location.rx;
+  if (location.ry) y = Crafty.viewport.height * location.ry;
+
+  return { x, y };
+};
+
+export const createEntity = (entityName, { location, ...settings }) =>
   Crafty.e("2D, WebGL, EntityDefinition")
     .attr({ x: 0, y: 0, w: 40, h: 40 })
-    .applyDefinition(entityName);
+    .applyDefinition(entityName)
+    .attr({ ...convertLocation(location), ...settings });
 
 const setEntityStructure = (entity, state) => {
   if (state.composition) {

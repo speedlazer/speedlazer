@@ -89,13 +89,13 @@ const battleship = async ({ spawn, wait /*, exec, move, when, call */ }) => {
   // spawn ship off screen
   const ship = spawn("BattleShip", {
     location: {
-      rx: 1.1,
+      rx: 0.2,
       ry: 0.7
     },
     defaultSpeed: 85
   });
 
-  await wait(5000);
+  await wait(50000);
   ship.destroy();
   /*
   await exec(shipMines, { amount: 10 });
