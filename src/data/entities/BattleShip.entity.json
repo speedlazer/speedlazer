@@ -1,72 +1,54 @@
 {
   "name": "BattleShip",
-  "states": {
-    "default": {
-      "composition": "battleship.deck",
-      "components": [
-        "ShipSolid",
-        [
-          "WaterSplashes",
-          {
-            "waterRadius": 10,
-            "minSplashDuration": 600,
-            "defaultWaterCooldown": 400,
-            "waterSplashSpeed": 700,
-            "minWaterOffset": -20
-          }
-        ],
-        ["Hideable", { "hideBelow": { "y": 540 } }]
+  "structure": {
+    "composition": "battleship.deck",
+    "components": [
+      "ShipSolid",
+      [
+        "WaterSplashes",
+        {
+          "waterRadius": 10,
+          "minSplashDuration": 600,
+          "defaultWaterCooldown": 400,
+          "waterSplashSpeed": 700,
+          "minWaterOffset": -20
+        }
       ],
-      "attachments": {
-        "cabin1": {
-          "composition": "battleship.firstCabin"
-        },
-        "cabin2": {
-          "composition": "battleship.secondCabin",
-          "components": ["DamageSupport"]
-        },
-        "hatch1": {
-          "entity": "ShipHatch",
-          "aattachments": {
-            "floor": {
-              "name": "turret",
-              "entity": "BulletTurret"
-            }
-          }
-        },
-        "hatch2": {
-          "entity": "ShipHatch",
-          "aattachments": {
-            "floor": {
-              "name": "turret",
-              "entity": "BulletTurret"
-            }
-          }
-        },
-        "hatch3": {
-          "entity": "ShipHatch",
-          "aattachments": {
-            "floor": {
-              "name": "turret",
-              "entity": "BulletTurret"
-            }
+      ["Hideable", { "hideBelow": { "y": 540 } }]
+    ],
+    "attachments": {
+      "cabin1": {
+        "composition": "battleship.firstCabin"
+      },
+      "cabin2": {
+        "composition": "battleship.secondCabin",
+        "components": ["DamageSupport"]
+      },
+      "hatch1": {
+        "entity": "ShipHatch",
+        "aattachments": {
+          "floor": {
+            "name": "turret",
+            "entity": "BulletTurret"
           }
         }
-      }
-    },
-    "fase1": {
-      "extends": "default",
-      "attachments": {
-        "mineCannon": {
-          "composition": "battleship.destroyedMineCannon"
+      },
+      "hatch2": {
+        "entity": "ShipHatch",
+        "aattachments": {
+          "floor": {
+            "name": "turret",
+            "entity": "BulletTurret"
+          }
         }
-      }
-    },
-    "fase2": {
-      "extends": "fase1",
-      "attachments": {
-        "cabin2": {
-          "composition": "battleship.secondCabinOpen"
+      },
+      "hatch3": {
+        "entity": "ShipHatch",
+        "aattachments": {
+          "floor": {
+            "name": "turret",
+            "entity": "BulletTurret"
+          }
         }
       }
     }

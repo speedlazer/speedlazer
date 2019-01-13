@@ -1,14 +1,6 @@
 {
   "name": "ShipHatch",
-  "states": {
-    "default": {
-      "composition": "shipHatchClosed"
-    },
-    "open": {
-      "composition": "shipHatchOpen"
-    }
-  },
-  "actions": {
-    "open": [["setState", "open", { "tweenDuration": 600 }]]
+  "structure": {
+    "composition": "shipHatch.closed"
   }
 }

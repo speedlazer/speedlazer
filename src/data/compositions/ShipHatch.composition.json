@@ -1,5 +1,5 @@
 {
-  "shipHatchClosed": {
+  "shipHatch.closed": {
     "attributes": {
       "width": 128,
       "height": 32
@@ -10,7 +10,7 @@
       ["aircraftCarrierWires", { "x": 80, "y": -20, "z": -4 }]
     ]
   },
-  "shipHatchOpen": {
+  "shipHatch.open": {
     "attributes": {
       "width": 128,
       "height": 32

@@ -75,7 +75,7 @@ const popupRandomCannon = async ({ call, action, delay, when }, { ship }) => {
   await action(hatch, "close");
 };
 
-const script = async ({ spawn, exec, move, when, call }) => {
+const battleship = async ({ spawn, exec, move, when, call }) => {
   // Fases:
   // - Mine cannon ✓
   // - Cabin 2 - low stress, Single cannon, invincible ✓
@@ -120,4 +120,4 @@ const script = async ({ spawn, exec, move, when, call }) => {
   );
 };
 
-export default script;
+export default battleship;
