@@ -102,6 +102,7 @@ Crafty.defineScene(
 
     new PauseMenu();
 
+    // TODO: Extract this later, or get rid of it somehow
     level.inventoryAdd("weapon", "lasers", { marking: "L" });
     level.inventoryAdd("ship", "life", { marking: "❤", icon: "heart" });
     level.inventoryAdd("shipUpgrade", "healthu", {
@@ -112,7 +113,8 @@ Crafty.defineScene(
     level.inventoryAdd("ship", "points", { marking: "P", icon: "star" });
 
     const scriptEnvironment = createScriptExecutionSpace(level);
-    stage1(scriptEnvironment);
+    await stage1(scriptEnvironment);
+    console.log("script finished!");
 
     //executeScript(startScript, options);
   },

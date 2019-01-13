@@ -1,51 +1,8 @@
-import spritesheets from "src/data/spritesheets";
-
-const dataFunctions = () => ({
-  loadSpriteSheets: async sheetNames =>
-    new Promise(resolve => {
-      const loader = {
-        sprites: {}
-      };
-      spritesheets
-        .filter(sheet => sheetNames.includes(sheet.name))
-        .forEach(sheet => {
-          loader.sprites[sheet.image] = sheet.map;
-        });
-      Crafty.load(loader, resolve);
-    })
-});
-
-const flowFunctions = () => ({
-  call: async (fn, ...args) => await fn(...args)
-});
-
-const levelFunctions = (state, level) => ({
-  setScrollingSpeed: async settings => {
-    const applySettings = {
-      accellerate: true,
-      x: 0,
-      y: 0,
-      ...settings
-    };
-    // TODO: Refactor setForcedSpeed internally
-    level.setForcedSpeed(applySettings, applySettings);
-  },
-  setScenery: async sceneryName => {
-    level.setScenery(sceneryName);
-  }
-});
-
-const shipFunctions = (state, level) => ({
-  setWeapons: async weapons => {
-    Crafty("PlayerControlledShip").each(function() {
-      this.clearItems();
-      weapons.forEach(weapon => {
-        this.installItem(level.inventory(weapon));
-      });
-    });
-    level.setStartWeapons(weapons);
-  }
-});
+import dataFunctions from "./dsl/data";
+import flowFunctions from "./dsl/flow";
+import levelFunctions from "./dsl/level";
+import shipFunctions from "./dsl/ship";
+import entityFunctions from "./dsl/entity";
 
 export const createScriptExecutionSpace = level => {
   // determine script 'seed' to stop execution
@@ -55,9 +12,10 @@ export const createScriptExecutionSpace = level => {
 
   const dsl = {
     ...dataFunctions(),
-    ...flowFunctions(),
     ...levelFunctions(state, level),
-    ...shipFunctions(state, level)
+    ...shipFunctions(state, level),
+    ...entityFunctions()
   };
+  Object.assign(dsl, flowFunctions(dsl));
   return dsl;
 };

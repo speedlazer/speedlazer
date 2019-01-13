@@ -1,4 +1,4 @@
-import { getOne, pickOne } from "src/utils";
+import { getOne, pickOne } from "src/lib/utils";
 import { EASE_IN_OUT } from "src/constants/easing";
 
 /**
@@ -75,7 +75,7 @@ const popupRandomCannon = async ({ call, action, delay, when }, { ship }) => {
   await action(hatch, "close");
 };
 
-const battleship = async ({ spawn, exec, move, when, call }) => {
+const battleship = async ({ spawn, wait /*, exec, move, when, call */ }) => {
   // Fases:
   // - Mine cannon ✓
   // - Cabin 2 - low stress, Single cannon, invincible ✓
@@ -94,6 +94,10 @@ const battleship = async ({ spawn, exec, move, when, call }) => {
     },
     defaultSpeed: 85
   });
+
+  await wait(5000);
+  ship.destroy();
+  /*
   await exec(shipMines, { amount: 10 });
   await move(ship, { rx: 0.8, easing: EASE_IN_OUT });
   await call(ship.mineCannon.allowDamage, { health: 600 });
@@ -118,6 +122,7 @@ const battleship = async ({ spawn, exec, move, when, call }) => {
       await popupRandomCannon(dsl, { ship });
     }
   );
+  */
 };
 
 export default battleship;
