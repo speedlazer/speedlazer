@@ -1,4 +1,5 @@
 import "src/components/utils/Scalable";
+import "src/components/utils/HideBelow";
 import "src/components/generic/TweenPromise";
 
 const definitionStructure = {
@@ -162,6 +163,11 @@ Crafty.c("Composable", {
       elem.crop(left, top, elem.w - right, elem.h - bottom);
     }
     if (options.flipX) elem.flip("X");
+    if (options.hideBelow) {
+      elem.addComponent("HideBelow").attr({
+        hideBelow: options.hideBelow
+      });
+    }
   },
 
   forEachPart(callback) {

@@ -1,6 +1,6 @@
-import Crafty from "src/crafty-loader";
 import spritesheets from "src/data/spritesheets";
 import "src/components/Composable";
+import "src/components/SpriteShader";
 import { createEntity } from "src/components/EntityDefinition";
 
 Crafty.paths({

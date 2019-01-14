@@ -17,7 +17,7 @@ Crafty.defaultShader(
       { name: "aSpriteDimensions", width: 4 }
     ],
     function(e, ent) {
-      let hideAt, s;
+      let s;
       const { co } = e;
       // Write texture coordinates
       e.program.writeVector(
@@ -93,10 +93,14 @@ Crafty.defaultShader(
         ocolor._blue / 255,
         overrideMode
       );
+
+      let hideAt = -1.0;
       if (ent.hideAt) {
         hideAt = Math.max(0, co.y + (ent.hideAt - ent.y) / ent.h * co.h);
-      } else {
-        hideAt = -1.0;
+      }
+      if (ent.hideBelow && ent._parent) {
+        const h = ent._parent.y + ent.hideBelow - ent.y;
+        hideAt = Math.max(0, co.y + h / ent.h * co.h);
       }
 
       e.program.writeVector(

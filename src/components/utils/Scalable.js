@@ -2,7 +2,7 @@ Crafty.c("Scalable", {
   properties: {
     scale: {
       set(v) {
-        return this._updateScale(v);
+        this._updateScale(v);
       },
       get() {
         return this._scale;
