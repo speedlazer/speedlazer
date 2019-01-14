@@ -102,7 +102,7 @@ Crafty.defineScene(
 
     new PauseMenu();
 
-    let newCode = false;
+    let newCode = true;
     if (newCode) {
       // TODO: Extract this later, or get rid of it somehow
       level.inventoryAdd("weapon", "lasers", { marking: "L" });

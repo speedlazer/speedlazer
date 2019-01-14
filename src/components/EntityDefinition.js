@@ -12,11 +12,13 @@ const convertLocation = location => {
   return { x, y };
 };
 
-export const createEntity = (entityName, { location, ...settings }) =>
-  Crafty.e("2D, WebGL, EntityDefinition")
+export const createEntity = (entityName, options = {}) => {
+  const { location, ...settings } = options;
+  return Crafty.e("2D, WebGL, EntityDefinition")
     .attr({ x: 0, y: 0, w: 40, h: 40 })
     .applyDefinition(entityName)
     .attr({ ...convertLocation(location), ...settings });
+};
 
 const setEntityStructure = (entity, state) => {
   if (state.composition) {

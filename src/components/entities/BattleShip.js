@@ -1,6 +1,6 @@
 import battleShipComposition from "src/data/compositions/BattleShip.composition.json";
 
-Crafty.c("BattleShip", {
+Crafty.c("OldBattleShip", {
   required:
     "2D, WebGL, Tween, Choreography, ShipSolid," +
     "Hideable, Flipable, Scalable, SunBlock, WaterSplashes," +

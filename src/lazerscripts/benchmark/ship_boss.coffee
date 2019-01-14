@@ -70,7 +70,7 @@ class Cabin2Active extends EntityScript
 class ShipBoss extends EntityScript
 
   spawn: (options) ->
-    Crafty.e('BattleShip').attr(
+    Crafty.e('OldBattleShip').attr(
       x: Crafty.viewport.width + 180
       y: 400
       defaultSpeed: options.speed ? 145

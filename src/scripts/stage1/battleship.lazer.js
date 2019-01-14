@@ -89,7 +89,7 @@ const battleship = async ({ spawn, wait /*, exec, move, when, call */ }) => {
   // spawn ship off screen
   const ship = spawn("BattleShip", {
     location: {
-      rx: 0.2,
+      rx: 0.1,
       ry: 0.7
     },
     defaultSpeed: 85
