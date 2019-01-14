@@ -187,7 +187,7 @@ Crafty.c("Composable", {
 
     const targetX = hook.x - widthFactor[alignment[1]] * entity.w;
     const targetY = hook.y - heightFactor[alignment[0]] * entity.h;
-    entity.attr({ x: targetX, y: targetY, z: hook.z });
+    entity.attr({ x: targetX, y: targetY, z: this.z + hook.z });
     this.attach(entity);
   },
 

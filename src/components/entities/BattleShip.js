@@ -15,7 +15,7 @@ Crafty.c("OldBattleShip", {
       waterSplashSpeed: 700,
       minOffset: -20
     });
-    this.compose(battleShipComposition["battkeship.deck"]);
+    this.compose(battleShipComposition["battleship.deck"]);
 
     this.hatch = Crafty.e("CarrierHatch, ShipHatch1").attr({
       x: this.x + 10 * 32,

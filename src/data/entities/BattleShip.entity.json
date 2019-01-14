@@ -14,7 +14,7 @@
           "minWaterOffset": -20
         }
       ],
-      ["HideBelow", { "hideBelow": { "y": 540 } }]
+      ["HideBelow", { "hideBelow": 540, "z": -12 }]
     ],
     "attachments": {
       "cabin1": {
