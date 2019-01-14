@@ -1,6 +1,6 @@
 {
   "name": "ShipHatch",
   "structure": {
-    "composition": "shipHatch.closed"
+    "composition": "shipHatch"
   }
 }

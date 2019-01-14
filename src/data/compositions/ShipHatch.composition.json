@@ -1,24 +1,21 @@
 {
-  "shipHatch.closed": {
+  "shipHatch": {
     "attributes": {
       "width": 128,
       "height": 32
     },
     "sprites": [
       ["aircraftCarrierOpenHatch", { "y": -4 }],
-      ["aircraftCarrierHatchLid", { "y": -4 }],
-      ["aircraftCarrierWires", { "x": 80, "y": -20, "z": -4 }]
-    ]
-  },
-  "shipHatch.open": {
-    "attributes": {
-      "width": 128,
-      "height": 32
-    },
-    "sprites": [
-      ["aircraftCarrierOpenHatch", { "y": -4 }],
-      ["aircraftCarrierHatchLid", { "x": -32, "y": 12 }],
-      ["aircraftCarrierWires", { "x": 80, "y": -20, "z": -4 }]
-    ]
+      ["aircraftCarrierHatchLid", { "y": -4, "key": "lid" }],
+      ["aircraftCarrierWires", { "x": 80, "y": -20, "z": -1 }]
+    ],
+    "frames": {
+      "closed": {
+        "lid": { "x": -4 }
+      },
+      "open": {
+        "lid": { "x": -31, "y": 12 }
+      }
+    }
   }
 }
