@@ -76,11 +76,19 @@ Crafty.defineScene("EntityPreview", ({ entityName }) => {
   createEntity(entityName);
 });
 
-export const showComposition = composition => {
+export const showComposition = (composition, options = {}) => {
   // load sprites
   const loader = {
     sprites: {}
   };
+  if (Crafty._current === "ComposablePreview" && options.frame) {
+    const currentComposable = Crafty("Composable").get(0);
+    if (currentComposable.appliedDefinition === composition) {
+      currentComposable.displayFrame(options.frame, options.tweenDuration);
+      return;
+    }
+  }
+
   spritesheets.forEach(sheet => {
     loader.sprites[sheet.image] = sheet.map;
   });

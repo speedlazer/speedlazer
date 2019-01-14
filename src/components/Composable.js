@@ -1,4 +1,5 @@
 import "src/components/utils/Scalable";
+import "src/components/generic/TweenPromise";
 
 const definitionStructure = {
   sprites: [],
@@ -18,6 +19,24 @@ const widthFactor = {
   center: 0.5,
   right: 1
 };
+
+const TWEEN_WHITELIST = ["x", "y", "z"];
+
+const deltaSettings = (settings, entity) =>
+  Object.entries(settings)
+    .filter(([name]) => TWEEN_WHITELIST.includes(name))
+    .map(([name, value]) => {
+      if (name === "x") {
+        return [name, entity.x + value];
+      } else if (name === "y") {
+        return [name, entity.y + value];
+      } else if (name === "z") {
+        return [name, entity.z + value];
+      } else {
+        return [name, value];
+      }
+    })
+    .reduce((result, [key, value]) => ({ ...result, [key]: value }), {});
 
 Crafty.c("Composable", {
   init() {
@@ -49,7 +68,7 @@ Crafty.c("Composable", {
         scale: definition.attributes.scale
       });
     }
-    this.appliedDefinition = definition;
+    this.appliedDefinition = proposedDefinition;
     return this;
   },
 
@@ -135,7 +154,13 @@ Crafty.c("Composable", {
       y: this.y + (options.y || 0),
       z: this.z + (options.z || 0)
     });
-
+    if (options.key) elem.attr({ key: options.key });
+    if (options.crop) {
+      // input: Top, Right, Bottom, Left (clockwise)
+      // output: left, top, width, height
+      const [top, right, bottom, left] = options.crop;
+      elem.crop(left, top, elem.w - right, elem.h - bottom);
+    }
     if (options.flipX) elem.flip("X");
   },
 
@@ -173,5 +198,33 @@ Crafty.c("Composable", {
       this.attach(hook);
       this.currentAttachHooks[label] = hook;
     });
+  },
+
+  async displayFrame(frameName, duration, easing = undefined) {
+    const frameData = this.appliedDefinition.frames[frameName];
+    if (!frameData) return;
+
+    const promises = Object.entries(frameData).map(([keyName, settings]) => {
+      const defaultSettings = {
+        x: 0,
+        y: 0,
+        z: 0,
+        ...(this.appliedDefinition.sprites.find(
+          ([, startSettings]) => startSettings.key === keyName
+        ) || [])[1]
+      };
+
+      const sprite = this.composableParts.find(
+        part => part.attr("key") === keyName
+      );
+      if (!sprite || !defaultSettings) return;
+      sprite.addComponent("TweenPromise");
+      const tweenSettings = deltaSettings(
+        { ...defaultSettings, ...settings },
+        this
+      );
+      sprite.tweenPromise(tweenSettings, duration, easing);
+    });
+    await Promise.all(promises);
   }
 });

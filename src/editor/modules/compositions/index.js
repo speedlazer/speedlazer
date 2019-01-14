@@ -3,7 +3,7 @@ import { Menu } from "../../components/Menu";
 import { h } from "preact";
 import compositions from "src/data/compositions";
 
-const Compositions = ({ compositionName }) => {
+const Compositions = ({ compositionName, frameName }) => {
   const activeComposition = compositions[compositionName];
 
   return (
@@ -15,8 +15,21 @@ const Compositions = ({ compositionName }) => {
           `/compositions/${key}`
         ])}
       />
+      {activeComposition &&
+        activeComposition.frames && (
+          <Menu
+            items={Object.keys(activeComposition.frames).map(key => [
+              key,
+              `/compositions/${compositionName}/frames/${key}`
+            ])}
+          />
+        )}
       {activeComposition && (
-        <CompositionPreview composition={activeComposition} />
+        <CompositionPreview
+          composition={activeComposition}
+          frame={frameName}
+          tweenDuration={1000}
+        />
       )}
     </section>
   );

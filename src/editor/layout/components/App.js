@@ -18,6 +18,7 @@ export const App = () => (
       <Spritesheets path="/editor/sprites/:map?" />
       <Spritesheets path="/editor/sprites/:map/:activeSprite" />
       <Compositions path="/editor/compositions/:compositionName?" />
+      <Compositions path="/editor/compositions/:compositionName/frames/:frameName" />
       <Entities path="/editor/entities/:entity?" />
     </Router>
   </div>

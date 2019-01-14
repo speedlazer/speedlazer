@@ -6,12 +6,15 @@
     },
     "sprites": [
       ["aircraftCarrierOpenHatch", { "y": -4 }],
-      ["aircraftCarrierHatchLid", { "y": -4, "key": "lid" }],
+      [
+        "aircraftCarrierHatchLid",
+        { "y": -4, "key": "lid", "crop": [2, 0, 0, 0] }
+      ],
       ["aircraftCarrierWires", { "x": 80, "y": -20, "z": -1 }]
     ],
     "frames": {
       "closed": {
-        "lid": { "x": -4 }
+        "lid": { "y": -4 }
       },
       "open": {
         "lid": { "x": -31, "y": 12 }
