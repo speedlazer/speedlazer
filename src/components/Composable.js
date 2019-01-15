@@ -160,7 +160,7 @@ Crafty.c("Composable", {
       // input: Top, Right, Bottom, Left (clockwise)
       // output: left, top, width, height
       const [top, right, bottom, left] = options.crop;
-      elem.crop(left, top, elem.w - right, elem.h - bottom);
+      elem.crop(left, top, elem.w - right - left, elem.h - bottom - top);
     }
     if (options.flipX) elem.flip("X");
     if (options.hideBelow) {
