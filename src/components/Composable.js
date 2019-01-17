@@ -21,7 +21,7 @@ const widthFactor = {
   right: 1
 };
 
-const TWEEN_WHITELIST = ["x", "y", "z"];
+const TWEEN_WHITELIST = ["x", "y", "z", "rotation"];
 
 const deltaSettings = (settings, entity) =>
   Object.entries(settings)
@@ -163,6 +163,9 @@ Crafty.c("Composable", {
       elem.crop(left, top, elem.w - right - left, elem.h - bottom - top);
     }
     if (options.flipX) elem.flip("X");
+    if (options.rotationOrigin) {
+      elem.origin(options.rotationOrigin.x, options.rotationOrigin.y);
+    }
     if (options.hideBelow) {
       elem.addComponent("HideBelow").attr({
         hideBelow: options.hideBelow

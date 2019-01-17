@@ -1,0 +1,31 @@
+{
+  "bulletCannon": {
+    "attributes": {
+      "width": 32,
+      "height": 20
+    },
+    "sprites": [
+      ["turretFoot", { "x": 0 }],
+      [
+        "mineCannon",
+        {
+          "x": -64,
+          "y": -24,
+          "key": "barrel",
+          "rotationOrigin": {
+            "x": 82,
+            "y": 24
+          }
+        }
+      ]
+    ],
+    "frames": {
+      "normal": {
+        "barrel": { "rotation": 0 }
+      },
+      "up": {
+        "barrel": { "rotation": 90 }
+      }
+    }
+  }
+}
