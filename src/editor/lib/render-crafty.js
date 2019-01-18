@@ -38,8 +38,8 @@ const addColor = (entity, color) =>
 Crafty.defineScene("ComposablePreview", ({ composition }) => {
   const composable = createComposable(composition);
 
-  composable.addComponent("SolidHitBox");
-  addColor(composable, "#FF0000");
+  //composable.addComponent("SolidHitBox");
+  //addColor(composable, "#FF0000");
 
   const actualSize = {
     minX: composable.x,

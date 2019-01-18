@@ -18,10 +18,9 @@ const Compositions = ({ compositionName, frameName }) => {
       {activeComposition &&
         activeComposition.frames && (
           <Menu
-            items={Object.keys(activeComposition.frames).map(key => [
-              key,
-              `/compositions/${compositionName}/frames/${key}`
-            ])}
+            items={["default", ...Object.keys(activeComposition.frames)].map(
+              key => [key, `/compositions/${compositionName}/frames/${key}`]
+            )}
           />
         )}
       {activeComposition && (

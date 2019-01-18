@@ -39,6 +39,21 @@ const deltaSettings = (settings, entity) =>
     })
     .reduce((result, [key, value]) => ({ ...result, [key]: value }), {});
 
+const generateDefaultFrame = definition => {
+  const result = {};
+  definition.sprites.filter(([, settings]) => settings.key).map(
+    ([, settings]) =>
+      (result[settings.key] = {
+        x: 0,
+        y: 0,
+        z: 0,
+        rotation: 0,
+        ...settings
+      })
+  );
+  return result;
+};
+
 Crafty.c("Composable", {
   init() {
     this.appliedDefinition = definitionStructure;
@@ -165,6 +180,7 @@ Crafty.c("Composable", {
     if (options.flipX) elem.flip("X");
     if (options.rotationOrigin) {
       elem.origin(options.rotationOrigin.x, options.rotationOrigin.y);
+      if (options.rotation) elem.attr({ rotation: options.rotation });
     }
     if (options.hideBelow) {
       elem.addComponent("HideBelow").attr({
@@ -210,7 +226,10 @@ Crafty.c("Composable", {
   },
 
   async displayFrame(frameName, duration, easing = undefined) {
-    const frameData = this.appliedDefinition.frames[frameName];
+    const frameData =
+      frameName === "default"
+        ? generateDefaultFrame(this.appliedDefinition)
+        : this.appliedDefinition.frames[frameName];
     if (!frameData) return;
 
     const promises = Object.entries(frameData).map(([keyName, settings]) => {

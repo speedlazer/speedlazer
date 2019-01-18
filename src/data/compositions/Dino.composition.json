@@ -1,0 +1,119 @@
+{
+  "dino": {
+    "attributes": {
+      "width": 200,
+      "height": 153
+    },
+    "sprites": [
+      [
+        "dinoBody",
+        { "z": 2, "rotationOrigin": { "x": 82, "y": 24 }, "key": "body" }
+      ],
+      [
+        "dinoTentacles",
+        { "x": 26, "y": 37, "z": 2, "rotationOrigin": { "x": 16, "y": 16 } }
+      ],
+      [
+        "dinoArm",
+        { "x": 16, "y": 82, "z": 3, "rotationOrigin": { "x": 34, "y": 16 } }
+      ],
+      [
+        "dinoNeck",
+        { "x": -32, "y": 42, "z": 1, "rotationOrigin": { "x": 50, "y": 16 } }
+      ],
+      [
+        "dinoJaw",
+        {
+          "x": -89,
+          "y": 52,
+          "z": 1,
+          "rotationOrigin": { "x": 70, "y": 16 },
+          "key": "jaw"
+        }
+      ],
+      [
+        "dinoTongue",
+        { "x": -39, "y": 52, "z": -1, "rotationOrigin": { "x": 70, "y": 16 } }
+      ],
+      [
+        "dinoHead",
+        {
+          "x": -94,
+          "y": 23,
+          "z": 2,
+          "rotationOrigin": { "x": 70, "y": 37 },
+          "key": "head"
+        }
+      ],
+      [
+        "dinoTail",
+        { "x": 124, "y": 24, "z": 1, "rotationOrigin": { "x": 10, "y": 22 } }
+      ],
+      [
+        "dinoUpperLeg",
+        { "x": 116, "y": 46, "z": 3, "rotationOrigin": { "x": 32, "y": 16 } }
+      ],
+      [
+        "dinoLowerLeg",
+        {
+          "x": 144,
+          "y": 86,
+          "z": 5,
+          "rotation": -55,
+          "rotationOrigin": { "x": 16, "y": 16 }
+        }
+      ],
+      [
+        "dinoFeet",
+        { "x": 172, "y": 114, "z": 6, "rotationOrigin": { "x": 26, "y": 8 } }
+      ],
+      [
+        "dinoToes",
+        { "x": 157, "y": 118, "z": 7, "rotationOrigin": { "x": 22, "y": 20 } }
+      ],
+      [
+        "dinoBackUpperLeg",
+        {
+          "x": 114,
+          "y": 36,
+          "z": -3,
+          "rotationOrigin": { "x": 22, "y": 20 }
+        }
+      ],
+      [
+        "dinoBackLowerLeg",
+        {
+          "x": 114,
+          "y": 63,
+          "z": -2,
+          "rotationOrigin": { "x": 16, "y": 20 }
+        }
+      ],
+      [
+        "dinoBackFeet",
+        {
+          "x": 98,
+          "y": 95,
+          "z": -1,
+          "rotationOrigin": { "x": 24, "y": 16 }
+        }
+      ],
+      [
+        "dinoBackToes",
+        {
+          "x": 82,
+          "y": 95,
+          "z": 0,
+          "rotationOrigin": { "x": 26, "y": 11 }
+        }
+      ]
+    ],
+    "frames": {
+      "roar1": {
+        "head": { "rotation": 40 },
+        "jaw": { "rotation": -42, "y": -8 },
+        "body": { "rotation": 20 }
+      }
+    }
+  }
+}
