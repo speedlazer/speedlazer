@@ -5,21 +5,32 @@
       "height": 153
     },
     "sprites": [
-      [
-        "dinoBody",
-        { "z": 2, "rotationOrigin": { "x": 82, "y": 24 }, "key": "body" }
-      ],
+      ["dinoBody", { "z": 2, "ro": [82, 24], "key": "body" }],
       [
         "dinoTentacles",
-        { "x": 26, "y": 37, "z": 2, "rotationOrigin": { "x": 16, "y": 16 } }
+        { "x": 26, "y": 37, "z": 2, "ro": [16, 16], "attachTo": "body" }
       ],
       [
         "dinoArm",
-        { "x": 16, "y": 82, "z": 3, "rotationOrigin": { "x": 34, "y": 16 } }
+        {
+          "x": 16,
+          "y": 82,
+          "z": 3,
+          "ro": [34, 16],
+          "key": "arm",
+          "attachTo": "body"
+        }
       ],
       [
         "dinoNeck",
-        { "x": -32, "y": 42, "z": 1, "rotationOrigin": { "x": 50, "y": 16 } }
+        {
+          "x": -32,
+          "y": 42,
+          "z": 1,
+          "ro": [50, 16],
+          "key": "neck",
+          "attachTo": "body"
+        }
       ],
       [
         "dinoJaw",
@@ -27,13 +38,21 @@
           "x": -89,
           "y": 52,
           "z": 1,
-          "rotationOrigin": { "x": 70, "y": 16 },
-          "key": "jaw"
+          "ro": [70, 16],
+          "key": "jaw",
+          "attachTo": "neck"
         }
       ],
       [
         "dinoTongue",
-        { "x": -39, "y": 52, "z": -1, "rotationOrigin": { "x": 70, "y": 16 } }
+        {
+          "x": -39,
+          "y": 52,
+          "z": -1,
+          "ro": [70, 16],
+          "attachTo": "neck",
+          "key": "tongue"
+        }
       ],
       [
         "dinoHead",
@@ -41,17 +60,25 @@
           "x": -94,
           "y": 23,
           "z": 2,
-          "rotationOrigin": { "x": 70, "y": 37 },
-          "key": "head"
+          "ro": [70, 37],
+          "key": "head",
+          "attachTo": "neck"
         }
       ],
       [
         "dinoTail",
-        { "x": 124, "y": 24, "z": 1, "rotationOrigin": { "x": 10, "y": 22 } }
+        { "x": 124, "y": 24, "z": 1, "ro": [10, 22], "attachTo": "body" }
       ],
       [
         "dinoUpperLeg",
-        { "x": 116, "y": 46, "z": 3, "rotationOrigin": { "x": 32, "y": 16 } }
+        {
+          "x": 116,
+          "y": 46,
+          "z": 3,
+          "ro": [32, 16],
+          "key": "upperLeg",
+          "attachTo": "body"
+        }
       ],
       [
         "dinoLowerLeg",
@@ -60,16 +87,25 @@
           "y": 86,
           "z": 5,
           "rotation": -55,
-          "rotationOrigin": { "x": 16, "y": 16 }
+          "ro": [16, 16],
+          "key": "lowerLeg",
+          "attachTo": "upperLeg"
         }
       ],
       [
         "dinoFeet",
-        { "x": 172, "y": 114, "z": 6, "rotationOrigin": { "x": 26, "y": 8 } }
+        {
+          "x": 172,
+          "y": 114,
+          "z": 6,
+          "ro": [26, 8],
+          "key": "feet",
+          "attachTo": "lowerLeg"
+        }
       ],
       [
         "dinoToes",
-        { "x": 157, "y": 118, "z": 7, "rotationOrigin": { "x": 22, "y": 20 } }
+        { "x": 157, "y": 118, "z": 7, "ro": [22, 20], "attachTo": "feet" }
       ],
       [
         "dinoBackUpperLeg",
@@ -77,7 +113,9 @@
           "x": 114,
           "y": 36,
           "z": -3,
-          "rotationOrigin": { "x": 22, "y": 20 }
+          "ro": [22, 20],
+          "key": "backUpperLeg",
+          "attachTo": "body"
         }
       ],
       [
@@ -86,7 +124,9 @@
           "x": 114,
           "y": 63,
           "z": -2,
-          "rotationOrigin": { "x": 16, "y": 20 }
+          "ro": [16, 20],
+          "key": "backLowerLeg",
+          "attachTo": "backUpperLeg"
         }
       ],
       [
@@ -95,7 +135,9 @@
           "x": 98,
           "y": 95,
           "z": -1,
-          "rotationOrigin": { "x": 24, "y": 16 }
+          "ro": [24, 16],
+          "key": "backFeet",
+          "attachTo": "backLowerLeg"
         }
       ],
       [
@@ -104,15 +146,26 @@
           "x": 82,
           "y": 95,
           "z": 0,
-          "rotationOrigin": { "x": 26, "y": 11 }
+          "ro": [26, 11],
+          "key": "backToes",
+          "attachTo": "backFeet"
         }
       ]
     ],
     "frames": {
       "roar1": {
         "head": { "rotation": 40 },
-        "jaw": { "rotation": -42, "y": 44 },
-        "body": { "rotation": 20 }
+        "jaw": { "rotation": -42, "x": -8 },
+        "tongue": { "x": -20 },
+        "neck": { "rotation": 0 },
+        "body": { "rotation": 20 },
+        "arm": { "rotation": -40 },
+        "tail": { "rotation": -10 },
+        "topLeg": { "rotation": 25 },
+        "bottomLeg": { "rotation": -50 },
+        "feet": { "rotation": -10 },
+        "toes": { "rotation": -10 },
+        "upperLegBack": { "rotation": 10 }
       }
     }
   }

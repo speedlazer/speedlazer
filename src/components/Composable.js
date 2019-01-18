@@ -1,6 +1,7 @@
 import "src/components/utils/Scalable";
 import "src/components/utils/HideBelow";
 import "src/components/generic/TweenPromise";
+import "src/components/generic/Delta2D";
 
 const definitionStructure = {
   sprites: [],
@@ -23,16 +24,16 @@ const widthFactor = {
 
 const TWEEN_WHITELIST = ["x", "y", "z", "rotation"];
 
-const deltaSettings = (settings, entity) =>
+const deltaSettings = settings =>
   Object.entries(settings)
     .filter(([name]) => TWEEN_WHITELIST.includes(name))
     .map(([name, value]) => {
       if (name === "x") {
-        return [name, entity.x + value];
+        return ["dx", value];
       } else if (name === "y") {
-        return [name, entity.y + value];
+        return ["dy", value];
       } else if (name === "z") {
-        return [name, entity.z + value];
+        return [name, value];
       } else {
         return [name, value];
       }
@@ -44,11 +45,11 @@ const generateDefaultFrame = definition => {
   definition.sprites.filter(([, settings]) => settings.key).map(
     ([, settings]) =>
       (result[settings.key] = {
-        x: 0,
-        y: 0,
         z: 0,
         rotation: 0,
-        ...settings
+        ...settings,
+        x: 0,
+        y: 0
       })
   );
   return result;
@@ -155,10 +156,23 @@ Crafty.c("Composable", {
       .concat(
         additions.map(spriteData => this.createAndAttachSprite(spriteData))
       );
+
+    const spriteParts = spriteList.map((spriteData, index) => ({
+      definition: spriteData,
+      entity: this.composableParts[index]
+    }));
+    spriteParts
+      .filter(({ definition }) => definition[1].attachTo)
+      .forEach(({ definition, entity }) => {
+        const attachTarget = spriteParts.find(
+          part => part.definition[1].key === definition[1].attachTo
+        );
+        attachTarget && attachTarget.entity.attach(entity);
+      });
   },
 
   createAndAttachSprite([spriteName, options]) {
-    const subElem = Crafty.e(`2D, WebGL, ${spriteName}`);
+    const subElem = Crafty.e(`2D, WebGL, Delta2D, ${spriteName}`);
     this.applySpriteOptions(subElem, options);
     this.attach(subElem);
     return subElem;
@@ -178,8 +192,9 @@ Crafty.c("Composable", {
       elem.crop(left, top, elem.w - right - left, elem.h - bottom - top);
     }
     if (options.flipX) elem.flip("X");
-    if (options.rotationOrigin) {
-      elem.origin(options.rotationOrigin.x, options.rotationOrigin.y);
+    if (options.ro) {
+      const [rx, ry] = options.ro;
+      elem.origin(rx, ry);
       if (options.rotation) elem.attr({ rotation: options.rotation });
     }
     if (options.hideBelow) {
@@ -234,12 +249,12 @@ Crafty.c("Composable", {
 
     const promises = Object.entries(frameData).map(([keyName, settings]) => {
       const defaultSettings = {
-        x: 0,
-        y: 0,
         z: 0,
         ...(this.appliedDefinition.sprites.find(
           ([, startSettings]) => startSettings.key === keyName
-        ) || [])[1]
+        ) || [])[1],
+        x: 0,
+        y: 0
       };
 
       const sprite = this.composableParts.find(
@@ -247,10 +262,7 @@ Crafty.c("Composable", {
       );
       if (!sprite || !defaultSettings) return;
       sprite.addComponent("TweenPromise");
-      const tweenSettings = deltaSettings(
-        { ...defaultSettings, ...settings },
-        this
-      );
+      const tweenSettings = deltaSettings({ ...defaultSettings, ...settings });
       sprite.tweenPromise(tweenSettings, duration, easing);
     });
     await Promise.all(promises);
