@@ -111,7 +111,7 @@
     "frames": {
       "roar1": {
         "head": { "rotation": 40 },
-        "jaw": { "rotation": -42, "y": -8 },
+        "jaw": { "rotation": -42, "y": 44 },
         "body": { "rotation": 20 }
       }
     }
