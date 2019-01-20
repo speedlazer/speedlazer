@@ -55,6 +55,15 @@ const generateDefaultFrame = definition => {
   return result;
 };
 
+const getSpriteByKey = (entity, key) => {
+  let index = null;
+  entity.appliedDefinition.sprites.forEach((def, idx) => {
+    if (def[1].key === key) index = idx;
+  });
+  if (index === null) return null;
+  return entity.composableParts[index];
+};
+
 Crafty.c("Composable", {
   init() {
     this.appliedDefinition = definitionStructure;
@@ -72,6 +81,14 @@ Crafty.c("Composable", {
 
     this.setOwnAttributes(definition.attributes);
     this.buildSprites(definition.sprites);
+    this.appliedDefinition = proposedDefinition;
+
+    this.forEachPart((entity, index) => {
+      const definition = this.spriteOptions(index);
+      if (!definition.attachTo) return;
+      const attachTarget = getSpriteByKey(this, definition.attachTo);
+      attachTarget && attachTarget.attach(entity);
+    });
 
     this.buildAttachHooks(definition.attachHooks);
     if (definition.hitbox.length > 0) {
@@ -85,7 +102,6 @@ Crafty.c("Composable", {
         scale: definition.attributes.scale
       });
     }
-    this.appliedDefinition = proposedDefinition;
     return this;
   },
 
@@ -156,20 +172,6 @@ Crafty.c("Composable", {
       .concat(
         additions.map(spriteData => this.createAndAttachSprite(spriteData))
       );
-
-    const spriteParts = spriteList.map((spriteData, index) => ({
-      definition: spriteData,
-      entity: this.composableParts[index]
-    }));
-
-    spriteParts
-      .filter(({ definition }) => definition[1].attachTo)
-      .forEach(({ definition, entity }) => {
-        const attachTarget = spriteParts.find(
-          part => part.definition[1].key === definition[1].attachTo
-        );
-        attachTarget && attachTarget.entity.attach(entity);
-      });
   },
 
   createAndAttachSprite([spriteName, options]) {
@@ -207,8 +209,12 @@ Crafty.c("Composable", {
 
   forEachPart(callback) {
     this.composableParts.forEach((elem, idx, list) =>
-      callback(elem, this.appliedDefinition.sprites[idx][1], idx, list)
+      callback(elem, idx, list)
     );
+  },
+
+  spriteOptions(index) {
+    return this.appliedDefinition.sprites[index][1];
   },
 
   attachEntity(targetHookName, entity) {
@@ -236,7 +242,12 @@ Crafty.c("Composable", {
         w: 10,
         h: 10
       });
-      this.attach(hook);
+      if (options.attachTo) {
+        const elem = getSpriteByKey(this, options.attachTo);
+        elem ? elem.attach(hook) : this.attach(hook);
+      } else {
+        this.attach(hook);
+      }
       this.currentAttachHooks[label] = hook;
     });
   },
