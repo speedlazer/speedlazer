@@ -1,5 +1,6 @@
 import spritesheets from "src/data/spritesheets";
 import "src/components/Composable";
+import "src/components/DebugComposable";
 import "src/components/SpriteShader";
 import { createEntity } from "src/components/EntityDefinition";
 
@@ -7,6 +8,8 @@ Crafty.paths({
   audio: "",
   images: ""
 });
+
+window.Crafty = Crafty;
 
 const SCREEN_WIDTH = 900;
 const SCREEN_HEIGHT = 600;
@@ -25,7 +28,7 @@ const updateActualSize = (actualSize, entity) => {
 };
 
 const createComposable = composition =>
-  Crafty.e("2D, WebGL, Composable")
+  Crafty.e("2D, WebGL, Composable, DebugComposable")
     .attr({ x: 0, y: 0, w: 40, h: 40 })
     .compose(composition);
 
@@ -35,19 +38,16 @@ const addColor = (entity, color) =>
     .addComponent("Color")
     .color(color);
 
-const applyDisplayOptions = (entity, options) => {
+const scaleScreenForEntity = entity => {
   const actualSize = {
     minX: entity.x,
     maxX: entity.x + entity.w,
     minY: entity.y,
     maxY: entity.y + entity.h
   };
-
   Object.values(entity.currentAttachHooks).forEach(hook => {
-    hook.addComponent("SolidHitBox");
     updateActualSize(actualSize, hook);
   });
-
   entity.forEachPart(entity => updateActualSize(actualSize, entity));
 
   const width = actualSize.maxX - actualSize.minX;
@@ -64,24 +64,32 @@ const applyDisplayOptions = (entity, options) => {
     y: (maxHeight - height) / 2 + offset.y
   });
 
+  Crafty.viewport.scale(scale);
+};
+
+const applyDisplayOptions = (entity, options) => {
+  Object.values(entity.currentAttachHooks).forEach(hook => {
+    options.showAttachPoints
+      ? hook.addComponent("SolidHitBox")
+      : hook.removeComponent("SolidHitBox");
+  });
+
   if (options.showSize) {
     addColor(entity, "#FF0000");
   } else {
-    entity.removeComponent("Color");
+    if (entity.has("Color")) {
+      entity.color("#000000", 0);
+    }
   }
 
-  if (options.showHitBox) {
-    entity.addComponent("SolidHitBox");
-  } else {
-    entity.removeComponent("SolidHitBox");
-  }
-
-  Crafty.viewport.scale(scale);
+  entity.displayHitBoxes(options.showHitBox);
+  entity.displayRotationPoints(options.showRotationPoints);
 };
 
 Crafty.defineScene("ComposablePreview", ({ composition, options }) => {
   const composable = createComposable(composition);
   applyDisplayOptions(composable, options);
+  scaleScreenForEntity(composable);
 });
 
 Crafty.defineScene("EntityPreview", ({ entityName }) => {

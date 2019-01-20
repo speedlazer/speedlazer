@@ -1,8 +1,8 @@
 {
   "battleship.deck": {
     "attributes": {
-      "width": 1280,
-      "height": 224
+      "width": 1390,
+      "height": 170
     },
     "hitbox": [20, 60, 1280, 60, 1280, 188, 20, 188],
     "sprites": [

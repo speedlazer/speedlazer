@@ -1,12 +1,12 @@
 {
   "bulletCannon": {
     "attributes": {
-      "width": 32,
-      "height": 20
+      "width": 100,
+      "height": 50
     },
     "sprites": [
-      ["turretFoot", { "x": 0 }],
-      ["mineCannon", { "x": -64, "y": -24, "key": "barrel", "ro": [82, 24] }]
+      ["turretFoot", { "x": 64, "y": 24 }],
+      ["mineCannon", { "x": 0, "y": 0, "key": "barrel", "ro": [82, 24] }]
     ],
     "frames": {
       "up": {

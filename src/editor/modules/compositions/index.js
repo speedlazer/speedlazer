@@ -4,19 +4,42 @@ import { h, Component } from "preact";
 import compositions from "src/data/compositions";
 import style from "./style.scss";
 
+const Setting = ({ checked, onCheck, children }) => (
+  <label class={style.text}>
+    <input type="checkbox" onChange={onCheck} checked={checked} /> {children}
+  </label>
+);
+
 class Compositions extends Component {
   constructor() {
     super();
     this.state = {
       showSize: false,
       showHitBox: false,
-      showRotationPoints: false
+      showRotationPoints: false,
+      showAttachPoints: false
     };
   }
 
+  updateShowSize = e => {
+    this.setState({ showSize: e.target.checked });
+  };
+
+  updateShowHitBox = e => {
+    this.setState({ showHitBox: e.target.checked });
+  };
+
+  updateShowRotationPoints = e => {
+    this.setState({ showRotationPoints: e.target.checked });
+  };
+
+  updateShowAttachPoints = e => {
+    this.setState({ showAttachPoints: e.target.checked });
+  };
+
   render(
     { compositionName, frameName },
-    { showSize, showHitBox, showRotationPoints }
+    { showSize, showHitBox, showRotationPoints, showAttachPoints }
   ) {
     const activeComposition = compositions[compositionName];
 
@@ -30,36 +53,24 @@ class Compositions extends Component {
           ])}
         />
         <div>
-          <label class={style.text}>
-            <input
-              type="checkbox"
-              onChange={e => {
-                this.setState({ showSize: e.target.checked });
-              }}
-              checked={showSize}
-            />{" "}
+          <Setting checked={showSize} onCheck={this.updateShowSize}>
             Show size
-          </label>
-          <label class={style.text}>
-            <input
-              type="checkbox"
-              onChange={e => {
-                this.setState({ showHitBox: e.target.checked });
-              }}
-              checked={showHitBox}
-            />{" "}
+          </Setting>
+          <Setting checked={showHitBox} onCheck={this.updateShowHitBox}>
             Show hitbox
-          </label>
-          <label class={style.text}>
-            <input
-              type="checkbox"
-              onChange={e => {
-                this.setState({ showRotationPoints: e.target.checked });
-              }}
-              checked={showRotationPoints}
-            />{" "}
+          </Setting>
+          <Setting
+            checked={showRotationPoints}
+            onCheck={this.updateShowRotationPoints}
+          >
             Show rotation points
-          </label>
+          </Setting>
+          <Setting
+            checked={showAttachPoints}
+            onCheck={this.updateShowAttachPoints}
+          >
+            Show attach points
+          </Setting>
         </div>
         {activeComposition &&
           activeComposition.frames && (
@@ -77,6 +88,7 @@ class Compositions extends Component {
             showSize={showSize}
             showHitBox={showHitBox}
             showRotationPoints={showRotationPoints}
+            showAttachPoints={showAttachPoints}
           />
         )}
       </section>

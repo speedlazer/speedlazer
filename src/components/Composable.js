@@ -161,6 +161,7 @@ Crafty.c("Composable", {
       definition: spriteData,
       entity: this.composableParts[index]
     }));
+
     spriteParts
       .filter(({ definition }) => definition[1].attachTo)
       .forEach(({ definition, entity }) => {
@@ -206,7 +207,7 @@ Crafty.c("Composable", {
 
   forEachPart(callback) {
     this.composableParts.forEach((elem, idx, list) =>
-      callback(elem, idx, list)
+      callback(elem, this.appliedDefinition.sprites[idx][1], idx, list)
     );
   },
 
