@@ -2,7 +2,7 @@
   "bulletCannon": {
     "attributes": {
       "width": 100,
-      "height": 50
+      "height": 42
     },
     "sprites": [
       ["turretFoot", { "x": 64, "y": 24 }],

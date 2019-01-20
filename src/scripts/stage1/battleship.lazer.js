@@ -54,28 +54,31 @@ import { EASE_IN_OUT } from "src/constants/easing";
 const shipMines = async () => {};
 const fireMine = async () => {};
 
-const popupRandomCannon = async ({ call, action, delay, when }, { ship }) => {
+const popupRandomCannon = async (
+  { call, displayFrame, wait, when },
+  { ship }
+) => {
   const hatch = pickOne([ship.hatch1, ship.hatch2, ship.hatch3]);
-  await action(hatch, "open");
-  await action(hatch, "rise");
-  await delay(1000);
+  await displayFrame(hatch, "open", 500, EASE_IN_OUT);
+  await displayFrame(hatch, "risen", 500, EASE_IN_OUT);
+  await wait(10000);
 
-  const target = getOne("PlayerShip");
-  await call(hatch.turret.aim, { target: target });
-  await action(hatch, "fire");
-  await when(
-    async ({ delay }) => await delay(5000),
-    async ({ call, delay }) => {
-      await call(hatch.turret.aim, { target: target });
-      await delay(80);
-    }
-  );
-  await call(hatch.turret.resetAim);
-  await action(hatch, "lower");
-  await action(hatch, "close");
+  //const target = getOne("PlayerShip");
+  //await call(hatch.turret.aim, { target: target });
+  //await action(hatch, "fire");
+  //await when(
+  //async ({ delay }) => await delay(5000),
+  //async ({ call, delay }) => {
+  //await call(hatch.turret.aim, { target: target });
+  //await delay(80);
+  //}
+  //);
+  //await call(hatch.turret.resetAim);
+  await displayFrame(hatch, "open", 500, EASE_IN_OUT);
+  await displayFrame(hatch, "default", 500, EASE_IN_OUT);
 };
 
-const battleship = async ({ spawn, wait /*, exec, move, when, call */ }) => {
+const battleship = async ({ spawn, wait, exec /*move, when, call */ }) => {
   // Fases:
   // - Mine cannon ✓
   // - Cabin 2 - low stress, Single cannon, invincible ✓
@@ -95,6 +98,10 @@ const battleship = async ({ spawn, wait /*, exec, move, when, call */ }) => {
     defaultSpeed: 85
   });
 
+  await wait(4000);
+  await exec(popupRandomCannon, { ship });
+  await wait(4000);
+  await exec(popupRandomCannon, { ship });
   await wait(50000);
   ship.destroy();
   /*

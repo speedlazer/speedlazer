@@ -22,7 +22,7 @@ const widthFactor = {
   right: 1
 };
 
-const TWEEN_WHITELIST = ["x", "y", "z", "rotation"];
+const TWEEN_WHITELIST = ["x", "y", "rotation"];
 
 const deltaSettings = settings =>
   Object.entries(settings)
@@ -32,8 +32,6 @@ const deltaSettings = settings =>
         return ["dx", value];
       } else if (name === "y") {
         return ["dy", value];
-      } else if (name === "z") {
-        return [name, value];
       } else {
         return [name, value];
       }
@@ -106,12 +104,17 @@ Crafty.c("Composable", {
   },
 
   updateChildrenOrder() {
-    const newZ = this.z;
+    const zDelta = this.z - this.currentZ;
+
     this.forEachPart(part => {
-      const zDelta = part.z - this.currentZ;
-      part.z = newZ + zDelta;
+      part.z += zDelta;
     });
-    this.currentZ = newZ;
+
+    Object.entries(this.currentAttachHooks).forEach(([, hook]) => {
+      hook.z += zDelta;
+      hook.currentAttachment && (hook.currentAttachment.z += zDelta);
+    });
+    this.currentZ = this.z;
   },
 
   setOwnAttributes(attributes) {
@@ -229,8 +232,9 @@ Crafty.c("Composable", {
 
     const targetX = hook.x - widthFactor[alignment[1]] * entity.w;
     const targetY = hook.y - heightFactor[alignment[0]] * entity.h;
-    entity.attr({ x: targetX, y: targetY, z: this.z + hook.z });
-    this.attach(entity);
+    entity.attr({ x: targetX, y: targetY, z: hook.z });
+    hook.attach(entity);
+    hook.attr({ currentAttachment: entity });
   },
 
   buildAttachHooks(attachHooks) {
@@ -241,7 +245,8 @@ Crafty.c("Composable", {
         y: this.y + (options.y || 0),
         z: this.z + (options.z || 0),
         w: 10,
-        h: 10
+        h: 10,
+        currentAttachment: null
       });
       if (options.attachTo) {
         const elem = getSpriteByKey(this, options.attachTo);

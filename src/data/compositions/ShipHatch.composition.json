@@ -8,7 +8,7 @@
       ["aircraftCarrierOpenHatch", { "y": -4, "x": -12 }],
       [
         "aircraftCarrierHatchLid",
-        { "y": -2, "x": -12, "key": "lid", "crop": [2, 0, 0, 0], "z": 1 }
+        { "y": -2, "x": -12, "key": "lid", "crop": [2, 0, 0, 0], "z": 3 }
       ],
       ["aircraftCarrierWires", { "x": 68, "y": -20, "z": -1 }],
       [
@@ -16,6 +16,7 @@
         {
           "x": -11,
           "y": 80,
+          "z": 1,
           "key": "floor",
           "crop": [18, 3, 0, 0],
           "hideBelow": 28
@@ -27,14 +28,15 @@
         "payload",
         {
           "x": 64,
-          "y": 80,
+          "y": 86,
+          "z": 5,
           "attachAlign": ["bottom", "center"],
           "attachTo": "floor"
         }
       ]
     ],
     "frames": {
-      "lowered": {
+      "open": {
         "lid": { "x": -30, "y": 16 },
         "floor": { "x": 0, "y": 0 }
       },
