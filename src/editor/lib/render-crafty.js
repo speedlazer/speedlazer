@@ -35,41 +35,53 @@ const addColor = (entity, color) =>
     .addComponent("Color")
     .color(color);
 
-Crafty.defineScene("ComposablePreview", ({ composition }) => {
-  const composable = createComposable(composition);
-
-  //composable.addComponent("SolidHitBox");
-  //addColor(composable, "#FF0000");
-
+const applyDisplayOptions = (entity, options) => {
   const actualSize = {
-    minX: composable.x,
-    maxX: composable.x + composable.w,
-    minY: composable.y,
-    maxY: composable.y + composable.h
+    minX: entity.x,
+    maxX: entity.x + entity.w,
+    minY: entity.y,
+    maxY: entity.y + entity.h
   };
 
-  Object.values(composable.currentAttachHooks).forEach(hook => {
+  Object.values(entity.currentAttachHooks).forEach(hook => {
     hook.addComponent("SolidHitBox");
     updateActualSize(actualSize, hook);
   });
 
-  composable.forEachPart(entity => updateActualSize(actualSize, entity));
+  entity.forEachPart(entity => updateActualSize(actualSize, entity));
 
   const width = actualSize.maxX - actualSize.minX;
   const height = actualSize.maxY - actualSize.minY;
   const offset = {
-    x: composable.x - actualSize.minX,
-    y: composable.y - actualSize.minY
+    x: entity.x - actualSize.minX,
+    y: entity.y - actualSize.minY
   };
   const scale = Math.min(SCREEN_WIDTH / width, SCREEN_HEIGHT / height, 1);
   const maxWidth = Math.max(width, SCREEN_WIDTH / scale);
   const maxHeight = Math.max(height, SCREEN_HEIGHT / scale);
-  composable.attr({
+  entity.attr({
     x: (maxWidth - width) / 2 + offset.x,
     y: (maxHeight - height) / 2 + offset.y
   });
 
+  if (options.showSize) {
+    addColor(entity, "#FF0000");
+  } else {
+    entity.removeComponent("Color");
+  }
+
+  if (options.showHitBox) {
+    entity.addComponent("SolidHitBox");
+  } else {
+    entity.removeComponent("SolidHitBox");
+  }
+
   Crafty.viewport.scale(scale);
+};
+
+Crafty.defineScene("ComposablePreview", ({ composition, options }) => {
+  const composable = createComposable(composition);
+  applyDisplayOptions(composable, options);
 });
 
 Crafty.defineScene("EntityPreview", ({ entityName }) => {
@@ -85,6 +97,7 @@ export const showComposition = (composition, options = {}) => {
     const currentComposable = Crafty("Composable").get(0);
     if (currentComposable.appliedDefinition === composition) {
       currentComposable.displayFrame(options.frame, options.tweenDuration);
+      applyDisplayOptions(currentComposable, options);
       return;
     }
   }
@@ -92,8 +105,9 @@ export const showComposition = (composition, options = {}) => {
   spritesheets.forEach(sheet => {
     loader.sprites[sheet.image] = sheet.map;
   });
+
   Crafty.load(loader, () => {
-    Crafty.enterScene("ComposablePreview", { composition });
+    Crafty.enterScene("ComposablePreview", { composition, options });
   });
 };
 

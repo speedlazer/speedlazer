@@ -13,12 +13,19 @@ export class CompositionPreview extends Component {
     this.setState({ craftyMounted: true });
   };
 
-  render({ composition, frame, tweenDuration }, { craftyMounted }) {
+  render(
+    { composition, frame, tweenDuration, ...displaySettings },
+    { craftyMounted }
+  ) {
     if (craftyMounted) {
       if (frame) {
-        showComposition(composition, { frame, tweenDuration });
+        showComposition(composition, {
+          frame,
+          tweenDuration,
+          ...displaySettings
+        });
       } else {
-        showComposition(composition);
+        showComposition(composition, displaySettings);
       }
     }
     return <div class={styles.preview} ref={this.mountCrafty} />;
