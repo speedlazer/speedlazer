@@ -10,31 +10,52 @@ const Setting = ({ checked, onCheck, children }) => (
   </label>
 );
 
+const DEFAULT_STATE = {
+  showSize: false,
+  showHitBox: false,
+  showRotationPoints: false,
+  showAttachPoints: false
+};
+
+const STORAGE_KEY = "editor-display";
+const storeState = newState =>
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
+
+const storedState = () => {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+  } catch (e) {
+    return {};
+  }
+};
+
 class Compositions extends Component {
   constructor() {
     super();
     this.state = {
-      showSize: false,
-      showHitBox: false,
-      showRotationPoints: false,
-      showAttachPoints: false
+      ...DEFAULT_STATE,
+      ...storedState()
     };
   }
 
   updateShowSize = e => {
     this.setState({ showSize: e.target.checked });
+    storeState(this.state);
   };
 
   updateShowHitBox = e => {
     this.setState({ showHitBox: e.target.checked });
+    storeState(this.state);
   };
 
   updateShowRotationPoints = e => {
     this.setState({ showRotationPoints: e.target.checked });
+    storeState(this.state);
   };
 
   updateShowAttachPoints = e => {
     this.setState({ showAttachPoints: e.target.checked });
+    storeState(this.state);
   };
 
   render(
