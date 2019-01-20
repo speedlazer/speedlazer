@@ -38,6 +38,19 @@ const addColor = (entity, color) =>
     .addComponent("Color")
     .color(color);
 
+const determineEntitySize = (sizeModel, entity) => {
+  updateActualSize(sizeModel, entity);
+  if (entity.has("Composable")) {
+    Object.values(entity.currentAttachHooks).forEach(hook => {
+      updateActualSize(sizeModel, hook);
+      if (hook.currentAttachment) {
+        determineEntitySize(sizeModel, hook.currentAttachment);
+      }
+    });
+    entity.forEachPart(entity => updateActualSize(sizeModel, entity));
+  }
+};
+
 const scaleScreenForEntity = entity => {
   const actualSize = {
     minX: entity.x,
@@ -45,10 +58,7 @@ const scaleScreenForEntity = entity => {
     minY: entity.y,
     maxY: entity.y + entity.h
   };
-  Object.values(entity.currentAttachHooks).forEach(hook => {
-    updateActualSize(actualSize, hook);
-  });
-  entity.forEachPart(entity => updateActualSize(actualSize, entity));
+  determineEntitySize(actualSize, entity);
 
   const width = actualSize.maxX - actualSize.minX;
   const height = actualSize.maxY - actualSize.minY;
@@ -93,7 +103,8 @@ Crafty.defineScene("ComposablePreview", ({ composition, options }) => {
 });
 
 Crafty.defineScene("EntityPreview", ({ entityName }) => {
-  createEntity(entityName);
+  const entity = createEntity(entityName);
+  scaleScreenForEntity(entity);
 });
 
 export const showComposition = (composition, options = {}) => {
