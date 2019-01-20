@@ -15,7 +15,7 @@
         "aircraftCarrierHatchLid",
         {
           "x": -11,
-          "y": 60,
+          "y": 80,
           "key": "floor",
           "crop": [18, 3, 0, 0],
           "hideBelow": 28
@@ -27,7 +27,7 @@
         "payload",
         {
           "x": 64,
-          "y": 60,
+          "y": 80,
           "attachAlign": ["bottom", "center"],
           "attachTo": "floor"
         }
@@ -40,7 +40,7 @@
       },
       "risen": {
         "lid": { "x": -30, "y": 16 },
-        "floor": { "y": -45 }
+        "floor": { "y": -65 }
       }
     }
   }

@@ -15,7 +15,8 @@ Crafty.c("DebugComposable", {
     Crafty("DebugRotationPoint").destroy();
     if (!show) return;
 
-    this.forEachPart((entity, definition) => {
+    this.forEachPart((entity, index) => {
+      const definition = this.spriteOptions(index);
       if (definition.ro) {
         const point = Crafty.e("2D, WebGL, Color, DebugRotationPoint")
           .attr({

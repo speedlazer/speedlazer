@@ -26,28 +26,28 @@
       },
       "hatch1": {
         "entity": "ShipHatch",
-        "aattachments": {
-          "floor": {
+        "attachments": {
+          "payload": {
             "name": "turret",
-            "entity": "BulletTurret"
+            "composition": "bulletCannon"
           }
         }
       },
       "hatch2": {
         "entity": "ShipHatch",
-        "aattachments": {
-          "floor": {
+        "attachments": {
+          "payload": {
             "name": "turret",
-            "entity": "BulletTurret"
+            "composition": "bulletCannon"
           }
         }
       },
       "hatch3": {
         "entity": "ShipHatch",
-        "aattachments": {
-          "floor": {
+        "attachments": {
+          "payload": {
             "name": "turret",
-            "entity": "BulletTurret"
+            "composition": "bulletCannon"
           }
         }
       }

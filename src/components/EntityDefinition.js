@@ -55,7 +55,7 @@ const setEntityStructure = (entity, state) => {
 
 Crafty.c("EntityDefinition", {
   init() {
-    this.appliedDefinition = null;
+    this.appliedEntityDefinition = null;
   },
 
   applyDefinition(entityName) {
@@ -64,7 +64,7 @@ Crafty.c("EntityDefinition", {
     const structure = definition.structure;
     setEntityStructure(this, structure);
 
-    this.appliedDefinition = definition;
+    this.appliedEntityDefinition = definition;
     return this;
   }
 });
