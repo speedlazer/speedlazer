@@ -1,6 +1,25 @@
 import spriteVertexShader from "./shaders/sprite.vert";
 import spriteFragmentShader from "./shaders/sprite.frag";
 
+const collectHideBelow = entity => {
+  if (entity._parent) {
+    const result = [];
+    if (entity.hideBelow) {
+      const hideBelow = entity._parent.y + entity.hideBelow;
+      result.push(hideBelow);
+    }
+
+    return result.concat(collectHideBelow(entity._parent));
+  } else {
+    return [];
+  }
+};
+
+const findHideBelow = entity => {
+  const belows = collectHideBelow(entity);
+  return belows.length === 0 ? null : Math.max(...belows);
+};
+
 Crafty.defaultShader(
   "Sprite",
   new Crafty.WebGLShader(
@@ -98,9 +117,10 @@ Crafty.defaultShader(
       if (ent.hideAt) {
         hideAt = Math.max(0, co.y + (ent.hideAt - ent.y) / ent.h * co.h);
       }
-      if (ent.hideBelow && ent._parent) {
-        const h = ent._parent.y + ent.hideBelow - ent.y;
-        hideAt = Math.max(0, co.y + h / ent.h * co.h);
+
+      const hideBelow = findHideBelow(ent);
+      if (hideBelow !== null) {
+        hideAt = Math.max(0, co.y + (hideBelow - ent.y) / ent.h * co.h);
       }
 
       e.program.writeVector(

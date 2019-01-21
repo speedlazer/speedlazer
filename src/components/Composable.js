@@ -281,7 +281,7 @@ Crafty.c("Composable", {
       if (!sprite || !defaultSettings) return;
       sprite.addComponent("TweenPromise");
       const tweenSettings = deltaSettings({ ...defaultSettings, ...settings });
-      sprite.tweenPromise(tweenSettings, duration, easing);
+      return sprite.tweenPromise(tweenSettings, duration, easing);
     });
     await Promise.all(promises);
   }
