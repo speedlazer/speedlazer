@@ -18,6 +18,13 @@ const flowFunctions = dsl => ({
         }
       )
     );
+  },
+  when: async (condition, action) => {
+    let conditionResult = await condition(dsl);
+    while (conditionResult) {
+      await action(dsl);
+      conditionResult = await condition(dsl);
+    }
   }
 });
 

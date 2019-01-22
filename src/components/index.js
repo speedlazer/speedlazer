@@ -6,11 +6,12 @@ import "./player";
 import "./utils";
 import "./weapons";
 
-import "./Composable";
 import "./BezierMove";
 import "./BigText";
 import "./ColorEffects";
 import "./ColorShader";
+import "./Composable";
+import "./DamageSupport";
 import "./DebugInfo";
 import "./Enemy";
 import "./Gradient";
