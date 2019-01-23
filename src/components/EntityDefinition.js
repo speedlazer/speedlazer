@@ -66,5 +66,13 @@ Crafty.c("EntityDefinition", {
 
     this.appliedEntityDefinition = definition;
     return this;
+  },
+
+  showState(stateName) {
+    const stateDefinition = this.appliedEntityDefinition.states[stateName];
+    // make sure 'default' will be a 'reset'
+    if (!stateDefinition) return;
+    setEntityStructure(this, stateDefinition);
+    //console.log("Show state", stateName, stateDefinition);
   }
 });

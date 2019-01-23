@@ -137,7 +137,9 @@ export const showComposition = async (composition, options = {}) => {
 };
 
 export const showEntity = async (entityName, options = {}) => {
-  if (inScene("EntityPreview") && options.frame) {
+  if (inScene("EntityPreview") && options.state) {
+    const currentEntity = Crafty("EntityDefinition").get(0);
+    currentEntity.showState(options.state);
     return;
   }
 
