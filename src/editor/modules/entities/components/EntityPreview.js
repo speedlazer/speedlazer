@@ -13,9 +13,9 @@ export class EntityPreview extends Component {
     this.setState({ craftyMounted: true });
   };
 
-  render({ entity }, { craftyMounted }) {
+  render({ entity, state }, { craftyMounted }) {
     if (craftyMounted) {
-      showEntity(entity);
+      showEntity(entity, { state });
     }
     return <div class={styles.preview} ref={this.mountCrafty} />;
   }

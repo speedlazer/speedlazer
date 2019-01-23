@@ -52,5 +52,13 @@
         }
       }
     }
+  },
+  "states": {
+    "fase3": {
+      "attachments": {
+        "cabin2": { "composition": "battleship.secondCabinOpen" },
+        "engineCore": { "composition": "engineCore" }
+      }
+    }
   }
 }

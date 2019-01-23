@@ -107,12 +107,23 @@ Crafty.defineScene("EntityPreview", ({ entityName }) => {
   scaleScreenForEntity(entity);
 });
 
-export const showComposition = (composition, options = {}) => {
-  // load sprites
-  const loader = {
-    sprites: {}
-  };
-  if (Crafty._current === "ComposablePreview" && options.frame) {
+const inScene = sceneName => Crafty._current === sceneName;
+
+const loadSpriteSheets = async () =>
+  new Promise(resolve => {
+    // load sprites
+    const loader = {
+      sprites: {}
+    };
+    spritesheets.forEach(sheet => {
+      loader.sprites[sheet.image] = sheet.map;
+    });
+
+    Crafty.load(loader, resolve);
+  });
+
+export const showComposition = async (composition, options = {}) => {
+  if (inScene("ComposablePreview") && options.frame) {
     const currentComposable = Crafty("Composable").get(0);
     if (currentComposable.appliedDefinition === composition) {
       currentComposable.displayFrame(options.frame, options.tweenDuration);
@@ -121,24 +132,15 @@ export const showComposition = (composition, options = {}) => {
     }
   }
 
-  spritesheets.forEach(sheet => {
-    loader.sprites[sheet.image] = sheet.map;
-  });
-
-  Crafty.load(loader, () => {
-    Crafty.enterScene("ComposablePreview", { composition, options });
-  });
+  await loadSpriteSheets();
+  Crafty.enterScene("ComposablePreview", { composition, options });
 };
 
-export const showEntity = entityName => {
-  // load sprites
-  const loader = {
-    sprites: {}
-  };
-  spritesheets.forEach(sheet => {
-    loader.sprites[sheet.image] = sheet.map;
-  });
-  Crafty.load(loader, () => {
-    Crafty.enterScene("EntityPreview", { entityName });
-  });
+export const showEntity = async (entityName, options = {}) => {
+  if (inScene("EntityPreview") && options.frame) {
+    return;
+  }
+
+  await loadSpriteSheets();
+  Crafty.enterScene("EntityPreview", { entityName });
 };

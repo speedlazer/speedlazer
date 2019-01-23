@@ -20,6 +20,7 @@ export const App = () => (
       <Compositions path="/editor/compositions/:compositionName?" />
       <Compositions path="/editor/compositions/:compositionName/frames/:frameName" />
       <Entities path="/editor/entities/:entity?" />
+      <Entities path="/editor/entities/:entity/states/:stateName" />
     </Router>
   </div>
 );
