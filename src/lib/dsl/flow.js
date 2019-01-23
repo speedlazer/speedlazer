@@ -1,9 +1,11 @@
-const flowFunctions = dsl => ({
-  call: async (fn, ...args) => await fn(...args),
-  exec: async (script, ...args) => {
+const flowFunctions = dsl => {
+  const call = async (fn, ...args) => await fn(...args);
+
+  const exec = async (script, ...args) => {
     await script(dsl, ...args);
-  },
-  wait: async duration => {
+  };
+
+  const wait = async duration => {
     const parts = Math.floor(duration / 40);
     return new Promise(resolve =>
       Crafty.e("Delay").delay(
@@ -18,14 +20,32 @@ const flowFunctions = dsl => ({
         }
       )
     );
-  },
-  when: async (condition, action) => {
-    let conditionResult = await condition(dsl);
-    while (conditionResult) {
-      await action(dsl);
-      conditionResult = await condition(dsl);
+  };
+
+  const waitWhile = async (fn, ...args) => {
+    let waiting = await call(fn, ...args);
+    while (waiting) {
+      await wait(50);
+      waiting = await call(fn, ...args);
     }
-  }
-});
+  };
+  const until = async (actionInProgress, repeatAction) => {
+    let actionCompleted = false;
+    actionInProgress(dsl).then(() => {
+      actionCompleted = true;
+    });
+    while (!actionCompleted) {
+      await repeatAction(dsl);
+    }
+  };
+
+  return {
+    until,
+    waitWhile,
+    wait,
+    exec,
+    call
+  };
+};
 
 export default flowFunctions;

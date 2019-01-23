@@ -62,7 +62,7 @@ const popupRandomCannon = async (
   await displayFrame(hatch, "open", 500, EASE_IN_OUT);
   await displayFrame(hatch, "risen", 500, EASE_IN_OUT);
 
-  await wait(10000);
+  await wait(5000);
 
   //const target = getOne("PlayerShip");
   //await call(hatch.turret.aim, { target: target });
@@ -79,7 +79,7 @@ const popupRandomCannon = async (
   await displayFrame(hatch, "default", 500, EASE_IN_OUT);
 };
 
-const battleship = async ({ spawn, wait, exec, move, when, call }) => {
+const battleship = async ({ spawn, wait, exec, move, until, call }) => {
   // Fases:
   // - Mine cannon ✓
   // - Cabin 2 - low stress, Single cannon, invincible ✓
@@ -93,7 +93,7 @@ const battleship = async ({ spawn, wait, exec, move, when, call }) => {
   // spawn ship off screen
   const ship = spawn("BattleShip", {
     location: {
-      rx: 0.1,
+      rx: -0.1,
       ry: 0.7
     },
     defaultSpeed: 85
@@ -120,8 +120,10 @@ const battleship = async ({ spawn, wait, exec, move, when, call }) => {
 
   await wait(4000);
   await call(ship.cabin2.allowDamage, { health: 8000 });
-  await when(
-    async ({ call }) => call(ship.cabin2.hasHealth),
+  await until(
+    async ({ waitWhile }) => {
+      await waitWhile(ship.cabin2.hasHealth);
+    },
     async dsl => {
       await popupRandomCannon(dsl, { ship });
     }
