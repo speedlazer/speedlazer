@@ -11,13 +11,13 @@ const collectHideBelow = entity => {
 
     return result.concat(collectHideBelow(entity._parent));
   } else {
-    return [];
+    return entity.hideBelow ? [entity.hideBelow] : [];
   }
 };
 
 const findHideBelow = entity => {
   const belows = collectHideBelow(entity);
-  return belows.length === 0 ? null : Math.max(...belows);
+  return belows.length === 0 ? null : Math.min(...belows);
 };
 
 Crafty.defaultShader(
