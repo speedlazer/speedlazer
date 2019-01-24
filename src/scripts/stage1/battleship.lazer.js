@@ -123,6 +123,7 @@ const battleship = async ({ spawn, wait, exec, move, until, call }) => {
   await until(
     async ({ waitWhile }) => {
       await waitWhile(ship.cabin2.hasHealth);
+      await call(ship.showState, "fase3");
     },
     async dsl => {
       await popupRandomCannon(dsl, { ship });
