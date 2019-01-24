@@ -165,7 +165,10 @@
         "bottomLeg": { "rotation": -50 },
         "feet": { "rotation": -10 },
         "toes": { "rotation": -10 },
-        "upperLegBack": { "rotation": 10 }
+        "upperLegBack": { "rotation": 10 },
+        "lowerLegBack": { "rotation": -60 },
+        "feetBack": { "rotation": -80 },
+        "toesBack": { "rotation": 0 }
       }
     }
   }
