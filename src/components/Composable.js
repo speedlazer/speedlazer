@@ -203,6 +203,10 @@ Crafty.c("Composable", {
       elem.origin(rx, ry);
       if (options.rotation) elem.attr({ rotation: options.rotation });
     }
+    if (options.hitbox) {
+      elem.addComponent("Collision");
+      elem.collision(options.hitbox);
+    }
     if (options.hideBelow) {
       elem.addComponent("HideBelow").attr({
         hideBelow: options.hideBelow

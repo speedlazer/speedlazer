@@ -8,6 +8,13 @@ Crafty.c("DebugComposable", {
         ? this.addComponent("SolidHitBox")
         : this.removeComponent("SolidHitBox");
     }
+    this.forEachPart(entity => {
+      if (entity.has("Collision")) {
+        show
+          ? entity.addComponent("SolidHitBox")
+          : entity.removeComponent("SolidHitBox");
+      }
+    });
   },
 
   displayRotationPoints(show = true) {

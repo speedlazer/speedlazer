@@ -6,7 +6,16 @@
     },
     "sprites": [
       ["turretFoot", { "x": 64, "y": 24 }],
-      ["mineCannon", { "x": 0, "y": 0, "key": "barrel", "ro": [82, 24] }]
+      [
+        "mineCannon",
+        {
+          "x": 0,
+          "y": 0,
+          "key": "barrel",
+          "ro": [82, 24],
+          "hitbox": [5, 10, 94, 10, 94, 28, 5, 28]
+        }
+      ]
     ],
     "frames": {
       "up": {
