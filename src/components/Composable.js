@@ -62,6 +62,10 @@ const getSpriteByKey = (entity, key) => {
   return entity.composableParts[index];
 };
 
+const getHookSettings = (definition, name) =>
+  (definition.attachHooks.find(([hookName]) => hookName === name) || [])[1] ||
+  {};
+
 Crafty.c("Composable", {
   init() {
     this.appliedDefinition = definitionStructure;
@@ -225,10 +229,10 @@ Crafty.c("Composable", {
   },
 
   attachEntity(targetHookName, entity) {
-    const hookSettings =
-      (this.appliedDefinition.attachHooks.find(
-        ([hookName]) => hookName === targetHookName
-      ) || [])[1] || {};
+    const hookSettings = getHookSettings(
+      this.appliedDefinition,
+      targetHookName
+    );
     const hook = this.currentAttachHooks[targetHookName];
     if (!hook) return;
     if (hook.currentAttachment) {
