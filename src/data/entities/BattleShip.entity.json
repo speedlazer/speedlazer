@@ -57,7 +57,18 @@
     "fase3": {
       "attachments": {
         "cabin2": { "composition": "battleship.secondCabinOpen" },
-        "engineCore": { "composition": "engineCore" }
+        "engineCore": { "composition": "battleship.engine" }
+      }
+    },
+    "fase4": {
+      "attachments": {
+        "cabin1": { "composition": "battleship.firstCabinDestroyed" }
+      }
+    },
+    "fase5": {
+      "attachments": {
+        "cabin2": { "composition": "battleship.secondCabinDestroyed" },
+        "engineCore": null
       }
     }
   }

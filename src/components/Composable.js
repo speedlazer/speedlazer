@@ -227,6 +227,14 @@ Crafty.c("Composable", {
       ) || [])[1] || {};
     const hook = this.currentAttachHooks[targetHookName];
     if (!hook) return;
+    if (hook.currentAttachment) {
+      hook.currentAttachment.destroy();
+    }
+
+    if (!entity) {
+      hook.attr({ currentAttachment: null });
+      return;
+    }
 
     const alignment = hookSettings.attachAlign || ["top", "left"];
 
@@ -237,16 +245,20 @@ Crafty.c("Composable", {
     hook.attr({ currentAttachment: entity });
   },
 
+  clearAttachment(targetHookName) {
+    this.attachEntity(targetHookName, null);
+  },
+
   buildAttachHooks(attachHooks) {
     attachHooks.forEach(([label, options]) => {
-      const hook = this.currentAttachHooks[label] || Crafty.e(`2D, ${label}`);
+      const hook = this.currentAttachHooks[label] || Crafty.e(`2D`);
       hook.attr({
         x: this.x + (options.x || 0),
         y: this.y + (options.y || 0),
         z: this.z + (options.z || 0),
         w: 10,
         h: 10,
-        currentAttachment: null
+        currentAttachment: hook.currentAttachment || null
       });
       if (options.attachTo) {
         const elem = getSpriteByKey(this, options.attachTo);

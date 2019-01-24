@@ -45,7 +45,7 @@
       ],
       [
         "engineCore",
-        { "x": 976, "y": -60, "z": 12, "attachAlign": ["top", "left"] }
+        { "x": 976, "y": -60, "z": 8, "attachAlign": ["top", "left"] }
       ],
       ["hatch1", { "x": 320, "y": 32, "z": 2, "attachAlign": ["top", "left"] }],
       ["hatch2", { "x": 512, "y": 32, "z": 2, "attachAlign": ["top", "left"] }],
@@ -65,6 +65,18 @@
       ["aircraftCarrierRadar", { "x": 64, "y": -23, "z": 1 }],
       ["aircraftCarrierAntenna", { "x": 128, "y": -65, "z": 1, "flipX": true }],
       ["aircraftCarrier5", { "x": 128, "y": 55, "z": 1 }]
+    ]
+  },
+  "battleship.firstCabinDestroyed": {
+    "attributes": {
+      "width": 192,
+      "height": 66
+    },
+    "sprites": [
+      ["aircraftCarrierCabinEndBroken", { "x": -16, "y": -15, "flipX": true }],
+      ["aircraftCarrierCabinRadarBroken", { "x": 48, "y": -15, "flipX": true }],
+      ["aircraftCarrierCabinBroken", { "x": 112, "y": -15 }],
+      ["aircraftCarrierCabinStartBroken", { "x": 176, "y": -15, "flipX": true }]
     ]
   },
   "battleship.secondCabin": {
@@ -90,7 +102,6 @@
       "width": 256,
       "height": 130
     },
-    "hitbox": [0, 45, 32, 30, 32, 0, 260, 0, 260, 128, 0, 128],
     "sprites": [
       ["aircraftCarrierCabinEnd", { "x": -16, "y": -15, "flipX": true }],
       ["aircraftCarrierCabinRadar", { "x": 48, "y": -15, "flipX": true }],
@@ -101,6 +112,19 @@
       ["aircraftCarrierAntenna", { "x": 160, "y": -63, "z": 1, "flipX": true }],
       ["aircraftCarrierOpened", { "x": 114, "y": 47, "z": 1 }],
       ["aircraftCarrier5", { "x": 76, "y": 40, "z": 1 }]
+    ]
+  },
+  "battleship.secondCabinDestroyed": {
+    "attributes": {
+      "width": 256,
+      "height": 66
+    },
+    "sprites": [
+      ["aircraftCarrierCabinEndBroken", { "x": -16, "y": -15, "flipX": true }],
+      ["aircraftCarrierCabinRadarBroken", { "x": 48, "y": -15, "flipX": true }],
+      ["aircraftCarrierCabinBroken", { "x": 112, "y": -15 }],
+      ["aircraftCarrierCabinBroken", { "x": 176, "y": -15 }],
+      ["aircraftCarrierCabinStartBroken", { "x": 240, "y": -15, "flipX": true }]
     ]
   },
   "battleship.engine": {

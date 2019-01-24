@@ -43,11 +43,15 @@ const setEntityStructure = (entity, state) => {
   if (state.attachments && typeof entity.attachEntity === "function") {
     Object.entries(state.attachments).forEach(
       ([attachPoint, attachDefinition]) => {
-        const attachment = Crafty.e("2D, WebGL");
-        setEntityStructure(attachment, attachDefinition);
-        entity.attachEntity(attachPoint, attachment);
-        const itemName = attachDefinition.name || attachPoint;
-        entity[itemName] = attachment;
+        if (attachDefinition) {
+          const attachment = attachDefinition ? Crafty.e("2D, WebGL") : null;
+          setEntityStructure(attachment, attachDefinition);
+          entity.attachEntity(attachPoint, attachment);
+          const itemName = attachDefinition.name || attachPoint;
+          entity[itemName] = attachment;
+        } else {
+          entity.clearAttachment(attachPoint);
+        }
       }
     );
   }
@@ -69,8 +73,10 @@ Crafty.c("EntityDefinition", {
   },
 
   showState(stateName) {
-    const stateDefinition = this.appliedEntityDefinition.states[stateName];
-    // make sure 'default' will be a 'reset'
+    const stateDefinition =
+      stateName === "default"
+        ? this.appliedEntityDefinition.structure
+        : this.appliedEntityDefinition.states[stateName];
     if (!stateDefinition) return;
     setEntityStructure(this, stateDefinition);
     //console.log("Show state", stateName, stateDefinition);
