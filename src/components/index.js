@@ -6,6 +6,7 @@ import "./player";
 import "./utils";
 import "./weapons";
 
+import "./Aimable";
 import "./BezierMove";
 import "./BigText";
 import "./ColorEffects";

@@ -50,15 +50,13 @@ import { EASE_IN_OUT } from "src/constants/easing";
  *
  */
 
-const popupRandomCannon = async ({ displayFrame, wait }, { ship }) => {
+const popupRandomCannon = async ({ call, displayFrame, wait }, { ship }) => {
   const hatch = pickOne([ship.hatch1, ship.hatch2, ship.hatch3]);
   await displayFrame(hatch, "open", 500, EASE_IN_OUT);
   await displayFrame(hatch, "risen", 500, EASE_IN_OUT);
 
-  await wait(5000);
-
-  //const target = getOne("PlayerShip");
-  //await call(hatch.turret.aim, { target: target });
+  const target = getOne("PlayerSpaceship");
+  await call(hatch.turret.aim, { target: target });
   //await action(hatch, "fire");
   //await when(
   //async ({ delay }) => await delay(5000),
@@ -67,7 +65,8 @@ const popupRandomCannon = async ({ displayFrame, wait }, { ship }) => {
   //await delay(80);
   //}
   //);
-  //await call(hatch.turret.resetAim);
+  await wait(5000);
+  await call(hatch.turret.resetAim);
   await displayFrame(hatch, "open", 500, EASE_IN_OUT);
   await displayFrame(hatch, "default", 500, EASE_IN_OUT);
 };

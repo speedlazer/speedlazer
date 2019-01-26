@@ -30,7 +30,10 @@
           "payload": {
             "name": "turret",
             "composition": "bulletCannon",
-            "components": ["DamageSupport"]
+            "components": [
+              "DamageSupport",
+              ["Aimable", { "aimParts": ["barrel"] }]
+            ]
           }
         }
       },
@@ -40,7 +43,10 @@
           "payload": {
             "name": "turret",
             "composition": "bulletCannon",
-            "components": ["DamageSupport"]
+            "components": [
+              "DamageSupport",
+              ["Aimable", { "aimParts": ["barrel"] }]
+            ]
           }
         }
       },
@@ -50,7 +56,10 @@
           "payload": {
             "name": "turret",
             "composition": "bulletCannon",
-            "components": ["DamageSupport"]
+            "components": [
+              "DamageSupport",
+              ["Aimable", { "aimParts": ["barrel"] }]
+            ]
           }
         }
       }
