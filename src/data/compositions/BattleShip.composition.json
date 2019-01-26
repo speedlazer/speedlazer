@@ -24,7 +24,17 @@
       ["aircraftCarrierBottomFlat", { "x": 704, "y": 64 }],
       ["aircraftCarrierBottomSpace", { "x": 832, "y": 64 }],
       ["aircraftCarrierBottomFlat", { "x": 960, "y": 64 }],
-      ["aircraftCarrierBottomFlat", { "x": 1088, "y": 64 }]
+      ["aircraftCarrierBottomFlat", { "x": 1088, "y": 64 }],
+
+      ["aircraftCarrierHole", { "x": 110, "y": 120, "z": 1 }],
+      ["aircraftCarrierHole", { "x": 190, "y": 120, "z": 1 }],
+      ["aircraftCarrierHole", { "x": 270, "y": 120, "z": 1 }],
+      ["aircraftCarrierHole", { "x": 430, "y": 120, "z": 1 }],
+      ["aircraftCarrierHole", { "x": 510, "y": 120, "z": 1 }],
+      ["aircraftCarrierHole", { "x": 590, "y": 120, "z": 1 }],
+      ["aircraftCarrierHole", { "x": 670, "y": 120, "z": 1 }],
+      ["aircraftCarrierHole", { "x": 750, "y": 120, "z": 1 }],
+      ["aircraftCarrierHole", { "x": 830, "y": 120, "z": 1 }]
     ],
     "attachHooks": [
       [
@@ -84,7 +94,7 @@
       "width": 256,
       "height": 130
     },
-    "hitbox": [0, 45, 32, 30, 32, 0, 260, 0, 260, 128, 0, 128],
+    "hitbox": [0, 55, 32, 40, 32, 0, 260, 0, 260, 128, 0, 128],
     "sprites": [
       ["aircraftCarrierCabinEnd", { "x": -16, "y": -15, "flipX": true }],
       ["aircraftCarrierCabinRadar", { "x": 48, "y": -15, "flipX": true }],
