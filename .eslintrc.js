@@ -16,7 +16,8 @@ module.exports = {
   },
   settings: {
     react: {
-      pragma: "h"
+      pragma: "h",
+      version: "15.6"
     }
   },
   rules: {

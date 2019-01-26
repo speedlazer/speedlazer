@@ -119,7 +119,6 @@ Crafty.defineScene(
 
       const scriptEnvironment = createScriptExecutionSpace(level);
       await stage1(scriptEnvironment);
-      console.log("script finished!");
     } else {
       executeScript(startScript, options);
     }
