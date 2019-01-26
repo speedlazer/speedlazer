@@ -7,13 +7,9 @@ const applyHitFlash = (entity, onOff) =>
     })
   );
 
-Crafty.c("DamageSupport", {
-  required: "Collision",
-  events: {
-    HitOn: "_onCollisonHit",
-    HitOff: "_onCollisonHitOff"
-  },
+const DEFAULT_HIT_LIST = ["Bullet", "Explosion"];
 
+Crafty.c("DamageSupport", {
   init() {
     this.attr({
       health: 0,
@@ -21,6 +17,8 @@ Crafty.c("DamageSupport", {
     });
     this.allowDamage = this.allowDamage.bind(this);
     this.hasHealth = this.hasHealth.bind(this);
+    this._onCollisonHit = this._onCollisonHit.bind(this);
+    this._onCollisonHitOff = this._onCollisonHitOff.bind(this);
   },
 
   allowDamage({ health }) {
@@ -28,7 +26,51 @@ Crafty.c("DamageSupport", {
       vulnerable: true,
       health
     });
-    this.checkHits("Bullet", "Explosion");
+
+    if (this.has("Composable")) {
+      if (this.has("Collision")) {
+        this.bind("HitOn", this._onCollisonHit);
+        this.bind("HitOff", this._onCollisonHitOff);
+        this.checkHits(...DEFAULT_HIT_LIST);
+      }
+      this.forEachPart(entity => {
+        if (entity.has("Collision")) {
+          entity.bind("HitOn", this._onCollisonHit);
+          entity.bind("HitOff", this._onCollisonHitOff);
+          entity.checkHits(...DEFAULT_HIT_LIST);
+        }
+      });
+    } else {
+      this.addComponent("Collision");
+      this.bind("HitOn", this._onCollisonHit);
+      this.bind("HitOff", this._onCollisonHitOff);
+      this.checkHits(...DEFAULT_HIT_LIST);
+    }
+  },
+
+  stopDamage() {
+    this.attr({
+      vulnerable: false
+    });
+
+    applyHitFlash(this, false);
+
+    if (this.has("Composable")) {
+      if (this.has("Collision")) {
+        this.unbind("HitOn", this._onCollisonHit);
+        this.unbind("HitOff", this._onCollisonHitOff);
+        this.ignoreHits(...DEFAULT_HIT_LIST);
+      }
+      this.forEachPart(entity => {
+        if (entity.has("Collision")) {
+          entity.unbind("HitOn", this._onCollisonHit);
+          entity.unbind("HitOff", this._onCollisonHitOff);
+          entity.ignoreHits(...DEFAULT_HIT_LIST);
+        }
+      });
+    } else {
+      this.ignoreHits(...DEFAULT_HIT_LIST);
+    }
   },
 
   hasHealth() {
@@ -69,8 +111,7 @@ Crafty.c("DamageSupport", {
     this.health -= cause.damage;
 
     if (this.health <= 0) {
-      this.ignoreHits("Bullet", "Explosion");
-      applyHitFlash(this, false);
+      this.stopDamage();
     }
   }
 });

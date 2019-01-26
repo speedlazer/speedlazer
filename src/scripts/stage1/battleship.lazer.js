@@ -133,6 +133,7 @@ const battleship = async ({
   const hatch = ship.hatch1;
   await displayFrame(hatch, "open", 500, EASE_IN_OUT);
   await displayFrame(hatch, "risen", 500, EASE_IN_OUT);
+  await displayFrame(hatch.turret, "up", 500, EASE_IN_OUT);
   await call(hatch.turret.allowDamage, { health: 500 });
   await waitWhile(hatch.turret.hasHealth);
   await call(ship.showState, "fase4");
