@@ -4,6 +4,7 @@ import introShip from "./IntroShip.composition.json";
 import shipHatch from "./ShipHatch.composition.json";
 import bulletCannon from "./BulletCannon.composition.json";
 import dino from "./Dino.composition.json";
+import drone from "./Drone.composition.json";
 
 const compositions = {
   ...battleShip,
@@ -11,7 +12,8 @@ const compositions = {
   ...introShip,
   ...shipHatch,
   ...bulletCannon,
-  ...dino
+  ...dino,
+  ...drone
 };
 
 export default compositions;

@@ -4,6 +4,7 @@
     "composition": "battleship.deck",
     "components": [
       "ShipSolid",
+      "GravitySolid",
       [
         "WaterSplashes",
         {

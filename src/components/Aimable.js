@@ -1,10 +1,13 @@
+const DEFAULT_AIM_SPEED = 100;
+import { EASE_IN_OUT } from "src/constants/easing";
+
 Crafty.c("Aimable", {
   init() {
     this.aim = this.aim.bind(this);
     this.resetAim = this.resetAim.bind(this);
   },
 
-  async aim({ target }) {
+  async aim({ target, speed = DEFAULT_AIM_SPEED, easing = EASE_IN_OUT }) {
     const tweens = [];
     const aimingParts = this.aimParts || [];
     this.forEachPart((item, index) => {
@@ -22,14 +25,14 @@ Crafty.c("Aimable", {
         item.addComponent("TweenPromise");
         const angleDelta = Math.abs(item.rotation - angle);
 
-        const duration = 2000 * (angleDelta / 360);
-        tweens.push(item.tweenPromise({ rotation: angle }, duration));
+        const duration = 1000 / speed * angleDelta;
+        tweens.push(item.tweenPromise({ rotation: angle }, duration, easing));
       }
     });
     await Promise.all(tweens);
   },
 
-  async resetAim() {
+  async resetAim({ speed = DEFAULT_AIM_SPEED, easing = EASE_IN_OUT } = {}) {
     const tweens = [];
     const aimingParts = this.aimParts || [];
     this.forEachPart((item, index) => {
@@ -38,8 +41,8 @@ Crafty.c("Aimable", {
         item.addComponent("TweenPromise");
         const angleDelta = Math.abs(item.rotation);
 
-        const duration = 2000 * (angleDelta / 360);
-        tweens.push(item.tweenPromise({ rotation: 0 }, duration));
+        const duration = 1000 / speed * angleDelta;
+        tweens.push(item.tweenPromise({ rotation: 0 }, duration, easing));
       }
     });
     await Promise.all(tweens);

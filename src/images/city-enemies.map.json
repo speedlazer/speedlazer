@@ -9,6 +9,7 @@
     "freddie": [3, 1, 3, 2],
     "standardMine": [3, 3, 1, 1],
     "standardDrone": [0, 4, 2, 2],
+    "standardDroneDamage": [2, 4, 2, 2],
     "standardRocket": [4, 4, 2, 1],
     "helicopter": [0, 6, 4, 2],
     "heliDamaged": [8, 6, 4, 2],

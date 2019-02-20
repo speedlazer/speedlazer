@@ -50,7 +50,7 @@ import { EASE_IN_OUT } from "src/constants/easing";
  *
  */
 
-const popupRandomCannon = async ({ call, displayFrame, wait }, { ship }) => {
+const popupRandomCannon = async ({ call, until, displayFrame }, { ship }) => {
   const hatch = pickOne([ship.hatch1, ship.hatch2, ship.hatch3]);
   await displayFrame(hatch, "open", 500, EASE_IN_OUT);
   await displayFrame(hatch, "risen", 500, EASE_IN_OUT);
@@ -58,14 +58,15 @@ const popupRandomCannon = async ({ call, displayFrame, wait }, { ship }) => {
   const target = getOne("PlayerSpaceship");
   await call(hatch.turret.aim, { target: target });
   //await action(hatch, "fire");
-  //await when(
-  //async ({ delay }) => await delay(5000),
-  //async ({ call, delay }) => {
-  //await call(hatch.turret.aim, { target: target });
-  //await delay(80);
-  //}
-  //);
-  await wait(5000);
+  await until(
+    async ({ wait }) => {
+      await wait(5000);
+    },
+    async ({ call, wait }) => {
+      await call(hatch.turret.aim, { target: target }); //, speed: 100 });
+      await wait(200);
+    }
+  );
   await call(hatch.turret.resetAim);
   await displayFrame(hatch, "open", 500, EASE_IN_OUT);
   await displayFrame(hatch, "default", 500, EASE_IN_OUT);
@@ -93,10 +94,26 @@ const battleship = async ({
   const ship = spawn("BattleShip", {
     location: {
       rx: -0.1,
+      //rx: 0.6,
       ry: 0.7
     },
     defaultSpeed: 85
   });
+
+  // try drone
+  /*
+  const drone = spawn("WarDrone", {
+    location: {
+      rx: 0.5,
+      ry: 0.3
+    },
+    defaultSpeed: 85
+  });
+  await call(drone.allowDamage, { health: 4000 });
+  await waitWhile(drone.hasHealth);
+  await call(drone.showState, "damaged");
+  await call(drone.activateGravity);
+  */
 
   /*
   await exec(shipMines, { amount: 10 });

@@ -16,6 +16,7 @@ import "./DamageSupport";
 import "./DebugInfo";
 import "./Enemy";
 import "./Gradient";
+import "./GravitySupport";
 import "./Horizon";
 import "./Invincible";
 import "./ScrollWall";

@@ -86,7 +86,7 @@ levelGenerator.defineElement 'water', ->
 
 levelGenerator.defineElement 'waterFront', ->
   height = 65
-  @add(0, @level.visibleHeight - 45, Crafty.e('2D, ShipSolid, BulletSolid').attr(w: @delta.x, h: 45))
+  @add(0, @level.visibleHeight - 45, Crafty.e('2D, ShipSolid, BulletSolid, GravityLiquid').attr(w: @delta.x, h: 45))
 
   water1 = Crafty.e('2D, Delta2D, WebGL, waterFront1, Wave1')
     .attr(z: -20)

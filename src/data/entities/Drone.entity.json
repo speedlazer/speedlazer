@@ -1,0 +1,12 @@
+{
+  "name": "WarDrone",
+  "structure": {
+    "composition": "drone",
+    "components": ["DamageSupport", "GravitySupport"]
+  },
+  "states": {
+    "damaged": {
+      "composition": "damagedDrone"
+    }
+  }
+}
