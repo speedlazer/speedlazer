@@ -8,5 +8,11 @@
     "damaged": {
       "composition": "damagedDrone"
     }
-  }
+  },
+  "habitats": [
+    {
+      "name": "Ocean",
+      "scenery": "Ocean"
+    }
+  ]
 }

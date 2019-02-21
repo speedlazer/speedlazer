@@ -84,5 +84,11 @@
         "engineCore": null
       }
     }
-  }
+  },
+  "habitats": [
+    {
+      "name": "Ocean",
+      "scenery": "Ocean"
+    }
+  ]
 }
