@@ -8,6 +8,7 @@ Crafty.c("Aimable", {
   },
 
   async aim({ target, speed = DEFAULT_AIM_SPEED, easing = EASE_IN_OUT }) {
+    if (!target) return;
     const tweens = [];
     const aimingParts = this.aimParts || [];
     this.forEachPart((item, index) => {
