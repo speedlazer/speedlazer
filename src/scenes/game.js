@@ -104,19 +104,6 @@ Crafty.defineScene(
 
     let newCode = true;
     if (newCode) {
-      // TODO: Extract this later, or get rid of it somehow
-      level.inventoryAdd("weapon", "lasers", { marking: "L" });
-      level.inventoryAdd("ship", "life", { marking: "❤", icon: "heart" });
-      level.inventoryAdd("shipUpgrade", "healthu", {
-        marking: "❤",
-        icon: "heart"
-      });
-      level.inventoryAdd("shipBoost", "healthb", {
-        marking: "❤",
-        icon: "heart"
-      });
-      level.inventoryAdd("ship", "points", { marking: "P", icon: "star" });
-
       const scriptEnvironment = createScriptExecutionSpace(level);
       await stage1(scriptEnvironment);
     } else {

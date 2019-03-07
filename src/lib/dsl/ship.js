@@ -3,7 +3,7 @@ const shipFunctions = (state, level) => ({
     Crafty("PlayerControlledShip").each(function() {
       this.clearItems();
       weapons.forEach(weapon => {
-        this.installItem(level.inventory(weapon));
+        this.installItem({ type: "weapon", contains: weapon });
       });
     });
     level.setStartWeapons(weapons);
