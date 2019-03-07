@@ -10,7 +10,7 @@ import { EASE_IN_OUT } from "src/constants/easing";
  *   Creates a new entity in the playingfield
  * - exec
  *   Executes a script providing DSL functions
- * - delay
+ * - wait
  *   Waits n milliseconds
  * - when
  *   Keeps executing task 2 when task 1 is pending
@@ -122,11 +122,11 @@ const battleship = async ({
 
   await when(
     async ({ call }) => call(ship.mineCannon.hasHealth),
-    async ({ call, exec, delay }) => {
+    async ({ call, exec, wait }) => {
       const target = getOne("PlayerShip");
       await call(ship.mineCannon.aim, { target: target });
       await exec(fireMine, { origin: ship.mineCannon.aimVector(), target });
-      await delay(400);
+      await wait(400);
     }
   );
 

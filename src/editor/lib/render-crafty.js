@@ -136,8 +136,13 @@ export const showComposition = async (composition, options = {}) => {
   Crafty.enterScene("ComposablePreview", { composition, options });
 };
 
+let currentEntity = null;
 export const showEntity = async (entityName, options = {}) => {
-  if (inScene("EntityPreview") && options.state) {
+  if (
+    inScene("EntityPreview") &&
+    options.state &&
+    currentEntity === entityName
+  ) {
     const currentEntity = Crafty("EntityDefinition").get(0);
     currentEntity.showState(options.state);
     return;
@@ -145,4 +150,5 @@ export const showEntity = async (entityName, options = {}) => {
 
   await loadSpriteSheets();
   Crafty.enterScene("EntityPreview", { entityName });
+  currentEntity = entityName;
 };

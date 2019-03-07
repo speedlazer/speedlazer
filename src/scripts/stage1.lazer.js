@@ -5,13 +5,15 @@ const stage1 = async ({
   setScenery,
   loadSpriteSheets,
   setWeapons,
-  exec
+  exec,
+  wait
 }) => {
   await loadSpriteSheets(["city-enemies", "city-scenery"]);
 
   await setScrollingSpeed({ x: 300 });
   await setScenery("City.Ocean");
   await setWeapons(["lasers"]);
+  await wait(30000);
   await exec(battleship);
 };
 

@@ -8,8 +8,8 @@ import { h, Component } from "preact";
 import spritesheets from "src/data/spritesheets";
 
 class Spritesheets extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       width: null,
       height: null
