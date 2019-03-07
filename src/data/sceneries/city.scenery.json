@@ -1,0 +1,23 @@
+{
+  "City": {
+    "Ocean": {
+      "width": 1024,
+      "height": 576,
+      "right": "City.Ocean",
+      "elements": [
+        {
+          "x": 0,
+          "y": -65,
+          "z": -20,
+          "c": ["WebGL", "waterFront1"]
+        },
+        {
+          "x": 512,
+          "y": -65,
+          "z": -20,
+          "c": ["WebGL", "waterFront2"]
+        }
+      ]
+    }
+  }
+}

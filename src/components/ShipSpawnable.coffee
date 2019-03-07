@@ -28,7 +28,8 @@ Crafty.c 'ShipSpawnable',
       @ship.destroy()
       @ship = null
 
-    @ship = Crafty.e(@level.getShipType())
+    shipType = @shipType #|| @level.getShipType()
+    @ship = Crafty.e(shipType)
       .attr
         x: pos.x
         y: pos.y

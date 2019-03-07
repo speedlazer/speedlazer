@@ -6,7 +6,7 @@
       "ShipSolid",
       "GravitySolid",
       [
-        "WaterSplashes",
+        "commented-WaterSplashes",
         {
           "waterRadius": 10,
           "minSplashDuration": 600,

@@ -3,11 +3,11 @@ import stage1 from "src/scripts/stage1.lazer";
 
 import Stage1 from "src/lazerscripts/stage1";
 import PauseMenu from "src/lib/PauseMenu";
-import levelGenerator from "src/lib/LevelGenerator";
+//import levelGenerator from "src/lib/LevelGenerator";
 
-let level = null;
-let script = null;
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+//let level = null;
+//let script = null;
+//const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 Crafty.defineScene(
   "Game",
@@ -16,7 +16,7 @@ Crafty.defineScene(
     //
     // import from globals
     Game.backgroundColor = null;
-    level = levelGenerator.createLevel();
+    //level = levelGenerator.createLevel();
 
     Crafty.createLayer("UILayerDOM", "DOM", {
       scaleResponse: 0,
@@ -43,77 +43,85 @@ Crafty.defineScene(
     // This is a dirty fix to prevent
     // 'glDrawElements: attempt to render with no buffer attached to enabled attribute 6'
     // to happen mid-stage
-    await levelGenerator.loadAssets(["explosion"]);
+    //await levelGenerator.loadAssets(["explosion"]);
 
-    const loadingTemp = Crafty.e("WebGL, explosion");
-    await delay(100);
-    loadingTemp.destroy();
+    //const loadingTemp = Crafty.e("WebGL, explosion");
+    //await delay(100);
+    //loadingTemp.destroy();
 
-    level.start();
-    Crafty("Player").each(function() {
-      this.level = level;
-    });
+    //level.start();
+    //Crafty("Player").each(function() {
+    //this.level = level;
+    //});
 
     const options = {
       startAtCheckpoint: data.checkpoint != null ? data.checkpoint : 0
     };
     const startScript = data.script != null ? data.script : Stage1;
 
-    const executeScript = async (scriptClass, options) => {
-      if (scriptClass == null) {
-        throw new Error("Script is not defined");
-      }
-      script = new scriptClass(level);
-      try {
-        await script.run(options);
-        Crafty.trigger("ScriptFinished", script);
-      } catch (e) {
-        if (e.message !== "sequence mismatch") {
-          throw e;
-        }
-      }
-    };
+    //const executeScript = async (scriptClass, options) => {
+    //if (scriptClass == null) {
+    //throw new Error("Script is not defined");
+    //}
+    //script = new scriptClass(level);
+    //try {
+    //await script.run(options);
+    //Crafty.trigger("ScriptFinished", script);
+    //} catch (e) {
+    //if (e.message !== "sequence mismatch") {
+    //throw e;
+    //}
+    //}
+    //};
 
     let checkpointsPassed = 0;
 
-    Crafty.bind("ScriptFinished", async script => {
-      const checkpoint = Math.max(
-        0,
-        script.startAtCheckpoint - script.currentCheckpoint
-      );
-      checkpointsPassed += script.currentCheckpoint;
-      if (script.nextScript) {
-        await executeScript(script.nextScript, {
-          startAtCheckpoint: checkpoint
-        });
-      } else {
-        if (script.gotoGameOver) {
-          Crafty.enterScene("GameOver", { gameCompleted: true });
-        }
-      }
-    });
+    //Crafty.bind("ScriptFinished", async script => {
+    //const checkpoint = Math.max(
+    //0,
+    //script.startAtCheckpoint - script.currentCheckpoint
+    //);
+    //checkpointsPassed += script.currentCheckpoint;
+    //if (script.nextScript) {
+    //await executeScript(script.nextScript, {
+    //startAtCheckpoint: checkpoint
+    //});
+    //} else {
+    //if (script.gotoGameOver) {
+    //Crafty.enterScene("GameOver", { gameCompleted: true });
+    //}
+    //}
+    //});
 
-    Crafty.bind("GameOver", () =>
-      Crafty.enterScene("GameOver", {
-        checkpoint: checkpointsPassed + script.currentCheckpoint,
-        script: startScript
-      })
-    );
+    //Crafty.bind("GameOver", () =>
+    //Crafty.enterScene("GameOver", {
+    //checkpoint: checkpointsPassed + script.currentCheckpoint,
+    //script: startScript
+    //})
+    //);
 
     new PauseMenu();
 
     let newCode = true;
     if (newCode) {
-      const scriptEnvironment = createScriptExecutionSpace(level);
+      //Crafty.e("ScrollWall")
+      //.attr({
+      //x: 0,
+      //y: 0
+      //})
+      //.scrollWall(0);
+      Crafty.viewport.x = 0;
+      Crafty.viewport.y = 0;
+      const scriptEnvironment = createScriptExecutionSpace();
       await stage1(scriptEnvironment);
-    } else {
-      executeScript(startScript, options);
+      //} else {
+      //executeScript(startScript, options);
     }
   },
   () => {
     // destructor
-    script.end();
-    level.stop();
+    //script.end();
+    //level.stop();
     Crafty("Player").each(function() {
       this.removeComponent("ShipSpawnable");
     });

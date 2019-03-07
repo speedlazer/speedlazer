@@ -1,16 +1,18 @@
-const levelFunctions = (state, level) => ({
-  setScrollingSpeed: async settings => {
-    const applySettings = {
-      accellerate: true,
-      x: 0,
-      y: 0,
-      ...settings
-    };
+import { setScenery } from "src/components/Scenery";
+
+const levelFunctions = () => ({
+  setScrollingSpeed: async () => {
+    //const applySettings = {
+    //accellerate: true,
+    //x: 0,
+    //y: 0,
+    //...settings
+    //};
     // TODO: Refactor setForcedSpeed internally
-    level.setForcedSpeed(applySettings, applySettings);
+    //level.setForcedSpeed(applySettings, applySettings);
   },
   setScenery: async sceneryName => {
-    level.setScenery(sceneryName);
+    setScenery(sceneryName);
   }
 });
 

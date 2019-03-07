@@ -4,16 +4,16 @@ import levelFunctions from "./dsl/level";
 import shipFunctions from "./dsl/ship";
 import entityFunctions from "./dsl/entity";
 
-export const createScriptExecutionSpace = level => {
+export const createScriptExecutionSpace = () => {
   // determine script 'seed' to stop execution
-  const state = {
-    running: true
-  };
+  //const state = {
+  //running: true
+  //};
 
   const dsl = {
     ...dataFunctions(),
-    ...levelFunctions(state, level),
-    ...shipFunctions(state, level),
+    ...levelFunctions(),
+    ...shipFunctions(),
     ...entityFunctions()
   };
   Object.assign(dsl, flowFunctions(dsl));

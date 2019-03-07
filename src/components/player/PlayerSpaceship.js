@@ -6,7 +6,7 @@ import { lookup } from "src/lib/random";
 Crafty.c("PlayerSpaceship", {
   required:
     "2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, " +
-    "WaterSplashes, PlayerControlledShip, Acceleration, InventoryWeapons",
+    "PlayerControlledShip, Acceleration, InventoryWeapons",
 
   init() {
     this.attr({ w: 71, h: 45 });
@@ -212,7 +212,7 @@ Crafty.c("PlayerSpaceship", {
 
     this.addComponent("Invincible").invincibleDuration(1500);
 
-    this.setDetectionOffset(60);
+    //this.setDetectionOffset(60);
     this.onHit("Hostile", collision => {
       if (isPaused() || this.has("Invincible")) return;
       let hit = false;
