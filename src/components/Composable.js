@@ -22,7 +22,7 @@ const widthFactor = {
   right: 1
 };
 
-const TWEEN_WHITELIST = ["x", "y", "rotation"];
+const TWEEN_WHITELIST = ["x", "y", "w", "h", "rotation"];
 
 const deltaSettings = settings =>
   Object.entries(settings)
@@ -183,6 +183,7 @@ Crafty.c("Composable", {
 
   createAndAttachSprite([spriteName, options]) {
     const subElem = Crafty.e(`2D, WebGL, Delta2D, ${spriteName}`);
+    subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });
     this.applySpriteOptions(subElem, options);
     this.attach(subElem);
     return subElem;
@@ -286,8 +287,13 @@ Crafty.c("Composable", {
     if (!frameData) return;
 
     const promises = Object.entries(frameData).map(([keyName, settings]) => {
+      const sprite = this.composableParts.find(
+        part => part.attr("key") === keyName
+      );
       const defaultSettings = {
         z: 0,
+        w: sprite.originalSize.w,
+        h: sprite.originalSize.h,
         ...(this.appliedDefinition.sprites.find(
           ([, startSettings]) => startSettings.key === keyName
         ) || [])[1],
@@ -295,10 +301,7 @@ Crafty.c("Composable", {
         y: 0
       };
 
-      const sprite = this.composableParts.find(
-        part => part.attr("key") === keyName
-      );
-      if (!sprite || !defaultSettings) return;
+      if (!sprite) return;
       sprite.addComponent("TweenPromise");
       const tweenSettings = deltaSettings({ ...defaultSettings, ...settings });
       return sprite.tweenPromise(tweenSettings, duration, easing);

@@ -1,0 +1,18 @@
+{
+  "ocean.front": {
+    "attributes": {
+      "width": 1024,
+      "height": 96
+    },
+    "sprites": [
+      ["waterFront1", { "z": -20, "key": "left" }],
+      ["waterFront2", { "x": 512, "z": -20, "key": "right" }]
+    ],
+    "frames": {
+      "wave": {
+        "left": { "w": 600, "h": 75, "y": 21 },
+        "right": { "x": 88, "w": 424, "h": 75, "y": 21 }
+      }
+    }
+  }
+}
