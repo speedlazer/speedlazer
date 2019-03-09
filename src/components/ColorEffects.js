@@ -2,7 +2,7 @@ import isObject from "lodash/isObject";
 
 Crafty.c("ColorEffects", {
   colorDesaturation(color) {
-    if (color == null) {
+    if (color === null) {
       return this;
     }
     const c = {};

@@ -4,6 +4,10 @@ import "src/components/DebugComposable";
 import "src/components/SpriteShader";
 import { createEntity } from "src/components/EntityDefinition";
 import { setScenery } from "src/components/Scenery";
+import {
+  /* setBackgroundColor, */
+  fadeBackgroundColor
+} from "src/components/Horizon";
 
 Crafty.paths({
   audio: "",
@@ -20,6 +24,8 @@ export const mount = domElem => {
   Crafty.init(SCREEN_WIDTH, SCREEN_HEIGHT, domElem);
   Crafty.background("#000000");
 };
+
+Crafty.bind("UpdateFrame", fd => Crafty.trigger("GameLoop", fd));
 
 const updateActualSize = (actualSize, entity) => {
   actualSize.minX = Math.min(actualSize.minX, entity.x);
@@ -108,8 +114,30 @@ Crafty.defineScene("EntityPreview", ({ entityName }) => {
   scaleScreenForEntity(entity);
 });
 
-Crafty.defineScene("SceneryPreview", ({ scenery }) => {
+Crafty.defineScene("SceneryPreview", async ({ scenery }) => {
+  //setBackgroundColor("#366eab", "#d6d5d5");
   setScenery(scenery);
+  fadeBackgroundColor({
+    topColors: [
+      "#000000",
+      "#000000",
+      "#000020",
+      "#222c50",
+      "#7a86a2",
+      "#366eab"
+    ],
+    bottomColors: [
+      "#000000",
+      "#000020",
+      "#000020",
+      "#7e261b",
+      "#d39915",
+      "#f7e459",
+      "#d6d5d5",
+      "#d6d5d5"
+    ],
+    duration: 60000
+  });
 });
 
 const inScene = sceneName => Crafty._current === sceneName;

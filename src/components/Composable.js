@@ -1,4 +1,4 @@
-import "src/components/ColorEffects";
+import "src/components/Horizon";
 import "src/components/utils/Scalable";
 import "src/components/utils/HideBelow";
 import "src/components/generic/TweenPromise";
@@ -220,11 +220,7 @@ Crafty.c("Composable", {
     }
     if (options.horizon) {
       const [bottom, top] = options.horizon;
-      elem
-        .addComponent("Horizon")
-        .addComponent("ColorEffects")
-        .colorDesaturation("#000000")
-        .saturationGradient(bottom, top);
+      elem.addComponent("Horizon").saturationGradient(bottom, top);
     }
   },
 
