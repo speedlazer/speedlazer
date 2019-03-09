@@ -14,5 +14,17 @@
         "right": { "x": 88, "w": 424, "h": 75, "y": 21 }
       }
     }
+  },
+  "ocean.middle": {
+    "attributes": {
+      "width": 512,
+      "height": 192
+    },
+    "sprites": [["waterMiddle", { "z": -500, "key": "middle" }]],
+    "frames": {
+      "wave": {
+        "middle": { "y": 10 }
+      }
+    }
   }
 }

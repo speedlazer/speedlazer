@@ -1,8 +1,8 @@
 import { h, Component } from "preact";
-import { mount, showEntity } from "src/editor/lib/render-crafty";
+import { mount, showScenery } from "src/editor/lib/render-crafty";
 import Preview from "src/editor/components/Preview";
 
-export class EntityPreview extends Component {
+export class SceneryPreview extends Component {
   constructor() {
     super();
     this.state = { craftyMounted: false };
@@ -13,9 +13,9 @@ export class EntityPreview extends Component {
     this.setState({ craftyMounted: true });
   };
 
-  render({ entity, state, habitat }, { craftyMounted }) {
+  render({ scenery }, { craftyMounted }) {
     if (craftyMounted) {
-      showEntity(entity, { state, habitat });
+      showScenery(scenery);
     }
     return <Preview onMount={this.mountCrafty} />;
   }

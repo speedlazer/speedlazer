@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
 import { mount, showComposition } from "src/editor/lib/render-crafty";
-import styles from "./CompositionPreview.scss";
+import Preview from "src/editor/components/Preview";
 
 export class CompositionPreview extends Component {
   constructor() {
@@ -28,6 +28,6 @@ export class CompositionPreview extends Component {
         showComposition(composition, displaySettings);
       }
     }
-    return <div class={styles.preview} ref={this.mountCrafty} />;
+    return <Preview onMount={this.mountCrafty} />;
   }
 }

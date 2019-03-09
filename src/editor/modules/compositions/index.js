@@ -40,22 +40,18 @@ class Compositions extends Component {
 
   updateShowSize = e => {
     this.setState({ showSize: e.target.checked });
-    storeState(this.state);
   };
 
   updateShowHitBox = e => {
     this.setState({ showHitBox: e.target.checked });
-    storeState(this.state);
   };
 
   updateShowRotationPoints = e => {
     this.setState({ showRotationPoints: e.target.checked });
-    storeState(this.state);
   };
 
   updateShowAttachPoints = e => {
     this.setState({ showAttachPoints: e.target.checked });
-    storeState(this.state);
   };
 
   render(
@@ -63,6 +59,7 @@ class Compositions extends Component {
     { showSize, showHitBox, showRotationPoints, showAttachPoints }
   ) {
     const activeComposition = compositions[compositionName];
+    storeState(this.state);
 
     return (
       <section>

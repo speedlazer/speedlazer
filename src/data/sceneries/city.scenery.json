@@ -1,23 +1,30 @@
 {
-  "City": {
-    "Ocean": {
-      "width": 1024,
-      "height": 576,
-      "right": "City.Ocean",
-      "elements": [
-        {
-          "x": 0,
-          "y": -65,
-          "z": -20,
-          "c": ["WebGL", "waterFront1"]
-        },
-        {
-          "x": 512,
-          "y": -65,
-          "z": -20,
-          "c": ["WebGL", "waterFront2"]
-        }
-      ]
-    }
+  "City.Ocean": {
+    "width": 1024,
+    "height": 576,
+    "right": "City.Ocean",
+    "elements": [
+      {
+        "x": 0,
+        "y": -65,
+        "z": -20,
+        "composition": "ocean.front"
+      },
+      {
+        "x": 0,
+        "y": -45,
+        "components": ["ShipSolid", "BulletSolid", "GravityLiquid"],
+        "w": 1024,
+        "h": 45
+      },
+      {
+        "x": 0,
+        "y": -150,
+        "z": -500,
+        "composition": "ocean.middle",
+        "horizon": [0.7, 0.4],
+        "distance": 0.5
+      }
+    ]
   }
 }
