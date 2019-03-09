@@ -22,7 +22,6 @@
         "y": -30,
         "z": -500,
         "composition": "ocean.middle",
-        "horizon": [0.7, 0.4],
         "distance": 0.5
       },
       {
@@ -30,7 +29,6 @@
         "y": -30,
         "z": -600,
         "composition": "ocean.horizon",
-        "horizon": [1.0, 0.2],
         "distance": 0.25
       }
     ]

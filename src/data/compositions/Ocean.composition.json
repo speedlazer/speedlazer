@@ -20,7 +20,9 @@
       "width": 512,
       "height": 192
     },
-    "sprites": [["waterMiddle", { "z": -500, "key": "middle" }]],
+    "sprites": [
+      ["waterMiddle", { "z": -500, "key": "middle", "horizon": [0.7, 0.4] }]
+    ],
     "frames": {
       "wave": {
         "middle": { "y": 10 }
@@ -32,6 +34,6 @@
       "width": 256,
       "height": 160
     },
-    "sprites": [["waterHorizon", { "z": -600 }]]
+    "sprites": [["waterHorizon", { "z": -600, "horizon": [1.0, 0.2] }]]
   }
 }
