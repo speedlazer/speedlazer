@@ -183,8 +183,8 @@ Crafty.c("Composable", {
 
   createAndAttachSprite([spriteName, options]) {
     const subElem = Crafty.e(`2D, WebGL, Delta2D, ${spriteName}`);
-    subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });
     this.applySpriteOptions(subElem, options);
+    subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });
     this.attach(subElem);
     return subElem;
   },
@@ -290,6 +290,7 @@ Crafty.c("Composable", {
       const sprite = this.composableParts.find(
         part => part.attr("key") === keyName
       );
+      if (!sprite) return;
       const defaultSettings = {
         z: 0,
         w: sprite.originalSize.w,
@@ -301,7 +302,6 @@ Crafty.c("Composable", {
         y: 0
       };
 
-      if (!sprite) return;
       sprite.addComponent("TweenPromise");
       const tweenSettings = deltaSettings({ ...defaultSettings, ...settings });
       return sprite.tweenPromise(tweenSettings, duration, easing);
