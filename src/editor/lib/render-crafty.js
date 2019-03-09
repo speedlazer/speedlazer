@@ -3,6 +3,7 @@ import "src/components/Composable";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";
 import { createEntity } from "src/components/EntityDefinition";
+import { setScenery } from "src/components/Scenery";
 
 Crafty.paths({
   audio: "",
@@ -107,6 +108,10 @@ Crafty.defineScene("EntityPreview", ({ entityName }) => {
   scaleScreenForEntity(entity);
 });
 
+Crafty.defineScene("SceneryPreview", ({ scenery }) => {
+  setScenery(scenery);
+});
+
 const inScene = sceneName => Crafty._current === sceneName;
 
 const loadSpriteSheets = async () =>
@@ -151,4 +156,9 @@ export const showEntity = async (entityName, options = {}) => {
   await loadSpriteSheets();
   Crafty.enterScene("EntityPreview", { entityName });
   currentEntity = entityName;
+};
+
+export const showScenery = async scenery => {
+  await loadSpriteSheets();
+  Crafty.enterScene("SceneryPreview", { scenery });
 };
