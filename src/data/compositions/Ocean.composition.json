@@ -26,5 +26,12 @@
         "middle": { "y": 10 }
       }
     }
+  },
+  "ocean.horizon": {
+    "attributes": {
+      "width": 256,
+      "height": 160
+    },
+    "sprites": [["waterHorizon", { "z": -600 }]]
   }
 }
