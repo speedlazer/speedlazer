@@ -3,6 +3,7 @@
     "width": 1024,
     "height": 576,
     "right": "City.Ocean",
+    "left": "City.Ocean",
     "elements": [
       {
         "x": 0,
