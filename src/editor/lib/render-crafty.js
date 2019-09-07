@@ -117,7 +117,7 @@ Crafty.defineScene("EntityPreview", ({ entityName }) => {
 Crafty.defineScene("SceneryPreview", async ({ scenery }) => {
   //setBackgroundColor("#366eab", "#d6d5d5");
   setScenery(scenery);
-  setScrollVelocity({ vx: -30, vy: 0 });
+  setScrollVelocity({ vx: -180, vy: 0 });
   fadeBackgroundColor({
     topColors: [
       "#000000",

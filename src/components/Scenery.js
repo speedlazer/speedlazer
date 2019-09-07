@@ -103,7 +103,9 @@ const SCENERY_DIRECTIONS = {
 Crafty.c("Scenery", {
   init() {
     this.currentScenery = null;
+    this.movingDirection = { vx: 0, vy: 0 };
     this.blocks = [];
+    this.delay = null;
   },
 
   setNextScenery(sceneryName) {
@@ -111,8 +113,8 @@ Crafty.c("Scenery", {
     if (!scenery) return;
     if (this.currentScenery === null) {
       this.startScenery(sceneryName, { direction: SCENERY_DIRECTIONS.ALL });
-      this.currentScenery = sceneryName;
     }
+    this.currentScenery = sceneryName;
   },
 
   startScenery(
@@ -129,9 +131,9 @@ Crafty.c("Scenery", {
       direction === SCENERY_DIRECTIONS.ALL
     ) {
       const nextPos = startXPos + block.w;
-      const nextBlock = scenery.right;
+      const nextBlock = this.currentScenery || scenery.right;
       if (calcReach(block.farthestDistance, scenery.width) > nextPos) {
-        console.log("add next to Right");
+        this.currentScenery = null;
         this.startScenery(nextBlock, {
           startXPos: nextPos,
           startYPos,
@@ -143,12 +145,11 @@ Crafty.c("Scenery", {
       direction === SCENERY_DIRECTIONS.LEFT ||
       direction === SCENERY_DIRECTIONS.ALL
     ) {
-      const nextBlock = scenery.left;
+      const nextBlock = this.currentScenery || scenery.left;
       const leftScenery = sceneries[nextBlock];
-
       const nextPos = startXPos - leftScenery.width;
       if (-calcReach(block.farthestDistance, scenery.width) < nextPos) {
-        console.log("add next to Left");
+        this.currentScenery = null;
         this.startScenery(nextBlock, {
           startXPos: nextPos,
           startYPos,
@@ -159,6 +160,7 @@ Crafty.c("Scenery", {
   },
 
   setScrollVelocity({ vx, vy }) {
+    this.movingDirection = { vx, vy };
     this.blocks.forEach(block => block.attr({ vx, vy }));
   }
 });
