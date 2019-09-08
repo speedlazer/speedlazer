@@ -114,32 +114,38 @@ Crafty.defineScene("EntityPreview", ({ entityName }) => {
   scaleScreenForEntity(entity);
 });
 
-Crafty.defineScene("SceneryPreview", async ({ scenery }) => {
-  //setBackgroundColor("#366eab", "#d6d5d5");
-  setScenery(scenery);
-  setScrollVelocity({ vx: -180, vy: 0 });
-  fadeBackgroundColor({
-    topColors: [
-      "#000000",
-      "#000000",
-      "#000020",
-      "#222c50",
-      "#7a86a2",
-      "#366eab"
-    ],
-    bottomColors: [
-      "#000000",
-      "#000020",
-      "#000020",
-      "#7e261b",
-      "#d39915",
-      "#f7e459",
-      "#d6d5d5",
-      "#d6d5d5"
-    ],
-    duration: 60000
-  });
-});
+Crafty.defineScene(
+  "SceneryPreview",
+  async ({ scenery }) => {
+    //setBackgroundColor("#366eab", "#d6d5d5");
+    setScenery(scenery);
+    setScrollVelocity({ vx: -180, vy: 0 });
+    fadeBackgroundColor({
+      topColors: [
+        "#000000",
+        "#000000",
+        "#000020",
+        "#222c50",
+        "#7a86a2",
+        "#366eab"
+      ],
+      bottomColors: [
+        "#000000",
+        "#000020",
+        "#000020",
+        "#7e261b",
+        "#d39915",
+        "#f7e459",
+        "#d6d5d5",
+        "#d6d5d5"
+      ],
+      duration: 60000
+    });
+  },
+  () => {
+    Crafty("Scenery").destroy();
+  }
+);
 
 const inScene = sceneName => Crafty._current === sceneName;
 
