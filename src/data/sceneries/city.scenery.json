@@ -1,4 +1,88 @@
 {
+  "City.Coast": {
+    "width": 1024,
+    "height": 576,
+    "right": "City.Coast",
+    "left": "City.Coast",
+    "elements": [
+      {
+        "x": 0,
+        "y": -65,
+        "z": -20,
+        "composition": "ocean.front"
+      },
+      {
+        "x": 0,
+        "y": -45,
+        "components": ["ShipSolid", "BulletSolid", "GravityLiquid"],
+        "w": 1024,
+        "h": 45
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "z": -500,
+        "composition": "ocean.middle",
+        "distance": 0.5
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "z": -600,
+        "composition": "ocean.horizon",
+        "distance": 0.25
+      },
+      {
+        "x": 0,
+        "y": -46,
+        "z": -598,
+        "composition": "city.horizon",
+        "distance": 0.25
+      }
+    ]
+  },
+  "City.CoastStart": {
+    "width": 1024,
+    "height": 576,
+    "right": "City.Coast",
+    "left": "City.Ocean",
+    "elements": [
+      {
+        "x": 0,
+        "y": -65,
+        "z": -20,
+        "composition": "ocean.front"
+      },
+      {
+        "x": 0,
+        "y": -45,
+        "components": ["ShipSolid", "BulletSolid", "GravityLiquid"],
+        "w": 1024,
+        "h": 45
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "z": -500,
+        "composition": "ocean.middle",
+        "distance": 0.5
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "z": -600,
+        "composition": "ocean.horizon",
+        "distance": 0.25
+      },
+      {
+        "x": 0,
+        "y": -46,
+        "z": -598,
+        "composition": "city.horizonStart",
+        "distance": 0.25
+      }
+    ]
+  },
   "City.Ocean": {
     "width": 1024,
     "height": 576,

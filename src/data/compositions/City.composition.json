@@ -1,0 +1,16 @@
+{
+  "city.horizon": {
+    "attributes": {
+      "width": 256,
+      "height": 160
+    },
+    "sprites": [["coast", { "z": -600, "horizon": [0.9, 0.8] }]]
+  },
+  "city.horizonStart": {
+    "attributes": {
+      "width": 256,
+      "height": 160
+    },
+    "sprites": [["coastStart", { "z": -600, "horizon": [0.9, 0.8] }]]
+  }
+}
