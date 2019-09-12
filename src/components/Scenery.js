@@ -12,22 +12,48 @@ export const setScrollVelocity = ({ vx, vy }) => {
   scenery.setScrollVelocity({ vx, vy });
 };
 
+const PIXEL_BUFFER = 300;
+
 Crafty.c("SceneryBlock", {
   init() {
     this.requires("2D, Motion");
     this.bind("Move", this.sceneryBlockMoved);
+    this.bind("Freeze", this.sceneryBlockFreeze);
+    this.bind("Unfreeze", this.sceneryBlockUnfreeze);
   },
   remove() {
     this.unbind("Move", this.sceneryBlockMoved);
   },
-  sceneryBlockMoved() {
+  sceneryBlockFreeze() {
+    this._children.forEach(child => child.freeze());
+  },
+  sceneryBlockUnfreeze() {
+    this._children.forEach(child => child.unfreeze());
+  },
+  moveScenery(dx, dy, includeSelf = true) {
+    if (includeSelf) {
+      this.shift(dx, dy);
+    }
+    const sceneryVectors = {
+      v1: this.x,
+      v2: this.x + this.w,
+      v3: Infinity,
+      v4: -Infinity
+    };
+
     this._children.forEach(child => {
       if (child.distance === 1) return;
-      child.shift(
-        -this.dx * (1 - child.distance),
-        -this.dy * (1 - child.distance)
-      );
+      child.shift(-dx * (1 - child.distance), -dy * (1 - child.distance));
+      if (child.distance === this.farthestDistance) {
+        if (child.x < sceneryVectors.v3) sceneryVectors.v3 = child.x;
+        if (child.x + child.w > sceneryVectors.v4)
+          sceneryVectors.v4 = child.x + child.w;
+      }
     });
+    this.sceneryVectors = sceneryVectors;
+  },
+  sceneryBlockMoved() {
+    this.moveScenery(this.dx, this.dy, false);
   }
 });
 
@@ -106,15 +132,20 @@ Crafty.c("Scenery", {
     this.movingDirection = { vx: 0, vy: 0 };
     this.blocks = [];
     this.delay = null;
+    this.bind("UpdateFrame", this.verifySceneryContent);
+  },
+  remove() {
+    this.unbind("UpdateFrame", this.verifySceneryContent);
   },
 
   setNextScenery(sceneryName) {
     const scenery = sceneries[sceneryName];
     if (!scenery) return;
-    if (this.currentScenery === null) {
+    if (this.blocks.length === 0) {
       this.startScenery(sceneryName, { direction: SCENERY_DIRECTIONS.ALL });
+    } else {
+      this.currentScenery = sceneryName;
     }
-    this.currentScenery = sceneryName;
   },
 
   startScenery(
@@ -122,9 +153,29 @@ Crafty.c("Scenery", {
     { startXPos = 0, startYPos = 0, direction = SCENERY_DIRECTIONS.RIGHT } = {}
   ) {
     const scenery = sceneries[sceneryName];
+    let block = this.blocks.find(
+      b => b.__frozen && b.sceneryName === sceneryName
+    );
 
-    const block = createBlock(scenery, startXPos, startYPos);
-    this.blocks.push(block);
+    if (block) {
+      block.unfreeze();
+      const dx = startXPos - Math.floor(block.x);
+      const dy = startYPos - Math.floor(block.y);
+      block.moveScenery(dx, dy);
+    } else {
+      let staleBlock = this.blocks.find(b => b.__frozen);
+
+      block = createBlock(scenery, startXPos, startYPos);
+      block.sceneryName = sceneryName;
+      if (staleBlock) {
+        const index = this.blocks.indexOf(staleBlock);
+        staleBlock.destroy();
+        this.blocks[index] = block;
+      } else {
+        this.blocks.push(block);
+      }
+    }
+    block.attr(this.movingDirection);
 
     if (
       direction === SCENERY_DIRECTIONS.RIGHT ||
@@ -162,5 +213,69 @@ Crafty.c("Scenery", {
   setScrollVelocity({ vx, vy }) {
     this.movingDirection = { vx, vy };
     this.blocks.forEach(block => block.attr({ vx, vy }));
+    this.checkCountDown = 5;
+  },
+
+  verifySceneryContent() {
+    const { vx, vy } = this.movingDirection;
+    if (vx === 0 && vy === 0) return;
+    this.checkCountDown--;
+    if (this.checkCountDown > 0) return;
+
+    const fps = Crafty.timer.FPS();
+    this.checkCountDown = Math.min(
+      PIXEL_BUFFER / Math.abs(vx) * fps,
+      PIXEL_BUFFER / Math.abs(vy) * fps
+    );
+
+    const fullSceneryVector = this.blocks.reduce(
+      (acc, block) => {
+        if (block.__frozen) return acc;
+        const sceneryVectors = block.sceneryVectors;
+        return {
+          v1: acc.v1 < sceneryVectors.v1 ? acc.v1 : sceneryVectors.v1,
+          v2: acc.v2 > sceneryVectors.v2 ? acc.v2 : sceneryVectors.v2,
+          v3: acc.v3 < sceneryVectors.v3 ? acc.v3 : sceneryVectors.v3,
+          v4: acc.v4 > sceneryVectors.v4 ? acc.v4 : sceneryVectors.v4,
+          left: acc.v1 < sceneryVectors.v1 ? acc.left : block,
+          right: acc.v2 > sceneryVectors.v2 ? acc.right : block
+        };
+      },
+      {
+        v1: Infinity,
+        v2: -Infinity,
+        v3: Infinity,
+        v4: -Infinity,
+        left: null,
+        right: null
+      }
+    );
+
+    // Cleanup fase -- change v1 into v4
+    if (vx < 0 && fullSceneryVector.left.sceneryVectors.v4 < 0) {
+      fullSceneryVector.left.freeze();
+    }
+
+    // Build fase
+    if (vx < 0 && fullSceneryVector.v4 < Crafty.viewport.width + PIXEL_BUFFER) {
+      // scrolling to the left, check right side if content needs to be added
+      const lastBlock = fullSceneryVector.right;
+      const nextBlock =
+        this.currentScenery || sceneries[lastBlock.sceneryName].right;
+
+      this.currentScenery = null;
+      this.startScenery(nextBlock, {
+        startXPos: Math.floor(fullSceneryVector.v2),
+        startYPos: 0, // TODO: Support vertical movement
+        direction: SCENERY_DIRECTIONS.RIGHT
+      });
+      return;
+    }
+    console.log(
+      "Enough content",
+      fullSceneryVector.v2,
+      this.blocks.length,
+      this.blocks.filter(b => !b.__frozen).length
+    );
   }
 });

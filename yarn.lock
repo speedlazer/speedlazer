@@ -802,7 +802,7 @@
 
 Crafty-Distro@craftyjs/Crafty-Distro#nightlies:
   version "0.0.0"
-  resolved "https://codeload.github.com/craftyjs/Crafty-Distro/tar.gz/f81509e57cd9a85b5216ecc44a937ee55d53ddff"
+  resolved "https://codeload.github.com/craftyjs/Crafty-Distro/tar.gz/4b240f83818859edc18009abdcc080150002b64c"
 
 abbrev@1:
   version "1.1.1"

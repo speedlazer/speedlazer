@@ -74,6 +74,15 @@ Crafty.c("Composable", {
     this.currentAttachHooks = {};
     this.currentZ = this.z;
     this.bind("Reorder", this.updateChildrenOrder);
+    this.bind("Freeze", this.composableFreeze);
+    this.bind("Unfreeze", this.composableUnfreeze);
+  },
+
+  composableFreeze() {
+    this._children.forEach(child => child.freeze());
+  },
+  composableUnfreeze() {
+    this._children.forEach(child => child.unfreeze());
   },
 
   compose(proposedDefinition) {
