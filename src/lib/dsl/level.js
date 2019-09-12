@@ -1,7 +1,8 @@
-import { setScenery } from "src/components/Scenery";
+import { setScenery, setScrollVelocity } from "src/components/Scenery";
 
 const levelFunctions = () => ({
-  setScrollingSpeed: async () => {
+  setScrollingSpeed: async (x, y) => {
+    setScrollVelocity({ vx: -x, vy: y });
     //const applySettings = {
     //accellerate: true,
     //x: 0,

@@ -1,7 +1,7 @@
 import battleship from "./stage1/battleship.lazer";
 
 const stage1 = async ({
-  //setScrollingSpeed,
+  setScrollingSpeed,
   setScenery,
   loadSpriteSheets,
   spawnShip,
@@ -11,7 +11,7 @@ const stage1 = async ({
 }) => {
   await loadSpriteSheets(["city-enemies", "city-scenery"]);
 
-  //await setScrollingSpeed({ x: 300 });
+  await setScrollingSpeed(300, 0);
   await setScenery("City.Ocean");
   await spawnShip();
   //await setWeapons(["lasers"]);

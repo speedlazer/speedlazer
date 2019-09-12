@@ -105,8 +105,8 @@ const createBlock = (scenery, x, y) => {
     const top = centerY - halfH * distance;
 
     entity.attr({
-      x: Math.floor(left + elementX),
-      y: Math.floor(top + elementY),
+      x: left + elementX,
+      y: top + elementY,
       distance
     });
     block.attach(entity);
@@ -159,8 +159,8 @@ Crafty.c("Scenery", {
 
     if (block) {
       block.unfreeze();
-      const dx = startXPos - Math.floor(block.x);
-      const dy = startYPos - Math.floor(block.y);
+      const dx = startXPos - block.x;
+      const dy = startYPos - block.y;
       block.moveScenery(dx, dy);
     } else {
       let staleBlock = this.blocks.find(b => b.__frozen);
@@ -251,8 +251,9 @@ Crafty.c("Scenery", {
       }
     );
 
-    // Cleanup fase -- change v1 into v4
+    // Cleanup fase
     if (vx < 0 && fullSceneryVector.left.sceneryVectors.v4 < 0) {
+      fullSceneryVector.left.attr({ vx: 0, vy: 0 });
       fullSceneryVector.left.freeze();
     }
 
@@ -265,17 +266,11 @@ Crafty.c("Scenery", {
 
       this.currentScenery = null;
       this.startScenery(nextBlock, {
-        startXPos: Math.floor(fullSceneryVector.v2),
+        startXPos: fullSceneryVector.v2 + vx / fps,
         startYPos: 0, // TODO: Support vertical movement
         direction: SCENERY_DIRECTIONS.RIGHT
       });
       return;
     }
-    console.log(
-      "Enough content",
-      fullSceneryVector.v2,
-      this.blocks.length,
-      this.blocks.filter(b => !b.__frozen).length
-    );
   }
 });

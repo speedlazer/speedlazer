@@ -1,8 +1,8 @@
-import dataFunctions from "./dsl/data";
-import flowFunctions from "./dsl/flow";
-import levelFunctions from "./dsl/level";
-import shipFunctions from "./dsl/ship";
-import entityFunctions from "./dsl/entity";
+import dataFunctions from "./data";
+import flowFunctions from "./flow";
+import levelFunctions from "./level";
+import shipFunctions from "./ship";
+import entityFunctions from "./entity";
 
 export const createScriptExecutionSpace = () => {
   // determine script 'seed' to stop execution
