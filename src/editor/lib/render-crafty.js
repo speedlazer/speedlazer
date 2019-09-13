@@ -119,7 +119,7 @@ Crafty.defineScene(
   async ({ scenery }) => {
     //setBackgroundColor("#366eab", "#d6d5d5");
     setScenery(scenery);
-    setScrollVelocity({ vx: -120, vy: 0 });
+    //setScrollVelocity({ vx: -200, vy: 0 });
     fadeBackgroundColor({
       topColors: [
         "#000000",
@@ -193,7 +193,7 @@ export const showEntity = async (entityName, options = {}) => {
   currentEntity = entityName;
 };
 
-export const showScenery = async scenery => {
+export const showScenery = async (scenery, scrollSpeed) => {
   await loadSpriteSheets();
   Crafty.enterScene("SceneryPreview", { scenery });
 };

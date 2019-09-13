@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
 import { mount, showScenery } from "src/editor/lib/render-crafty";
 import Preview from "src/editor/components/Preview";
+import { setScrollVelocity } from "src/components/Scenery";
 
 export class SceneryPreview extends Component {
   constructor() {
@@ -13,10 +14,27 @@ export class SceneryPreview extends Component {
     this.setState({ craftyMounted: true });
   };
 
-  render({ scenery }, { craftyMounted }) {
-    if (craftyMounted) {
-      showScenery(scenery);
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.scenery !== this.props.scenery && this.state.craftyMounted) {
+      showScenery(this.props.scenery);
     }
+    if (
+      this.props.scenery &&
+      this.state.craftyMounted &&
+      !prevState.craftyMounted
+    ) {
+      showScenery(this.props.scenery);
+    }
+    if (
+      prevProps.scrollSpeed !== this.props.scrollSpeed &&
+      this.props.scenery &&
+      this.state.craftyMounted
+    ) {
+      setScrollVelocity({ vx: this.props.scrollSpeed, vy: 0 });
+    }
+  }
+
+  render() {
     return <Preview onMount={this.mountCrafty} />;
   }
 }
