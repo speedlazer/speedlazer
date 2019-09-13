@@ -30,10 +30,17 @@ Crafty.c("SceneryBlock", {
   sceneryBlockUnfreeze() {
     this._children.forEach(child => child.unfreeze());
   },
-  moveScenery(dx, dy, includeSelf = true) {
-    if (includeSelf) {
-      this.shift(dx, dy);
-    }
+  moveScenery(dx, dy, { vx, vy }) {
+    this.shift(dx, dy);
+    const vDx = dx - vx / Crafty.timer.FPS();
+    const vDy = dy - vy / Crafty.timer.FPS();
+
+    this._children.forEach(child => {
+      if (child.distance === 1) return;
+      child.shift(-vDx * (1 - child.distance), -vDy * (1 - child.distance));
+    });
+  },
+  sceneryBlockMoved() {
     const sceneryVectors = {
       v1: this.x,
       v2: this.x + this.w,
@@ -43,7 +50,10 @@ Crafty.c("SceneryBlock", {
 
     this._children.forEach(child => {
       if (child.distance === 1) return;
-      child.shift(-dx * (1 - child.distance), -dy * (1 - child.distance));
+      child.shift(
+        -this.dx * (1 - child.distance),
+        -this.dy * (1 - child.distance)
+      );
       if (child.distance === this.farthestDistance) {
         if (child.x < sceneryVectors.v3) sceneryVectors.v3 = child.x;
         if (child.x + child.w > sceneryVectors.v4)
@@ -51,9 +61,6 @@ Crafty.c("SceneryBlock", {
       }
     });
     this.sceneryVectors = sceneryVectors;
-  },
-  sceneryBlockMoved() {
-    this.moveScenery(this.dx, this.dy, false);
   }
 });
 
@@ -161,7 +168,7 @@ Crafty.c("Scenery", {
       block.unfreeze();
       const dx = startXPos - block.x;
       const dy = startYPos - block.y;
-      block.moveScenery(dx, dy);
+      block.moveScenery(dx, dy, this.movingDirection);
     } else {
       let staleBlock = this.blocks.find(b => b.__frozen);
 
