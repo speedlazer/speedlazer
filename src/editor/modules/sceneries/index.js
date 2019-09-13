@@ -17,6 +17,10 @@ class Sceneries extends Component {
     this.setState(state => ({ ...state, scrollSpeed: state.scrollSpeed - 20 }));
   };
 
+  stop = () => {
+    this.setState(state => ({ ...state, scrollSpeed: 0 }));
+  };
+
   render({ scenery }, { scrollSpeed }) {
     const activeScenery = sceneries[scenery];
     return (
@@ -31,6 +35,7 @@ class Sceneries extends Component {
         {activeScenery && (
           <div>
             <button onClick={this.toRight}>&laquo;</button>
+            <button onClick={this.stop}>Stop</button>
             <button onClick={this.toLeft}>&raquo;</button>
             <SceneryPreview scenery={scenery} scrollSpeed={scrollSpeed} />
           </div>
