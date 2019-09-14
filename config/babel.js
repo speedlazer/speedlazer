@@ -10,8 +10,7 @@ module.exports = {
         },
         modules: false,
         loose: true,
-        useBuiltIns: "usage",
-        debug: true
+        useBuiltIns: "usage"
       }
     ]
   ],
