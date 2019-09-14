@@ -41,6 +41,12 @@ class Spritesheets extends Component {
             />
           </div>
           <ScrollBox height={"100%"} width={"80vw"}>
+            {highlight && (
+              <p style={{ color: "white" }}>
+                {activeSprite} - {tileWidth * highlight[2]} x{" "}
+                {tileHeight * highlight[3]}
+              </p>
+            )}
             <LayerBox width={width} height={height}>
               <img
                 src={activeMap.image}

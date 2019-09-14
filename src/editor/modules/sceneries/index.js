@@ -3,6 +3,7 @@ import sceneries from "src/data/sceneries";
 import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
+import { Text } from "../../components/Text";
 import { h, Component } from "preact";
 
 class Sceneries extends Component {
@@ -39,6 +40,7 @@ class Sceneries extends Component {
               <button onClick={this.toRight}>&laquo;</button>
               <button onClick={this.stop}>Stop</button>
               <button onClick={this.toLeft}>&raquo;</button>
+              <Text>Current speed: x: {scrollSpeed}</Text>
               <SceneryPreview scenery={scenery} scrollSpeed={scrollSpeed} />
             </div>
           )}

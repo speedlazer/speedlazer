@@ -8,7 +8,6 @@
       {
         "x": 0,
         "y": -65,
-        "z": -20,
         "composition": "ocean.front"
       },
       {
@@ -21,21 +20,18 @@
       {
         "x": 0,
         "y": -30,
-        "z": -500,
         "composition": "ocean.middle",
         "distance": 0.5
       },
       {
         "x": 0,
         "y": -30,
-        "z": -600,
         "composition": "ocean.horizon",
         "distance": 0.25
       },
       {
         "x": 0,
         "y": -46,
-        "z": -598,
         "composition": "city.horizon",
         "distance": 0.25
       }
@@ -50,7 +46,6 @@
       {
         "x": 0,
         "y": -65,
-        "z": -20,
         "composition": "ocean.front"
       },
       {
@@ -63,21 +58,18 @@
       {
         "x": 0,
         "y": -30,
-        "z": -500,
         "composition": "ocean.middle",
         "distance": 0.5
       },
       {
         "x": 0,
         "y": -30,
-        "z": -600,
         "composition": "ocean.horizon",
         "distance": 0.25
       },
       {
         "x": 0,
         "y": -46,
-        "z": -598,
         "composition": "city.horizonStart",
         "distance": 0.25
       }
@@ -88,6 +80,82 @@
     "height": 576,
     "right": "City.Ocean",
     "left": "City.Ocean",
+    "elements": [
+      {
+        "x": 0,
+        "y": -65,
+        "composition": "ocean.front"
+      },
+      {
+        "x": 0,
+        "y": -45,
+        "components": ["ShipSolid", "BulletSolid", "GravityLiquid"],
+        "w": 1024,
+        "h": 45
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "composition": "ocean.middle",
+        "distance": 0.5
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "composition": "ocean.horizon",
+        "distance": 0.25
+      }
+    ]
+  },
+  "City.BayStart": {
+    "width": 1024,
+    "height": 576,
+    "right": "City.Bay",
+    "left": "City.Coast",
+    "elements": [
+      {
+        "x": 0,
+        "y": -65,
+        "composition": "ocean.front"
+      },
+      {
+        "x": 0,
+        "y": -45,
+        "components": ["ShipSolid", "BulletSolid", "GravityLiquid"],
+        "w": 1024,
+        "h": 45
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "composition": "ocean.middle",
+        "distance": 0.5
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "composition": "ocean.horizon",
+        "distance": 0.25
+      },
+      {
+        "x": 0,
+        "y": -46,
+        "composition": "city.horizon",
+        "distance": 0.25
+      },
+      {
+        "x": 0,
+        "y": -180,
+        "composition": "city.cityStart",
+        "distance": 0.5
+      }
+    ]
+  },
+  "City.Bay": {
+    "width": 1024,
+    "height": 576,
+    "left": "City.Bay",
+    "right": "City.Bay",
     "elements": [
       {
         "x": 0,
@@ -105,16 +173,32 @@
       {
         "x": 0,
         "y": -30,
-        "z": -500,
         "composition": "ocean.middle",
         "distance": 0.5
       },
       {
         "x": 0,
         "y": -30,
-        "z": -600,
         "composition": "ocean.horizon",
         "distance": 0.25
+      },
+      {
+        "x": 0,
+        "y": -46,
+        "composition": "city.horizon",
+        "distance": 0.25
+      },
+      {
+        "x": 0,
+        "y": -180,
+        "composition": "city.city",
+        "distance": 0.5
+      },
+      {
+        "x": 0,
+        "y": -210,
+        "composition": "city.layer2",
+        "distance": 0.375
       }
     ]
   }
