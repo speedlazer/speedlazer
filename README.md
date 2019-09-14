@@ -7,7 +7,9 @@ HTML5 Gamepad API.
 
 # Play
 
-[Click here to play!](https://speedlazer.net)
+[Click here to play!](https://speedlazer.net) This is the 'engine 1'
+version of the game. The current master branch contains the 'engine 2'
+version, but that version is not yet playable.
 
 To test if your gamepad is succesfully connected/working, use:
 http://html5gamepad.com/
@@ -30,9 +32,8 @@ yarn install
 yarn start
 ```
 
-The game files are in `app/scripts`. The "Game" is in
-`app/scripts/scenes/Game.coffee`. But it mainly runs DSL scripts,
-located in `app/scripts/lazerscripts`
+The content scripts are in `src/scripts`. All other data is in
+`src/data`. An editor/viewer is available locally, at `http://localhost:9000/editor.html`.
 
 # License
 
