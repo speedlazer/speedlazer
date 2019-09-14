@@ -1,8 +1,9 @@
 import { SceneryPreview } from "./components/SceneryPreview";
 import sceneries from "src/data/sceneries";
 import { Menu } from "../../components/Menu";
+import { Divider } from "../../components/Divider";
+import { Title } from "../../components/Title";
 import { h, Component } from "preact";
-import { setScrollVelocity } from "src/components/Scenery";
 
 class Sceneries extends Component {
   state = {
@@ -25,21 +26,23 @@ class Sceneries extends Component {
     const activeScenery = sceneries[scenery];
     return (
       <section>
-        <h1 style={{ color: "white" }}>Scenery</h1>
-        <Menu
-          items={Object.entries(sceneries).map(([key]) => [
-            key,
-            `/sceneries/${key}`
-          ])}
-        />
-        {activeScenery && (
-          <div>
-            <button onClick={this.toRight}>&laquo;</button>
-            <button onClick={this.stop}>Stop</button>
-            <button onClick={this.toLeft}>&raquo;</button>
-            <SceneryPreview scenery={scenery} scrollSpeed={scrollSpeed} />
-          </div>
-        )}
+        <Title>Scenery</Title>
+        <Divider>
+          <Menu
+            items={Object.entries(sceneries).map(([key]) => [
+              key,
+              `/sceneries/${key}`
+            ])}
+          />
+          {activeScenery && (
+            <div>
+              <button onClick={this.toRight}>&laquo;</button>
+              <button onClick={this.stop}>Stop</button>
+              <button onClick={this.toLeft}>&raquo;</button>
+              <SceneryPreview scenery={scenery} scrollSpeed={scrollSpeed} />
+            </div>
+          )}
+        </Divider>
       </section>
     );
   }

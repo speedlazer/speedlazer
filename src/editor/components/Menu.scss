@@ -1,12 +1,30 @@
 .menu {
-  list-style-type: none;
-  padding: 0;
+    list-style-type: none;
+    padding: 0;
 
-  > li > a {
-    color: #ffffff;
-  }
+    > li > a {
+        color: #ddd;
+        text-decoration: none;
+    }
+    > li > a.active {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    &.horizontal {
+        width: 100%;
+        background: #111;
+        margin: 0;
+        padding: 0;
+        display: flex;
+
+        > li {
+            padding: 0.5em 1em;
+        }
+    }
 }
 
 .active {
-  font-weight: bold;
+    font-weight: bold;
+    text-decoration: underline;
 }

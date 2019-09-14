@@ -1,10 +1,11 @@
+import { h, Component } from "preact";
 import { Divider } from "../../components/Divider";
 import { Grid } from "../../components/Grid";
 import { LayerBox } from "../../components/LayerBox";
 import { Menu } from "../../components/Menu";
 import { ScrollBox } from "../../components/ScrollBox";
 import { Highlight } from "./components/Highlight";
-import { h, Component } from "preact";
+import { Title } from "../../components/Title";
 import spritesheets from "src/data/spritesheets";
 
 class Spritesheets extends Component {
@@ -24,9 +25,9 @@ class Spritesheets extends Component {
     const tileHeight = activeMap.map.tileh;
     return (
       <section>
-        <h1 style={{ color: "white" }}>
+        <Title>
           Spritesheets - {activeMap.name} {width}x{height}
-        </h1>
+        </Title>
         <Menu
           items={spritesheets.map(map => [map.name, `/sprites/${map.name}`])}
         />

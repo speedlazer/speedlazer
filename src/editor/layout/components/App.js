@@ -9,6 +9,7 @@ import Sceneries from "src/editor/modules/sceneries";
 export const App = () => (
   <div>
     <Menu
+      horizontal={true}
       items={[
         ["Sprites", "/sprites"],
         ["Compositions", "/compositions"],

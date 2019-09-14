@@ -1,6 +1,8 @@
+import { h, Component } from "preact";
 import { CompositionPreview } from "./components/CompositionPreview";
 import { Menu } from "../../components/Menu";
-import { h, Component } from "preact";
+import { Divider } from "../../components/Divider";
+import { Title } from "../../components/Title";
 import compositions from "src/data/compositions";
 import style from "./style.scss";
 
@@ -63,52 +65,61 @@ class Compositions extends Component {
 
     return (
       <section>
-        <h1 class={style.text}>Compositions</h1>
-        <Menu
-          items={Object.keys(compositions).map(key => [
-            key,
-            `/compositions/${key}`
-          ])}
-        />
-        <div>
-          <Setting checked={showSize} onCheck={this.updateShowSize}>
-            Show size
-          </Setting>
-          <Setting checked={showHitBox} onCheck={this.updateShowHitBox}>
-            Show hitbox
-          </Setting>
-          <Setting
-            checked={showRotationPoints}
-            onCheck={this.updateShowRotationPoints}
-          >
-            Show rotation points
-          </Setting>
-          <Setting
-            checked={showAttachPoints}
-            onCheck={this.updateShowAttachPoints}
-          >
-            Show attach points
-          </Setting>
-        </div>
-        {activeComposition &&
-          activeComposition.frames && (
-            <Menu
-              items={["default", ...Object.keys(activeComposition.frames)].map(
-                key => [key, `/compositions/${compositionName}/frames/${key}`]
-              )}
-            />
-          )}
-        {activeComposition && (
-          <CompositionPreview
-            composition={activeComposition}
-            frame={frameName}
-            tweenDuration={1000}
-            showSize={showSize}
-            showHitBox={showHitBox}
-            showRotationPoints={showRotationPoints}
-            showAttachPoints={showAttachPoints}
+        <Title>Compositions</Title>
+        <Divider>
+          <Menu
+            items={Object.keys(compositions).map(key => [
+              key,
+              `/compositions/${key}`
+            ])}
           />
-        )}
+          <div>
+            <div>
+              <Setting checked={showSize} onCheck={this.updateShowSize}>
+                Show size
+              </Setting>
+              <Setting checked={showHitBox} onCheck={this.updateShowHitBox}>
+                Show hitbox
+              </Setting>
+              <Setting
+                checked={showRotationPoints}
+                onCheck={this.updateShowRotationPoints}
+              >
+                Show rotation points
+              </Setting>
+              <Setting
+                checked={showAttachPoints}
+                onCheck={this.updateShowAttachPoints}
+              >
+                Show attach points
+              </Setting>
+            </div>
+            {activeComposition &&
+              activeComposition.frames && (
+                <Menu
+                  horizontal={true}
+                  items={[
+                    "default",
+                    ...Object.keys(activeComposition.frames)
+                  ].map(key => [
+                    key,
+                    `/compositions/${compositionName}/frames/${key}`
+                  ])}
+                />
+              )}
+            {activeComposition && (
+              <CompositionPreview
+                composition={activeComposition}
+                frame={frameName}
+                tweenDuration={1000}
+                showSize={showSize}
+                showHitBox={showHitBox}
+                showRotationPoints={showRotationPoints}
+                showAttachPoints={showAttachPoints}
+              />
+            )}
+          </div>
+        </Divider>
       </section>
     );
   }
