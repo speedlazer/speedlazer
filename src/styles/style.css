@@ -1,73 +1,73 @@
 html,
 body {
-  margin: 0 0;
-  background: #000;
+    margin: 0 0;
+    background: #000;
 }
 
 html {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 #cr-stage {
-  image-rendering: -moz-crisp-edges;         /* Firefox */
-  image-rendering:   -o-crisp-edges;         /* Opera */
-  image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
-  image-rendering: crisp-edges;
-  -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+    image-rendering: -moz-crisp-edges; /* Firefox */
+    image-rendering: -o-crisp-edges; /* Opera */
+    image-rendering: -webkit-optimize-contrast; /* Webkit (non-standard naming) */
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
 
-  transform-origin: top left;
+    transform-origin: top left;
 }
 
 h1 {
-  font-size: 1.2em;
+    font-size: 1.2em;
 }
 
 h2 {
-  font-size: 1.1em;
+    font-size: 1.1em;
 }
 
 footer {
-  color: #DDD;
-  padding: 1em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    color: #ddd;
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-family: "Press Start 2P";
-  font-size: 8px;
-  width: 100%
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-family: "Press Start 2P";
+    font-size: 8px;
+    width: 100%;
 }
 
 footer * {
-  margin-right: 1em;
+    margin-right: 1em;
 }
 
 footer button {
-  padding: 0.6em;
-  border-radius: 0.2em;
-  background: #DDD;
+    padding: 0.6em;
+    border-radius: 0.2em;
+    background: #ddd;
 }
 
 #version::before {
-  content: 'Ver: ';
+    content: "Ver: ";
 }
 
 a {
-  color: #fff;
+    color: #fff;
 }
 
 .fullscreen #theater {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: #000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #000;
 }

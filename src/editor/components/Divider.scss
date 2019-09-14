@@ -1,11 +1,11 @@
 .divider {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 
-  > *:first-child {
-    flex: 0.2;
-  }
-  > *:last-child {
-    flex: 0.8;
-  }
+    > *:first-child {
+        flex: 0.2;
+    }
+    > *:last-child {
+        flex: 0.8;
+    }
 }

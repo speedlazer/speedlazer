@@ -58,7 +58,7 @@
     "start": "webpack-dev-server --open --config ./config/webpack.dev.js",
     "lint": "eslint src/",
     "test": "mocha --recursive --require @babel/polyfill --require @babel/register",
-    "prettier": "prettier '{,!(node_modules|dist|.tmp)/**/}*.js' --write"
+    "prettier": "prettier '{,!(node_modules|dist|.tmp)/**/}*.{js,css,scss,json}' --write"
   },
   "babel": {
     "presets": ["@babel/env"],
@@ -89,6 +89,13 @@
         "files": "*.json",
         "options": {
           "parser": "json"
+        }
+      },
+      {
+        "files": "*.{s,}css",
+        "options": {
+          "parser": "css",
+          "tabWidth": 4
         }
       }
     ],
