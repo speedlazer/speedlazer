@@ -263,6 +263,13 @@ Crafty.c("Scenery", {
       fullSceneryVector.left.attr({ vx: 0, vy: 0 });
       fullSceneryVector.left.freeze();
     }
+    if (
+      vx > 0 &&
+      fullSceneryVector.right.sceneryVectors.v3 > Crafty.viewport.width
+    ) {
+      fullSceneryVector.right.attr({ vx: 0, vy: 0 });
+      fullSceneryVector.right.freeze();
+    }
 
     // Build fase
     if (vx < 0 && fullSceneryVector.v4 < Crafty.viewport.width + PIXEL_BUFFER) {
@@ -276,6 +283,22 @@ Crafty.c("Scenery", {
         startXPos: fullSceneryVector.v2 + vx / fps,
         startYPos: 0, // TODO: Support vertical movement
         direction: SCENERY_DIRECTIONS.RIGHT
+      });
+      return;
+    }
+    if (vx > 0 && fullSceneryVector.v3 > -PIXEL_BUFFER) {
+      // scrolling to the left, check right side if content needs to be added
+      const firstBlock = fullSceneryVector.left;
+      const nextBlock =
+        this.currentScenery || sceneries[firstBlock.sceneryName].left;
+
+      this.currentScenery = null;
+      const leftScenery = sceneries[nextBlock];
+      const nextPos = fullSceneryVector.v1 - leftScenery.width;
+      this.startScenery(nextBlock, {
+        startXPos: nextPos + vx / fps,
+        startYPos: 0, // TODO: Support vertical movement
+        direction: SCENERY_DIRECTIONS.LEFT
       });
       return;
     }
