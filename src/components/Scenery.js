@@ -143,6 +143,7 @@ Crafty.c("Scenery", {
   },
   remove() {
     this.unbind("UpdateFrame", this.verifySceneryContent);
+    this.blocks.forEach(b => b.destroy());
   },
 
   setNextScenery(sceneryName) {

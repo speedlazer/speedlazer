@@ -11,6 +11,9 @@ const Entities = ({
   habitatName = "default"
 }) => {
   const activeEntity = entities.find(e => e.name === entity);
+  const activeHabitat =
+    activeEntity &&
+    activeEntity.habitats.find(({ name }) => name === habitatName);
 
   return (
     <section>
@@ -42,7 +45,7 @@ const Entities = ({
             <EntityPreview
               entity={entity}
               state={stateName}
-              habitat={habitatName}
+              habitat={activeHabitat}
             />
           )}
         </div>

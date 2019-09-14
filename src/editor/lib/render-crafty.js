@@ -3,9 +3,9 @@ import "src/components/Composable";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";
 import { createEntity } from "src/components/EntityDefinition";
-import { setScenery } from "src/components/Scenery";
+import { setScenery, setScrollVelocity } from "src/components/Scenery";
 import {
-  /* setBackgroundColor, */
+  setBackgroundColor,
   fadeBackgroundColor
 } from "src/components/Horizon";
 
@@ -109,15 +109,37 @@ Crafty.defineScene("ComposablePreview", ({ composition, options }) => {
   scaleScreenForEntity(composable);
 });
 
-Crafty.defineScene("EntityPreview", ({ entityName }) => {
+let activeHabitat = null;
+const setHabitat = habitat => {
+  if (!habitat || !habitat.scenery || habitat.scenery !== activeHabitat) {
+    Crafty("Scenery").destroy();
+  }
+  habitat &&
+    habitat.scenery &&
+    habitat.scenery !== activeHabitat &&
+    setScenery(habitat.scenery);
+
+  habitat && habitat.background
+    ? setBackgroundColor(habitat.background[0], habitat.background[1])
+    : setBackgroundColor("#000000", "#000000");
+
+  habitat &&
+    habitat.scrollSpeed &&
+    (habitat.scenery
+      ? setScrollVelocity(habitat.scrollSpeed)
+      : setScrollVelocity({ vx: 0, vy: 0 }));
+};
+
+Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
   const entity = createEntity(entityName);
+  setHabitat(habitat);
+
   scaleScreenForEntity(entity);
 });
 
 Crafty.defineScene(
   "SceneryPreview",
   async ({ scenery }) => {
-    //setBackgroundColor("#366eab", "#d6d5d5");
     setScenery(scenery);
     fadeBackgroundColor({
       topColors: [
@@ -184,12 +206,13 @@ export const showEntity = async (entityName, options = {}) => {
   ) {
     const existingEntity = Crafty("EntityDefinition").get(0);
     existingEntity.showState(options.state);
+    setHabitat(options.habitat);
     return;
   }
   currentEntity = entityName;
 
   await loadSpriteSheets();
-  Crafty.enterScene("EntityPreview", { entityName });
+  Crafty.enterScene("EntityPreview", { entityName, habitat: options.habitat });
 };
 
 export const showScenery = async scenery => {
