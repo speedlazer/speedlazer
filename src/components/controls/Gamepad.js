@@ -275,16 +275,16 @@ Crafty.c("GamepadMultiway", {
   },
 
   /* Constructor
-       *
-       * Takes a configuration object which may contain the following
-       * properties:
-       *
-       * speed: either a number describing the speed in pixel for both
-       *        directions (x, y) or an object with properties "x" and "y"
-       *        describing speed individually, e.g. "{x: 2, y: 3}"
-       *
-       * gamepadIndex: Index (zero-based) of gamepad to use
-       */
+   *
+   * Takes a configuration object which may contain the following
+   * properties:
+   *
+   * speed: either a number describing the speed in pixel for both
+   *        directions (x, y) or an object with properties "x" and "y"
+   *        describing speed individually, e.g. "{x: 2, y: 3}"
+   *
+   * gamepadIndex: Index (zero-based) of gamepad to use
+   */
   gamepadMultiway: function(config) {
     config = config || {};
 

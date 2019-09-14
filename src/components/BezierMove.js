@@ -11,7 +11,7 @@ Crafty.c("BezierMove", {
 
   bezierMove(path, settings) {
     const speed = settings.speed || this.defaultSpeed;
-    const duration = path.length / speed * 1000;
+    const duration = (path.length / speed) * 1000;
 
     this.bezierTimer = new Crafty.easing(duration, settings.easing || "linear");
     this.bezierPath = path;

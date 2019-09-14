@@ -18,31 +18,26 @@ const Entities = ({
       <Divider>
         <Menu items={entities.map(({ name }) => [name, `/entities/${name}`])} />
         <div>
-          {activeEntity &&
-            activeEntity.states && (
-              <Menu
-                horizontal={true}
-                items={["default", ...Object.keys(activeEntity.states)].map(
-                  key => [
-                    key,
-                    `/entities/${entity}/states/${key}/${habitatName}`
-                  ]
-                )}
-              />
-            )}
-          {activeEntity &&
-            activeEntity.habitats && (
-              <Menu
-                horizontal={true}
-                items={[
-                  "default",
-                  ...Object.values(activeEntity.habitats).map(h => h.name)
-                ].map(key => [
-                  key,
-                  `/entities/${entity}/states/${stateName}/${key}`
-                ])}
-              />
-            )}
+          {activeEntity && activeEntity.states && (
+            <Menu
+              horizontal={true}
+              items={["default", ...Object.keys(activeEntity.states)].map(
+                key => [key, `/entities/${entity}/states/${key}/${habitatName}`]
+              )}
+            />
+          )}
+          {activeEntity && activeEntity.habitats && (
+            <Menu
+              horizontal={true}
+              items={[
+                "default",
+                ...Object.values(activeEntity.habitats).map(h => h.name)
+              ].map(key => [
+                key,
+                `/entities/${entity}/states/${stateName}/${key}`
+              ])}
+            />
+          )}
           {entity && (
             <EntityPreview
               entity={entity}

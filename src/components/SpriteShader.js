@@ -115,12 +115,12 @@ Crafty.defaultShader(
 
       let hideAt = -1.0;
       if (ent.hideAt) {
-        hideAt = Math.max(0, co.y + (ent.hideAt - ent.y) / ent.h * co.h);
+        hideAt = Math.max(0, co.y + ((ent.hideAt - ent.y) / ent.h) * co.h);
       }
 
       const hideBelow = findHideBelow(ent);
       if (hideBelow !== null) {
-        hideAt = Math.max(0, co.y + (hideBelow - ent.y) / ent.h * co.h);
+        hideAt = Math.max(0, co.y + ((hideBelow - ent.y) / ent.h) * co.h);
       }
 
       e.program.writeVector(

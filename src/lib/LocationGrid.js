@@ -25,12 +25,10 @@ class LocationGrid {
 
     const xs = this.coordList(settings.x);
     const ys = this.coordList(settings.y);
-    const coords = settings.initial;
-    for (let y of ys) {
-      for (let x of xs) {
-        coords.push({ x, y });
-      }
-    }
+    const coords = ys.reduce(
+      (acc, y) => acc.concat(xs.map(x => ({ x, y }))),
+      settings.initial
+    );
 
     this.freeCoords = shuffle(coords);
   }

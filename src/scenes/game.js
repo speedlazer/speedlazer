@@ -1,7 +1,7 @@
 import { createScriptExecutionSpace } from "src/lib/dsl";
 import stage1 from "src/scripts/stage1.lazer";
 
-import Stage1 from "src/lazerscripts/stage1";
+//import Stage1 from "src/lazerscripts/stage1";
 import PauseMenu from "src/lib/PauseMenu";
 //import levelGenerator from "src/lib/LevelGenerator";
 
@@ -11,7 +11,7 @@ import PauseMenu from "src/lib/PauseMenu";
 
 Crafty.defineScene(
   "Game",
-  async (data = {}) => {
+  async (/*data = {}*/) => {
     // constructor
     //
     // import from globals
@@ -54,10 +54,10 @@ Crafty.defineScene(
     //this.level = level;
     //});
 
-    const options = {
-      startAtCheckpoint: data.checkpoint != null ? data.checkpoint : 0
-    };
-    const startScript = data.script != null ? data.script : Stage1;
+    //const options = {
+    //startAtCheckpoint: data.checkpoint != null ? data.checkpoint : 0
+    //};
+    //const startScript = data.script != null ? data.script : Stage1;
 
     //const executeScript = async (scriptClass, options) => {
     //if (scriptClass == null) {
@@ -74,7 +74,7 @@ Crafty.defineScene(
     //}
     //};
 
-    let checkpointsPassed = 0;
+    //let checkpointsPassed = 0;
 
     //Crafty.bind("ScriptFinished", async script => {
     //const checkpoint = Math.max(

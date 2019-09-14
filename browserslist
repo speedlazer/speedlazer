@@ -1,6 +1,5 @@
 # see: https://www.npmjs.com/package/browserslist
 
-last 3 Chrome versions
-Safari >= 11
-last 3 Firefox versions
-last 3 Opera versions
+last 2 Chrome versions
+last 2 Firefox versions
+last 2 Opera versions

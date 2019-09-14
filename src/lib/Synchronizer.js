@@ -45,12 +45,12 @@ class Synchronizer {
   }
 
   verifyActiveSynchronisations() {
-    for (let name in this.synchronizations) {
+    this.synchronization.forEach(name => {
       const sync = this.synchronizations[name];
       if (difference(this.entities, sync.registered).length === 0) {
         sync.defer.resolve();
       }
-    }
+    });
   }
 }
 

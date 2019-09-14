@@ -172,7 +172,7 @@ export class BezierPath {
     const localT = (t - c.min) / (c.max - c.min);
     const vector = c.curve.derivative(localT);
     const atan = Math.atan2(vector.y, vector.x);
-    return atan * 180 / Math.PI;
+    return (atan * 180) / Math.PI;
   }
 }
 

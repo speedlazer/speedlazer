@@ -117,7 +117,8 @@ Crafty.c("PlayerSpaceship", {
   },
 
   _updateFlyingSpeed(newSpeed, dt) {
-    const correction = newSpeed < 30 ? newSpeed / 2 : 15 + newSpeed / 400 * 100;
+    const correction =
+      newSpeed < 30 ? newSpeed / 2 : 15 + (newSpeed / 400) * 100;
 
     if (this.currentRenderedSpeed > correction) {
       this.currentRenderedSpeed -= 12;
@@ -191,10 +192,11 @@ Crafty.c("PlayerSpaceship", {
       _blue: 255
     };
     Crafty.assignColor(this.playerColor, c);
-    for (let comp of ["_red", "_green", "_blue"]) {
+
+    ["_red", "_green", "_blue"].forEach(comp => {
       const newC = (c[comp] + basicC[comp] + basicC[comp]) / 3;
       c[comp] = newC;
-    }
+    });
 
     this.trailColor = c;
     this.backFire.colorOverride(c);
@@ -217,12 +219,14 @@ Crafty.c("PlayerSpaceship", {
       if (isPaused() || this.has("Invincible")) return;
       let hit = false;
       let damage = 0;
-      for (let e of collision) {
+
+      collision.forEach(e => {
         if (e.obj.damage && e.obj.damage > damage && !e.obj.hidden) {
-          ({ damage } = e.obj);
+          damage = e.obj.damage;
           hit = true;
         }
-      }
+      });
+
       if (hit) {
         this.trigger("Hit", { damage });
       }
@@ -265,8 +269,8 @@ Crafty.c("PlayerSpaceship", {
     this.bind("CameraPan", ({ dx, dy }) => this.shift(-dx, -dy));
 
     this.bind("GameLoop", function(fd) {
-      const motionX = (this.vx + this._currentSpeed.x) / 1000.0 * fd.dt;
-      const motionY = (this.vy + this._currentSpeed.y) / 1000.0 * fd.dt;
+      const motionX = ((this.vx + this._currentSpeed.x) / 1000.0) * fd.dt;
+      const motionY = ((this.vy + this._currentSpeed.y) / 1000.0) * fd.dt;
 
       if (this.has("AnimationMode")) {
         if (this._choreography && this._choreography.length === 0) {

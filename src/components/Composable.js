@@ -41,16 +41,18 @@ const deltaSettings = settings =>
 
 const generateDefaultFrame = definition => {
   const result = {};
-  definition.sprites.filter(([, settings]) => settings.key).map(
-    ([, settings]) =>
-      (result[settings.key] = {
-        z: 0,
-        rotation: 0,
-        ...settings,
-        x: 0,
-        y: 0
-      })
-  );
+  definition.sprites
+    .filter(([, settings]) => settings.key)
+    .map(
+      ([, settings]) =>
+        (result[settings.key] = {
+          z: 0,
+          rotation: 0,
+          ...settings,
+          x: 0,
+          y: 0
+        })
+    );
   return result;
 };
 

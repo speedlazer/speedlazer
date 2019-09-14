@@ -182,17 +182,17 @@ export const showEntity = async (entityName, options = {}) => {
     options.state &&
     currentEntity === entityName
   ) {
-    const currentEntity = Crafty("EntityDefinition").get(0);
-    currentEntity.showState(options.state);
+    const existingEntity = Crafty("EntityDefinition").get(0);
+    existingEntity.showState(options.state);
     return;
   }
+  currentEntity = entityName;
 
   await loadSpriteSheets();
   Crafty.enterScene("EntityPreview", { entityName });
-  currentEntity = entityName;
 };
 
-export const showScenery = async (scenery, scrollSpeed) => {
+export const showScenery = async scenery => {
   await loadSpriteSheets();
   Crafty.enterScene("SceneryPreview", { scenery });
 };

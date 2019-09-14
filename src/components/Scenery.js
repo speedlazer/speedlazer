@@ -123,8 +123,8 @@ const createBlock = (scenery, x, y) => {
 };
 
 const calcReach = (distance, width) =>
-  (Crafty.viewport.width - (Crafty.viewport.width - width * distance) / 2) /
-  (width * distance) *
+  ((Crafty.viewport.width - (Crafty.viewport.width - width * distance) / 2) /
+    (width * distance)) *
   width;
 
 const SCENERY_DIRECTIONS = {
@@ -231,8 +231,8 @@ Crafty.c("Scenery", {
 
     const fps = Crafty.timer.FPS();
     this.checkCountDown = Math.min(
-      PIXEL_BUFFER / Math.abs(vx) * fps,
-      PIXEL_BUFFER / Math.abs(vy) * fps
+      (PIXEL_BUFFER / Math.abs(vx)) * fps,
+      (PIXEL_BUFFER / Math.abs(vy)) * fps
     );
 
     const fullSceneryVector = this.blocks.reduce(

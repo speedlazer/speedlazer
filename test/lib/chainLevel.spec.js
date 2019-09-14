@@ -66,9 +66,7 @@ describe("Chain scoring", () => {
           let sumReward = currentLevel.reward * amount;
           expect(
             sumReward,
-            `${nextLevel.name} awards less than achieving ${
-              currentLevel.name
-            } x ${amount}`
+            `${nextLevel.name} awards less than achieving ${currentLevel.name} x ${amount}`
           ).to.be.lessThan(nextLevel.reward);
           expect(
             nextLevel.ratio,

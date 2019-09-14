@@ -25,18 +25,18 @@ Crafty.c("Scalable", {
     const oldW = this.w;
     const oldH = this.h;
 
-    this.w = this.w / oldScale * newScale;
-    this.h = this.h / oldScale * newScale;
+    this.w = (this.w / oldScale) * newScale;
+    this.h = (this.h / oldScale) * newScale;
 
     this._children.forEach(c => {
       const relX = c.x - this.x;
       const relY = c.y - this.y;
       if (typeof c.attr === "function") {
         c.attr({
-          x: this.x + relX / oldScale * newScale,
-          y: this.y + relY / oldScale * newScale,
-          w: (c.w + oldW - this.w) / oldScale * newScale,
-          h: (c.h + oldH - this.h) / oldScale * newScale
+          x: this.x + (relX / oldScale) * newScale,
+          y: this.y + (relY / oldScale) * newScale,
+          w: ((c.w + oldW - this.w) / oldScale) * newScale,
+          h: ((c.h + oldH - this.h) / oldScale) * newScale
         });
       }
     });
@@ -45,7 +45,7 @@ Crafty.c("Scalable", {
     if (this.map && this.map.points) {
       this.map.points = this.map.points.map((point, i) => {
         const origin = i % 2 === 0 ? this.x : this.y;
-        return origin + (point - origin) / oldScale * newScale;
+        return origin + ((point - origin) / oldScale) * newScale;
       });
     }
   }
