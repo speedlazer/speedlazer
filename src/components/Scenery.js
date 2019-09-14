@@ -122,10 +122,10 @@ const createBlock = (scenery, x, y) => {
   return block;
 };
 
-const calcReach = (distance, width) =>
-  ((Crafty.viewport.width - (Crafty.viewport.width - width * distance) / 2) /
-    (width * distance)) *
-  width;
+const calcReach = (distance, width) => {
+  const vpw = Crafty.viewport.width / Crafty.viewport._scale;
+  return ((vpw - (vpw - width * distance) / 2) / (width * distance)) * width;
+};
 
 const SCENERY_DIRECTIONS = {
   RIGHT: 1,
@@ -259,21 +259,20 @@ Crafty.c("Scenery", {
       }
     );
 
+    const vpw = Crafty.viewport.width / Crafty.viewport._scale;
+
     // Cleanup fase
     if (vx < 0 && fullSceneryVector.left.sceneryVectors.v4 < 0) {
       fullSceneryVector.left.attr({ vx: 0, vy: 0 });
       fullSceneryVector.left.freeze();
     }
-    if (
-      vx > 0 &&
-      fullSceneryVector.right.sceneryVectors.v3 > Crafty.viewport.width
-    ) {
+    if (vx > 0 && fullSceneryVector.right.sceneryVectors.v3 > vpw) {
       fullSceneryVector.right.attr({ vx: 0, vy: 0 });
       fullSceneryVector.right.freeze();
     }
 
     // Build fase
-    if (vx < 0 && fullSceneryVector.v4 < Crafty.viewport.width + PIXEL_BUFFER) {
+    if (vx < 0 && fullSceneryVector.v4 < vpw + PIXEL_BUFFER) {
       // scrolling to the left, check right side if content needs to be added
       const lastBlock = fullSceneryVector.right;
       const nextBlock =

@@ -8,9 +8,16 @@ Crafty.c("Backdrop", {
     this.attr({
       x: 0,
       y: 0,
-      w: Crafty.viewport.width,
-      h: Crafty.viewport.height,
+      w: Crafty.viewport.width / Crafty.viewport._scale,
+      h: Crafty.viewport.height / Crafty.viewport._scale,
       z: -10000
+    });
+    this.bind("ViewportScale", this.updateBackdrop);
+  },
+  updateBackdrop() {
+    this.attr({
+      w: Crafty.viewport.width / Crafty.viewport._scale,
+      h: Crafty.viewport.height / Crafty.viewport._scale
     });
   }
 });
