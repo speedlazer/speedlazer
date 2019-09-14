@@ -61,9 +61,7 @@
     "prettier": "prettier '{,!(node_modules|dist|.tmp)/**/}*.js' --write"
   },
   "babel": {
-    "presets": [
-      "@babel/env"
-    ],
+    "presets": ["@babel/env"],
     "plugins": [
       [
         "@babel/plugin-transform-react-jsx",
@@ -86,6 +84,14 @@
     "when": "^3.7.8"
   },
   "prettier": {
+    "overrides": [
+      {
+        "files": "*.json",
+        "options": {
+          "parser": "json"
+        }
+      }
+    ],
     "parser": "babel",
     "tabWidth": 2
   },
