@@ -28,15 +28,13 @@ const TWEEN_WHITELIST = ["x", "y", "w", "h", "rotation"];
 const deltaSettings = settings =>
   Object.entries(settings)
     .filter(([name]) => TWEEN_WHITELIST.includes(name))
-    .map(([name, value]) => {
-      if (name === "x") {
-        return ["dx", value];
-      } else if (name === "y") {
-        return ["dy", value];
-      } else {
-        return [name, value];
-      }
-    })
+    .map(([name, value]) =>
+      name === "x"
+        ? ["dx", value]
+        : name === "y"
+        ? ["dy", value]
+        : [name, value]
+    )
     .reduce((result, [key, value]) => ({ ...result, [key]: value }), {});
 
 const generateDefaultFrame = definition => {
