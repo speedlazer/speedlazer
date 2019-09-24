@@ -12,7 +12,9 @@
   "habitats": [
     {
       "name": "Ocean",
-      "scenery": "Ocean"
+      "scenery": "City.Ocean",
+      "scrollSpeed": { "vx": -100, "vy": 0 },
+      "background": ["#366eab", "#d6d5d5"]
     }
   ]
 }
