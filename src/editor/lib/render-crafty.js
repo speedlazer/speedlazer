@@ -4,10 +4,12 @@ import "src/components/DebugComposable";
 import "src/components/SpriteShader";
 import { createEntity } from "src/components/EntityDefinition";
 import { setScenery, setScrollVelocity } from "src/components/Scenery";
+import "src/components/WayPointMotion";
 import {
   setBackgroundColor,
   fadeBackgroundColor
 } from "src/components/Horizon";
+import { getBezierPath } from "src/lib/BezierPath";
 
 Crafty.paths({
   audio: "",
@@ -218,4 +220,43 @@ export const showEntity = async (entityName, options = {}) => {
 export const showScenery = async scenery => {
   await loadSpriteSheets();
   Crafty.enterScene("SceneryPreview", { scenery });
+};
+
+const showBezier = pattern => {
+  const vpw = Crafty.viewport.width;
+  const vph = Crafty.viewport.height;
+  const normalizedPath = pattern.map(({ x, y }) => ({
+    x: x * vpw,
+    y: y * vph
+  }));
+  const bezierPath = getBezierPath(normalizedPath);
+
+  for (let t = 0.0; t < 1.0; t += 0.01) {
+    const p = bezierPath.get(t);
+    Crafty.e("2D, WebGL, Color, BezierPath")
+      .attr({ x: p.x, y: p.y, w: 3, h: 3 })
+      .color("#00FFFF");
+  }
+};
+
+Crafty.defineScene("FlyPatternPreview", ({ pattern, showPath, showPoints }) => {
+  const vpw = Crafty.viewport.width;
+  const vph = Crafty.viewport.height;
+  showPoints &&
+    pattern.forEach(({ x, y }) => {
+      Crafty.e("2D, WebGL, Color, Waypoint")
+        .attr({ x: x * vpw, y: y * vph, w: 6, h: 6 })
+        .color("#FF0000");
+    });
+
+  showPath && showBezier(pattern);
+
+  Crafty.e("2D, WebGL, Color, WayPointMotion")
+    .attr({ x: pattern[0].x * vpw, y: pattern[0].y * vph, w: 20, h: 20 })
+    .color("#0000FF")
+    .flyPattern(pattern, "easeInOutQuad");
+});
+
+export const showFlyPattern = async (pattern, { showPoints, showPath }) => {
+  Crafty.enterScene("FlyPatternPreview", { pattern, showPoints, showPath });
 };

@@ -30,7 +30,7 @@ class Sceneries extends Component {
         <Title>Scenery</Title>
         <Divider>
           <Menu
-            items={Object.entries(sceneries).map(([key]) => [
+            items={Object.keys(sceneries).map(key => [
               key,
               `/sceneries/${key}`
             ])}

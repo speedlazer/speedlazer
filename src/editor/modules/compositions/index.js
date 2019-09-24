@@ -3,14 +3,8 @@ import { CompositionPreview } from "./components/CompositionPreview";
 import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
+import { Setting } from "../../components/Setting";
 import compositions from "src/data/compositions";
-import style from "./style.scss";
-
-const Setting = ({ checked, onCheck, children }) => (
-  <label class={style.text}>
-    <input type="checkbox" onChange={onCheck} checked={checked} /> {children}
-  </label>
-);
 
 const DEFAULT_STATE = {
   showSize: false,
@@ -19,7 +13,7 @@ const DEFAULT_STATE = {
   showAttachPoints: false
 };
 
-const STORAGE_KEY = "editor-display";
+const STORAGE_KEY = "editor-composition-settings";
 const storeState = newState =>
   localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
 
@@ -32,28 +26,28 @@ const storedState = () => {
 };
 
 class Compositions extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       ...DEFAULT_STATE,
       ...storedState()
     };
   }
 
-  updateShowSize = e => {
-    this.setState({ showSize: e.target.checked });
+  updateShowSize = checked => {
+    this.setState(s => ({ ...s, showSize: checked }));
   };
 
-  updateShowHitBox = e => {
-    this.setState({ showHitBox: e.target.checked });
+  updateShowHitBox = checked => {
+    this.setState(s => ({ ...s, showHitBox: checked }));
   };
 
-  updateShowRotationPoints = e => {
-    this.setState({ showRotationPoints: e.target.checked });
+  updateShowRotationPoints = checked => {
+    this.setState(s => ({ ...s, showRotationPoints: checked }));
   };
 
-  updateShowAttachPoints = e => {
-    this.setState({ showAttachPoints: e.target.checked });
+  updateShowAttachPoints = checked => {
+    this.setState(s => ({ ...s, showAttachPoints: checked }));
   };
 
   render(
