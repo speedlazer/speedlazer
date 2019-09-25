@@ -254,7 +254,7 @@ Crafty.defineScene("FlyPatternPreview", ({ pattern, showPath, showPoints }) => {
   Crafty.e("2D, WebGL, Color, WayPointMotion")
     .attr({ x: pattern[0].x * vpw, y: pattern[0].y * vph, w: 20, h: 20 })
     .color("#0000FF")
-    .flyPattern(pattern, "easeInOutQuad");
+    .flyPattern(pattern, 75, "easeInOutQuad");
 });
 
 let currentPattern = null;

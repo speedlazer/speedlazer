@@ -15,7 +15,7 @@
           "minWaterOffset": -20
         }
       ],
-      ["HideBelow", { "hideBelow": 540, "z": -12 }]
+      ["HideBelow", { "hideBelow": 570, "z": -12 }]
     ],
     "attachments": {
       "cabin1": {
@@ -89,6 +89,10 @@
     {
       "name": "Ocean",
       "scenery": "City.Ocean",
+      "position": {
+        "x": 0,
+        "y": 80
+      },
       "scrollSpeed": { "vx": -100, "vy": 0 },
       "background": ["#366eab", "#d6d5d5"]
     }
