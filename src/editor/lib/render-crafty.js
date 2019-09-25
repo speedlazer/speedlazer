@@ -257,6 +257,26 @@ Crafty.defineScene("FlyPatternPreview", ({ pattern, showPath, showPoints }) => {
     .flyPattern(pattern, "easeInOutQuad");
 });
 
+let currentPattern = null;
 export const showFlyPattern = async (pattern, { showPoints, showPath }) => {
+  if (pattern === currentPattern && inScene("FlyPatternPreview")) {
+    Crafty("Waypoint").destroy();
+    Crafty("BezierPath").destroy();
+
+    const vpw = Crafty.viewport.width;
+    const vph = Crafty.viewport.height;
+
+    showPoints &&
+      pattern.forEach(({ x, y }) => {
+        Crafty.e("2D, WebGL, Color, Waypoint")
+          .attr({ x: x * vpw, y: y * vph, w: 6, h: 6 })
+          .color("#FF0000");
+      });
+
+    showPath && showBezier(pattern);
+    return;
+  }
+  currentPattern = pattern;
+
   Crafty.enterScene("FlyPatternPreview", { pattern, showPoints, showPath });
 };
