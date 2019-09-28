@@ -28,18 +28,18 @@ Crafty.c("Scalable", {
     this.w = (this.w / oldScale) * newScale;
     this.h = (this.h / oldScale) * newScale;
 
-    this._children.forEach(c => {
-      const relX = c.x - this.x;
-      const relY = c.y - this.y;
-      if (typeof c.attr === "function") {
-        c.attr({
+    this._children
+      .filter(child => child.attr)
+      .forEach(child => {
+        const relX = child.x - this.x;
+        const relY = child.y - this.y;
+        child.attr({
           x: this.x + (relX / oldScale) * newScale,
           y: this.y + (relY / oldScale) * newScale,
-          w: ((c.w + oldW - this.w) / oldScale) * newScale,
-          h: ((c.h + oldH - this.h) / oldScale) * newScale
+          w: ((child.w + oldW - this.w) / oldScale) * newScale,
+          h: ((child.h + oldH - this.h) / oldScale) * newScale
         });
-      }
-    });
+      });
 
     // Scale collision shape
     if (this.map && this.map.points) {
