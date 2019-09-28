@@ -1,11 +1,14 @@
 import { togglePause } from "src/lib/core/pauseToggle";
+import Gamepad from "./Gamepad";
 
-Crafty.c("GamepadControls", {
+const component = "GamepadControls";
+
+Crafty.c(component, {
   init() {
     this.requires("Listener");
     this.bind("RemoveComponent", function(componentName) {
       if (componentName === "ControlScheme") {
-        this.removeComponent("GamepadControls");
+        this.removeComponent(component);
       }
     });
     this.emits = {};
@@ -17,7 +20,7 @@ Crafty.c("GamepadControls", {
 
   setupControls(player) {
     player
-      .addComponent("GamepadControls")
+      .addComponent(component)
       .controls(this.controlMap)
       .addComponent("ControlScheme");
   },
@@ -28,7 +31,7 @@ Crafty.c("GamepadControls", {
       return;
     }
 
-    this.requires("Gamepad");
+    this.requires(Gamepad);
     this.gamepad(controlMap.gamepadIndex);
 
     this.bind("GamepadKeyChange", this._keyHandling);
@@ -141,3 +144,5 @@ Crafty.c("GamepadControls", {
     });
   }
 });
+
+export default component;

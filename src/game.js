@@ -2,6 +2,8 @@ import CryptoJS from "crypto-js";
 import sortBy from "lodash/sortBy";
 import { setGameSpeed, getGameSpeed } from "./lib/core/gameSpeed";
 import { isPaused } from "./lib/core/pauseToggle";
+import AnalogKeyboardControls from "src/components/controls/AnalogKeyboardControls";
+import GamepadControls from "src/components/controls/GamepadControls";
 
 /*
  * Destructure this file into multiple components
@@ -58,7 +60,7 @@ const Game = {
     //.setName('Player 2')
     //.color('#00FF00')
 
-    Crafty.e("AnalogKeyboardControls, PlayerAssignable").controls({
+    Crafty.e(AnalogKeyboardControls, "PlayerAssignable").controls({
       fire: Crafty.keys.SPACE,
       switchWeapon: Crafty.keys.PERIOD,
       super: Crafty.keys.ENTER,
@@ -69,7 +71,7 @@ const Game = {
       pause: Crafty.keys.P
     });
 
-    Crafty.e("AnalogKeyboardControls, PlayerAssignable").controls({
+    Crafty.e(AnalogKeyboardControls, "PlayerAssignable").controls({
       fire: Crafty.keys.G,
       switchWeapon: Crafty.keys.H,
       up: Crafty.keys.W,
@@ -79,7 +81,7 @@ const Game = {
       pause: Crafty.keys.Q
     });
 
-    Crafty.e("GamepadControls, PlayerAssignable").controls({
+    Crafty.e(GamepadControls, "PlayerAssignable").controls({
       gamepadIndex: 0,
       fire: 0,
       switchWeapon: 2,
@@ -91,7 +93,7 @@ const Game = {
       right: 15
     });
 
-    Crafty.e("GamepadControls, PlayerAssignable").controls({
+    Crafty.e(GamepadControls, "PlayerAssignable").controls({
       gamepadIndex: 1,
       fire: 0,
       switchWeapon: 2,

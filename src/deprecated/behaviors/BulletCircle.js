@@ -1,7 +1,9 @@
 import defaults from "lodash/defaults";
 import { lookup } from "src/lib/random";
 
-Crafty.c("BulletCircle", {
+const component = "BulletCircle";
+
+Crafty.c(component, {
   bulletCircle(options) {
     this.shootConfig = defaults(options, {
       burstAmount: 10,
@@ -35,3 +37,5 @@ Crafty.c("BulletCircle", {
     }
   }
 });
+
+export default component;

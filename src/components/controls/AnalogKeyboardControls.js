@@ -1,11 +1,13 @@
 import { togglePause } from "src/lib/core/pauseToggle";
 
-Crafty.c("AnalogKeyboardControls", {
+const component = "AnalogKeyboardControls";
+
+Crafty.c(component, {
   init() {
     this.requires("Listener");
     this.bind("RemoveComponent", componentName => {
       if (componentName === "ControlScheme") {
-        this.removeComponent("AnalogKeyboardControls");
+        this.removeComponent(component);
       }
     });
   },
@@ -16,7 +18,7 @@ Crafty.c("AnalogKeyboardControls", {
 
   setupControls(player) {
     player
-      .addComponent("AnalogKeyboardControls")
+      .addComponent(component)
       .controls(this.controlMap)
       .addComponent("ControlScheme");
   },
@@ -240,3 +242,5 @@ Crafty.c("AnalogKeyboardControls", {
     });
   }
 });
+
+export default component;

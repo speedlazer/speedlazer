@@ -1,6 +1,3 @@
-import "./behaviors";
-import "./controls";
-import "./entities";
 import "./generic";
 import "./player";
 import "./utils";
