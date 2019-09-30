@@ -10,7 +10,9 @@ import TweenPromise from "src/components/generic/TweenPromise";
 import ViewportRelativeMotion from "src/components/generic/ViewportRelativeMotion";
 import InventoryWeapons from "src/components/player/InventoryWeapons";
 
-Crafty.c("PlayerSpaceship", {
+const PlayerSpaceship = "PlayerSpaceship";
+
+Crafty.c(PlayerSpaceship, {
   required: [
     "2D, WebGL, playerShip",
     ColorEffects,
@@ -470,3 +472,5 @@ Crafty.c("PlayerSpaceship", {
     this.trailEntPool.clean();
   }
 });
+
+export default PlayerSpaceship;

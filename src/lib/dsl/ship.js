@@ -1,5 +1,6 @@
 import ControlScheme from "src/components/player/ControlScheme";
 import Player from "src/components/player/Player";
+import PlayerSpaceship from "src/components/player/PlayerSpaceship";
 
 const shipFunctions = () => ({
   setWeapons: async weapons => {
@@ -20,7 +21,7 @@ const shipFunctions = () => ({
       }));
     });
     Crafty([Player, ControlScheme].join(" ")).each(function() {
-      this.attr({ shipType: "PlayerSpaceship" });
+      this.attr({ shipType: PlayerSpaceship });
       this.spawnShip();
     });
   }

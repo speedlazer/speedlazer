@@ -2,7 +2,9 @@ import { levelProgress, levelInfo, determineLevel } from "src/lib/chainLevel";
 import Listener from "src/components/generic/Listener";
 import ControlScheme from "src/components/player/ControlScheme";
 
-Crafty.c("PlayerInfo", {
+const PlayerInfo = "PlayerInfo";
+
+Crafty.c(PlayerInfo, {
   init() {
     this.requires(["2D", Listener].join(", "));
     this.boosts = {};
@@ -250,3 +252,5 @@ Crafty.c("PlayerInfo", {
     }
   }
 });
+
+export default PlayerInfo;
