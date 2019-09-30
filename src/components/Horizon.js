@@ -1,10 +1,11 @@
-import "./ColorEffects";
-import "./generic/ColorFade";
-import "./Gradient";
+import ColorEffects from "./ColorEffects";
+import ColorFade from "./generic/ColorFade";
+import Gradient from "./Gradient";
 
 Crafty.c("Backdrop", {
+  required: ["2D, WebGL", Gradient, ColorFade].join(","),
+
   init() {
-    this.requires("2D, WebGL, Gradient, ColorFade");
     this.attr({
       x: 0,
       y: 0,
@@ -56,8 +57,9 @@ export const fadeBackgroundColor = async ({
   });
 
 Crafty.c("Horizon", {
+  required: [ColorEffects].join(","),
+
   init() {
-    this.requires("ColorEffects");
     this.colorDesaturation(currentBackground);
   }
 });

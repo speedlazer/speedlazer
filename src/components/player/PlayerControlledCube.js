@@ -1,9 +1,16 @@
 import { isPaused } from "src/lib/core/pauseToggle";
+import Acceleration from "src/components/generic/Acceleration";
+import Listener from "src/components/generic/Listener";
 
 Crafty.c("PlayerControlledCube", {
   init() {
     this.requires(
-      "2D, WebGL, Color, Listener, Collision, SunBlock, PlayerControlledShip, Acceleration, InventoryWeapons"
+      [
+        "2D, WebGL, Color",
+        Listener,
+        "Collision, SunBlock, PlayerControlledShip, InventoryWeapons",
+        Acceleration
+      ].join(", ")
     );
     this.attr({ w: 40, h: 40 });
 

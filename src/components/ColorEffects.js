@@ -1,6 +1,8 @@
 import isObject from "lodash/isObject";
 
-Crafty.c("ColorEffects", {
+const component = "ColorEffects";
+
+Crafty.c(component, {
   colorDesaturation(color) {
     if (color === null) {
       return this;
@@ -44,3 +46,5 @@ Crafty.c("ColorEffects", {
     return this;
   }
 });
+
+export default component;

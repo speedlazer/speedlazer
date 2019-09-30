@@ -24,7 +24,9 @@ const strToColor = string => [
   parseInt(string.slice(5, 7), 16)
 ];
 
-Crafty.c("ColorFade", {
+const component = "ColorFade";
+
+Crafty.c(component, {
   colorFade(options, bottomColors, topColors) {
     const { duration, skip } = options;
     this.duration = duration;
@@ -66,3 +68,5 @@ Crafty.c("ColorFade", {
     }
   }
 });
+
+export default component;

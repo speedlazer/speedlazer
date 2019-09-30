@@ -2,7 +2,7 @@ import "src/components/Horizon";
 import "src/components/utils/Scalable";
 import "src/components/utils/HideBelow";
 import "src/components/generic/TweenPromise";
-import "src/components/generic/Delta2D";
+import Delta2D from "src/components/generic/Delta2D";
 
 const definitionStructure = {
   sprites: [],
@@ -192,7 +192,7 @@ Crafty.c("Composable", {
   },
 
   createAndAttachSprite([spriteName, options]) {
-    const subElem = Crafty.e(`2D, WebGL, Delta2D, ${spriteName}`);
+    const subElem = Crafty.e(["2D, WebGL", Delta2D, spriteName].join(", "));
     this.applySpriteOptions(subElem, options);
     subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });
     this.attach(subElem);
@@ -274,7 +274,7 @@ Crafty.c("Composable", {
 
   buildAttachHooks(attachHooks) {
     attachHooks.forEach(([label, options]) => {
-      const hook = this.currentAttachHooks[label] || Crafty.e(`2D`);
+      const hook = this.currentAttachHooks[label] || Crafty.e("2D");
       hook.attr({
         x: this.x + (options.x || 0),
         y: this.y + (options.y || 0),

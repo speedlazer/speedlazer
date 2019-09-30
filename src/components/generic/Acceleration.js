@@ -1,6 +1,8 @@
 import defaults from "lodash/defaults";
 
-Crafty.c("Acceleration", {
+const component = "Acceleration";
+
+Crafty.c(component, {
   init() {
     this._currentSpeed = { x: 0, y: 0 };
     this._targetSpeed = { x: 0, y: 0 };
@@ -63,3 +65,5 @@ Crafty.c("Acceleration", {
     this._currentAcceleration[axis] = 0;
   }
 });
+
+export default component;

@@ -1,5 +1,5 @@
-import "./game";
+import "./Game";
 import "./GameOver";
-import "./intro";
+import "./Intro";
 import "./New";
 import "./Scores";

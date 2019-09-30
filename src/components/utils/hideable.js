@@ -1,3 +1,5 @@
+import ColorEffects from "src/components/ColorEffects";
+
 Crafty.c("Hideable", {
   _hidden: false,
 
@@ -16,7 +18,7 @@ Crafty.c("Hideable", {
   },
 
   init() {
-    this.requires("ColorEffects");
+    this.requires(ColorEffects);
   },
 
   sendToBackground(scale, z) {

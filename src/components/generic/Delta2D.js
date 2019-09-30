@@ -1,4 +1,6 @@
-Crafty.c("Delta2D", {
+const component = "Delta2D";
+
+Crafty.c(component, {
   required: "2D",
 
   properties: {
@@ -59,3 +61,5 @@ Crafty.c("Delta2D", {
     }
   }
 });
+
+export default component;

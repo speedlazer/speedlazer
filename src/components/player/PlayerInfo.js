@@ -1,8 +1,9 @@
 import { levelProgress, levelInfo, determineLevel } from "src/lib/chainLevel";
+import Listener from "src/components/generic/Listener";
 
 Crafty.c("PlayerInfo", {
   init() {
-    this.requires("2D, Listener");
+    this.requires(["2D", Listener].join(", "));
     this.boosts = {};
     this.visible = true;
   },

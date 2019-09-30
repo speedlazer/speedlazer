@@ -2,11 +2,19 @@ import defaults from "lodash/defaults";
 import createEntityPool from "src/lib/entityPool";
 import { isPaused } from "src/lib/core/pauseToggle";
 import { lookup } from "src/lib/random";
+import Acceleration from "src/components/generic/Acceleration";
+import Delta2D from "src/components/generic/Delta2D";
+import ColorEffects from "src/components/ColorEffects";
+import Listener from "src/components/generic/Listener";
 
 Crafty.c("PlayerSpaceship", {
-  required:
-    "2D, WebGL, playerShip, ColorEffects, Listener, Collision, SunBlock, " +
-    "PlayerControlledShip, Acceleration, InventoryWeapons",
+  required: [
+    "2D, WebGL, playerShip",
+    ColorEffects,
+    Listener,
+    "Collision, SunBlock, PlayerControlledShip, Acceleration, InventoryWeapons",
+    Acceleration
+  ].join(","),
 
   init() {
     this.attr({ w: 71, h: 45 });
@@ -167,7 +175,7 @@ Crafty.c("PlayerSpaceship", {
 
   start() {
     this.backFire = Crafty.e(
-      "2D, WebGL, shipEngineFire, ColorEffects, SpriteAnimation"
+      ["2D, WebGL, shipEngineFire", ColorEffects, "SpriteAnimation"].join(", ")
     );
     this.backFire.reel("burn", 300, [[4, 5, 3, 1], [3, 0, 3, 1]]);
     this.backFire.timing = 0;
@@ -203,7 +211,11 @@ Crafty.c("PlayerSpaceship", {
     this.trailEntPool = createEntityPool(
       () =>
         Crafty.e(
-          "2D, WebGL, shipEngineFire, Delta2D, TweenPromise, ViewportRelativeMotion, ColorEffects"
+          [
+            Delta2D,
+            "2D, WebGL, shipEngineFire, TweenPromise, ViewportRelativeMotion",
+            ColorEffects
+          ].join(", ")
         )
           .colorOverride(this.trailColor)
           .viewportRelativeMotion({

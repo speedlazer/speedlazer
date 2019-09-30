@@ -1,4 +1,6 @@
-Crafty.c("Listener", {
+const component = "Listener";
+
+Crafty.c(component, {
   init() {
     this.listeners = [];
   },
@@ -28,3 +30,5 @@ Crafty.c("Listener", {
     object.bind(event, realCallback);
   }
 });
+
+export default component;

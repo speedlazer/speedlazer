@@ -60,7 +60,7 @@ const Game = {
     //.setName('Player 2')
     //.color('#00FF00')
 
-    Crafty.e(AnalogKeyboardControls, "PlayerAssignable").controls({
+    Crafty.e([AnalogKeyboardControls, "PlayerAssignable"].join(", ")).controls({
       fire: Crafty.keys.SPACE,
       switchWeapon: Crafty.keys.PERIOD,
       super: Crafty.keys.ENTER,
@@ -71,7 +71,7 @@ const Game = {
       pause: Crafty.keys.P
     });
 
-    Crafty.e(AnalogKeyboardControls, "PlayerAssignable").controls({
+    Crafty.e([AnalogKeyboardControls, "PlayerAssignable"].join(", ")).controls({
       fire: Crafty.keys.G,
       switchWeapon: Crafty.keys.H,
       up: Crafty.keys.W,
@@ -81,7 +81,7 @@ const Game = {
       pause: Crafty.keys.Q
     });
 
-    Crafty.e(GamepadControls, "PlayerAssignable").controls({
+    Crafty.e([GamepadControls, "PlayerAssignable"].join(", ")).controls({
       gamepadIndex: 0,
       fire: 0,
       switchWeapon: 2,
@@ -93,7 +93,7 @@ const Game = {
       right: 15
     });
 
-    Crafty.e(GamepadControls, "PlayerAssignable").controls({
+    Crafty.e([GamepadControls, "PlayerAssignable"].join(", ")).controls({
       gamepadIndex: 1,
       fire: 0,
       switchWeapon: 2,

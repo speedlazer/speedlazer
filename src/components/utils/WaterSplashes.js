@@ -1,5 +1,6 @@
 import createEntityPool from "src/lib/entityPool";
 import { lookup } from "src/lib/random";
+import ColorEffects from "src/components/ColorEffects";
 
 Crafty.c("GameParticle", {
   events: {
@@ -94,7 +95,9 @@ Crafty.c("PausableMotion", {
 const splashPool = createEntityPool(
   () =>
     Crafty.e(
-      "2D, WebGL, Explode, ColorEffects, GameParticle, PausableMotion, Tween"
+      "2D, WebGL, Explode",
+      ColorEffects,
+      "GameParticle, PausableMotion, Tween"
     ).colorOverride("#FFFFFF"),
   200
 );

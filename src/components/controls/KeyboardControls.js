@@ -1,10 +1,11 @@
 import { togglePause } from "src/lib/core/pauseToggle";
+import Listener from "src/components/generic/Listener";
 
 const component = "KeyboardControls";
 
 Crafty.c(component, {
   init() {
-    this.requires("Listener");
+    this.requires(Listener);
     this.bind("RemoveComponent", function(componentName) {
       if (componentName === "ControlScheme") {
         this.removeComponent(component);
