@@ -151,6 +151,7 @@ Crafty.c("Scenery", {
     if (!scenery) return;
     if (this.blocks.length === 0) {
       this.startScenery(sceneryName, { direction: SCENERY_DIRECTIONS.ALL });
+      this.checkCountDown = 5;
     } else {
       this.currentScenery = sceneryName;
     }
@@ -221,7 +222,7 @@ Crafty.c("Scenery", {
   setScrollVelocity({ vx, vy }) {
     this.movingDirection = { vx, vy };
     this.blocks.forEach(block => block.attr({ vx, vy }));
-    this.checkCountDown = 5;
+    this.checkCountDown = this.blocks.length === 0 ? Infinity : 5;
   },
 
   verifySceneryContent() {
