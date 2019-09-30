@@ -1,7 +1,10 @@
 const EXTRA_LIFE_POINT_BOUNDARY = 15000;
 import { determineLevel, levelInfo } from "src/lib/chainLevel";
+import ControlScheme from "src/components/player/ControlScheme";
 
-Crafty.c("Player", {
+const Player = "Player";
+
+Crafty.c(Player, {
   events: {
     EntityEndState: "_processEnemyState"
   },
@@ -12,8 +15,8 @@ Crafty.c("Player", {
 
   reset() {
     this.softReset();
-    if (this.has("ControlScheme")) {
-      this.removeComponent("ControlScheme");
+    if (this.has(ControlScheme)) {
+      this.removeComponent(ControlScheme);
     }
   },
 
@@ -142,3 +145,5 @@ Crafty.c("Player", {
     }
   }
 });
+
+export default Player;

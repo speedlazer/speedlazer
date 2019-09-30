@@ -1,6 +1,6 @@
-const component = "Listener";
+const Listener = "Listener";
 
-Crafty.c(component, {
+Crafty.c(Listener, {
   init() {
     this.listeners = [];
   },
@@ -31,4 +31,4 @@ Crafty.c(component, {
   }
 });
 
-export default component;
+export default Listener;

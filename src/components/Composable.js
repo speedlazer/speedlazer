@@ -1,7 +1,7 @@
 import "src/components/Horizon";
 import "src/components/utils/Scalable";
 import "src/components/utils/HideBelow";
-import "src/components/generic/TweenPromise";
+import TweenPromise from "src/components/generic/TweenPromise";
 import Delta2D from "src/components/generic/Delta2D";
 
 const definitionStructure = {
@@ -316,7 +316,7 @@ Crafty.c("Composable", {
         y: 0
       };
 
-      sprite.addComponent("TweenPromise");
+      sprite.addComponent(TweenPromise);
       const tweenSettings = deltaSettings({ ...defaultSettings, ...settings });
       return sprite.tweenPromise(tweenSettings, duration, easing);
     });

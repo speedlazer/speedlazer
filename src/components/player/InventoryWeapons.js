@@ -1,4 +1,6 @@
-Crafty.c("InventoryWeapons", {
+const InventoryWeapons = "InventoryWeapons";
+
+Crafty.c(InventoryWeapons, {
   init() {},
 
   stats(newStats) {
@@ -85,3 +87,5 @@ Crafty.c("InventoryWeapons", {
     }
   }
 });
+
+export default InventoryWeapons;

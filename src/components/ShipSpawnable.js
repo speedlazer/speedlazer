@@ -1,5 +1,6 @@
 import { setGameSpeed } from "src/lib/core/gameSpeed";
 import Listener from "src/components/generic/Listener";
+import ControlScheme from "src/components/player/ControlScheme";
 
 Crafty.c("ShipSpawnable", {
   init() {
@@ -23,7 +24,7 @@ Crafty.c("ShipSpawnable", {
   },
 
   spawnShip(stats = {}) {
-    if (!this.has("ControlScheme")) {
+    if (!this.has(ControlScheme)) {
       return;
     }
     if (!(this.lives > 0)) {
@@ -62,7 +63,7 @@ Crafty.c("ShipSpawnable", {
     }
     this.ship.attr({ healthPerc: this.health / this.maxHealth });
 
-    if (this.has("ControlScheme")) {
+    if (this.has(ControlScheme)) {
       this.assignControls(this.ship);
     }
 

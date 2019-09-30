@@ -1,3 +1,6 @@
+import ControlScheme from "src/components/player/ControlScheme";
+import Player from "src/components/player/Player";
+
 const shipFunctions = () => ({
   setWeapons: async weapons => {
     Crafty("PlayerControlledShip").each(function() {
@@ -9,14 +12,14 @@ const shipFunctions = () => ({
     //level.setStartWeapons(weapons);
   },
   spawnShip: () => {
-    Crafty("Player").each(function() {
+    Crafty(Player).each(function() {
       this.addComponent("ShipSpawnable");
       this.spawnPosition(() => ({
         x: 200,
         y: 100
       }));
     });
-    Crafty("Player ControlScheme").each(function() {
+    Crafty([Player, ControlScheme].join(" ")).each(function() {
       this.attr({ shipType: "PlayerSpaceship" });
       this.spawnShip();
     });

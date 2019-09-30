@@ -3,6 +3,7 @@ import stage1 from "src/scripts/stage1.lazer";
 
 //import Stage1 from "src/lazerscripts/stage1";
 import PauseMenu from "src/lib/PauseMenu";
+import Player from "src/components/player/Player";
 //import levelGenerator from "src/lib/LevelGenerator";
 
 //let level = null;
@@ -122,7 +123,7 @@ Crafty.defineScene(
     // destructor
     //script.end();
     //level.stop();
-    Crafty("Player").each(function() {
+    Crafty(Player).each(function() {
       this.removeComponent("ShipSpawnable");
     });
     Crafty.unbind("GameOver");

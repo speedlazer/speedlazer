@@ -6,13 +6,17 @@ import Acceleration from "src/components/generic/Acceleration";
 import Delta2D from "src/components/generic/Delta2D";
 import ColorEffects from "src/components/ColorEffects";
 import Listener from "src/components/generic/Listener";
+import TweenPromise from "src/components/generic/TweenPromise";
+import ViewportRelativeMotion from "src/components/generic/ViewportRelativeMotion";
+import InventoryWeapons from "src/components/player/InventoryWeapons";
 
 Crafty.c("PlayerSpaceship", {
   required: [
     "2D, WebGL, playerShip",
     ColorEffects,
     Listener,
-    "Collision, SunBlock, PlayerControlledShip, Acceleration, InventoryWeapons",
+    "Collision, SunBlock, PlayerControlledShip",
+    InventoryWeapons,
     Acceleration
   ].join(","),
 
@@ -213,7 +217,9 @@ Crafty.c("PlayerSpaceship", {
         Crafty.e(
           [
             Delta2D,
-            "2D, WebGL, shipEngineFire, TweenPromise, ViewportRelativeMotion",
+            "2D, WebGL, shipEngineFire",
+            ViewportRelativeMotion,
+            TweenPromise,
             ColorEffects
           ].join(", ")
         )

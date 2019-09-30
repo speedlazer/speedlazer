@@ -1,4 +1,6 @@
-Crafty.c("ControlScheme", {
+const ControlScheme = "ControlScheme";
+
+Crafty.c(ControlScheme, {
   init() {
     if (!this.has("Cheats")) {
       this.addComponent("Cheats");
@@ -15,3 +17,5 @@ Crafty.c("ControlScheme", {
     Crafty.trigger("PlayerDeactivated");
   }
 });
+
+export default ControlScheme;

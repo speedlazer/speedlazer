@@ -3,7 +3,9 @@ const correction = 0.225;
 const calculateY = (delta, speed) =>
   delta * (speed - (correction - correction * speed));
 
-Crafty.c("ViewportRelativeMotion", {
+const ViewportRelativeMotion = "ViewportRelativeMotion";
+
+Crafty.c(ViewportRelativeMotion, {
   viewportRelativeMotion({ x, y, offsetY, speed, xspeed, yspeed }) {
     this._speed = {
       x: xspeed || speed,
@@ -38,3 +40,5 @@ Crafty.c("ViewportRelativeMotion", {
     this.unbind("CameraMove", this.motion);
   }
 });
+
+export default ViewportRelativeMotion;

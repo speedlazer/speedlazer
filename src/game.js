@@ -4,6 +4,8 @@ import { setGameSpeed, getGameSpeed } from "./lib/core/gameSpeed";
 import { isPaused } from "./lib/core/pauseToggle";
 import AnalogKeyboardControls from "src/components/controls/AnalogKeyboardControls";
 import GamepadControls from "src/components/controls/GamepadControls";
+import Player from "src/components/player/Player";
+import PlayerAssignable from "src/components/player/PlayerAssignable";
 
 /*
  * Destructure this file into multiple components
@@ -50,7 +52,7 @@ const Game = {
     Crafty.background("#000000");
     Crafty.timer.FPS(1000 / 17); // 17ms per frame
 
-    Crafty.e("Player, Color")
+    Crafty.e([Player, "Color"].join(", "))
       .attr({ name: "Player 1", z: 0, playerNumber: 1 })
       .setName("Player 1")
       .color("#FF0000");
@@ -60,7 +62,7 @@ const Game = {
     //.setName('Player 2')
     //.color('#00FF00')
 
-    Crafty.e([AnalogKeyboardControls, "PlayerAssignable"].join(", ")).controls({
+    Crafty.e([AnalogKeyboardControls, PlayerAssignable].join(", ")).controls({
       fire: Crafty.keys.SPACE,
       switchWeapon: Crafty.keys.PERIOD,
       super: Crafty.keys.ENTER,
@@ -71,7 +73,7 @@ const Game = {
       pause: Crafty.keys.P
     });
 
-    Crafty.e([AnalogKeyboardControls, "PlayerAssignable"].join(", ")).controls({
+    Crafty.e([AnalogKeyboardControls, PlayerAssignable].join(", ")).controls({
       fire: Crafty.keys.G,
       switchWeapon: Crafty.keys.H,
       up: Crafty.keys.W,
@@ -81,7 +83,7 @@ const Game = {
       pause: Crafty.keys.Q
     });
 
-    Crafty.e([GamepadControls, "PlayerAssignable"].join(", ")).controls({
+    Crafty.e([GamepadControls, PlayerAssignable].join(", ")).controls({
       gamepadIndex: 0,
       fire: 0,
       switchWeapon: 2,
@@ -93,7 +95,7 @@ const Game = {
       right: 15
     });
 
-    Crafty.e([GamepadControls, "PlayerAssignable"].join(", ")).controls({
+    Crafty.e([GamepadControls, PlayerAssignable].join(", ")).controls({
       gamepadIndex: 1,
       fire: 0,
       switchWeapon: 2,

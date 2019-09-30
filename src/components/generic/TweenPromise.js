@@ -1,4 +1,6 @@
-Crafty.c("TweenPromise", {
+const TweenPromise = "TweenPromise";
+
+Crafty.c(TweenPromise, {
   init() {
     this.requires("Tween");
   },
@@ -10,3 +12,5 @@ Crafty.c("TweenPromise", {
     });
   }
 });
+
+export default TweenPromise;

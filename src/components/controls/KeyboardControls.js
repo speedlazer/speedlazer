@@ -1,14 +1,15 @@
 import { togglePause } from "src/lib/core/pauseToggle";
 import Listener from "src/components/generic/Listener";
+import ControlScheme from "src/components/player/ControlScheme";
 
-const component = "KeyboardControls";
+const KeyboardControls = "KeyboardControls";
 
-Crafty.c(component, {
+Crafty.c(KeyboardControls, {
   init() {
     this.requires(Listener);
     this.bind("RemoveComponent", function(componentName) {
-      if (componentName === "ControlScheme") {
-        this.removeComponent(component);
+      if (componentName === ControlScheme) {
+        this.removeComponent(KeyboardControls);
       }
     });
   },
@@ -19,9 +20,9 @@ Crafty.c(component, {
 
   setupControls(player) {
     player
-      .addComponent(component)
+      .addComponent(KeyboardControls)
       .controls(this.controlMap)
-      .addComponent("ControlScheme");
+      .addComponent(ControlScheme);
   },
 
   controls(controlMap) {
@@ -113,4 +114,4 @@ Crafty.c(component, {
   }
 });
 
-export default component;
+export default KeyboardControls;

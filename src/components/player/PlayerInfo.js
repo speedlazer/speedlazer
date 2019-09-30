@@ -1,5 +1,6 @@
 import { levelProgress, levelInfo, determineLevel } from "src/lib/chainLevel";
 import Listener from "src/components/generic/Listener";
+import ControlScheme from "src/components/player/ControlScheme";
 
 Crafty.c("PlayerInfo", {
   init() {
@@ -147,7 +148,7 @@ Crafty.c("PlayerInfo", {
 
   updateBoostInfo() {
     this.boosts.forEach(b => b.attr({ alpha: 0 }));
-    if (!this.player.has("ControlScheme")) {
+    if (!this.player.has(ControlScheme)) {
       return;
     }
     if (this.visibile === false) {
@@ -165,7 +166,7 @@ Crafty.c("PlayerInfo", {
 
   updateHealthInfo(fd) {
     this.health.attr({ alpha: 0 });
-    if (!this.player.has("ControlScheme")) {
+    if (!this.player.has(ControlScheme)) {
       return;
     }
     if (this.visibile === false) {
@@ -210,13 +211,13 @@ Crafty.c("PlayerInfo", {
       this.displayedChain = this.player.chain;
     }
 
-    if (this.player.has("ControlScheme")) {
+    if (this.player.has(ControlScheme)) {
       this.score.text(`Score: ${this.displayedScore}`);
     } else {
       this.score.text(this.player.name);
     }
 
-    if (this.player.has("ControlScheme")) {
+    if (this.player.has(ControlScheme)) {
       if (this.player.lives === 0) {
         this.lives.text("Game Over");
         this.heart.attr({ alpha: 0, visible: false });

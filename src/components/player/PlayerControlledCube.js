@@ -1,14 +1,18 @@
 import { isPaused } from "src/lib/core/pauseToggle";
 import Acceleration from "src/components/generic/Acceleration";
 import Listener from "src/components/generic/Listener";
+import InventoryWeapons from "src/components/player/InventoryWeapons";
 
-Crafty.c("PlayerControlledCube", {
+const PlayerControlledCube = "PlayerControlledCube";
+
+Crafty.c(PlayerControlledCube, {
   init() {
     this.requires(
       [
         "2D, WebGL, Color",
         Listener,
-        "Collision, SunBlock, PlayerControlledShip, InventoryWeapons",
+        "Collision, SunBlock, PlayerControlledShip",
+        InventoryWeapons,
         Acceleration
       ].join(", ")
     );
@@ -184,3 +188,5 @@ Crafty.c("PlayerControlledCube", {
       });
   }
 });
+
+export default PlayerControlledCube;

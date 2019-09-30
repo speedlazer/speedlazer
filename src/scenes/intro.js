@@ -1,4 +1,5 @@
 //import Test from "src/lazerscripts/Test";
+import Player from "src/components/player/Player";
 
 Crafty.defineScene(
   "Intro",
@@ -69,7 +70,7 @@ Crafty.defineScene(
         family: "Press Start 2P"
       });
 
-    Crafty("Player").each(function() {
+    Crafty(Player).each(function() {
       this.reset();
       this.one("Activated", () =>
         Crafty.enterScene("Game", {
@@ -86,7 +87,7 @@ Crafty.defineScene(
     Crafty("Delay").each(function() {
       this.destroy();
     });
-    Crafty("Player").each(function() {
+    Crafty(Player).each(function() {
       this.unbind("Activated");
     });
   }

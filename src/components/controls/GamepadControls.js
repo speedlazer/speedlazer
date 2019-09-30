@@ -1,15 +1,16 @@
 import { togglePause } from "src/lib/core/pauseToggle";
 import Listener from "src/components/generic/Listener";
 import Gamepad from "./Gamepad";
+import ControlScheme from "src/components/player/ControlScheme";
 
-const component = "GamepadControls";
+const GamepadControls = "GamepadControls";
 
-Crafty.c(component, {
+Crafty.c(GamepadControls, {
   init() {
     this.requires(Listener);
     this.bind("RemoveComponent", function(componentName) {
-      if (componentName === "ControlScheme") {
-        this.removeComponent(component);
+      if (componentName === ControlScheme) {
+        this.removeComponent(GamepadControls);
       }
     });
     this.emits = {};
@@ -21,9 +22,9 @@ Crafty.c(component, {
 
   setupControls(player) {
     player
-      .addComponent(component)
+      .addComponent(GamepadControls)
       .controls(this.controlMap)
-      .addComponent("ControlScheme");
+      .addComponent(ControlScheme);
   },
 
   controls(controlMap) {
@@ -146,4 +147,4 @@ Crafty.c(component, {
   }
 });
 
-export default component;
+export default GamepadControls;

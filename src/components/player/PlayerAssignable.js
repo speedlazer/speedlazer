@@ -1,4 +1,9 @@
-Crafty.c("PlayerAssignable", {
+import ControlScheme from "src/components/player/ControlScheme";
+import Player from "src/components/player/Player";
+
+const PlayerAssignable = "PlayerAssignable";
+
+Crafty.c(PlayerAssignable, {
   init() {
     this._attachControllerAssignTrigger();
     this.preferredPlayer = null;
@@ -27,16 +32,18 @@ Crafty.c("PlayerAssignable", {
   _preferredplayer() {
     if (this.preferredPlayer !== null) {
       const player = Crafty(this.preferredPlayer);
-      if (!player.has("ControlScheme")) {
+      if (!player.has(ControlScheme)) {
         return player;
       }
     }
   },
 
   _firstUnassignedPlayer() {
-    const players = Crafty("Player");
+    const players = Crafty(Player);
     return Array.from(players)
       .map(playerId => Crafty(playerId))
-      .find(player => !player.has("ControlScheme"));
+      .find(player => !player.has(ControlScheme));
   }
 });
+
+export default PlayerAssignable;

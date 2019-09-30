@@ -27,9 +27,9 @@
  * @version 0.0.1
  * @author Sven Jacobs <mail@svenjacobs.com>
  */
-const component = "Gamepad";
+const Gamepad = "Gamepad";
 
-Crafty.c(component, {
+Crafty.c(Gamepad, {
   _gpEnterFrame: function() {
     var gamepad = this._getGamepad(this._gamepadIndex);
 
@@ -366,4 +366,4 @@ Crafty.c("GamepadMultiway", {
   }
 });
 
-export default component;
+export default Gamepad;

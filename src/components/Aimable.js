@@ -1,5 +1,6 @@
 const DEFAULT_AIM_SPEED = 100;
 import { EASE_IN_OUT } from "src/constants/easing";
+import TweenPromise from "src/components/generic/TweenPromise";
 
 Crafty.c("Aimable", {
   init() {
@@ -23,7 +24,7 @@ Crafty.c("Aimable", {
         const dy = aimCoord[1] - targetCoord[1];
 
         const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
-        item.addComponent("TweenPromise");
+        item.addComponent(TweenPromise);
         const angleDelta = Math.abs(item.rotation - angle);
 
         const duration = (1000 / speed) * angleDelta;
@@ -39,7 +40,7 @@ Crafty.c("Aimable", {
     this.forEachPart((item, index) => {
       const options = this.spriteOptions(index);
       if (aimingParts.includes(options.key)) {
-        item.addComponent("TweenPromise");
+        item.addComponent(TweenPromise);
         const angleDelta = Math.abs(item.rotation);
 
         const duration = (1000 / speed) * angleDelta;
