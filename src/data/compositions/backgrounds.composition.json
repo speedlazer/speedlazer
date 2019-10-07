@@ -1,0 +1,100 @@
+{
+  "night": {
+    "attributes": {
+      "width": 1024,
+      "height": 576
+    },
+    "sprites": [
+      [
+        "stars",
+        {
+          "z": 2,
+          "w": 672,
+          "h": 288,
+          "key": "topleft",
+          "ro": [672, 288]
+        }
+      ],
+      [
+        "stars",
+        {
+          "z": 2,
+          "w": 672,
+          "h": 288,
+          "x": 672,
+          "y": 0,
+          "key": "topright",
+          "attachTo": "topleft"
+        }
+      ],
+      [
+        "stars",
+        {
+          "z": 2,
+          "w": 672,
+          "h": 288,
+          "x": 0,
+          "y": 288,
+          "key": "bottomleft",
+          "attachTo": "topleft"
+        }
+      ],
+      [
+        "stars",
+        {
+          "z": 2,
+          "w": 672,
+          "h": 288,
+          "x": 672,
+          "y": 288,
+          "key": "bottomright",
+          "attachTo": "topleft"
+        }
+      ]
+    ],
+    "frames": {
+      "end": {
+        "topleft": { "alpha": 0.2, "rotation": -5 },
+        "topright": { "alpha": 0.2 },
+        "bottomleft": { "alpha": 0.2 },
+        "bottomright": { "alpha": 0.2 }
+      }
+    }
+  },
+  "sky": {
+    "attributes": {
+      "width": 1024,
+      "height": 576
+    },
+    "gradients": [
+      {
+        "z": 2,
+        "w": 1024,
+        "h": 576,
+        "key": "sky",
+        "topColor": ["#000000", 0],
+        "bottomColor": ["#000000", 0]
+      }
+    ],
+    "frames": {
+      "dawn": {
+        "sky": { "topColor": ["#000000", 0.0], "bottomColor": ["#000020", 0.3] }
+      },
+      "dawn2": {
+        "sky": { "topColor": ["#000020", 0.3], "bottomColor": ["#000020", 1.0] }
+      },
+      "dawn3": {
+        "sky": { "topColor": ["#222c50", 1.0], "bottomColor": ["#7e261b", 1.0] }
+      },
+      "dawn4": {
+        "sky": { "topColor": ["#7a86a2", 1.0], "bottomColor": ["#d39915", 1.0] }
+      },
+      "dawn5": {
+        "sky": { "topColor": ["#366eab", 1.0], "bottomColor": ["#f7e459", 1.0] }
+      },
+      "dawn6": {
+        "sky": { "topColor": ["#366eab", 1.0], "bottomColor": ["#d6d5d5", 1.0] }
+      }
+    }
+  }
+}

@@ -1,13 +1,14 @@
 import spritesheets from "src/data/spritesheets";
-import "src/components/Composable";
+import Composable from "src/components/Composable";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";
+import { setBackground } from "src/components/Background";
 import { createEntity } from "src/components/EntityDefinition";
 import { setScenery, setScrollVelocity } from "src/components/Scenery";
 import "src/components/WayPointMotion";
 import {
-  setBackgroundColor,
-  fadeBackgroundColor
+  setBackgroundColor
+  //fadeBackgroundColor
 } from "src/components/Horizon";
 import { getBezierPath } from "src/lib/BezierPath";
 
@@ -18,8 +19,8 @@ Crafty.paths({
 
 window.Crafty = Crafty;
 
-const SCREEN_WIDTH = 900;
-const SCREEN_HEIGHT = 600;
+const SCREEN_WIDTH = 1024;
+const SCREEN_HEIGHT = 576;
 
 export const mount = domElem => {
   if (!domElem) return;
@@ -37,7 +38,7 @@ const updateActualSize = (actualSize, entity) => {
 };
 
 const createComposable = composition =>
-  Crafty.e("2D, WebGL, Composable, DebugComposable")
+  Crafty.e(["2D", "WebGL", Composable, "DebugComposable"].join(", "))
     .attr({ x: 0, y: 0, w: 40, h: 40 })
     .compose(composition);
 
@@ -49,7 +50,7 @@ const addColor = (entity, color) =>
 
 const determineEntitySize = (sizeModel, entity) => {
   updateActualSize(sizeModel, entity);
-  if (entity.has("Composable")) {
+  if (entity.has(Composable)) {
     Object.values(entity.currentAttachHooks).forEach(hook => {
       updateActualSize(sizeModel, hook);
       if (hook.currentAttachment) {
@@ -143,27 +144,27 @@ Crafty.defineScene(
   "SceneryPreview",
   async ({ scenery }) => {
     setScenery(scenery);
-    fadeBackgroundColor({
-      topColors: [
-        "#000000",
-        "#000000",
-        "#000020",
-        "#222c50",
-        "#7a86a2",
-        "#366eab"
-      ],
-      bottomColors: [
-        "#000000",
-        "#000020",
-        "#000020",
-        "#7e261b",
-        "#d39915",
-        "#f7e459",
-        "#d6d5d5",
-        "#d6d5d5"
-      ],
-      duration: 60000
-    });
+    //fadeBackgroundColor({
+    //topColors: [
+    //"#000000",
+    //"#000000",
+    //"#000020",
+    //"#222c50",
+    //"#7a86a2",
+    //"#366eab"
+    //],
+    //bottomColors: [
+    //"#000000",
+    //"#000020",
+    //"#000020",
+    //"#7e261b",
+    //"#d39915",
+    //"#f7e459",
+    //"#d6d5d5",
+    //"#d6d5d5"
+    //],
+    //duration: 60000
+    //});
   },
   () => {
     Crafty("Scenery").destroy();
@@ -187,7 +188,7 @@ const loadSpriteSheets = async () =>
 
 export const showComposition = async (composition, options = {}) => {
   if (inScene("ComposablePreview") && options.frame) {
-    const currentComposable = Crafty("Composable").get(0);
+    const currentComposable = Crafty(Composable).get(0);
     if (currentComposable.appliedDefinition === composition) {
       currentComposable.displayFrame(options.frame, options.tweenDuration);
       applyDisplayOptions(currentComposable, options);
@@ -279,4 +280,16 @@ export const showFlyPattern = async (pattern, { showPoints, showPath }) => {
   currentPattern = pattern;
 
   Crafty.enterScene("FlyPatternPreview", { pattern, showPoints, showPath });
+};
+
+Crafty.defineScene("BackgroundPreview", ({ background }) => {
+  setBackground(background);
+  //const composable = createComposable(composition);
+  //applyDisplayOptions(composable, options);
+  //scaleScreenForEntity(composable);
+});
+
+export const showBackground = async background => {
+  await loadSpriteSheets();
+  Crafty.enterScene("BackgroundPreview", { background });
 };

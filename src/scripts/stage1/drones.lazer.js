@@ -1,7 +1,7 @@
 //import { getOne, pickOne } from "src/lib/utils";
 //import { EASE_IN_OUT } from "src/constants/easing";
 
-export const droneWave1 = async ({
+const droneFlight = pattern => async ({
   spawn,
   //wait,
   //until,
@@ -10,17 +10,17 @@ export const droneWave1 = async ({
   waitWhile,
   moveWithPattern
 }) => {
-  // spawn dronw off screen
+  // spawn drone off screen
   const drone = spawn("WarDrone", {
     location: {
       rx: 1.1,
       ry: 0.5
     },
-    defaultVelocity: 200
+    defaultVelocity: 400
   });
 
-  await call(drone.allowDamage, { health: 400 });
-  const movement = moveWithPattern(drone, "pattern1");
+  await call(drone.allowDamage, { health: 100 });
+  const movement = moveWithPattern(drone, pattern);
 
   const healthCheck = async () => {
     await waitWhile(drone.hasHealth);
@@ -30,6 +30,17 @@ export const droneWave1 = async ({
   };
 
   await Promise.race([movement.process, healthCheck()]);
+};
 
-  console.log("Done!");
+export const droneWave = (amount, pattern, delay = 1000) => async ({
+  exec,
+  wait
+}) => {
+  const items = Array(amount)
+    .fill("")
+    .map(async (e, index) => {
+      await wait(index * delay);
+      await exec(droneFlight(pattern));
+    });
+  await Promise.all(items);
 };

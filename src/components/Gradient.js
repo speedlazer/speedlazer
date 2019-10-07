@@ -23,9 +23,9 @@ Crafty.extend({
   }
 });
 
-const component = "Gradient";
+const Gradient = "Gradient";
 
-Crafty.c(component, {
+Crafty.c(Gradient, {
   init() {
     // Declaring the vars here instead as class attributes
     // make them unique for each instance
@@ -106,4 +106,4 @@ Crafty.c(component, {
   }
 });
 
-export default component;
+export default Gradient;

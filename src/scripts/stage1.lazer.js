@@ -1,5 +1,5 @@
 //import battleship from "./stage1/battleship.lazer";
-import { droneWave1 } from "./stage1/drones.lazer";
+import { droneWave } from "./stage1/drones.lazer";
 import { bigText } from "src/components/BigText";
 
 const stage1 = async ({
@@ -8,8 +8,8 @@ const stage1 = async ({
   loadSpriteSheets,
   spawnShip,
   setWeapons,
-  exec
-  //wait
+  exec,
+  wait
 }) => {
   const text = bigText("Loading...");
   text.fadeIn(2000);
@@ -18,14 +18,17 @@ const stage1 = async ({
 
   await setScrollingSpeed(300, 0);
   await setScenery("City.Ocean");
-  await text.fadeOut(2000);
+  //await text.fadeOut(2000);
   text.remove();
 
   await spawnShip();
   await setWeapons(["lasers"]);
-  await exec(droneWave1);
-  //await wait(30000);
-  //await exec(battleship);
+  await exec(droneWave(5, "pattern1", 1000));
+  await wait(1000);
+  await exec(droneWave(5, "pattern1", 1000));
+  await setScenery("City.CoastStart");
+  await exec(droneWave(5, "pattern1", 1000));
+  console.log("Done!");
 };
 
 export default stage1;

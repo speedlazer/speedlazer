@@ -1,70 +1,57 @@
-const mix = (v, from, to) => [
-  Math.round(from[0] * (1 - v) + to[0] * v),
-  Math.round(from[1] * (1 - v) + to[1] * v),
-  Math.round(from[2] * (1 - v) + to[2] * v)
-];
+const mix = (v, from, to) => ({
+  _red: Math.round(from._red * (1 - v) + to._red * v),
+  _green: Math.round(from._green * (1 - v) + to._green * v),
+  _blue: Math.round(from._blue * (1 - v) + to._blue * v),
+  _strength: from._strength * (1 - v) + to._strength * v
+});
 
-const buildColor = (v, colors) => {
-  let left;
-  const parts = 1 / (colors.length - 1);
-  const index = Math.floor(v / parts);
-  const from = colors[index];
-  const to = (left = colors[index + 1]) != null ? left : from;
-
-  const localV = (v - index * parts) / parts;
-  return mix(localV, from, to);
-};
-
-const colorToStr = color =>
-  `#${color.map(value => `0${value.toString(16)}`.slice(-2)).join("")}`;
-
-const strToColor = string => [
-  parseInt(string.slice(1, 3), 16),
-  parseInt(string.slice(3, 5), 16),
-  parseInt(string.slice(5, 7), 16)
-];
+const strToColor = ([string, alpha]) => ({
+  _red: parseInt(string.slice(1, 3), 16),
+  _green: parseInt(string.slice(3, 5), 16),
+  _blue: parseInt(string.slice(5, 7), 16),
+  _strength: alpha
+});
 
 const ColorFade = "ColorFade";
 
 Crafty.c(ColorFade, {
-  colorFade(options, bottomColors, topColors) {
-    const { duration, skip } = options;
-    this.duration = duration;
-    this._bottomColors = bottomColors.map(strToColor);
-    this._topColors = topColors.map(strToColor);
+  colorFade(topColor, bottomColor, duration, easing) {
+    this._nextTopColor = strToColor(topColor);
+    this._nextBottomColor = strToColor(bottomColor);
+    this._startTopColor = this.topColor();
+    this._startBottomColor = this.bottomColor();
+    this.colorFadeTimer = new Crafty.easing(duration, easing);
 
-    this.v = Math.max(skip || 0, 0);
-    this.bind("GameLoop", this._recolor);
+    if (!this.fadingColors) {
+      this.fadingColors = true;
+      this.bind("EnterFrame", this.updateColorFade);
+    }
     return this;
   },
 
-  remove() {
-    this.trigger("ColorFadeFinished");
-    this.unbind("GameLoop", this._recolor);
+  stopColorFade() {
+    if (this.fadingColors) {
+      this.unbind("EnterFrame", this.updateColorFade);
+      this.fadingColors = false;
+      this.trigger("FadeAborted");
+    }
   },
 
-  _recolor(fd) {
-    this.v += fd.dt;
-    let pos = this.v / this.duration;
-    if (pos < 0) {
-      pos = 0;
-    }
-    if (pos >= 1) {
-      this.unbind("GameLoop", this._recolor);
-      pos = 1;
-    }
+  updateColorFade({ dt }) {
+    this.colorFadeTimer.tick(dt);
+    const value = this.colorFadeTimer.value();
+    this._topColor = mix(value, this._startTopColor, this._nextTopColor);
+    this._bottomColor = mix(
+      value,
+      this._startBottomColor,
+      this._nextBottomColor
+    );
+    this.trigger("Invalidate");
 
-    const bcolor = buildColor(pos, this._bottomColors);
-    const tcolor = buildColor(pos, this._topColors);
-
-    this.bottomColor(bcolor);
-    this.topColor(tcolor);
-    this.trigger("ColorFadeUpdate", {
-      topColor: colorToStr(tcolor),
-      bottomColor: colorToStr(bcolor)
-    });
-    if (pos >= 1) {
-      this.trigger("ColorFadeFinished");
+    if (value >= 1.0) {
+      this.unbind("EnterFrame", this.updateAcceleration);
+      this.fadingColors = false;
+      this.trigger("FadeCompleted");
     }
   }
 });

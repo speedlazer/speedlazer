@@ -1,3 +1,4 @@
+import backgrounds from "./backgrounds.composition.json";
 import battleShip from "./BattleShip.composition.json";
 import bulletCannon from "./BulletCannon.composition.json";
 import dino from "./Dino.composition.json";
@@ -9,6 +10,7 @@ import city from "./City.composition.json";
 import shipHatch from "./ShipHatch.composition.json";
 
 const compositions = {
+  ...backgrounds,
   ...battleShip,
   ...bulletCannon,
   ...city,
