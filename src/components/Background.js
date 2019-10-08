@@ -29,17 +29,35 @@ Crafty.c(Background, {
   },
 
   setBackground(background, { autoStart = true, duration = null } = {}) {
+    let toRemove = Object.keys(this.elements);
     (background.composables || []).forEach(([composable, settings]) => {
       const composition = compositions[composable];
-      const sub = Crafty.e(["2D", "WebGL", Composable].join(","))
-        .attr({ x: 0, y: 0, w: 40, h: 40, z: this.z })
-        .compose(composition);
-      sub.displayFrame(settings.frame || "default");
-      this.elements[settings.key] = sub;
+
+      const existing = this.elements[settings.key];
+      toRemove = toRemove.filter(k => k !== settings.key);
+      if (existing && existing.appliedDefinition === composition) {
+        existing.displayFrame(settings.frame || "default");
+      } else {
+        existing && existing.destroy();
+
+        const sub = Crafty.e(["2D", "WebGL", Composable].join(","))
+          .attr({ x: 0, y: 0, w: 40, h: 40, z: this.z })
+          .compose(composition);
+        sub.displayFrame(settings.frame || "default");
+        this.elements[settings.key] = sub;
+      }
+    });
+    toRemove.forEach(k => {
+      this.elements[k].destroy();
+      delete this.elements[k];
     });
 
     if (autoStart && background.timeline) {
       this.animationDuration = duration || background.timeline.defaultDuration;
+      if (background.backgroundColor) {
+        const backgroundColor = strToColor([background.backgroundColor, 1.0]);
+        setBackgroundColor(backgroundColor);
+      }
       if (this.animationDuration) {
         this.backgroundTimer = new Crafty.easing(
           this.animationDuration,
@@ -50,7 +68,7 @@ Crafty.c(Background, {
           handled: false
         }));
 
-        this.bind("EnterFrame", this.updateBackground);
+        this.uniqueBind("EnterFrame", this.updateBackground);
       }
     }
   },

@@ -5,10 +5,15 @@ Crafty.c(TweenPromise, {
     this.requires("Tween");
   },
 
-  tweenPromise(...args) {
+  tweenPromise(props, duration, easing) {
     return new Promise(resolve => {
-      this.one("TweenEnd", () => resolve(this));
-      this.tween(...args);
+      if (duration > 0) {
+        this.one("TweenEnd", () => resolve(this));
+        this.tween(props, duration, easing);
+      } else {
+        this.attr(props);
+        resolve();
+      }
     });
   }
 });

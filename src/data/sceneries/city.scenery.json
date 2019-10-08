@@ -4,7 +4,7 @@
     "height": 576,
     "right": "City.Coast",
     "left": "City.Coast",
-    "backgrounds": ["night"],
+    "backgrounds": ["City.Night", "City.Dawn"],
     "elements": [
       {
         "x": 0,
@@ -43,6 +43,7 @@
     "height": 576,
     "right": "City.Coast",
     "left": "City.Ocean",
+    "backgrounds": ["City.Night", "City.Dawn"],
     "elements": [
       {
         "x": 0,
@@ -81,7 +82,7 @@
     "height": 576,
     "right": "City.Ocean",
     "left": "City.Ocean",
-    "backgrounds": ["night"],
+    "backgrounds": ["City.Night", "City.Dawn"],
     "elements": [
       {
         "x": 0,
@@ -114,6 +115,7 @@
     "height": 576,
     "right": "City.Bay",
     "left": "City.Coast",
+    "backgrounds": ["City.Night", "City.Dawn"],
     "elements": [
       {
         "x": 0,
@@ -158,6 +160,7 @@
     "height": 576,
     "left": "City.Bay",
     "right": "City.Bay",
+    "backgrounds": ["City.Night", "City.Dawn"],
     "elements": [
       {
         "x": 0,

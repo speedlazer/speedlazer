@@ -16,6 +16,15 @@ const ColorFade = "ColorFade";
 
 Crafty.c(ColorFade, {
   colorFade(topColor, bottomColor, duration, easing) {
+    if (duration === 0) {
+      this._nextTopColor = strToColor(topColor);
+      this._nextBottomColor = strToColor(bottomColor);
+      this._topColor = this._nextTopColor;
+      this._bottomColor = this._nextBottomColor;
+      this.trigger("Invalidate");
+      return;
+    }
+
     this._nextTopColor = strToColor(topColor);
     this._nextBottomColor = strToColor(bottomColor);
     this._startTopColor = this.topColor();

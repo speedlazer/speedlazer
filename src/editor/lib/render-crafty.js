@@ -268,5 +268,9 @@ Crafty.defineScene("BackgroundPreview", ({ background }) => {
 
 export const showBackground = async background => {
   await loadSpriteSheets();
+  if (inScene("BackgroundPreview")) {
+    setBackground(background);
+    return;
+  }
   Crafty.enterScene("BackgroundPreview", { background });
 };
