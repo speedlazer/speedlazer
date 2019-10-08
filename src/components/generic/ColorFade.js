@@ -1,11 +1,11 @@
-const mix = (v, from, to) => ({
+export const mix = (v, from, to) => ({
   _red: Math.round(from._red * (1 - v) + to._red * v),
   _green: Math.round(from._green * (1 - v) + to._green * v),
   _blue: Math.round(from._blue * (1 - v) + to._blue * v),
   _strength: from._strength * (1 - v) + to._strength * v
 });
 
-const strToColor = ([string, alpha]) => ({
+export const strToColor = ([string, alpha]) => ({
   _red: parseInt(string.slice(1, 3), 16),
   _green: parseInt(string.slice(3, 5), 16),
   _blue: parseInt(string.slice(5, 7), 16),

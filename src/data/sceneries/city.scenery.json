@@ -4,6 +4,7 @@
     "height": 576,
     "right": "City.Coast",
     "left": "City.Coast",
+    "backgrounds": ["night"],
     "elements": [
       {
         "x": 0,
@@ -80,6 +81,7 @@
     "height": 576,
     "right": "City.Ocean",
     "left": "City.Ocean",
+    "backgrounds": ["night"],
     "elements": [
       {
         "x": 0,

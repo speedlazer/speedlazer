@@ -1,5 +1,6 @@
 import { SceneryPreview } from "./components/SceneryPreview";
 import sceneries from "src/data/sceneries";
+import backgrounds from "src/data/backgrounds";
 import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
@@ -25,6 +26,13 @@ class Sceneries extends Component {
 
   render({ scenery }, { scrollSpeed }) {
     const activeScenery = sceneries[scenery];
+
+    const backgroundName =
+      activeScenery &&
+      activeScenery.backgrounds &&
+      activeScenery.backgrounds[0];
+    const background = backgroundName && backgrounds[backgroundName];
+
     return (
       <section>
         <Title>Scenery</Title>
@@ -41,7 +49,12 @@ class Sceneries extends Component {
               <button onClick={this.stop}>Stop</button>
               <button onClick={this.toLeft}>&raquo;</button>
               <Text>Current speed: x: {scrollSpeed}</Text>
-              <SceneryPreview scenery={scenery} scrollSpeed={scrollSpeed} />
+              <Text>Current background: {backgroundName}</Text>
+              <SceneryPreview
+                scenery={scenery}
+                background={background}
+                scrollSpeed={scrollSpeed}
+              />
             </div>
           )}
         </Divider>

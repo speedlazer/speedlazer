@@ -7,9 +7,7 @@ Crafty.c(component, {
     if (color === null) {
       return this;
     }
-    const c = {};
-    Crafty.assignColor(color, c);
-    this.attr({ desaturationColor: c });
+    this.attr({ desaturationColor: color });
 
     this.trigger("Invalidate");
     return this;

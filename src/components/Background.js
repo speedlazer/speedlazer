@@ -1,5 +1,8 @@
 import Composable from "./Composable";
 import compositions from "src/data/compositions";
+import { LINEAR } from "src/constants/easing";
+import { getBackgroundColor, setBackgroundColor } from "src/components/Horizon";
+import { mix, strToColor } from "src/components/generic/ColorFade";
 
 export const Background = "Background";
 
@@ -15,6 +18,7 @@ Crafty.c(Background, {
       z: -10000
     });
     this.bind("ViewportScale", this.updateBackdrop);
+    this.elements = {};
   },
 
   updateBackdrop() {
@@ -24,17 +28,74 @@ Crafty.c(Background, {
     });
   },
 
-  setBackground(background) {
+  setBackground(background, { autoStart = true, duration = null } = {}) {
     (background.composables || []).forEach(([composable, settings]) => {
       const composition = compositions[composable];
       const sub = Crafty.e(["2D", "WebGL", Composable].join(","))
-        .attr({ x: 0, y: 0, w: 40, h: 40 })
+        .attr({ x: 0, y: 0, w: 40, h: 40, z: this.z })
         .compose(composition);
-
       sub.displayFrame(settings.frame || "default");
-
-      console.log(settings);
+      this.elements[settings.key] = sub;
     });
+
+    if (autoStart && background.timeline) {
+      this.animationDuration = duration || background.timeline.defaultDuration;
+      if (this.animationDuration) {
+        this.backgroundTimer = new Crafty.easing(
+          this.animationDuration,
+          LINEAR
+        );
+        this.timeLineEvents = background.timeline.transitions.map(t => ({
+          ...t,
+          handled: false
+        }));
+
+        this.bind("EnterFrame", this.updateBackground);
+      }
+    }
+  },
+
+  updateBackground({ dt }) {
+    this.backgroundTimer.tick(dt);
+    const value = this.backgroundTimer.value();
+    this.timeLineEvents.forEach(t => {
+      if (t.handled || t.start > value) return;
+      // handle event
+      if (t.targetFrame && t.key) {
+        const elem = this.elements[t.key];
+        t.handled = true;
+        elem.displayFrame(
+          t.targetFrame,
+          (t.end - t.start) * this.animationDuration
+        );
+      }
+      if (t.targetBackgroundColor) {
+        if (t.sourceColor && t.ease) {
+          t.ease.tick(dt);
+          const color = mix(t.ease.value(), t.sourceColor, t.targetColor);
+          setBackgroundColor(color);
+          if (t.ease.value() >= 1.0) {
+            t.handled = true;
+          }
+        } else {
+          t.sourceColor = getBackgroundColor();
+          t.targetColor = strToColor([t.targetBackgroundColor, 1.0]);
+          t.ease = new Crafty.easing(
+            (t.end - t.start) * this.animationDuration,
+            LINEAR
+          );
+          t.ease.tick(dt);
+          const color = mix(t.ease.value(), t.sourceColor, t.targetColor);
+          setBackgroundColor(color);
+        }
+      }
+    });
+
+    if (value >= 1.0) {
+      this.unbind("EnterFrame", this.updateBackground);
+      this.trigger("FadeCompleted");
+      console.log("done!");
+    }
   }
 });
 

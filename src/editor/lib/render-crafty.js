@@ -122,9 +122,9 @@ const setHabitat = habitat => {
     habitat.scenery !== activeHabitat &&
     setScenery(habitat.scenery);
 
-  habitat && habitat.background
-    ? setBackgroundColor(habitat.background[0], habitat.background[1])
-    : setBackgroundColor("#000000", "#000000");
+  //habitat && habitat.background
+  //? setBackgroundColor(habitat.background[0], habitat.background[1])
+  //: setBackgroundColor("#000000", "#000000");
 
   habitat &&
     habitat.scrollSpeed &&
@@ -142,29 +142,9 @@ Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
 
 Crafty.defineScene(
   "SceneryPreview",
-  async ({ scenery }) => {
+  async ({ scenery, background }) => {
+    background && setBackground(background);
     setScenery(scenery);
-    //fadeBackgroundColor({
-    //topColors: [
-    //"#000000",
-    //"#000000",
-    //"#000020",
-    //"#222c50",
-    //"#7a86a2",
-    //"#366eab"
-    //],
-    //bottomColors: [
-    //"#000000",
-    //"#000020",
-    //"#000020",
-    //"#7e261b",
-    //"#d39915",
-    //"#f7e459",
-    //"#d6d5d5",
-    //"#d6d5d5"
-    //],
-    //duration: 60000
-    //});
   },
   () => {
     Crafty("Scenery").destroy();
@@ -218,9 +198,9 @@ export const showEntity = async (entityName, options = {}) => {
   Crafty.enterScene("EntityPreview", { entityName, habitat: options.habitat });
 };
 
-export const showScenery = async scenery => {
+export const showScenery = async (scenery, background) => {
   await loadSpriteSheets();
-  Crafty.enterScene("SceneryPreview", { scenery });
+  Crafty.enterScene("SceneryPreview", { scenery, background });
 };
 
 const showBezier = pattern => {
@@ -284,9 +264,6 @@ export const showFlyPattern = async (pattern, { showPoints, showPath }) => {
 
 Crafty.defineScene("BackgroundPreview", ({ background }) => {
   setBackground(background);
-  //const composable = createComposable(composition);
-  //applyDisplayOptions(composable, options);
-  //scaleScreenForEntity(composable);
 });
 
 export const showBackground = async background => {
