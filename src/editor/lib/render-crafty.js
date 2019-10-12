@@ -1,15 +1,15 @@
 import spritesheets from "src/data/spritesheets";
+import backgrounds from "src/data/backgrounds";
 import Composable from "src/components/Composable";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";
-import { setBackground } from "src/components/Background";
+import {
+  setBackground,
+  setBackgroundCheckpoint
+} from "src/components/Background";
 import { createEntity } from "src/components/EntityDefinition";
 import { setScenery, setScrollVelocity } from "src/components/Scenery";
 import "src/components/WayPointMotion";
-import {
-  setBackgroundColor
-  //fadeBackgroundColor
-} from "src/components/Horizon";
 import { getBezierPath } from "src/lib/BezierPath";
 
 Crafty.paths({
@@ -79,12 +79,23 @@ const scaleScreenForEntity = entity => {
   const scale = Math.min(SCREEN_WIDTH / width, SCREEN_HEIGHT / height, 1);
   const maxWidth = Math.max(width, SCREEN_WIDTH / scale);
   const maxHeight = Math.max(height, SCREEN_HEIGHT / scale);
+  if (!entity.preScalePos) {
+    entity.preScalePos = { x: entity.x, y: entity.y };
+  }
+
   entity.attr({
     x: (maxWidth - width) / 2 + offset.x,
     y: (maxHeight - height) / 2 + offset.y
   });
 
   Crafty.viewport.scale(scale);
+};
+
+const resetScreenScaling = entity => {
+  if (entity.preScalePos) {
+    entity.attr({ x: entity.preScalePos.x, y: entity.preScalePos.y });
+  }
+  Crafty.viewport.scale(1.0);
 };
 
 const applyDisplayOptions = (entity, options) => {
@@ -109,7 +120,11 @@ const applyDisplayOptions = (entity, options) => {
 Crafty.defineScene("ComposablePreview", ({ composition, options }) => {
   const composable = createComposable(composition);
   applyDisplayOptions(composable, options);
-  scaleScreenForEntity(composable);
+  if (options.scaleViewport) {
+    scaleScreenForEntity(composable);
+  } else {
+    resetScreenScaling(composable);
+  }
 });
 
 let activeHabitat = null;
@@ -122,9 +137,12 @@ const setHabitat = habitat => {
     habitat.scenery !== activeHabitat &&
     setScenery(habitat.scenery);
 
-  //habitat && habitat.background
-  //? setBackgroundColor(habitat.background[0], habitat.background[1])
-  //: setBackgroundColor("#000000", "#000000");
+  if (habitat && habitat.background) {
+    setBackground(backgrounds[habitat.background[0]]);
+    setBackgroundCheckpoint(habitat.background[1]);
+  } else {
+    Crafty("Background").destroy();
+  }
 
   habitat &&
     habitat.scrollSpeed &&
@@ -142,8 +160,11 @@ Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
 
 Crafty.defineScene(
   "SceneryPreview",
-  async ({ scenery, background }) => {
-    background && setBackground(background);
+  async ({ scenery, background, checkpoint }) => {
+    if (background) {
+      setBackground(background);
+      setBackgroundCheckpoint(checkpoint);
+    }
     setScenery(scenery);
   },
   () => {
@@ -166,12 +187,21 @@ const loadSpriteSheets = async () =>
     Crafty.load(loader, resolve);
   });
 
+let scaleViewport = true;
 export const showComposition = async (composition, options = {}) => {
   if (inScene("ComposablePreview") && options.frame) {
     const currentComposable = Crafty(Composable).get(0);
     if (currentComposable.appliedDefinition === composition) {
       currentComposable.displayFrame(options.frame, options.tweenDuration);
       applyDisplayOptions(currentComposable, options);
+      if (options.scaleViewport !== scaleViewport) {
+        scaleViewport = options.scaleViewport;
+        if (options.scaleViewport) {
+          scaleScreenForEntity(currentComposable);
+        } else {
+          resetScreenScaling(currentComposable);
+        }
+      }
       return;
     }
   }
@@ -181,7 +211,9 @@ export const showComposition = async (composition, options = {}) => {
 };
 
 let currentEntity = null;
+let currentHabitat = null;
 export const showEntity = async (entityName, options = {}) => {
+  const strHabitat = JSON.stringify(options.habitat);
   if (
     inScene("EntityPreview") &&
     options.state &&
@@ -189,18 +221,23 @@ export const showEntity = async (entityName, options = {}) => {
   ) {
     const existingEntity = Crafty("EntityDefinition").get(0);
     existingEntity.showState(options.state);
-    setHabitat(options.habitat);
+
+    if (strHabitat !== currentHabitat) {
+      currentHabitat = strHabitat;
+      setHabitat(options.habitat);
+    }
     return;
   }
   currentEntity = entityName;
+  currentHabitat = strHabitat;
 
   await loadSpriteSheets();
   Crafty.enterScene("EntityPreview", { entityName, habitat: options.habitat });
 };
 
-export const showScenery = async (scenery, background) => {
+export const showScenery = async (scenery, backgroundSettings = {}) => {
   await loadSpriteSheets();
-  Crafty.enterScene("SceneryPreview", { scenery, background });
+  Crafty.enterScene("SceneryPreview", { scenery, ...backgroundSettings });
 };
 
 const showBezier = pattern => {
@@ -263,13 +300,13 @@ export const showFlyPattern = async (pattern, { showPoints, showPath }) => {
 };
 
 Crafty.defineScene("BackgroundPreview", ({ background }) => {
-  setBackground(background);
+  setBackground(background, { maxCheckpoint: Infinity });
 });
 
 export const showBackground = async background => {
   await loadSpriteSheets();
   if (inScene("BackgroundPreview")) {
-    setBackground(background);
+    setBackground(background, { maxCheckpoint: Infinity });
     return;
   }
   Crafty.enterScene("BackgroundPreview", { background });

@@ -10,7 +10,8 @@ const DEFAULT_STATE = {
   showSize: false,
   showHitBox: false,
   showRotationPoints: false,
-  showAttachPoints: false
+  showAttachPoints: false,
+  scaleViewport: true
 };
 
 const STORAGE_KEY = "editor-composition-settings";
@@ -50,9 +51,19 @@ class Compositions extends Component {
     this.setState(s => ({ ...s, showAttachPoints: checked }));
   };
 
+  updateScaleViewport = checked => {
+    this.setState(s => ({ ...s, scaleViewport: checked }));
+  };
+
   render(
     { compositionName, frameName },
-    { showSize, showHitBox, showRotationPoints, showAttachPoints }
+    {
+      showSize,
+      showHitBox,
+      showRotationPoints,
+      showAttachPoints,
+      scaleViewport
+    }
   ) {
     const activeComposition = compositions[compositionName];
     storeState(this.state);
@@ -69,6 +80,12 @@ class Compositions extends Component {
           />
           <div>
             <div>
+              <Setting
+                checked={scaleViewport}
+                onCheck={this.updateScaleViewport}
+              >
+                Rescale viewport
+              </Setting>
               <Setting checked={showSize} onCheck={this.updateShowSize}>
                 Show size
               </Setting>
@@ -107,6 +124,7 @@ class Compositions extends Component {
                 tweenDuration={1000}
                 showSize={showSize}
                 showHitBox={showHitBox}
+                scaleViewport={scaleViewport}
                 showRotationPoints={showRotationPoints}
                 showAttachPoints={showAttachPoints}
               />

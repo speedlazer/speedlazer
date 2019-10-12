@@ -4,7 +4,7 @@
     "height": 576,
     "right": "City.Coast",
     "left": "City.Coast",
-    "backgrounds": ["City.Night", "City.Dawn"],
+    "backgrounds": [["City.Sunrise", 2]],
     "elements": [
       {
         "x": 0,
@@ -43,7 +43,7 @@
     "height": 576,
     "right": "City.Coast",
     "left": "City.Ocean",
-    "backgrounds": ["City.Night", "City.Dawn"],
+    "backgrounds": [["City.Sunrise", 1]],
     "elements": [
       {
         "x": 0,
@@ -82,7 +82,7 @@
     "height": 576,
     "right": "City.Ocean",
     "left": "City.Ocean",
-    "backgrounds": ["City.Night", "City.Dawn"],
+    "backgrounds": [["City.Sunrise", 0]],
     "elements": [
       {
         "x": 0,
@@ -115,7 +115,7 @@
     "height": 576,
     "right": "City.Bay",
     "left": "City.Coast",
-    "backgrounds": ["City.Night", "City.Dawn"],
+    "backgrounds": [["City.Sunrise", 2]],
     "elements": [
       {
         "x": 0,
@@ -160,7 +160,7 @@
     "height": 576,
     "left": "City.Bay",
     "right": "City.Bay",
-    "backgrounds": ["City.Night", "City.Dawn"],
+    "backgrounds": [["City.Sunrise", 3]],
     "elements": [
       {
         "x": 0,

@@ -16,14 +16,20 @@ export class SceneryPreview extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.scenery !== this.props.scenery && this.state.craftyMounted) {
-      showScenery(this.props.scenery, this.props.background);
+      showScenery(this.props.scenery, {
+        background: this.props.background,
+        checkpoint: this.props.backgroundCheckpoint
+      });
     }
     if (
       this.props.scenery &&
       this.state.craftyMounted &&
       !prevState.craftyMounted
     ) {
-      showScenery(this.props.scenery, this.props.background);
+      showScenery(this.props.scenery, {
+        background: this.props.background,
+        checkpoint: this.props.backgroundCheckpoint
+      });
     }
     if (
       prevProps.scrollSpeed !== this.props.scrollSpeed &&

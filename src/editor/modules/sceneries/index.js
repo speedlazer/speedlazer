@@ -27,11 +27,12 @@ class Sceneries extends Component {
   render({ scenery }, { scrollSpeed }) {
     const activeScenery = sceneries[scenery];
 
-    const backgroundName =
+    const backgroundSetting =
       activeScenery &&
       activeScenery.backgrounds &&
+      activeScenery.backgrounds[0] &&
       activeScenery.backgrounds[0];
-    const background = backgroundName && backgrounds[backgroundName];
+    const background = backgroundSetting && backgrounds[backgroundSetting[0]];
 
     return (
       <section>
@@ -49,10 +50,14 @@ class Sceneries extends Component {
               <button onClick={this.stop}>Stop</button>
               <button onClick={this.toLeft}>&raquo;</button>
               <Text>Current speed: x: {scrollSpeed}</Text>
-              <Text>Current background: {backgroundName}</Text>
+              <Text>
+                Current background: {backgroundSetting && backgroundSetting[0]}{" "}
+                - {backgroundSetting && backgroundSetting[1]}
+              </Text>
               <SceneryPreview
                 scenery={scenery}
                 background={background}
+                backgroundCheckpoint={backgroundSetting && backgroundSetting[1]}
                 scrollSpeed={scrollSpeed}
               />
             </div>

@@ -28,21 +28,37 @@ Crafty.c(Background, {
     });
   },
 
-  setBackground(background, { autoStart = true, duration = null } = {}) {
+  setBackground(background, { maxCheckpoint = 0, ...options } = {}) {
+    this.currentBackground = background;
+
+    this.maxAllowedCheckpoint = maxCheckpoint;
+    this.setActiveCheckpoint(0, options);
+  },
+
+  setActiveCheckpoint(checkpoint, { autoStart = true, duration = null } = {}) {
+    this.unbind("EnterFrame", this.updateBackground);
+    const checkpointData = this.currentBackground.checkpoints[checkpoint];
+    if (!checkpointData) return;
+    this.targetCheckpoint = checkpoint;
+
     let toRemove = Object.keys(this.elements);
-    (background.composables || []).forEach(([composable, settings]) => {
+    (checkpointData.composables || []).forEach(([composable, settings]) => {
       const composition = compositions[composable];
 
       const existing = this.elements[settings.key];
       toRemove = toRemove.filter(k => k !== settings.key);
       if (existing && existing.appliedDefinition === composition) {
-        existing.displayFrame(settings.frame || "default");
+        //const startFrame = settings.frame || "default";
+        //if (existing.targetFrame !== startFrame) {
+        //existing.displayFrame(startFrame);
+        //}
       } else {
         existing && existing.destroy();
 
         const sub = Crafty.e(["2D", "WebGL", Composable].join(","))
           .attr({ x: 0, y: 0, w: 40, h: 40, z: this.z })
           .compose(composition);
+        this.attach(sub);
         sub.displayFrame(settings.frame || "default");
         this.elements[settings.key] = sub;
       }
@@ -52,10 +68,14 @@ Crafty.c(Background, {
       delete this.elements[k];
     });
 
-    if (autoStart && background.timeline) {
-      this.animationDuration = duration || background.timeline.defaultDuration;
-      if (background.backgroundColor) {
-        const backgroundColor = strToColor([background.backgroundColor, 1.0]);
+    if (autoStart && checkpointData.timeline) {
+      this.animationDuration =
+        duration || checkpointData.timeline.defaultDuration;
+      if (checkpointData.backgroundColor) {
+        const backgroundColor = strToColor([
+          checkpointData.backgroundColor,
+          1.0
+        ]);
         setBackgroundColor(backgroundColor);
       }
       if (this.animationDuration) {
@@ -63,7 +83,7 @@ Crafty.c(Background, {
           this.animationDuration,
           LINEAR
         );
-        this.timeLineEvents = background.timeline.transitions.map(t => ({
+        this.timeLineEvents = checkpointData.timeline.transitions.map(t => ({
           ...t,
           handled: false
         }));
@@ -111,15 +131,24 @@ Crafty.c(Background, {
 
     if (value >= 1.0) {
       this.unbind("EnterFrame", this.updateBackground);
-      this.trigger("FadeCompleted");
-      console.log("done!");
+      if (
+        this.maxAllowedCheckpoint > this.targetCheckpoint &&
+        this.currentBackground.checkpoints.length > this.targetCheckpoint + 1
+      ) {
+        this.setActiveCheckpoint(this.targetCheckpoint + 1);
+      }
     }
   }
 });
 
 export default Background;
 
-export const setBackground = background => {
+export const setBackground = (background, options) => {
   const backdrop = Crafty(Background).get(0) || Crafty.e(Background);
-  backdrop.setBackground(background);
+  backdrop.setBackground(background, options);
+};
+
+export const setBackgroundCheckpoint = checkpoint => {
+  const backdrop = Crafty(Background).get(0) || Crafty.e(Background);
+  backdrop.setActiveCheckpoint(checkpoint);
 };

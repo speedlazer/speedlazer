@@ -15,10 +15,10 @@ export const App = () => (
       items={[
         ["Sprites", "/sprites"],
         ["Compositions", "/compositions"],
-        ["Entities", "/entities"],
-        ["Sceneries", "/sceneries"],
+        ["Fly patterns", "/fly-patterns"],
         ["Backgrounds", "/backgrounds"],
-        ["Fly patterns", "/fly-patterns"]
+        ["Sceneries", "/sceneries"],
+        ["Entities", "/entities"]
       ]}
     />
     <Router>
