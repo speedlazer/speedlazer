@@ -35,10 +35,18 @@ Crafty.c(Background, {
     this.setActiveCheckpoint(0, options);
   },
 
+  setCheckpointLimit(limit) {
+    this.maxAllowedCheckpoint = limit;
+    if (this.targetCheckpoint < limit && !this.animatingBackground) {
+      this.setActiveCheckpoint(this.targetCheckpoint + 1);
+    }
+  },
+
   setActiveCheckpoint(checkpoint, { autoStart = true, duration = null } = {}) {
     this.unbind("EnterFrame", this.updateBackground);
     const checkpointData = this.currentBackground.checkpoints[checkpoint];
     if (!checkpointData) return;
+    this.animatingBackground = true;
     this.targetCheckpoint = checkpoint;
 
     let toRemove = Object.keys(this.elements);
@@ -131,6 +139,7 @@ Crafty.c(Background, {
 
     if (value >= 1.0) {
       this.unbind("EnterFrame", this.updateBackground);
+      this.animatingBackground = false;
       if (
         this.maxAllowedCheckpoint > this.targetCheckpoint &&
         this.currentBackground.checkpoints.length > this.targetCheckpoint + 1
@@ -151,4 +160,9 @@ export const setBackground = (background, options) => {
 export const setBackgroundCheckpoint = checkpoint => {
   const backdrop = Crafty(Background).get(0) || Crafty.e(Background);
   backdrop.setActiveCheckpoint(checkpoint);
+};
+
+export const setBackgroundCheckpointLimit = limit => {
+  const backdrop = Crafty(Background).get(0) || Crafty.e(Background);
+  backdrop.setCheckpointLimit(limit);
 };

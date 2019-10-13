@@ -15,17 +15,27 @@ export class BackgroundPreview extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.background !== this.props.background &&
+      (prevProps.background !== this.props.background ||
+        prevProps.backgroundLimit !== this.props.backgroundLimit ||
+        prevProps.activeCheckpoint !== this.props.activeCheckpoint) &&
       this.state.craftyMounted
     ) {
-      showBackground(this.props.background);
+      showBackground(
+        this.props.background,
+        this.props.backgroundLimit,
+        this.props.activeCheckpoint
+      );
     }
     if (
       this.props.background &&
       this.state.craftyMounted &&
       !prevState.craftyMounted
     ) {
-      showBackground(this.props.background);
+      showBackground(
+        this.props.background,
+        this.props.backgroundLimit,
+        this.props.activeCheckpoint
+      );
     }
   }
 

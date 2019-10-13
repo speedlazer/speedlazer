@@ -5,7 +5,8 @@ import "src/components/DebugComposable";
 import "src/components/SpriteShader";
 import {
   setBackground,
-  setBackgroundCheckpoint
+  setBackgroundCheckpoint,
+  setBackgroundCheckpointLimit
 } from "src/components/Background";
 import { createEntity } from "src/components/EntityDefinition";
 import { setScenery, setScrollVelocity } from "src/components/Scenery";
@@ -299,15 +300,34 @@ export const showFlyPattern = async (pattern, { showPoints, showPath }) => {
   Crafty.enterScene("FlyPatternPreview", { pattern, showPoints, showPath });
 };
 
-Crafty.defineScene("BackgroundPreview", ({ background }) => {
-  setBackground(background, { maxCheckpoint: Infinity });
+Crafty.defineScene("BackgroundPreview", ({ background, backgroundLimit }) => {
+  setBackground(background, { maxCheckpoint: backgroundLimit });
 });
 
-export const showBackground = async background => {
+let currentBackground = null;
+let currentBackgroundLimit = 0;
+let currentBackgroundCheckpoint = 0;
+export const showBackground = async (
+  background,
+  backgroundLimit,
+  activeCheckpoint
+) => {
   await loadSpriteSheets();
   if (inScene("BackgroundPreview")) {
-    setBackground(background, { maxCheckpoint: Infinity });
+    if (currentBackground !== background) {
+      setBackground(background, { maxCheckpoint: backgroundLimit });
+    } else if (currentBackgroundCheckpoint !== activeCheckpoint) {
+      setBackgroundCheckpoint(activeCheckpoint);
+    } else if (currentBackgroundLimit !== backgroundLimit) {
+      setBackgroundCheckpointLimit(backgroundLimit);
+    }
+    currentBackground = background;
+    currentBackgroundLimit = backgroundLimit;
+    currentBackgroundCheckpoint = activeCheckpoint;
     return;
   }
-  Crafty.enterScene("BackgroundPreview", { background });
+  currentBackground = background;
+  currentBackgroundLimit = backgroundLimit;
+  currentBackgroundCheckpoint = activeCheckpoint;
+  Crafty.enterScene("BackgroundPreview", { background, backgroundLimit });
 };

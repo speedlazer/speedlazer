@@ -30,6 +30,7 @@ export const App = () => (
       <Entities path="/editor/entities/:entity/states/:stateName/:habitatName" />
       <Sceneries path="/editor/sceneries/:scenery?" />
       <Backgrounds path="/editor/backgrounds/:background?" />
+      <Backgrounds path="/editor/backgrounds/:background/checkpoints/:checkpoint" />
       <FlyPatterns path="/editor/fly-patterns/:pattern?" />
     </Router>
   </div>
