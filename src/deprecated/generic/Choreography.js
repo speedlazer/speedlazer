@@ -4,9 +4,9 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
  */
-const defaults = require("lodash/defaults");
-const clone = require("lodash/clone");
-const extend = require("lodash/extend");
+import defaults from "lodash/defaults";
+import clone from "lodash/clone";
+import extend from "lodash/extend";
 
 // TODO: Document
 //
@@ -161,9 +161,9 @@ Crafty.c("Choreography", {
     });
     if (part.properties) {
       const currentProperties = {};
-      for (let k in part.properties) {
-        currentProperties[k] = this[k];
-      }
+      Object.keys(part.properies).forEach(
+        key => (currentProperties[key] = this[key])
+      );
       return (this._currentPart.currentProperties = currentProperties);
     }
   },
@@ -178,7 +178,7 @@ Crafty.c("Choreography", {
     return this.shift(dx, dy);
   },
 
-  _executeDelay(v) {},
+  _executeDelay() {},
 
   _executeMoveIntoViewport(v, prevv, dt) {
     // the goal are current coordinates on screen
