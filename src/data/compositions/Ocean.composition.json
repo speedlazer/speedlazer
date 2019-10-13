@@ -9,9 +9,13 @@
       ["waterFront2", { "x": 512, "z": -20, "key": "right" }]
     ],
     "frames": {
-      "wave": {
-        "left": { "w": 600, "h": 75, "y": 21 },
-        "right": { "x": 88, "w": 424, "h": 75, "y": 21 }
+      "waveR": {
+        "left": { "scaleX": 1.125, "x": 32, "scaleY": 0.9, "y": 10 },
+        "right": { "scaleX": 0.875, "x": 32, "scaleY": 0.9, "y": 10 }
+      },
+      "waveL": {
+        "left": { "scaleX": 0.875, "x": -32, "scaleY": 1.1, "y": -10 },
+        "right": { "scaleX": 1.125, "x": -32, "scaleY": 1.1, "y": -10 }
       }
     }
   },
@@ -25,7 +29,7 @@
     ],
     "frames": {
       "wave": {
-        "middle": { "y": 10 }
+        "middle": { "y": 4 }
       }
     }
   },

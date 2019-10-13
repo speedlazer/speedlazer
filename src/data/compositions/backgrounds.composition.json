@@ -97,5 +97,27 @@
         "sky": { "topColor": ["#366eab", 1.0], "bottomColor": ["#d6d5d5", 1.0] }
       }
     }
+  },
+  "sun": {
+    "attributes": {
+      "width": 96,
+      "height": 96,
+      "scale": 0.6
+    },
+    "sprites": [
+      ["sun", { "x": 0, "y": 0, "crop": [1, 1, 1, 1] }],
+      [
+        "directGlare",
+        { "x": -40, "y": -40, "crop": [1, 1, 1, 1], "key": "glare" }
+      ]
+    ],
+    "frames": {
+      "noGlare": {
+        "glare": { "alpha": 0 }
+      },
+      "full": {
+        "attributes": { "scale": 1.0 }
+      }
+    }
   }
 }

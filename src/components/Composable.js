@@ -1,5 +1,5 @@
 import "src/components/Horizon";
-import "src/components/utils/Scalable";
+import Scalable from "src/components/utils/Scalable";
 import "src/components/utils/HideBelow";
 import TweenPromise from "src/components/generic/TweenPromise";
 import Delta2D from "src/components/generic/Delta2D";
@@ -26,7 +26,17 @@ const widthFactor = {
   right: 1
 };
 
-const TWEEN_WHITELIST = ["x", "y", "w", "h", "rotation", "alpha"];
+const TWEEN_WHITELIST = [
+  "x",
+  "y",
+  "w",
+  "h",
+  "rotation",
+  "alpha",
+  "scale",
+  "scaleX",
+  "scaleY"
+];
 
 const deltaSettings = settings =>
   Object.entries(settings)
@@ -67,6 +77,7 @@ const generateDefaultFrame = definition => {
           y: 0
         })
     );
+  result.attributes = definition.attributes;
   return result;
 };
 
@@ -129,7 +140,7 @@ Crafty.c(Composable, {
     }
 
     if (definition.attributes.scale) {
-      this.addComponent("Scalable");
+      this.addComponent(Scalable);
       this.attr({
         scale: definition.attributes.scale
       });
@@ -282,7 +293,9 @@ Crafty.c(Composable, {
   },
 
   createAndAttachSprite([spriteName, options]) {
-    const subElem = Crafty.e(["2D, WebGL", Delta2D, spriteName].join(", "));
+    const subElem = Crafty.e(
+      ["2D, WebGL", Delta2D, Scalable, spriteName].join(", ")
+    );
     this.applySpriteOptions(subElem, options);
     subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });
     this.attach(subElem);
@@ -396,19 +409,27 @@ Crafty.c(Composable, {
     if (!frameData) return;
 
     const promises = Object.entries(frameData).map(([keyName, settings]) => {
+      if (keyName === "attributes") {
+        const tweenSettings = deltaSettings({
+          ...settings
+        });
+
+        this.addComponent(TweenPromise);
+        return this.tweenPromise(tweenSettings, duration, easing);
+      }
       const sprite = this.composableParts.find(
         part => part.attr("key") === keyName
       );
       if (sprite) {
         const defaultSettings = {
           z: 0,
-          w: sprite.originalSize.w,
-          h: sprite.originalSize.h,
           ...(this.appliedDefinition.sprites.find(
             ([, startSettings]) => startSettings.key === keyName
           ) || [])[1],
           x: 0,
-          y: 0
+          y: 0,
+          scaleX: 1,
+          scaleY: 1
         };
 
         sprite.addComponent(TweenPromise);
