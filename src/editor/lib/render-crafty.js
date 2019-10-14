@@ -273,7 +273,7 @@ Crafty.defineScene("FlyPatternPreview", ({ pattern, showPath, showPoints }) => {
   Crafty.e("2D, WebGL, Color, WayPointMotion")
     .attr({ x: pattern[0].x * vpw, y: pattern[0].y * vph, w: 20, h: 20 })
     .color("#0000FF")
-    .flyPattern(pattern, 75, "easeInOutQuad");
+    .flyPattern(pattern, { velocity: 75, easing: "easeInOutQuad" });
 });
 
 let currentPattern = null;
@@ -300,9 +300,13 @@ export const showFlyPattern = async (pattern, { showPoints, showPath }) => {
   Crafty.enterScene("FlyPatternPreview", { pattern, showPoints, showPath });
 };
 
-Crafty.defineScene("BackgroundPreview", ({ background, backgroundLimit }) => {
-  setBackground(background, { maxCheckpoint: backgroundLimit });
-});
+Crafty.defineScene(
+  "BackgroundPreview",
+  ({ background, backgroundLimit, activeCheckpoint }) => {
+    setBackground(background, { maxCheckpoint: backgroundLimit });
+    if (activeCheckpoint !== 0) setBackgroundCheckpoint(activeCheckpoint);
+  }
+);
 
 let currentBackground = null;
 let currentBackgroundLimit = 0;
@@ -329,5 +333,9 @@ export const showBackground = async (
   currentBackground = background;
   currentBackgroundLimit = backgroundLimit;
   currentBackgroundCheckpoint = activeCheckpoint;
-  Crafty.enterScene("BackgroundPreview", { background, backgroundLimit });
+  Crafty.enterScene("BackgroundPreview", {
+    background,
+    backgroundLimit,
+    activeCheckpoint
+  });
 };

@@ -6,7 +6,7 @@ import Compositions from "src/editor/modules/compositions";
 import Entities from "src/editor/modules/entities";
 import Sceneries from "src/editor/modules/sceneries";
 import Backgrounds from "src/editor/modules/backgrounds";
-import FlyPatterns from "src/editor/modules/fly-patterns";
+import Paths from "src/editor/modules/paths";
 
 export const App = () => (
   <div>
@@ -15,7 +15,7 @@ export const App = () => (
       items={[
         ["Sprites", "/sprites"],
         ["Compositions", "/compositions"],
-        ["Fly patterns", "/fly-patterns"],
+        ["Paths", "/paths"],
         ["Backgrounds", "/backgrounds"],
         ["Sceneries", "/sceneries"],
         ["Entities", "/entities"]
@@ -31,7 +31,7 @@ export const App = () => (
       <Sceneries path="/editor/sceneries/:scenery?" />
       <Backgrounds path="/editor/backgrounds/:background?" />
       <Backgrounds path="/editor/backgrounds/:background/checkpoints/:checkpoint" />
-      <FlyPatterns path="/editor/fly-patterns/:pattern?" />
+      <Paths path="/editor/paths/:pattern?" />
     </Router>
   </div>
 );

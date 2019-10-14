@@ -1,7 +1,12 @@
 import { getBezierPath } from "src/lib/BezierPath";
 
-Crafty.c("WayPointMotion", {
-  flyPattern(pattern, velocity, easing = "linear") {
+const WayPointMotion = "WayPointMotion";
+
+Crafty.c(WayPointMotion, {
+  flyPattern(
+    pattern,
+    { duration: d, velocity, easing = "linear", start = 0.0, end = 1.0 } = {}
+  ) {
     this.pattern = pattern;
 
     const vpw = Crafty.viewport.width;
@@ -11,9 +16,14 @@ Crafty.c("WayPointMotion", {
       y: y * vph
     }));
     this.bezierPath = getBezierPath(normalizedPath);
-    const duration = this.bezierPath.length / velocity;
 
-    this.wayPointEasing = new Crafty.easing(duration * 1000, easing);
+    const duration = d || (this.bezierPath.length / velocity) * 1000;
+
+    const fullDuration = duration / (end - start);
+
+    this.wayPointEasing = new Crafty.easing(fullDuration, easing);
+    this.wayPointEasing.tick(start * fullDuration);
+    this.targetPatternValue = end;
 
     if (!this.inMotion) {
       this.inMotion = true;
@@ -36,10 +46,12 @@ Crafty.c("WayPointMotion", {
     const value = this.wayPointEasing.value();
     const p = this.bezierPath.get(value);
     this.attr(p);
-    if (value >= 1.0) {
+    if (value >= this.targetPatternValue) {
       this.unbind("EnterFrame", this.updateAcceleration);
       this.inMotion = false;
       this.trigger("PatternCompleted");
     }
   }
 });
+
+export default WayPointMotion;

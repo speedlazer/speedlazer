@@ -1,5 +1,7 @@
 import Composable from "./Composable";
 import compositions from "src/data/compositions";
+import paths from "src/data/paths";
+import WayPointMotion from "./WayPointMotion";
 import { LINEAR } from "src/constants/easing";
 import { getBackgroundColor, setBackgroundColor } from "src/components/Horizon";
 import { mix, strToColor } from "src/components/generic/ColorFade";
@@ -15,7 +17,7 @@ Crafty.c(Background, {
       y: 0,
       w: Crafty.viewport.width / Crafty.viewport._scale,
       h: Crafty.viewport.height / Crafty.viewport._scale,
-      z: -10000
+      z: -1000
     });
     this.bind("ViewportScale", this.updateBackdrop);
     this.elements = {};
@@ -62,9 +64,11 @@ Crafty.c(Background, {
         //}
       } else {
         existing && existing.destroy();
+        const x = (settings.relativeX || 0) * Crafty.viewport.width;
+        const y = (settings.relativeY || 0) * Crafty.viewport.height;
 
         const sub = Crafty.e(["2D", "WebGL", Composable].join(","))
-          .attr({ x: 0, y: 0, w: 40, h: 40, z: this.z })
+          .attr({ x, y, w: 40, h: 40, z: this.z })
           .compose(composition);
         this.attach(sub);
         sub.displayFrame(settings.frame || "default");
@@ -134,6 +138,20 @@ Crafty.c(Background, {
           const color = mix(t.ease.value(), t.sourceColor, t.targetColor);
           setBackgroundColor(color);
         }
+      }
+      if (t.path && t.key) {
+        console.log("Movement along path");
+        t.handled = true;
+        const elem = this.elements[t.key];
+        elem.addComponent(WayPointMotion);
+        const pathDuration = (t.end - t.start) * this.animationDuration;
+        const path = paths[t.path.name];
+
+        elem.flyPattern(path, {
+          duration: pathDuration,
+          start: t.path.start || 0.0,
+          end: t.path.end || 1.0
+        });
       }
     });
 

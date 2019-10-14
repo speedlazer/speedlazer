@@ -20,6 +20,7 @@ class Backgrounds extends Component {
 
   render({ background, checkpoint }, { backgroundLimit }) {
     const activeBackground = backgrounds[background];
+    console.log(checkpoint);
     return (
       <section>
         <Title>Backgrounds</Title>
@@ -52,7 +53,7 @@ class Backgrounds extends Component {
               />
               <BackgroundPreview
                 background={activeBackground}
-                activeCheckpoint={checkpoint || 0}
+                activeCheckpoint={checkpoint ? parseInt(checkpoint, 10) : 0}
                 backgroundLimit={backgroundLimit}
               />
             </div>

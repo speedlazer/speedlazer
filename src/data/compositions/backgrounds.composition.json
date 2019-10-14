@@ -105,10 +105,10 @@
       "scale": 0.6
     },
     "sprites": [
-      ["sun", { "x": 0, "y": 0, "crop": [1, 1, 1, 1] }],
+      ["sun", { "x": 0, "y": 0, "z": 4, "crop": [1, 1, 1, 1] }],
       [
         "directGlare",
-        { "x": -40, "y": -40, "crop": [1, 1, 1, 1], "key": "glare" }
+        { "x": -40, "y": -40, "z": 2000, "crop": [1, 1, 1, 1], "key": "glare" }
       ]
     ],
     "frames": {
@@ -116,7 +116,12 @@
         "glare": { "alpha": 0 }
       },
       "full": {
-        "attributes": { "scale": 1.0 }
+        "attributes": { "scale": 1.0 },
+        "glare": { "alpha": 1 }
+      },
+      "large": {
+        "attributes": { "scale": 1.2 },
+        "glare": { "alpha": 0 }
       }
     }
   }
