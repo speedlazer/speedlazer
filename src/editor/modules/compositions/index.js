@@ -105,18 +105,28 @@ class Compositions extends Component {
                 Show attach points
               </Setting>
             </div>
-            {activeComposition && activeComposition.frames && (
-              <Menu
-                horizontal={true}
-                items={[
-                  "default",
-                  ...Object.keys(activeComposition.frames)
-                ].map(key => [
-                  key,
-                  `/compositions/${compositionName}/frames/${key}`
-                ])}
-              />
-            )}
+            {activeComposition &&
+              (activeComposition.frames || activeComposition.animations) && (
+                <Menu
+                  horizontal={true}
+                  items={["default", ...Object.keys(activeComposition.frames)]
+                    .map(key => [
+                      key,
+                      `/compositions/${compositionName}/frames/${key}`
+                    ])
+                    .concat(
+                      activeComposition.animations && activeComposition.frames
+                        ? [["|", ""]]
+                        : [],
+                      Object.keys(activeComposition.animations || {}).map(
+                        key => [
+                          key,
+                          `/compositions/${compositionName}/animations/${key}`
+                        ]
+                      )
+                    )}
+                />
+              )}
             {activeComposition && (
               <CompositionPreview
                 composition={activeComposition}

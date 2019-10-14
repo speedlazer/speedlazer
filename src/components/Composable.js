@@ -11,6 +11,8 @@ const definitionStructure = {
   gradients: [],
   attachHooks: [],
   attributes: {},
+  frames: {},
+  animations: {},
   hitbox: []
 };
 
@@ -144,6 +146,10 @@ Crafty.c(Composable, {
       this.attr({
         scale: definition.attributes.scale
       });
+    }
+
+    if (definition.animations) {
+      console.log("Handling animations");
     }
     return this;
   },
