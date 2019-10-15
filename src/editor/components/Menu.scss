@@ -2,16 +2,6 @@
     list-style-type: none;
     padding: 0;
 
-    > li > a {
-        color: #ddd;
-        text-decoration: none;
-        padding-left: 1em;
-    }
-    > li > a.active {
-        font-weight: bold;
-        text-decoration: underline;
-    }
-
     &.horizontal {
         width: 100%;
         background: #111;
@@ -24,7 +14,27 @@
         }
     }
 }
-
+.item > a {
+    color: #ddd;
+    text-decoration: none;
+    padding-left: 1em;
+}
+.item > a.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+.folder {
+    padding-left: 1em;
+}
+.folder > ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.folderName {
+    color: #cfc;
+    text-decoration: underline;
+}
 .active {
     font-weight: bold;
     text-decoration: underline;

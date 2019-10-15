@@ -8,16 +8,19 @@ const stage1 = async ({
   loadSpriteSheets,
   spawnShip,
   setWeapons,
+  setBackground,
+  setBackgroundCheckpointLimit,
   exec,
   wait
 }) => {
   const text = bigText("Loading...");
   text.fadeIn(2000);
 
-  await loadSpriteSheets(["city-enemies", "city-scenery"]);
+  await loadSpriteSheets(["mega-texture"]);
 
-  await setScrollingSpeed(300, 0);
+  await setScrollingSpeed(100, 0);
   await setScenery("City.Ocean");
+  setBackground("City.Sunrise");
   //await text.fadeOut(2000);
   text.remove();
 
@@ -25,6 +28,7 @@ const stage1 = async ({
   await setWeapons(["lasers"]);
   await exec(droneWave(5, "pattern1", 1000));
   await wait(1000);
+  setBackgroundCheckpointLimit(1);
   await exec(droneWave(5, "pattern1", 1000));
   await setScenery("City.CoastStart");
   await exec(droneWave(5, "pattern1", 1000));

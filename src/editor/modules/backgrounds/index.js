@@ -20,7 +20,6 @@ class Backgrounds extends Component {
 
   render({ background, checkpoint }, { backgroundLimit }) {
     const activeBackground = backgrounds[background];
-    console.log(checkpoint);
     return (
       <section>
         <Title>Backgrounds</Title>

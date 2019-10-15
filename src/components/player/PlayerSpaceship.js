@@ -118,11 +118,11 @@ Crafty.c(PlayerSpaceship, {
     const velocity = Math.max(dx * (1000 / dt), 0);
 
     if (dy > 0) {
-      this.healthPerc < 0.3 ? this.sprite(13, 5) : this.sprite(7, 4);
+      this.healthPerc < 0.3 ? this.sprite(13, 53) : this.sprite(7, 52);
     } else if (dy < 0) {
-      this.healthPerc < 0.3 ? this.sprite(13, 3) : this.sprite(10, 4);
+      this.healthPerc < 0.3 ? this.sprite(13, 51) : this.sprite(10, 52);
     } else {
-      this.healthPerc < 0.3 ? this.sprite(0, 2) : this.sprite(0, 0);
+      this.healthPerc < 0.3 ? this.sprite(0, 50) : this.sprite(0, 48);
     }
 
     this.rotation = 0;
@@ -183,7 +183,7 @@ Crafty.c(PlayerSpaceship, {
     this.backFire = Crafty.e(
       ["2D, WebGL, shipEngineFire", ColorEffects, "SpriteAnimation"].join(", ")
     );
-    this.backFire.reel("burn", 300, [[4, 5, 3, 1], [3, 0, 3, 1]]);
+    this.backFire.reel("burn", 300, [[4, 53, 3, 1], [3, 48, 3, 1]]);
     this.backFire.timing = 0;
     this.backFire.animate("burn", -1);
     const w = 68;
