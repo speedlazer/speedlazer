@@ -32,9 +32,13 @@ const makeFolders = (acc, [name, path]) => {
 
 const Item = ({ name, path }) => (
   <li class={styles.item}>
-    <Link activeClassName={styles.active} href={path}>
-      {name}
-    </Link>
+    {path ? (
+      <Link activeClassName={styles.active} href={path}>
+        {name}
+      </Link>
+    ) : (
+      name
+    )}
   </li>
 );
 
@@ -55,7 +59,11 @@ const createStructure = items =>
       items
         .filter(({ type }) => type === "item")
         .map(item => (
-          <Item key={item.path} name={item.name} path={`/editor${item.path}`} />
+          <Item
+            key={item.path}
+            name={item.name}
+            path={item.path ? `/editor${item.path}` : null}
+          />
         ))
     );
 
