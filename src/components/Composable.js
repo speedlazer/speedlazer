@@ -117,7 +117,7 @@ Crafty.c(Composable, {
     this._children.forEach(child => child.unfreeze());
   },
 
-  compose(proposedDefinition) {
+  compose(proposedDefinition, { autoStartAnimation = true } = {}) {
     const definition = {
       ...definitionStructure,
       ...proposedDefinition
@@ -148,10 +148,18 @@ Crafty.c(Composable, {
       });
     }
 
-    if (definition.animations) {
-      console.log("Handling animations");
+    if (
+      definition.animations &&
+      definition.animations.default &&
+      autoStartAnimation
+    ) {
+      this.playAnimation("default");
     }
     return this;
+  },
+
+  playAnimation(animationName) {
+    console.log("playing", animationName);
   },
 
   updateChildrenOrder() {

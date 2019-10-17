@@ -56,7 +56,7 @@ class Compositions extends Component {
   };
 
   render(
-    { compositionName, frameName },
+    { compositionName, animationName, frameName },
     {
       showSize,
       showHitBox,
@@ -131,6 +131,7 @@ class Compositions extends Component {
               <CompositionPreview
                 composition={activeComposition}
                 frame={frameName}
+                animation={animationName}
                 tweenDuration={1000}
                 showSize={showSize}
                 showHitBox={showHitBox}

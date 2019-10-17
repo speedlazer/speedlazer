@@ -14,7 +14,7 @@ export class CompositionPreview extends Component {
   };
 
   render(
-    { composition, frame, tweenDuration, ...displaySettings },
+    { composition, frame, animation, tweenDuration, ...displaySettings },
     { craftyMounted }
   ) {
     if (craftyMounted) {
@@ -22,6 +22,11 @@ export class CompositionPreview extends Component {
         showComposition(composition, {
           frame,
           tweenDuration,
+          ...displaySettings
+        });
+      } else if (animation) {
+        showComposition(composition, {
+          animation,
           ...displaySettings
         });
       } else {

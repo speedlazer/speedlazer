@@ -41,7 +41,10 @@ const updateActualSize = (actualSize, entity) => {
 const createComposable = composition =>
   Crafty.e(["2D", "WebGL", Composable, "DebugComposable"].join(", "))
     .attr({ x: 0, y: 0, w: 40, h: 40 })
-    .compose(composition);
+    .compose(
+      composition,
+      { autoStartAnimation: false }
+    );
 
 const addColor = (entity, color) =>
   entity
@@ -195,6 +198,22 @@ export const showComposition = async (composition, options = {}) => {
     if (currentComposable.appliedDefinition === composition) {
       currentComposable.displayFrame(options.frame, options.tweenDuration);
       applyDisplayOptions(currentComposable, options);
+      if (options.scaleViewport !== scaleViewport) {
+        scaleViewport = options.scaleViewport;
+        if (options.scaleViewport) {
+          scaleScreenForEntity(currentComposable);
+        } else {
+          resetScreenScaling(currentComposable);
+        }
+      }
+      return;
+    }
+  }
+
+  if (inScene("ComposablePreview") && options.animation) {
+    const currentComposable = Crafty(Composable).get(0);
+    if (currentComposable.appliedDefinition === composition) {
+      currentComposable.playAnimation(options.animation);
       if (options.scaleViewport !== scaleViewport) {
         scaleViewport = options.scaleViewport;
         if (options.scaleViewport) {
