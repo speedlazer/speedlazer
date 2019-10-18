@@ -5,8 +5,11 @@
       "height": 96
     },
     "sprites": [
-      ["waterFront1", { "z": -20, "key": "left" }],
-      ["waterFront2", { "x": 512, "z": -20, "key": "right" }]
+      ["waterFront1", { "z": -20, "key": "left", "horizon": [0.4, 0.0] }],
+      [
+        "waterFront2",
+        { "x": 512, "z": -20, "key": "right", "horizon": [0.4, 0.0] }
+      ]
     ],
     "frames": {
       "waveR": {

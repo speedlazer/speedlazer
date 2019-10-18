@@ -160,6 +160,21 @@ Crafty.c(Composable, {
 
   playAnimation(animationName) {
     console.log("playing", animationName);
+    this.activeAnimation = animationName;
+    this.bind("EnterFrame", this.updateFrame);
+  },
+
+  animationPlaying() {
+    return this.activeAnimation !== null;
+  },
+
+  stopAnimation() {
+    this.unbind("EnterFrame", this.updateFrame);
+    this.activeAnimation = null;
+  },
+
+  updateFrame: fData => {
+    console.log("animate!", fData);
   },
 
   updateChildrenOrder() {

@@ -1,6 +1,6 @@
 {
   "City.Coast": {
-    "width": 1024,
+    "width": 1023,
     "height": 576,
     "right": "City.Coast",
     "left": "City.Coast",
@@ -39,7 +39,7 @@
     ]
   },
   "City.CoastStart": {
-    "width": 1024,
+    "width": 1023,
     "height": 576,
     "right": "City.Coast",
     "left": "City.Ocean",
@@ -78,7 +78,7 @@
     ]
   },
   "City.Ocean": {
-    "width": 1024,
+    "width": 1023,
     "height": 576,
     "right": "City.Ocean",
     "left": "City.Ocean",
@@ -111,7 +111,7 @@
     ]
   },
   "City.BayStart": {
-    "width": 1024,
+    "width": 1023,
     "height": 576,
     "right": "City.Bay",
     "left": "City.Coast",
@@ -156,7 +156,7 @@
     ]
   },
   "City.Bay": {
-    "width": 1024,
+    "width": 1023,
     "height": 576,
     "left": "City.Bay",
     "right": "City.Bay",

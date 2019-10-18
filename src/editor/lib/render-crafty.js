@@ -196,6 +196,7 @@ export const showComposition = async (composition, options = {}) => {
   if (inScene("ComposablePreview") && options.frame) {
     const currentComposable = Crafty(Composable).get(0);
     if (currentComposable.appliedDefinition === composition) {
+      currentComposable.animationPlaying() && currentComposable.stopAnimation();
       currentComposable.displayFrame(options.frame, options.tweenDuration);
       applyDisplayOptions(currentComposable, options);
       if (options.scaleViewport !== scaleViewport) {
