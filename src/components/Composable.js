@@ -5,6 +5,8 @@ import TweenPromise from "src/components/generic/TweenPromise";
 import Delta2D from "src/components/generic/Delta2D";
 import Gradient from "src/components/Gradient";
 import ColorFade from "src/components/generic/ColorFade";
+import { globalStartTime } from "src/lib/time";
+import { easingFunctions } from "src/constants/easing";
 
 const definitionStructure = {
   sprites: [],
@@ -159,9 +161,24 @@ Crafty.c(Composable, {
   },
 
   playAnimation(animationName) {
+    const animationData =
+      this.appliedDefinition.animations &&
+      this.appliedDefinition.animations[animationName];
+    if (!animationData)
+      throw new Error(`Animation ${animationName} not found in playAnimation`);
+
     console.log("playing", animationName);
-    this.activeAnimation = animationName;
-    this.bind("EnterFrame", this.updateFrame);
+    this.activeAnimation = {
+      name: animationName,
+      data: animationData,
+      easing: easingFunctions[animationData.easing || "linear"]
+    };
+
+    this.animationStart =
+      animationData.timer && animationData.timer === "global"
+        ? globalStartTime()
+        : new Date() * 1;
+    this.bind("EnterFrame", this.updateAnimationFrame);
   },
 
   animationPlaying() {
@@ -169,12 +186,20 @@ Crafty.c(Composable, {
   },
 
   stopAnimation() {
-    this.unbind("EnterFrame", this.updateFrame);
+    this.unbind("EnterFrame", this.updateAnimationFrame);
     this.activeAnimation = null;
   },
 
-  updateFrame: fData => {
-    console.log("animate!", fData);
+  updateAnimationFrame({ gameTime }) {
+    // When pausing the game is introduced, this will
+    // need some special care
+    const timeElapsed = gameTime - this.animationStart;
+    const timeInIteration = timeElapsed % this.activeAnimation.data.duration;
+    const v = this.activeAnimation.easing(
+      timeInIteration / this.activeAnimation.data.duration
+    );
+
+    console.log("animate!", v);
   },
 
   updateChildrenOrder() {

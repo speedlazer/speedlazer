@@ -24,7 +24,7 @@
     "animations": {
       "default": {
         "repeat": true,
-        "easing": "easeInOut",
+        "easing": "easeInOutQuad",
         "duration": 5000,
         "timer": "global",
         "timeline": [
