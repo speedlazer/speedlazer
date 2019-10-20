@@ -99,11 +99,13 @@ const getHookSettings = (definition, name) =>
   (definition.attachHooks.find(([hookName]) => hookName === name) || [])[1] ||
   {};
 
+const getFrameData = (entity, frameName) =>
+  frameName === "default"
+    ? generateDefaultFrame(entity.appliedDefinition)
+    : entity.appliedDefinition.frames[frameName];
+
 const displayFrameFn = (entity, frameName) => {
-  const frameData =
-    frameName === "default"
-      ? generateDefaultFrame(entity.appliedDefinition)
-      : entity.appliedDefinition.frames[frameName];
+  const frameData = getFrameData(entity, frameName);
   if (!frameData) return () => {};
 
   const fns = Object.entries(frameData).reduce((acc, [keyName, settings]) => {
@@ -238,7 +240,8 @@ Crafty.c(Composable, {
     this.activeAnimation = {
       name: animationName,
       data: animationData,
-      easing: easingFunctions[animationData.easing || "linear"]
+      easing: easingFunctions[animationData.easing || "linear"],
+      timeline: animationData.timeline.map(e => ({ ...e }))
     };
 
     this.animationStart =
@@ -266,7 +269,12 @@ Crafty.c(Composable, {
       timeInIteration / this.activeAnimation.data.duration
     );
 
-    console.log("animate!", v);
+    this.activeAnimation.timeline.forEach(event => {
+      if (event.start > v || v > event.end) return;
+      event.animateFn = event.animateFn || displayFrameFn(this, event.endFrame);
+      const localV = (v - event.start) / (event.end - event.start);
+      event.animateFn(localV);
+    });
   },
 
   updateChildrenOrder() {
@@ -523,10 +531,7 @@ Crafty.c(Composable, {
   },
 
   async displayFrame(frameName, duration = 0, easing = undefined) {
-    const frameData =
-      frameName === "default"
-        ? generateDefaultFrame(this.appliedDefinition)
-        : this.appliedDefinition.frames[frameName];
+    const frameData = getFrameData(this, frameName);
     if (!frameData) return;
 
     const frameFunc = displayFrameFn(this, frameName);
