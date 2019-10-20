@@ -1,3 +1,5 @@
+import Animator from "./Animator";
+
 export const mix = (v, from, to) => ({
   _red: Math.round(from._red * (1 - v) + to._red * v),
   _green: Math.round(from._green * (1 - v) + to._green * v),
@@ -15,53 +17,29 @@ export const strToColor = ([string, alpha]) => ({
 const ColorFade = "ColorFade";
 
 Crafty.c(ColorFade, {
-  colorFade(topColor, bottomColor, duration, easing) {
-    if (duration === 0) {
-      this._nextTopColor = strToColor(topColor);
-      this._nextBottomColor = strToColor(bottomColor);
-      this._topColor = this._nextTopColor;
-      this._bottomColor = this._nextBottomColor;
+  required: Animator,
+
+  colorFadeFn(topColor, bottomColor) {
+    const colorFade = {
+      nextTopColor: strToColor(topColor),
+      nextBottomColor: strToColor(bottomColor),
+      startTopColor: this.topColor(),
+      startBottomColor: this.bottomColor()
+    };
+    return t => {
+      this._topColor = mix(t, colorFade.startTopColor, colorFade.nextTopColor);
+      this._bottomColor = mix(
+        t,
+        colorFade.startBottomColor,
+        colorFade.nextBottomColor
+      );
       this.trigger("Invalidate");
-      return;
-    }
-
-    this._nextTopColor = strToColor(topColor);
-    this._nextBottomColor = strToColor(bottomColor);
-    this._startTopColor = this.topColor();
-    this._startBottomColor = this.bottomColor();
-    this.colorFadeTimer = new Crafty.easing(duration, easing);
-
-    if (!this.fadingColors) {
-      this.fadingColors = true;
-      this.bind("EnterFrame", this.updateColorFade);
-    }
-    return this;
+    };
   },
 
-  stopColorFade() {
-    if (this.fadingColors) {
-      this.unbind("EnterFrame", this.updateColorFade);
-      this.fadingColors = false;
-      this.trigger("FadeAborted");
-    }
-  },
-
-  updateColorFade({ dt }) {
-    this.colorFadeTimer.tick(dt);
-    const value = this.colorFadeTimer.value();
-    this._topColor = mix(value, this._startTopColor, this._nextTopColor);
-    this._bottomColor = mix(
-      value,
-      this._startBottomColor,
-      this._nextBottomColor
-    );
-    this.trigger("Invalidate");
-
-    if (value >= 1.0) {
-      this.unbind("EnterFrame", this.updateAcceleration);
-      this.fadingColors = false;
-      this.trigger("FadeCompleted");
-    }
+  colorFade(topColor, bottomColor, duration, easing) {
+    const fadeFunc = this.colorFadeFn(topColor, bottomColor);
+    return this.animate(fadeFunc, duration, easing);
   }
 });
 

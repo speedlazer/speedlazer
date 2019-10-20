@@ -3,9 +3,7 @@ import Animator from "./Animator";
 const TweenPromise = "TweenPromise";
 
 Crafty.c(TweenPromise, {
-  init() {
-    this.requires(Animator);
-  },
+  required: Animator,
 
   tweenFn(props) {
     return Object.entries(props).reduce(
