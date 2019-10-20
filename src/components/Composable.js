@@ -99,6 +99,70 @@ const getHookSettings = (definition, name) =>
   (definition.attachHooks.find(([hookName]) => hookName === name) || [])[1] ||
   {};
 
+const displayFrameFn = (entity, frameName) => {
+  const frameData =
+    frameName === "default"
+      ? generateDefaultFrame(entity.appliedDefinition)
+      : entity.appliedDefinition.frames[frameName];
+  if (!frameData) return () => {};
+
+  const fns = Object.entries(frameData).reduce((acc, [keyName, settings]) => {
+    if (keyName === "attributes") {
+      const tweenSettings = deltaSettings({
+        ...settings
+      });
+      return acc.concat(tweenFn(entity, tweenSettings));
+    }
+    const sprite = entity.composableParts.find(
+      part => part.attr("key") === keyName
+    );
+    if (sprite) {
+      const defaultSettings = {
+        z: 0,
+        ...(entity.appliedDefinition.sprites.find(
+          ([, startSettings]) => startSettings.key === keyName
+        ) || [])[1],
+        x: 0,
+        y: 0,
+        scaleX: 1,
+        scaleY: 1
+      };
+
+      const tweenSettings = deltaSettings({
+        ...defaultSettings,
+        ...settings
+      });
+      return acc.concat(tweenFn(sprite, tweenSettings));
+    }
+
+    const gradient = entity.gradientParts.find(
+      part => part.attr("key") === keyName
+    );
+    if (gradient) {
+      const defaultSettings = {
+        z: 0,
+        w: gradient.originalSize.w,
+        h: gradient.originalSize.h,
+        ...(entity.appliedDefinition.gradients.find(
+          startSettings => startSettings.key === keyName
+        ) || {}),
+        x: 0,
+        y: 0
+      };
+
+      const tweenSettings = deltaSettings({
+        ...defaultSettings,
+        ...settings
+      });
+      return acc.concat(
+        tweenFn(gradient, tweenSettings),
+        colorFadeFn(gradient, settings.topColor, settings.bottomColor)
+      );
+    }
+  }, []);
+  return t => fns.forEach(f => f(t));
+};
+
 const Composable = "Composable";
 
 Crafty.c(Composable, {
@@ -458,69 +522,6 @@ Crafty.c(Composable, {
     });
   },
 
-  displayFrameFn(frameName) {
-    const frameData =
-      frameName === "default"
-        ? generateDefaultFrame(this.appliedDefinition)
-        : this.appliedDefinition.frames[frameName];
-    if (!frameData) return () => {};
-    const fns = Object.entries(frameData).reduce((acc, [keyName, settings]) => {
-      if (keyName === "attributes") {
-        const tweenSettings = deltaSettings({
-          ...settings
-        });
-        return acc.concat(tweenFn(this, tweenSettings));
-      }
-      const sprite = this.composableParts.find(
-        part => part.attr("key") === keyName
-      );
-      if (sprite) {
-        const defaultSettings = {
-          z: 0,
-          ...(this.appliedDefinition.sprites.find(
-            ([, startSettings]) => startSettings.key === keyName
-          ) || [])[1],
-          x: 0,
-          y: 0,
-          scaleX: 1,
-          scaleY: 1
-        };
-
-        const tweenSettings = deltaSettings({
-          ...defaultSettings,
-          ...settings
-        });
-        return acc.concat(tweenFn(sprite, tweenSettings));
-      }
-
-      const gradient = this.gradientParts.find(
-        part => part.attr("key") === keyName
-      );
-      if (gradient) {
-        const defaultSettings = {
-          z: 0,
-          w: gradient.originalSize.w,
-          h: gradient.originalSize.h,
-          ...(this.appliedDefinition.gradients.find(
-            startSettings => startSettings.key === keyName
-          ) || {}),
-          x: 0,
-          y: 0
-        };
-
-        const tweenSettings = deltaSettings({
-          ...defaultSettings,
-          ...settings
-        });
-        return acc.concat(
-          tweenFn(gradient, tweenSettings),
-          colorFadeFn(gradient, settings.topColor, settings.bottomColor)
-        );
-      }
-    }, []);
-    return t => fns.forEach(f => f(t));
-  },
-
   async displayFrame(frameName, duration = 0, easing = undefined) {
     const frameData =
       frameName === "default"
@@ -528,7 +529,7 @@ Crafty.c(Composable, {
         : this.appliedDefinition.frames[frameName];
     if (!frameData) return;
 
-    const frameFunc = this.displayFrameFn(frameName);
+    const frameFunc = displayFrameFn(this, frameName);
     return this.animate(frameFunc, duration, easing);
   }
 });
