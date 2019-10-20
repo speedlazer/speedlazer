@@ -7,11 +7,12 @@ Crafty.c(Animator, {
 
   animate(transitionFn, duration, easing = "linear") {
     return new Promise(resolve => {
-      this.animations.push({
+      const animation = {
         transition: transitionFn,
         timer: new Crafty.easing(duration, easing),
         resolver: resolve
-      });
+      };
+      this.animations.push(animation);
       if (!this.animating) {
         this.animating = true;
         this.uniqueBind("UpdateFrame", this._animateTick);
