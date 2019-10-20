@@ -1,27 +1,25 @@
 import Animator from "./Animator";
 
-const TweenPromise = "TweenPromise";
+export const tweenFn = (entity, next, current = undefined) => {
+  const c = current ? current : entity;
+  return Object.entries(next).reduce(
+    (acc, [key, newValue]) => {
+      const t0 = c[key];
+      return t => {
+        acc(t);
+        entity[key] = (1 - t) * t0 + t * newValue;
+      };
+    },
+    () => {}
+  );
+};
 
+const TweenPromise = "TweenPromise";
 Crafty.c(TweenPromise, {
   required: Animator,
 
-  tweenFn(next, current = undefined) {
-    const c = current ? current : this;
-    return Object.entries(next).reduce(
-      (acc, [key, newValue]) => {
-        const t0 = c[key];
-        return t => {
-          acc(t);
-          this[key] = (1 - t) * t0 + t * newValue;
-        };
-      },
-
-      () => {}
-    );
-  },
-
   async tweenPromise(props, duration, easing) {
-    const tweenFunc = this.tweenFn(props);
+    const tweenFunc = tweenFn(this, props);
     return this.animate(tweenFunc, duration, easing);
   }
 });

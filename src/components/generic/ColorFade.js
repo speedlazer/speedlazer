@@ -18,40 +18,40 @@ export const strToColor = ([string, alpha]) => ({
 const toColor = a =>
   a && a.length === 2 && typeof a[0] === "string" ? strToColor(a) : a;
 
-const ColorFade = "ColorFade";
+export const colorFadeFn = (
+  entity,
+  nextTopColor,
+  nextBottomColor,
+  currentTopColor = undefined,
+  currentBottomColor = undefined
+) => {
+  const colorFade = {
+    nextTopColor: toColor(nextTopColor),
+    nextBottomColor: toColor(nextBottomColor),
+    startTopColor: currentTopColor
+      ? toColor(currentTopColor)
+      : entity.topColor(),
+    startBottomColor: currentBottomColor
+      ? toColor(currentBottomColor)
+      : entity.bottomColor()
+  };
+  return t => {
+    entity._topColor = mix(t, colorFade.startTopColor, colorFade.nextTopColor);
+    entity._bottomColor = mix(
+      t,
+      colorFade.startBottomColor,
+      colorFade.nextBottomColor
+    );
+    entity.trigger("Invalidate");
+  };
+};
 
+const ColorFade = "ColorFade";
 Crafty.c(ColorFade, {
   required: [Animator, Gradient].join(","),
 
-  colorFadeFn(
-    nextTopColor,
-    nextBottomColor,
-    currentTopColor = undefined,
-    currentBottomColor = undefined
-  ) {
-    const colorFade = {
-      nextTopColor: toColor(nextTopColor),
-      nextBottomColor: toColor(nextBottomColor),
-      startTopColor: currentTopColor
-        ? toColor(currentTopColor)
-        : this.topColor(),
-      startBottomColor: currentBottomColor
-        ? toColor(currentBottomColor)
-        : this.bottomColor()
-    };
-    return t => {
-      this._topColor = mix(t, colorFade.startTopColor, colorFade.nextTopColor);
-      this._bottomColor = mix(
-        t,
-        colorFade.startBottomColor,
-        colorFade.nextBottomColor
-      );
-      this.trigger("Invalidate");
-    };
-  },
-
   colorFade(topColor, bottomColor, duration, easing) {
-    const fadeFunc = this.colorFadeFn(topColor, bottomColor);
+    const fadeFunc = colorFadeFn(this, topColor, bottomColor);
     return this.animate(fadeFunc, duration, easing);
   }
 });
