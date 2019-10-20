@@ -1,4 +1,5 @@
 import Animator from "./Animator";
+import Gradient from "../Gradient";
 
 export const mix = (v, from, to) => ({
   _red: Math.round(from._red * (1 - v) + to._red * v),
@@ -14,17 +15,29 @@ export const strToColor = ([string, alpha]) => ({
   _strength: alpha
 });
 
+const toColor = a =>
+  a && a.length === 2 && typeof a[0] === "string" ? strToColor(a) : a;
+
 const ColorFade = "ColorFade";
 
 Crafty.c(ColorFade, {
-  required: Animator,
+  required: [Animator, Gradient].join(","),
 
-  colorFadeFn(topColor, bottomColor) {
+  colorFadeFn(
+    nextTopColor,
+    nextBottomColor,
+    currentTopColor = undefined,
+    currentBottomColor = undefined
+  ) {
     const colorFade = {
-      nextTopColor: strToColor(topColor),
-      nextBottomColor: strToColor(bottomColor),
-      startTopColor: this.topColor(),
-      startBottomColor: this.bottomColor()
+      nextTopColor: toColor(nextTopColor),
+      nextBottomColor: toColor(nextBottomColor),
+      startTopColor: currentTopColor
+        ? toColor(currentTopColor)
+        : this.topColor(),
+      startBottomColor: currentBottomColor
+        ? toColor(currentBottomColor)
+        : this.bottomColor()
     };
     return t => {
       this._topColor = mix(t, colorFade.startTopColor, colorFade.nextTopColor);
