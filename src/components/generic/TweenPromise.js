@@ -14,7 +14,7 @@ export const tweenFn = (entity, next, current = undefined) => {
   );
 };
 
-const TweenPromise = "TweenPromise";
+export const TweenPromise = "TweenPromise";
 Crafty.c(TweenPromise, {
   required: Animator,
 

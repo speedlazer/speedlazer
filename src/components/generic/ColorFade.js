@@ -46,7 +46,7 @@ export const colorFadeFn = (
   };
 };
 
-const ColorFade = "ColorFade";
+export const ColorFade = "ColorFade";
 Crafty.c(ColorFade, {
   required: [Animator, Gradient].join(","),
 

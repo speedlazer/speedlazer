@@ -1,10 +1,11 @@
 import "src/components/Horizon";
 import Scalable from "src/components/utils/Scalable";
 import "src/components/utils/HideBelow";
-import TweenPromise from "src/components/generic/TweenPromise";
+import Animator from "src/components/generic//Animator";
+import { tweenFn } from "src/components/generic/TweenPromise";
+import { colorFadeFn } from "src/components/generic/ColorFade";
 import Delta2D from "src/components/generic/Delta2D";
 import Gradient from "src/components/Gradient";
-import ColorFade from "src/components/generic/ColorFade";
 import { globalStartTime } from "src/lib/time";
 import { easingFunctions } from "src/constants/easing";
 
@@ -101,6 +102,8 @@ const getHookSettings = (definition, name) =>
 const Composable = "Composable";
 
 Crafty.c(Composable, {
+  required: Animator,
+
   init() {
     this.appliedDefinition = definitionStructure;
     this.composableParts = [];
@@ -455,21 +458,18 @@ Crafty.c(Composable, {
     });
   },
 
-  async displayFrame(frameName, duration = 0, easing = undefined) {
+  displayFrameFn(frameName) {
     const frameData =
       frameName === "default"
         ? generateDefaultFrame(this.appliedDefinition)
         : this.appliedDefinition.frames[frameName];
-    if (!frameData) return;
-
-    const promises = Object.entries(frameData).map(([keyName, settings]) => {
+    if (!frameData) return () => {};
+    const fns = Object.entries(frameData).reduce((acc, [keyName, settings]) => {
       if (keyName === "attributes") {
         const tweenSettings = deltaSettings({
           ...settings
         });
-
-        this.addComponent(TweenPromise);
-        return this.tweenPromise(tweenSettings, duration, easing);
+        return acc.concat(tweenFn(this, tweenSettings));
       }
       const sprite = this.composableParts.find(
         part => part.attr("key") === keyName
@@ -486,12 +486,11 @@ Crafty.c(Composable, {
           scaleY: 1
         };
 
-        sprite.addComponent(TweenPromise);
         const tweenSettings = deltaSettings({
           ...defaultSettings,
           ...settings
         });
-        return sprite.tweenPromise(tweenSettings, duration, easing);
+        return acc.concat(tweenFn(sprite, tweenSettings));
       }
 
       const gradient = this.gradientParts.find(
@@ -509,23 +508,28 @@ Crafty.c(Composable, {
           y: 0
         };
 
-        gradient.addComponent(TweenPromise);
-        gradient.addComponent(ColorFade);
         const tweenSettings = deltaSettings({
           ...defaultSettings,
           ...settings
         });
-        gradient.colorFade(
-          settings.topColor,
-          settings.bottomColor,
-          duration,
-          easing
+        return acc.concat(
+          tweenFn(gradient, tweenSettings),
+          colorFadeFn(gradient, settings.topColor, settings.bottomColor)
         );
-
-        return gradient.tweenPromise(tweenSettings, duration, easing);
       }
-    });
-    await Promise.all(promises);
+    }, []);
+    return t => fns.forEach(f => f(t));
+  },
+
+  async displayFrame(frameName, duration = 0, easing = undefined) {
+    const frameData =
+      frameName === "default"
+        ? generateDefaultFrame(this.appliedDefinition)
+        : this.appliedDefinition.frames[frameName];
+    if (!frameData) return;
+
+    const frameFunc = this.displayFrameFn(frameName);
+    return this.animate(frameFunc, duration, easing);
   }
 });
 
