@@ -124,6 +124,9 @@ const applyDisplayOptions = (entity, options) => {
 Crafty.defineScene("ComposablePreview", ({ composition, options }) => {
   const composable = createComposable(composition);
   applyDisplayOptions(composable, options);
+  if (options.frame) {
+    composable.displayFrame(options.frame, 0);
+  }
   if (options.scaleViewport) {
     scaleScreenForEntity(composable);
   } else {
