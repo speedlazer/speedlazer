@@ -104,64 +104,88 @@ const getFrameData = (entity, frameName) =>
     ? generateDefaultFrame(entity.appliedDefinition)
     : entity.appliedDefinition.frames[frameName];
 
-const displayFrameFn = (entity, frameName) => {
-  const frameData = getFrameData(entity, frameName);
-  if (!frameData) return () => {};
+const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
+  const targetFrameData = getFrameData(entity, targetFrame);
+  if (!targetFrameData) return () => {};
+  const sourceFrameData = getFrameData(entity, sourceFrame);
 
-  const fns = Object.entries(frameData).reduce((acc, [keyName, settings]) => {
-    if (keyName === "attributes") {
-      const tweenSettings = deltaSettings({
-        ...settings
-      });
-      return acc.concat(tweenFn(entity, tweenSettings));
-    }
-    const sprite = entity.composableParts.find(
-      part => part.attr("key") === keyName
-    );
-    if (sprite) {
-      const defaultSettings = {
-        z: 0,
-        ...(entity.appliedDefinition.sprites.find(
-          ([, startSettings]) => startSettings.key === keyName
-        ) || [])[1],
-        x: 0,
-        y: 0,
-        scaleX: 1,
-        scaleY: 1
-      };
+  const fns = Object.entries(targetFrameData).reduce(
+    (acc, [keyName, settings]) => {
+      if (keyName === "attributes") {
+        const tweenSettings = deltaSettings({
+          ...settings
+        });
+        const sourceTweenSettings =
+          sourceFrameData &&
+          deltaSettings({
+            ...sourceFrameData[keyName]
+          });
 
-      const tweenSettings = deltaSettings({
-        ...defaultSettings,
-        ...settings
-      });
-      return acc.concat(tweenFn(sprite, tweenSettings));
-    }
-
-    const gradient = entity.gradientParts.find(
-      part => part.attr("key") === keyName
-    );
-    if (gradient) {
-      const defaultSettings = {
-        z: 0,
-        w: gradient.originalSize.w,
-        h: gradient.originalSize.h,
-        ...(entity.appliedDefinition.gradients.find(
-          startSettings => startSettings.key === keyName
-        ) || {}),
-        x: 0,
-        y: 0
-      };
-
-      const tweenSettings = deltaSettings({
-        ...defaultSettings,
-        ...settings
-      });
-      return acc.concat(
-        tweenFn(gradient, tweenSettings),
-        colorFadeFn(gradient, settings.topColor, settings.bottomColor)
+        return acc.concat(tweenFn(entity, tweenSettings, sourceTweenSettings));
+      }
+      const sprite = entity.composableParts.find(
+        part => part.attr("key") === keyName
       );
-    }
-  }, []);
+      if (sprite) {
+        const defaultSettings = {
+          z: 0,
+          ...(entity.appliedDefinition.sprites.find(
+            ([, startSettings]) => startSettings.key === keyName
+          ) || [])[1],
+          x: 0,
+          y: 0,
+          scaleX: 1,
+          scaleY: 1
+        };
+
+        const tweenSettings = deltaSettings({
+          ...defaultSettings,
+          ...settings
+        });
+        const sourceTweenSettings =
+          sourceFrameData &&
+          deltaSettings({
+            ...defaultSettings,
+            ...sourceFrameData[keyName]
+          });
+
+        return acc.concat(tweenFn(sprite, tweenSettings, sourceTweenSettings));
+      }
+
+      const gradient = entity.gradientParts.find(
+        part => part.attr("key") === keyName
+      );
+      if (gradient) {
+        const defaultSettings = {
+          z: 0,
+          w: gradient.originalSize.w,
+          h: gradient.originalSize.h,
+          ...(entity.appliedDefinition.gradients.find(
+            startSettings => startSettings.key === keyName
+          ) || {}),
+          x: 0,
+          y: 0
+        };
+
+        const tweenSettings = deltaSettings({
+          ...defaultSettings,
+          ...settings
+        });
+        const sourceTweenSettings =
+          sourceFrameData &&
+          deltaSettings({
+            ...defaultSettings,
+            ...sourceFrameData[keyName]
+          });
+
+        return acc.concat(
+          tweenFn(gradient, tweenSettings, sourceTweenSettings),
+          colorFadeFn(gradient, settings.topColor, settings.bottomColor)
+        );
+      }
+    },
+    []
+  );
   return t => fns.forEach(f => f(t));
 };
 
@@ -236,7 +260,6 @@ Crafty.c(Composable, {
     if (!animationData)
       throw new Error(`Animation ${animationName} not found in playAnimation`);
 
-    console.log("playing", animationName);
     this.activeAnimation = {
       name: animationName,
       data: animationData,
@@ -265,13 +288,17 @@ Crafty.c(Composable, {
     // need some special care
     const timeElapsed = gameTime - this.animationStart;
     const timeInIteration = timeElapsed % this.activeAnimation.data.duration;
-    const v = this.activeAnimation.easing(
-      timeInIteration / this.activeAnimation.data.duration
-    );
+    const t = timeInIteration / this.activeAnimation.data.duration;
+    const v = this.activeAnimation.easing(t);
 
     this.activeAnimation.timeline.forEach(event => {
-      if (event.start > v || v > event.end) return;
-      event.animateFn = event.animateFn || displayFrameFn(this, event.endFrame);
+      if (event.start > v || v >= event.end) return;
+      if (!event.animateFn)
+        event.animateFn = displayFrameFn(
+          this,
+          event.endFrame,
+          event.startFrame
+        );
       const localV = (v - event.start) / (event.end - event.start);
       event.animateFn(localV);
     });

@@ -13,41 +13,41 @@
     ],
     "frames": {
       "waveR": {
-        "left": { "scaleX": 1.125, "x": 32, "scaleY": 0.9, "y": 10 },
-        "right": { "scaleX": 0.875, "x": 32, "scaleY": 0.9, "y": 10 }
+        "left": { "scaleX": 1.125, "x": 32, "scaleY": 0.95, "y": 5 },
+        "right": { "scaleX": 0.875, "x": 32, "scaleY": 0.95, "y": 5 }
       },
       "waveL": {
-        "left": { "scaleX": 0.875, "x": -32, "scaleY": 1.1, "y": -10 },
-        "right": { "scaleX": 1.125, "x": -32, "scaleY": 1.1, "y": -10 }
+        "left": { "scaleX": 0.875, "x": -32, "scaleY": 1.05, "y": -5 },
+        "right": { "scaleX": 1.125, "x": -32, "scaleY": 1.05, "y": -5 }
       }
     },
     "animations": {
       "default": {
         "repeat": true,
-        "easing": "easeInOutQuad",
-        "duration": 5000,
+        "easing": "linear",
+        "duration": 15000,
         "timer": "global",
         "timeline": [
           {
             "start": 0.0,
-            "end": 0.25,
+            "end": 0.2,
             "startFrame": "default",
             "endFrame": "waveL"
           },
           {
-            "start": 0.25,
+            "start": 0.2,
             "end": 0.5,
             "startFrame": "waveL",
             "endFrame": "default"
           },
           {
             "start": 0.5,
-            "end": 0.75,
+            "end": 0.8,
             "startFrame": "default",
             "endFrame": "waveR"
           },
           {
-            "start": 0.75,
+            "start": 0.8,
             "end": 1,
             "startFrame": "waveR",
             "endFrame": "default"
