@@ -206,5 +206,57 @@
         "distance": 0.375
       }
     ]
+  },
+  "City.Bridge": {
+    "width": 1023,
+    "height": 576,
+    "left": "City.Bay",
+    "right": "City.Bay",
+    "backgrounds": [["City.Sunrise", 3]],
+    "elements": [
+      {
+        "x": 0,
+        "y": -65,
+        "z": -20,
+        "composition": "ocean.front"
+      },
+      {
+        "x": 0,
+        "y": -45,
+        "components": ["ShipSolid", "BulletSolid", "GravityLiquid"],
+        "w": 1024,
+        "h": 45
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "composition": "ocean.middle",
+        "distance": 0.5
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "composition": "ocean.horizon",
+        "distance": 0.25
+      },
+      {
+        "x": 0,
+        "y": -46,
+        "composition": "city.horizon",
+        "distance": 0.25
+      },
+      {
+        "x": 0,
+        "y": -52,
+        "composition": "city.bridge.foot",
+        "distance": 0.5
+      },
+      {
+        "x": 0,
+        "y": -210,
+        "composition": "city.layer2",
+        "distance": 0.375
+      }
+    ]
   }
 }

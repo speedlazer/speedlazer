@@ -25,7 +25,7 @@
       "default": {
         "repeat": true,
         "easing": "linear",
-        "duration": 15000,
+        "duration": 20000,
         "timer": "global",
         "timeline": [
           {
@@ -67,6 +67,28 @@
     "frames": {
       "wave": {
         "middle": { "y": 4 }
+      }
+    },
+    "animations": {
+      "default": {
+        "repeat": true,
+        "easing": "linear",
+        "duration": 10000,
+        "timer": "global",
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 0.5,
+            "startFrame": "default",
+            "endFrame": "wave"
+          },
+          {
+            "start": 0.5,
+            "end": 1.0,
+            "startFrame": "wave",
+            "endFrame": "default"
+          }
+        ]
       }
     }
   },
