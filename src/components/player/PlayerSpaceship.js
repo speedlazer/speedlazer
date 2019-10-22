@@ -1,13 +1,8 @@
 import defaults from "lodash/defaults";
-import createEntityPool from "src/lib/entityPool";
 import { isPaused } from "src/lib/core/pauseToggle";
-import { lookup } from "src/lib/random";
 import Acceleration from "src/components/generic/Acceleration";
-import Delta2D from "src/components/generic/Delta2D";
 import ColorEffects from "src/components/ColorEffects";
 import Listener from "src/components/generic/Listener";
-import TweenPromise from "src/components/generic/TweenPromise";
-import ViewportRelativeMotion from "src/components/generic/ViewportRelativeMotion";
 import InventoryWeapons from "src/components/player/InventoryWeapons";
 
 const PlayerSpaceship = "PlayerSpaceship";
@@ -126,11 +121,11 @@ Crafty.c(PlayerSpaceship, {
     }
 
     this.rotation = 0;
-    this._updateFlyingSpeed(velocity, dt);
+    this._updateFlyingSpeed(velocity);
     this.rotation = rotation;
   },
 
-  _updateFlyingSpeed(newSpeed, dt) {
+  _updateFlyingSpeed(newSpeed) {
     const correction =
       newSpeed < 30 ? newSpeed / 2 : 15 + (newSpeed / 400) * 100;
 
@@ -152,31 +147,6 @@ Crafty.c(PlayerSpaceship, {
       w,
       h
     });
-    this._emitTrail(dt);
-  },
-
-  _emitTrail(dt) {
-    this.emitCooldown -= dt;
-    if (this.emitCooldown < 0) {
-      const w = this.backFire.w / 4;
-      const h = 4;
-      this.trailEntPool
-        .get()
-        .attr({
-          x: this.x - w + 8,
-          dy: 0,
-          y: Math.floor(this.y + 21 - lookup() * 4),
-          w,
-          h,
-          z: -4,
-          alpha: 0.3 + lookup() * 0.4
-        })
-        .tweenPromise({ alpha: 0, h: 2, dy: 2 }, 750, "easeOutQuad")
-        .then(e => {
-          this.trailEntPool.recycle(e);
-        });
-      this.emitCooldown = 30;
-    }
   },
 
   start() {
@@ -214,23 +184,6 @@ Crafty.c(PlayerSpaceship, {
 
     this.trailColor = c;
     this.backFire.colorOverride(c);
-    this.trailEntPool = createEntityPool(
-      () =>
-        Crafty.e(
-          [
-            Delta2D,
-            "2D, WebGL, shipEngineFire",
-            ViewportRelativeMotion,
-            TweenPromise,
-            ColorEffects
-          ].join(", ")
-        )
-          .colorOverride(this.trailColor)
-          .viewportRelativeMotion({
-            speed: 1
-          }),
-      2
-    );
 
     this.addComponent("Invincible").invincibleDuration(1500);
 
@@ -469,7 +422,7 @@ Crafty.c(PlayerSpaceship, {
   },
 
   remove() {
-    this.trailEntPool.clean();
+    //this.trailEntPool.clean();
   }
 });
 
