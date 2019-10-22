@@ -47,10 +47,11 @@ const createComposable = composition =>
     );
 
 const addColor = (entity, color) =>
-  entity
-    .addComponent("WebGL")
-    .addComponent("Color")
-    .color(color);
+  entity.attach(
+    Crafty.e("2D, WebGL, Color, SizeBox")
+      .attr({ x: entity.x, y: entity.y, w: entity.w, h: entity.h, z: -5000 })
+      .color(color)
+  );
 
 const determineEntitySize = (sizeModel, entity) => {
   updateActualSize(sizeModel, entity);
@@ -112,9 +113,7 @@ const applyDisplayOptions = (entity, options) => {
   if (options.showSize) {
     addColor(entity, "#FF0000");
   } else {
-    if (entity.has("Color")) {
-      entity.color("#000000", 0);
-    }
+    Crafty("SizeBox").destroy();
   }
 
   entity.displayHitBoxes(options.showHitBox);
@@ -218,6 +217,7 @@ export const showComposition = async (composition, options = {}) => {
     const currentComposable = Crafty(Composable).get(0);
     if (currentComposable.appliedDefinition === composition) {
       currentComposable.playAnimation(options.animation);
+      applyDisplayOptions(currentComposable, options);
       if (options.scaleViewport !== scaleViewport) {
         scaleViewport = options.scaleViewport;
         if (options.scaleViewport) {
