@@ -96,6 +96,11 @@
     "laserTank": [0, 59, 6, 3],
     "laserTankBarrel": [6, 59, 4, 2],
     "mineCannon": [13, 55, 3, 1],
-    "turretFoot": [12, 55, 1, 1]
+    "turretFoot": [12, 55, 1, 1],
+
+    "general1": [16, 48, 4, 4],
+    "general2": [20, 48, 4, 4],
+    "pilot1": [16, 52, 4, 4],
+    "pilot2": [20, 52, 4, 4]
   }
 }

@@ -4,6 +4,7 @@ import { Grid } from "../../components/Grid";
 import { LayerBox } from "../../components/LayerBox";
 import { Menu } from "../../components/Menu";
 import { ScrollBox } from "../../components/ScrollBox";
+import { Text } from "../../components/Text";
 import { Highlight } from "./components/Highlight";
 import { Title } from "../../components/Title";
 import spritesheets from "src/data/spritesheets";
@@ -14,7 +15,8 @@ class Spritesheets extends Component {
     super(props);
     this.state = {
       width: null,
-      height: null
+      height: null,
+      clickCoord: null
     };
   }
 
@@ -27,6 +29,11 @@ class Spritesheets extends Component {
     const tileX = event.offsetX / tileWidth;
     const tileY = event.offsetY / tileHeight;
 
+    this.setState(s => ({
+      ...s,
+      clickCoord: { x: Math.floor(tileX), y: Math.floor(tileY) }
+    }));
+
     const sprite = Object.entries(activeMap.map.map).find(
       ([, [x, y, w, h]]) =>
         tileX > x && tileX < x + w && tileY > y && tileY < y + h
@@ -36,7 +43,7 @@ class Spritesheets extends Component {
     }
   };
 
-  render({ map, activeSprite }, { width, height }) {
+  render({ map, activeSprite }, { width, height, clickCoord }) {
     const activeMap = spritesheets.find(m => m.name === map) || spritesheets[0];
     const highlight = (activeSprite && activeMap.map.map[activeSprite]) || null;
 
@@ -64,10 +71,15 @@ class Spritesheets extends Component {
           </div>
           <div>
             {highlight && (
-              <p style={{ color: "white" }}>
+              <Text>
                 {activeSprite} - {tileWidth * highlight[2]} x{" "}
                 {tileHeight * highlight[3]}
-              </p>
+              </Text>
+            )}
+            {clickCoord && (
+              <Text>
+                Clicked at: [{clickCoord.x}, {clickCoord.y}]
+              </Text>
             )}
             <ScrollBox height={"80vh"} width={"80vw"}>
               <LayerBox
