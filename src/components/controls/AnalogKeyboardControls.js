@@ -188,13 +188,16 @@ Crafty.c(AnalogKeyboardControls, {
         return;
       }
       if (e.key === controlMap.fire) {
-        ship.shoot(true);
+        ship.controlPrimary(true);
       }
       if (e.key === controlMap.switchWeapon) {
-        ship.switchWeapon(true);
+        ship.controlSwitch(true);
       }
-      if (e.key === controlMap.super) {
-        ship.superWeapon(true);
+      if (e.key === controlMap.heavy) {
+        ship.controlSecondary(true);
+      }
+      if (e.key === controlMap.shield) {
+        ship.controlBlock(true);
       }
 
       if (e.key === controlMap.up) {
@@ -218,13 +221,16 @@ Crafty.c(AnalogKeyboardControls, {
         return;
       }
       if (e.key === controlMap.fire) {
-        ship.shoot(false);
+        ship.controlPrimary(false);
       }
       if (e.key === controlMap.switchWeapon) {
-        ship.switchWeapon(false);
+        ship.controlSwitch(false);
       }
-      if (e.key === controlMap.super) {
-        ship.superWeapon(false);
+      if (e.key === controlMap.heavy) {
+        ship.controlSecondary(false);
+      }
+      if (e.key === controlMap.shield) {
+        ship.controlBlock(false);
       }
 
       if (e.key === controlMap.up) {

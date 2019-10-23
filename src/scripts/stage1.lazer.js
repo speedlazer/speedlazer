@@ -7,7 +7,6 @@ const stage1 = async ({
   setScenery,
   loadSpriteSheets,
   spawnShip,
-  setWeapons,
   setBackground,
   setBackgroundCheckpointLimit,
   exec,
@@ -25,7 +24,6 @@ const stage1 = async ({
   text.remove();
 
   await spawnShip();
-  await setWeapons(["lasers"]);
 
   await exec(droneWave(5, "pattern1", 300));
   await wait(1000);

@@ -67,58 +67,9 @@ Crafty.c("ShipSpawnable", {
       this.assignControls(this.ship);
     }
 
-    this.listenTo(this.ship, "HitTarget", function(data) {
-      this.stats.shotsHit += 1;
-      const points = data.pointsOnHit != null ? data.pointsOnHit : 0;
-      if (data != null) {
-        this.addPoints(points, data.location);
-      }
-    });
-
-    this.listenTo(this.ship, "DestroyTarget", function(data) {
-      this.stats.enemiesKilled += 1;
-      const points =
-        (data.pointsOnDestroy != null ? data.pointsOnDestroy : 0) +
-        (data.pointsOnHit != null ? data.pointsOnHit : 0);
-      if (data != null) {
-        this.addPoints(points, data.location);
-      }
-      if (data.chainable) {
-        this.addChainXP(points);
-      }
-    });
-
-    this.listenTo(this.ship, "BonusPoints", function(data) {
-      this.addPoints(data.points, data.location);
-    });
-
-    this.listenTo(this.ship, "PowerUp", function(powerUp) {
-      if (["ship", "shipBoost", "shipUpgrade"].includes(powerUp.type)) {
-        if (powerUp.contains === "life") {
-          this.gainLife();
-        }
-        if (powerUp.contains === "healthu") {
-          this.healthUpgrade();
-        }
-        if (powerUp.contains === "healthb") {
-          this.healthBoost();
-        }
-        if (powerUp.contains === "points") {
-          this.addPoints(500);
-        }
-      }
-      this.addPoints(20);
-      this.ship.attr({ healthPerc: this.health / this.maxHealth });
-    });
-
-    this.listenTo(this.ship, "Shoot", function() {
-      this.stats.shotsFired += 1;
-    });
-
     this.trigger("ShipSpawned", this.ship);
     Crafty.trigger("ShipSpawned", this.ship);
 
-    this.ship.stats(stats);
     // We start it after the spawned event, so that listeners can
     // reposition it before
     this.ship.start();

@@ -1,9 +1,7 @@
 import defaults from "lodash/defaults";
-import { isPaused } from "src/lib/core/pauseToggle";
 import Acceleration from "src/components/generic/Acceleration";
 import ColorEffects from "src/components/ColorEffects";
 import Listener from "src/components/generic/Listener";
-import InventoryWeapons from "src/components/player/InventoryWeapons";
 
 const PlayerSpaceship = "PlayerSpaceship";
 
@@ -13,7 +11,6 @@ Crafty.c(PlayerSpaceship, {
     ColorEffects,
     Listener,
     "Collision, SunBlock, PlayerControlledShip",
-    InventoryWeapons,
     Acceleration
   ].join(","),
 
@@ -21,89 +18,8 @@ Crafty.c(PlayerSpaceship, {
     this.attr({ w: 71, h: 45 });
     this.collision([21, 13, 56, 13, 66, 32, 35, 32]);
 
-    this.onHit("ShipSolid", hits => {
-      const delta = this.motionDelta();
-      let xCorrection = 0;
-      let yCorrection = 0;
-      let xDir = 0;
-      let yDir = 0;
-
-      hits.map(hitData => {
-        let xHitCorrection = 0;
-        let yHitCorrection = 0;
-
-        if (hitData.type === "SAT") {
-          xHitCorrection -= hitData.overlap * hitData.nx;
-          yHitCorrection -= hitData.overlap * hitData.ny;
-        } else {
-          // MBR
-          const { obj } = hitData;
-          const d =
-            typeof obj.choreographyDelta === "function"
-              ? obj.choreographyDelta()
-              : { x: 0, y: 0 };
-
-          if (
-            obj.intersect(this.x - delta.x + d.x, this.y + d.y, this.w, this.h)
-          ) {
-            yHitCorrection -= delta.y - d.y;
-          }
-
-          if (
-            obj.intersect(this.x + d.y, this.y - delta.y + d.y, this.w, this.h)
-          ) {
-            xHitCorrection -= delta.x - d.x;
-          }
-        }
-
-        if (xHitCorrection !== 0) {
-          if (xHitCorrection > 0) {
-            if (xDir < 0) {
-              this._squashShip();
-            }
-            xDir = 1;
-            xCorrection = Math.max(xCorrection, xHitCorrection);
-          } else {
-            if (xDir > 0) {
-              this._squashShip();
-            }
-            xDir = -1;
-            xCorrection = Math.min(xCorrection, xHitCorrection);
-          }
-        }
-
-        if (yHitCorrection !== 0) {
-          if (yHitCorrection < 0) {
-            if (yDir > 0) {
-              this._squashShip();
-            }
-            yDir = -1;
-            return (yCorrection = Math.min(yCorrection, yHitCorrection));
-          } else {
-            if (yDir < 0) {
-              this._squashShip();
-            }
-            yDir = 1;
-            return (yCorrection = Math.max(yCorrection, yHitCorrection));
-          }
-        }
-      });
-
-      this.shift(xCorrection, yCorrection);
-    });
-
-    this.primaryWeapon = undefined;
-    this.primaryWeapons = [];
-    this.secondaryWeapon = undefined;
-    this.superUsed = 0;
-    this.weaponsEnabled = true;
     this.currentRenderedSpeed = 0;
     this.flip("X");
-    this.emitCooldown = 0;
-  },
-
-  _squashShip() {
-    this.trigger("Hit", { damage: 1000 });
   },
 
   updateMovementVisuals(rotation, dx, dy, dt) {
@@ -187,70 +103,9 @@ Crafty.c(PlayerSpaceship, {
 
     this.addComponent("Invincible").invincibleDuration(1500);
 
-    //this.setDetectionOffset(60);
-    this.onHit("Hostile", collision => {
-      if (isPaused() || this.has("Invincible")) return;
-      let hit = false;
-      let damage = 0;
-
-      collision.forEach(e => {
-        if (e.obj.damage && e.obj.damage > damage && !e.obj.hidden) {
-          damage = e.obj.damage;
-          hit = true;
-        }
-      });
-
-      if (hit) {
-        this.trigger("Hit", { damage });
-      }
-    });
-
-    this.onHit("PowerUp", collision => {
-      if (isPaused()) return;
-      collision
-        .filter(pu => !pu.obj.pickedUp)
-        .forEach(pu => this.pickUp(pu.obj));
-    });
-
-    this.bind("Hit", () => {
-      this.addComponent("Invincible").invincibleDuration(2000);
-      Crafty.e("Blast, Explosion").explode({
-        x: this.x + this.w / 2,
-        y: this.y + this.h / 2,
-        radius: this.w / 3
-      });
-      Crafty.audio.play("explosion");
-      Crafty("ScrollWall")
-        .get(0)
-        .addTrauma(0.3);
-    });
-
-    this.bind("Die", () => {
-      Crafty.e("Blast, Explosion").explode({
-        x: this.x + this.w / 2,
-        y: this.y + this.h / 2,
-        radius: this.w
-      });
-      Crafty.audio.play("explosion");
-      // this trauma is added upon the 'hit'
-      Crafty("ScrollWall")
-        .get(0)
-        .addTrauma(0.3);
-      this.trigger("Destroyed", this);
-    });
-
-    this.bind("CameraPan", ({ dx, dy }) => this.shift(-dx, -dy));
-
     this.bind("GameLoop", function(fd) {
       const motionX = ((this.vx + this._currentSpeed.x) / 1000.0) * fd.dt;
       const motionY = ((this.vy + this._currentSpeed.y) / 1000.0) * fd.dt;
-
-      if (this.has("AnimationMode")) {
-        if (this._choreography && this._choreography.length === 0) {
-          this.updateMovementVisuals(this.rotation, motionX, motionY, fd.dt);
-        }
-        return;
-      }
 
       this.updateAcceleration();
 
@@ -274,98 +129,13 @@ Crafty.c(PlayerSpaceship, {
     this.targetSpeed(speed, options);
   },
 
-  shoot(onOff) {
-    if (!this.weaponsEnabled) {
-      return;
-    }
+  controlPrimary(onOff) {},
 
-    if (this.primaryWeapon != null) {
-      this.primaryWeapon.shoot(onOff);
-    }
+  controlSwitch(onOff) {},
 
-    if (this.secondaryWeapon != null) {
-      this.secondaryWeapon.shoot(onOff);
-    }
-  },
+  controlSecondary(onOff) {},
 
-  switchWeapon(onOff) {
-    if (!onOff) {
-      return;
-    }
-    const nextWeapon = (this.currentPrimary + 1) % this.primaryWeapons.length;
-    if (this.primaryWeapon != null) {
-      this.primaryWeapon.uninstall();
-    }
-    this.primaryWeapon = this.primaryWeapons[nextWeapon];
-    this.primaryWeapon.install(this);
-    this.currentPrimary = nextWeapon;
-  },
-
-  superWeapon(onOff) {
-    if (!onOff) {
-      return;
-    }
-    this.superUsed += 1;
-  },
-
-  pickUp(powerUp) {
-    if (!this.installItem(powerUp.settings)) {
-      return;
-    }
-    Crafty.audio.play("powerup");
-    this.trigger("PowerUp", powerUp.settings);
-    powerUp.pickup();
-  },
-
-  clearItems() {
-    if (this.primaryWeapon != null) {
-      this.primaryWeapon.uninstall();
-    }
-    this.primaryWeapons.forEach(w => w.destroy());
-    this.primaryWeapons = [];
-    this.items = [];
-  },
-
-  _installPrimary(componentName) {
-    const text = {
-      damage: "Damage",
-      rapid: "RapidFire",
-      aim: "AimAssist",
-      speed: "BulletSpeed",
-
-      damageb: "Damage",
-      rapidb: "RapidFire",
-      aimb: "AimAssist",
-      speedb: "BulletSpeed"
-    };
-    const weapon = Crafty.e(componentName);
-    weapon.install(this);
-    if (this.primaryWeapon != null) {
-      this.primaryWeapon.uninstall();
-    }
-    this.primaryWeapon = weapon;
-    this.listenTo(weapon, "levelUp", info =>
-      this.scoreText(`${text[info.aspect]} +${info.level}`)
-    );
-    this.listenTo(weapon, "boost", info =>
-      this.scoreText(`${text[info.aspect]} Boost!`)
-    );
-    this.listenTo(weapon, "boostExpired", info =>
-      this.scoreText(`${text[info.aspect]} Boost expired`, {
-        positive: false
-      })
-    );
-
-    this.primaryWeapons.push(weapon);
-    this.currentPrimary = this.primaryWeapons.length - 1;
-  },
-
-  hasItem(item) {
-    if (this.items == null) {
-      return false;
-    }
-    return this.items.find(inventory => inventory.contains === item);
-  },
+  controlBlock(onOff) {},
 
   scoreText(text, settings = {}) {
     settings = defaults(settings, {
@@ -419,10 +189,6 @@ Crafty.c(PlayerSpaceship, {
       );
       t.one("TweenEnd", () => t.destroy());
     }, settings.delay);
-  },
-
-  remove() {
-    //this.trailEntPool.clean();
   }
 });
 

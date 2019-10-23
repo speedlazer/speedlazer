@@ -3,15 +3,6 @@ import Player from "src/components/player/Player";
 import PlayerSpaceship from "src/components/player/PlayerSpaceship";
 
 const shipFunctions = () => ({
-  setWeapons: async weapons => {
-    Crafty("PlayerControlledShip").each(function() {
-      this.clearItems();
-      weapons.forEach(weapon => {
-        this.installItem({ type: "weapon", contains: weapon });
-      });
-    });
-    //level.setStartWeapons(weapons);
-  },
   spawnShip: () => {
     Crafty(Player).each(function() {
       this.addComponent("ShipSpawnable");

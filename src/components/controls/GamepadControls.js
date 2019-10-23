@@ -126,13 +126,16 @@ Crafty.c(GamepadControls, {
 
     this.listenTo(ship, "GamepadKeyChange", e => {
       if (e.button === this.controlMap.fire) {
-        ship.shoot(e.pressed);
+        ship.controlPrimary(e.pressed);
       }
       if (e.button === this.controlMap.switchWeapon) {
-        ship.switchWeapon(e.pressed);
+        ship.controlSwitch(e.pressed);
       }
-      if (e.button === this.controlMap.super) {
-        ship.superWeapon(e.pressed);
+      if (e.button === this.controlMap.heavy) {
+        ship.controlSecondary(e.pressed);
+      }
+      if (e.button === this.controlMap.shield) {
+        ship.controlBlock(e.pressed);
       }
 
       // TODO: This event is not coming through
