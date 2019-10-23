@@ -8,6 +8,7 @@ import introShip from "./IntroShip.composition.json";
 import ocean from "./Ocean.composition.json";
 import city from "./City.composition.json";
 import shipHatch from "./ShipHatch.composition.json";
+import portraits from "./portraits.composition.json";
 
 const compositions = {
   ...backgrounds,
@@ -19,7 +20,8 @@ const compositions = {
   ...droneShip,
   ...introShip,
   ...ocean,
-  ...shipHatch
+  ...shipHatch,
+  ...portraits
 };
 
 export default compositions;

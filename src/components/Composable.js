@@ -127,11 +127,13 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
         part => part.attr("key") === keyName
       );
       if (sprite) {
+        const originalSettings = entity.appliedDefinition.sprites.find(
+          ([, startSettings]) => startSettings.key === keyName
+        );
+
         const defaultSettings = {
           z: 0,
-          ...(entity.appliedDefinition.sprites.find(
-            ([, startSettings]) => startSettings.key === keyName
-          ) || [])[1],
+          ...(originalSettings && originalSettings[1]),
           x: 0,
           y: 0,
           scaleX: 1,
@@ -149,7 +151,16 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
             ...sourceFrameData[keyName]
           });
 
-        return acc.concat(tweenFn(sprite, tweenSettings, sourceTweenSettings));
+        const newSpriteName = settings.sprite || originalSettings[0];
+
+        return acc.concat(
+          tweenFn(sprite, tweenSettings, sourceTweenSettings),
+          () => {
+            if (sprite._spriteName === newSpriteName) return;
+            sprite.sprite(newSpriteName);
+            sprite._spriteName = newSpriteName;
+          }
+        );
       }
 
       const gradient = entity.gradientParts.find(

@@ -1,0 +1,38 @@
+{
+  "portraits.pilot": {
+    "attributes": {
+      "width": 128,
+      "height": 128
+    },
+    "sprites": [["pilot1", { "key": "pilot" }]],
+    "frames": {
+      "idle": {
+        "pilot": {}
+      },
+      "talk": {
+        "pilot": { "sprite": "pilot2" }
+      }
+    },
+    "animations": {
+      "talk": {
+        "repeat": true,
+        "easing": "linear",
+        "duration": 500,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 0.5,
+            "startFrame": "idle",
+            "endFrame": "talk"
+          },
+          {
+            "start": 0.5,
+            "end": 1.0,
+            "startFrame": "talk",
+            "endFrame": "idle"
+          }
+        ]
+      }
+    }
+  }
+}

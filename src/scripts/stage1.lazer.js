@@ -26,12 +26,13 @@ const stage1 = async ({
 
   await spawnShip();
   await setWeapons(["lasers"]);
-  await exec(droneWave(5, "pattern1", 1000));
+
+  await exec(droneWave(5, "pattern1", 300));
   await wait(1000);
   setBackgroundCheckpointLimit(1);
-  await exec(droneWave(5, "pattern1", 1000));
+  await exec(droneWave(5, "pattern1", 300));
   await setScenery("City.CoastStart");
-  await exec(droneWave(5, "pattern1", 1000));
+  await exec(droneWave(5, "pattern1", 300));
   console.log("Done!");
 };
 

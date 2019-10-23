@@ -151,6 +151,35 @@
       "height": 64,
       "scale": 0.8
     },
-    "sprites": [["helicopterLanded", { "x": 0, "y": 0 }]]
+    "sprites": [["helicopterLanded", { "x": 0, "y": 0, "key": "heli" }]],
+    "frames": {
+      "fly1": {
+        "heli": { "sprite": "helicopter" }
+      },
+      "fly2": {
+        "heli": { "sprite": "helicopter2" }
+      }
+    },
+    "animations": {
+      "flying": {
+        "repeat": true,
+        "easing": "linear",
+        "duration": 500,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 0.5,
+            "startFrame": "fly1",
+            "endFrame": "fly2"
+          },
+          {
+            "start": 0.5,
+            "end": 1,
+            "startFrame": "fly2",
+            "endFrame": "fly1"
+          }
+        ]
+      }
+    }
   }
 }

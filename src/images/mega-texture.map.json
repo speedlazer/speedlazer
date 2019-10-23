@@ -80,6 +80,7 @@
     "standardDroneDamage": [2, 52, 2, 2],
     "standardRocket": [4, 52, 2, 1],
     "helicopter": [0, 54, 4, 2],
+    "helicopter2": [4, 54, 4, 2],
     "heliDamaged": [8, 54, 4, 2],
     "helicopterLanded": [12, 56, 4, 2],
     "standardLargeDrone": [0, 56, 3, 3],
