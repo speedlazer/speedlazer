@@ -3,6 +3,121 @@ import Acceleration from "src/components/generic/Acceleration";
 import ColorEffects from "src/components/ColorEffects";
 import Listener from "src/components/generic/Listener";
 
+Crafty.c("BlasterBullet", {
+  required: "2D, WebGL, Motion, sphere1, ColorEffects",
+
+  init() {
+    this.crop(4, 19, 24, 11);
+    this.bind("UpdateFrame", this._checkBounds);
+  },
+
+  _checkBounds() {
+    const maxX =
+      -Crafty.viewport._x +
+      Crafty.viewport._width / Crafty.viewport._scale +
+      10;
+    const minX = -Crafty.viewport._x - 10;
+
+    const maxY =
+      -Crafty.viewport._y +
+      Crafty.viewport._height / Crafty.viewport._scale +
+      10;
+    const minY = -Crafty.viewport._y - 10;
+
+    if (this.x > maxX || minX > this.x || minY > this.y || this.y > maxY) {
+      // TODO: Turn this into a bullet pool
+      this.destroy();
+    }
+  }
+});
+
+const blasterBullet = (color, angle, v) => {
+  const vy = v * Math.sin((angle / 180) * Math.PI);
+  const vx = v * Math.cos((angle / 180) * Math.PI);
+
+  return Crafty.e("BlasterBullet")
+    .attr({
+      w: 40,
+      h: 5,
+      vx,
+      vy,
+      rotation: angle
+    })
+    .colorOverride(color);
+};
+
+class WeaponBlaster {
+  constructor(ship) {
+    this.ship = ship;
+    this.cooldown = 0;
+  }
+  press() {
+    if (!this.color) {
+      this.color = {};
+      Crafty.assignColor(this.ship.playerColor, this.color);
+      Object.entries(this.color).forEach(([key, v]) => {
+        this.color[key] = (v + 510) / 3;
+      });
+    }
+  }
+  hold(dt) {
+    if (this.cooldown <= 0) {
+      const bullet = blasterBullet(this.color, 0, 800);
+      bullet.attr({
+        x: this.ship.x + this.ship.w,
+        y: this.ship.y + this.ship.h / 2
+      });
+
+      this.cooldown = 100;
+    } else {
+      this.cooldown -= dt;
+    }
+  }
+  release() {}
+}
+
+class WeaponChargedBlaster {
+  constructor(ship) {
+    this.ship = ship;
+    this.charged = 0;
+  }
+  press() {
+    this.charged = 0;
+    if (!this.color) {
+      this.color = {};
+      Crafty.assignColor(this.ship.playerColor, this.color);
+      Object.entries(this.color).forEach(([key, v]) => {
+        this.color[key] = (v + 510) / 3;
+      });
+    }
+  }
+  hold(dt) {
+    this.charged += dt;
+    if (this.charged > 3000) {
+      this.ship.colorOverride({ _red: 255, _green: 0, _blue: 0 });
+    }
+    if (this.charged > 5000) {
+      this.ship.destroy();
+    }
+  }
+  release() {
+    this.ship.colorOverride(this.ship.playerColor, "partial");
+    let bullets = this.charged / 100;
+    while (bullets > 0) {
+      const angle = -80 + Math.random() * 160;
+      const v = 250 + Math.random() * 200;
+
+      const bullet = blasterBullet(this.color, angle, v);
+      bullet.attr({
+        x: this.ship.x + this.ship.w,
+        y: this.ship.y + this.ship.h / 2
+      });
+      bullets--;
+    }
+    this.charged = 0;
+  }
+}
+
 const PlayerSpaceship = "PlayerSpaceship";
 
 Crafty.c(PlayerSpaceship, {
@@ -20,6 +135,14 @@ Crafty.c(PlayerSpaceship, {
 
     this.currentRenderedSpeed = 0;
     this.flip("X");
+
+    this.weapons = [
+      {
+        primary: new WeaponBlaster(this),
+        secondary: new WeaponChargedBlaster(this)
+      }
+    ];
+    this.activeWeapon = 0;
   },
 
   updateMovementVisuals(rotation, dx, dy, dt) {
@@ -129,11 +252,49 @@ Crafty.c(PlayerSpaceship, {
     this.targetSpeed(speed, options);
   },
 
-  controlPrimary(onOff) {},
+  controlPrimary(onOff) {
+    if (onOff) {
+      this.controlSecondary(false);
+      this._primaryWeapon().press();
+      this.bind("EnterFrame", this._holdPrimary);
+    } else {
+      this.unbind("EnterFrame", this._holdPrimary);
+      this._primaryWeapon().release();
+    }
+  },
 
-  controlSwitch(onOff) {},
+  _holdPrimary({ dt }) {
+    this._primaryWeapon().hold(dt);
+  },
 
-  controlSecondary(onOff) {},
+  controlSwitch(onOff) {
+    if (!onOff) {
+      this.activeWeapon = (this.activeWeapon + 1) % this.weapons.length;
+    }
+  },
+
+  controlSecondary(onOff) {
+    if (onOff) {
+      this.controlPrimary(false);
+      this._secondaryWeapon().press();
+      this.bind("EnterFrame", this._holdSecondary);
+    } else {
+      this.unbind("EnterFrame", this._holdSecondary);
+      this._secondaryWeapon().release();
+    }
+  },
+
+  _holdSecondary({ dt }) {
+    this._secondaryWeapon().hold(dt);
+  },
+
+  _primaryWeapon() {
+    return this.weapons[this.activeWeapon].primary;
+  },
+
+  _secondaryWeapon() {
+    return this.weapons[this.activeWeapon].secondary;
+  },
 
   controlBlock(onOff) {},
 
