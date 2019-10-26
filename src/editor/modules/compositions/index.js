@@ -109,15 +109,16 @@ class Compositions extends Component {
               (activeComposition.frames || activeComposition.animations) && (
                 <Menu
                   horizontal={true}
-                  items={["default", ...Object.keys(activeComposition.frames)]
+                  items={[
+                    "default",
+                    ...Object.keys(activeComposition.frames || [])
+                  ]
                     .map(key => [
                       key,
                       `/compositions/${compositionName}/frames/${key}`
                     ])
                     .concat(
-                      activeComposition.animations && activeComposition.frames
-                        ? [["|", ""]]
-                        : [],
+                      activeComposition.animations ? [["|", ""]] : [],
                       Object.keys(activeComposition.animations || {}).map(
                         key => [
                           key,

@@ -103,6 +103,28 @@
     "general2": [20, 48, 4, 4],
     "pilot1": [16, 52, 4, 4],
     "pilot2": [20, 52, 4, 4],
-    "shield": [10, 59, 4, 4]
+    "shield": [10, 59, 4, 4],
+
+    "explosion1": [24, 48, 3, 3],
+    "explosion2": [27, 48, 3, 3],
+    "explosion3": [30, 48, 3, 3],
+    "explosion4": [33, 48, 3, 3],
+    "explosion5": [36, 48, 3, 3],
+
+    "explosion6": [24, 51, 3, 3],
+    "explosion7": [27, 51, 3, 3],
+    "explosion8": [30, 51, 3, 3],
+    "explosion9": [33, 51, 3, 3],
+    "explosion10": [36, 51, 3, 3],
+
+    "explosion11": [24, 54, 3, 3],
+    "explosion12": [27, 54, 3, 3],
+    "explosion13": [30, 54, 3, 3],
+    "explosion14": [33, 54, 3, 3],
+    "explosion15": [36, 54, 3, 3],
+
+    "explosion16": [24, 57, 3, 3],
+    "explosion17": [27, 57, 3, 3],
+    "explosion18": [30, 57, 3, 3]
   }
 }

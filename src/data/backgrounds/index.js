@@ -2,34 +2,42 @@ export default {
   "City.Sunrise": {
     checkpoints: [
       {
-        composables: [["night", { key: "night" }]],
+        composables: [
+          ["background.night", { key: "night" }],
+          ["background.sky", { key: "sky", frame: "default" }]
+        ],
         backgroundColor: "#000000",
         timeline: {
-          defaultDuration: 120000,
+          defaultDuration: 60000,
           transitions: [
-            { key: "night", start: 0.0, end: 1.0, targetFrame: "middle" }
+            { key: "night", start: 0.0, end: 1.0, targetFrame: "middle" },
+            { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn" },
+            { key: "sky", start: 0.5, end: 1.0, targetFrame: "dawn2" },
+            { start: 0.0, end: 0.5, targetBackgroundColor: "#000000" },
+            { start: 0.5, end: 1.0, targetBackgroundColor: "#0F1630" }
           ]
         }
       },
       {
         composables: [
-          ["night", { key: "night", frame: "middle" }],
-          ["sky", { key: "sky", frame: "default" }],
+          ["background.night", { key: "night", frame: "middle" }],
+          ["background.sky", { key: "sky", frame: "dawn2" }],
           [
-            "sun",
+            "background.sun",
             { key: "sun", frame: "large", relativeX: 0.7, relativeY: 0.8 }
           ]
         ],
-        backgroundColor: "#000000",
+        backgroundColor: "#0F1630",
         timeline: {
-          defaultDuration: 120000,
+          defaultDuration: 60000,
           transitions: [
             { key: "night", start: 0.0, end: 1.0, targetFrame: "end" },
-            { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn" },
-            { start: 0.0, end: 0.5, targetBackgroundColor: "#000020" },
-
-            { key: "sky", start: 0.5, end: 1.0, targetFrame: "dawn2" },
-            { start: 0.5, end: 1.0, targetBackgroundColor: "#72261b" },
+            { key: "sky", start: 0.0, end: 0.3, targetFrame: "dawn3" },
+            { key: "sky", start: 0.3, end: 0.7, targetFrame: "dawn4" },
+            { key: "sky", start: 0.7, end: 1.0, targetFrame: "dawn5" },
+            { start: 0.0, end: 0.3, targetBackgroundColor: "#191F3D" },
+            { start: 0.3, end: 0.85, targetBackgroundColor: "#27273D" },
+            { start: 0.85, end: 1.0, targetBackgroundColor: "#FD7321" },
             {
               key: "sun",
               start: 0.5,
@@ -45,16 +53,18 @@ export default {
       },
       {
         composables: [
-          ["night", { key: "night", frame: "end" }],
-          ["sky", { key: "sky", frame: "dawn2" }],
-          ["sun", { key: "sun", frame: "large" }]
+          ["background.night", { key: "night", frame: "end" }],
+          ["background.sky", { key: "sky", frame: "dawn5" }],
+          ["background.sun", { key: "sun", frame: "large" }]
         ],
-        backgroundColor: "#72261b",
+        backgroundColor: "#FD7321",
         timeline: {
-          defaultDuration: 120000,
+          defaultDuration: 60000,
           transitions: [
-            { key: "sky", start: 0.0, end: 1.0, targetFrame: "dawn3" },
-            { start: 0.0, end: 1.0, targetBackgroundColor: "#d39915" },
+            { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn6" },
+            { key: "sky", start: 0.5, end: 1.0, targetFrame: "dawn7" },
+            { start: 0.0, end: 0.5, targetBackgroundColor: "#FDAB3A" },
+            { start: 0.5, end: 1.0, targetBackgroundColor: "#FCC67B" },
             { start: 0.0, end: 1.0, key: "sun", targetFrame: "full" },
             {
               key: "sun",
@@ -71,18 +81,17 @@ export default {
       },
       {
         composables: [
-          ["sky", { key: "sky", frame: "dawn3" }],
-          ["sun", { key: "sun", frame: "full" }]
+          ["background.sky", { key: "sky", frame: "dawn7" }],
+          ["background.sun", { key: "sun", frame: "full" }]
         ],
-        backgroundColor: "#d39915",
+        backgroundColor: "#FCC67B",
         timeline: {
-          defaultDuration: 180000,
+          defaultDuration: 60000,
           transitions: [
-            { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn4" },
-            { start: 0.0, end: 0.5, targetBackgroundColor: "#f7e459" },
-
-            { key: "sky", start: 0.5, end: 1.0, targetFrame: "dawn5" },
-            { start: 0.5, end: 1.0, targetBackgroundColor: "#d6d5d5" },
+            { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn8" },
+            { key: "sky", start: 0.5, end: 1.0, targetFrame: "dawn9" },
+            { start: 0.0, end: 0.5, targetBackgroundColor: "#F3D7B1" },
+            { start: 0.5, end: 1.0, targetBackgroundColor: "#BABCD9" },
             { start: 0.0, end: 1.0, key: "sun", targetFrame: "default" },
             {
               key: "sun",

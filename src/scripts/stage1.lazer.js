@@ -25,9 +25,9 @@ const stage1 = async ({
 
   await spawnShip();
 
+  setBackgroundCheckpointLimit(4);
   await exec(droneWave(5, "pattern1", 300));
   await wait(1000);
-  setBackgroundCheckpointLimit(1);
   await exec(droneWave(5, "pattern1", 300));
   await setScenery("City.CoastStart");
   await exec(droneWave(5, "pattern1", 300));
