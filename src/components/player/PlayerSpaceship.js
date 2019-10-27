@@ -3,11 +3,10 @@ import Acceleration from "src/components/generic/Acceleration";
 import ColorEffects from "src/components/ColorEffects";
 import Listener from "src/components/generic/Listener";
 
-Crafty.c("BlasterBullet", {
-  required: "2D, WebGL, Motion, sphere1, ColorEffects",
+Crafty.c("ScreenBound", {
+  required: "2D",
 
   init() {
-    this.crop(4, 19, 24, 11);
     this.bind("UpdateFrame", this._checkBounds);
   },
 
@@ -16,19 +15,31 @@ Crafty.c("BlasterBullet", {
       -Crafty.viewport._x +
       Crafty.viewport._width / Crafty.viewport._scale +
       10;
-    const minX = -Crafty.viewport._x - 10;
+    const minX = -Crafty.viewport._x - 100;
 
     const maxY =
       -Crafty.viewport._y +
       Crafty.viewport._height / Crafty.viewport._scale +
       10;
-    const minY = -Crafty.viewport._y - 10;
+    const minY = -Crafty.viewport._y - 100;
 
     if (this.x > maxX || minX > this.x || minY > this.y || this.y > maxY) {
       // TODO: Turn this into a bullet pool
       this.destroy();
     }
   }
+});
+
+Crafty.c("BlasterBullet", {
+  required: "ScreenBound, WebGL, Motion, sphere1, ColorEffects",
+
+  init() {
+    this.crop(4, 19, 24, 11);
+  }
+});
+
+Crafty.c("Bomb", {
+  required: "ScreenBound, WebGL, Motion, standardMine"
 });
 
 const blasterBullet = (color, angle, v) => {
@@ -45,6 +56,14 @@ const blasterBullet = (color, angle, v) => {
     })
     .colorOverride(color);
 };
+
+const dropBomb = () =>
+  Crafty.e("Bomb").attr({
+    vy: 100,
+    ay: 300,
+    vx: 400,
+    ax: -150
+  });
 
 class WeaponBlaster {
   constructor(ship) {
@@ -74,6 +93,54 @@ class WeaponBlaster {
     }
   }
   release() {}
+}
+
+class WeaponBomb {
+  constructor(ship) {
+    this.ship = ship;
+    this.cooldown = 0;
+  }
+  press() {}
+  hold(dt) {
+    if (this.cooldown <= 0) {
+      const bomb = dropBomb();
+      bomb.attr({
+        x: this.ship.x + this.ship.w / 2,
+        y: this.ship.y + this.ship.h
+      });
+
+      this.cooldown = 500;
+    } else {
+      this.cooldown -= dt;
+    }
+  }
+  release() {
+    this.cooldown -= 400;
+  }
+}
+
+class WeaponTimeBomb {
+  constructor(ship) {
+    this.ship = ship;
+    this.cooldown = 0;
+  }
+  press() {}
+  hold(dt) {
+    if (this.cooldown <= 0) {
+      const bomb = dropBomb();
+      bomb.attr({
+        x: this.ship.x + this.ship.w / 2,
+        y: this.ship.y + this.ship.h
+      });
+
+      this.cooldown = 500;
+    } else {
+      this.cooldown -= dt;
+    }
+  }
+  release() {
+    this.cooldown -= 400;
+  }
 }
 
 class WeaponChargedBlaster {
@@ -140,6 +207,10 @@ Crafty.c(PlayerSpaceship, {
       {
         primary: new WeaponBlaster(this),
         secondary: new WeaponChargedBlaster(this)
+      },
+      {
+        primary: new WeaponBomb(this),
+        secondary: new WeaponTimeBomb(this)
       }
     ];
     this.activeWeapon = 0;
@@ -296,7 +367,17 @@ Crafty.c(PlayerSpaceship, {
     return this.weapons[this.activeWeapon].secondary;
   },
 
-  controlBlock(onOff) {},
+  controlBlock(onOff) {
+    if (onOff) {
+      this.activeShield = Crafty.e("2D, WebGL, shield").attr({
+        x: this.x - 32,
+        y: this.y - 40
+      });
+      this.attach(this.activeShield);
+    } else {
+      this.activeShield.destroy();
+    }
+  },
 
   scoreText(text, settings = {}) {
     settings = defaults(settings, {
