@@ -3,7 +3,7 @@ import { Title } from "../../components/Title";
 import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
 import { Setting } from "../../components/Setting";
-import FlyPatternPreview from "./components/FlyPatternPreview";
+import FlyPatternPreview from "./FlyPatternPreview";
 import paths from "src/data/paths";
 
 const DEFAULT_STATE = {

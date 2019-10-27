@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { EntityPreview } from "./components/EntityPreview";
+import { EntityPreview } from "./EntityPreview";
 import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";

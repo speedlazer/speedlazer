@@ -1,4 +1,4 @@
-import { SceneryPreview } from "./components/SceneryPreview";
+import { SceneryPreview } from "./SceneryPreview";
 import sceneries from "src/data/sceneries";
 import backgrounds from "src/data/backgrounds";
 import { Menu } from "../../components/Menu";

@@ -5,7 +5,7 @@ import { LayerBox } from "../../components/LayerBox";
 import { Menu } from "../../components/Menu";
 import { ScrollBox } from "../../components/ScrollBox";
 import { Text } from "../../components/Text";
-import { Highlight } from "./components/Highlight";
+import { Highlight } from "./Highlight";
 import { Title } from "../../components/Title";
 import spritesheets from "src/data/spritesheets";
 import { route } from "preact-router";

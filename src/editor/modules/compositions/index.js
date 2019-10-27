@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { CompositionPreview } from "./components/CompositionPreview";
+import { CompositionPreview } from "./CompositionPreview";
 import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";

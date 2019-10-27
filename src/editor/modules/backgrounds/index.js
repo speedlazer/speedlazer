@@ -1,4 +1,4 @@
-import { BackgroundPreview } from "./components/BackgroundPreview";
+import { BackgroundPreview } from "./BackgroundPreview";
 import backgrounds from "src/data/backgrounds";
 import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
