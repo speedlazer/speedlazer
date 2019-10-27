@@ -102,7 +102,7 @@ const getHookSettings = (definition, name) =>
 const getFrameData = (entity, frameName) =>
   frameName === "default"
     ? generateDefaultFrame(entity.appliedDefinition)
-    : entity.appliedDefinition.frames[frameName];
+    : frameName && entity.appliedDefinition.frames[frameName];
 
 const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
   const targetFrameData = getFrameData(entity, targetFrame);
@@ -198,6 +198,23 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
     []
   );
   return t => fns.forEach(f => f(t));
+};
+
+const displaySpriteAnimationFn = (entity, animationDefinition) => {
+  const sprite = entity.composableParts.find(
+    part => part.attr("key") === animationDefinition.key
+  );
+  if (!sprite) {
+    return () => {};
+  }
+  return t => {
+    const spriteIndex = Math.min(
+      Math.floor(t * animationDefinition.sprites.length),
+      animationDefinition.sprites.length - 1
+    );
+    const name = animationDefinition.sprites[spriteIndex];
+    sprite.sprite(name);
+  };
 };
 
 const Composable = "Composable";
@@ -298,21 +315,28 @@ Crafty.c(Composable, {
     // When pausing the game is introduced, this will
     // need some special care
     const timeElapsed = gameTime - this.animationStart;
-    const timeInIteration = timeElapsed % this.activeAnimation.data.duration;
+    const timeInIteration = this.activeAnimation.data.repeat
+      ? timeElapsed % this.activeAnimation.data.duration
+      : timeElapsed;
     const t = timeInIteration / this.activeAnimation.data.duration;
     const v = this.activeAnimation.easing(t);
 
     this.activeAnimation.timeline.forEach(event => {
       if (event.start > v || v >= event.end) return;
       if (!event.animateFn)
-        event.animateFn = displayFrameFn(
-          this,
-          event.endFrame,
-          event.startFrame
-        );
+        event.animateFn =
+          (event.startFrame &&
+            event.endFrame &&
+            displayFrameFn(this, event.endFrame, event.startFrame)) ||
+          (event.spriteAnimation &&
+            displaySpriteAnimationFn(this, event.spriteAnimation));
+
       const localV = (v - event.start) / (event.end - event.start);
       event.animateFn(localV);
     });
+    if (t >= 1.0 && !this.activeAnimation.data.repeat) {
+      this.stopAnimation();
+    }
   },
 
   updateChildrenOrder() {
