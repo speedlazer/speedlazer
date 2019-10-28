@@ -77,8 +77,6 @@ Crafty.c(Background, {
       }
     });
     (checkpointData.entities || []).forEach(([entity, settings]) => {
-      console.log(entity, settings);
-
       const existing = this.elements[settings.key];
       toRemove = toRemove.filter(k => k !== settings.key);
       const x = (settings.relativeX || 0) * Crafty.viewport.width;
@@ -92,25 +90,6 @@ Crafty.c(Background, {
         existing.attr({ x, y, z: this.z });
         existing.showState(settings.state || "default");
       }
-
-      //const composition = compositions[composable];
-      //const existing = this.elements[settings.key];
-      //toRemove = toRemove.filter(k => k !== settings.key);
-      //if (existing && existing.appliedDefinition === composition) {
-      //const startFrame = settings.frame || "default";
-      //if (existing.targetFrame !== startFrame) {
-      //existing.displayFrame(startFrame);
-      //}
-      //} else {
-      //existing && existing.destroy();
-      //const x = (settings.relativeX || 0) * Crafty.viewport.width;
-      //const y = (settings.relativeY || 0) * Crafty.viewport.height;
-      //const sub = Crafty.e(["2D", "WebGL", Composable].join(","))
-      //.attr({ x, y, w: 40, h: 40, z: this.z })
-      //.compose(composition);
-      //this.attach(sub);
-      //this.elements[settings.key] = sub;
-      //}
     });
     toRemove.forEach(k => {
       this.elements[k].destroy();

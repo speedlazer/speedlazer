@@ -1,6 +1,7 @@
 import spritesheets from "src/data/spritesheets";
 import backgrounds from "src/data/backgrounds";
 import Composable from "src/components/Composable";
+import "src/components/LightGlare";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";
 import {

@@ -18,3 +18,5 @@ import "./ScrollWall";
 import "./ShipSpawnable";
 import "./SpriteShader";
 import "./TextInput";
+
+import "./LightGlare";

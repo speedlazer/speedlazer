@@ -2,7 +2,7 @@
   "name": "Sun",
   "structure": {
     "composition": "background.sun",
-    "components": []
+    "components": [["LightGlare", { "glareAlphaLink": "glare" }]]
   },
   "states": {
     "full": {

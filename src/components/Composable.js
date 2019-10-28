@@ -595,6 +595,10 @@ Crafty.c(Composable, {
     });
   },
 
+  getElementByKey(key) {
+    return getSpriteByKey(this, key);
+  },
+
   async displayFrame(frameName, duration = 0, easing = undefined) {
     const frameData = getFrameData(this, frameName);
     if (!frameData) return;

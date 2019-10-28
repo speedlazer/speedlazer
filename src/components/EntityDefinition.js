@@ -87,6 +87,5 @@ Crafty.c("EntityDefinition", {
         : this.appliedEntityDefinition.states[stateName];
     if (!stateDefinition) return;
     setEntityStructure(this, stateDefinition);
-    //console.log("Show state", stateName, stateDefinition);
   }
 });
