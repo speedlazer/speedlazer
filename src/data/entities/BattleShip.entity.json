@@ -67,6 +67,27 @@
     }
   },
   "states": {
+    "turret1": {
+      "attachments": {
+        "hatch1": {
+          "frame": "risen"
+        }
+      }
+    },
+    "turret2": {
+      "attachments": {
+        "hatch2": {
+          "frame": "risen"
+        }
+      }
+    },
+    "turret3": {
+      "attachments": {
+        "hatch3": {
+          "frame": "risen"
+        }
+      }
+    },
     "fase3": {
       "attachments": {
         "cabin2": { "composition": "battleship.secondCabinOpen" },

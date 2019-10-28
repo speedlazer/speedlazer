@@ -1,4 +1,4 @@
-import "src/components/Composable";
+import Composable from "src/components/Composable";
 import entities from "src/data/entities";
 import compositions from "src/data/compositions";
 
@@ -15,7 +15,7 @@ const convertLocation = location => {
 export const createEntity = (entityName, options = {}) => {
   const { location, ...settings } = options;
   return Crafty.e("2D, WebGL, EntityDefinition")
-    .attr({ x: 0, y: 0, w: 40, h: 40 })
+    .attr({ x: 0, y: 0 })
     .applyDefinition(entityName)
     .attr({ ...convertLocation(location), ...settings });
 };
@@ -23,7 +23,13 @@ export const createEntity = (entityName, options = {}) => {
 const setEntityStructure = (entity, state) => {
   if (state.composition) {
     const composition = compositions[state.composition];
-    entity.addComponent("Composable").compose(composition);
+    entity.addComponent(Composable).compose(composition);
+    if (!state.frame) {
+      entity.displayFrame("default");
+    }
+  }
+  if (state.frame && entity.has(Composable)) {
+    entity.displayFrame(state.frame);
   }
   if (state.entity) {
     entity.addComponent("EntityDefinition").applyDefinition(state.entity);
@@ -44,10 +50,11 @@ const setEntityStructure = (entity, state) => {
     Object.entries(state.attachments).forEach(
       ([attachPoint, attachDefinition]) => {
         if (attachDefinition) {
-          const attachment = attachDefinition ? Crafty.e("2D, WebGL") : null;
+          const itemName = attachDefinition.name || attachPoint;
+          const attachment = entity[itemName] || Crafty.e("2D, WebGL");
+
           setEntityStructure(attachment, attachDefinition);
           entity.attachEntity(attachPoint, attachment);
-          const itemName = attachDefinition.name || attachPoint;
           entity[itemName] = attachment;
         } else {
           entity.clearAttachment(attachPoint);

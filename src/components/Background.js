@@ -1,5 +1,6 @@
 import Composable from "./Composable";
 import compositions from "src/data/compositions";
+import { createEntity } from "src/components/EntityDefinition";
 import paths from "src/data/paths";
 import WayPointMotion from "./WayPointMotion";
 import { LINEAR } from "src/constants/easing";
@@ -58,10 +59,10 @@ Crafty.c(Background, {
       const existing = this.elements[settings.key];
       toRemove = toRemove.filter(k => k !== settings.key);
       if (existing && existing.appliedDefinition === composition) {
-        //const startFrame = settings.frame || "default";
-        //if (existing.targetFrame !== startFrame) {
-        //existing.displayFrame(startFrame);
-        //}
+        const startFrame = settings.frame || "default";
+        if (existing.targetFrame !== startFrame) {
+          existing.displayFrame(startFrame);
+        }
       } else {
         existing && existing.destroy();
         const x = (settings.relativeX || 0) * Crafty.viewport.width;
@@ -74,6 +75,42 @@ Crafty.c(Background, {
         sub.displayFrame(settings.frame || "default");
         this.elements[settings.key] = sub;
       }
+    });
+    (checkpointData.entities || []).forEach(([entity, settings]) => {
+      console.log(entity, settings);
+
+      const existing = this.elements[settings.key];
+      toRemove = toRemove.filter(k => k !== settings.key);
+      const x = (settings.relativeX || 0) * Crafty.viewport.width;
+      const y = (settings.relativeY || 0) * Crafty.viewport.height;
+      if (!existing) {
+        const e = createEntity(entity, settings).attr({ x, y, z: this.z });
+        this.elements[settings.key] = e;
+        this.attach(e);
+        e.showState(settings.state || "default");
+      } else {
+        existing.attr({ x, y, z: this.z });
+        existing.showState(settings.state || "default");
+      }
+
+      //const composition = compositions[composable];
+      //const existing = this.elements[settings.key];
+      //toRemove = toRemove.filter(k => k !== settings.key);
+      //if (existing && existing.appliedDefinition === composition) {
+      //const startFrame = settings.frame || "default";
+      //if (existing.targetFrame !== startFrame) {
+      //existing.displayFrame(startFrame);
+      //}
+      //} else {
+      //existing && existing.destroy();
+      //const x = (settings.relativeX || 0) * Crafty.viewport.width;
+      //const y = (settings.relativeY || 0) * Crafty.viewport.height;
+      //const sub = Crafty.e(["2D", "WebGL", Composable].join(","))
+      //.attr({ x, y, w: 40, h: 40, z: this.z })
+      //.compose(composition);
+      //this.attach(sub);
+      //this.elements[settings.key] = sub;
+      //}
     });
     toRemove.forEach(k => {
       this.elements[k].destroy();
@@ -114,10 +151,11 @@ Crafty.c(Background, {
       if (t.targetFrame && t.key) {
         const elem = this.elements[t.key];
         t.handled = true;
-        elem.displayFrame(
-          t.targetFrame,
-          (t.end - t.start) * this.animationDuration
-        );
+        elem &&
+          elem.displayFrame(
+            t.targetFrame,
+            (t.end - t.start) * this.animationDuration
+          );
       }
       if (t.targetBackgroundColor) {
         if (t.sourceColor && t.ease) {
@@ -140,9 +178,9 @@ Crafty.c(Background, {
         }
       }
       if (t.path && t.key) {
-        console.log("Movement along path");
         t.handled = true;
         const elem = this.elements[t.key];
+        if (!elem) return;
         elem.addComponent(WayPointMotion);
         const pathDuration = (t.end - t.start) * this.animationDuration;
         const path = paths[t.path.name];

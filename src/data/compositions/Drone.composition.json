@@ -2,16 +2,17 @@
   "drone": {
     "attributes": {
       "width": 60,
-      "height": 50
+      "height": 50,
+      "scale": 0.7
     },
     "hitbox": [0, 20, 50, 0, 60, 40, 0, 50],
-    "sprites": [["standardDrone", { "x": -2, "y": -11 }]]
-  },
-  "damagedDrone": {
-    "attributes": {
-      "width": 60,
-      "height": 50
-    },
-    "sprites": [["standardDroneDamage", { "x": -2, "y": -11 }]]
+    "sprites": [["standardDrone", { "x": -2, "y": -11, "key": "main" }]],
+    "frames": {
+      "damaged": {
+        "main": {
+          "sprite": "standardDroneDamage"
+        }
+      }
+    }
   }
 }

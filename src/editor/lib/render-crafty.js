@@ -327,7 +327,9 @@ Crafty.defineScene(
   "BackgroundPreview",
   ({ background, backgroundLimit, activeCheckpoint }) => {
     setBackground(background, { maxCheckpoint: backgroundLimit });
-    if (activeCheckpoint !== 0) setBackgroundCheckpoint(activeCheckpoint);
+    if (activeCheckpoint !== 0) {
+      setTimeout(() => setBackgroundCheckpoint(activeCheckpoint));
+    }
   }
 );
 

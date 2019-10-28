@@ -241,6 +241,9 @@ Crafty.c(Composable, {
   },
 
   compose(proposedDefinition, { autoStartAnimation = true } = {}) {
+    if (this.appliedDefinition === proposedDefinition) {
+      return;
+    }
     const definition = {
       ...definitionStructure,
       ...proposedDefinition
@@ -549,7 +552,7 @@ Crafty.c(Composable, {
     );
     const hook = this.currentAttachHooks[targetHookName];
     if (!hook) return;
-    if (hook.currentAttachment) {
+    if (hook.currentAttachment && hook.currentAttachment !== entity) {
       hook.currentAttachment.destroy();
     }
 

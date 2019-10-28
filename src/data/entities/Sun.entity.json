@@ -1,0 +1,16 @@
+{
+  "name": "Sun",
+  "structure": {
+    "composition": "background.sun",
+    "components": []
+  },
+  "states": {
+    "full": {
+      "frame": "full"
+    },
+    "large": {
+      "frame": "large"
+    }
+  },
+  "habitats": []
+}

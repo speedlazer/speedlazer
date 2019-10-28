@@ -6,7 +6,7 @@
   },
   "states": {
     "damaged": {
-      "composition": "damagedDrone"
+      "frame": "damaged"
     }
   },
   "habitats": [
