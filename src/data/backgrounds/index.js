@@ -86,7 +86,7 @@ export default {
         entities: [["Sun", { key: "sun", state: "full" }]],
         backgroundColor: "#FCC67B",
         timeline: {
-          defaultDuration: 60000,
+          defaultDuration: 120000,
           transitions: [
             { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn8" },
             { key: "sky", start: 0.5, end: 1.0, targetFrame: "dawn9" },
