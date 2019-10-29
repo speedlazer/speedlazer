@@ -20,16 +20,16 @@ export const createEntity = (entityName, options = {}) => {
     .attr({ ...convertLocation(location), ...settings });
 };
 
-const setEntityStructure = (entity, state) => {
+const setEntityStructure = (entity, state, duration) => {
   if (state.composition) {
     const composition = compositions[state.composition];
     entity.addComponent(Composable).compose(composition);
     if (!state.frame) {
-      entity.displayFrame("default");
+      entity.displayFrame("default", duration);
     }
   }
   if (state.frame && entity.has(Composable)) {
-    entity.displayFrame(state.frame);
+    entity.displayFrame(state.frame, duration);
   }
   if (state.entity) {
     entity.addComponent("EntityDefinition").applyDefinition(state.entity);
@@ -74,18 +74,18 @@ Crafty.c("EntityDefinition", {
     const definition = entities.find(e => e.name === entityName);
     this.addComponent(entityName);
     const structure = definition.structure;
-    setEntityStructure(this, structure);
+    setEntityStructure(this, structure, 0);
 
     this.appliedEntityDefinition = definition;
     return this;
   },
 
-  showState(stateName) {
+  showState(stateName, duration = 0) {
     const stateDefinition =
       stateName === "default"
         ? this.appliedEntityDefinition.structure
         : this.appliedEntityDefinition.states[stateName];
     if (!stateDefinition) return;
-    setEntityStructure(this, stateDefinition);
+    setEntityStructure(this, stateDefinition, duration);
   }
 });

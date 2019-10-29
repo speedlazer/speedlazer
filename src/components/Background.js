@@ -136,6 +136,15 @@ Crafty.c(Background, {
             (t.end - t.start) * this.animationDuration
           );
       }
+      if (t.targetState && t.key) {
+        const elem = this.elements[t.key];
+        t.handled = true;
+        elem &&
+          elem.showState(
+            t.targetState,
+            (t.end - t.start) * this.animationDuration
+          );
+      }
       if (t.targetBackgroundColor) {
         if (t.sourceColor && t.ease) {
           t.ease.tick(dt);
