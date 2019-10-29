@@ -1,6 +1,7 @@
 import spritesheets from "src/data/spritesheets";
 import backgrounds from "src/data/backgrounds";
 import Composable from "src/components/Composable";
+import Weapon from "src/components/Weapon";
 import "src/components/LightGlare";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";
@@ -363,5 +364,37 @@ export const showBackground = async (
     background,
     backgroundLimit,
     activeCheckpoint
+  });
+};
+
+Crafty.defineScene("BulletPatternPreview", ({ pattern, difficulty }) => {
+  Crafty.e(`2D, WebGL, Color, ${Weapon}, Red`)
+    .attr({
+      x: 800,
+      y: 250,
+      w: 20,
+      h: 20,
+      weaponTarget: "Blue",
+      weaponDirection: "left",
+      difficulty
+    })
+    .weapon(pattern)
+    .color("#FF0000");
+
+  Crafty.e("2D, WebGL, Color, Blue")
+    .attr({
+      x: 100,
+      y: 250,
+      w: 20,
+      h: 20
+    })
+    .color("#0000FF");
+});
+
+export const showBulletPattern = async (pattern, { difficulty }) => {
+  await loadSpriteSheets();
+  Crafty.enterScene("BulletPatternPreview", {
+    pattern,
+    difficulty
   });
 };

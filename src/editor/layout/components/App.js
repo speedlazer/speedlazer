@@ -7,6 +7,7 @@ import Entities from "src/editor/modules/entities";
 import Sceneries from "src/editor/modules/sceneries";
 import Backgrounds from "src/editor/modules/backgrounds";
 import Paths from "src/editor/modules/paths";
+import Patterns from "src/editor/modules/patterns";
 
 export const App = () => (
   <div>
@@ -16,6 +17,7 @@ export const App = () => (
         ["Sprites", "/sprites"],
         ["Compositions", "/compositions"],
         ["Paths", "/paths"],
+        ["Patterns", "/patterns"],
         ["Backgrounds", "/backgrounds"],
         ["Sceneries", "/sceneries"],
         ["Entities", "/entities"]
@@ -33,6 +35,7 @@ export const App = () => (
       <Backgrounds path="/editor/backgrounds/:background?" />
       <Backgrounds path="/editor/backgrounds/:background/checkpoints/:checkpoint" />
       <Paths path="/editor/paths/:pattern?" />
+      <Patterns path="/editor/patterns/:pattern?" />
     </Router>
   </div>
 );
