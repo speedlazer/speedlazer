@@ -245,7 +245,7 @@ export const showEntity = async (entityName, options = {}) => {
     currentEntity === entityName
   ) {
     const existingEntity = Crafty("EntityDefinition").get(0);
-    existingEntity.showState(options.state);
+    existingEntity.showState(options.state, 1000);
 
     if (strHabitat !== currentHabitat) {
       currentHabitat = strHabitat;

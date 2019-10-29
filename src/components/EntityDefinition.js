@@ -53,7 +53,7 @@ const setEntityStructure = (entity, state, duration) => {
           const itemName = attachDefinition.name || attachPoint;
           const attachment = entity[itemName] || Crafty.e("2D, WebGL");
 
-          setEntityStructure(attachment, attachDefinition);
+          setEntityStructure(attachment, attachDefinition, duration);
           entity.attachEntity(attachPoint, attachment);
           entity[itemName] = attachment;
         } else {
@@ -67,7 +67,6 @@ const setEntityStructure = (entity, state, duration) => {
 Crafty.c("EntityDefinition", {
   init() {
     this.appliedEntityDefinition = null;
-    this.showState = this.showState.bind(this);
   },
 
   applyDefinition(entityName) {

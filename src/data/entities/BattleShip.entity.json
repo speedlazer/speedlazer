@@ -67,26 +67,23 @@
     }
   },
   "states": {
-    "turret1": {
-      "attachments": {
-        "hatch1": {
-          "frame": "risen"
-        }
-      }
+    "t1o": {
+      "attachments": { "hatch1": { "frame": "open" } }
     },
-    "turret2": {
-      "attachments": {
-        "hatch2": {
-          "frame": "risen"
-        }
-      }
+    "t1r": {
+      "attachments": { "hatch1": { "frame": "risen" } }
     },
-    "turret3": {
-      "attachments": {
-        "hatch3": {
-          "frame": "risen"
-        }
-      }
+    "t2o": {
+      "attachments": { "hatch2": { "frame": "open" } }
+    },
+    "t2r": {
+      "attachments": { "hatch2": { "frame": "risen" } }
+    },
+    "t3o": {
+      "attachments": { "hatch3": { "frame": "open" } }
+    },
+    "t3r": {
+      "attachments": { "hatch3": { "frame": "risen" } }
     },
     "fase3": {
       "attachments": {
