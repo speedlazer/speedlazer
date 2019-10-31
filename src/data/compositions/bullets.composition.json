@@ -1,9 +1,48 @@
 {
-  "bullets.bullet1": {
+  "weapons.bullet": {
     "attributes": {
       "width": 26,
       "height": 16
     },
-    "sprites": [["sphere1", { "crop": [17, 0, 0, 0] }]]
+    "sprites": [["sphere1", { "crop": [17, 0, 0, 0], "flipX": true }]]
+  },
+  "weapons.muzzleFlash": {
+    "attributes": {
+      "width": 32,
+      "height": 32
+    },
+    "sprites": [["muzzleFlash", { "flipX": true, "key": "flash" }]],
+    "frames": {
+      "small": {
+        "flash": { "x": 13, "scale": 0.2 }
+      },
+      "normal": {
+        "flash": { "scale": 1.0 }
+      },
+      "end": {
+        "flash": { "alpha": 0 }
+      }
+    },
+    "animations": {
+      "default": {
+        "repeat": false,
+        "easing": "linear",
+        "duration": 300,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 0.3,
+            "startFrame": "small",
+            "endFrame": "normal"
+          },
+          {
+            "start": 0.6,
+            "end": 1.0,
+            "startFrame": "normal",
+            "endFrame": "end"
+          }
+        ]
+      }
+    }
   }
 }

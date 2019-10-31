@@ -65,6 +65,7 @@ const generateDefaultFrame = definition => {
           z: 0,
           rotation: 0,
           alpha: 1,
+          scale: 1,
           ...settings,
           x: 0,
           y: 0
@@ -133,6 +134,7 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
 
         const defaultSettings = {
           z: 0,
+          alpha: 1,
           ...(originalSettings && originalSettings[1]),
           x: 0,
           y: 0,
@@ -238,6 +240,12 @@ Crafty.c(Composable, {
   },
   composableUnfreeze() {
     this._children.forEach(child => child.unfreeze());
+    if (
+      this.appliedDefinition.animations &&
+      this.appliedDefinition.animations.default
+    ) {
+      this.playAnimation("default");
+    }
   },
 
   compose(proposedDefinition, { autoStartAnimation = true } = {}) {
