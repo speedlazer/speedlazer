@@ -236,10 +236,10 @@ Crafty.c(Composable, {
   },
 
   composableFreeze() {
-    this._children.forEach(child => child.freeze());
+    this._children.forEach(child => child.freeze && child.freeze());
   },
   composableUnfreeze() {
-    this._children.forEach(child => child.unfreeze());
+    this._children.forEach(child => child.unfreeze && child.unfreeze());
     if (
       this.appliedDefinition.animations &&
       this.appliedDefinition.animations.default

@@ -367,34 +367,43 @@ export const showBackground = async (
   });
 };
 
-Crafty.defineScene("BulletPatternPreview", ({ pattern, difficulty }) => {
-  Crafty.e(`2D, WebGL, Color, ${Weapon}, Red`)
-    .attr({
-      x: 800,
-      y: 250,
-      w: 20,
-      h: 20,
-      weaponTarget: "Blue",
-      weaponDirection: "left",
-      difficulty
-    })
-    .weapon(pattern)
-    .color("#FF0000");
+Crafty.defineScene(
+  "BulletPatternPreview",
+  ({ pattern, difficulty, collisionType }) => {
+    Crafty.e(`2D, WebGL, Color, ${Weapon}, Red`)
+      .attr({
+        x: 800,
+        y: 250,
+        w: 20,
+        h: 20,
+        weaponTarget: "Blue",
+        weaponDirection: "left",
+        difficulty
+      })
+      .weapon(pattern)
+      .color("#FF0000");
 
-  Crafty.e("2D, WebGL, Color, Blue")
-    .attr({
-      x: 100,
-      y: 250,
-      w: 20,
-      h: 20
-    })
-    .color("#0000FF");
-});
+    Crafty.e(
+      ["2D, WebGL, Color, Blue", collisionType].filter(Boolean).join(", ")
+    )
+      .attr({
+        x: 100,
+        y: 240,
+        w: 40,
+        h: 40
+      })
+      .color("#0000FF");
+  }
+);
 
-export const showBulletPattern = async (pattern, { difficulty }) => {
+export const showBulletPattern = async (
+  pattern,
+  { difficulty, collisionType }
+) => {
   await loadSpriteSheets();
   Crafty.enterScene("BulletPatternPreview", {
     pattern,
-    difficulty
+    difficulty,
+    collisionType
   });
 };

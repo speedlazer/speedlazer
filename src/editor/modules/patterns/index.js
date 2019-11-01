@@ -2,6 +2,7 @@ import { h, Component } from "preact";
 import { Title } from "../../components/Title";
 import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
+import { Text } from "../../components/Text";
 import BulletPatternPreview from "./BulletPatternPreview";
 import patterns from "src/data/patterns";
 
@@ -40,6 +41,7 @@ class Patterns extends Component {
               <button onClick={this.buttonClick(0.25)}>Medium</button>
               <button onClick={this.buttonClick(0.75)}>Hard</button>
               <button onClick={this.buttonClick(1.0)}>Nightmare</button>
+              <Text>{collisionType}</Text>
             </div>
             {collisionTypes && (
               <Menu
@@ -47,7 +49,7 @@ class Patterns extends Component {
                 items={[
                   [
                     "default",
-                    () => this.setState(s => ({ ...s, collissionType: null }))
+                    () => this.setState(s => ({ ...s, collisionType: null }))
                   ]
                 ].concat(
                   collisionTypes.map(type => [

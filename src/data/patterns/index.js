@@ -1,8 +1,9 @@
 export default {
-  turretGun: {
+  "turret.bullet": {
     spawnRhythm: {
       initialDelay: [1500, 150],
-      repeat: [150, 150, [3000, 150]]
+      //repeat: [150, 150, [3000, 150]]
+      repeat: [3000]
     },
     spawnables: {
       bullet: {
@@ -11,10 +12,10 @@ export default {
         composition: "weapons.bullet",
         timeline: [{ start: 0, end: 4000 }],
         collisions: {
-          Solid: {
+          SolidCollision: {
             spawns: [["spark", {}]]
           },
-          Water: {
+          WaterCollision: {
             spawns: [["splash", {}]]
           }
         }
@@ -25,9 +26,22 @@ export default {
         composition: "weapons.muzzleFlash",
         timeline: [{ start: 0, end: 400 }]
       },
-      spark: {},
-      splash: {}
+      spark: {
+        spawnPosition: "outside",
+        speed: 0,
+        sprite: "explosion10",
+        timeline: [{ start: 0, end: 800 }]
+      },
+      splash: {
+        spawnPosition: "outside",
+        speed: 0,
+        sprite: "explosion10",
+        timeline: [{ start: 0, end: 800 }]
+      }
     },
-    spawns: [["bullet", {}], ["muzzleFlash", {}]]
+    spawns: [
+      ["bullet", {}]
+      //, ["muzzleFlash", {}]
+    ]
   }
 };

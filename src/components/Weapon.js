@@ -11,7 +11,26 @@ const Bullet = "Bullet";
 Crafty.c(Bullet, {
   required: "2D, Motion, WebGL",
 
+  init() {
+    this.bind("HitOn", this._bulletHit);
+  },
+
+  _bulletHit(collisionType, hitData) {
+    const collisionConfig = this.bulletSettings.collisions[collisionType];
+    const firstObj = hitData[0].obj;
+    (collisionConfig.spawns || []).forEach(([name, settings]) => {
+      spawnItem(this.weaponDefinition, name, settings, firstObj, this);
+    });
+
+    this.bulletTime = 0;
+    this.unbind("EnterFrame", this._updateBullet);
+    this.freeze();
+  },
+
   bullet(weaponDefinition, itemSettings, overrideSettings) {
+    this.weaponDefinition = weaponDefinition;
+    this.bulletSettings = itemSettings;
+
     const speed = adjustForDifficulty(this.difficulty, itemSettings.speed);
     this.attr({ vx: speed * -1 });
     // add lifecycle stuff, bullet entity pools, etc.
@@ -30,12 +49,14 @@ Crafty.c(Bullet, {
 
     if (this.bulletTime > this.maxBulletTime) {
       this.unbind("EnterFrame", this._updateBullet);
+      this.bulletTime = 0;
       this.freeze();
     }
   }
 });
 
 let pool = [];
+Crafty.bind("SceneDestroy", () => (pool = []));
 
 const getItemFromPool = itemDefinition => {
   const available = pool.find(
@@ -51,32 +72,52 @@ const getItemFromPool = itemDefinition => {
     y: 3000
   });
   if (itemDefinition.sprite) {
-    this.addComponent(itemDefinition.sprite);
+    spawn.addComponent(itemDefinition.sprite);
   }
   if (itemDefinition.composition) {
     spawn
       .addComponent(Composable)
       .compose(compositions[itemDefinition.composition]);
   }
+  const collisionChecks = Object.keys(itemDefinition.collisions || {});
+  if (collisionChecks.length > 0) {
+    spawn.addComponent("Collision");
+    collisionChecks.forEach(collisionType => {
+      spawn.onHit(collisionType, hitDatas => {
+        spawn._bulletHit(collisionType, hitDatas);
+      });
+    });
+  }
+
   pool = pool.concat(spawn);
   return spawn;
 };
 
-const spawnItem = (definition, itemName, itemSettings, spawner) => {
+const spawnItem = (definition, itemName, itemSettings, spawner, source) => {
   const itemDef = definition.spawnables[itemName];
 
   const spawn = getItemFromPool(itemDef);
   spawn.attr({
-    difficulty: spawner.difficulty,
+    difficulty: spawner.difficulty
+  });
+  let spawnPosition = [0.5, 0.5];
+  if (typeof itemDef.spawnPosition === "object") {
+    spawnPosition = itemDef.spawnPosition;
+  }
+  if (typeof itemDef.spawnPosition === "string" && source) {
+    console.log(itemDef.spawnPosition);
+  }
+  spawn.attr({
     x:
       spawner.x +
-      itemDef.spawnPosition[0] * spawner.w -
-      spawn.w * (1 - itemDef.spawnPosition[0]),
+      spawnPosition[0] * spawner.w -
+      spawn.w * (1 - spawnPosition[0]),
     y:
       spawner.y +
-      itemDef.spawnPosition[1] * spawner.h -
-      spawn.h * (1 - itemDef.spawnPosition[1])
+      spawnPosition[1] * spawner.h -
+      spawn.h * (1 - spawnPosition[1])
   });
+
   spawn.bullet(definition, itemDef, itemSettings);
 };
 
