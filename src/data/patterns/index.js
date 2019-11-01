@@ -9,7 +9,7 @@ export default {
         spawnPosition: [0, 0.5],
         speed: 300,
         composition: "weapons.bullet",
-        timeline: [{ start: 0, end: 5000 }],
+        timeline: [{ start: 0, end: 4000 }],
         collisions: {
           Solid: {
             spawns: [["spark", {}]]
