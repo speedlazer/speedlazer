@@ -97,6 +97,6 @@
       "width": 256,
       "height": 160
     },
-    "sprites": [["waterHorizon", { "z": -600, "horizon": [1.0, 0.6] }]]
+    "sprites": [["waterHorizon", { "z": -600, "horizon": [1.0, 0.4] }]]
   }
 }
