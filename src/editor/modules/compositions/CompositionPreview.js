@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { mount, showComposition } from "src/editor/lib/render-crafty";
+import { unmount, mount, showComposition } from "src/editor/lib/render-crafty";
 import Preview from "src/editor/components/Preview";
 
 export class CompositionPreview extends Component {
@@ -12,6 +12,10 @@ export class CompositionPreview extends Component {
     mount(domElem);
     this.setState({ craftyMounted: true });
   };
+
+  componentWillUnmount() {
+    this.state.craftyMounted && unmount();
+  }
 
   render(
     { composition, frame, animation, tweenDuration, ...displaySettings },

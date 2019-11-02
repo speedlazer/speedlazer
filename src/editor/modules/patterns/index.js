@@ -17,8 +17,25 @@ const patternCollisionTypes = activePattern =>
         )
         .filter((e, i, l) => l.indexOf(e) === i);
 
+const DEFAULT_STATE = {
+  difficulty: 0,
+  collisionType: null
+};
+
+const STORAGE_KEY = "editor-weapon-settings";
+const storeState = newState =>
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
+
+const storedState = () => {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+  } catch (e) {
+    return {};
+  }
+};
+
 class Patterns extends Component {
-  state = { difficulty: 0, collisionType: null };
+  state = { ...DEFAULT_STATE, ...storedState() };
 
   buttonClick = difficulty => () => {
     this.setState(state => ({ ...state, difficulty }));
@@ -27,6 +44,7 @@ class Patterns extends Component {
   render({ pattern }, { difficulty, collisionType }) {
     const activePattern = patterns[pattern];
 
+    storeState(this.state);
     const collisionTypes = patternCollisionTypes(activePattern);
     return (
       <section>
@@ -35,38 +53,38 @@ class Patterns extends Component {
           <Menu
             items={Object.keys(patterns).map(key => [key, `/patterns/${key}`])}
           />
-          <div>
+          {activePattern && (
             <div>
-              <button onClick={this.buttonClick(0.0)}>Easy</button>
-              <button onClick={this.buttonClick(0.25)}>Medium</button>
-              <button onClick={this.buttonClick(0.75)}>Hard</button>
-              <button onClick={this.buttonClick(1.0)}>Nightmare</button>
-              <Text>{collisionType}</Text>
-            </div>
-            {collisionTypes && (
-              <Menu
-                horizontal={true}
-                items={[
-                  [
-                    "default",
-                    () => this.setState(s => ({ ...s, collisionType: null }))
-                  ]
-                ].concat(
-                  collisionTypes.map(type => [
-                    type,
-                    () => this.setState(s => ({ ...s, collisionType: type }))
-                  ])
-                )}
-              />
-            )}
-            {activePattern && (
+              <div>
+                <button onClick={this.buttonClick(0.0)}>Easy</button>
+                <button onClick={this.buttonClick(0.25)}>Medium</button>
+                <button onClick={this.buttonClick(0.75)}>Hard</button>
+                <button onClick={this.buttonClick(1.0)}>Nightmare</button>
+                <Text>{collisionType}</Text>
+              </div>
+              {collisionTypes && (
+                <Menu
+                  horizontal={true}
+                  items={[
+                    [
+                      "default",
+                      () => this.setState(s => ({ ...s, collisionType: null }))
+                    ]
+                  ].concat(
+                    collisionTypes.map(type => [
+                      type,
+                      () => this.setState(s => ({ ...s, collisionType: type }))
+                    ])
+                  )}
+                />
+              )}
               <BulletPatternPreview
                 pattern={activePattern}
                 difficulty={difficulty}
                 collisionType={collisionType}
               />
-            )}
-          </div>
+            </div>
+          )}
         </Divider>
       </section>
     );

@@ -1,5 +1,9 @@
 import { h, Component } from "preact";
-import { mount, showBulletPattern } from "src/editor/lib/render-crafty";
+import {
+  unmount,
+  mount,
+  showBulletPattern
+} from "src/editor/lib/render-crafty";
 import Preview from "src/editor/components/Preview";
 
 const propChanged = (prevProps, props, checkChanged) =>
@@ -15,6 +19,10 @@ export class BulletPatternPreview extends Component {
     mount(domElem);
     this.setState({ craftyMounted: true });
   };
+
+  componentWillUnmount() {
+    this.state.craftyMounted && unmount();
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (

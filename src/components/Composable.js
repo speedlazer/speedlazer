@@ -6,6 +6,7 @@ import { tweenFn } from "src/components/generic/TweenPromise";
 import { colorFadeFn } from "src/components/generic/ColorFade";
 import Delta2D from "src/components/generic/Delta2D";
 import Gradient from "src/components/Gradient";
+import ColorEffects from "src/components/ColorEffects";
 import { globalStartTime } from "src/lib/time";
 import { easingFunctions } from "src/constants/easing";
 
@@ -511,6 +512,11 @@ Crafty.c(Composable, {
       z: this.z + (options.z || 0)
     });
     if (options.key) elem.attr({ key: options.key });
+    if (options.scale) elem.attr({ scale: options.scale });
+    if (options.overrideColor) {
+      elem.addComponent(ColorEffects);
+      elem.colorOverride(options.overrideColor);
+    }
     if (options.crop) {
       // input: Top, Right, Bottom, Left (clockwise)
       // output: left, top, width, height

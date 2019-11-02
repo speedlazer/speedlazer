@@ -34,9 +34,20 @@
     padding: 0;
     margin: 0;
 }
+.folderOpen .folderName::before {
+    content: "▼ ";
+    font-size: 0.6rem;
+}
+
+.folderClosed .folderName::before {
+    content: "▶︎ ";
+    font-size: 0.6rem;
+}
+
 .folderName {
     color: #cfc;
     text-decoration: underline;
+    cursor: pointer;
 }
 .active {
     font-weight: bold;

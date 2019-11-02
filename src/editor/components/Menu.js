@@ -1,6 +1,6 @@
 import styles from "./Menu.scss";
 import { Link } from "preact-router/match";
-import { h } from "preact";
+import { h, Component } from "preact";
 
 const classes = def =>
   Object.entries(def)
@@ -53,12 +53,26 @@ const Item = ({ name, path }) => (
   </li>
 );
 
-const Folder = ({ name, items }) => (
-  <li class={styles.folder}>
-    <span class={styles.folderName}>{name}</span>
-    <ul>{createStructure(items.reduce(makeFolders, []))}</ul>
-  </li>
-);
+class Folder extends Component {
+  state = { open: false };
+  render({ name, items }, { open }) {
+    return (
+      <li
+        class={`${styles.folder} ${
+          open ? styles.folderOpen : styles.folderClosed
+        }`}
+      >
+        <span
+          class={styles.folderName}
+          onClick={() => this.setState(state => ({ open: !state.open }))}
+        >
+          {name}
+        </span>
+        {open && <ul>{createStructure(items.reduce(makeFolders, []))}</ul>}
+      </li>
+    );
+  }
+}
 
 const createStructure = items =>
   items

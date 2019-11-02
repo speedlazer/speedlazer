@@ -6,6 +6,17 @@ const adjustForDifficulty = (difficulty, numberOrArray) =>
     ? numberOrArray
     : numberOrArray[0] + (numberOrArray[1] - numberOrArray[0]) * difficulty;
 
+const middle = obj => ({ x: obj.x + obj.w / 2, y: obj.y + obj.h / 2 });
+
+const calcHitPosition = (objA, objB) => {
+  const mA = middle(objA);
+  const mB = middle(objB);
+  return {
+    x: (mA.x + mB.x) / 2,
+    y: (mA.y + mB.y) / 2
+  };
+};
+
 const Bullet = "Bullet";
 
 Crafty.c(Bullet, {
@@ -18,8 +29,9 @@ Crafty.c(Bullet, {
   _bulletHit(collisionType, hitData) {
     const collisionConfig = this.bulletSettings.collisions[collisionType];
     const firstObj = hitData[0].obj;
+    const position = calcHitPosition(this, firstObj);
     (collisionConfig.spawns || []).forEach(([name, settings]) => {
-      spawnItem(this.weaponDefinition, name, settings, firstObj, this);
+      spawnItem(this.weaponDefinition, name, settings, firstObj, position);
     });
 
     this.bulletTime = 0;
@@ -93,7 +105,7 @@ const getItemFromPool = itemDefinition => {
   return spawn;
 };
 
-const spawnItem = (definition, itemName, itemSettings, spawner, source) => {
+const spawnItem = (definition, itemName, itemSettings, spawner, position) => {
   const itemDef = definition.spawnables[itemName];
 
   const spawn = getItemFromPool(itemDef);
@@ -103,20 +115,23 @@ const spawnItem = (definition, itemName, itemSettings, spawner, source) => {
   let spawnPosition = [0.5, 0.5];
   if (typeof itemDef.spawnPosition === "object") {
     spawnPosition = itemDef.spawnPosition;
+    spawn.attr({
+      x:
+        spawner.x +
+        spawnPosition[0] * spawner.w -
+        spawn.w * (1 - spawnPosition[0]),
+      y:
+        spawner.y +
+        spawnPosition[1] * spawner.h -
+        spawn.h * (1 - spawnPosition[1])
+    });
   }
-  if (typeof itemDef.spawnPosition === "string" && source) {
-    console.log(itemDef.spawnPosition);
+  if (typeof itemDef.spawnPosition === "string") {
+    spawn.attr({
+      x: position.x - spawn.w / 2,
+      y: position.y - spawn.h / 2
+    });
   }
-  spawn.attr({
-    x:
-      spawner.x +
-      spawnPosition[0] * spawner.w -
-      spawn.w * (1 - spawnPosition[0]),
-    y:
-      spawner.y +
-      spawnPosition[1] * spawner.h -
-      spawn.h * (1 - spawnPosition[1])
-  });
 
   spawn.bullet(definition, itemDef, itemSettings);
 };

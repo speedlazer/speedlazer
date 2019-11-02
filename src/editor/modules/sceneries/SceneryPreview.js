@@ -1,5 +1,5 @@
 import { h, Component } from "preact";
-import { mount, showScenery } from "src/editor/lib/render-crafty";
+import { unmount, mount, showScenery } from "src/editor/lib/render-crafty";
 import Preview from "src/editor/components/Preview";
 import { setScrollVelocity } from "src/components/Scenery";
 
@@ -13,6 +13,10 @@ export class SceneryPreview extends Component {
     mount(domElem);
     this.setState({ craftyMounted: true });
   };
+
+  componentWillUnmount() {
+    this.state.craftyMounted && unmount();
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.scenery !== this.props.scenery && this.state.craftyMounted) {

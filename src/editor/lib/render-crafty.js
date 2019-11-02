@@ -29,6 +29,11 @@ export const mount = domElem => {
   if (!domElem) return;
   Crafty.init(SCREEN_WIDTH, SCREEN_HEIGHT, domElem);
   Crafty.background("#000000");
+  Crafty.timer.FPS(1000 / 17); // 17ms per frame
+};
+
+export const unmount = () => {
+  Crafty.stop();
 };
 
 Crafty.bind("UpdateFrame", fd => Crafty.trigger("GameLoop", fd));
