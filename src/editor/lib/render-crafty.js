@@ -2,6 +2,7 @@ import spritesheets from "src/data/spritesheets";
 import backgrounds from "src/data/backgrounds";
 import Composable from "src/components/Composable";
 import Weapon from "src/components/Weapon";
+import WayPointMotion from "src/components/WayPointMotion";
 import "src/components/LightGlare";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";
@@ -389,7 +390,9 @@ Crafty.defineScene(
       .color("#FF0000");
 
     Crafty.e(
-      ["2D, WebGL, Color, Blue", collisionType].filter(Boolean).join(", ")
+      ["2D, WebGL, Color, Blue", collisionType, WayPointMotion]
+        .filter(Boolean)
+        .join(", ")
     )
       .attr({
         x: 100,

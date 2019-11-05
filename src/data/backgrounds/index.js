@@ -26,7 +26,7 @@ export default {
         entities: [
           [
             "Sun",
-            { key: "sun", state: "large", relativeX: 0.7, relativeY: 0.8 }
+            { key: "sun", state: "large", relativeX: 0.9, relativeY: 0.7 }
           ]
         ],
         backgroundColor: "#0F1630",

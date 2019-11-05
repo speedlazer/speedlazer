@@ -136,11 +136,11 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
         const defaultSettings = {
           z: 0,
           alpha: 1,
+          scaleX: 1,
+          scaleY: 1,
           ...(originalSettings && originalSettings[1]),
           x: 0,
-          y: 0,
-          scaleX: 1,
-          scaleY: 1
+          y: 0
         };
 
         const tweenSettings = deltaSettings({
@@ -326,6 +326,7 @@ Crafty.c(Composable, {
   updateAnimationFrame({ gameTime }) {
     // When pausing the game is introduced, this will
     // need some special care
+    if (gameTime < this.animationStart) this.animationStart = gameTime;
     const timeElapsed = gameTime - this.animationStart;
     const timeInIteration = this.activeAnimation.data.repeat
       ? timeElapsed % this.activeAnimation.data.duration
@@ -513,6 +514,8 @@ Crafty.c(Composable, {
     });
     if (options.key) elem.attr({ key: options.key });
     if (options.scale) elem.attr({ scale: options.scale });
+    if (options.scaleX) elem.attr({ scale: options.scaleX });
+    if (options.scaleY) elem.attr({ scale: options.scaleY });
     if (options.overrideColor) {
       elem.addComponent(ColorEffects);
       elem.colorOverride(options.overrideColor);

@@ -1,8 +1,16 @@
 import { getBezierPath } from "src/lib/BezierPath";
+import StackableCoordinates from "./StackableCoordinates";
 
 const WayPointMotion = "WayPointMotion";
 
 Crafty.c(WayPointMotion, {
+  required: StackableCoordinates,
+
+  init() {
+    this.createStackablePropertyFor("xPath", "x");
+    this.createStackablePropertyFor("yPath", "y");
+  },
+
   flyPattern(
     pattern,
     { duration: d, velocity, easing = "linear", start = 0.0, end = 1.0 } = {}
@@ -11,9 +19,10 @@ Crafty.c(WayPointMotion, {
 
     const vpw = Crafty.viewport.width;
     const vph = Crafty.viewport.height;
+    const base = this.pattern[0];
     const normalizedPath = pattern.map(({ x, y }) => ({
-      x: x * vpw,
-      y: y * vph
+      x: (x - base.x) * vpw,
+      y: (y - base.y) * vph
     }));
     this.bezierPath = getBezierPath(normalizedPath);
 
@@ -45,7 +54,8 @@ Crafty.c(WayPointMotion, {
     this.wayPointEasing.tick(dt);
     const value = this.wayPointEasing.value();
     const p = this.bezierPath.get(value);
-    this.attr(p);
+
+    this.attr({ xPath: p.x, yPath: p.y });
     if (value >= this.targetPatternValue) {
       this.unbind("EnterFrame", this.updateAcceleration);
       this.inMotion = false;

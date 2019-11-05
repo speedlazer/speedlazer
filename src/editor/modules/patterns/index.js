@@ -19,7 +19,8 @@ const patternCollisionTypes = activePattern =>
 
 const DEFAULT_STATE = {
   difficulty: 0,
-  collisionType: null
+  collisionType: null,
+  moveBlue: false
 };
 
 const STORAGE_KEY = "editor-weapon-settings";
@@ -41,7 +42,7 @@ class Patterns extends Component {
     this.setState(state => ({ ...state, difficulty }));
   };
 
-  render({ pattern }, { difficulty, collisionType }) {
+  render({ pattern }, { difficulty, collisionType, moveBlue }) {
     const activePattern = patterns[pattern];
 
     storeState(this.state);
@@ -61,6 +62,16 @@ class Patterns extends Component {
                 <button onClick={this.buttonClick(0.75)}>Hard</button>
                 <button onClick={this.buttonClick(1.0)}>Nightmare</button>
                 <Text>{collisionType}</Text>
+                <button
+                  onClick={() =>
+                    this.setState(state => ({
+                      ...state,
+                      moveBlue: !state.moveBlue
+                    }))
+                  }
+                >
+                  {moveBlue ? "Stop" : "Move"} Blue
+                </button>
               </div>
               {collisionTypes && (
                 <Menu
@@ -82,6 +93,7 @@ class Patterns extends Component {
                 pattern={activePattern}
                 difficulty={difficulty}
                 collisionType={collisionType}
+                moveBlue={moveBlue}
               />
             </div>
           )}

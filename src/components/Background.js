@@ -79,15 +79,19 @@ Crafty.c(Background, {
     (checkpointData.entities || []).forEach(([entity, settings]) => {
       const existing = this.elements[settings.key];
       toRemove = toRemove.filter(k => k !== settings.key);
-      const x = (settings.relativeX || 0) * Crafty.viewport.width;
-      const y = (settings.relativeY || 0) * Crafty.viewport.height;
       if (!existing) {
+        const x = (settings.relativeX || 0) * Crafty.viewport.width;
+        const y = (settings.relativeY || 0) * Crafty.viewport.height;
         const e = createEntity(entity, settings).attr({ x, y, z: this.z });
         this.elements[settings.key] = e;
         this.attach(e);
         e.showState(settings.state || "default");
       } else {
-        existing.attr({ x, y, z: this.z });
+        settings.relativeX &&
+          this.attr({ x: settings.relativeX * Crafty.viewport.width });
+        settings.relativeY &&
+          this.attr({ y: settings.relativeY * Crafty.viewport.height });
+        existing.attr({ z: this.z });
         existing.showState(settings.state || "default");
       }
     });

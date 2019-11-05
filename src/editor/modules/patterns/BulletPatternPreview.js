@@ -37,6 +37,32 @@ export class BulletPatternPreview extends Component {
         collisionType: this.props.collisionType
       });
     }
+    if (
+      propChanged(prevProps, this.props, ["moveBlue"]) &&
+      this.state.craftyMounted
+    ) {
+      if (this.props.moveBlue) {
+        Crafty("Blue").flyPattern(
+          [
+            { x: 0.1, y: 0.5 },
+            { x: 0.9, y: 0.2 },
+            { x: 0.7, y: 0.8 },
+            { x: 0.5, y: 0.2 },
+            { x: 0.3, y: 0.8 },
+            { x: 0.1, y: 0.5 },
+            { x: 0.3, y: 0.2 },
+            { x: 0.9, y: 0.5 },
+            { x: 0.4, y: 0.9 },
+            { x: 0.1, y: 0.5 }
+          ],
+          {
+            duration: 15000
+          }
+        );
+      } else {
+        Crafty("Blue").stopFlyPattern();
+      }
+    }
   }
 
   render() {
