@@ -41,14 +41,14 @@ Crafty.defaultShader(
       // Write texture coordinates
       e.program.writeVector(
         "aTextureCoord",
-        co.x,
-        co.y,
-        co.x,
-        co.y + co.h,
-        co.x + co.w,
-        co.y,
-        co.x + co.w,
-        co.y + co.h
+        co.x + 1,
+        co.y + 1,
+        co.x + 1,
+        co.y + co.h - 1,
+        co.x + co.w - 1,
+        co.y + 1,
+        co.x + co.w - 1,
+        co.y + co.h - 1
       );
       e.program.writeVector("aSpriteDimensions", co.x, co.y, co.w, co.h);
       const color =

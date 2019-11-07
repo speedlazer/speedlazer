@@ -32,7 +32,7 @@ vec3 hsv2rgb(vec3 c) {
 }
 
 void main() {
-  highp vec2 coord =   vTextureCoord.xy / uTextureDimensions;
+  highp vec2 coord = vTextureCoord.xy / uTextureDimensions;
   float blur = vGradient.z;
 
   if ((vGradient.a >= 0.0) && (vTextureCoord.y >= vGradient.a)) {
@@ -89,16 +89,16 @@ void main() {
   mediump float lightnessBase = (0.2126*vColor.r + 0.7152*vColor.g + 0.0722*vColor.b);
   mediump vec4 baseColor = vec4(vColor.rgb, texelColor.a) * (1.0 + (lightness - lightnessBase));
   mediump vec4 mixColor = vec4(
-      (baseColor.rgba * mixFactor) + (texelColor.rgba * (1.0 - mixFactor))
-      );
+    (baseColor.rgba * mixFactor) + (texelColor.rgba * (1.0 - mixFactor))
+  );
 
   if (vColor.a > 1.0) {
     mixColor.rgb = vColor.rgb;
   }
 
   gl_FragColor = vec4(
-      mixColor.rgb * vColor.a * texelColor.a * vTextureCoord.z,
-      texelColor.a * vTextureCoord.z
-      );
+    mixColor.rgb * vColor.a * texelColor.a * vTextureCoord.z,
+    texelColor.a * vTextureCoord.z
+  );
 }
 
