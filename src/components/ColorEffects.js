@@ -7,7 +7,13 @@ Crafty.c(component, {
     if (color === null) {
       return this;
     }
-    this.attr({ desaturationColor: color });
+    this.attr({
+      desaturationColor: {
+        _red: color._red / 255,
+        _green: color._green / 255,
+        _blue: color._blue / 255
+      }
+    });
 
     this.trigger("Invalidate");
     return this;
@@ -27,7 +33,14 @@ Crafty.c(component, {
     } else {
       Crafty.assignColor(color, c);
     }
-    this.attr({ overrideColor: c, overrideColorMode: mode });
+    this.attr({
+      overrideColor: {
+        _red: c._red / 255,
+        _green: c._green / 255,
+        _blue: c._blue / 255
+      },
+      overrideColorMode: mode
+    });
 
     this.trigger("Invalidate");
     return this;

@@ -75,7 +75,7 @@ Crafty.c("Enemy", {
 
   applyHitFlash(onOff) {
     if (onOff) {
-      this.attr({ hitFlash: { _red: 255, _green: 255, _blue: 255 } });
+      this.attr({ hitFlash: { _red: 1, _green: 1, _blue: 1 } });
     } else {
       this.attr({ hitFlash: false });
     }

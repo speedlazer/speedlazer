@@ -78,19 +78,11 @@ Crafty.defaultShader(
         bottomSaturation = 0.0;
       }
 
-      if (Game.webGLMode === false) {
-        topSaturation = 0.0;
-        bottomSaturation = 0.0;
-        if (ent.has("cloud")) {
-          lightness = 1.0;
-        }
-      }
-
       e.program.writeVector(
         "aColor",
-        color._red / 255,
-        color._green / 255,
-        color._blue / 255,
+        color._red,
+        color._green,
+        color._blue,
         lightness
       );
 
@@ -107,9 +99,9 @@ Crafty.defaultShader(
 
       e.program.writeVector(
         "aOverrideColor",
-        ocolor._red / 255,
-        ocolor._green / 255,
-        ocolor._blue / 255,
+        ocolor._red,
+        ocolor._green,
+        ocolor._blue,
         overrideMode
       );
 

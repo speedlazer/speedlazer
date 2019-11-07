@@ -3,7 +3,7 @@ import { isPaused } from "src/lib/core/pauseToggle";
 const applyHitFlash = (entity, onOff) =>
   entity.forEachPart(part =>
     part.attr({
-      hitFlash: onOff ? { _red: 255, _green: 255, _blue: 255 } : false
+      hitFlash: onOff ? { _red: 1, _green: 1, _blue: 1 } : false
     })
   );
 
