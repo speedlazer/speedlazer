@@ -50,7 +50,7 @@ const Game = {
     Crafty.init(1024, 576, stage); // PAL+
     //Crafty.pixelart(true)
     Crafty.background("#000000");
-    Crafty.timer.FPS(1000 / 17); // 17ms per frame
+    Crafty.timer.FPS(1000 / 10); // 17ms per frame
 
     Crafty.e([Player, "Color"].join(", "))
       .attr({ name: "Player 1", z: 0, playerNumber: 1 })

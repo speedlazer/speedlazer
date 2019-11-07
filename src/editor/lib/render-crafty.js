@@ -30,7 +30,7 @@ export const mount = domElem => {
   if (!domElem) return;
   Crafty.init(SCREEN_WIDTH, SCREEN_HEIGHT, domElem);
   Crafty.background("#000000");
-  Crafty.timer.FPS(1000 / 17); // 17ms per frame
+  Crafty.timer.FPS(1000 / 10); // 10ms per frame
 };
 
 export const unmount = () => {
