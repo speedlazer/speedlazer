@@ -8,7 +8,7 @@ export default {
     spawnables: {
       bullet: {
         spawnPosition: [0, 0.5],
-        speed: 300,
+        speed: [300, 400],
         composition: "weapons.bullet",
         timeline: [{ start: 0, end: 4000 }],
         collisions: {

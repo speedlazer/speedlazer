@@ -116,12 +116,11 @@ const spawnItem = (definition, itemName, itemSettings, spawner, position) => {
   spawn.attr({
     difficulty: spawner.difficulty
   });
-  let spawnPosition = [0.5, 0.5];
   if (typeof itemDef.spawnPosition === "object") {
-    spawnPosition = itemDef.spawnPosition;
     spawn.attr({
-      x: position.x - spawn.w * (1 - spawnPosition[0]),
-      y: position.y - spawn.h * (1 - spawnPosition[1]),
+      x: position.x - spawn._origin.x,
+      y: position.y - spawn._origin.y,
+      z: spawner.z,
       rotation: position.angle
     });
   }
@@ -129,6 +128,7 @@ const spawnItem = (definition, itemName, itemSettings, spawner, position) => {
     spawn.attr({
       x: position.x - spawn.w / 2,
       y: position.y - spawn.h / 2,
+      z: spawner.z,
       rotation: position.angle
     });
   }

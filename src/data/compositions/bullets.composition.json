@@ -2,9 +2,10 @@
   "weapons.bullet": {
     "attributes": {
       "width": 26,
-      "height": 16
+      "height": 16,
+      "ro": [4, 8]
     },
-    "sprites": [["sphere1", { "crop": [17, 0, 0, 0], "flipX": true }]]
+    "sprites": [["sphere1", { "z": -2, "crop": [17, 6, 0, 0], "flipX": true }]]
   },
   "weapons.solidHit": {
     "attributes": {
@@ -92,13 +93,10 @@
       "height": 32,
       "ro": [28, 16]
     },
-    "sprites": [["muzzleFlash", { "flipX": true, "key": "flash" }]],
+    "sprites": [["muzzleFlash", { "z": 20, "flipX": true, "key": "flash" }]],
     "frames": {
-      "small": {
-        "flash": { "x": 13, "scale": 0.2 }
-      },
       "normal": {
-        "flash": { "scale": 1.0 }
+        "flash": { "alpha": 1.0 }
       },
       "end": {
         "flash": { "alpha": 0 }
@@ -113,11 +111,17 @@
           {
             "start": 0.0,
             "end": 0.3,
+            "startFrame": "end",
+            "endFrame": "normal"
+          },
+          {
+            "start": 0.3,
+            "end": 0.7,
             "startFrame": "small",
             "endFrame": "normal"
           },
           {
-            "start": 0.6,
+            "start": 0.7,
             "end": 1.0,
             "startFrame": "normal",
             "endFrame": "end"
