@@ -49,8 +49,8 @@
       [
         "explosion5",
         {
-          "scaleX": 0.15,
-          "scaleY": 0.15,
+          "scaleX": 0.25,
+          "scaleY": 0.25,
           "x": -45,
           "y": -45,
           "overrideColor": "#ffffff",
@@ -89,7 +89,8 @@
   "weapons.muzzleFlash": {
     "attributes": {
       "width": 32,
-      "height": 32
+      "height": 32,
+      "ro": [28, 16]
     },
     "sprites": [["muzzleFlash", { "flipX": true, "key": "flash" }]],
     "frames": {

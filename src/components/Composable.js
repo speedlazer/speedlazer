@@ -370,6 +370,10 @@ Crafty.c(Composable, {
     const attrs = {};
     if (attributes.width) attrs.w = attributes.width;
     if (attributes.height) attrs.h = attributes.height;
+    if (attributes.ro) {
+      const [rx, ry] = attributes.ro;
+      this.origin(rx, ry);
+    }
     this.attr(attrs);
   },
 

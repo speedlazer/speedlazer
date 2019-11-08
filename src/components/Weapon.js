@@ -39,12 +39,16 @@ Crafty.c(Bullet, {
     this.freeze();
   },
 
-  bullet(weaponDefinition, itemSettings, overrideSettings) {
+  bullet(weaponDefinition, itemSettings, overrideSettings, startAngle) {
     this.weaponDefinition = weaponDefinition;
     this.bulletSettings = itemSettings;
 
     const speed = adjustForDifficulty(this.difficulty, itemSettings.speed);
-    this.attr({ vx: speed * -1 });
+    this.attr({
+      vy: -Math.sin((startAngle / 180) * Math.PI) * speed,
+      vx: -Math.cos((startAngle / 180) * Math.PI) * speed
+    });
+
     // add lifecycle stuff, bullet entity pools, etc.
     this.bulletTime = 0;
     this.bulletDefinition = itemSettings;
@@ -116,75 +120,86 @@ const spawnItem = (definition, itemName, itemSettings, spawner, position) => {
   if (typeof itemDef.spawnPosition === "object") {
     spawnPosition = itemDef.spawnPosition;
     spawn.attr({
-      x:
-        spawner.x +
-        spawnPosition[0] * spawner.w -
-        spawn.w * (1 - spawnPosition[0]),
-      y:
-        spawner.y +
-        spawnPosition[1] * spawner.h -
-        spawn.h * (1 - spawnPosition[1])
+      x: position.x - spawn.w * (1 - spawnPosition[0]),
+      y: position.y - spawn.h * (1 - spawnPosition[1]),
+      rotation: position.angle
     });
   }
   if (typeof itemDef.spawnPosition === "string") {
     spawn.attr({
       x: position.x - spawn.w / 2,
-      y: position.y - spawn.h / 2
+      y: position.y - spawn.h / 2,
+      rotation: position.angle
     });
   }
 
-  spawn.bullet(definition, itemDef, itemSettings);
+  spawn.bullet(definition, itemDef, itemSettings, position.angle);
 };
 
 const Weapon = "Weapon";
 
 Crafty.c(Weapon, {
-  weapon(definition, activate = true) {
-    this.weaponDefinition = definition;
+  init() {
+    this.weapons = [];
+  },
 
-    if (activate) {
-      this.activatedAt = new Date() * 1;
-      this.weaponInitialDelay = adjustForDifficulty(
-        this.difficulty,
-        this.weaponDefinition.spawnRhythm.initialDelay
-      );
-
-      this.bind("EnterFrame", this._updateSpawnFrame);
-    }
+  weapon(name, definition) {
+    this.weapons.push({ name, state: {}, definition, active: false });
     return this;
   },
 
-  _weaponSpawn() {
-    this.weaponDefinition.spawns.forEach(([name, overrideSettings]) => {
-      spawnItem(this.weaponDefinition, name, overrideSettings, this);
+  activateWeapon(name) {
+    const weapon = this.weapons.find(w => w.name === name);
+    if (weapon.active === true) {
+      return this;
+    }
+    weapon.nactive = true;
+    weapon.activatedAt = new Date() * 1;
+
+    weapon.initialDelay = adjustForDifficulty(
+      this.difficulty,
+      weapon.definition.pattern.spawnRhythm.initialDelay
+    );
+    this.uniqueBind("EnterFrame", this._updateSpawnFrame);
+    return this;
+  },
+
+  _weaponSpawn(w) {
+    w.definition.pattern.spawns.forEach(([name, overrideSettings]) => {
+      spawnItem(w.definition.pattern, name, overrideSettings, this, {
+        x: this.x + w.definition.x,
+        y: this.y + w.definition.y,
+        angle: w.definition.angle
+      });
     });
   },
 
   _updateSpawnFrame({ dt }) {
-    const spawnRhythm = this.weaponDefinition.spawnRhythm;
+    this.weapons.forEach(w => {
+      const spawnRhythm = w.definition.pattern.spawnRhythm;
 
-    if (this.weaponInitialDelay > 0) {
-      this.weaponInitialDelay -= dt;
-      if (this.weaponInitialDelay <= 0) {
-        this._weaponSpawn();
-        this.weaponWaitIndex = 0;
-        this.weaponPatternDelay = adjustForDifficulty(
+      if (w.initialDelay > 0) {
+        w.initialDelay -= dt;
+        if (w.initialDelay <= 0) {
+          this._weaponSpawn(w);
+          w.waitIndex = 0;
+          w.patternDelay = adjustForDifficulty(
+            this.difficulty,
+            spawnRhythm.repeat[w.waitIndex]
+          );
+        }
+        return;
+      }
+      w.patternDelay -= dt;
+      if (w.patternDelay <= 0) {
+        this._weaponSpawn(w);
+        w.waitIndex = (w.waitIndex + 1) % spawnRhythm.repeat.length;
+        w.patternDelay = adjustForDifficulty(
           this.difficulty,
-          spawnRhythm.repeat[this.weaponWaitIndex]
+          spawnRhythm.repeat[w.waitIndex]
         );
       }
-      return;
-    }
-    this.weaponPatternDelay -= dt;
-    if (this.weaponPatternDelay <= 0) {
-      this._weaponSpawn();
-      this.weaponWaitIndex =
-        (this.weaponWaitIndex + 1) % spawnRhythm.repeat.length;
-      this.weaponPatternDelay = adjustForDifficulty(
-        this.difficulty,
-        spawnRhythm.repeat[this.weaponWaitIndex]
-      );
-    }
+    });
   }
 });
 

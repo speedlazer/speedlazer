@@ -378,15 +378,14 @@ Crafty.defineScene(
   ({ pattern, difficulty, collisionType }) => {
     Crafty.e(`2D, WebGL, Color, ${Weapon}, Red`)
       .attr({
-        x: 800,
+        x: 200,
         y: 250,
         w: 20,
         h: 20,
-        weaponTarget: "Blue",
-        weaponDirection: "left",
         difficulty
       })
-      .weapon(pattern)
+      .weapon("main", { pattern, target: "Blue", x: 20, y: 10, angle: 180 })
+      .activateWeapon("main")
       .color("#FF0000");
 
     Crafty.e(
@@ -395,7 +394,7 @@ Crafty.defineScene(
         .join(", ")
     )
       .attr({
-        x: 100,
+        x: 300,
         y: 240,
         w: 40,
         h: 40
