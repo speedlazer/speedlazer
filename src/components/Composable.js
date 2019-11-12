@@ -367,6 +367,7 @@ Crafty.c(Composable, {
   },
 
   setOwnAttributes(attributes) {
+    if (!attributes) return;
     const attrs = {};
     if (attributes.width) attrs.w = attributes.width;
     if (attributes.height) attrs.h = attributes.height;

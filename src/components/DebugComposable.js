@@ -21,7 +21,10 @@ Crafty.c("DebugComposable", {
     if (!this.appliedDefinition) return;
     Crafty("DebugRotationPoint").destroy();
     if (!show) return;
-    if (this.appliedDefinition.attributes.ro) {
+    if (
+      this.appliedDefinition.attributes &&
+      this.appliedDefinition.attributes.ro
+    ) {
       const ro = this.appliedDefinition.attributes.ro;
       const point = Crafty.e("2D, WebGL, Color, DebugRotationPoint")
         .attr({
