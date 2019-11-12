@@ -5,6 +5,7 @@
       "height": 16,
       "ro": [4, 8]
     },
+    "hitbox": [2, 3, 14, 3, 14, 12, 2, 12],
     "sprites": [["sphere1", { "z": -2, "crop": [17, 6, 0, 0], "flipX": true }]]
   },
   "weapons.solidHit": {
