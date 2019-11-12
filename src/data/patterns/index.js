@@ -11,7 +11,7 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: [250, 300],
         composition: "weapons.bullet",
-        timeline: [{ start: 0, end: 4000 }],
+        queue: [{ duration: 4000 }],
         collisions: {
           SolidCollision: {
             spawns: [["spark", {}]]
@@ -25,19 +25,19 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: 0,
         composition: "weapons.muzzleFlash",
-        timeline: [{ start: 0, end: 400 }]
+        queue: [{ duration: 400 }]
       },
       spark: {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.solidHit",
-        timeline: [{ start: 0, end: 100 }]
+        queue: [{ duration: 100 }]
       },
       splash: {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.waterHit",
-        timeline: [{ start: 0, end: 305 }]
+        queue: [{ duration: 305 }]
       }
     },
     spawns: [["bullet", {}], ["muzzleFlash", {}]]
@@ -54,7 +54,7 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: [250, 300],
         composition: "weapons.bullet",
-        timeline: [{ start: 0, end: 4000 }],
+        queue: [{ duration: 4000 }],
         collisions: {
           SolidCollision: {
             spawns: [["spark", {}]]
@@ -68,19 +68,19 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: 0,
         composition: "weapons.muzzleFlash",
-        timeline: [{ start: 0, end: 400 }]
+        queue: [{ duration: 400 }]
       },
       spark: {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.solidHit",
-        timeline: [{ start: 0, end: 100 }]
+        queue: [{ duration: 100 }]
       },
       splash: {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.waterHit",
-        timeline: [{ start: 0, end: 305 }]
+        queue: [{ duration: 305 }]
       }
     },
     spawns: [
@@ -101,15 +101,14 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: [200, 600],
         composition: "weapons.bullet",
-        timeline: [
+        queue: [
           {
-            start: 0,
-            end: [2000, 800],
+            duration: [2000, 800],
             velocity: [0, 100],
             easing: "easeOutQuad"
           },
-          { start: [2500, 810], end: [2550, 850], velocity: [900, 1200] },
-          { start: 3000, end: 4000 }
+          { velocity: [900, 1200] },
+          { duration: 3000 }
         ],
         collisions: {
           SolidCollision: {
@@ -124,19 +123,19 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: 0,
         composition: "weapons.muzzleFlash",
-        timeline: [{ start: 0, end: 400 }]
+        queue: [{ duration: 400 }]
       },
       spark: {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.solidHit",
-        timeline: [{ start: 0, end: 100 }]
+        queue: [{ duration: 100 }]
       },
       splash: {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.waterHit",
-        timeline: [{ start: 0, end: 305 }]
+        queue: [{ duration: 305 }]
       }
     },
     spawns: [

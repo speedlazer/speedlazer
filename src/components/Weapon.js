@@ -4,8 +4,12 @@ import AngleMotion from "src/components/AngleMotion";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import { easingFunctions } from "src/constants/easing";
 
-const adjustForDifficulty = (difficulty, numberOrArray) =>
-  typeof numberOrArray === "number"
+const adjustForDifficulty = (difficulty, numberOrArray, defaultValue = 0) =>
+  numberOrArray === undefined
+    ? defaultValue
+    : typeof numberOrArray === "number"
+    ? numberOrArray
+    : typeof numberOrArray === "string"
     ? numberOrArray
     : numberOrArray[0] + (numberOrArray[1] - numberOrArray[0]) * difficulty;
 
@@ -44,7 +48,16 @@ Crafty.c(Bullet, {
 
   bullet(weaponDefinition, itemSettings, overrideSettings, initialAngle) {
     this.weaponDefinition = weaponDefinition;
-    this.bulletSettings = JSON.parse(JSON.stringify(itemSettings));
+    this.bulletSettings = { ...itemSettings };
+    this.bulletSettings.queue = (this.bulletSettings.queue || []).map(event =>
+      Object.entries(event).reduce(
+        (a, [k, v]) => ({
+          ...a,
+          [k]: adjustForDifficulty(this.difficulty, v)
+        }),
+        {}
+      )
+    );
 
     const initialVelocity = adjustForDifficulty(
       this.difficulty,
@@ -56,9 +69,10 @@ Crafty.c(Bullet, {
     // add lifecycle stuff, bullet entity pools, etc.
     this.bulletTime = 0;
     this.bulletDefinition = itemSettings;
-    this.maxBulletTime = itemSettings.timeline.reduce((max, item) => {
-      const end = adjustForDifficulty(this.difficulty, item.end);
-      return max > end ? max : end;
+    this.maxBulletTime = itemSettings.queue.reduce((max, item) => {
+      const delay = adjustForDifficulty(this.difficulty, item.delay);
+      const duration = adjustForDifficulty(this.difficulty, item.duration);
+      return max + delay + duration;
     }, 0);
 
     this.uniqueBind("EnterFrame", this._updateBullet);
@@ -66,24 +80,34 @@ Crafty.c(Bullet, {
 
   _updateBullet({ dt }) {
     this.bulletTime += dt;
-    const v = this.bulletTime;
 
-    this.bulletSettings.timeline.forEach(event => {
-      const start = adjustForDifficulty(this.difficulty, event.start);
-      const end = adjustForDifficulty(this.difficulty, event.end);
-      if (start > v || v >= end) return;
-      if (!event.animateFn && event.velocity !== undefined) {
-        const animateFn = tweenFn(this, {
-          velocity: adjustForDifficulty(this.difficulty, event.velocity)
-        });
-        const easing = easingFunctions[event.easing || "linear"];
-        event.animateFn = t => animateFn(easing(t));
+    const upcoming = this.bulletSettings.queue[0];
+    if (upcoming) {
+      upcoming.delay = (upcoming.delay || 0) - dt;
+      const localV =
+        (upcoming.duration - (upcoming.duration + upcoming.delay)) /
+        upcoming.duration;
+      if (upcoming.delay < 0 && (upcoming.duration || 0) === 0) {
+        if (upcoming.velocity !== undefined) {
+          this.attr({ velocity: upcoming.velocity });
+        }
       }
-      if (event.animateFn) {
-        const localV = (v - start) / (end - start);
-        event.animateFn(localV);
+      if (upcoming.delay < 0 && upcoming.duration > 0) {
+        if (!upcoming.animateFn && upcoming.velocity !== undefined) {
+          const animateFn = tweenFn(this, {
+            velocity: upcoming.velocity
+          });
+          const easing = easingFunctions[upcoming.easing || "linear"];
+          upcoming.animateFn = t => animateFn(easing(t));
+        }
+        if (upcoming.animateFn) {
+          upcoming.animateFn(localV);
+        }
       }
-    });
+      if (localV > 1) {
+        this.bulletSettings.queue.shift();
+      }
+    }
 
     if (this.bulletTime > this.maxBulletTime) {
       this.unbind("EnterFrame", this._updateBullet);
@@ -138,7 +162,7 @@ const spawnItem = (definition, itemName, itemSettings, spawner, position) => {
   spawn.attr({
     difficulty: spawner.difficulty
   });
-  const angle = position.angle + { ...itemDef, ...itemSettings }.angle;
+  const angle = position.angle + ({ ...itemDef, ...itemSettings }.angle || 0);
   if (typeof itemDef.spawnPosition === "object") {
     spawn.attr({
       x: position.x - spawn._origin.x,
