@@ -1,6 +1,8 @@
 import compositions from "src/data/compositions";
 import Composable from "src/components/Composable";
 import AngleMotion from "src/components/AngleMotion";
+import { tweenFn } from "src/components/generic/TweenPromise";
+import { easingFunctions } from "src/constants/easing";
 
 const adjustForDifficulty = (difficulty, numberOrArray) =>
   typeof numberOrArray === "number"
@@ -42,28 +44,46 @@ Crafty.c(Bullet, {
 
   bullet(weaponDefinition, itemSettings, overrideSettings, initialAngle) {
     this.weaponDefinition = weaponDefinition;
-    this.bulletSettings = itemSettings;
+    this.bulletSettings = JSON.parse(JSON.stringify(itemSettings));
 
-    const initialSpeed = adjustForDifficulty(
+    const initialVelocity = adjustForDifficulty(
       this.difficulty,
-      itemSettings.speed
+      itemSettings.velocity
     );
 
-    this.attr({ angle: initialAngle, velocity: initialSpeed });
+    this.attr({ angle: initialAngle, velocity: initialVelocity });
 
     // add lifecycle stuff, bullet entity pools, etc.
     this.bulletTime = 0;
     this.bulletDefinition = itemSettings;
-    this.maxBulletTime = itemSettings.timeline.reduce(
-      (max, item) => (max > item.end ? max : item.end),
-      0
-    );
+    this.maxBulletTime = itemSettings.timeline.reduce((max, item) => {
+      const end = adjustForDifficulty(this.difficulty, item.end);
+      return max > end ? max : end;
+    }, 0);
 
     this.uniqueBind("EnterFrame", this._updateBullet);
   },
 
   _updateBullet({ dt }) {
     this.bulletTime += dt;
+    const v = this.bulletTime;
+
+    this.bulletSettings.timeline.forEach(event => {
+      const start = adjustForDifficulty(this.difficulty, event.start);
+      const end = adjustForDifficulty(this.difficulty, event.end);
+      if (start > v || v >= end) return;
+      if (!event.animateFn && event.velocity !== undefined) {
+        const animateFn = tweenFn(this, {
+          velocity: adjustForDifficulty(this.difficulty, event.velocity)
+        });
+        const easing = easingFunctions[event.easing || "linear"];
+        event.animateFn = t => animateFn(easing(t));
+      }
+      if (event.animateFn) {
+        const localV = (v - start) / (end - start);
+        event.animateFn(localV);
+      }
+    });
 
     if (this.bulletTime > this.maxBulletTime) {
       this.unbind("EnterFrame", this._updateBullet);
