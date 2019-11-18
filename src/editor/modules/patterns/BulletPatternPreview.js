@@ -26,7 +26,11 @@ export class BulletPatternPreview extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      (propChanged(prevProps, this.props, ["difficulty", "collisionType"]) &&
+      (propChanged(prevProps, this.props, [
+        "pattern",
+        "difficulty",
+        "collisionType"
+      ]) &&
         this.state.craftyMounted) ||
       (this.props.pattern &&
         this.state.craftyMounted &&

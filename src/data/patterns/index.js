@@ -107,7 +107,7 @@ export default {
             velocity: [0, 100],
             easing: "easeOutQuad"
           },
-          { velocity: [900, 1200] },
+          { velocity: [900, 1200], aimOnTarget: true },
           { duration: 3000 }
         ],
         collisions: {

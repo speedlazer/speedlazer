@@ -237,14 +237,13 @@ Crafty.c(Composable, {
   },
 
   composableFreeze() {
+    this.appliedDefinition;
+    this.stopAnimation();
     this._children.forEach(child => child.freeze && child.freeze());
   },
   composableUnfreeze() {
     this._children.forEach(child => child.unfreeze && child.unfreeze());
-    if (
-      this.appliedDefinition.animations &&
-      this.appliedDefinition.animations.default
-    ) {
+    if (this.getAnimation("default")) {
       this.playAnimation("default");
     }
   },
@@ -283,20 +282,21 @@ Crafty.c(Composable, {
       });
     }
 
-    if (
-      definition.animations &&
-      definition.animations.default &&
-      autoStartAnimation
-    ) {
+    if (this.getAnimation("default") && autoStartAnimation) {
       this.playAnimation("default");
     }
     return this;
   },
 
-  playAnimation(animationName) {
-    const animationData =
+  getAnimation(animationName) {
+    return (
       this.appliedDefinition.animations &&
-      this.appliedDefinition.animations[animationName];
+      this.appliedDefinition.animations[animationName]
+    );
+  },
+
+  playAnimation(animationName) {
+    const animationData = this.getAnimation(animationName);
     if (!animationData)
       throw new Error(`Animation ${animationName} not found in playAnimation`);
 
@@ -342,7 +342,8 @@ Crafty.c(Composable, {
             event.endFrame &&
             displayFrameFn(this, event.endFrame, event.startFrame)) ||
           (event.spriteAnimation &&
-            displaySpriteAnimationFn(this, event.spriteAnimation));
+            displaySpriteAnimationFn(this, event.spriteAnimation)) ||
+          (() => {});
 
       const localV = (v - event.start) / (event.end - event.start);
       event.animateFn(localV);

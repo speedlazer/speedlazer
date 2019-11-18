@@ -11,7 +11,7 @@ Crafty.c(AngleMotion, {
         return this._velocity;
       },
       configurable: true,
-      enumberable: true
+      enumerable: true
     },
     _velocity: { value: 0, writable: true, enumerable: false },
 
@@ -24,12 +24,19 @@ Crafty.c(AngleMotion, {
         return this._angle;
       },
       configurable: true,
-      enumberable: true
+      enumerable: true
     },
     _angle: { value: 0, writable: true, enumerable: false }
   },
 
   _setAngleAndSpeed(angle, speed) {
+    if (speed === 0) {
+      this.attr({
+        vy: 0,
+        vx: 0
+      });
+      return;
+    }
     this.attr({
       vy: -Math.sin((angle / 180) * Math.PI) * speed,
       vx: -Math.cos((angle / 180) * Math.PI) * speed

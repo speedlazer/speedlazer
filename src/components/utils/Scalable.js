@@ -4,6 +4,7 @@ Crafty.c(Scalable, {
   properties: {
     scaleX: {
       set(v) {
+        if (v === this._scaleX) return;
         this._updateScaleX(v);
       },
       get() {
@@ -20,6 +21,7 @@ Crafty.c(Scalable, {
     },
     scaleY: {
       set(v) {
+        if (v === this._scaleY) return;
         this._updateScaleY(v);
       },
       get() {
@@ -36,6 +38,7 @@ Crafty.c(Scalable, {
     },
     scale: {
       set(v) {
+        if (v === this._scale) return;
         this._updateScale(v);
       },
       get() {

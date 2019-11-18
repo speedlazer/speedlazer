@@ -1,6 +1,7 @@
 import compositions from "src/data/compositions";
 import Composable from "src/components/Composable";
 import AngleMotion from "src/components/AngleMotion";
+import Steering from "src/components/Steering";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import { easingFunctions } from "src/constants/easing";
 
@@ -17,10 +18,10 @@ const middle = obj => ({ x: obj.x + obj.w / 2, y: obj.y + obj.h / 2 });
 
 const calcHitPosition = (objA, objB) => {
   const mA = middle(objA);
-  const mB = middle(objB);
+  //const mB = middle(objB);
   return {
-    x: (mA.x + mB.x) / 2,
-    y: (mA.y + mB.y) / 2
+    x: mA.x,
+    y: mA.y
   };
 };
 
@@ -38,25 +39,42 @@ Crafty.c(Bullet, {
     const firstObj = hitData[0].obj;
     const position = calcHitPosition(this, firstObj);
     (collisionConfig.spawns || []).forEach(([name, settings]) => {
-      spawnItem(this.weaponDefinition, name, settings, firstObj, position);
+      spawnItem(
+        this.weaponDefinition,
+        name,
+        settings,
+        firstObj,
+        position,
+        this.target
+      );
     });
 
-    this.bulletTime = 0;
     this.unbind("EnterFrame", this._updateBullet);
+    this.bulletTime = 0;
     this.freeze();
   },
 
-  bullet(weaponDefinition, itemSettings, overrideSettings, initialAngle) {
+  bullet(
+    weaponDefinition,
+    itemSettings,
+    overrideSettings,
+    initialAngle,
+    target
+  ) {
     this.weaponDefinition = weaponDefinition;
     this.bulletSettings = { ...itemSettings };
-    this.bulletSettings.queue = (this.bulletSettings.queue || []).map(event =>
-      Object.entries(event).reduce(
-        (a, [k, v]) => ({
-          ...a,
-          [k]: adjustForDifficulty(this.difficulty, v)
-        }),
-        {}
-      )
+    this.bulletSettings.queue = (this.bulletSettings.queue || []).map(
+      event => ({
+        duration: 0,
+        delay: 0,
+        ...Object.entries(event).reduce(
+          (a, [k, v]) => ({
+            ...a,
+            [k]: adjustForDifficulty(this.difficulty, v)
+          }),
+          {}
+        )
+      })
     );
 
     const initialVelocity = adjustForDifficulty(
@@ -64,12 +82,12 @@ Crafty.c(Bullet, {
       itemSettings.velocity
     );
 
-    this.attr({ angle: initialAngle, velocity: initialVelocity });
+    this.attr({ angle: initialAngle, velocity: initialVelocity, target });
 
     // add lifecycle stuff, bullet entity pools, etc.
     this.bulletTime = 0;
     this.bulletDefinition = itemSettings;
-    this.maxBulletTime = itemSettings.queue.reduce((max, item) => {
+    this.maxBulletTime = this.bulletSettings.queue.reduce((max, item) => {
       const delay = adjustForDifficulty(this.difficulty, item.delay);
       const duration = adjustForDifficulty(this.difficulty, item.duration);
       return max + delay + duration;
@@ -85,11 +103,40 @@ Crafty.c(Bullet, {
     if (upcoming) {
       upcoming.delay = (upcoming.delay || 0) - dt;
       const localV =
-        (upcoming.duration - (upcoming.duration + upcoming.delay)) /
-        upcoming.duration;
-      if (upcoming.delay < 0 && (upcoming.duration || 0) === 0) {
+        upcoming.duration === 0
+          ? 1
+          : (upcoming.duration - (upcoming.duration + upcoming.delay)) /
+            upcoming.duration;
+
+      if (upcoming.delay < 0 && upcoming.duration === 0) {
         if (upcoming.velocity !== undefined) {
           this.attr({ velocity: upcoming.velocity });
+        }
+        if (upcoming.steering !== undefined) {
+          this.addComponent(Steering).attr({ steering: upcoming.steering });
+        }
+        if (upcoming.aimOnTarget !== undefined) {
+          const potentialTargets = Crafty(this.target);
+          if (potentialTargets.length > 0) {
+            const target = Crafty(
+              potentialTargets[
+                Math.floor(Math.random() * potentialTargets.length)
+              ]
+            );
+            const targetLocation = {
+              x: target.x + target.w / 2,
+              y: target.y + target.h / 2
+            };
+
+            const aimVector = {
+              x: this.x - targetLocation.x,
+              y: this.y - targetLocation.y
+            };
+            const radians = Math.atan2(aimVector.y, aimVector.x);
+            const angle = (radians / Math.PI) * 180;
+
+            this.attr({ angle, rotation: angle });
+          }
         }
       }
       if (upcoming.delay < 0 && upcoming.duration > 0) {
@@ -104,7 +151,7 @@ Crafty.c(Bullet, {
           upcoming.animateFn(localV);
         }
       }
-      if (localV > 1) {
+      if (localV >= 1) {
         this.bulletSettings.queue.shift();
       }
     }
@@ -155,14 +202,30 @@ const getItemFromPool = itemDefinition => {
   return spawn;
 };
 
-const spawnItem = (definition, itemName, itemSettings, spawner, position) => {
+const spawnItem = (
+  definition,
+  itemName,
+  itemSettings,
+  spawner,
+  position,
+  target
+) => {
   const itemDef = definition.spawnables[itemName];
 
   const spawn = getItemFromPool(itemDef);
+
   spawn.attr({
     difficulty: spawner.difficulty
   });
   const angle = position.angle + ({ ...itemDef, ...itemSettings }.angle || 0);
+
+  spawn.attr({
+    x: position.x - spawn.w / 2,
+    y: position.y - spawn.h / 2,
+    z: spawner.z,
+    rotation: angle
+  });
+
   if (typeof itemDef.spawnPosition === "object") {
     spawn.attr({
       x: position.x - spawn._origin.x,
@@ -171,16 +234,7 @@ const spawnItem = (definition, itemName, itemSettings, spawner, position) => {
       rotation: angle
     });
   }
-  if (typeof itemDef.spawnPosition === "string") {
-    spawn.attr({
-      x: position.x - spawn.w / 2,
-      y: position.y - spawn.h / 2,
-      z: spawner.z,
-      rotation: angle
-    });
-  }
-
-  spawn.bullet(definition, itemDef, itemSettings, angle);
+  spawn.bullet(definition, itemDef, itemSettings, angle, target);
 };
 
 const Weapon = "Weapon";
@@ -213,11 +267,18 @@ Crafty.c(Weapon, {
 
   _weaponSpawn(w) {
     w.definition.pattern.spawns.forEach(([name, overrideSettings]) => {
-      spawnItem(w.definition.pattern, name, overrideSettings, this, {
-        x: this.x + w.definition.x,
-        y: this.y + w.definition.y,
-        angle: w.definition.angle
-      });
+      spawnItem(
+        w.definition.pattern,
+        name,
+        overrideSettings,
+        this,
+        {
+          x: this.x + w.definition.x,
+          y: this.y + w.definition.y,
+          angle: w.definition.angle
+        },
+        w.definition.target
+      );
     });
   },
 
