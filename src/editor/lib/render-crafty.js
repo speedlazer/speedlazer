@@ -389,7 +389,7 @@ Crafty.defineScene(
       .color("#FF0000");
 
     Crafty.e(
-      ["2D, WebGL, Color, Blue", collisionType, WayPointMotion]
+      ["2D, WebGL, Color, Blue, Collision", collisionType, WayPointMotion]
         .filter(Boolean)
         .join(", ")
     )

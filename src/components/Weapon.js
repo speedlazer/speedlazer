@@ -30,10 +30,6 @@ const Bullet = "Bullet";
 Crafty.c(Bullet, {
   required: `2D, Motion, WebGL, ${AngleMotion}`,
 
-  init() {
-    this.bind("HitOn", this._bulletHit);
-  },
-
   _bulletHit(collisionType, hitData) {
     const collisionConfig = this.bulletSettings.collisions[collisionType];
     const firstObj = hitData[0].obj;
@@ -190,7 +186,10 @@ const getItemFromPool = itemDefinition => {
   }
   const collisionChecks = Object.keys(itemDefinition.collisions || {});
   if (collisionChecks.length > 0) {
-    spawn.addComponent("Collision");
+    if (!spawn.has("Collision")) {
+      spawn.addComponent("Collision");
+    }
+
     collisionChecks.forEach(collisionType => {
       spawn.onHit(collisionType, hitDatas => {
         spawn._bulletHit(collisionType, hitDatas);
