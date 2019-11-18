@@ -1,4 +1,41 @@
 export default {
+  "heli.rocket": {
+    spawnRhythm: {
+      initialDelay: [1500, 150],
+      burst: 2,
+      shotDelay: [250, 190],
+      burstDelay: [3000, 2000]
+    },
+    spawns: [["rocket", { angle: -10 }]],
+    spawnables: {
+      rocket: {
+        spawnPosition: [0, 0.5],
+        velocity: [250, 400],
+        composition: "weapons.rocket",
+        queue: [{ steering: 120 }, { duration: 14000 }],
+        collisions: {
+          SolidCollision: {
+            spawns: [["spark", {}]]
+          },
+          WaterCollision: {
+            spawns: [["splash", {}]]
+          }
+        }
+      },
+      spark: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.solidHit",
+        queue: [{ duration: 100 }]
+      },
+      splash: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.waterHit",
+        queue: [{ duration: 305 }]
+      }
+    }
+  },
   "turret.bullet": {
     spawnRhythm: {
       initialDelay: [1500, 150],

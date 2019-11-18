@@ -24,7 +24,46 @@ Crafty.c(Steering, {
   },
 
   _updateSteering({ dt }) {
-    console.log("update steering", this.target, this._steering);
+    if (!this.currentTarget && this.target) {
+      const potentialTargets = Crafty(this.target);
+      if (potentialTargets.length > 0) {
+        this.currentTarget = Crafty(
+          potentialTargets[Math.floor(Math.random() * potentialTargets.length)]
+        );
+      }
+    }
+    if (!this.currentTarget) return;
+    const targetLocation = {
+      x: this.currentTarget.x + this.currentTarget.w / 2,
+      y: this.currentTarget.y + this.currentTarget.h / 2
+    };
+
+    const aimVector = {
+      x: this.x - targetLocation.x,
+      y: this.y - targetLocation.y
+    };
+    const radians = Math.atan2(aimVector.y, aimVector.x);
+    const aimAngle = (radians / Math.PI) * 180;
+
+    const steering = (this._steering / 1000) * dt;
+
+    const diff = (360 + aimAngle - this.angle) % 360;
+    if (diff > steering) {
+      this.attr({
+        angle: (360 + this.angle + steering) % 360,
+        rotation: (360 + this.rotation + steering) % 360
+      });
+    } else if (diff < steering) {
+      this.attr({
+        angle: (360 + this.angle - steering) % 360,
+        rotation: (360 + this.rotation - steering) % 360
+      });
+    } else {
+      this.attr({
+        angle: (360 + aimAngle) % 360,
+        rotation: (360 + aimAngle) % 360
+      });
+    }
   }
 });
 
