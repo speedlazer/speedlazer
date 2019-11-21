@@ -2,17 +2,23 @@ export default {
   "heli.rocket": {
     spawnRhythm: {
       initialDelay: [1500, 150],
-      burst: 2,
+      burst: 1,
       shotDelay: [250, 190],
       burstDelay: [3000, 2000]
     },
-    spawns: [["rocket", { angle: -10 }]],
+    spawns: [["rocket", { angle: 90, autoRotate: false }]],
     spawnables: {
       rocket: {
         spawnPosition: [0, 0.5],
         velocity: [250, 400],
         composition: "weapons.rocket",
-        queue: [{ steering: 120 }, { duration: 14000 }],
+        queue: [
+          { duration: 130 },
+          { velocity: 0, angle: 0, autoRotate: true },
+          { duration: 500 },
+          { velocity: [250, 400], steering: 120 },
+          { duration: 14000 }
+        ],
         collisions: {
           SolidCollision: {
             spawns: [["spark", {}]]
@@ -184,12 +190,12 @@ export default {
       ["muzzleFlash", {}]
     ]
   },
-  "boss.extreme test": {
+  "boss.extreme-test": {
     spawnRhythm: {
       initialDelay: [1500, 150],
       burst: [5, 30],
       shotDelay: 200,
-      burstDelay: [2000, 0]
+      burstDelay: [2000, 10]
     },
     spawnables: {
       bullet: {
