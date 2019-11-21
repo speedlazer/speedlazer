@@ -6,7 +6,10 @@ export default {
       shotDelay: [250, 190],
       burstDelay: [3000, 2000]
     },
-    spawns: [["rocket", { angle: 90, autoRotate: false }]],
+    spawns: [
+      ["rocket", { angle: 90, autoRotate: false }],
+      ["rocket", { angle: -90, autoRotate: false }]
+    ],
     spawnables: {
       rocket: {
         spawnPosition: [0, 0.5],
@@ -16,7 +19,7 @@ export default {
           { duration: 130 },
           { velocity: 0, angle: 0, autoRotate: true },
           { duration: 500 },
-          { velocity: [250, 400], steering: 120 },
+          { velocity: [250, 400], steering: 180 },
           { duration: 14000 }
         ],
         collisions: {
