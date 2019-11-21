@@ -5,7 +5,7 @@ Crafty.c(AngleMotion, {
     velocity: {
       set: function(value) {
         this._velocity = value;
-        this._setAngleAndSpeed(this._angle, this._velocity);
+        this._setAngleAndVelocity(this._angle, this._velocity);
       },
       get: function() {
         return this._velocity;
@@ -18,7 +18,7 @@ Crafty.c(AngleMotion, {
     angle: {
       set: function(value) {
         this._angle = value;
-        this._setAngleAndSpeed(this._angle, this._velocity);
+        this._setAngleAndVelocity(this._angle, this._velocity);
       },
       get: function() {
         return this._angle;
@@ -29,8 +29,8 @@ Crafty.c(AngleMotion, {
     _angle: { value: 0, writable: true, enumerable: false }
   },
 
-  _setAngleAndSpeed(angle, speed) {
-    if (speed === 0) {
+  _setAngleAndVelocity(angle, velocity) {
+    if (velocity === 0) {
       this.attr({
         vy: 0,
         vx: 0
@@ -38,8 +38,8 @@ Crafty.c(AngleMotion, {
       return;
     }
     this.attr({
-      vy: -Math.sin((angle / 180) * Math.PI) * speed,
-      vx: -Math.cos((angle / 180) * Math.PI) * speed
+      vy: -Math.sin((angle / 180) * Math.PI) * velocity,
+      vx: -Math.cos((angle / 180) * Math.PI) * velocity
     });
   }
 });
