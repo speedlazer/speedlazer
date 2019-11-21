@@ -103,11 +103,10 @@ Crafty.c(Bullet, {
 
     // add lifecycle stuff, bullet entity pools, etc.
     this.bulletTime = 0;
-    this.maxBulletTime = this.bulletSettings.queue.reduce((max, item) => {
-      const delay = adjustForDifficulty(this.difficulty, item.delay);
-      const duration = adjustForDifficulty(this.difficulty, item.duration);
-      return max + delay + duration;
-    }, 0);
+    this.maxBulletTime = this.bulletSettings.queue.reduce(
+      (max, item) => max + adjustForDifficulty(this.difficulty, item.duration),
+      0
+    );
 
     this.uniqueBind("EnterFrame", this._updateBullet);
   },
@@ -124,9 +123,12 @@ Crafty.c(Bullet, {
           : (upcoming.duration - (upcoming.duration + upcoming.delay)) /
             upcoming.duration;
 
-      if (upcoming.delay < 0 && upcoming.duration === 0) {
+      if (upcoming.delay <= 0 && upcoming.duration === 0) {
         if (upcoming.velocity !== undefined) {
           this.attr({ velocity: upcoming.velocity });
+        }
+        if (upcoming.angle !== undefined) {
+          this.attr({ angle: upcoming.angle });
         }
         if (upcoming.cleanOutOfScreen !== undefined) {
           this.addComponent(ScreenBound);
@@ -158,7 +160,7 @@ Crafty.c(Bullet, {
           }
         }
       }
-      if (upcoming.delay < 0 && upcoming.duration > 0) {
+      if (upcoming.duration > 0) {
         if (!upcoming.animateFn && upcoming.velocity !== undefined) {
           const animateFn = tweenFn(this, {
             velocity: upcoming.velocity
@@ -197,7 +199,9 @@ const getItemFromPool = itemDefinition => {
 
   const spawn = Crafty.e(Bullet).attr({
     x: 3000,
-    y: 3000
+    y: 3000,
+    angle: 0,
+    rotation: 0
   });
   spawn.bulletDefinition = itemDefinition;
   if (itemDefinition.sprite) {
@@ -254,23 +258,22 @@ const spawnItem = (
   const itemDef = definition.spawnables[itemName];
   generator(itemDef, itemSettings, position, spawner.difficulty, settings => {
     const spawn = getItemFromPool(itemDef);
+    const autoRotate = settings.autoRotate !== false;
     spawn.attr({
-      difficulty: spawner.difficulty
-    });
-
-    spawn.attr({
+      difficulty: spawner.difficulty,
       x: position.x - spawn.w / 2,
       y: position.y - spawn.h / 2,
       z: spawner.z,
-      rotation: settings.angle
+      autoRotate,
+      angle: settings.angle,
+      steering: 0,
+      rotation: autoRotate ? settings.angle : 0
     });
 
     if (typeof settings.spawnPosition === "object") {
       spawn.attr({
         x: position.x - spawn._origin.x,
-        y: position.y - spawn._origin.y,
-        z: spawner.z,
-        rotation: settings.angle
+        y: position.y - spawn._origin.y
       });
     }
     spawn.bullet(definition, settings, target);
