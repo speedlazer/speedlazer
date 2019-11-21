@@ -183,5 +183,42 @@ export default {
       ["bullet", { angle: -40 }],
       ["muzzleFlash", {}]
     ]
+  },
+  "boss.extreme test": {
+    spawnRhythm: {
+      initialDelay: [1500, 150],
+      burst: [5, 30],
+      shotDelay: 200,
+      burstDelay: [2000, 0]
+    },
+    spawnables: {
+      bullet: {
+        spawnPosition: [0, 0.5],
+        velocity: 200,
+        composition: "weapons.bullet",
+        queue: [{ cleanOutOfScreen: true }, { duration: 13000 }],
+        collisions: {
+          SolidCollision: {
+            spawns: [["spark", {}]]
+          },
+          WaterCollision: {
+            spawns: [["splash", {}]]
+          }
+        }
+      },
+      spark: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.solidHit",
+        queue: [{ duration: 100 }]
+      },
+      splash: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.waterHit",
+        queue: [{ duration: 305 }]
+      }
+    },
+    spawns: [["bullet", { angleRange: { from: 0, to: 360, step: 8 } }]]
   }
 };

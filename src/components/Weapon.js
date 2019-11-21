@@ -16,6 +16,33 @@ const adjustForDifficulty = (difficulty, numberOrArray, defaultValue = 0) =>
 
 const middle = obj => ({ x: obj.x + obj.w / 2, y: obj.y + obj.h / 2 });
 
+const ScreenBound = "ScreenBound";
+Crafty.c(ScreenBound, {
+  required: "2D",
+
+  init() {
+    this.bind("UpdateFrame", this._checkBounds);
+  },
+
+  _checkBounds() {
+    const maxX =
+      -Crafty.viewport._x +
+      Crafty.viewport._width / Crafty.viewport._scale +
+      10;
+    const minX = -Crafty.viewport._x - 50;
+
+    const maxY =
+      -Crafty.viewport._y +
+      Crafty.viewport._height / Crafty.viewport._scale +
+      10;
+    const minY = -Crafty.viewport._y - 50;
+
+    if (this.x > maxX || minX > this.x || minY > this.y || this.y > maxY) {
+      this.freeze();
+    }
+  }
+});
+
 const calcHitPosition = (objA, objB) => {
   const mA = middle(objA);
   //const mB = middle(objB);
@@ -50,15 +77,9 @@ Crafty.c(Bullet, {
     this.freeze();
   },
 
-  bullet(
-    weaponDefinition,
-    itemSettings,
-    overrideSettings,
-    initialAngle,
-    target
-  ) {
+  bullet(weaponDefinition, settings, target) {
     this.weaponDefinition = weaponDefinition;
-    this.bulletSettings = { ...itemSettings };
+    this.bulletSettings = { ...settings };
     this.bulletSettings.queue = (this.bulletSettings.queue || []).map(
       event => ({
         duration: 0,
@@ -75,14 +96,13 @@ Crafty.c(Bullet, {
 
     const initialVelocity = adjustForDifficulty(
       this.difficulty,
-      itemSettings.velocity
+      settings.velocity
     );
 
-    this.attr({ angle: initialAngle, velocity: initialVelocity, target });
+    this.attr({ angle: settings.angle, velocity: initialVelocity, target });
 
     // add lifecycle stuff, bullet entity pools, etc.
     this.bulletTime = 0;
-    this.bulletDefinition = itemSettings;
     this.maxBulletTime = this.bulletSettings.queue.reduce((max, item) => {
       const delay = adjustForDifficulty(this.difficulty, item.delay);
       const duration = adjustForDifficulty(this.difficulty, item.duration);
@@ -107,6 +127,9 @@ Crafty.c(Bullet, {
       if (upcoming.delay < 0 && upcoming.duration === 0) {
         if (upcoming.velocity !== undefined) {
           this.attr({ velocity: upcoming.velocity });
+        }
+        if (upcoming.cleanOutOfScreen !== undefined) {
+          this.addComponent(ScreenBound);
         }
         if (upcoming.steering !== undefined) {
           this.addComponent(Steering).attr({ steering: upcoming.steering });
@@ -176,6 +199,7 @@ const getItemFromPool = itemDefinition => {
     x: 3000,
     y: 3000
   });
+  spawn.bulletDefinition = itemDefinition;
   if (itemDefinition.sprite) {
     spawn.addComponent(itemDefinition.sprite);
   }
@@ -201,6 +225,24 @@ const getItemFromPool = itemDefinition => {
   return spawn;
 };
 
+const generator = (itemDef, itemSettings, position, difficulty, f) => {
+  const settings = { ...itemDef, ...itemSettings };
+  if (settings.angleRange) {
+    for (
+      let spawnAngle = settings.angleRange.from;
+      spawnAngle <= settings.angleRange.to;
+      spawnAngle += settings.angleRange.step
+    ) {
+      const angle = position.angle + spawnAngle;
+      f({ ...settings, angle });
+    }
+  } else {
+    const angle =
+      position.angle + ({ ...settings, ...itemSettings }.angle || 0);
+    f({ ...settings, angle });
+  }
+};
+
 const spawnItem = (
   definition,
   itemName,
@@ -210,30 +252,29 @@ const spawnItem = (
   target
 ) => {
   const itemDef = definition.spawnables[itemName];
-
-  const spawn = getItemFromPool(itemDef);
-
-  spawn.attr({
-    difficulty: spawner.difficulty
-  });
-  const angle = position.angle + ({ ...itemDef, ...itemSettings }.angle || 0);
-
-  spawn.attr({
-    x: position.x - spawn.w / 2,
-    y: position.y - spawn.h / 2,
-    z: spawner.z,
-    rotation: angle
-  });
-
-  if (typeof itemDef.spawnPosition === "object") {
+  generator(itemDef, itemSettings, position, spawner.difficulty, settings => {
+    const spawn = getItemFromPool(itemDef);
     spawn.attr({
-      x: position.x - spawn._origin.x,
-      y: position.y - spawn._origin.y,
-      z: spawner.z,
-      rotation: angle
+      difficulty: spawner.difficulty
     });
-  }
-  spawn.bullet(definition, itemDef, itemSettings, angle, target);
+
+    spawn.attr({
+      x: position.x - spawn.w / 2,
+      y: position.y - spawn.h / 2,
+      z: spawner.z,
+      rotation: settings.angle
+    });
+
+    if (typeof settings.spawnPosition === "object") {
+      spawn.attr({
+        x: position.x - spawn._origin.x,
+        y: position.y - spawn._origin.y,
+        z: spawner.z,
+        rotation: settings.angle
+      });
+    }
+    spawn.bullet(definition, settings, target);
+  });
 };
 
 const Weapon = "Weapon";
