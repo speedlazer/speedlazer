@@ -47,21 +47,28 @@ Crafty.c(Steering, {
 
     const steering = (this._steering / 1000) * dt;
 
-    const diff = (360 + aimAngle - this.angle) % 360;
+    const diffA = (aimAngle - this.angle - 360) % 360;
+    const diffB = (aimAngle - this.angle + 360) % 360;
+    const diff = Math.abs(diffA) < Math.abs(diffB) ? diffA : diffB;
+
     if (diff > steering) {
       this.attr({
         angle: (360 + this.angle + steering) % 360,
-        rotation: (360 + this.rotation + steering) % 360
+        rotation: this.autoRotate
+          ? this.rotation
+          : (360 + this.rotation + steering) % 360
       });
-    } else if (diff < steering) {
+    } else if (diff < -steering) {
       this.attr({
         angle: (360 + this.angle - steering) % 360,
-        rotation: (360 + this.rotation - steering) % 360
+        rotation: this.autoRotate
+          ? this.rotation
+          : (360 + this.rotation - steering) % 360
       });
     } else {
       this.attr({
         angle: (360 + aimAngle) % 360,
-        rotation: (360 + aimAngle) % 360
+        rotation: this.autoRotate ? this.rotation : (360 + aimAngle) % 360
       });
     }
   }
