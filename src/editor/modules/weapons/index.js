@@ -4,7 +4,7 @@ import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
 import { Text } from "../../components/Text";
 import BulletPatternPreview from "./BulletPatternPreview";
-import patterns from "src/data/patterns";
+import weapons from "src/data/weapons";
 
 const patternCollisionTypes = activePattern =>
   !activePattern
@@ -35,7 +35,7 @@ const storedState = () => {
   }
 };
 
-class Patterns extends Component {
+class Weapons extends Component {
   state = { ...DEFAULT_STATE, ...storedState() };
 
   buttonClick = difficulty => () => {
@@ -43,16 +43,16 @@ class Patterns extends Component {
   };
 
   render({ pattern }, { difficulty, collisionType, moveBlue }) {
-    const activePattern = patterns[pattern];
+    const activePattern = weapons[pattern];
 
     storeState(this.state);
     const collisionTypes = patternCollisionTypes(activePattern);
     return (
       <section>
-        <Title>Patterns</Title>
+        <Title>Weapons</Title>
         <Divider>
           <Menu
-            items={Object.keys(patterns).map(key => [key, `/patterns/${key}`])}
+            items={Object.keys(weapons).map(key => [key, `/weapons/${key}`])}
           />
           {activePattern && (
             <div>
@@ -103,4 +103,4 @@ class Patterns extends Component {
   }
 }
 
-export default Patterns;
+export default Weapons;

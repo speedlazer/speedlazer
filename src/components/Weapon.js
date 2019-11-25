@@ -308,8 +308,8 @@ Crafty.c(Weapon, {
     return this;
   },
 
-  _weaponSpawn(w) {
-    w.definition.pattern.spawns.forEach(([name, overrideSettings]) => {
+  _weaponSpawn(w, spawnRhythm) {
+    spawnRhythm.spawns.forEach(([name, overrideSettings]) => {
       spawnItem(
         w.definition.pattern,
         name,
@@ -332,7 +332,7 @@ Crafty.c(Weapon, {
       if (w.initialDelay > 0) {
         w.initialDelay -= dt;
         if (w.initialDelay <= 0) {
-          this._weaponSpawn(w);
+          this._weaponSpawn(w, spawnRhythm);
           w.shotIndex = 0;
           w.shotDelay = adjustForDifficulty(
             this.difficulty,
@@ -352,7 +352,7 @@ Crafty.c(Weapon, {
             spawnRhythm.burstDelay
           );
         } else {
-          this._weaponSpawn(w);
+          this._weaponSpawn(w, spawnRhythm);
           w.shotDelay = adjustForDifficulty(
             this.difficulty,
             spawnRhythm.shotDelay

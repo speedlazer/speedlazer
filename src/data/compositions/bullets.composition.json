@@ -8,6 +8,30 @@
     "hitbox": [2, 3, 14, 3, 14, 12, 2, 12],
     "sprites": [["sphere1", { "z": -2, "crop": [17, 6, 0, 0], "flipX": true }]]
   },
+  "weapons.sphere": {
+    "attributes": {
+      "width": 16,
+      "height": 16,
+      "ro": [8, 8]
+    },
+    "sprites": [["sphere1", { "z": -2, "crop": [0, 6, 17, 0], "key": "main" }]],
+    "animations": {
+      "default": {
+        "repeat": true,
+        "duration": 300,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 1.0,
+            "spriteAnimation": {
+              "key": "main",
+              "sprites": ["sphere1", "sphere2"]
+            }
+          }
+        ]
+      }
+    }
+  },
   "weapons.rocket": {
     "attributes": {
       "width": 47,
