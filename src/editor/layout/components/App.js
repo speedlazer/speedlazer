@@ -8,6 +8,7 @@ import Sceneries from "src/editor/modules/sceneries";
 import Backgrounds from "src/editor/modules/backgrounds";
 import Paths from "src/editor/modules/paths";
 import Weapons from "src/editor/modules/weapons";
+import Particles from "src/editor/modules/particles";
 
 export const App = () => (
   <div>
@@ -18,6 +19,7 @@ export const App = () => (
         ["Compositions", "/compositions"],
         ["Paths", "/paths"],
         ["Weapons", "/weapons"],
+        ["Particles", "/particles"],
         ["Backgrounds", "/backgrounds"],
         ["Sceneries", "/sceneries"],
         ["Entities", "/entities"]
@@ -36,6 +38,7 @@ export const App = () => (
       <Backgrounds path="/editor/backgrounds/:background/checkpoints/:checkpoint" />
       <Paths path="/editor/paths/:pattern?" />
       <Weapons path="/editor/weapons/:weapon?" />
+      <Particles path="/editor/particles/:particles?" />
     </Router>
   </div>
 );
