@@ -199,7 +199,7 @@ export default {
       burst: 1,
       shotDelay: 4000,
       burstDelay: [1500, 500],
-      spawns: [["bullet", { angleRange: { from: -60, to: 60, step: 8 } }]]
+      spawns: [["bullet", { angleRange: { from: 0, to: 360, step: 8 } }]]
     },
     spawnables: {
       bullet: {
@@ -208,7 +208,7 @@ export default {
         composition: "weapons.bullet",
         queue: [
           { cleanOutOfScreen: true },
-          { duration: 800 },
+          { duration: 200 },
           { duration: 500, velocity: 0 },
           { velocity: [900, 1200], aimOnTarget: true },
           { duration: 3000 }

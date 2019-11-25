@@ -6,10 +6,10 @@ import { Text } from "../../components/Text";
 import BulletPatternPreview from "./BulletPatternPreview";
 import weapons from "src/data/weapons";
 
-const patternCollisionTypes = activePattern =>
-  !activePattern
+const weaponCollisionTypes = activeWeapon =>
+  !activeWeapon
     ? []
-    : Object.values(activePattern.spawnables || {})
+    : Object.values(activeWeapon.spawnables || {})
         .reduce(
           (acc, spawnable) =>
             acc.concat(Object.keys(spawnable.collisions || {})),
@@ -42,11 +42,11 @@ class Weapons extends Component {
     this.setState(state => ({ ...state, difficulty }));
   };
 
-  render({ pattern }, { difficulty, collisionType, moveBlue }) {
-    const activePattern = weapons[pattern];
+  render({ weapon }, { difficulty, collisionType, moveBlue }) {
+    const activeWeapon = weapons[weapon];
 
     storeState(this.state);
-    const collisionTypes = patternCollisionTypes(activePattern);
+    const collisionTypes = weaponCollisionTypes(activeWeapon);
     return (
       <section>
         <Title>Weapons</Title>
@@ -54,7 +54,7 @@ class Weapons extends Component {
           <Menu
             items={Object.keys(weapons).map(key => [key, `/weapons/${key}`])}
           />
-          {activePattern && (
+          {activeWeapon && (
             <div>
               <div>
                 <button onClick={this.buttonClick(0.0)}>Easy</button>
@@ -90,7 +90,7 @@ class Weapons extends Component {
                 />
               )}
               <BulletPatternPreview
-                pattern={activePattern}
+                weapon={activeWeapon}
                 difficulty={difficulty}
                 collisionType={collisionType}
                 moveBlue={moveBlue}

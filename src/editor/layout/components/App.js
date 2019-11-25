@@ -35,7 +35,7 @@ export const App = () => (
       <Backgrounds path="/editor/backgrounds/:background?" />
       <Backgrounds path="/editor/backgrounds/:background/checkpoints/:checkpoint" />
       <Paths path="/editor/paths/:pattern?" />
-      <Weapons path="/editor/weapons/:pattern?" />
+      <Weapons path="/editor/weapons/:weapon?" />
     </Router>
   </div>
 );
