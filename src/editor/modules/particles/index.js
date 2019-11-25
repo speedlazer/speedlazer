@@ -2,6 +2,7 @@ import { h, Component } from "preact";
 import { Title } from "../../components/Title";
 import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
+import ParticleEmitterPreview from "./ParticleEmitterPreview";
 import particles from "src/data/particles";
 
 class Particles extends Component {
@@ -18,7 +19,11 @@ class Particles extends Component {
               `/particles/${key}`
             ])}
           />
-          {activeParticles && <div></div>}
+          {activeParticles && (
+            <div>
+              <ParticleEmitterPreview emitter={activeParticles} />
+            </div>
+          )}
         </Divider>
       </section>
     );

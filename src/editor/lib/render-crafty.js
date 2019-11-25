@@ -3,6 +3,7 @@ import backgrounds from "src/data/backgrounds";
 import Composable from "src/components/Composable";
 import Weapon from "src/components/Weapon";
 import WayPointMotion from "src/components/WayPointMotion";
+import ParticleEmitter from "src/components/ParticleEmitter";
 import "src/components/LightGlare";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";
@@ -412,5 +413,32 @@ export const showBulletPattern = async (
     pattern,
     difficulty,
     collisionType
+  });
+};
+
+Crafty.defineScene("ParticleEmitterPreview", () => {
+  //Crafty.e("2D, WebGL, Color")
+  //.attr({
+  //x: 500,
+  //y: 250,
+  //w: 200,
+  //h: 20
+  //})
+  //.color("#FF0000");
+
+  Crafty.e(`2D, WebGL, ${ParticleEmitter}`)
+    .attr({
+      x: 500,
+      y: 250,
+      w: 200,
+      h: 20
+    })
+    .particles();
+});
+
+export const showParticleEmitter = async emitter => {
+  await loadSpriteSheets();
+  Crafty.enterScene("ParticleEmitterPreview", {
+    emitter
   });
 };
