@@ -16,7 +16,9 @@ void main() {
   mat2 entityRotationMatrix = mat2(cos(aOrientation.z), sin(aOrientation.z), -sin(aOrientation.z), cos(aOrientation.z));
 
   pos = entityRotationMatrix * (pos - entityOrigin) + entityOrigin;
+
   gl_Position = viewportScale * (viewportTranslation + vec4(pos, 1.0/(1.0+exp(aLayer.x) ), 1) );
+	gl_PointSize = 16.0;
 
   vColor = aColor;
   vLayer = aLayer;
