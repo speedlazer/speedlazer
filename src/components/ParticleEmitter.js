@@ -7,20 +7,22 @@ const randM1to1 = () => Math.random() * 2 - 1;
 const spawnParticle = (entity, settings) => {
   const x = entity.x + Math.random() * entity.w;
   const y = entity.y + Math.random() * entity.h;
-  const speed = 80 + randM1to1() * 10;
-  const angle = 0 + randM1to1() * 360;
-  const life = 1000 + randM1to1() * 500;
+  const speed = settings.velocity + randM1to1() * settings.velocityRandom;
+  const angle = settings.angle + randM1to1() * settings.angleRandom;
+  const life = settings.duration + randM1to1() * settings.durationRandom;
+  const startSize = settings.startSize + randM1to1() * settings.startSizeRandom;
+  const endSize = settings.endSize + randM1to1() * settings.endSizeRandom;
 
   return {
     aPosition: [x, y],
     aVelocity: [speed, (angle * Math.PI) / 180],
     aOrientation: [x, y, 0],
-    aSize: [8, 24],
+    aSize: [startSize, endSize],
     aLife: [entity.timeFrame, life],
     expire: entity.timeFrame + life,
     aLayer: [entity._globalZ, entity._alpha],
-    aColor1: [1, 1, 0, 1],
-    aColor2: [0.2, 0.2, 0.2, 1]
+    aColor1: [1, 0.8, 0.1, 1],
+    aColor2: [0.2, 0.2, 0.2, 0]
   };
 };
 
@@ -51,11 +53,9 @@ const ParticleEmitter = "ParticleEmitter";
 
 Crafty.c(ParticleEmitter, {
   required: `2D, ${WebGLParticles}`,
-  _red: 0,
-  _green: 0,
-  _blue: 0,
-  _strength: 1.0,
   ready: true,
+  __image: "",
+  img: null,
 
   init: function() {
     // Necessary for some rendering layers
@@ -82,13 +82,17 @@ Crafty.c(ParticleEmitter, {
   _setupParticles: function(layer) {
     if (layer.type === "WebGL") {
       this._establishShader("Particle", Crafty.defaultShader("Particle"));
+      if (this.__image !== "") {
+        this.program.setTexture(
+          layer.makeTexture(this.__image, this.img, false)
+        );
+      }
     }
   },
 
   _drawParticles: function(e) {
     // The expensive draw
     if (this.initialDraw === false) {
-      console.log("EXPENSIVE!");
       e.program.growArrays(this.particles.length);
 
       for (let pi = 0; pi < this.particles.length; pi++) {
@@ -113,12 +117,61 @@ Crafty.c(ParticleEmitter, {
     }
   },
 
-  particles: function() {
-    const amount = 800;
+  particles: function({
+    amount = 150,
+    velocity = 80,
+    velocityRandom = 20,
+    angle = 0,
+    angleRandom = 360,
+    duration = 2000,
+    durationRandom = 500,
+    startSize = 12,
+    startSizeRandom = 2,
+    endSize = 24,
+    endSizeRandom = 8,
+    sprite = null
+  } = {}) {
+    this.particleSettings = {
+      amount,
+      velocity,
+      velocityRandom,
+      angle,
+      angleRandom,
+      duration,
+      durationRandom,
+      startSize,
+      startSizeRandom,
+      endSize,
+      endSizeRandom,
+      sprite
+    };
+
+    if (this.particleSettings.sprite) {
+      const sprite = Crafty.e(`WebGL, ${this.particleSettings.sprite}`).attr({
+        x: 5000,
+        y: 5000
+      });
+      this.__image = sprite.__image;
+      this.__coord = sprite.__coord;
+      if (this.program) {
+        this.program.setTexture(
+          this._drawLayer.makeTexture(this.__image, this.img, false)
+        );
+        const gl = this.program.context;
+        gl.uniform4f(
+          this.program.shader.spriteCoords,
+          this.__coord[0],
+          this.__coord[1],
+          this.__coord[2],
+          this.__coord[3]
+        );
+      }
+      sprite.destroy();
+    }
 
     this.particles = Array(amount)
       .fill(0)
-      .map(() => spawnParticle(this));
+      .map(() => spawnParticle(this, this.particleSettings));
 
     this.nextExpireCheck = this.particles.reduce(
       (acc, p) => (acc > p.expire ? p.expire : acc),
@@ -133,79 +186,15 @@ Crafty.c(ParticleEmitter, {
     this.timeFrame += dt;
 
     if (this.timeFrame >= this.nextExpireCheck) {
-      this.nextExpireCheck = this.timeFrame + 200;
+      this.nextExpireCheck = this.timeFrame + 100;
       for (let i = 0; i < this.particles.length; i++) {
-        if (this.particles[i].expire < this.timeFrame) {
-          this.particles[i] = spawnParticle(this);
+        if (this.particles[i].expire < this.timeFrame + 50) {
+          this.particles[i] = spawnParticle(this, this.particleSettings);
           this._writeParticle(i, this.particles[i]);
         }
       }
     }
   }
 });
-
-/*
-var pos = this.drawVars.pos;
-pos._x = this._x;
-pos._y = this._y;
-pos._w = this._w;
-pos._h = this._h;
-
-var coord = this.__coord || [0, 0, 0, 0];
-var co = this.drawVars.co;
-co.x = coord[0];
-co.y = coord[1];
-co.w = coord[2];
-co.h = coord[3];
-
-// Handle flipX, flipY
-// (Just swap the positions of e.g. x and x+w)
-if (this._flipX) {
-    co.x = co.x + co.w;
-    co.w = -co.w;
-}
-if (this._flipY) {
-    co.y = co.y + co.h;
-    co.h = -co.h;
-}
-
-//Draw entity
-var gl = this._drawContext;
-this.drawVars.gl = gl;
-var prog = (this.drawVars.program = this.program);
-
-// The program might need to refer to the current element's index
-prog.setCurrentEntity(this);
-
-// Write position; x, y, w, h
-prog.writeVector(
-    "aPosition",
-    this._x,
-    this._y,
-    this._x,
-    this._y + this._h,
-    this._x + this._w,
-    this._y,
-    this._x + this._w,
-    this._y + this._h
-);
-
-// Write orientation
-prog.writeVector(
-    "aOrientation",
-    this._origin.x + this._x,
-    this._origin.y + this._y,
-    (this._rotation * Math.PI) / 180
-);
-
-// Write z, alpha
-prog.writeVector("aLayer", this._globalZ, this._alpha);
-
-// This should only need to handle *specific* attributes!
-this.trigger("Draw", this.drawVars);
-
-// Register the vertex groups to be drawn, referring to this entities position in the big buffer
-prog.addIndices(prog.ent_offset);
-*/
 
 export default ParticleEmitter;

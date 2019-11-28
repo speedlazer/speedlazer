@@ -10,6 +10,7 @@ attribute vec4 aColor2;
 varying lowp vec4 vColor;
 varying lowp vec2 vLayer;
 varying lowp vec2 vLife;
+
 uniform  vec4 uViewport;
 uniform  vec4 uTimeOffset;
 
@@ -39,5 +40,4 @@ void main() {
   vLayer = aLayer;
   vLife = vec2(duration, aLife.y);
 }
-
 

@@ -426,14 +426,19 @@ Crafty.defineScene("ParticleEmitterPreview", () => {
   //})
   //.color("#FF0000");
 
-  Crafty.e(`2D, WebGL, ${ParticleEmitter}`)
+  Crafty.e(`2D, ${ParticleEmitter}`)
     .attr({
       x: 500,
-      y: 250,
-      w: 200,
+      y: 500,
+      w: 20,
       h: 20
     })
-    .particles();
+    .particles({
+      amount: 500,
+      sprite: "explosion7",
+      angle: -90,
+      angleRandom: 20
+    });
 });
 
 export const showParticleEmitter = async emitter => {

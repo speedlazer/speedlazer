@@ -154,23 +154,6 @@ RenderProgramWrapper.prototype = {
       viewport._h
     );
   }
-
-  // Fill in the attribute with the given arguments, cycling through the data if necessary
-  // If the arguments provided match the width of the attribute, that means it'll fill the same values for each of the four vertices.
-  // TODO determine if this abstraction is a performance hit!
-  //writeVector: function(name) {
-  //var a = this._attribute_table[name];
-  //var stride = this.stride,
-  //offset = a.offset + this.ent_offset * stride,
-  //w = a.width;
-  //var l = arguments.length - 1;
-  //var data = this._attributeArray;
-
-  //// Filling buffer should be cleaned up
-  //for (var c = 0; c < w; c++) {
-  //data[offset + stride + c] = arguments[((w + c) % l) + 1];
-  //}
-  //}
 };
 
 Crafty.c(WebGLParticles, {
@@ -262,6 +245,10 @@ Crafty.c(WebGLParticles, {
     const compiledShader = this._drawLayer._makeProgram(shader);
     var gl = this._drawContext;
     compiledShader.time = gl.getUniformLocation(compiledShader, "uTimeOffset");
+    compiledShader.spriteCoords = gl.getUniformLocation(
+      compiledShader,
+      "uSpriteCoords"
+    );
 
     const program = new RenderProgramWrapper(this._drawLayer, compiledShader);
     program.name = compName;
