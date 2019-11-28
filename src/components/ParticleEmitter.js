@@ -4,6 +4,26 @@ import WebGLParticles from "src/components/WebGLParticles";
 
 const randM1to1 = () => Math.random() * 2 - 1;
 
+const spawnParticle = (entity, settings) => {
+  const x = entity.x + Math.random() * entity.w;
+  const y = entity.y + Math.random() * entity.h;
+  const speed = 80 + randM1to1() * 10;
+  const angle = 0 + randM1to1() * 360;
+  const life = 1000 + randM1to1() * 500;
+
+  return {
+    aPosition: [x, y],
+    aVelocity: [speed, (angle * Math.PI) / 180],
+    aOrientation: [x, y, 0],
+    aSize: [8, 24],
+    aLife: [entity.timeFrame, life],
+    expire: entity.timeFrame + life,
+    aLayer: [entity._globalZ, entity._alpha],
+    aColor1: [1, 1, 0, 1],
+    aColor2: [0.2, 0.2, 0.2, 1]
+  };
+};
+
 Crafty.defaultShader(
   "Particle",
   new Crafty.WebGLShader(
@@ -16,7 +36,8 @@ Crafty.defaultShader(
       { name: "aLayer", width: 2 },
       { name: "aSize", width: 2 },
       { name: "aLife", width: 2 },
-      { name: "aColor", width: 4 }
+      { name: "aColor1", width: 4 },
+      { name: "aColor2", width: 4 }
     ],
     function(e, entity) {
       e.program.index_pointer = entity.particles.length;
@@ -70,18 +91,8 @@ Crafty.c(ParticleEmitter, {
       console.log("EXPENSIVE!");
       e.program.growArrays(this.particles.length);
 
-      const attributes = e.program.attributes;
-      let offset = 0;
       for (let pi = 0; pi < this.particles.length; pi++) {
-        for (let ai = 0; ai < attributes.length; ai++) {
-          for (let api = 0; api < attributes[ai].width; api++) {
-            e.program._attributeArray[offset] = this.particles[pi][
-              attributes[ai].name
-            ][api];
-
-            offset++;
-          }
-        }
+        this._writeParticle(pi, this.particles[pi]);
       }
       this.initialDraw = true;
     }
@@ -89,27 +100,30 @@ Crafty.c(ParticleEmitter, {
     e.program.draw(e, this);
   },
 
+  _writeParticle: function(pi, particle) {
+    const attributes = this.program.attributes;
+    let offset = pi * this.program.stride;
+
+    for (let ai = 0; ai < attributes.length; ai++) {
+      for (let api = 0; api < attributes[ai].width; api++) {
+        this.program._attributeArray[offset] =
+          particle[attributes[ai].name][api];
+        offset++;
+      }
+    }
+  },
+
   particles: function() {
-    const amount = 3000;
+    const amount = 800;
 
     this.particles = Array(amount)
       .fill(0)
-      .map(() => {
-        const x = this.x + Math.random() * this.w;
-        const y = this.y + Math.random() * this.h;
-        const speed = 20 + randM1to1() * 10;
-        const angle = 0 + randM1to1() * 360;
+      .map(() => spawnParticle(this));
 
-        return {
-          aPosition: [x, y],
-          aVelocity: [speed, (angle * Math.PI) / 180],
-          aOrientation: [x, y, 0],
-          aSize: [8, 0],
-          aLife: [0, 0],
-          aLayer: [this._globalZ, this._alpha],
-          aColor: [1, 0, 0, 1]
-        };
-      });
+    this.nextExpireCheck = this.particles.reduce(
+      (acc, p) => (acc > p.expire ? p.expire : acc),
+      Infinity
+    );
 
     this.trigger("Invalidate");
     return this;
@@ -117,6 +131,16 @@ Crafty.c(ParticleEmitter, {
 
   _renderParticles({ dt }) {
     this.timeFrame += dt;
+
+    if (this.timeFrame >= this.nextExpireCheck) {
+      this.nextExpireCheck = this.timeFrame + 200;
+      for (let i = 0; i < this.particles.length; i++) {
+        if (this.particles[i].expire < this.timeFrame) {
+          this.particles[i] = spawnParticle(this);
+          this._writeParticle(i, this.particles[i]);
+        }
+      }
+    }
   }
 });
 

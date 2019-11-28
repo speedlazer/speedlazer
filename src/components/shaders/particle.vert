@@ -4,10 +4,12 @@ attribute vec3 aOrientation;
 attribute vec2 aLayer;
 attribute vec2 aSize;
 attribute vec2 aLife;
-attribute vec4 aColor;
+attribute vec4 aColor1;
+attribute vec4 aColor2;
 
 varying lowp vec4 vColor;
 varying lowp vec2 vLayer;
+varying lowp vec2 vLife;
 uniform  vec4 uViewport;
 uniform  vec4 uTimeOffset;
 
@@ -23,16 +25,19 @@ void main() {
   pos = entityRotationMatrix * (pos - entityOrigin) + entityOrigin;
 
   float duration = uTimeOffset.x - aLife.x;
+  float durationScale = duration / aLife.y;
+
   float dist = aVelocity.x * (duration / 1000.0);
 
   vec2 movement = vec2(cos(aVelocity.y) * dist, sin(aVelocity.y) * dist);
   pos = pos + movement;
 
   gl_Position = viewportScale * (viewportTranslation + vec4(pos, 1.0/(1.0+exp(aLayer.x) ), 1) );
-	gl_PointSize = aSize.x;
+	gl_PointSize = (1.0 - durationScale) * aSize.x + durationScale * aSize.y;
 
-  vColor = aColor;
+  vColor = mix(aColor1, aColor2, durationScale);
   vLayer = aLayer;
+  vLife = vec2(duration, aLife.y);
 }
 
 
