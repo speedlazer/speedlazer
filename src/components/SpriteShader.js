@@ -39,6 +39,7 @@ Crafty.defaultShader(
       let s;
       const { co } = e;
       // Write texture coordinates
+      //e.program.max_size = 2000;
       e.program.writeVector(
         "aTextureCoord",
         co.x + 1,

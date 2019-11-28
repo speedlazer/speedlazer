@@ -2,6 +2,8 @@ import particleVertexShader from "./shaders/particle.vert";
 import particleFragmentShader from "./shaders/particle.frag";
 import WebGLParticles from "src/components/WebGLParticles";
 
+const randM1to1 = () => Math.random() * 2 - 1;
+
 Crafty.defaultShader(
   "Particle",
   new Crafty.WebGLShader(
@@ -9,35 +11,17 @@ Crafty.defaultShader(
     particleFragmentShader,
     [
       { name: "aPosition", width: 2 },
+      { name: "aVelocity", width: 2 },
       { name: "aOrientation", width: 3 },
       { name: "aLayer", width: 2 },
+      { name: "aSize", width: 2 },
+      { name: "aLife", width: 2 },
       { name: "aColor", width: 4 }
     ],
     function(e, entity) {
       e.program.index_pointer = entity.particles.length;
-
-      //// Write orientation
-      //prog.writeVector(
-      //"aOrientation",
-      //this._origin.x + this._x,
-      //this._origin.y + this._y,
-      //(this._rotation * Math.PI) / 180
-      //);
-      //// Write z, alpha
-      //prog.writeVector("aLayer", this._globalZ, this._alpha);
-      //e.program.writeVector(
-      //"aColor",
-      //entity._red / 255,
-      //entity._green / 255,
-      //entity._blue / 255,
-      //entity._strength
-      //);
-      //const positionCoords = new Array(entity.particles.length * 2);
-      //for (let i = 0; i < entity.particles.length; i++) {
-      //positionCoords[i * 2] = entity.particles[i].x;
-      //positionCoords[i * 2 + 1] = entity.particles[i].y;
-      //}
-      //e.program.writeVector("aPosition", ...positionCoords);
+      const gl = e.program.context;
+      gl.uniform4f(e.program.shader.time, entity.timeFrame, 0, 0, 0);
     }
   )
 );
@@ -59,11 +43,14 @@ Crafty.c(ParticleEmitter, {
     if (this._drawLayer) {
       this._setupParticles(this._drawLayer);
     }
+    this.initialDraw = false;
     this.trigger("Invalidate");
+    this.timeFrame = 0;
   },
 
   events: {
-    LayerAttached: "_setupParticles"
+    LayerAttached: "_setupParticles",
+    EnterFrame: "_renderParticles"
   },
 
   remove: function() {
@@ -79,40 +66,57 @@ Crafty.c(ParticleEmitter, {
 
   _drawParticles: function(e) {
     // The expensive draw
-    const attributes = e.program.attributes;
-    let offset = 0;
-    for (let pi = 0; pi < this.particles.length; pi++) {
-      for (let ai = 0; ai < attributes.length; ai++) {
-        for (let api = 0; api < attributes[ai].width; api++) {
-          e.program._attributeArray[offset] = this.particles[pi][
-            attributes[ai].name
-          ][api];
+    if (this.initialDraw === false) {
+      console.log("EXPENSIVE!");
+      e.program.growArrays(this.particles.length);
 
-          offset++;
+      const attributes = e.program.attributes;
+      let offset = 0;
+      for (let pi = 0; pi < this.particles.length; pi++) {
+        for (let ai = 0; ai < attributes.length; ai++) {
+          for (let api = 0; api < attributes[ai].width; api++) {
+            e.program._attributeArray[offset] = this.particles[pi][
+              attributes[ai].name
+            ][api];
+
+            offset++;
+          }
         }
       }
+      this.initialDraw = true;
     }
 
     e.program.draw(e, this);
   },
 
   particles: function() {
-    const particle = (x, y, r, g, b) => ({
-      aPosition: [x, y],
-      aOrientation: [x, y, 0],
-      aLayer: [this._globalZ, this._alpha],
-      aColor: [r, g, b, 1]
-    });
+    const amount = 3000;
 
-    this.particles = [
-      particle(this.x, this.y, 1, 0, 0),
-      particle(this.x + this.w, this.y, 0, 0, 1),
-      particle(this.x + this.w, this.y + this.h, 1, 0, 0),
-      particle(this.x, this.y + this.h, 0, 1, 0)
-    ];
+    this.particles = Array(amount)
+      .fill(0)
+      .map(() => {
+        const x = this.x + Math.random() * this.w;
+        const y = this.y + Math.random() * this.h;
+        const speed = 20 + randM1to1() * 10;
+        const angle = 0 + randM1to1() * 360;
+
+        return {
+          aPosition: [x, y],
+          aVelocity: [speed, (angle * Math.PI) / 180],
+          aOrientation: [x, y, 0],
+          aSize: [8, 0],
+          aLife: [0, 0],
+          aLayer: [this._globalZ, this._alpha],
+          aColor: [1, 0, 0, 1]
+        };
+      });
 
     this.trigger("Invalidate");
     return this;
+  },
+
+  _renderParticles({ dt }) {
+    this.timeFrame += dt;
   }
 });
 

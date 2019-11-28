@@ -7,7 +7,7 @@ function RenderProgramWrapper(layer, shader) {
   this.draw = function() {};
 
   this.array_size = 16;
-  this.max_size = 1024;
+  this.max_size = 4096;
   this._indexArray = new Uint16Array(this.array_size);
   this._indexBuffer = layer.context.createBuffer();
 }
@@ -46,6 +46,7 @@ RenderProgramWrapper.prototype = {
   // does so by creating a new array of that size and copying the existing one into it
   growArrays: function(size) {
     if (this.array_size >= this.max_size) return;
+    if (this.array_size >= size) return;
 
     var newsize = Math.min(size, this.max_size);
 
@@ -259,6 +260,8 @@ Crafty.c(WebGLParticles, {
 
   _establishShader: function(compName, shader) {
     const compiledShader = this._drawLayer._makeProgram(shader);
+    var gl = this._drawContext;
+    compiledShader.time = gl.getUniformLocation(compiledShader, "uTimeOffset");
 
     const program = new RenderProgramWrapper(this._drawLayer, compiledShader);
     program.name = compName;
