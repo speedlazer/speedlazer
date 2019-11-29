@@ -416,7 +416,7 @@ export const showBulletPattern = async (
   });
 };
 
-Crafty.defineScene("ParticleEmitterPreview", () => {
+Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
   //Crafty.e("2D, WebGL, Color")
   //.attr({
   //x: 500,
@@ -426,19 +426,23 @@ Crafty.defineScene("ParticleEmitterPreview", () => {
   //})
   //.color("#FF0000");
 
+  const emitterSettings = {
+    w: emitter.emitter.w,
+    h: emitter.emitter.h
+  };
+
+  const particleSettings = {
+    amount: emitter.emitter.amount,
+    ...emitter.particle
+  };
+
   Crafty.e(`2D, ${ParticleEmitter}`)
     .attr({
-      x: 500,
-      y: 500,
-      w: 20,
-      h: 20
+      x: (Crafty.viewport.width - emitter.emitter.w) / 2,
+      y: (Crafty.viewport.height - emitter.emitter.h) / 2,
+      ...emitterSettings
     })
-    .particles({
-      amount: 500,
-      sprite: "explosion7",
-      angle: -90,
-      angleRandom: 20
-    });
+    .particles(particleSettings);
 });
 
 export const showParticleEmitter = async emitter => {

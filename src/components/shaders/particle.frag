@@ -20,6 +20,6 @@ void main(void) {
   mediump vec4 texelColor = texture2D(uSampler, coord);
   mediump float lightness = (0.2126*texelColor.r + 0.7152*texelColor.g + 0.0722*texelColor.b);
 
-  texelColor = vec4(vColor.rgb * (lightness * 1.3), texelColor.a * vColor.a);
-  gl_FragColor = texelColor;
+  mediump vec3 mixedColor = vColor.rgb * (lightness * 1.3);
+  gl_FragColor = vec4(mixedColor * texelColor.a * vColor.a, texelColor.a * vColor.a);
 }

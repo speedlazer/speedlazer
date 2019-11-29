@@ -13,6 +13,13 @@ const spawnParticle = (entity, settings) => {
   const startSize = settings.startSize + randM1to1() * settings.startSizeRandom;
   const endSize = settings.endSize + randM1to1() * settings.endSizeRandom;
 
+  const startColor = settings.startColor.map(
+    (a, i) => a + randM1to1() * settings.startColorRandom[i]
+  );
+  const endColor = settings.endColor.map(
+    (a, i) => a + randM1to1() * settings.endColorRandom[i]
+  );
+
   return {
     aPosition: [x, y],
     aVelocity: [speed, (angle * Math.PI) / 180],
@@ -21,8 +28,8 @@ const spawnParticle = (entity, settings) => {
     aLife: [entity.timeFrame, life],
     expire: entity.timeFrame + life,
     aLayer: [entity._globalZ, entity._alpha],
-    aColor1: [1, 0.8, 0.1, 1],
-    aColor2: [0.2, 0.2, 0.2, 0]
+    aColor1: startColor,
+    aColor2: endColor
   };
 };
 
@@ -129,7 +136,11 @@ Crafty.c(ParticleEmitter, {
     startSizeRandom = 2,
     endSize = 24,
     endSizeRandom = 8,
-    sprite = null
+    sprite = null,
+    startColor = [1, 1, 1, 1],
+    startColorRandom = [0, 0, 0, 0],
+    endColor = [0, 0, 0, 1],
+    endColorRandom = [0, 0, 0, 0]
   } = {}) {
     this.particleSettings = {
       amount,
@@ -143,7 +154,11 @@ Crafty.c(ParticleEmitter, {
       startSizeRandom,
       endSize,
       endSizeRandom,
-      sprite
+      sprite,
+      startColor,
+      startColorRandom,
+      endColor,
+      endColorRandom
     };
 
     if (this.particleSettings.sprite) {
