@@ -17,6 +17,11 @@ uniform  vec4 uTimeOffset;
 mat4 viewportScale = mat4(2.0 / uViewport.z, 0, 0, 0,    0, -2.0 / uViewport.w, 0,0,    0, 0,1,0,    -1,+1,0,1);
 vec4 viewportTranslation = vec4(uViewport.xy, 0, 0);
 
+float gravity(float accelleration, float duration) {
+  // https://www.vcalc.com/equation/?uuid=e6ccc22d-da27-11e2-8e97-bc764e04d25f
+  return 0.5 * accelleration * (duration / 1000.0) * (duration / 1000.0);
+}
+
 void main() {
   vec2 pos = aPosition;
   vec2 entityOrigin = aOrientation.xy;
@@ -31,7 +36,9 @@ void main() {
   float dist = aVelocity.x * (duration / 1000.0);
 
   vec2 movement = vec2(cos(aVelocity.y) * dist, sin(aVelocity.y) * dist);
-  pos = pos + movement;
+  vec2 gravityDisplacement = vec2(gravity(uTimeOffset.y, duration), gravity(uTimeOffset.z, duration));
+
+  pos = pos + movement + gravityDisplacement;
 
   gl_Position = viewportScale * (viewportTranslation + vec4(pos, 1.0/(1.0+exp(aLayer.x) ), 1) );
 	gl_PointSize = (1.0 - durationScale) * aSize.x + durationScale * aSize.y;

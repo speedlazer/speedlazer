@@ -433,7 +433,8 @@ Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
 
   const particleSettings = {
     amount: emitter.emitter.amount,
-    ...emitter.particle
+    ...emitter.particle,
+    gravity: emitter.gravity
   };
 
   Crafty.e(`2D, ${ParticleEmitter}`)

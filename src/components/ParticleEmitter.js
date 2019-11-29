@@ -50,8 +50,11 @@ Crafty.defaultShader(
     ],
     function(e, entity) {
       e.program.index_pointer = entity.particles.length;
+
+      const gx = entity.particleSettings.gravity[0];
+      const gy = entity.particleSettings.gravity[1];
       const gl = e.program.context;
-      gl.uniform4f(e.program.shader.time, entity.timeFrame, 0, 0, 0);
+      gl.uniform4f(e.program.shader.time, entity.timeFrame, gx, gy, 0);
     }
   )
 );
@@ -126,6 +129,7 @@ Crafty.c(ParticleEmitter, {
 
   particles: function({
     amount = 150,
+    gravity = [0, 0],
     velocity = 80,
     velocityRandom = 20,
     angle = 0,
@@ -144,6 +148,7 @@ Crafty.c(ParticleEmitter, {
   } = {}) {
     this.particleSettings = {
       amount,
+      gravity,
       velocity,
       velocityRandom,
       angle,

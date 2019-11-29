@@ -24,6 +24,7 @@ export default {
       h: 20,
       amount: 300
     },
+    gravity: [0, -90],
     particle: {
       sprite: "explosion7",
       angle: 0,
