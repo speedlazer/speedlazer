@@ -165,6 +165,8 @@ Crafty.c(ParticleEmitter, {
       endColor,
       endColorRandom
     };
+    this.emissionRate = amount / duration;
+    this.shouldHaveEmitted = 0;
 
     if (this.particleSettings.sprite) {
       const sprite = Crafty.e(`WebGL, ${this.particleSettings.sprite}`).attr({
@@ -191,12 +193,15 @@ Crafty.c(ParticleEmitter, {
 
     this.particles = Array(amount)
       .fill(0)
-      .map(() => spawnParticle(this, this.particleSettings));
+      .map(() =>
+        spawnParticle(this, {
+          ...this.particleSettings,
+          duration: 0,
+          durationRandom: 0
+        })
+      );
 
-    this.nextExpireCheck = this.particles.reduce(
-      (acc, p) => (acc > p.expire ? p.expire : acc),
-      Infinity
-    );
+    this.nextExpireCheck = 100;
 
     this.trigger("Invalidate");
     return this;
@@ -204,10 +209,13 @@ Crafty.c(ParticleEmitter, {
 
   _renderParticles({ dt }) {
     this.timeFrame += dt;
+    this.shouldHaveEmitted =
+      Math.min((this.timeFrame / 1000.0) * this.emissionRate, 1) *
+      this.particleSettings.amount;
 
     if (this.timeFrame >= this.nextExpireCheck) {
       this.nextExpireCheck = this.timeFrame + 100;
-      for (let i = 0; i < this.particles.length; i++) {
+      for (let i = 0; i < this.shouldHaveEmitted; i++) {
         if (this.particles[i].expire < this.timeFrame + 50) {
           this.particles[i] = spawnParticle(this, this.particleSettings);
           this._writeParticle(i, this.particles[i]);
