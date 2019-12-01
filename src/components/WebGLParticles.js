@@ -1,20 +1,20 @@
 const WebGLParticles = "WebGLParticles";
 
-function RenderProgramWrapper(layer, shader) {
-  this.shader = shader;
-  this.layer = layer;
-  this.context = layer.context;
-  this.draw = function() {};
+class RenderProgramWrapper {
+  constructor(layer, shader) {
+    this.shader = shader;
+    this.layer = layer;
+    this.context = layer.context;
+    this.draw = function() {};
 
-  this.array_size = 16;
-  this.max_size = 4096;
-  this._indexArray = new Uint16Array(this.array_size);
-  this._indexBuffer = layer.context.createBuffer();
-}
+    this.array_size = 16;
+    this.max_size = 4096;
+    this._indexArray = new Uint16Array(this.array_size);
+    this._indexBuffer = layer.context.createBuffer();
+  }
 
-RenderProgramWrapper.prototype = {
   // Takes an array of attributes; see WebGLLayer's getProgramWrapper method
-  initAttributes: function(attributes) {
+  initAttributes(attributes) {
     this.attributes = attributes;
     this._attribute_table = {};
     var offset = 0;
@@ -40,11 +40,11 @@ RenderProgramWrapper.prototype = {
     this._attributeBuffer = this.context.createBuffer();
     this._registryHoles = [];
     this._registrySize = 0;
-  },
+  }
 
   // increase the size of the typed arrays
   // does so by creating a new array of that size and copying the existing one into it
-  growArrays: function(size) {
+  growArrays(size) {
     if (this.array_size >= this.max_size) return;
     if (this.array_size >= size) return;
 
@@ -59,11 +59,11 @@ RenderProgramWrapper.prototype = {
     this._attributeArray = newAttributeArray;
     this._indexArray = newIndexArray;
     this.array_size = newsize;
-  },
+  }
 
   // Add an entity that needs to be rendered by this program
   // Needs to be assigned an index in the buffer
-  registerEntity: function(e) {
+  registerEntity(e) {
     if (this._registryHoles.length === 0) {
       if (this._registrySize >= this.max_size) {
         throw "Number of entities exceeds maximum limit.";
@@ -75,28 +75,28 @@ RenderProgramWrapper.prototype = {
     } else {
       e._glBufferIndex = this._registryHoles.pop();
     }
-  },
+  }
 
   // remove an entity; allow its buffer index to be reused
-  unregisterEntity: function(e) {
+  unregisterEntity(e) {
     if (typeof e._glBufferIndex === "number")
       this._registryHoles.push(e._glBufferIndex);
     e._glBufferIndex = null;
-  },
+  }
 
-  resetRegistry: function() {
+  resetRegistry() {
     this._maxElement = 0;
     this._registryHoles.length = 0;
-  },
+  }
 
-  setCurrentEntity: function(ent) {
+  setCurrentEntity(ent) {
     // offset is 4 * buffer index, because each entity has 4 vertices
     this.ent_offset = ent._glBufferIndex;
     this.ent = ent;
-  },
+  }
 
   // Called before a batch of entities is prepped for rendering
-  switchTo: function() {
+  switchTo() {
     var gl = this.context;
     gl.useProgram(this.shader);
     gl.bindBuffer(gl.ARRAY_BUFFER, this._attributeBuffer);
@@ -122,28 +122,28 @@ RenderProgramWrapper.prototype = {
     }
 
     this.index_pointer = 0;
-  },
+  }
 
   // Sets a texture
-  setTexture: function(texture_obj) {
+  setTexture(texture_obj) {
     // Only needs to be done once
     if (this.texture_obj !== undefined) return;
     // Set the texture buffer to use
     texture_obj.setToProgram(this.shader, "uSampler", "uTextureDimensions");
     this.texture_obj = texture_obj;
-  },
+  }
 
   // Writes data from the attribute and index arrays to the appropriate buffers, and then calls drawElements.
-  renderBatch: function() {
+  renderBatch() {
     var gl = this.context;
     gl.bindBuffer(gl.ARRAY_BUFFER, this._attributeBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, this._attributeArray, gl.STATIC_DRAW);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._indexArray, gl.STATIC_DRAW);
     gl.drawArrays(gl.POINTS, 0, this.index_pointer);
-  },
+  }
 
-  setViewportUniforms: function(viewport) {
+  setViewportUniforms(viewport) {
     var gl = this.context;
     gl.useProgram(this.shader);
     gl.uniform4f(
@@ -154,7 +154,7 @@ RenderProgramWrapper.prototype = {
       viewport._h
     );
   }
-};
+}
 
 Crafty.c(WebGLParticles, {
   /**@
