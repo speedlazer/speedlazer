@@ -55,6 +55,13 @@ Crafty.defaultShader(
       const gy = entity.particleSettings.gravity[1];
       const gl = e.program.context;
       gl.uniform4f(e.program.shader.time, entity.timeFrame, gx, gy, 0);
+      gl.uniform4f(
+        e.program.shader.spriteCoords,
+        entity.__coord[0],
+        entity.__coord[1],
+        entity.__coord[2],
+        entity.__coord[3]
+      );
     }
   )
 );
@@ -180,14 +187,6 @@ Crafty.c(ParticleEmitter, {
       if (this.program) {
         this.program.setTexture(
           this._drawLayer.makeTexture(this.__image, this.img, false)
-        );
-        const gl = this.program.context;
-        gl.uniform4f(
-          this.program.shader.spriteCoords,
-          this.__coord[0],
-          this.__coord[1],
-          this.__coord[2],
-          this.__coord[3]
         );
       }
       sprite.destroy();

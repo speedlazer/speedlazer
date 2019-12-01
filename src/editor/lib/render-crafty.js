@@ -417,21 +417,32 @@ export const showBulletPattern = async (
 };
 
 Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
-  //Crafty.e("2D, WebGL, Color")
-  //.attr({
-  //x: 500,
-  //y: 250,
-  //w: 200,
-  //h: 20
-  //})
-  //.color("#FF0000");
+  Crafty.e("2D, WebGL, Color")
+    .attr({
+      x: (Crafty.viewport.width - emitter.emitter.w) / 2,
+      y: (Crafty.viewport.height - emitter.emitter.h) / 2,
+      w: emitter.emitter.w,
+      h: emitter.emitter.h,
+      z: 50
+    })
+    .color("#FF0000");
 
   Crafty.e(`2D, ${ParticleEmitter}`)
     .attr({
       x: (Crafty.viewport.width - emitter.emitter.w) / 2,
-      y: (Crafty.viewport.height - emitter.emitter.h) / 2
+      y: (Crafty.viewport.height - emitter.emitter.h) / 2,
+      z: 20
     })
     .particles(emitter);
+
+  Crafty.e("2D, WebGL, Color")
+    .attr({
+      x: (Crafty.viewport.width - emitter.emitter.w) / 2,
+      y: 200 + (Crafty.viewport.height - emitter.emitter.h) / 2,
+      w: emitter.emitter.w,
+      h: emitter.emitter.h
+    })
+    .color("#0000FF");
 });
 
 export const showParticleEmitter = async emitter => {
