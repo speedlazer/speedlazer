@@ -1,6 +1,8 @@
 import Composable from "src/components/Composable";
+import ParticleEmitter from "src/components/ParticleEmitter";
 import entities from "src/data/entities";
 import compositions from "src/data/compositions";
+import particles from "src/data/particles";
 
 const convertLocation = location => {
   if (!location) return {};
@@ -20,6 +22,8 @@ export const createEntity = (entityName, options = {}) => {
     .attr({ ...convertLocation(location), ...settings });
 };
 
+const EntityDefinition = "EntityDefinition";
+
 const setEntityStructure = (entity, state, duration) => {
   if (state.composition) {
     const composition = compositions[state.composition];
@@ -32,7 +36,11 @@ const setEntityStructure = (entity, state, duration) => {
     entity.displayFrame(state.frame, duration);
   }
   if (state.entity) {
-    entity.addComponent("EntityDefinition").applyDefinition(state.entity);
+    entity.addComponent(EntityDefinition).applyDefinition(state.entity);
+  }
+  if (state.particles) {
+    const emitter = particles[state.particles];
+    entity.addComponent(ParticleEmitter).particles(emitter);
   }
 
   if (state.components) {
@@ -51,20 +59,21 @@ const setEntityStructure = (entity, state, duration) => {
       ([attachPoint, attachDefinition]) => {
         if (attachDefinition) {
           const itemName = attachDefinition.name || attachPoint;
-          const attachment = entity[itemName] || Crafty.e("2D, WebGL");
+          const attachment = entity[itemName] || Crafty.e("2D");
 
           setEntityStructure(attachment, attachDefinition, duration);
           entity.attachEntity(attachPoint, attachment);
           entity[itemName] = attachment;
         } else {
           entity.clearAttachment(attachPoint);
+          entity[attachPoint] = null;
         }
       }
     );
   }
 };
 
-Crafty.c("EntityDefinition", {
+Crafty.c(EntityDefinition, {
   init() {
     this.appliedEntityDefinition = null;
   },

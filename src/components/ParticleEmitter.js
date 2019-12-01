@@ -74,7 +74,6 @@ Crafty.c(ParticleEmitter, {
 
   init: function() {
     // Necessary for some rendering layers
-    //this.__coord = this.__coord || [0, 0, 0, 0];
     this.bind("Draw", this._drawParticles);
     if (this._drawLayer) {
       this._setupParticles(this._drawLayer);
@@ -108,10 +107,10 @@ Crafty.c(ParticleEmitter, {
   _drawParticles: function(e) {
     // The expensive draw
     if (this.initialDraw === false) {
-      this.particleBuffer.growArrays(this.particles.length);
+      this.particleBuffer.growArrays(this._particles.length);
 
-      for (let pi = 0; pi < this.particles.length; pi++) {
-        this._writeParticle(pi, this.particles[pi]);
+      for (let pi = 0; pi < this._particles.length; pi++) {
+        this._writeParticle(pi, this._particles[pi]);
       }
       this.initialDraw = true;
     }
@@ -174,7 +173,7 @@ Crafty.c(ParticleEmitter, {
       });
       this.__image = sprite.__image;
       this.__coord = sprite.__coord;
-      if (this.program) {
+      if (this.program && this._drawLayer) {
         this.program.setTexture(
           this._drawLayer.makeTexture(this.__image, this.img, false)
         );
@@ -182,7 +181,7 @@ Crafty.c(ParticleEmitter, {
       sprite.destroy();
     }
 
-    this.particles = Array(amount)
+    this._particles = Array(amount)
       .fill(0)
       .map(() =>
         spawnParticle(this, {
@@ -207,9 +206,9 @@ Crafty.c(ParticleEmitter, {
     if (this.timeFrame >= this.nextExpireCheck) {
       this.nextExpireCheck = this.timeFrame + 100;
       for (let i = 0; i < this.shouldHaveEmitted; i++) {
-        if (this.particles[i].expire < this.timeFrame + 50) {
-          this.particles[i] = spawnParticle(this, this.particleSettings);
-          this._writeParticle(i, this.particles[i]);
+        if (this._particles[i].expire < this.timeFrame + 50) {
+          this._particles[i] = spawnParticle(this, this.particleSettings);
+          this._writeParticle(i, this._particles[i]);
         }
       }
     }
