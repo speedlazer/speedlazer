@@ -1,5 +1,65 @@
 const WebGLParticles = "WebGLParticles";
 
+class ParticleBuffer {
+  constructor(context, stride, attributes) {
+    this.context = context;
+    this.attributes = attributes;
+    this.stride = stride;
+
+    this.array_size = 16;
+    this.max_size = 4096;
+
+    this._attributeArray = new Float32Array(this.array_size * this.stride);
+    this._attributeBuffer = this.context.createBuffer();
+  }
+
+  growArrays(size) {
+    if (this.array_size >= this.max_size) return;
+    if (this.array_size >= size) return;
+
+    const newsize = Math.min(size, this.max_size);
+
+    const newAttributeArray = new Float32Array(newsize * this.stride);
+    newAttributeArray.set(this._attributeArray);
+
+    this._attributeArray = newAttributeArray;
+    this.array_size = newsize;
+  }
+
+  writeParticle(pi, particle) {
+    const attributes = this.attributes;
+    let offset = pi * this.stride;
+
+    for (let ai = 0; ai < attributes.length; ai++) {
+      for (let api = 0; api < attributes[ai].width; api++) {
+        this._attributeArray[offset] = particle[attributes[ai].name][api];
+        offset++;
+      }
+    }
+  }
+
+  draw() {
+    const gl = this.context;
+    gl.bindBuffer(gl.ARRAY_BUFFER, this._attributeBuffer);
+    const attributes = this.attributes;
+    // Process every attribute
+    for (var i = 0; i < attributes.length; i++) {
+      let a = attributes[i];
+      gl.vertexAttribPointer(
+        a.location,
+        a.width,
+        a.type,
+        false,
+        this.stride * a.bytes,
+        a.offset * a.bytes
+      );
+    }
+
+    gl.bufferData(gl.ARRAY_BUFFER, this._attributeArray, gl.STATIC_DRAW);
+    gl.drawArrays(gl.POINTS, 0, this.array_size);
+  }
+}
+
 class RenderProgramWrapper {
   constructor(layer, shader) {
     this.shader = shader;
@@ -34,8 +94,12 @@ class RenderProgramWrapper {
     this.stride = offset;
 
     // Create attribute array of correct size to hold max elements
-    this._attributeArray = new Float32Array(this.array_size * this.stride);
-    this._attributeBuffer = this.context.createBuffer();
+    this.particleBuffer = new ParticleBuffer(
+      this.context,
+      this.stride,
+      this.attributes
+    );
+
     this._registryHoles = [];
     this._registrySize = 0;
   }
@@ -43,16 +107,7 @@ class RenderProgramWrapper {
   // increase the size of the typed arrays
   // does so by creating a new array of that size and copying the existing one into it
   growArrays(size) {
-    if (this.array_size >= this.max_size) return;
-    if (this.array_size >= size) return;
-
-    var newsize = Math.min(size, this.max_size);
-
-    var newAttributeArray = new Float32Array(newsize * this.stride);
-    newAttributeArray.set(this._attributeArray);
-
-    this._attributeArray = newAttributeArray;
-    this.array_size = newsize;
+    this.particleBuffer.growArrays(size);
   }
 
   // Add an entity that needs to be rendered by this program
@@ -93,29 +148,6 @@ class RenderProgramWrapper {
   switchTo() {
     var gl = this.context;
     gl.useProgram(this.shader);
-    gl.bindBuffer(gl.ARRAY_BUFFER, this._attributeBuffer);
-    var a,
-      attributes = this.attributes;
-    // Process every attribute
-    for (var i = 0; i < attributes.length; i++) {
-      a = attributes[i];
-      gl.vertexAttribPointer(
-        a.location,
-        a.width,
-        a.type,
-        false,
-        this.stride * a.bytes,
-        a.offset * a.bytes
-      );
-    }
-
-    // For now, special case the need for texture objects
-    var t = this.texture_obj;
-    if (t && t.unit === null) {
-      this.layer.texture_manager.bindTexture(t);
-    }
-
-    this.index_pointer = 0;
   }
 
   // Sets a texture
@@ -129,11 +161,13 @@ class RenderProgramWrapper {
 
   // Writes data from the attribute and index arrays to the appropriate buffers, and then calls drawElements.
   renderBatch() {
-    var gl = this.context;
+    // For now, special case the need for texture objects
+    var t = this.texture_obj;
+    if (t && t.unit === null) {
+      this.layer.texture_manager.bindTexture(t);
+    }
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, this._attributeBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, this._attributeArray, gl.STATIC_DRAW);
-    gl.drawArrays(gl.POINTS, 0, this.index_pointer);
+    this.particleBuffer.draw();
   }
 
   setViewportUniforms(viewport) {

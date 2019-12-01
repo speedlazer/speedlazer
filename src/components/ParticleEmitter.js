@@ -49,8 +49,6 @@ Crafty.defaultShader(
       { name: "aColor2", width: 4 }
     ],
     function(e, entity) {
-      e.program.index_pointer = entity.particles.length;
-
       const gx = entity.particleSettings.gravity[0];
       const gy = entity.particleSettings.gravity[1];
       const gl = e.program.context;
@@ -122,17 +120,9 @@ Crafty.c(ParticleEmitter, {
   },
 
   _writeParticle: function(pi, particle) {
-    const attributes = this.program.attributes;
-    let offset = pi * this.program.stride;
-
-    for (let ai = 0; ai < attributes.length; ai++) {
-      for (let api = 0; api < attributes[ai].width; api++) {
-        this.program._attributeArray[offset] =
-          particle[attributes[ai].name][api];
-        offset++;
-      }
-    }
+    this.program.particleBuffer.writeParticle(pi, particle);
   },
+
   particles: function({
     emitter: { amount = 150, w = 10, h = 10 },
     gravity = [0, 0],
