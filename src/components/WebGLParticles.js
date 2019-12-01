@@ -8,12 +8,26 @@ class ParticleBuffer {
 
     this.array_size = 16;
     this.max_size = 4096;
+    this.render_size = 0;
 
     this._attributeArray = new Float32Array(this.array_size * this.stride);
     this._attributeBuffer = this.context.createBuffer();
+
+    this.active = true;
+  }
+
+  reactivate() {
+    this.active = true;
+    this.render_size = 0;
+  }
+
+  deactivate() {
+    this.active = false;
   }
 
   growArrays(size) {
+    this.render_size = Math.min(size, this.max_size);
+
     if (this.array_size >= this.max_size) return;
     if (this.array_size >= size) return;
 
@@ -56,7 +70,7 @@ class ParticleBuffer {
     }
 
     gl.bufferData(gl.ARRAY_BUFFER, this._attributeArray, gl.STATIC_DRAW);
-    gl.drawArrays(gl.POINTS, 0, this.array_size);
+    gl.drawArrays(gl.POINTS, 0, this.render_size);
   }
 }
 
@@ -67,8 +81,8 @@ class RenderProgramWrapper {
     this.context = layer.context;
     this.draw = function() {};
 
-    this.array_size = 16;
-    this.max_size = 4096;
+    this.array_size = 0;
+    this.max_size = 24;
   }
 
   // Takes an array of attributes; see WebGLLayer's getProgramWrapper method
@@ -94,54 +108,45 @@ class RenderProgramWrapper {
     this.stride = offset;
 
     // Create attribute array of correct size to hold max elements
-    this.particleBuffer = new ParticleBuffer(
-      this.context,
-      this.stride,
-      this.attributes
-    );
 
-    this._registryHoles = [];
-    this._registrySize = 0;
-  }
-
-  // increase the size of the typed arrays
-  // does so by creating a new array of that size and copying the existing one into it
-  growArrays(size) {
-    this.particleBuffer.growArrays(size);
+    this.buffers = [];
   }
 
   // Add an entity that needs to be rendered by this program
   // Needs to be assigned an index in the buffer
   registerEntity(e) {
-    if (this._registryHoles.length === 0) {
-      if (this._registrySize >= this.max_size) {
+    const staleBuffer = this.buffers.find(b => b.active === false);
+    if (staleBuffer === undefined) {
+      if (this.buffers.length >= this.max_size) {
         throw "Number of entities exceeds maximum limit.";
-      } else if (this._registrySize >= this.array_size) {
-        this.growArrays(2 * this.array_size);
       }
-      e._glBufferIndex = this._registrySize;
-      this._registrySize++;
+
+      const newBuffer = new ParticleBuffer(
+        this.context,
+        this.stride,
+        this.attributes
+      );
+      this.buffers.push(newBuffer);
+      e.particleBuffer = newBuffer;
     } else {
-      e._glBufferIndex = this._registryHoles.pop();
+      staleBuffer.reactivate();
+      e.particleBuffer = staleBuffer;
     }
   }
 
   // remove an entity; allow its buffer index to be reused
   unregisterEntity(e) {
-    if (typeof e._glBufferIndex === "number")
-      this._registryHoles.push(e._glBufferIndex);
-    e._glBufferIndex = null;
+    e.particleBuffer.deactivate();
+    e.particleBuffer = null;
   }
 
   resetRegistry() {
-    this._maxElement = 0;
-    this._registryHoles.length = 0;
+    this.buffers = [];
   }
 
   setCurrentEntity(ent) {
     // offset is 4 * buffer index, because each entity has 4 vertices
-    this.ent_offset = ent._glBufferIndex;
-    this.ent = ent;
+    this.renderBuffer = ent.particleBuffer;
   }
 
   // Called before a batch of entities is prepped for rendering
@@ -167,7 +172,9 @@ class RenderProgramWrapper {
       this.layer.texture_manager.bindTexture(t);
     }
 
-    this.particleBuffer.draw();
+    if (this.renderBuffer && this.renderBuffer.active) {
+      this.renderBuffer.draw();
+    }
   }
 
   setViewportUniforms(viewport) {

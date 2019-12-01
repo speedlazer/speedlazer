@@ -108,7 +108,7 @@ Crafty.c(ParticleEmitter, {
   _drawParticles: function(e) {
     // The expensive draw
     if (this.initialDraw === false) {
-      e.program.growArrays(this.particles.length);
+      this.particleBuffer.growArrays(this.particles.length);
 
       for (let pi = 0; pi < this.particles.length; pi++) {
         this._writeParticle(pi, this.particles[pi]);
@@ -120,7 +120,7 @@ Crafty.c(ParticleEmitter, {
   },
 
   _writeParticle: function(pi, particle) {
-    this.program.particleBuffer.writeParticle(pi, particle);
+    this.particleBuffer.writeParticle(pi, particle);
   },
 
   particles: function({
