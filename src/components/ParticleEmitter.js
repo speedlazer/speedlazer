@@ -126,26 +126,28 @@ Crafty.c(ParticleEmitter, {
       }
     }
   },
-
   particles: function({
-    amount = 150,
+    emitter: { amount = 150, w = 10, h = 10 },
     gravity = [0, 0],
-    velocity = 80,
-    velocityRandom = 20,
-    angle = 0,
-    angleRandom = 360,
-    duration = 2000,
-    durationRandom = 500,
-    startSize = 12,
-    startSizeRandom = 2,
-    endSize = 24,
-    endSizeRandom = 8,
-    sprite = null,
-    startColor = [1, 1, 1, 1],
-    startColorRandom = [0, 0, 0, 0],
-    endColor = [0, 0, 0, 1],
-    endColorRandom = [0, 0, 0, 0]
+    particle: {
+      velocity = 80,
+      velocityRandom = 20,
+      angle = 0,
+      angleRandom = 360,
+      duration = 2000,
+      durationRandom = 500,
+      startSize = 12,
+      startSizeRandom = 2,
+      endSize = 24,
+      endSizeRandom = 8,
+      sprite = null,
+      startColor = [1, 1, 1, 1],
+      startColorRandom = [0, 0, 0, 0],
+      endColor = [0, 0, 0, 1],
+      endColorRandom = [0, 0, 0, 0]
+    }
   } = {}) {
+    this.attr({ w, h });
     this.particleSettings = {
       amount,
       gravity,
