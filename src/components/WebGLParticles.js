@@ -9,8 +9,6 @@ class RenderProgramWrapper {
 
     this.array_size = 16;
     this.max_size = 4096;
-    this._indexArray = new Uint16Array(this.array_size);
-    this._indexBuffer = layer.context.createBuffer();
   }
 
   // Takes an array of attributes; see WebGLLayer's getProgramWrapper method
@@ -51,13 +49,9 @@ class RenderProgramWrapper {
     var newsize = Math.min(size, this.max_size);
 
     var newAttributeArray = new Float32Array(newsize * this.stride);
-    var newIndexArray = new Uint16Array(newsize);
-
     newAttributeArray.set(this._attributeArray);
-    newIndexArray.set(this._indexArray);
 
     this._attributeArray = newAttributeArray;
-    this._indexArray = newIndexArray;
     this.array_size = newsize;
   }
 
@@ -136,10 +130,9 @@ class RenderProgramWrapper {
   // Writes data from the attribute and index arrays to the appropriate buffers, and then calls drawElements.
   renderBatch() {
     var gl = this.context;
+
     gl.bindBuffer(gl.ARRAY_BUFFER, this._attributeBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, this._attributeArray, gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._indexBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this._indexArray, gl.STATIC_DRAW);
     gl.drawArrays(gl.POINTS, 0, this.index_pointer);
   }
 
