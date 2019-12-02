@@ -18,6 +18,29 @@ export default {
       endColorRandom: [0.1, 0.1, 0, 0.2]
     }
   },
+  "missile.trail": {
+    emitter: {
+      w: 2,
+      h: 2,
+      amount: 200
+    },
+    gravity: [0, 0],
+    particle: {
+      sprite: "explosion7",
+      angle: 0,
+      angleRandom: 0,
+      duration: 1000,
+      durationRandom: 0,
+      velocity: 0,
+      velocityRandom: 0,
+      startSize: 10,
+      endSize: 1,
+      startColor: [0.3, 0.3, 0.3, 0.6],
+      startColorRandom: [0, 0, 0, 0],
+      endColor: [0.3, 0.3, 0.3, 0],
+      endColorRandom: [0, 0, 0, 0]
+    }
+  },
   smoke: {
     emitter: {
       w: 160,

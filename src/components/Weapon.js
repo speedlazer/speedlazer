@@ -2,6 +2,7 @@ import compositions from "src/data/compositions";
 import Composable from "src/components/Composable";
 import AngleMotion from "src/components/AngleMotion";
 import Steering from "src/components/Steering";
+import { EntityDefinition } from "src/components/EntityDefinition";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import { easingFunctions } from "src/constants/easing";
 
@@ -211,6 +212,9 @@ const getItemFromPool = itemDefinition => {
     spawn
       .addComponent(Composable)
       .compose(compositions[itemDefinition.composition]);
+  }
+  if (itemDefinition.entity) {
+    spawn.addComponent(EntityDefinition).applyDefinition(itemDefinition.entity);
   }
   const collisionChecks = Object.keys(itemDefinition.collisions || {});
   if (collisionChecks.length > 0) {

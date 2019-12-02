@@ -191,7 +191,8 @@ Crafty.c(ParticleEmitter, {
         })
       );
 
-    this.nextExpireCheck = 100;
+    this.nextExpireRatio = duration / amount;
+    this.nextExpireCheck = duration / amount;
 
     this.trigger("Invalidate");
     return this;
@@ -204,9 +205,9 @@ Crafty.c(ParticleEmitter, {
       this.particleSettings.amount;
 
     if (this.timeFrame >= this.nextExpireCheck) {
-      this.nextExpireCheck = this.timeFrame + 100;
+      this.nextExpireCheck = this.timeFrame + this.nextExpireRatio;
       for (let i = 0; i < this.shouldHaveEmitted; i++) {
-        if (this._particles[i].expire < this.timeFrame + 50) {
+        if (this._particles[i].expire < this.timeFrame + 20) {
           this._particles[i] = spawnParticle(this, this.particleSettings);
           this._writeParticle(i, this._particles[i]);
         }

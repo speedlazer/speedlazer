@@ -14,7 +14,7 @@ export default {
       rocket: {
         spawnPosition: [0, 0.5],
         velocity: [250, 400],
-        composition: "weapons.rocket",
+        entity: "HeliRocket",
         queue: [
           { duration: 130 },
           { velocity: 0, angle: 0, autoRotate: true },

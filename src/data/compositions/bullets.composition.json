@@ -39,7 +39,10 @@
       "ro": [4, 8]
     },
     "hitbox": [2, 3, 45, 3, 45, 12, 2, 12],
-    "sprites": [["standardRocket", { "z": -2 }]]
+    "sprites": [["standardRocket", { "z": -2 }]],
+    "attachHooks": [
+      ["trail", { "x": 47, "y": 8, "z": -2, "attachAlign": ["center", "left"] }]
+    ]
   },
   "weapons.solidHit": {
     "attributes": {

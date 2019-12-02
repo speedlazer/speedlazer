@@ -22,7 +22,7 @@ export const createEntity = (entityName, options = {}) => {
     .attr({ ...convertLocation(location), ...settings });
 };
 
-const EntityDefinition = "EntityDefinition";
+export const EntityDefinition = "EntityDefinition";
 
 const setEntityStructure = (entity, state, duration) => {
   if (state.composition) {
