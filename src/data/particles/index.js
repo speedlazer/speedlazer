@@ -63,6 +63,28 @@ export default {
       endColorRandom: [0, 0, 0, 0]
     }
   },
+  smoke2: {
+    emitter: {
+      w: 200,
+      h: 20,
+      amount: 300
+    },
+    gravity: [20, -90],
+    particle: {
+      sprite: "explosion7",
+      angle: 0,
+      angleRandom: 20,
+      duration: 2500,
+      durationRandom: 500,
+      velocity: 10,
+      startSize: 30,
+      endSize: 80,
+      startColor: [0.3, 0.3, 0.3, 1],
+      startColorRandom: [0, 0, 0, 0.2],
+      endColor: [0.1, 0.1, 0.1, 0],
+      endColorRandom: [0, 0, 0, 0]
+    }
+  },
   fountain: {
     emitter: {
       w: 10,

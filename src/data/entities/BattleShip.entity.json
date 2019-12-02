@@ -25,6 +25,7 @@
         "composition": "battleship.firstCabin"
       },
       "cabin1burn": null,
+      "cabin2burn": null,
       "cabin2": {
         "composition": "battleship.secondCabin",
         "components": ["DamageSupport"]
@@ -98,14 +99,16 @@
     "fase4": {
       "attachments": {
         "cabin1": { "composition": "battleship.firstCabinDestroyed" },
-        "cabin1burn": {
-          "particles": "smoke"
-        }
+        "cabin1burn": { "particles": "smoke" },
+        "cabin2burn": null
       }
     },
     "fase5": {
       "attachments": {
+        "cabin1": { "composition": "battleship.firstCabinDestroyed" },
         "cabin2": { "composition": "battleship.secondCabinDestroyed" },
+        "cabin1burn": { "particles": "smoke" },
+        "cabin2burn": { "particles": "smoke2" },
         "engineCore": null
       }
     }

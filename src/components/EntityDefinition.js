@@ -63,6 +63,7 @@ const setEntityStructure = (entity, state, duration) => {
 
           setEntityStructure(attachment, attachDefinition, duration);
           entity.attachEntity(attachPoint, attachment);
+
           entity[itemName] = attachment;
         } else {
           entity.clearAttachment(attachPoint);

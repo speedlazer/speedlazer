@@ -146,13 +146,14 @@ class RenderProgramWrapper {
 
   setCurrentEntity(ent) {
     // offset is 4 * buffer index, because each entity has 4 vertices
-    this.renderBuffer = ent.particleBuffer;
+    this.drawBuffers.push(ent.particleBuffer);
   }
 
   // Called before a batch of entities is prepped for rendering
   switchTo() {
     var gl = this.context;
     gl.useProgram(this.shader);
+    this.drawBuffers = [];
   }
 
   // Sets a texture
@@ -172,8 +173,10 @@ class RenderProgramWrapper {
       this.layer.texture_manager.bindTexture(t);
     }
 
-    if (this.renderBuffer && this.renderBuffer.active) {
-      this.renderBuffer.draw();
+    for (let i = 0; i < this.drawBuffers.length; i++) {
+      if (this.drawBuffers[i].active) {
+        this.drawBuffers[i].draw();
+      }
     }
   }
 
