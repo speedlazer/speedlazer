@@ -6,7 +6,15 @@ import ParticleEmitterPreview from "./ParticleEmitterPreview";
 import particles from "src/data/particles";
 
 class Particles extends Component {
-  render({ particles: p }) {
+  state = {
+    emission: true
+  };
+
+  toggleEmission = () => {
+    this.setState(state => ({ ...state, emission: !state.emission }));
+  };
+
+  render({ particles: p }, { emission }) {
     const activeParticles = particles[p];
 
     return (
@@ -21,7 +29,15 @@ class Particles extends Component {
           />
           {activeParticles && (
             <div>
-              <ParticleEmitterPreview emitter={activeParticles} />
+              <div>
+                <button onClick={this.toggleEmission}>
+                  {emission ? "stop" : "start"}
+                </button>
+              </div>
+              <ParticleEmitterPreview
+                emitter={activeParticles}
+                active={emission}
+              />
             </div>
           )}
         </Divider>

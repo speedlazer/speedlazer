@@ -13,7 +13,7 @@ export default {
       startSize: 30,
       endSize: 30,
       startColor: [0.8, 0.8, 0.8, 0.8],
-      startColorRandom: [0.1, 0.1, 0, 0.2],
+      startColorRandom: [0.02, 0.02, 0.02, 0.2],
       endColor: [0.8, 0.8, 0.8, 0],
       endColorRandom: [0.1, 0.1, 0, 0.2]
     }

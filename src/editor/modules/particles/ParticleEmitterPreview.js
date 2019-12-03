@@ -26,17 +26,13 @@ export class ParticleEmitterPreview extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      (propChanged(prevProps, this.props, [
-        "emitter",
-        "difficulty",
-        "collisionType"
-      ]) &&
+      (propChanged(prevProps, this.props, ["emitter", "active"]) &&
         this.state.craftyMounted) ||
       (this.props.emitter &&
         this.state.craftyMounted &&
         !prevState.craftyMounted)
     ) {
-      showParticleEmitter(this.props.emitter, {});
+      showParticleEmitter(this.props.emitter, { active: this.props.active });
     }
   }
 

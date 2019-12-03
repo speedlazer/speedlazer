@@ -81,6 +81,7 @@ Crafty.c(ParticleEmitter, {
     this.initialDraw = false;
     this.trigger("Invalidate");
     this.timeFrame = 0;
+    this.startTime = 0;
   },
 
   events: {
@@ -198,10 +199,23 @@ Crafty.c(ParticleEmitter, {
     return this;
   },
 
+  stopEmission() {
+    this.emissionRate = 0;
+    this.shouldHaveEmitted = 0;
+  },
+
+  startEmission() {
+    this.emissionRate =
+      this.particleSettings.amount / this.particleSettings.duration;
+    this.shouldHaveEmitted = 0;
+    this.startTime = 0;
+  },
+
   _renderParticles({ dt }) {
     this.timeFrame += dt;
+    this.startTime += dt;
     this.shouldHaveEmitted =
-      Math.min((this.timeFrame / 1000.0) * this.emissionRate, 1) *
+      Math.min((this.startTime / 1000.0) * this.emissionRate, 1) *
       this.particleSettings.amount;
 
     if (this.timeFrame >= this.nextExpireCheck) {

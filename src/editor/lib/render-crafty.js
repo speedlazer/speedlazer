@@ -416,7 +416,7 @@ export const showBulletPattern = async (
   });
 };
 
-Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
+Crafty.defineScene("ParticleEmitterPreview", ({ emitter, active }) => {
   //Crafty.e("2D, WebGL, Color")
   //.attr({
   //x: (Crafty.viewport.width - emitter.emitter.w) / 2,
@@ -436,9 +436,21 @@ Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
     .particles(emitter);
 });
 
-export const showParticleEmitter = async emitter => {
+let currentEmitter = null;
+export const showParticleEmitter = async (emitter, { active }) => {
   await loadSpriteSheets();
+  if (inScene("ParticleEmitterPreview") && emitter === currentEmitter) {
+    if (!active) {
+      Crafty(ParticleEmitter).stopEmission();
+    } else {
+      Crafty(ParticleEmitter).startEmission();
+    }
+    return;
+  }
+  currentEmitter = emitter;
+
   Crafty.enterScene("ParticleEmitterPreview", {
-    emitter
+    emitter,
+    active
   });
 };
