@@ -33,6 +33,13 @@ class Particles extends Component {
                 <button onClick={this.toggleEmission}>
                   {emission ? "stop" : "start"}
                 </button>
+                <button
+                  onClick={() => {
+                    Crafty("Emitter").destroy();
+                  }}
+                >
+                  Destroy emitter
+                </button>
               </div>
               <ParticleEmitterPreview
                 emitter={activeParticles}

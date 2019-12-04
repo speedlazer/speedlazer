@@ -7,7 +7,7 @@ uniform mediump vec2 uTextureDimensions;
 uniform mediump vec4 uSpriteCoords;
 
 void main(void) {
-  if (vLife.x > vLife.y) {
+  if (vLife.x > vLife.y || vLife.x < 0.0) {
     discard;
   }
 

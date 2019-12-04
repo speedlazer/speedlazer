@@ -3,7 +3,7 @@ export default {
     emitter: {
       w: 1250,
       h: 10,
-      amount: 600
+      amount: 500
     },
     particle: {
       sprite: "explosion7",

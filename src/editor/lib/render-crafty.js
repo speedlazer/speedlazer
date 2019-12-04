@@ -426,14 +426,13 @@ Crafty.defineScene("ParticleEmitterPreview", ({ emitter, active }) => {
   //z: 50
   //})
   //.color("#FF0000");
+  const emitterSource = Crafty.e(`2D, Emitter`).attr({
+    x: (Crafty.viewport.width - emitter.emitter.w) / 2,
+    y: (Crafty.viewport.height - emitter.emitter.h) / 2,
+    z: 20
+  });
 
-  Crafty.e(`2D, ${ParticleEmitter}`)
-    .attr({
-      x: (Crafty.viewport.width - emitter.emitter.w) / 2,
-      y: (Crafty.viewport.height - emitter.emitter.h) / 2,
-      z: 20
-    })
-    .particles(emitter);
+  Crafty.e(`2D, ${ParticleEmitter}`).particles(emitter, emitterSource);
 });
 
 let currentEmitter = null;

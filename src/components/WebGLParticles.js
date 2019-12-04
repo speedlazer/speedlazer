@@ -145,7 +145,6 @@ class RenderProgramWrapper {
   }
 
   setCurrentEntity(ent) {
-    // offset is 4 * buffer index, because each entity has 4 vertices
     this.drawBuffers.push(ent.particleBuffer);
   }
 

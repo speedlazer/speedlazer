@@ -5,8 +5,9 @@ import WebGLParticles from "src/components/WebGLParticles";
 const randM1to1 = () => Math.random() * 2 - 1;
 
 const spawnParticle = (entity, settings) => {
-  const x = entity.x + Math.random() * entity.w;
-  const y = entity.y + Math.random() * entity.h;
+  const source = entity.attachedTo || entity;
+  const x = source.x + Math.random() * entity.w;
+  const y = source.y + Math.random() * entity.h;
   const speed = settings.velocity + randM1to1() * settings.velocityRandom;
   const angle = settings.angle + randM1to1() * settings.angleRandom;
   const life = settings.duration + randM1to1() * settings.durationRandom;
@@ -78,7 +79,7 @@ Crafty.c(ParticleEmitter, {
     if (this._drawLayer) {
       this._setupParticles(this._drawLayer);
     }
-    this.initialDraw = false;
+    this.initialDraw = true;
     this.trigger("Invalidate");
     this.timeFrame = 0;
     this.startTime = 0;
@@ -89,12 +90,13 @@ Crafty.c(ParticleEmitter, {
     EnterFrame: "_renderParticles"
   },
 
-  remove: function() {
+  remove() {
+    this.initialDraw = true;
     this.unbind("Draw", this._drawParticles);
     this.trigger("Invalidate");
   },
 
-  _setupParticles: function(layer) {
+  _setupParticles(layer) {
     if (layer.type === "WebGL") {
       this._establishShader("Particle", Crafty.defaultShader("Particle"));
       if (this.__image !== "") {
@@ -105,46 +107,61 @@ Crafty.c(ParticleEmitter, {
     }
   },
 
-  _drawParticles: function(e) {
+  _drawParticles(e) {
     // The expensive draw
-    if (this.initialDraw === false) {
+    if (this.initialDraw === true) {
       this.particleBuffer.growArrays(this._particles.length);
 
       for (let pi = 0; pi < this._particles.length; pi++) {
         this._writeParticle(pi, this._particles[pi]);
       }
-      this.initialDraw = true;
+      this.initialDraw = false;
     }
 
     e.program.draw(e, this);
   },
 
-  _writeParticle: function(pi, particle) {
+  _writeParticle(pi, particle) {
     this.particleBuffer.writeParticle(pi, particle);
   },
 
-  particles: function({
-    emitter: { amount = 150, w = 10, h = 10 },
-    gravity = [0, 0],
-    particle: {
-      velocity = 80,
-      velocityRandom = 20,
-      angle = 0,
-      angleRandom = 360,
-      duration = 2000,
-      durationRandom = 500,
-      startSize = 12,
-      startSizeRandom = 2,
-      endSize = 24,
-      endSizeRandom = 8,
-      sprite = null,
-      startColor = [1, 1, 1, 1],
-      startColorRandom = [0, 0, 0, 0],
-      endColor = [0, 0, 0, 1],
-      endColorRandom = [0, 0, 0, 0]
-    }
-  } = {}) {
-    this.attr({ w, h });
+  attachToEntity(entity) {
+    this.attachedTo = entity;
+    this.z = entity.z;
+    entity.bind("Reorder", () => {
+      this.z = entity.z;
+    });
+    entity.bind("Remove", () => {
+      this.stopEmission();
+      this.attachedTo = null;
+      this.autoDestruct = true;
+    });
+  },
+
+  particles(
+    {
+      emitter: { amount = 150, w = 10, h = 10 },
+      gravity = [0, 0],
+      particle: {
+        velocity = 80,
+        velocityRandom = 20,
+        angle = 0,
+        angleRandom = 360,
+        duration = 2000,
+        durationRandom = 500,
+        startSize = 12,
+        startSizeRandom = 2,
+        endSize = 24,
+        endSizeRandom = 8,
+        sprite = null,
+        startColor = [1, 1, 1, 1],
+        startColorRandom = [0, 0, 0, 0],
+        endColor = [0, 0, 0, 1],
+        endColorRandom = [0, 0, 0, 0]
+      }
+    } = {},
+    attachTo = null
+  ) {
     this.particleSettings = {
       amount,
       gravity,
@@ -164,6 +181,11 @@ Crafty.c(ParticleEmitter, {
       endColor,
       endColorRandom
     };
+    if (attachTo) {
+      this.attachToEntity(attachTo);
+    }
+
+    this.attr({ w, h });
     this.emissionRate = amount / duration;
     this.shouldHaveEmitted = 0;
 
@@ -192,6 +214,10 @@ Crafty.c(ParticleEmitter, {
         })
       );
 
+    this.lastExpired = this._particles.reduce(
+      (a, p) => (p.expire > a ? p.expire : a),
+      0
+    );
     this.nextExpireRatio = duration / amount;
     this.nextExpireCheck = duration / amount;
 
@@ -220,12 +246,20 @@ Crafty.c(ParticleEmitter, {
 
     if (this.timeFrame >= this.nextExpireCheck) {
       this.nextExpireCheck = this.timeFrame + this.nextExpireRatio;
+
       for (let i = 0; i < this.shouldHaveEmitted; i++) {
         if (this._particles[i].expire < this.timeFrame + 20) {
-          this._particles[i] = spawnParticle(this, this.particleSettings);
-          this._writeParticle(i, this._particles[i]);
+          const p = spawnParticle(this, this.particleSettings);
+          if (p.expire > this.lastExpired) {
+            this.lastExpired = p.expire;
+          }
+          this._particles[i] = p;
+          this._writeParticle(i, p);
         }
       }
+    }
+    if (this.autoDestruct && this.timeFrame > this.lastExpired) {
+      this.destroy();
     }
   }
 });
