@@ -24,18 +24,18 @@ export default {
         ],
         collisions: {
           SolidCollision: {
-            spawns: [["spark", {}]]
+            spawns: [["hit", {}]]
           },
           WaterCollision: {
             spawns: [["splash", {}]]
           }
         }
       },
-      spark: {
+      hit: {
         spawnPosition: "outside",
         velocity: 0,
-        composition: "weapons.solidHit",
-        queue: [{ duration: 100 }]
+        composition: "weapons.explosion",
+        queue: [{ duration: 350 }]
       },
       splash: {
         spawnPosition: "outside",
