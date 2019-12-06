@@ -153,6 +153,7 @@ class RenderProgramWrapper {
     var gl = this.context;
     gl.useProgram(this.shader);
     this.drawBuffers = [];
+    this.hasTime = false;
   }
 
   // Sets a texture

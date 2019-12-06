@@ -416,7 +416,7 @@ export const showBulletPattern = async (
   });
 };
 
-Crafty.defineScene("ParticleEmitterPreview", ({ emitter, active }) => {
+Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
   //Crafty.e("2D, WebGL, Color")
   //.attr({
   //x: (Crafty.viewport.width - emitter.emitter.w) / 2,

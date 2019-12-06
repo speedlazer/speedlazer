@@ -34,6 +34,8 @@ const spawnParticle = (entity, settings) => {
   };
 };
 
+let startRender = null;
+
 Crafty.defaultShader(
   "Particle",
   new Crafty.WebGLShader(
@@ -50,10 +52,15 @@ Crafty.defaultShader(
       { name: "aColor2", width: 4 }
     ],
     function(e, entity) {
-      const gx = entity.particleSettings.gravity[0];
-      const gy = entity.particleSettings.gravity[1];
       const gl = e.program.context;
-      gl.uniform4f(e.program.shader.time, entity.timeFrame, gx, gy, 0);
+
+      if (startRender && !e.program.hasTime) {
+        const gx = entity.particleSettings.gravity[0];
+        const gy = entity.particleSettings.gravity[1];
+        gl.uniform4f(e.program.shader.time, entity.timeFrame, gx, gy, 0);
+        e.program.hasTime = entity.timeFrame;
+      }
+
       gl.uniform4f(
         e.program.shader.spriteCoords,
         entity.__coord[0],
@@ -130,6 +137,10 @@ Crafty.c(ParticleEmitter, {
     this.z = entity.z;
     entity.bind("Reorder", () => {
       this.z = entity.z;
+    });
+    entity.bind("move", () => {
+      this.x = entity.x;
+      this.y = entity.y;
     });
     entity.bind("Remove", () => {
       this.stopEmission();
@@ -237,8 +248,10 @@ Crafty.c(ParticleEmitter, {
     this.startTime = 0;
   },
 
-  _renderParticles({ dt }) {
-    this.timeFrame += dt;
+  _renderParticles({ dt, gameTime }) {
+    startRender = startRender || gameTime;
+    this.timeFrame = gameTime - startRender;
+
     this.startTime += dt;
     this.shouldHaveEmitted =
       Math.min((this.startTime / 1000.0) * this.emissionRate, 1) *
