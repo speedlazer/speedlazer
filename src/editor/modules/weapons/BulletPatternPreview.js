@@ -29,6 +29,7 @@ export class BulletPatternPreview extends Component {
       (propChanged(prevProps, this.props, [
         "weapon",
         "difficulty",
+        "swapped",
         "collisionType"
       ]) &&
         this.state.craftyMounted) ||
@@ -38,7 +39,8 @@ export class BulletPatternPreview extends Component {
     ) {
       showBulletPattern(this.props.weapon, {
         difficulty: this.props.difficulty,
-        collisionType: this.props.collisionType
+        collisionType: this.props.collisionType,
+        swapped: this.props.swapped
       });
     }
     if (

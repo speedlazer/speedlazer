@@ -329,5 +329,51 @@ export default {
         queue: [{ duration: 305 }]
       }
     }
+  },
+  "ship.bullets": {
+    spawnRhythm: {
+      initialDelay: 1,
+      burst: 1,
+      shotDelay: 120,
+      burstDelay: 1,
+      spawns: [
+        ["bullet", { angleRange: { from: [0, -6], to: [1, 6], step: 3 } }],
+        ["muzzleFlash", {}]
+      ]
+    },
+    spawnables: {
+      bullet: {
+        spawnPosition: [0, 0.5],
+        velocity: [250, 300],
+        composition: "weapons.bullet",
+        queue: [{ duration: 4000 }],
+        collisions: {
+          SolidCollision: {
+            spawns: [["spark", {}]]
+          },
+          WaterCollision: {
+            spawns: [["splash", {}]]
+          }
+        }
+      },
+      muzzleFlash: {
+        spawnPosition: [0, 0.5],
+        velocity: 0,
+        composition: "weapons.muzzleFlash",
+        queue: [{ duration: 400 }]
+      },
+      spark: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.solidHit",
+        queue: [{ duration: 100 }]
+      },
+      splash: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.waterHit",
+        queue: [{ duration: 305 }]
+      }
+    }
   }
 };

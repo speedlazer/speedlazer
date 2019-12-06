@@ -376,43 +376,57 @@ export const showBackground = async (
 
 Crafty.defineScene(
   "BulletPatternPreview",
-  ({ pattern, difficulty, collisionType }) => {
-    Crafty.e(`2D, WebGL, Color, ${Weapon}, Red`)
+  ({ pattern, difficulty, collisionType, swapped }) => {
+    const red = Crafty.e(`2D, WebGL, Color, Red, ${WayPointMotion}`)
       .attr({
         x: 800,
-        y: 250,
-        w: 20,
-        h: 20,
+        y: 240,
+        w: 40,
+        h: 40,
         difficulty
       })
-      .weapon("main", { pattern, target: "Blue", x: 0, y: 10, angle: 0 })
-      .activateWeapon("main")
       .color("#FF0000");
 
-    Crafty.e(
-      ["2D, WebGL, Color, Blue, Collision", collisionType, WayPointMotion]
-        .filter(Boolean)
-        .join(", ")
-    )
+    const blue = Crafty.e(`2D, WebGL, Color, Blue, ${WayPointMotion}`)
       .attr({
         x: 200,
         y: 240,
         w: 40,
-        h: 40
+        h: 40,
+        difficulty
       })
       .color("#0000FF");
+
+    swapped
+      ? red.addComponent(
+          ["Collision", collisionType].filter(Boolean).join(", ")
+        )
+      : blue.addComponent(
+          ["Collision", collisionType].filter(Boolean).join(", ")
+        );
+
+    swapped
+      ? blue
+          .addComponent(Weapon)
+          .weapon("main", { pattern, target: "Red", x: 40, y: 20, angle: 180 })
+          .activateWeapon("main")
+      : red
+          .addComponent(Weapon)
+          .weapon("main", { pattern, target: "Blue", x: 0, y: 20, angle: 0 })
+          .activateWeapon("main");
   }
 );
 
 export const showBulletPattern = async (
   pattern,
-  { difficulty, collisionType }
+  { difficulty, collisionType, swapped }
 ) => {
   await loadSpriteSheets();
   Crafty.enterScene("BulletPatternPreview", {
     pattern,
     difficulty,
-    collisionType
+    collisionType,
+    swapped
   });
 };
 

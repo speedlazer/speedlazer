@@ -20,7 +20,8 @@ const weaponCollisionTypes = activeWeapon =>
 const DEFAULT_STATE = {
   difficulty: 0,
   collisionType: null,
-  moveBlue: false
+  moveBlue: false,
+  swapped: false
 };
 
 const STORAGE_KEY = "editor-weapon-settings";
@@ -42,7 +43,7 @@ class Weapons extends Component {
     this.setState(state => ({ ...state, difficulty }));
   };
 
-  render({ weapon }, { difficulty, collisionType, moveBlue }) {
+  render({ weapon }, { difficulty, collisionType, moveBlue, swapped }) {
     const activeWeapon = weapons[weapon];
 
     storeState(this.state);
@@ -72,6 +73,16 @@ class Weapons extends Component {
                 >
                   {moveBlue ? "Stop" : "Move"} Blue
                 </button>
+                <button
+                  onClick={() =>
+                    this.setState(state => ({
+                      ...state,
+                      swapped: !state.swapped
+                    }))
+                  }
+                >
+                  Swap Blue {"<->"} Red
+                </button>
               </div>
               {collisionTypes && (
                 <Menu
@@ -94,6 +105,7 @@ class Weapons extends Component {
                 difficulty={difficulty}
                 collisionType={collisionType}
                 moveBlue={moveBlue}
+                swapped={swapped}
               />
             </div>
           )}

@@ -209,9 +209,8 @@ const getItemFromPool = itemDefinition => {
     spawn.addComponent(itemDefinition.sprite);
   }
   if (itemDefinition.composition) {
-    spawn
-      .addComponent(Composable)
-      .compose(compositions[itemDefinition.composition]);
+    const composeData = compositions[itemDefinition.composition];
+    spawn.addComponent(Composable).compose(composeData);
   }
   if (itemDefinition.entity) {
     spawn.addComponent(EntityDefinition).applyDefinition(itemDefinition.entity);
@@ -237,9 +236,12 @@ const generator = (itemDef, itemSettings, position, difficulty, f) => {
   const settings = { ...itemDef, ...itemSettings };
   if (settings.angleRange) {
     for (
-      let spawnAngle = settings.angleRange.from;
-      spawnAngle <= settings.angleRange.to;
-      spawnAngle += settings.angleRange.step
+      let spawnAngle = adjustForDifficulty(
+        difficulty,
+        settings.angleRange.from
+      );
+      spawnAngle <= adjustForDifficulty(difficulty, settings.angleRange.to);
+      spawnAngle += adjustForDifficulty(difficulty, settings.angleRange.step)
     ) {
       const angle = position.angle + spawnAngle;
       f({ ...settings, angle });
