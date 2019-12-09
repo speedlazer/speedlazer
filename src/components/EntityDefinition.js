@@ -1,8 +1,10 @@
 import Composable from "src/components/Composable";
+import Weapon from "src/components/Weapon";
 import ParticleEmitter from "src/components/ParticleEmitter";
 import entities from "src/data/entities";
 import compositions from "src/data/compositions";
 import particles from "src/data/particles";
+import weapons from "src/data/weapons";
 
 const convertLocation = location => {
   if (!location) return {};
@@ -57,13 +59,21 @@ const setEntityStructure = (entity, state, duration) => {
       }
     });
   }
+  if (state.weapon) {
+    const pattern = weapons[state.weapon.pattern];
+    entity
+      .attr({ difficulty: 0 })
+      .addComponent(Weapon)
+      .weapon({ ...state.weapon, pattern });
+  }
 
   if (state.attachments && typeof entity.attachEntity === "function") {
     Object.entries(state.attachments).forEach(
       ([attachPoint, attachDefinition]) => {
         if (attachDefinition) {
           const itemName = attachDefinition.name || attachPoint;
-          const attachment = entity[itemName] || Crafty.e("2D");
+          const attachment =
+            entity[itemName] || Crafty.e("2D").attr({ w: 1, h: 1 });
 
           setEntityStructure(attachment, attachDefinition, duration);
           entity.attachEntity(attachPoint, attachment);

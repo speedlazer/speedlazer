@@ -1,0 +1,65 @@
+{
+  "player.ship": {
+    "attributes": {
+      "width": 96,
+      "height": 54
+    },
+    "sprites": [
+      ["playerShip", { "flipX": true, "key": "main" }],
+      [
+        "shipEngineFire",
+        { "x": -64, "y": 12, "z": -1, "scale": 0.6, "key": "flame" }
+      ]
+    ],
+    "hitbox": [20, 20, 76, 24, 90, 45, 20, 45],
+    "attachHooks": [
+      [
+        "mainWeapon",
+        {
+          "x": 62,
+          "y": 44,
+          "z": 4,
+          "attachAlign": ["center", "right"],
+          "attachTo": "main"
+        }
+      ]
+    ],
+    "frames": {
+      "flame2": {
+        "flame": {
+          "x": -5,
+          "scale": 0.7,
+          "alpha": 0.9
+        }
+      },
+      "landed": {
+        "flame": {
+          "x": 24,
+          "scale": 0.1,
+          "alpha": 0.2
+        }
+      }
+    },
+    "animations": {
+      "flying": {
+        "repeat": true,
+        "easing": "linear",
+        "duration": 500,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 0.5,
+            "startFrame": "default",
+            "endFrame": "flame2"
+          },
+          {
+            "start": 0.5,
+            "end": 1,
+            "startFrame": "flame2",
+            "endFrame": "default"
+          }
+        ]
+      }
+    }
+  }
+}

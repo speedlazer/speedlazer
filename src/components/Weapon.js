@@ -292,83 +292,75 @@ const spawnItem = (
 const Weapon = "Weapon";
 
 Crafty.c(Weapon, {
-  init() {
-    this.weapons = [];
-  },
-
-  weapon(name, definition) {
-    this.weapons.push({ name, state: {}, definition, active: false });
+  weapon(definition) {
+    this.definition = definition;
+    this.active = false;
     return this;
   },
 
-  activateWeapon(name) {
-    const weapon = this.weapons.find(w => w.name === name);
-    if (weapon.active === true) {
-      return this;
-    }
-    weapon.active = true;
-    weapon.activatedAt = new Date() * 1;
+  activate() {
+    this.active = true;
+    this.activatedAt = new Date() * 1;
 
-    weapon.initialDelay = adjustForDifficulty(
+    this.initialDelay = adjustForDifficulty(
       this.difficulty,
-      weapon.definition.pattern.spawnRhythm.initialDelay
+      this.definition.pattern.spawnRhythm.initialDelay
     );
     this.uniqueBind("EnterFrame", this._updateSpawnFrame);
     return this;
   },
 
-  _weaponSpawn(w, spawnRhythm) {
+  _weaponSpawn(spawnRhythm) {
     spawnRhythm.spawns.forEach(([name, overrideSettings]) => {
       spawnItem(
-        w.definition.pattern,
+        this.definition.pattern,
         name,
         overrideSettings,
         this,
         {
-          x: this.x + w.definition.x,
-          y: this.y + w.definition.y,
-          angle: w.definition.angle
+          x: this.x + (this.definition.x || 0),
+          y: this.y + (this.definition.y || 0),
+          angle: this.definition.angle || 0
         },
-        w.definition.target
+        this.definition.target
       );
     });
   },
 
   _updateSpawnFrame({ dt }) {
-    this.weapons.forEach(w => {
-      const spawnRhythm = w.definition.pattern.spawnRhythm;
+    const spawnRhythm = this.definition.pattern.spawnRhythm;
 
-      if (w.initialDelay > 0) {
-        w.initialDelay -= dt;
-        if (w.initialDelay <= 0) {
-          this._weaponSpawn(w, spawnRhythm);
-          w.shotIndex = 0;
-          w.shotDelay = adjustForDifficulty(
-            this.difficulty,
-            spawnRhythm.shotDelay
-          );
-        }
-        return;
+    if (this.initialDelay > 0) {
+      this.initialDelay -= dt;
+      if (this.initialDelay <= 0) {
+        this._weaponSpawn(spawnRhythm);
+        this.shotIndex = 0;
+        this.shotDelay = adjustForDifficulty(
+          this.difficulty,
+          spawnRhythm.shotDelay
+        );
       }
-      w.shotDelay -= dt;
-      if (w.shotDelay <= 0) {
-        w.shotIndex++;
-        if (
-          w.shotIndex >= adjustForDifficulty(this.difficulty, spawnRhythm.burst)
-        ) {
-          w.initialDelay = adjustForDifficulty(
-            this.difficulty,
-            spawnRhythm.burstDelay
-          );
-        } else {
-          this._weaponSpawn(w, spawnRhythm);
-          w.shotDelay = adjustForDifficulty(
-            this.difficulty,
-            spawnRhythm.shotDelay
-          );
-        }
+      return;
+    }
+    this.shotDelay -= dt;
+    if (this.shotDelay <= 0) {
+      this.shotIndex++;
+      if (
+        this.shotIndex >=
+        adjustForDifficulty(this.difficulty, spawnRhythm.burst)
+      ) {
+        this.initialDelay = adjustForDifficulty(
+          this.difficulty,
+          spawnRhythm.burstDelay
+        );
+      } else {
+        this._weaponSpawn(spawnRhythm);
+        this.shotDelay = adjustForDifficulty(
+          this.difficulty,
+          spawnRhythm.shotDelay
+        );
       }
-    });
+    }
   }
 });
 

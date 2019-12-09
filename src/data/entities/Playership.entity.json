@@ -1,0 +1,27 @@
+{
+  "name": "PlayerShip",
+  "structure": {
+    "composition": "player.ship",
+    "attachments": {
+      "mainWeapon": {
+        "weapon": {
+          "pattern": "ship.bullets",
+          "target": "PlayerEnemy",
+          "angle": 180
+        }
+      }
+    }
+  },
+  "habitats": [
+    {
+      "name": "Ocean",
+      "scenery": "City.Ocean",
+      "position": {
+        "x": 200,
+        "y": 380
+      },
+      "scrollSpeed": { "vx": -100, "vy": 0 },
+      "background": ["City.Sunrise", 3]
+    }
+  ]
+}

@@ -10,6 +10,7 @@ import ocean from "./Ocean.composition.json";
 import city from "./City.composition.json";
 import shipHatch from "./ShipHatch.composition.json";
 import portraits from "./portraits.composition.json";
+import playerShip from "./PlayerShip.composition.json";
 
 const compositions = {
   ...backgrounds,
@@ -23,7 +24,8 @@ const compositions = {
   ...ocean,
   ...shipHatch,
   ...portraits,
-  ...bullets
+  ...bullets,
+  ...playerShip
 };
 
 export default compositions;
