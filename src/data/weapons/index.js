@@ -70,6 +70,7 @@ export default {
       },
       muzzleFlash: {
         spawnPosition: [0, 0.5],
+        attached: true,
         velocity: 0,
         composition: "weapons.muzzleFlash",
         queue: [{ duration: 400 }]
@@ -117,6 +118,7 @@ export default {
       },
       muzzleFlash: {
         spawnPosition: [0, 0.5],
+        attached: true,
         velocity: 0,
         composition: "weapons.muzzleFlash",
         queue: [{ duration: 400 }]
@@ -175,6 +177,7 @@ export default {
       },
       muzzleFlash: {
         spawnPosition: [0, 0.5],
+        attached: true,
         velocity: 0,
         composition: "weapons.muzzleFlash",
         queue: [{ duration: 400 }]
@@ -312,6 +315,7 @@ export default {
       },
       muzzleFlash: {
         spawnPosition: [0, 0.5],
+        attached: true,
         velocity: 0,
         composition: "weapons.muzzleFlash",
         queue: [{ duration: 400 }]
@@ -344,7 +348,7 @@ export default {
     spawnables: {
       bullet: {
         spawnPosition: [0, 0.5],
-        velocity: [250, 300],
+        velocity: [750, 800],
         composition: "weapons.bullet",
         queue: [{ duration: 4000 }],
         collisions: {
@@ -358,9 +362,10 @@ export default {
       },
       muzzleFlash: {
         spawnPosition: [0, 0.5],
+        attached: true,
         velocity: 0,
         composition: "weapons.muzzleFlash",
-        queue: [{ duration: 400 }]
+        queue: [{ duration: 120 }]
       },
       spark: {
         spawnPosition: "outside",

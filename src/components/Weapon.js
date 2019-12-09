@@ -275,6 +275,9 @@ const spawnItem = (
       steering: 0,
       rotation: autoRotate ? settings.angle : 0
     });
+    if (itemDef.attached) {
+      spawner.attach(spawn);
+    }
 
     if (typeof settings.spawnPosition === "object") {
       spawn.attr({
