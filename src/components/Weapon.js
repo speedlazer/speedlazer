@@ -44,7 +44,7 @@ Crafty.c(ScreenBound, {
   }
 });
 
-const calcHitPosition = (objA, objB) => {
+const calcHitPosition = (objA /*, objB */) => {
   const mA = middle(objA);
   //const mB = middle(objB);
   return {
@@ -307,6 +307,12 @@ Crafty.c(Weapon, {
       this.definition.pattern.spawnRhythm.initialDelay
     );
     this.uniqueBind("EnterFrame", this._updateSpawnFrame);
+    return this;
+  },
+
+  deactivate() {
+    this.active = false;
+    this.unbind("EnterFrame", this._updateSpawnFrame);
     return this;
   },
 

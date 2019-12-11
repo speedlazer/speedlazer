@@ -535,6 +535,10 @@ Crafty.c(Composable, {
       elem.addComponent(ColorEffects);
       elem.colorOverride(options.overrideColor);
     }
+    if (options.accentColor) {
+      elem.addComponent(ColorEffects);
+      elem.colorOverride(options.accentColor, "partial");
+    }
     if (options.crop) {
       // input: Top, Right, Bottom, Left (clockwise)
       // output: left, top, width, height

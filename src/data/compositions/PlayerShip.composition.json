@@ -5,7 +5,10 @@
       "height": 54
     },
     "sprites": [
-      ["playerShip", { "flipX": true, "key": "main" }],
+      [
+        "playerShip",
+        { "flipX": true, "key": "main", "accentColor": "#ff0000" }
+      ],
       [
         "shipEngineFire",
         {
@@ -13,7 +16,8 @@
           "y": 12,
           "scale": 0.1,
           "alpha": 0.2,
-          "key": "flame"
+          "key": "flame",
+          "overrideColor": "#ffa0a0"
         }
       ]
     ],

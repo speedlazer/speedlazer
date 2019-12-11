@@ -20,10 +20,7 @@ Crafty.c(component, {
   },
 
   // mode: 'all', 'partial'
-  colorOverride(color, mode) {
-    if (mode == null) {
-      mode = "all";
-    }
+  colorOverride(color, mode = "all") {
     if (color == null) {
       return this;
     }
