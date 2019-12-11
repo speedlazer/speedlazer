@@ -1,6 +1,6 @@
 import { LINEAR } from "src/constants/easing";
 import { createEntity } from "src/components/EntityDefinition";
-import flyPatterns from "src/data/fly-patterns";
+import paths from "src/data/paths";
 import "src/components/WayPointMotion";
 
 const entityFunctions = () => ({
@@ -9,10 +9,10 @@ const entityFunctions = () => ({
     await entity.displayFrame(frameName, duration, easing);
   },
   moveWithPattern: (entity, pattern, velocity = null, easing = LINEAR) => {
-    const flyPattern = flyPatterns[pattern];
+    const flyPattern = paths[pattern];
     entity.addComponent("WayPointMotion");
     const v = velocity || entity.defaultVelocity;
-    entity.flyPattern(flyPattern, v, easing);
+    entity.flyPattern(flyPattern, { velocity: v, easing });
 
     return {
       process: new Promise(resolve => {

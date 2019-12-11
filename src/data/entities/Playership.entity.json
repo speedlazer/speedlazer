@@ -1,0 +1,51 @@
+{
+  "name": "PlayerShip",
+  "structure": {
+    "composition": "player.ship",
+    "animation": null,
+    "attachments": {
+      "mainWeapon": {
+        "weapon": {
+          "pattern": "ship.bullets",
+          "target": "PlayerEnemy",
+          "angle": 180
+        }
+      }
+    }
+  },
+  "states": {
+    "shooting": {
+      "attachments": {
+        "mainWeapon": {
+          "weapon": {
+            "active": true
+          }
+        }
+      }
+    },
+    "noShooting": {
+      "attachments": {
+        "mainWeapon": {
+          "weapon": {
+            "active": false
+          }
+        }
+      }
+    },
+    "flying": {
+      "animation": "flying"
+    }
+  },
+  "habitats": [
+    {
+      "name": "Ocean",
+      "scenery": "City.Ocean",
+      "position": {
+        "x": 200,
+        "y": 380
+      },
+      "scrollSpeed": { "vx": -100, "vy": 0 },
+      "background": ["City.Sunrise", 3]
+    }
+  ]
+}

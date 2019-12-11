@@ -6,7 +6,7 @@
   },
   "states": {
     "damaged": {
-      "composition": "damagedDrone"
+      "frame": "damaged"
     }
   },
   "habitats": [
@@ -14,7 +14,7 @@
       "name": "Ocean",
       "scenery": "City.Ocean",
       "scrollSpeed": { "vx": -100, "vy": 0 },
-      "background": ["#366eab", "#d6d5d5"]
+      "background": ["City.Sunrise", 2]
     }
   ]
 }

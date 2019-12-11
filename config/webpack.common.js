@@ -28,7 +28,7 @@ module.exports = {
       excludeChunks: ["editor"]
     }),
     new webpack.ProvidePlugin({
-      Crafty: ["src/crafty-loader", "default"],
+      Crafty: ["src/crafty", "default"],
       Game: ["src/game", "default"],
       WhenJS: ["src/when-loader", "default"]
     })

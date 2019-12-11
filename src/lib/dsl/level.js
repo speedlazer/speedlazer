@@ -1,19 +1,26 @@
 import { setScenery, setScrollVelocity } from "src/components/Scenery";
+import backgrounds from "src/data/backgrounds";
+import {
+  setBackground,
+  setBackgroundCheckpoint,
+  setBackgroundCheckpointLimit
+} from "src/components/Background";
 
 const levelFunctions = () => ({
   setScrollingSpeed: async (x, y) => {
     setScrollVelocity({ vx: -x, vy: y });
-    //const applySettings = {
-    //accellerate: true,
-    //x: 0,
-    //y: 0,
-    //...settings
-    //};
-    // TODO: Refactor setForcedSpeed internally
-    //level.setForcedSpeed(applySettings, applySettings);
   },
   setScenery: async sceneryName => {
     setScenery(sceneryName);
+  },
+  setBackground: async backgroundName => {
+    setBackground(backgrounds[backgroundName]);
+  },
+  setBackgroundCheckpointLimit: async limit => {
+    setBackgroundCheckpointLimit(limit);
+  },
+  setBackgroundCheckpoint: async checkpoint => {
+    setBackgroundCheckpoint(checkpoint);
   }
 });
 

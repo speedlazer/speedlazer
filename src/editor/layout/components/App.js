@@ -5,7 +5,10 @@ import Spritesheets from "src/editor/modules/spritesheets";
 import Compositions from "src/editor/modules/compositions";
 import Entities from "src/editor/modules/entities";
 import Sceneries from "src/editor/modules/sceneries";
-import FlyPatterns from "src/editor/modules/fly-patterns";
+import Backgrounds from "src/editor/modules/backgrounds";
+import Paths from "src/editor/modules/paths";
+import Weapons from "src/editor/modules/weapons";
+import Particles from "src/editor/modules/particles";
 
 export const App = () => (
   <div>
@@ -14,9 +17,12 @@ export const App = () => (
       items={[
         ["Sprites", "/sprites"],
         ["Compositions", "/compositions"],
-        ["Entities", "/entities"],
+        ["Paths", "/paths"],
+        ["Weapons", "/weapons"],
+        ["Particles", "/particles"],
+        ["Backgrounds", "/backgrounds"],
         ["Sceneries", "/sceneries"],
-        ["Fly patterns", "/fly-patterns"]
+        ["Entities", "/entities"]
       ]}
     />
     <Router>
@@ -24,10 +30,15 @@ export const App = () => (
       <Spritesheets path="/editor/sprites/:map/:activeSprite" />
       <Compositions path="/editor/compositions/:compositionName?" />
       <Compositions path="/editor/compositions/:compositionName/frames/:frameName" />
+      <Compositions path="/editor/compositions/:compositionName/animations/:animationName" />
       <Entities path="/editor/entities/:entity?" />
       <Entities path="/editor/entities/:entity/states/:stateName/:habitatName" />
       <Sceneries path="/editor/sceneries/:scenery?" />
-      <FlyPatterns path="/editor/fly-patterns/:pattern?" />
+      <Backgrounds path="/editor/backgrounds/:background?" />
+      <Backgrounds path="/editor/backgrounds/:background/checkpoints/:checkpoint" />
+      <Paths path="/editor/paths/:pattern?" />
+      <Weapons path="/editor/weapons/:weapon?" />
+      <Particles path="/editor/particles/:particles?" />
     </Router>
   </div>
 );

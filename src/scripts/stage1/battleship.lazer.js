@@ -1,5 +1,6 @@
 import { getOne, pickOne } from "src/lib/utils";
 import { EASE_IN_OUT } from "src/constants/easing";
+import PlayerSpaceship from "src/components/player/PlayerSpaceship";
 
 /**
  * NOTES:
@@ -55,7 +56,7 @@ const popupRandomCannon = async ({ call, until, displayFrame }, { ship }) => {
   await displayFrame(hatch, "open", 500, EASE_IN_OUT);
   await displayFrame(hatch, "risen", 500, EASE_IN_OUT);
 
-  const target = getOne("PlayerSpaceship");
+  const target = getOne(PlayerSpaceship);
   await call(hatch.turret.aim, { target: target });
   //await action(hatch, "fire");
   await until(

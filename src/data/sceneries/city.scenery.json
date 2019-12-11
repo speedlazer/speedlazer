@@ -1,9 +1,10 @@
 {
   "City.Coast": {
-    "width": 1024,
+    "width": 1023,
     "height": 576,
     "right": "City.Coast",
     "left": "City.Coast",
+    "backgrounds": [["City.Sunrise", 2]],
     "elements": [
       {
         "x": 0,
@@ -38,10 +39,11 @@
     ]
   },
   "City.CoastStart": {
-    "width": 1024,
+    "width": 1023,
     "height": 576,
     "right": "City.Coast",
     "left": "City.Ocean",
+    "backgrounds": [["City.Sunrise", 1]],
     "elements": [
       {
         "x": 0,
@@ -76,10 +78,11 @@
     ]
   },
   "City.Ocean": {
-    "width": 1024,
+    "width": 1023,
     "height": 576,
     "right": "City.Ocean",
     "left": "City.Ocean",
+    "backgrounds": [["City.Sunrise", 0]],
     "elements": [
       {
         "x": 0,
@@ -108,10 +111,11 @@
     ]
   },
   "City.BayStart": {
-    "width": 1024,
+    "width": 1023,
     "height": 576,
     "right": "City.Bay",
     "left": "City.Coast",
+    "backgrounds": [["City.Sunrise", 2]],
     "elements": [
       {
         "x": 0,
@@ -152,10 +156,11 @@
     ]
   },
   "City.Bay": {
-    "width": 1024,
+    "width": 1023,
     "height": 576,
     "left": "City.Bay",
     "right": "City.Bay",
+    "backgrounds": [["City.Sunrise", 3]],
     "elements": [
       {
         "x": 0,
@@ -192,6 +197,58 @@
         "x": 0,
         "y": -180,
         "composition": "city.city",
+        "distance": 0.5
+      },
+      {
+        "x": 0,
+        "y": -210,
+        "composition": "city.layer2",
+        "distance": 0.375
+      }
+    ]
+  },
+  "City.Bridge": {
+    "width": 1023,
+    "height": 576,
+    "left": "City.Bay",
+    "right": "City.Bay",
+    "backgrounds": [["City.Sunrise", 3]],
+    "elements": [
+      {
+        "x": 0,
+        "y": -65,
+        "z": -20,
+        "composition": "ocean.front"
+      },
+      {
+        "x": 0,
+        "y": -45,
+        "components": ["ShipSolid", "BulletSolid", "GravityLiquid"],
+        "w": 1024,
+        "h": 45
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "composition": "ocean.middle",
+        "distance": 0.5
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "composition": "ocean.horizon",
+        "distance": 0.25
+      },
+      {
+        "x": 0,
+        "y": -46,
+        "composition": "city.horizon",
+        "distance": 0.25
+      },
+      {
+        "x": 0,
+        "y": -52,
+        "composition": "city.bridge.foot",
         "distance": 0.5
       },
       {

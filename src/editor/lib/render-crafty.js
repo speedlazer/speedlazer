@@ -1,14 +1,20 @@
 import spritesheets from "src/data/spritesheets";
-import "src/components/Composable";
+import backgrounds from "src/data/backgrounds";
+import Composable from "src/components/Composable";
+import Weapon from "src/components/Weapon";
+import WayPointMotion from "src/components/WayPointMotion";
+import ParticleEmitter from "src/components/ParticleEmitter";
+import "src/components/LightGlare";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";
+import {
+  setBackground,
+  setBackgroundCheckpoint,
+  setBackgroundCheckpointLimit
+} from "src/components/Background";
 import { createEntity } from "src/components/EntityDefinition";
 import { setScenery, setScrollVelocity } from "src/components/Scenery";
 import "src/components/WayPointMotion";
-import {
-  setBackgroundColor,
-  fadeBackgroundColor
-} from "src/components/Horizon";
 import { getBezierPath } from "src/lib/BezierPath";
 
 Crafty.paths({
@@ -18,13 +24,18 @@ Crafty.paths({
 
 window.Crafty = Crafty;
 
-const SCREEN_WIDTH = 900;
-const SCREEN_HEIGHT = 600;
+const SCREEN_WIDTH = 1024;
+const SCREEN_HEIGHT = 576;
 
 export const mount = domElem => {
   if (!domElem) return;
   Crafty.init(SCREEN_WIDTH, SCREEN_HEIGHT, domElem);
   Crafty.background("#000000");
+  Crafty.timer.FPS(1000 / 10); // 10ms per frame
+};
+
+export const unmount = () => {
+  Crafty.stop();
 };
 
 Crafty.bind("UpdateFrame", fd => Crafty.trigger("GameLoop", fd));
@@ -37,19 +48,23 @@ const updateActualSize = (actualSize, entity) => {
 };
 
 const createComposable = composition =>
-  Crafty.e("2D, WebGL, Composable, DebugComposable")
+  Crafty.e(["2D", "WebGL", Composable, "DebugComposable"].join(", "))
     .attr({ x: 0, y: 0, w: 40, h: 40 })
-    .compose(composition);
+    .compose(
+      composition,
+      { autoStartAnimation: false }
+    );
 
 const addColor = (entity, color) =>
-  entity
-    .addComponent("WebGL")
-    .addComponent("Color")
-    .color(color);
+  entity.attach(
+    Crafty.e("2D, WebGL, Color, SizeBox")
+      .attr({ x: entity.x, y: entity.y, w: entity.w, h: entity.h, z: -5000 })
+      .color(color)
+  );
 
 const determineEntitySize = (sizeModel, entity) => {
   updateActualSize(sizeModel, entity);
-  if (entity.has("Composable")) {
+  if (entity.has(Composable)) {
     Object.values(entity.currentAttachHooks).forEach(hook => {
       updateActualSize(sizeModel, hook);
       if (hook.currentAttachment) {
@@ -78,12 +93,23 @@ const scaleScreenForEntity = entity => {
   const scale = Math.min(SCREEN_WIDTH / width, SCREEN_HEIGHT / height, 1);
   const maxWidth = Math.max(width, SCREEN_WIDTH / scale);
   const maxHeight = Math.max(height, SCREEN_HEIGHT / scale);
+  if (!entity.preScalePos) {
+    entity.preScalePos = { x: entity.x, y: entity.y };
+  }
+
   entity.attr({
     x: (maxWidth - width) / 2 + offset.x,
     y: (maxHeight - height) / 2 + offset.y
   });
 
   Crafty.viewport.scale(scale);
+};
+
+const resetScreenScaling = entity => {
+  if (entity.preScalePos) {
+    entity.attr({ x: entity.preScalePos.x, y: entity.preScalePos.y });
+  }
+  Crafty.viewport.scale(1.0);
 };
 
 const applyDisplayOptions = (entity, options) => {
@@ -96,9 +122,7 @@ const applyDisplayOptions = (entity, options) => {
   if (options.showSize) {
     addColor(entity, "#FF0000");
   } else {
-    if (entity.has("Color")) {
-      entity.color("#000000", 0);
-    }
+    Crafty("SizeBox").destroy();
   }
 
   entity.displayHitBoxes(options.showHitBox);
@@ -108,7 +132,14 @@ const applyDisplayOptions = (entity, options) => {
 Crafty.defineScene("ComposablePreview", ({ composition, options }) => {
   const composable = createComposable(composition);
   applyDisplayOptions(composable, options);
-  scaleScreenForEntity(composable);
+  if (options.frame) {
+    composable.displayFrame(options.frame, 0);
+  }
+  if (options.scaleViewport) {
+    scaleScreenForEntity(composable);
+  } else {
+    resetScreenScaling(composable);
+  }
 });
 
 let activeHabitat = null;
@@ -121,9 +152,12 @@ const setHabitat = habitat => {
     habitat.scenery !== activeHabitat &&
     setScenery(habitat.scenery);
 
-  habitat && habitat.background
-    ? setBackgroundColor(habitat.background[0], habitat.background[1])
-    : setBackgroundColor("#000000", "#000000");
+  if (habitat && habitat.background) {
+    setBackground(backgrounds[habitat.background[0]]);
+    setBackgroundCheckpoint(habitat.background[1]);
+  } else {
+    Crafty("Background").destroy();
+  }
 
   habitat &&
     habitat.scrollSpeed &&
@@ -141,29 +175,12 @@ Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
 
 Crafty.defineScene(
   "SceneryPreview",
-  async ({ scenery }) => {
+  async ({ scenery, background, checkpoint }) => {
+    if (background) {
+      setBackground(background);
+      setBackgroundCheckpoint(checkpoint);
+    }
     setScenery(scenery);
-    fadeBackgroundColor({
-      topColors: [
-        "#000000",
-        "#000000",
-        "#000020",
-        "#222c50",
-        "#7a86a2",
-        "#366eab"
-      ],
-      bottomColors: [
-        "#000000",
-        "#000020",
-        "#000020",
-        "#7e261b",
-        "#d39915",
-        "#f7e459",
-        "#d6d5d5",
-        "#d6d5d5"
-      ],
-      duration: 60000
-    });
   },
   () => {
     Crafty("Scenery").destroy();
@@ -185,12 +202,39 @@ const loadSpriteSheets = async () =>
     Crafty.load(loader, resolve);
   });
 
+let scaleViewport = true;
 export const showComposition = async (composition, options = {}) => {
   if (inScene("ComposablePreview") && options.frame) {
-    const currentComposable = Crafty("Composable").get(0);
+    const currentComposable = Crafty(Composable).get(0);
     if (currentComposable.appliedDefinition === composition) {
+      currentComposable.animationPlaying() && currentComposable.stopAnimation();
       currentComposable.displayFrame(options.frame, options.tweenDuration);
       applyDisplayOptions(currentComposable, options);
+      if (options.scaleViewport !== scaleViewport) {
+        scaleViewport = options.scaleViewport;
+        if (options.scaleViewport) {
+          scaleScreenForEntity(currentComposable);
+        } else {
+          resetScreenScaling(currentComposable);
+        }
+      }
+      return;
+    }
+  }
+
+  if (inScene("ComposablePreview") && options.animation) {
+    const currentComposable = Crafty(Composable).get(0);
+    if (currentComposable.appliedDefinition === composition) {
+      currentComposable.playAnimation(options.animation);
+      applyDisplayOptions(currentComposable, options);
+      if (options.scaleViewport !== scaleViewport) {
+        scaleViewport = options.scaleViewport;
+        if (options.scaleViewport) {
+          scaleScreenForEntity(currentComposable);
+        } else {
+          resetScreenScaling(currentComposable);
+        }
+      }
       return;
     }
   }
@@ -200,26 +244,33 @@ export const showComposition = async (composition, options = {}) => {
 };
 
 let currentEntity = null;
+let currentHabitat = null;
 export const showEntity = async (entityName, options = {}) => {
+  const strHabitat = JSON.stringify(options.habitat);
   if (
     inScene("EntityPreview") &&
     options.state &&
     currentEntity === entityName
   ) {
     const existingEntity = Crafty("EntityDefinition").get(0);
-    existingEntity.showState(options.state);
-    setHabitat(options.habitat);
+    existingEntity.showState(options.state, 1000);
+
+    if (strHabitat !== currentHabitat) {
+      currentHabitat = strHabitat;
+      setHabitat(options.habitat);
+    }
     return;
   }
   currentEntity = entityName;
+  currentHabitat = strHabitat;
 
   await loadSpriteSheets();
   Crafty.enterScene("EntityPreview", { entityName, habitat: options.habitat });
 };
 
-export const showScenery = async scenery => {
+export const showScenery = async (scenery, backgroundSettings = {}) => {
   await loadSpriteSheets();
-  Crafty.enterScene("SceneryPreview", { scenery });
+  Crafty.enterScene("SceneryPreview", { scenery, ...backgroundSettings });
 };
 
 const showBezier = pattern => {
@@ -254,7 +305,7 @@ Crafty.defineScene("FlyPatternPreview", ({ pattern, showPath, showPoints }) => {
   Crafty.e("2D, WebGL, Color, WayPointMotion")
     .attr({ x: pattern[0].x * vpw, y: pattern[0].y * vph, w: 20, h: 20 })
     .color("#0000FF")
-    .flyPattern(pattern, 75, "easeInOutQuad");
+    .flyPattern(pattern, { velocity: 75, easing: "easeInOutQuad" });
 });
 
 let currentPattern = null;
@@ -279,4 +330,141 @@ export const showFlyPattern = async (pattern, { showPoints, showPath }) => {
   currentPattern = pattern;
 
   Crafty.enterScene("FlyPatternPreview", { pattern, showPoints, showPath });
+};
+
+Crafty.defineScene(
+  "BackgroundPreview",
+  ({ background, backgroundLimit, activeCheckpoint }) => {
+    setBackground(background, { maxCheckpoint: backgroundLimit });
+    if (activeCheckpoint !== 0) {
+      setTimeout(() => setBackgroundCheckpoint(activeCheckpoint));
+    }
+  }
+);
+
+let currentBackground = null;
+let currentBackgroundLimit = 0;
+let currentBackgroundCheckpoint = 0;
+export const showBackground = async (
+  background,
+  backgroundLimit,
+  activeCheckpoint
+) => {
+  await loadSpriteSheets();
+  if (inScene("BackgroundPreview")) {
+    if (currentBackground !== background) {
+      setBackground(background, { maxCheckpoint: backgroundLimit });
+    } else if (currentBackgroundCheckpoint !== activeCheckpoint) {
+      setBackgroundCheckpoint(activeCheckpoint);
+    } else if (currentBackgroundLimit !== backgroundLimit) {
+      setBackgroundCheckpointLimit(backgroundLimit);
+    }
+    currentBackground = background;
+    currentBackgroundLimit = backgroundLimit;
+    currentBackgroundCheckpoint = activeCheckpoint;
+    return;
+  }
+  currentBackground = background;
+  currentBackgroundLimit = backgroundLimit;
+  currentBackgroundCheckpoint = activeCheckpoint;
+  Crafty.enterScene("BackgroundPreview", {
+    background,
+    backgroundLimit,
+    activeCheckpoint
+  });
+};
+
+Crafty.defineScene(
+  "BulletPatternPreview",
+  ({ pattern, difficulty, collisionType, swapped }) => {
+    const red = Crafty.e(`2D, WebGL, Color, Red, ${WayPointMotion}`)
+      .attr({
+        x: 800,
+        y: 240,
+        w: 40,
+        h: 40,
+        difficulty
+      })
+      .color("#FF0000");
+
+    const blue = Crafty.e(`2D, WebGL, Color, Blue, ${WayPointMotion}`)
+      .attr({
+        x: 200,
+        y: 240,
+        w: 40,
+        h: 40,
+        difficulty
+      })
+      .color("#0000FF");
+
+    swapped
+      ? red.addComponent(
+          ["Collision", collisionType].filter(Boolean).join(", ")
+        )
+      : blue.addComponent(
+          ["Collision", collisionType].filter(Boolean).join(", ")
+        );
+
+    swapped
+      ? blue
+          .addComponent(Weapon)
+          .weapon({ pattern, target: "Red", x: 40, y: 20, angle: 180 })
+          .activate()
+      : red
+          .addComponent(Weapon)
+          .weapon({ pattern, target: "Blue", x: 0, y: 20, angle: 0 })
+          .activate();
+  }
+);
+
+export const showBulletPattern = async (
+  pattern,
+  { difficulty, collisionType, swapped }
+) => {
+  await loadSpriteSheets();
+  Crafty.enterScene("BulletPatternPreview", {
+    pattern,
+    difficulty,
+    collisionType,
+    swapped
+  });
+};
+
+Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
+  //Crafty.background("#FFFFFF");
+  //Crafty.e("2D, We00bGL, Color")
+  //.attr({
+  //x: (Crafty.viewport.width - emitter.emitter.w) / 2,
+  //y: (Crafty.viewport.height - emitter.emitter.h) / 2,
+  //w: emitter.emitter.w,
+  //h: emitter.emitter.h,
+  //z: 50
+  //})
+  //.color("#FF0000");
+  const emitterSource = Crafty.e(`2D, Emitter`).attr({
+    x: (Crafty.viewport.width - emitter.emitter.w) / 2,
+    y: (Crafty.viewport.height - emitter.emitter.h) / 2,
+    z: 20
+  });
+
+  Crafty.e(`2D, ${ParticleEmitter}`).particles(emitter, emitterSource);
+});
+
+let currentEmitter = null;
+export const showParticleEmitter = async (emitter, { active }) => {
+  await loadSpriteSheets();
+  if (inScene("ParticleEmitterPreview") && emitter === currentEmitter) {
+    if (!active) {
+      Crafty(ParticleEmitter).stopEmission();
+    } else {
+      Crafty(ParticleEmitter).startEmission();
+    }
+    return;
+  }
+  currentEmitter = emitter;
+
+  Crafty.enterScene("ParticleEmitterPreview", {
+    emitter,
+    active
+  });
 };

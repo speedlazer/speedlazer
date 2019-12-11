@@ -1,13 +1,22 @@
 import "src/components/Horizon";
-import "src/components/utils/Scalable";
+import Scalable from "src/components/utils/Scalable";
 import "src/components/utils/HideBelow";
-import "src/components/generic/TweenPromise";
-import "src/components/generic/Delta2D";
+import Animator from "src/components/generic//Animator";
+import { tweenFn } from "src/components/generic/TweenPromise";
+import { colorFadeFn } from "src/components/generic/ColorFade";
+import Delta2D from "src/components/generic/Delta2D";
+import Gradient from "src/components/Gradient";
+import ColorEffects from "src/components/ColorEffects";
+import { globalStartTime } from "src/lib/time";
+import { easingFunctions } from "src/constants/easing";
 
 const definitionStructure = {
   sprites: [],
+  gradients: [],
   attachHooks: [],
   attributes: {},
+  frames: {},
+  animations: {},
   hitbox: []
 };
 
@@ -23,7 +32,17 @@ const widthFactor = {
   right: 1
 };
 
-const TWEEN_WHITELIST = ["x", "y", "w", "h", "rotation"];
+const TWEEN_WHITELIST = [
+  "x",
+  "y",
+  "w",
+  "h",
+  "rotation",
+  "alpha",
+  "scale",
+  "scaleX",
+  "scaleY"
+];
 
 const deltaSettings = settings =>
   Object.entries(settings)
@@ -39,10 +58,24 @@ const deltaSettings = settings =>
 
 const generateDefaultFrame = definition => {
   const result = {};
-  definition.sprites
+  (definition.sprites || [])
     .filter(([, settings]) => settings.key)
     .map(
       ([, settings]) =>
+        (result[settings.key] = {
+          z: 0,
+          rotation: 0,
+          alpha: 1,
+          scale: 1,
+          ...settings,
+          x: 0,
+          y: 0
+        })
+    );
+  (definition.gradients || [])
+    .filter(settings => settings.key)
+    .map(
+      settings =>
         (result[settings.key] = {
           z: 0,
           rotation: 0,
@@ -51,6 +84,7 @@ const generateDefaultFrame = definition => {
           y: 0
         })
     );
+  result.attributes = definition.attributes;
   return result;
 };
 
@@ -67,10 +101,134 @@ const getHookSettings = (definition, name) =>
   (definition.attachHooks.find(([hookName]) => hookName === name) || [])[1] ||
   {};
 
-Crafty.c("Composable", {
+const getFrameData = (entity, frameName) =>
+  frameName === "default"
+    ? generateDefaultFrame(entity.appliedDefinition)
+    : frameName && entity.appliedDefinition.frames[frameName];
+
+const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
+  const targetFrameData = getFrameData(entity, targetFrame);
+  if (!targetFrameData) return () => {};
+  const sourceFrameData = getFrameData(entity, sourceFrame);
+
+  const fns = Object.entries(targetFrameData).reduce(
+    (acc, [keyName, settings]) => {
+      if (keyName === "attributes") {
+        const tweenSettings = deltaSettings({
+          ...settings
+        });
+        const sourceTweenSettings =
+          sourceFrameData &&
+          deltaSettings({
+            ...sourceFrameData[keyName]
+          });
+
+        return acc.concat(tweenFn(entity, tweenSettings, sourceTweenSettings));
+      }
+      const sprite = entity.composableParts.find(
+        part => part.attr("key") === keyName
+      );
+      if (sprite) {
+        const originalSettings = entity.appliedDefinition.sprites.find(
+          ([, startSettings]) => startSettings.key === keyName
+        );
+
+        const defaultSettings = {
+          z: 0,
+          alpha: 1,
+          scaleX: 1,
+          scaleY: 1,
+          ...(originalSettings && originalSettings[1]),
+          x: 0,
+          y: 0
+        };
+
+        const tweenSettings = deltaSettings({
+          ...defaultSettings,
+          ...settings
+        });
+        const sourceTweenSettings =
+          sourceFrameData &&
+          deltaSettings({
+            ...defaultSettings,
+            ...sourceFrameData[keyName]
+          });
+
+        const newSpriteName = settings.sprite || originalSettings[0];
+
+        return acc.concat(
+          tweenFn(sprite, tweenSettings, sourceTweenSettings),
+          () => {
+            if (sprite._spriteName === newSpriteName) return;
+            sprite.sprite(newSpriteName);
+            sprite._spriteName = newSpriteName;
+          }
+        );
+      }
+
+      const gradient = entity.gradientParts.find(
+        part => part.attr("key") === keyName
+      );
+      if (gradient) {
+        const defaultSettings = {
+          z: 0,
+          w: gradient.originalSize.w,
+          h: gradient.originalSize.h,
+          ...(entity.appliedDefinition.gradients.find(
+            startSettings => startSettings.key === keyName
+          ) || {}),
+          x: 0,
+          y: 0
+        };
+
+        const tweenSettings = deltaSettings({
+          ...defaultSettings,
+          ...settings
+        });
+        const sourceTweenSettings =
+          sourceFrameData &&
+          deltaSettings({
+            ...defaultSettings,
+            ...sourceFrameData[keyName]
+          });
+
+        return acc.concat(
+          tweenFn(gradient, tweenSettings, sourceTweenSettings),
+          colorFadeFn(gradient, settings.topColor, settings.bottomColor)
+        );
+      }
+    },
+    []
+  );
+  return t => fns.forEach(f => f(t));
+};
+
+const displaySpriteAnimationFn = (entity, animationDefinition) => {
+  const sprite = entity.composableParts.find(
+    part => part.attr("key") === animationDefinition.key
+  );
+  if (!sprite) {
+    return () => {};
+  }
+  return t => {
+    const spriteIndex = Math.min(
+      Math.floor(t * animationDefinition.sprites.length),
+      animationDefinition.sprites.length - 1
+    );
+    const name = animationDefinition.sprites[spriteIndex];
+    sprite.sprite(name);
+  };
+};
+
+const Composable = "Composable";
+
+Crafty.c(Composable, {
+  required: Animator,
+
   init() {
     this.appliedDefinition = definitionStructure;
     this.composableParts = [];
+    this.gradientParts = [];
     this.currentAttachHooks = {};
     this.currentZ = this.z;
     this.bind("Reorder", this.updateChildrenOrder);
@@ -79,13 +237,21 @@ Crafty.c("Composable", {
   },
 
   composableFreeze() {
-    this._children.forEach(child => child.freeze());
+    this.appliedDefinition;
+    this.stopAnimation();
+    this._children.forEach(child => child.freeze && child.freeze());
   },
   composableUnfreeze() {
-    this._children.forEach(child => child.unfreeze());
+    this._children.forEach(child => child.unfreeze && child.unfreeze());
+    if (this.getAnimation("default")) {
+      this.playAnimation("default");
+    }
   },
 
-  compose(proposedDefinition) {
+  compose(proposedDefinition, { autoStartAnimation = true } = {}) {
+    if (this.appliedDefinition === proposedDefinition) {
+      return;
+    }
     const definition = {
       ...definitionStructure,
       ...proposedDefinition
@@ -93,6 +259,7 @@ Crafty.c("Composable", {
 
     this.setOwnAttributes(definition.attributes);
     this.buildSprites(definition.sprites);
+    this.buildGradients(definition.gradients);
     this.appliedDefinition = proposedDefinition;
 
     this.forEachPart((entity, index) => {
@@ -109,12 +276,90 @@ Crafty.c("Composable", {
     }
 
     if (definition.attributes.scale) {
-      this.addComponent("Scalable");
+      this.addComponent(Scalable);
       this.attr({
         scale: definition.attributes.scale
       });
     }
+
+    if (this.getAnimation("default") && autoStartAnimation) {
+      this.playAnimation("default");
+    }
     return this;
+  },
+
+  getAnimation(animationName) {
+    return (
+      this.appliedDefinition.animations &&
+      this.appliedDefinition.animations[animationName]
+    );
+  },
+
+  async playAnimation(animationName) {
+    const animationData = this.getAnimation(animationName);
+    if (!animationData)
+      throw new Error(`Animation ${animationName} not found in playAnimation`);
+
+    if (animationData.startEase) {
+      const firstFrame = animationData.timeline[0].startFrame;
+      await this.displayFrame(
+        firstFrame,
+        animationData.startEase.duration,
+        animationData.startEase.easing
+      );
+    }
+
+    this.activeAnimation = {
+      name: animationName,
+      data: animationData,
+      easing: easingFunctions[animationData.easing || "linear"],
+      timeline: animationData.timeline.map(e => ({ ...e }))
+    };
+
+    this.animationStart =
+      animationData.timer && animationData.timer === "global"
+        ? globalStartTime()
+        : new Date() * 1;
+    this.bind("EnterFrame", this.updateAnimationFrame);
+  },
+
+  animationPlaying() {
+    return this.activeAnimation !== null;
+  },
+
+  stopAnimation() {
+    this.unbind("EnterFrame", this.updateAnimationFrame);
+    this.activeAnimation = null;
+  },
+
+  updateAnimationFrame({ gameTime }) {
+    // When pausing the game is introduced, this will
+    // need some special care
+    if (gameTime < this.animationStart) this.animationStart = gameTime;
+    const timeElapsed = gameTime - this.animationStart;
+    const timeInIteration = this.activeAnimation.data.repeat
+      ? timeElapsed % this.activeAnimation.data.duration
+      : timeElapsed;
+    const t = timeInIteration / this.activeAnimation.data.duration;
+    const v = this.activeAnimation.easing(t);
+
+    this.activeAnimation.timeline.forEach(event => {
+      if (event.start > v || v >= event.end) return;
+      if (!event.animateFn)
+        event.animateFn =
+          (event.startFrame &&
+            event.endFrame &&
+            displayFrameFn(this, event.endFrame, event.startFrame)) ||
+          (event.spriteAnimation &&
+            displaySpriteAnimationFn(this, event.spriteAnimation)) ||
+          (() => {});
+
+      const localV = (v - event.start) / (event.end - event.start);
+      event.animateFn(localV);
+    });
+    if (t >= 1.0 && !this.activeAnimation.data.repeat) {
+      this.stopAnimation();
+    }
   },
 
   updateChildrenOrder() {
@@ -132,9 +377,14 @@ Crafty.c("Composable", {
   },
 
   setOwnAttributes(attributes) {
+    if (!attributes) return;
     const attrs = {};
     if (attributes.width) attrs.w = attributes.width;
     if (attributes.height) attrs.h = attributes.height;
+    if (attributes.ro) {
+      const [rx, ry] = attributes.ro;
+      this.origin(rx, ry);
+    }
     this.attr(attrs);
   },
 
@@ -191,8 +441,80 @@ Crafty.c("Composable", {
       );
   },
 
+  buildGradients(gradientList) {
+    const additions = [];
+
+    const currentlyApplied = this.appliedDefinition.gradients;
+    let currentPointer = 0;
+    gradientList.forEach(gradient => {
+      const current = currentlyApplied[currentPointer];
+      if (!current) {
+        additions.push(gradient);
+      } else {
+        const toUpdate = this.composableParts[currentPointer];
+        this.applySpriteOptions(toUpdate, gradient);
+        currentPointer++;
+      }
+    });
+    const deletions = this.gradientParts.slice(currentPointer);
+    deletions.forEach(deletion => {
+      this.detach(deletion);
+      deletion.destroy();
+    });
+    this.gradientParts = this.gradientParts
+      .slice(0, currentPointer)
+      .concat(
+        additions.map(gradientData =>
+          this.createAndAttachGradient(gradientData)
+        )
+      );
+  },
+
+  createAndAttachGradient(options) {
+    const subElem = Crafty.e(["2D, WebGL", Gradient, Delta2D].join(", "));
+    this.applyGradientOptions(subElem, options);
+    subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });
+    this.attach(subElem);
+    return subElem;
+  },
+
+  applyGradientOptions(elem, options) {
+    elem.attr({
+      x: this.x + (options.x || 0),
+      y: this.y + (options.y || 0),
+      z: this.z + (options.z || 0)
+    });
+    if (options.key) elem.attr({ key: options.key });
+    elem.attr({
+      w: options.w || elem.w,
+      h: options.h || elem.h,
+      alpha: options.alpha === undefined ? 1 : options.alpha
+    });
+    if (options.topColor)
+      elem.topColor(options.topColor[0], options.topColor[1]);
+    if (options.bottomColor)
+      elem.bottomColor(options.bottomColor[0], options.bottomColor[1]);
+
+    if (options.ro) {
+      const [rx, ry] = options.ro;
+      elem.origin(rx, ry);
+      if (options.rotation) elem.attr({ rotation: options.rotation });
+    }
+    if (options.hitbox) {
+      elem.addComponent("Collision");
+      elem.collision(options.hitbox);
+    }
+    if (options.hideBelow) {
+      elem.addComponent("HideBelow").attr({
+        hideBelow: options.hideBelow
+      });
+    }
+  },
+
   createAndAttachSprite([spriteName, options]) {
-    const subElem = Crafty.e(`2D, WebGL, Delta2D, ${spriteName}`);
+    const subElem = Crafty.e(
+      ["2D, WebGL", Delta2D, Scalable, spriteName].join(", ")
+    );
     this.applySpriteOptions(subElem, options);
     subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });
     this.attach(subElem);
@@ -206,12 +528,28 @@ Crafty.c("Composable", {
       z: this.z + (options.z || 0)
     });
     if (options.key) elem.attr({ key: options.key });
+    if (options.scale) elem.attr({ scale: options.scale });
+    if (options.scaleX) elem.attr({ scale: options.scaleX });
+    if (options.scaleY) elem.attr({ scale: options.scaleY });
+    if (options.overrideColor) {
+      elem.addComponent(ColorEffects);
+      elem.colorOverride(options.overrideColor);
+    }
+    if (options.accentColor) {
+      elem.addComponent(ColorEffects);
+      elem.colorOverride(options.accentColor, "partial");
+    }
     if (options.crop) {
       // input: Top, Right, Bottom, Left (clockwise)
       // output: left, top, width, height
       const [top, right, bottom, left] = options.crop;
       elem.crop(left, top, elem.w - right - left, elem.h - bottom - top);
     }
+    elem.attr({
+      w: options.w || elem.w,
+      h: options.h || elem.h,
+      alpha: options.alpha === undefined ? 1 : options.alpha
+    });
     if (options.flipX) elem.flip("X");
     if (options.ro) {
       const [rx, ry] = options.ro;
@@ -250,7 +588,7 @@ Crafty.c("Composable", {
     );
     const hook = this.currentAttachHooks[targetHookName];
     if (!hook) return;
-    if (hook.currentAttachment) {
+    if (hook.currentAttachment && hook.currentAttachment !== entity) {
       hook.currentAttachment.destroy();
     }
 
@@ -274,7 +612,7 @@ Crafty.c("Composable", {
 
   buildAttachHooks(attachHooks) {
     attachHooks.forEach(([label, options]) => {
-      const hook = this.currentAttachHooks[label] || Crafty.e(`2D`);
+      const hook = this.currentAttachHooks[label] || Crafty.e("2D");
       hook.attr({
         x: this.x + (options.x || 0),
         y: this.y + (options.y || 0),
@@ -293,33 +631,17 @@ Crafty.c("Composable", {
     });
   },
 
-  async displayFrame(frameName, duration, easing = undefined) {
-    const frameData =
-      frameName === "default"
-        ? generateDefaultFrame(this.appliedDefinition)
-        : this.appliedDefinition.frames[frameName];
+  getElementByKey(key) {
+    return getSpriteByKey(this, key);
+  },
+
+  async displayFrame(frameName, duration = 0, easing = undefined) {
+    const frameData = getFrameData(this, frameName);
     if (!frameData) return;
 
-    const promises = Object.entries(frameData).map(([keyName, settings]) => {
-      const sprite = this.composableParts.find(
-        part => part.attr("key") === keyName
-      );
-      if (!sprite) return;
-      const defaultSettings = {
-        z: 0,
-        w: sprite.originalSize.w,
-        h: sprite.originalSize.h,
-        ...(this.appliedDefinition.sprites.find(
-          ([, startSettings]) => startSettings.key === keyName
-        ) || [])[1],
-        x: 0,
-        y: 0
-      };
-
-      sprite.addComponent("TweenPromise");
-      const tweenSettings = deltaSettings({ ...defaultSettings, ...settings });
-      return sprite.tweenPromise(tweenSettings, duration, easing);
-    });
-    await Promise.all(promises);
+    const frameFunc = displayFrameFn(this, frameName);
+    return this.animate(frameFunc, duration, easing);
   }
 });
+
+export default Composable;

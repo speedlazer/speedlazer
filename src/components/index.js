@@ -1,15 +1,10 @@
-import "./behaviors";
-import "./controls";
-import "./entities";
-import "./generic";
-import "./player";
 import "./utils";
 import "./weapons";
 
 import "./Aimable";
 import "./BezierMove";
 import "./BigText";
-import "./ColorEffects";
+//import "./ColorEffects";
 import "./ColorShader";
 import "./Composable";
 import "./DamageSupport";
@@ -23,3 +18,5 @@ import "./ScrollWall";
 import "./ShipSpawnable";
 import "./SpriteShader";
 import "./TextInput";
+
+import "./LightGlare";

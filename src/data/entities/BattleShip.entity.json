@@ -5,22 +5,17 @@
     "components": [
       "ShipSolid",
       "GravitySolid",
-      [
-        "commented-WaterSplashes",
-        {
-          "waterRadius": 10,
-          "minSplashDuration": 600,
-          "defaultWaterCooldown": 400,
-          "waterSplashSpeed": 700,
-          "minWaterOffset": -20
-        }
-      ],
       ["HideBelow", { "hideBelow": 570, "z": -12 }]
     ],
     "attachments": {
+      "bottom": {
+        "particles": "waterSplashes"
+      },
       "cabin1": {
         "composition": "battleship.firstCabin"
       },
+      "cabin1burn": null,
+      "cabin2burn": null,
       "cabin2": {
         "composition": "battleship.secondCabin",
         "components": ["DamageSupport"]
@@ -67,20 +62,48 @@
     }
   },
   "states": {
+    "t1o": {
+      "attachments": { "hatch1": { "frame": "open" } }
+    },
+    "t1r": {
+      "attachments": { "hatch1": { "frame": "risen" } }
+    },
+    "t2o": {
+      "attachments": { "hatch2": { "frame": "open" } }
+    },
+    "t2r": {
+      "attachments": { "hatch2": { "frame": "risen" } }
+    },
+    "t3o": {
+      "attachments": { "hatch3": { "frame": "open" } }
+    },
+    "t3r": {
+      "attachments": { "hatch3": { "frame": "risen" } }
+    },
     "fase3": {
       "attachments": {
+        "cabin1": { "composition": "battleship.firstCabin" },
+        "cabin1burn": null,
+        "cabin2burn": null,
         "cabin2": { "composition": "battleship.secondCabinOpen" },
         "engineCore": { "composition": "battleship.engine" }
       }
     },
     "fase4": {
       "attachments": {
-        "cabin1": { "composition": "battleship.firstCabinDestroyed" }
+        "cabin1": { "composition": "battleship.firstCabinDestroyed" },
+        "cabin1burn": { "particles": ["smoke", { "emitter": { "w": 160 } }] },
+        "cabin2burn": null,
+        "cabin2": { "composition": "battleship.secondCabinOpen" },
+        "engineCore": { "composition": "battleship.engine" }
       }
     },
     "fase5": {
       "attachments": {
+        "cabin1": { "composition": "battleship.firstCabinDestroyed" },
         "cabin2": { "composition": "battleship.secondCabinDestroyed" },
+        "cabin1burn": { "particles": ["smoke", { "emitter": { "w": 160 } }] },
+        "cabin2burn": { "particles": ["smoke", { "emitter": { "w": 200 } }] },
         "engineCore": null
       }
     }
@@ -94,7 +117,7 @@
         "y": 80
       },
       "scrollSpeed": { "vx": -100, "vy": 0 },
-      "background": ["#366eab", "#d6d5d5"]
+      "background": ["City.Sunrise", 3]
     }
   ]
 }

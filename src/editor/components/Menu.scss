@@ -2,15 +2,6 @@
     list-style-type: none;
     padding: 0;
 
-    > li > a {
-        color: #ddd;
-        text-decoration: none;
-    }
-    > li > a.active {
-        font-weight: bold;
-        text-decoration: underline;
-    }
-
     &.horizontal {
         width: 100%;
         background: #111;
@@ -23,7 +14,41 @@
         }
     }
 }
+.item {
+    color: #cfc;
+}
+.item > a {
+    color: #ddd;
+    text-decoration: none;
+    padding-left: 1em;
+}
+.item > a.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+.folder {
+    padding-left: 1em;
+}
+.folder > ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.folderOpen .folderName::before {
+    content: "▼ ";
+    font-size: 0.6rem;
+}
 
+.folderClosed .folderName::before {
+    content: "▶︎ ";
+    font-size: 0.6rem;
+}
+
+.folderName {
+    color: #cfc;
+    text-decoration: underline;
+    cursor: pointer;
+}
 .active {
     font-weight: bold;
     text-decoration: underline;

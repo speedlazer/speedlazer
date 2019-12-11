@@ -23,7 +23,9 @@ Crafty.extend({
   }
 });
 
-Crafty.c("Gradient", {
+const Gradient = "Gradient";
+
+Crafty.c(Gradient, {
   init() {
     // Declaring the vars here instead as class attributes
     // make them unique for each instance
@@ -103,3 +105,5 @@ Crafty.c("Gradient", {
     this.trigger("Invalidate");
   }
 });
+
+export default Gradient;

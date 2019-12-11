@@ -33,5 +33,60 @@
       "height": 256
     },
     "sprites": [["cityLayer2", { "z": -505, "horizon": [0.6, 0.6] }]]
+  },
+  "city.bridge.foot": {
+    "attributes": {
+      "width": 512,
+      "height": 288
+    },
+    "sprites": [["cityBridge", { "z": -305, "horizon": [0.4, 0.4] }]]
+  },
+  "city.bridge.deck": {
+    "attributes": {
+      "width": 1024,
+      "height": 192
+    },
+    "sprites": [
+      ["bridgeDeck", { "z": -305 }],
+      ["bridgeDeck", { "z": -305, "x": 512, "flipX": true }]
+    ]
+  },
+  "explosion": {
+    "attributes": { "width": 96, "height": 96 },
+    "sprites": [["explosion1", { "key": "main" }]],
+    "animations": {
+      "default": {
+        "duration": 1000,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 1.0,
+            "spriteAnimation": {
+              "key": "main",
+              "sprites": [
+                "explosion1",
+                "explosion2",
+                "explosion3",
+                "explosion4",
+                "explosion5",
+                "explosion6",
+                "explosion7",
+                "explosion8",
+                "explosion9",
+                "explosion10",
+                "explosion11",
+                "explosion12",
+                "explosion13",
+                "explosion14",
+                "explosion15",
+                "explosion16",
+                "explosion17",
+                "explosion18"
+              ]
+            }
+          }
+        ]
+      }
+    }
   }
 }

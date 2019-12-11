@@ -1,4 +1,6 @@
-Crafty.c("Delta2D", {
+const Delta2D = "Delta2D";
+
+Crafty.c(Delta2D, {
   required: "2D",
 
   properties: {
@@ -59,3 +61,5 @@ Crafty.c("Delta2D", {
     }
   }
 });
+
+export default Delta2D;

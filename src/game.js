@@ -2,6 +2,10 @@ import CryptoJS from "crypto-js";
 import sortBy from "lodash/sortBy";
 import { setGameSpeed, getGameSpeed } from "./lib/core/gameSpeed";
 import { isPaused } from "./lib/core/pauseToggle";
+import AnalogKeyboardControls from "src/components/controls/AnalogKeyboardControls";
+import GamepadControls from "src/components/controls/GamepadControls";
+import Player from "src/components/player/Player";
+import PlayerAssignable from "src/components/player/PlayerAssignable";
 
 /*
  * Destructure this file into multiple components
@@ -46,22 +50,18 @@ const Game = {
     Crafty.init(1024, 576, stage); // PAL+
     //Crafty.pixelart(true)
     Crafty.background("#000000");
-    Crafty.timer.FPS(1000 / 17); // 17ms per frame
+    Crafty.timer.FPS(1000 / 10); // 17ms per frame
 
-    Crafty.e("Player, Color")
+    Crafty.e([Player, "Color"].join(", "))
       .attr({ name: "Player 1", z: 0, playerNumber: 1 })
       .setName("Player 1")
       .color("#FF0000");
 
-    //Crafty.e('Player, Color')
-    //.attr({name: 'Player 2', z: 10, playerNumber: 2})
-    //.setName('Player 2')
-    //.color('#00FF00')
-
-    Crafty.e("AnalogKeyboardControls, PlayerAssignable").controls({
+    Crafty.e([AnalogKeyboardControls, PlayerAssignable].join(", ")).controls({
       fire: Crafty.keys.SPACE,
-      switchWeapon: Crafty.keys.PERIOD,
-      super: Crafty.keys.ENTER,
+      switchWeapon: Crafty.keys.Z,
+      heavy: Crafty.keys.C,
+      shield: Crafty.keys.X,
       up: Crafty.keys.UP_ARROW,
       down: Crafty.keys.DOWN_ARROW,
       left: Crafty.keys.LEFT_ARROW,
@@ -69,30 +69,8 @@ const Game = {
       pause: Crafty.keys.P
     });
 
-    Crafty.e("AnalogKeyboardControls, PlayerAssignable").controls({
-      fire: Crafty.keys.G,
-      switchWeapon: Crafty.keys.H,
-      up: Crafty.keys.W,
-      down: Crafty.keys.S,
-      left: Crafty.keys.A,
-      right: Crafty.keys.D,
-      pause: Crafty.keys.Q
-    });
-
-    Crafty.e("GamepadControls, PlayerAssignable").controls({
+    Crafty.e([GamepadControls, PlayerAssignable].join(", ")).controls({
       gamepadIndex: 0,
-      fire: 0,
-      switchWeapon: 2,
-      super: 4,
-      pause: 9,
-      up: 12,
-      down: 13,
-      left: 14,
-      right: 15
-    });
-
-    Crafty.e("GamepadControls, PlayerAssignable").controls({
-      gamepadIndex: 1,
       fire: 0,
       switchWeapon: 2,
       super: 4,
