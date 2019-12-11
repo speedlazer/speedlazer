@@ -34,6 +34,14 @@ const setEntityStructure = (entity, state, duration) => {
     if (!state.frame) {
       entity.displayFrame("default", duration);
     }
+    if (!state.animation) {
+      entity.stopAnimation();
+    }
+  }
+  if (state.animation !== undefined && entity.has(Composable)) {
+    state.animation
+      ? entity.playAnimation(state.animation)
+      : entity.stopAnimation();
   }
   if (state.frame && entity.has(Composable)) {
     entity.displayFrame(state.frame, duration);
@@ -74,11 +82,14 @@ const setEntityStructure = (entity, state, duration) => {
     });
   }
   if (state.weapon) {
-    const pattern = weapons[state.weapon.pattern];
-    entity
-      .attr({ difficulty: 0 })
-      .addComponent(Weapon)
-      .weapon({ ...state.weapon, pattern });
+    if (!entity.has(Weapon)) {
+      const pattern = weapons[state.weapon.pattern];
+      entity
+        .attr({ difficulty: 0 })
+        .addComponent(Weapon)
+        .weapon({ ...state.weapon, pattern });
+    }
+    state.weapon.active ? entity.activate() : entity.deactivate();
   }
 
   if (state.attachments && typeof entity.attachEntity === "function") {

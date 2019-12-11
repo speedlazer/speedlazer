@@ -295,10 +295,19 @@ Crafty.c(Composable, {
     );
   },
 
-  playAnimation(animationName) {
+  async playAnimation(animationName) {
     const animationData = this.getAnimation(animationName);
     if (!animationData)
       throw new Error(`Animation ${animationName} not found in playAnimation`);
+
+    if (animationData.startEase) {
+      const firstFrame = animationData.timeline[0].startFrame;
+      await this.displayFrame(
+        firstFrame,
+        animationData.startEase.duration,
+        animationData.startEase.easing
+      );
+    }
 
     this.activeAnimation = {
       name: animationName,

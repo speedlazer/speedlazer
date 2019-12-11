@@ -2,6 +2,7 @@
   "name": "PlayerShip",
   "structure": {
     "composition": "player.ship",
+    "animation": null,
     "attachments": {
       "mainWeapon": {
         "weapon": {
@@ -10,6 +11,29 @@
           "angle": 180
         }
       }
+    }
+  },
+  "states": {
+    "shooting": {
+      "attachments": {
+        "mainWeapon": {
+          "weapon": {
+            "active": true
+          }
+        }
+      }
+    },
+    "noShooting": {
+      "attachments": {
+        "mainWeapon": {
+          "weapon": {
+            "active": false
+          }
+        }
+      }
+    },
+    "flying": {
+      "animation": "flying"
     }
   },
   "habitats": [
