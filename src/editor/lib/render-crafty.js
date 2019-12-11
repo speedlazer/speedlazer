@@ -408,12 +408,12 @@ Crafty.defineScene(
     swapped
       ? blue
           .addComponent(Weapon)
-          .weapon("main", { pattern, target: "Red", x: 40, y: 20, angle: 180 })
-          .activateWeapon("main")
+          .weapon({ pattern, target: "Red", x: 40, y: 20, angle: 180 })
+          .activate()
       : red
           .addComponent(Weapon)
-          .weapon("main", { pattern, target: "Blue", x: 0, y: 20, angle: 0 })
-          .activateWeapon("main");
+          .weapon({ pattern, target: "Blue", x: 0, y: 20, angle: 0 })
+          .activate();
   }
 );
 
@@ -431,7 +431,8 @@ export const showBulletPattern = async (
 };
 
 Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
-  //Crafty.e("2D, WebGL, Color")
+  //Crafty.background("#FFFFFF");
+  //Crafty.e("2D, We00bGL, Color")
   //.attr({
   //x: (Crafty.viewport.width - emitter.emitter.w) / 2,
   //y: (Crafty.viewport.height - emitter.emitter.h) / 2,

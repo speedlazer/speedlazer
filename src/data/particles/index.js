@@ -41,6 +41,30 @@ export default {
       endColorRandom: [0, 0, 0, 0]
     }
   },
+  explosion: {
+    emitter: {
+      w: 2,
+      h: 2,
+      amount: 200,
+      duration: 500,
+      mode: "expand"
+    },
+    gravity: [0, 40],
+    particle: {
+      sprite: "explosion7",
+      angles: [0, 20, 100, 180, 230, 330],
+      duration: 1000,
+      durationRandom: 0,
+      velocity: 50,
+      velocityRandom: 10,
+      startSize: 30,
+      endSize: 1,
+      startColor: [0.3, 0.2, 0.1, 1],
+      startColorRandom: [0, 0, 0, 0],
+      endColor: [0.1, 0.1, 0.1, 0],
+      endColorRandom: [0, 0, 0, 0]
+    }
+  },
   smoke: {
     emitter: {
       w: 160,
@@ -57,29 +81,7 @@ export default {
       velocity: 10,
       startSize: 30,
       endSize: 80,
-      startColor: [0.3, 0.3, 0.3, 1],
-      startColorRandom: [0, 0, 0, 0.2],
-      endColor: [0.1, 0.1, 0.1, 0],
-      endColorRandom: [0, 0, 0, 0]
-    }
-  },
-  smoke2: {
-    emitter: {
-      w: 200,
-      h: 20,
-      amount: 300
-    },
-    gravity: [20, -90],
-    particle: {
-      sprite: "explosion7",
-      angle: 0,
-      angleRandom: 20,
-      duration: 2500,
-      durationRandom: 500,
-      velocity: 10,
-      startSize: 30,
-      endSize: 80,
-      startColor: [0.3, 0.3, 0.3, 1],
+      startColor: [0.1, 0.1, 0.1, 1],
       startColorRandom: [0, 0, 0, 0.2],
       endColor: [0.1, 0.1, 0.1, 0],
       endColorRandom: [0, 0, 0, 0]

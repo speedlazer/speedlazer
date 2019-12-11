@@ -5,6 +5,7 @@ import entities from "src/data/entities";
 import compositions from "src/data/compositions";
 import particles from "src/data/particles";
 import weapons from "src/data/weapons";
+import merge from "lodash/merge";
 
 const convertLocation = location => {
   if (!location) return {};
@@ -41,11 +42,24 @@ const setEntityStructure = (entity, state, duration) => {
     entity.addComponent(EntityDefinition).applyDefinition(state.entity);
   }
   if (state.particles) {
-    const emitter = particles[state.particles];
-    if (!entity.emitter) {
-      const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
-      entity.emitter = e;
-      entity.emitting = state.particles;
+    if (Array.isArray(state.particles)) {
+      const emitter = merge(
+        {},
+        particles[state.particles[0]],
+        state.particles[1]
+      );
+      if (!entity.emitter) {
+        const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
+        entity.emitter = e;
+        entity.emitting = state.particles;
+      }
+    } else {
+      const emitter = particles[state.particles];
+      if (!entity.emitter) {
+        const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
+        entity.emitter = e;
+        entity.emitting = state.particles;
+      }
     }
   }
 

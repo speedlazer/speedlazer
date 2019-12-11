@@ -5,16 +5,6 @@
     "components": [
       "ShipSolid",
       "GravitySolid",
-      [
-        "commented-WaterSplashes",
-        {
-          "waterRadius": 10,
-          "minSplashDuration": 600,
-          "defaultWaterCooldown": 400,
-          "waterSplashSpeed": 700,
-          "minWaterOffset": -20
-        }
-      ],
       ["HideBelow", { "hideBelow": 570, "z": -12 }]
     ],
     "attachments": {
@@ -102,7 +92,7 @@
     "fase4": {
       "attachments": {
         "cabin1": { "composition": "battleship.firstCabinDestroyed" },
-        "cabin1burn": { "particles": "smoke" },
+        "cabin1burn": { "particles": ["smoke", { "emitter": { "w": 160 } }] },
         "cabin2burn": null,
         "cabin2": { "composition": "battleship.secondCabinOpen" },
         "engineCore": { "composition": "battleship.engine" }
@@ -112,8 +102,8 @@
       "attachments": {
         "cabin1": { "composition": "battleship.firstCabinDestroyed" },
         "cabin2": { "composition": "battleship.secondCabinDestroyed" },
-        "cabin1burn": { "particles": "smoke" },
-        "cabin2burn": { "particles": "smoke2" },
+        "cabin1burn": { "particles": ["smoke", { "emitter": { "w": 160 } }] },
+        "cabin2burn": { "particles": ["smoke", { "emitter": { "w": 200 } }] },
         "engineCore": null
       }
     }
