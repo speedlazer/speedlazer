@@ -44,13 +44,31 @@ Crafty.c(ScreenBound, {
   }
 });
 
-const calcHitPosition = (objA /*, objB */) => {
-  const mA = middle(objA);
-  //const mB = middle(objB);
-  return {
-    x: mA.x,
-    y: mA.y
-  };
+const calcHitPosition = (objA, objB) => {
+  let x = null;
+  let y = null;
+
+  const xLeftOverlap = objA.x < objB.x && objA.w + objA.x > objB.x;
+  const xRightOverlap = objA.x < objB.x + objB.w && objA.x + objA.w > objB.x;
+
+  const yTopOverlap = objA.y < objB.y && objA.h + objA.y > objB.y;
+  const yBottomOverlap = objA.y < objB.w + objB.h && objA.y + objA.h > objB.y;
+
+  if (xLeftOverlap && (!yTopOverlap && !yBottomOverlap)) {
+    x = objB.x;
+    y = objA.y + objA.h / 2;
+  } else if (xRightOverlap && (!yTopOverlap && !yBottomOverlap)) {
+    x = objB.x + objB.w;
+    y = objA.y + objA.h / 2;
+  } else if (yTopOverlap) {
+    x = objA.x + objA.w / 2;
+    y = objB.y;
+  } else if (yBottomOverlap) {
+    x = objA.x + objA.w / 2;
+    y = objB.y + objB.h;
+  }
+
+  return { x, y };
 };
 
 const Bullet = "Bullet";
