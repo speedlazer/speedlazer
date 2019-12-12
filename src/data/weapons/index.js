@@ -349,7 +349,7 @@ export default {
       bullet: {
         spawnPosition: [0, 0.5],
         velocity: [750, 800],
-        composition: "weapons.bullet",
+        composition: "player.bullet",
         queue: [{ duration: 4000 }],
         collisions: {
           SolidCollision: {

@@ -10,7 +10,8 @@
           "target": "PlayerEnemy",
           "angle": 180
         }
-      }
+      },
+      "trail": null
     }
   },
   "states": {
@@ -33,7 +34,11 @@
       }
     },
     "flying": {
-      "animation": "flying"
+      "attachments": {
+        "trail": {
+          "particles": "ship.trail"
+        }
+      }
     }
   },
   "habitats": [

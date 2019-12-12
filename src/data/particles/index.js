@@ -1,10 +1,11 @@
 export default {
   waterSplashes: {
     emitter: {
-      w: 1250,
+      w: 1300,
       h: 10,
       amount: 500
     },
+    gravity: [-80, 5],
     particle: {
       sprite: "explosion7",
       angle: 0,
@@ -12,10 +13,32 @@ export default {
       velocity: 10,
       startSize: 30,
       endSize: 30,
-      startColor: [0.8, 0.8, 0.8, 0.8],
-      startColorRandom: [0.02, 0.02, 0.02, 0.2],
+      startColor: [1.0, 1.0, 1.0, 0.8],
       endColor: [0.8, 0.8, 0.8, 0],
       endColorRandom: [0.1, 0.1, 0, 0.2]
+    }
+  },
+  "ship.trail": {
+    emitter: {
+      w: 2,
+      h: 2,
+      amount: 200
+    },
+    gravity: [-150, 0],
+    particle: {
+      sprite: "explosion7",
+      angle: 0,
+      angleRandom: 0,
+      duration: 1500,
+      durationRandom: 0,
+      velocity: 0,
+      velocityRandom: 0,
+      startSize: 25,
+      endSize: 1,
+      startColor: [0.9, 0.5, 0.5, 0.8],
+      startColorRandom: [0, 0, 0, 0],
+      endColor: [0.9, 0.2, 0.2, 0],
+      endColorRandom: [0, 0, 0, 0]
     }
   },
   "missile.trail": {

@@ -8,6 +8,27 @@
     "hitbox": [2, 3, 14, 3, 14, 12, 2, 12],
     "sprites": [["sphere1", { "z": -2, "crop": [17, 6, 0, 0], "flipX": true }]]
   },
+  "player.bullet": {
+    "attributes": {
+      "width": 52,
+      "height": 8,
+      "ro": [4, 4]
+    },
+    "hitbox": [2, 3, 14, 3, 14, 12, 2, 12],
+    "sprites": [
+      [
+        "sphere1",
+        {
+          "z": -2,
+          "crop": [17, 6, 0, 0],
+          "flipX": true,
+          "w": 52,
+          "h": 8,
+          "overrideColor": "#ff8080"
+        }
+      ]
+    ]
+  },
   "weapons.sphere": {
     "attributes": {
       "width": 16,
@@ -162,7 +183,12 @@
       "height": 32,
       "ro": [28, 16]
     },
-    "sprites": [["muzzleFlash", { "z": 20, "flipX": true, "key": "flash" }]],
+    "sprites": [
+      [
+        "muzzleFlash",
+        { "z": 20, "flipX": true, "key": "flash", "overrideColor": "#ff8080" }
+      ]
+    ],
     "frames": {
       "normal": {
         "flash": { "alpha": 1.0 }
@@ -181,12 +207,6 @@
             "start": 0.0,
             "end": 0.3,
             "startFrame": "end",
-            "endFrame": "normal"
-          },
-          {
-            "start": 0.3,
-            "end": 0.7,
-            "startFrame": "small",
             "endFrame": "normal"
           },
           {
