@@ -116,6 +116,7 @@ const setEntityStructure = (entity, state, duration) => {
 Crafty.c(EntityDefinition, {
   init() {
     this.appliedEntityDefinition = null;
+    this.showState = this.showState.bind(this);
   },
 
   applyDefinition(entityName) {

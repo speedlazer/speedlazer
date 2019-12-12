@@ -136,28 +136,30 @@ const battleship = async ({
   */
 
   await wait(4000);
-  await call(ship.cabin2.allowDamage, { health: 4000 });
-  await until(
-    async ({ waitWhile }) => {
-      await waitWhile(ship.cabin2.hasHealth);
-      await call(ship.showState, "fase3");
-    },
-    async dsl => {
-      await popupRandomCannon(dsl, { ship });
-    }
-  );
-  // Destroy cannon
-  const hatch = ship.hatch1;
-  await displayFrame(hatch, "open", 500, EASE_IN_OUT);
-  await displayFrame(hatch, "risen", 500, EASE_IN_OUT);
-  await displayFrame(hatch.turret, "up", 500, EASE_IN_OUT);
-  await call(hatch.turret.allowDamage, { health: 500 });
-  await waitWhile(hatch.turret.hasHealth);
-  await displayFrame(hatch.turret, "default", 500, EASE_IN_OUT);
-  await displayFrame(hatch, "open", 500, EASE_IN_OUT);
-  await displayFrame(hatch, "default", 500, EASE_IN_OUT);
+  //await call(ship.cabin2.allowDamage, { health: 4000 });
+  //await until(
+  //async ({ waitWhile }) => {
+  //await waitWhile(ship.cabin2.hasHealth);
+  //await call(ship.showState, "fase3");
+  //},
+  //async dsl => {
+  //await popupRandomCannon(dsl, { ship });
+  //}
+  //);
+  //// Destroy cannon
+  //const hatch = ship.hatch1;
+  //await displayFrame(hatch, "open", 500, EASE_IN_OUT);
+  //await displayFrame(hatch, "risen", 500, EASE_IN_OUT);
+  //await displayFrame(hatch.turret, "up", 500, EASE_IN_OUT);
+  //await call(hatch.turret.allowDamage, { health: 500 });
+  //await waitWhile(hatch.turret.hasHealth);
+  //await displayFrame(hatch.turret, "default", 500, EASE_IN_OUT);
+  //await displayFrame(hatch, "open", 500, EASE_IN_OUT);
+  //await displayFrame(hatch, "default", 500, EASE_IN_OUT);
   await call(ship.showState, "fase4");
-  await wait(40000);
+  await wait(20000);
+  await call(ship.showState, "fase5");
+  await wait(30000);
 
   ship.destroy();
 };
