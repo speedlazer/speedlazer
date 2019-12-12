@@ -5,11 +5,9 @@ Crafty.c(ShipControls, {
     onOff ? this.showState("shooting") : this.showState("noShooting");
   },
 
-  controlSecondary(onOff) {},
-
-  controlSecondary(onOff) {},
-
-  controlBlock(onOff) {}
+  controlSecondary() {},
+  controlSwitch() {},
+  controlBlock() {}
 });
 
 export default ShipControls;
