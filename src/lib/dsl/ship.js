@@ -1,9 +1,8 @@
 import ControlScheme from "src/components/player/ControlScheme";
 import Player from "src/components/player/Player";
-import PlayerSpaceship from "src/components/player/PlayerSpaceship";
 
 const shipFunctions = () => ({
-  spawnShip: () => {
+  spawnShip: entityDef => {
     Crafty(Player).each(function() {
       this.addComponent("ShipSpawnable");
       this.spawnPosition(() => ({
@@ -12,8 +11,9 @@ const shipFunctions = () => ({
       }));
     });
     Crafty([Player, ControlScheme].join(" ")).each(function() {
-      this.attr({ shipType: PlayerSpaceship });
-      this.spawnShip();
+      this.attr({ shipType: entityDef });
+      const ship = this.spawnShip();
+      ship.showState("flying");
     });
   }
 });

@@ -23,7 +23,7 @@ const stage1 = async ({
   //await text.fadeOut(2000);
   text.remove();
 
-  await spawnShip();
+  await spawnShip("PlayerShip");
 
   setBackgroundCheckpointLimit(4);
   await exec(droneWave(5, "pattern1", 300));
