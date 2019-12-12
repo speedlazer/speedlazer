@@ -22,20 +22,20 @@ export default {
     emitter: {
       w: 2,
       h: 2,
-      amount: 200
+      amount: 100
     },
-    gravity: [-150, 0],
+    gravity: [-50, 0],
     particle: {
       sprite: "explosion7",
-      angle: 0,
+      angle: 180,
       angleRandom: 0,
-      duration: 1500,
+      duration: 500,
       durationRandom: 0,
-      velocity: 0,
+      velocity: 350,
       velocityRandom: 0,
-      startSize: 25,
+      startSize: 18,
       endSize: 1,
-      startColor: [0.9, 0.5, 0.5, 0.8],
+      startColor: [0.9, 0.5, 0.5, 0.2],
       startColorRandom: [0, 0, 0, 0],
       endColor: [0.9, 0.2, 0.2, 0],
       endColorRandom: [0, 0, 0, 0]

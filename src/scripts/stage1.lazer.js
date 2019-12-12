@@ -1,4 +1,4 @@
-//import battleship from "./stage1/battleship.lazer";
+import battleship from "./stage1/battleship.lazer";
 import { droneWave } from "./stage1/drones.lazer";
 import { bigText } from "src/components/BigText";
 
@@ -31,6 +31,8 @@ const stage1 = async ({
   await exec(droneWave(5, "pattern1", 300));
   await setScenery("City.CoastStart");
   await exec(droneWave(5, "pattern1", 300));
+
+  await exec(battleship);
   console.log("Done!");
 };
 
