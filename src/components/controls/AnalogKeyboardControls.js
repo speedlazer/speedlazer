@@ -52,10 +52,10 @@ Crafty.c(AnalogKeyboardControls, {
   assignControls(ship) {
     const { controlMap } = this;
 
-    const MAX_X_SPEED = 500;
+    const MAX_X_SPEED = 700;
     const MAX_Y_SPEED = 500;
-    const ACCELLERATE_Y = MAX_Y_SPEED * 5;
-    const ACCELLERATE_X = MAX_X_SPEED * 5;
+    const ACCELLERATE_Y = MAX_Y_SPEED * 8;
+    const ACCELLERATE_X = MAX_X_SPEED * 8;
 
     let yDir = 0;
     let xDir = 0;

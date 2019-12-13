@@ -348,7 +348,7 @@ export default {
     spawnables: {
       bullet: {
         spawnPosition: [0, 0.5],
-        velocity: [750, 800],
+        velocity: [1050, 1200],
         composition: "player.bullet",
         queue: [{ duration: 4000 }],
         collisions: {
