@@ -11,7 +11,9 @@
           "angle": 180
         }
       },
-      "trail": null
+      "trail": null,
+      "reverseTrail": null,
+      "reverseTrail2": null
     }
   },
   "states": {
@@ -37,6 +39,19 @@
       "attachments": {
         "trail": {
           "particles": "ship.trail"
+        },
+        "reverseTrail": null,
+        "reverseTrail2": null
+      }
+    },
+    "reverse": {
+      "attachments": {
+        "trail": null,
+        "reverseTrail": {
+          "particles": "ship.reverse"
+        },
+        "reverseTrail2": {
+          "particles": "ship.reverse"
         }
       }
     }

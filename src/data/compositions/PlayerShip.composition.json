@@ -28,6 +28,26 @@
           "attachAlign": ["center", "left"],
           "attachTo": "main"
         }
+      ],
+      [
+        "reverseTrail",
+        {
+          "x": 42,
+          "y": 52,
+          "z": 1,
+          "attachAlign": ["center", "right"],
+          "attachTo": "main"
+        }
+      ],
+      [
+        "reverseTrail2",
+        {
+          "x": 42,
+          "y": 36,
+          "z": -3,
+          "attachAlign": ["center", "right"],
+          "attachTo": "main"
+        }
       ]
     ]
   }
