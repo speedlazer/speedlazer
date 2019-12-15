@@ -16,7 +16,7 @@ const droneFlight = pattern => async ({
       rx: 1.1,
       ry: 0.5
     },
-    defaultVelocity: 400
+    defaultVelocity: 300
   });
 
   await call(drone.allowDamage, { health: 100 });
