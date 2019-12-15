@@ -48,8 +48,12 @@ const calcHitPosition = (objA, objB) => {
   let x = null;
   let y = null;
 
-  const xLeftOverlap = objA.x < objB.x && objA.w + objA.x > objB.x;
-  const xRightOverlap = objA.x < objB.x + objB.w && objA.x + objA.w > objB.x;
+  const xLeftOverlap =
+    (objA.x < objB.x && objA.w + objA.x > objB.x) ||
+    (objA.vx !== undefined && objA.vx > 0);
+  const xRightOverlap =
+    (objA.x < objB.x + objB.w && objA.x + objA.w > objB.x) ||
+    (objA.vx !== undefined && objA.vx < 0);
 
   const yTopOverlap = objA.y < objB.y && objA.h + objA.y > objB.y;
   const yBottomOverlap = objA.y < objB.w + objB.h && objA.y + objA.h > objB.y;

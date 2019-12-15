@@ -91,14 +91,14 @@ export default {
     emitter: {
       w: 2,
       h: 2,
-      amount: 100
+      amount: 35
     },
     gravity: [0, 0],
     particle: {
       sprite: "explosion7",
       angle: 0,
       angleRandom: 0,
-      duration: 100,
+      duration: 50,
       durationRandom: 0,
       velocity: 0,
       velocityRandom: 10,
