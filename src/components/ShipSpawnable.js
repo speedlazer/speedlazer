@@ -1,6 +1,7 @@
 import Listener from "src/components/generic/Listener";
 import ControlScheme from "src/components/player/ControlScheme";
 import ShipControls from "src/components/player/ShipControls";
+import ShipCollision from "src/components/player/ShipCollision";
 import { createEntity } from "src/components/EntityDefinition";
 
 Crafty.c("ShipSpawnable", {
@@ -46,7 +47,7 @@ Crafty.c("ShipSpawnable", {
     }
 
     this.ship = createEntity(this.shipType, { location: pos });
-    this.ship.addComponent(ShipControls);
+    this.ship.addComponent(ShipControls, ShipCollision);
 
     if (this.has(ControlScheme)) {
       this.assignControls(this.ship);
