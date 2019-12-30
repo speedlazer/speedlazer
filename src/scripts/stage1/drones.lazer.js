@@ -19,14 +19,14 @@ const droneFlight = pattern => async ({
     defaultVelocity: 300
   });
 
-  await call(drone.allowDamage, { health: 100 });
+  await call(drone.allowDamage, { health: 1 });
   const movement = moveWithPattern(drone, pattern);
 
   const healthCheck = async () => {
     await waitWhile(drone.hasHealth);
     movement.abort();
-    await call(drone.showState, "damaged");
-    await call(drone.activateGravity);
+    await call(drone.showState, "dead");
+    //await call(drone.activateGravity);
   };
 
   await Promise.race([movement.process, healthCheck()]);

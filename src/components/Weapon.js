@@ -15,7 +15,15 @@ const adjustForDifficulty = (difficulty, numberOrArray, defaultValue = 0) =>
     ? numberOrArray
     : numberOrArray[0] + (numberOrArray[1] - numberOrArray[0]) * difficulty;
 
-const middle = obj => ({ x: obj.x + obj.w / 2, y: obj.y + obj.h / 2 });
+const applyDifficultyToObj = (difficulty, obj) =>
+  obj &&
+  Object.entries(obj).reduce(
+    (a, [k, v]) => ({
+      ...a,
+      [k]: adjustForDifficulty(difficulty, v)
+    }),
+    {}
+  );
 
 const ScreenBound = "ScreenBound";
 Crafty.c(ScreenBound, {
@@ -84,6 +92,10 @@ Crafty.c(Bullet, {
     const collisionConfig = this.bulletSettings.collisions[collisionType];
     const firstObj = hitData[0].obj;
     const position = calcHitPosition(this, firstObj);
+
+    firstObj.processDamage &&
+      firstObj.processDamage(this.bulletSettings.damage);
+
     (collisionConfig.spawns || []).forEach(([name, settings]) => {
       spawnItem(
         this.weaponDefinition,
@@ -107,14 +119,12 @@ Crafty.c(Bullet, {
       event => ({
         duration: 0,
         delay: 0,
-        ...Object.entries(event).reduce(
-          (a, [k, v]) => ({
-            ...a,
-            [k]: adjustForDifficulty(this.difficulty, v)
-          }),
-          {}
-        )
+        ...applyDifficultyToObj(this.difficulty, event)
       })
+    );
+    this.bulletSettings.damage = applyDifficultyToObj(
+      this.difficulty,
+      settings.damage
     );
 
     const initialVelocity = adjustForDifficulty(

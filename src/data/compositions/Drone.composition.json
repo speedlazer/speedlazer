@@ -17,12 +17,38 @@
           "attachAlign": ["center", "right"],
           "attachTo": "main"
         }
+      ],
+      [
+        "explosion",
+        {
+          "x": 22,
+          "y": 18,
+          "z": 2,
+          "attachAlign": ["center", "center"],
+          "attachTo": "main"
+        }
+      ],
+      [
+        "smoke",
+        {
+          "x": 22,
+          "y": 18,
+          "z": 1,
+          "attachAlign": ["center", "center"],
+          "attachTo": "main"
+        }
       ]
     ],
     "frames": {
       "damaged": {
         "main": {
           "sprite": "standardDroneDamage"
+        }
+      },
+      "hidden": {
+        "main": {
+          "hidden": true,
+          "alpha": 0
         }
       }
     }

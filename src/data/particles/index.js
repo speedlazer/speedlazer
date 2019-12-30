@@ -114,16 +114,17 @@ export default {
     emitter: {
       w: 2,
       h: 2,
-      amount: 200
+      amount: 200,
+      duration: 1300
     },
-    gravity: [0, 0],
+    gravity: [0, -50],
     particle: {
       sprite: "explosion7",
       angle: 0,
-      angleRandom: 0,
+      angleRandom: 360,
       duration: 1000,
       durationRandom: 0,
-      velocity: 0,
+      velocity: 40,
       velocityRandom: 0,
       startSize: 15,
       endSize: 10,
@@ -154,6 +155,31 @@ export default {
       startColor: [0.3, 0.2, 0.1, 1],
       startColorRandom: [0, 0, 0, 0],
       endColor: [0.1, 0.1, 0.1, 0],
+      endColorRandom: [0, 0, 0, 0]
+    }
+  },
+  sparks: {
+    emitter: {
+      w: 2,
+      h: 2,
+      amount: 100
+    },
+    gravity: [0, 50],
+    particle: {
+      sprite: "explosion7",
+      angle: 160,
+      angleRandom: 60,
+      duration: 1000,
+      durationRandom: 0,
+      velocity: 90,
+      velocityRandom: 0,
+      startSize: 2,
+      startSizeRandom: 0,
+      endSize: 2,
+      endSizeRandom: 0,
+      startColor: [1.0, 1.0, 0.0, 0.6],
+      startColorRandom: [0, 0, 0, 0],
+      endColor: [1.0, 1.0, 0.0, 0.2],
       endColorRandom: [0, 0, 0, 0]
     }
   },

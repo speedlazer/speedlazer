@@ -350,6 +350,9 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: [1050, 1200],
         composition: "player.bullet",
+        damage: {
+          laser: [1, 3]
+        },
         queue: [{ duration: 4000 }],
         collisions: {
           SolidCollision: {

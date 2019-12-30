@@ -11,7 +11,23 @@
   },
   "states": {
     "damaged": {
-      "frame": "damaged"
+      "frame": "damaged",
+      "attachments": {
+        "trail": null
+      }
+    },
+    "dead": {
+      "frame": "hidden",
+      "attachments": {
+        "trail": null,
+        "explosion": {
+          "composition": "explosion",
+          "animation": "default"
+        },
+        "smoke": {
+          "particles": "drone.smoke"
+        }
+      }
     }
   },
   "habitats": [
