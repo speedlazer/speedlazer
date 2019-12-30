@@ -9,7 +9,7 @@ const spawnParticle = (entity, settings) => {
   const x = source.x + Math.random() * entity.w;
   const y = source.y + Math.random() * entity.h;
   const speed = settings.velocity + randM1to1() * settings.velocityRandom;
-  const angle = settings.angle + randM1to1() * settings.angleRandom;
+  const angle = settings.currentAngle + randM1to1() * settings.angleRandom;
   const life = settings.duration + randM1to1() * settings.durationRandom;
   const startSize = settings.startSize + randM1to1() * settings.startSizeRandom;
   const endSize = settings.endSize + randM1to1() * settings.endSizeRandom;
@@ -138,7 +138,13 @@ Crafty.c(ParticleEmitter, {
     entity.bind("Reorder", () => {
       this.z = entity.z;
     });
-    entity.bind("move", () => {
+    entity.bind("Change", changes => {
+      if (Object.prototype.hasOwnProperty.call(changes, "angle")) {
+        this.particleSettings.currentAngle =
+          this.particleSettings.angle + changes.angle;
+      }
+    });
+    entity.bind("Move", () => {
       this.x = entity.x;
       this.y = entity.y;
     });
@@ -190,6 +196,7 @@ Crafty.c(ParticleEmitter, {
       velocity,
       velocityRandom,
       angle,
+      currentAngle: angle,
       angleRandom,
       duration,
       durationRandom,

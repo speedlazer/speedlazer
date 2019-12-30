@@ -165,10 +165,10 @@ export default {
       amount: 200,
       duration: 550
     },
-    gravity: [0, 50],
+    gravity: [0, 70],
     particle: {
       sprite: "explosion7",
-      angle: 160,
+      angle: 0,
       angleRandom: 60,
       duration: 1000,
       durationRandom: 0,

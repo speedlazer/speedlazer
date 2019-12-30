@@ -82,7 +82,7 @@ const calcHitPosition = (objA, objB) => {
     y = objB.y + objB.h;
   }
 
-  return { x, y };
+  return { x, y, angle: objA.angle };
 };
 
 const Bullet = "Bullet";
@@ -286,7 +286,7 @@ const generator = (itemDef, itemSettings, position, difficulty, f) => {
     }
   } else {
     const angle =
-      position.angle + ({ ...settings, ...itemSettings }.angle || 0);
+      (position.angle || 0) + ({ ...settings, ...itemSettings }.angle || 0);
     f({ ...settings, angle });
   }
 };
