@@ -142,6 +142,12 @@ Crafty.c(ParticleEmitter, {
       this.x = entity.x;
       this.y = entity.y;
     });
+    entity.bind("Freeze", () => {
+      this.stopEmission();
+    });
+    entity.bind("Unfreeze", () => {
+      this.startEmission();
+    });
     entity.bind("Remove", () => {
       this.stopEmission();
       this.attachedTo = null;
@@ -265,7 +271,7 @@ Crafty.c(ParticleEmitter, {
 
     if (
       this.timeFrame >= this.nextExpireCheck &&
-      this.timeFrame < this.particleSettings.emitterDuration
+      this.startTime < this.particleSettings.emitterDuration
     ) {
       this.nextExpireCheck = this.timeFrame + this.nextExpireRatio;
 

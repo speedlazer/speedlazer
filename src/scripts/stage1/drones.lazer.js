@@ -3,7 +3,7 @@
 
 const droneFlight = pattern => async ({
   spawn,
-  //wait,
+  wait,
   //until,
   call,
   //displayFrame,
@@ -26,7 +26,8 @@ const droneFlight = pattern => async ({
     await waitWhile(drone.hasHealth);
     movement.abort();
     await call(drone.showState, "dead");
-    //await call(drone.activateGravity);
+    await wait(200);
+    drone.destroy();
   };
 
   await Promise.race([movement.process, healthCheck()]);

@@ -1,7 +1,7 @@
 import "src/components/Horizon";
 import Scalable from "src/components/utils/Scalable";
 import "src/components/utils/HideBelow";
-import Animator from "src/components/generic//Animator";
+import Animator from "src/components/generic/Animator";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import { colorFadeFn } from "src/components/generic/ColorFade";
 import Delta2D from "src/components/generic/Delta2D";

@@ -356,7 +356,10 @@ export default {
         queue: [{ duration: 4000 }],
         collisions: {
           SolidCollision: {
-            spawns: [["spark", {}]]
+            spawns: [
+              ["sparkHit", {}],
+              ["sparks", { emitter: { duration: 100 } }]
+            ]
           },
           WaterCollision: {
             spawns: [["splash", {}]]
@@ -370,11 +373,17 @@ export default {
         composition: "weapons.muzzleFlash",
         queue: [{ duration: 120 }]
       },
-      spark: {
+      sparkHit: {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.solidHit",
         queue: [{ duration: 100 }]
+      },
+      sparks: {
+        spawnPosition: "outside",
+        velocity: 0,
+        particles: "sparks",
+        queue: [{ duration: 200 }]
       },
       splash: {
         spawnPosition: "outside",

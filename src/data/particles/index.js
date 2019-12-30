@@ -115,7 +115,7 @@ export default {
       w: 2,
       h: 2,
       amount: 200,
-      duration: 1300
+      duration: 300
     },
     gravity: [0, -50],
     particle: {
@@ -124,10 +124,10 @@ export default {
       angleRandom: 360,
       duration: 1000,
       durationRandom: 0,
-      velocity: 40,
-      velocityRandom: 0,
+      velocity: 140,
+      velocityRandom: 40,
       startSize: 15,
-      endSize: 10,
+      endSize: 2,
       startColor: [0.1, 0.1, 0.1, 0.6],
       startColorRandom: [0, 0, 0, 0],
       endColor: [0.3, 0.3, 0.3, 0],
@@ -162,7 +162,8 @@ export default {
     emitter: {
       w: 2,
       h: 2,
-      amount: 100
+      amount: 200,
+      duration: 550
     },
     gravity: [0, 50],
     particle: {
