@@ -151,7 +151,12 @@ Crafty.c(ParticleEmitter, {
 
   particles(
     {
-      emitter: { amount = 150, w = 10, h = 10 },
+      emitter: {
+        amount = 150,
+        w = 10,
+        h = 10,
+        duration: emitterDuration = Infinity
+      },
       gravity = [0, 0],
       particle: {
         velocity = 80,
@@ -190,7 +195,8 @@ Crafty.c(ParticleEmitter, {
       startColor,
       startColorRandom,
       endColor,
-      endColorRandom
+      endColorRandom,
+      emitterDuration
     };
     if (attachTo) {
       this.attachToEntity(attachTo);
@@ -257,7 +263,10 @@ Crafty.c(ParticleEmitter, {
       Math.min((this.startTime / 1000.0) * this.emissionRate, 1) *
       this.particleSettings.amount;
 
-    if (this.timeFrame >= this.nextExpireCheck) {
+    if (
+      this.timeFrame >= this.nextExpireCheck &&
+      this.timeFrame < this.particleSettings.emitterDuration
+    ) {
       this.nextExpireCheck = this.timeFrame + this.nextExpireRatio;
 
       for (let i = 0; i < this.shouldHaveEmitted; i++) {
