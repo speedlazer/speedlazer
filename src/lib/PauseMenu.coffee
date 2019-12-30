@@ -29,7 +29,6 @@ class PauseMenu
         text: 'Restart'
         execute: ->
           togglePause()
-          Game.resetCredits()
           Crafty('Player').each -> @softReset()
           Crafty.enterScene 'Game'
       }

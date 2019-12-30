@@ -4,9 +4,6 @@ import Player from "src/components/player/Player";
 Crafty.defineScene(
   "Intro",
   () => {
-    // import from globals
-    Game.resetCredits();
-
     // constructor
     Crafty.background("#000000");
     Crafty.viewport.x = 0;

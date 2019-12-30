@@ -21,8 +21,6 @@ import PlayerAssignable from "src/components/player/PlayerAssignable";
 const Game = {
   // Initialize and start our game
   start() {
-    this.resetCredits();
-
     const settings = this.settings();
     if (settings.sound === false) {
       Crafty.audio.mute();
@@ -83,10 +81,6 @@ const Game = {
 
     Crafty.enterScene("Intro");
   },
-
-  resetCredits() {
-    this.credits = 2;
-  }, // This is actually 'Extra' credits, so in total 3
 
   highscores() {
     const loadList = function() {

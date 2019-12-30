@@ -117,13 +117,8 @@ Crafty.defineScene 'GameOver', (data) ->
 
     # After a timeout, be able to replay
     Crafty.e('Delay').delay ->
-      if Game.credits > 0 and not data.gameCompleted
+      if not data.gameCompleted
         time = 10
-
-        text = if Game.credits is 1
-          "1 Credit left"
-        else
-          "#{Game.credits} Credits left"
 
         Crafty.e('2D, DOM, Text')
           .attr(x: 0, y: h * .8, w: w)
@@ -134,7 +129,7 @@ Crafty.defineScene 'GameOver', (data) ->
             weight: 'bold'
             family: 'Press Start 2P'
           )
-          .text(text)
+          .text('Game over. Continue game?')
         e = Crafty.e('2D, DOM, Text')
           .attr(x: 0, y: (h * .8) + 30, w: w)
           .textColor('#FF0000')
@@ -155,7 +150,6 @@ Crafty.defineScene 'GameOver', (data) ->
         Crafty('Player').each ->
           @reset()
           @one 'Activated', ->
-            Game.credits -= 1
             Crafty.enterScene 'Game', data
       else
         @delay ->
