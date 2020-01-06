@@ -6,6 +6,7 @@ import compositions from "src/data/compositions";
 import particles from "src/data/particles";
 import weapons from "src/data/weapons";
 import merge from "lodash/merge";
+import { playAudio } from "src/lib/audio";
 
 const convertLocation = location => {
   if (!location) return {};
@@ -45,6 +46,9 @@ const setEntityStructure = (entity, state, duration) => {
   }
   if (state.frame && entity.has(Composable)) {
     entity.displayFrame(state.frame, duration);
+  }
+  if (state.audio) {
+    playAudio(state.audio);
   }
   if (state.entity) {
     entity.addComponent(EntityDefinition).applyDefinition(state.entity);

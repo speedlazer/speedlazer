@@ -1,5 +1,6 @@
 import spritesheets from "src/data/spritesheets";
 import backgrounds from "src/data/backgrounds";
+import audiosheets from "src/data/audio";
 import Composable from "src/components/Composable";
 import Weapon from "src/components/Weapon";
 import WayPointMotion from "src/components/WayPointMotion";
@@ -16,6 +17,7 @@ import { createEntity } from "src/components/EntityDefinition";
 import { setScenery, setScrollVelocity } from "src/components/Scenery";
 import "src/components/WayPointMotion";
 import { getBezierPath } from "src/lib/BezierPath";
+import { loadAudio } from "src/lib/audio";
 
 Crafty.paths({
   audio: "",
@@ -202,6 +204,13 @@ const loadSpriteSheets = async () =>
     Crafty.load(loader, resolve);
   });
 
+const loadAllAudio = () => {
+  const loadingPromises = audiosheets.map(map => loadAudio(map));
+  return Promise.all(loadingPromises);
+};
+
+const loadAssets = () => Promise.all([loadAllAudio(), loadSpriteSheets()]);
+
 let scaleViewport = true;
 export const showComposition = async (composition, options = {}) => {
   if (inScene("ComposablePreview") && options.frame) {
@@ -239,7 +248,7 @@ export const showComposition = async (composition, options = {}) => {
     }
   }
 
-  await loadSpriteSheets();
+  await loadAssets();
   Crafty.enterScene("ComposablePreview", { composition, options });
 };
 
@@ -264,12 +273,12 @@ export const showEntity = async (entityName, options = {}) => {
   currentEntity = entityName;
   currentHabitat = strHabitat;
 
-  await loadSpriteSheets();
+  await loadAssets();
   Crafty.enterScene("EntityPreview", { entityName, habitat: options.habitat });
 };
 
 export const showScenery = async (scenery, backgroundSettings = {}) => {
-  await loadSpriteSheets();
+  await loadAssets();
   Crafty.enterScene("SceneryPreview", { scenery, ...backgroundSettings });
 };
 
@@ -350,7 +359,7 @@ export const showBackground = async (
   backgroundLimit,
   activeCheckpoint
 ) => {
-  await loadSpriteSheets();
+  await loadAssets();
   if (inScene("BackgroundPreview")) {
     if (currentBackground !== background) {
       setBackground(background, { maxCheckpoint: backgroundLimit });
@@ -409,24 +418,29 @@ Crafty.defineScene(
       ? blue
           .addComponent(Weapon)
           .weapon({ pattern, target: "Red", x: 40, y: 20, angle: 180 })
-          .activate()
       : red
           .addComponent(Weapon)
-          .weapon({ pattern, target: "Blue", x: 0, y: 20, angle: 0 })
-          .activate();
+          .weapon({ pattern, target: "Blue", x: 0, y: 20, angle: 0 });
+
+    Crafty(Weapon).activate();
   }
 );
 
 export const showBulletPattern = async (
   pattern,
-  { difficulty, collisionType, swapped }
+  { difficulty, collisionType, swapped, firing }
 ) => {
-  await loadSpriteSheets();
+  if (inScene("BulletPatternPreview") && Crafty(Weapon).active !== firing) {
+    firing ? Crafty(Weapon).activate() : Crafty(Weapon).deactivate();
+    return;
+  }
+  await loadAssets();
   Crafty.enterScene("BulletPatternPreview", {
     pattern,
     difficulty,
     collisionType,
-    swapped
+    swapped,
+    firing
   });
 };
 
@@ -452,7 +466,7 @@ Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
 
 let currentEmitter = null;
 export const showParticleEmitter = async (emitter, { active }) => {
-  await loadSpriteSheets();
+  await loadAssets();
   if (inScene("ParticleEmitterPreview") && emitter === currentEmitter) {
     if (!active) {
       Crafty(ParticleEmitter).stopEmission();

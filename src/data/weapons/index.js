@@ -371,13 +371,13 @@ export default {
         attached: true,
         velocity: 0,
         composition: "weapons.muzzleFlash",
-        queue: [{ duration: 120 }]
+        queue: [{ duration: 120, audio: "shot" }]
       },
       sparkHit: {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.solidHit",
-        queue: [{ duration: 100 }]
+        queue: [{ duration: 100, audio: "hit" }]
       },
       sparks: {
         spawnPosition: "outside",

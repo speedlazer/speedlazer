@@ -18,6 +18,7 @@
     },
     "dead": {
       "frame": "hidden",
+      "audio": "explosion",
       "attachments": {
         "trail": null,
         "explosion": {

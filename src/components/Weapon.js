@@ -7,6 +7,7 @@ import Steering from "src/components/Steering";
 import { EntityDefinition } from "src/components/EntityDefinition";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import { easingFunctions } from "src/constants/easing";
+import { playAudio } from "src/lib/audio";
 
 const adjustForDifficulty = (difficulty, numberOrArray, defaultValue = 0) =>
   numberOrArray === undefined
@@ -196,6 +197,10 @@ Crafty.c(Bullet, {
         }
       }
       if (upcoming.duration > 0) {
+        if (upcoming.audio) {
+          playAudio(upcoming.audio);
+          upcoming.audio = null;
+        }
         if (!upcoming.animateFn && upcoming.velocity !== undefined) {
           const animateFn = tweenFn(this, {
             velocity: upcoming.velocity

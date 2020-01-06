@@ -1,4 +1,6 @@
 import spritesheets from "src/data/spritesheets";
+import audiosheets from "src/data/audio";
+import { loadAudio } from "src/lib/audio";
 
 const dataFunctions = () => ({
   loadSpriteSheets: async sheetNames =>
@@ -12,7 +14,14 @@ const dataFunctions = () => ({
           loader.sprites[sheet.image] = sheet.map;
         });
       Crafty.load(loader, resolve);
-    })
+    }),
+  loadAudio: async audioMaps =>
+    Promise.all(
+      audioMaps
+        .map(mapName => audiosheets.find(e => e.name === mapName))
+        .filter(Boolean)
+        .map(map => loadAudio(map))
+    )
 });
 
 export default dataFunctions;
