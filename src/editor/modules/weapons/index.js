@@ -19,6 +19,7 @@ const weaponCollisionTypes = activeWeapon =>
 
 const DEFAULT_STATE = {
   difficulty: 0,
+  firing: false,
   collisionType: null,
   moveBlue: false,
   swapped: false
@@ -40,10 +41,14 @@ class Weapons extends Component {
   state = { ...DEFAULT_STATE, ...storedState() };
 
   buttonClick = difficulty => () => {
-    this.setState(state => ({ ...state, difficulty }));
+    this.setState(state => ({ ...state, difficulty, firing: true }));
   };
 
-  render({ weapon }, { difficulty, collisionType, moveBlue, swapped }) {
+  toggleWeapon = () => {
+    this.setState(state => ({ ...state, firing: !state.firing }));
+  };
+
+  render({ weapon }, { firing, difficulty, collisionType, moveBlue, swapped }) {
     const activeWeapon = weapons[weapon];
 
     storeState(this.state);
@@ -58,6 +63,9 @@ class Weapons extends Component {
           {activeWeapon && (
             <div>
               <div>
+                <button onClick={this.toggleWeapon}>
+                  {firing ? "Stop" : "Start"}
+                </button>
                 <button onClick={this.buttonClick(0.0)}>Easy</button>
                 <button onClick={this.buttonClick(0.25)}>Medium</button>
                 <button onClick={this.buttonClick(0.75)}>Hard</button>
@@ -102,6 +110,7 @@ class Weapons extends Component {
               )}
               <BulletPatternPreview
                 weapon={activeWeapon}
+                firing={firing}
                 difficulty={difficulty}
                 collisionType={collisionType}
                 moveBlue={moveBlue}
