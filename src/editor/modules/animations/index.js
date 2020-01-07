@@ -1,43 +1,43 @@
-import { BackgroundPreview } from "./BackgroundPreview";
-import backgrounds from "src/data/backgrounds";
+import { AnimationPreview } from "./AnimationPreview";
+import animations from "src/data/animations";
 import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
 import { Text } from "../../components/Text";
 import { h, Component } from "preact";
 
-class Backgrounds extends Component {
+class Animations extends Component {
   state = {
-    backgroundLimit: 0
+    animationLimit: 0
   };
 
   increaseLimit = () => {
     this.setState(s => ({
       ...s,
-      backgroundLimit: s.backgroundLimit + 1
+      animationLimit: s.animationLimit + 1
     }));
   };
 
-  render({ background, checkpoint }, { backgroundLimit }) {
-    const activeBackground = backgrounds[background];
+  render({ animation, checkpoint }, { animationLimit }) {
+    const activeAnimation = animations[animation];
     return (
       <section>
-        <Title>Backgrounds</Title>
+        <Title>Animations</Title>
         <Divider>
           <Menu
-            items={Object.keys(backgrounds).map(key => [
+            items={Object.keys(animations).map(key => [
               key,
-              `/backgrounds/${key}`
+              `/animations/${key}`
             ])}
           />
-          {activeBackground && (
+          {activeAnimation && (
             <div>
               <div>
-                <Text>{backgroundLimit}</Text>
+                <Text>{animationLimit}</Text>
                 <button
                   onClick={this.increaseLimit}
                   disabled={
-                    activeBackground.checkpoints.length <= backgroundLimit
+                    activeAnimation.checkpoints.length <= animationLimit
                   }
                 >
                   Increase allowed checkpoint
@@ -45,15 +45,15 @@ class Backgrounds extends Component {
               </div>
               <Menu
                 horizontal={true}
-                items={activeBackground.checkpoints.map((a, i) => [
+                items={activeAnimation.checkpoints.map((a, i) => [
                   `${i + 1}`,
-                  `/backgrounds/${background}/checkpoints/${i}`
+                  `/animations/${animation}/checkpoints/${i}`
                 ])}
               />
-              <BackgroundPreview
-                background={activeBackground}
+              <AnimationPreview
+                animation={activeAnimation}
                 activeCheckpoint={checkpoint ? parseInt(checkpoint, 10) : 0}
-                backgroundLimit={backgroundLimit}
+                animationLimit={animationLimit}
               />
             </div>
           )}
@@ -63,4 +63,4 @@ class Backgrounds extends Component {
   }
 }
 
-export default Backgrounds;
+export default Animations;

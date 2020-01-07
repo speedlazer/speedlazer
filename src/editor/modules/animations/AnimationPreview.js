@@ -1,8 +1,8 @@
 import { h, Component } from "preact";
-import { unmount, mount, showBackground } from "src/editor/lib/render-crafty";
+import { unmount, mount, showAnimation } from "src/editor/lib/render-crafty";
 import Preview from "src/editor/components/Preview";
 
-export class BackgroundPreview extends Component {
+export class AnimationPreview extends Component {
   constructor() {
     super();
     this.state = { craftyMounted: false };
@@ -19,25 +19,25 @@ export class BackgroundPreview extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      (prevProps.background !== this.props.background ||
-        prevProps.backgroundLimit !== this.props.backgroundLimit ||
+      (prevProps.animation !== this.props.animation ||
+        prevProps.animationLimit !== this.props.animationLimit ||
         prevProps.activeCheckpoint !== this.props.activeCheckpoint) &&
       this.state.craftyMounted
     ) {
-      showBackground(
-        this.props.background,
-        this.props.backgroundLimit,
+      showAnimation(
+        this.props.animation,
+        this.props.animationLimit,
         this.props.activeCheckpoint
       );
     }
     if (
-      this.props.background &&
+      this.props.animation &&
       this.state.craftyMounted &&
       !prevState.craftyMounted
     ) {
-      showBackground(
-        this.props.background,
-        this.props.backgroundLimit,
+      showAnimation(
+        this.props.animation,
+        this.props.animationLimit,
         this.props.activeCheckpoint
       );
     }

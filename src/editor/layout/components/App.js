@@ -6,7 +6,7 @@ import Audiosheets from "src/editor/modules/audio";
 import Compositions from "src/editor/modules/compositions";
 import Entities from "src/editor/modules/entities";
 import Sceneries from "src/editor/modules/sceneries";
-import Backgrounds from "src/editor/modules/backgrounds";
+import Animations from "src/editor/modules/animations";
 import Paths from "src/editor/modules/paths";
 import Weapons from "src/editor/modules/weapons";
 import Particles from "src/editor/modules/particles";
@@ -22,7 +22,7 @@ export const App = () => (
         ["Paths", "/paths"],
         ["Weapons", "/weapons"],
         ["Particles", "/particles"],
-        ["Backgrounds", "/backgrounds"],
+        ["Animations", "/animations"],
         ["Sceneries", "/sceneries"],
         ["Entities", "/entities"]
       ]}
@@ -38,8 +38,8 @@ export const App = () => (
       <Entities path="/editor/entities/:entity?" />
       <Entities path="/editor/entities/:entity/states/:stateName/:habitatName" />
       <Sceneries path="/editor/sceneries/:scenery?" />
-      <Backgrounds path="/editor/backgrounds/:background?" />
-      <Backgrounds path="/editor/backgrounds/:background/checkpoints/:checkpoint" />
+      <Animations path="/editor/animations/:animation?" />
+      <Animations path="/editor/animations/:animation/checkpoints/:checkpoint" />
       <Paths path="/editor/paths/:pattern?" />
       <Weapons path="/editor/weapons/:weapon?" />
       <Particles path="/editor/particles/:particles?" />

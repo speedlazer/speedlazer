@@ -1,6 +1,6 @@
 import { SceneryPreview } from "./SceneryPreview";
 import sceneries from "src/data/sceneries";
-import backgrounds from "src/data/backgrounds";
+import animations from "src/data/animations";
 import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
@@ -32,7 +32,7 @@ class Sceneries extends Component {
       activeScenery.backgrounds &&
       activeScenery.backgrounds[0] &&
       activeScenery.backgrounds[0];
-    const background = backgroundSetting && backgrounds[backgroundSetting[0]];
+    const background = backgroundSetting && animations[backgroundSetting[0]];
 
     return (
       <section>

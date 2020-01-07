@@ -1,5 +1,5 @@
 import { setScenery, setScrollVelocity } from "src/components/Scenery";
-import backgrounds from "src/data/backgrounds";
+import animations from "src/data/animations";
 import {
   setBackground,
   setBackgroundCheckpoint,
@@ -14,7 +14,7 @@ const levelFunctions = () => ({
     setScenery(sceneryName);
   },
   setBackground: async backgroundName => {
-    setBackground(backgrounds[backgroundName]);
+    setBackground(animations[backgroundName]);
   },
   setBackgroundCheckpointLimit: async limit => {
     setBackgroundCheckpointLimit(limit);

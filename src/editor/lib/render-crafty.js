@@ -1,5 +1,5 @@
 import spritesheets from "src/data/spritesheets";
-import backgrounds from "src/data/backgrounds";
+import animations from "src/data/animations";
 import audiosheets from "src/data/audio";
 import Composable from "src/components/Composable";
 import Weapon from "src/components/Weapon";
@@ -155,7 +155,7 @@ const setHabitat = habitat => {
     setScenery(habitat.scenery);
 
   if (habitat && habitat.background) {
-    setBackground(backgrounds[habitat.background[0]]);
+    setBackground(animations[habitat.background[0]]);
     setBackgroundCheckpoint(habitat.background[1]);
   } else {
     Crafty("Background").destroy();
@@ -342,9 +342,9 @@ export const showFlyPattern = async (pattern, { showPoints, showPath }) => {
 };
 
 Crafty.defineScene(
-  "BackgroundPreview",
-  ({ background, backgroundLimit, activeCheckpoint }) => {
-    setBackground(background, { maxCheckpoint: backgroundLimit });
+  "AnimationPreview",
+  ({ animation, animationLimit, activeCheckpoint }) => {
+    setBackground(animation, { maxCheckpoint: animationLimit });
     if (activeCheckpoint !== 0) {
       setTimeout(() => setBackgroundCheckpoint(activeCheckpoint));
     }
@@ -354,31 +354,31 @@ Crafty.defineScene(
 let currentBackground = null;
 let currentBackgroundLimit = 0;
 let currentBackgroundCheckpoint = 0;
-export const showBackground = async (
-  background,
-  backgroundLimit,
+export const showAnimation = async (
+  animation,
+  animationLimit,
   activeCheckpoint
 ) => {
   await loadAssets();
-  if (inScene("BackgroundPreview")) {
-    if (currentBackground !== background) {
-      setBackground(background, { maxCheckpoint: backgroundLimit });
+  if (inScene("AnimationPreview")) {
+    if (currentBackground !== animation) {
+      setBackground(animation, { maxCheckpoint: animationLimit });
     } else if (currentBackgroundCheckpoint !== activeCheckpoint) {
       setBackgroundCheckpoint(activeCheckpoint);
-    } else if (currentBackgroundLimit !== backgroundLimit) {
-      setBackgroundCheckpointLimit(backgroundLimit);
+    } else if (currentBackgroundLimit !== animationLimit) {
+      setBackgroundCheckpointLimit(animationLimit);
     }
-    currentBackground = background;
-    currentBackgroundLimit = backgroundLimit;
+    currentBackground = animation;
+    currentBackgroundLimit = animationLimit;
     currentBackgroundCheckpoint = activeCheckpoint;
     return;
   }
-  currentBackground = background;
-  currentBackgroundLimit = backgroundLimit;
+  currentBackground = animation;
+  currentBackgroundLimit = animationLimit;
   currentBackgroundCheckpoint = activeCheckpoint;
-  Crafty.enterScene("BackgroundPreview", {
-    background,
-    backgroundLimit,
+  Crafty.enterScene("AnimationPreview", {
+    animation,
+    animationLimit,
     activeCheckpoint
   });
 };
