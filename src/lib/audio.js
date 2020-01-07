@@ -59,3 +59,15 @@ export const playAudio = async sampleName => {
     return source;
   }
 };
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+    if (document["hidden"]) {
+      context.suspend();
+    } else {
+      context.resume();
+    }
+  },
+  false
+);
