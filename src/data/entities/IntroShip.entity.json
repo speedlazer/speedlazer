@@ -1,0 +1,51 @@
+{
+  "name": "IntroShip",
+  "structure": {
+    "composition": "introShip",
+    "components": [
+      "ShipSolid",
+      "GravitySolid",
+      ["HideBelow", { "hideBelow": 570, "z": -12 }]
+    ],
+    "attachments": {
+      "bottom": {
+        "particles": [
+          "waterSplashes",
+          { "emitter": { "w": 850, "amount": 300 } }
+        ]
+      },
+      "hatch1": {
+        "composition": "shipHatch"
+      },
+      "hatch2": {
+        "composition": "shipHatch"
+      }
+    }
+  },
+  "states": {
+    "t1o": {
+      "attachments": { "hatch1": { "frame": "open" } }
+    },
+    "t1r": {
+      "attachments": { "hatch1": { "frame": "risen" } }
+    },
+    "t2o": {
+      "attachments": { "hatch2": { "frame": "open" } }
+    },
+    "t2r": {
+      "attachments": { "hatch2": { "frame": "risen" } }
+    }
+  },
+  "habitats": [
+    {
+      "name": "Ocean",
+      "scenery": "City.Ocean",
+      "position": {
+        "x": 0,
+        "y": 280
+      },
+      "scrollSpeed": { "vx": 0, "vy": 0 },
+      "background": ["City.Sunrise", 0]
+    }
+  ]
+}

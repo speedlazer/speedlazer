@@ -2,7 +2,7 @@
   "introShip": {
     "attributes": {
       "width": 800,
-      "height": 128
+      "height": 108
     },
     "sprites": [
       ["aircraftCarrierBottomFlat", { "x": -64, "y": 10, "z": 5 }],
@@ -21,22 +21,31 @@
       ["aircraftCarrierTopFlat", { "x": 576, "y": -54 }],
       ["boxes", { "x": 622, "y": -64, "z": 5 }],
 
-      ["aircraftCarrierCabinStart", { "x": 96, "y": -178 }],
-      ["aircraftCarrierCabinRadar", { "x": 128, "y": -178 }],
-      ["aircraftCarrierCabin", { "x": 192, "y": -178 }],
-      ["aircraftCarrierCabinRadar", { "x": 256, "y": -178 }],
-      ["aircraftCarrierCabin", { "x": 320, "y": -178 }],
-      ["aircraftCarrierCabinEnd", { "x": 384, "y": -178 }],
+      ["aircraftCarrierCabinStart", { "x": 96, "y": -178, "z": 6 }],
+      ["aircraftCarrierCabinRadar", { "x": 128, "y": -178, "z": 6 }],
+      ["aircraftCarrierCabin", { "x": 192, "y": -178, "z": 6 }],
+      ["aircraftCarrierCabinRadar", { "x": 256, "y": -178, "z": 6 }],
+      ["aircraftCarrierCabin", { "x": 320, "y": -178, "z": 6 }],
+      ["aircraftCarrierCabinEnd", { "x": 384, "y": -178, "z": 6 }],
 
-      ["aircraftCarrierRadar", { "x": 232, "y": -185 }],
-      ["aircraftCarrierAntenna", { "x": 316, "y": -227 }],
-      ["aircraftCarrierAntenna", { "x": 158, "y": -227 }],
-      ["aircraftCarrier7", { "x": 192, "y": -116, "z": 1 }],
-      ["aircraftCarrier7", { "x": 320, "y": -116, "z": 1 }]
+      ["aircraftCarrierRadar", { "x": 232, "y": -185, "z": 6 }],
+      ["aircraftCarrierAntenna", { "x": 316, "y": -227, "z": 6 }],
+      ["aircraftCarrierAntenna", { "x": 158, "y": -227, "z": 6 }],
+      ["aircraftCarrier7", { "x": 192, "y": -116, "z": 1, "z": 6 }],
+      ["aircraftCarrier7", { "x": 320, "y": -116, "z": 1, "z": 6 }]
     ],
     "attachHooks": [
-      ["BoxesLocation", { "x": 550, "y": -16, "z": 23 }],
-      ["BoxesLocation", { "x": 614, "y": -16, "z": 23 }]
+      ["boxLocation1", { "x": 550, "y": -16, "z": 23 }],
+      ["boxLocation2", { "x": 614, "y": -16, "z": 23 }],
+      [
+        "hatch1",
+        { "x": 220, "y": -20, "z": 2, "attachAlign": ["top", "left"] }
+      ],
+      [
+        "hatch2",
+        { "x": 412, "y": -20, "z": 2, "attachAlign": ["top", "left"] }
+      ],
+      ["bottom", { "x": -64, "y": 90, "z": 8, "attachAlign": ["top", "left"] }]
     ]
   }
 }
