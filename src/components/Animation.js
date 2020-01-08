@@ -54,7 +54,7 @@ Crafty.c(Animation, {
         const sub = Crafty.e(["2D", "WebGL", Composable].join(","))
           .attr({ x, y, w: 40, h: 40, z: this.z })
           .compose(composition);
-        this.attach(sub);
+        //this.attach(sub);
         sub.displayFrame(settings.frame || "default");
         this.elements[settings.key] = sub;
       }
@@ -67,13 +67,12 @@ Crafty.c(Animation, {
         const y = (settings.relativeY || 0) * Crafty.viewport.height;
         const e = createEntity(entity, settings).attr({ x, y, z: this.z });
         this.elements[settings.key] = e;
-        this.attach(e);
         e.showState(settings.state || "default");
       } else {
         settings.relativeX &&
-          this.attr({ x: settings.relativeX * Crafty.viewport.width });
+          existing.attr({ x: settings.relativeX * Crafty.viewport.width });
         settings.relativeY &&
-          this.attr({ y: settings.relativeY * Crafty.viewport.height });
+          existing.attr({ y: settings.relativeY * Crafty.viewport.height });
         existing.attr({ z: this.z });
         existing.showState(settings.state || "default");
       }

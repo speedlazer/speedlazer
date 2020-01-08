@@ -35,8 +35,8 @@
       ["aircraftCarrier7", { "x": 320, "y": -116, "z": 1, "z": 6 }]
     ],
     "attachHooks": [
-      ["boxLocation1", { "x": 550, "y": -16, "z": 23 }],
-      ["boxLocation2", { "x": 614, "y": -16, "z": 23 }],
+      ["boxLocation1", { "x": 650, "y": -10, "z": 23 }],
+      ["boxLocation2", { "x": 714, "y": -16, "z": 23 }],
       [
         "hatch1",
         { "x": 220, "y": -20, "z": 2, "attachAlign": ["top", "left"] }

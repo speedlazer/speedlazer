@@ -112,7 +112,7 @@ export default {
     checkpoints: [
       {
         entities: [
-          ["IntroShip", { key: "ship", relativeX: -0.4, relativeY: 0.7 }]
+          ["IntroShip", { key: "ship", relativeX: -0.3, relativeY: 0.7 }]
         ],
         timeline: {
           defaultDuration: 5000,
@@ -122,7 +122,7 @@ export default {
               start: 0.0,
               end: 0.3,
               path: {
-                data: [{ x: -0.4, y: 0.7 }, { x: -0.2, y: 0.7 }],
+                data: [{ x: -0.3, y: 0.7 }, { x: -0.15, y: 0.7 }],
                 start: 0.0,
                 end: 1.0
               }
@@ -131,7 +131,9 @@ export default {
         }
       },
       {
-        entities: [["IntroShip", { key: "ship" }]],
+        entities: [
+          ["IntroShip", { key: "ship", relativeX: -0.15, relativeY: 0.7 }]
+        ],
         timeline: {
           defaultDuration: 2000,
           transitions: [

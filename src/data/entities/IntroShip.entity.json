@@ -18,7 +18,13 @@
         "composition": "shipHatch"
       },
       "hatch2": {
-        "composition": "shipHatch"
+        "composition": "shipHatch",
+        "attachments": {
+          "payload": {
+            "name": "player1",
+            "entity": "PlayerShip"
+          }
+        }
       },
       "boxLocation1": {
         "composition": "boxes"

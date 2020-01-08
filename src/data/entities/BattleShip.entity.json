@@ -58,7 +58,9 @@
             ]
           }
         }
-      }
+      },
+      "heliPlace1": { "composition": "battleship.heli" },
+      "heliPlace2": { "composition": "battleship.heli" }
     }
   },
   "states": {
