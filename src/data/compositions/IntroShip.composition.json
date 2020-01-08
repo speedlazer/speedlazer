@@ -47,5 +47,12 @@
       ],
       ["bottom", { "x": -64, "y": 90, "z": 8, "attachAlign": ["top", "left"] }]
     ]
+  },
+  "boxes": {
+    "attributes": {
+      "width": 32,
+      "height": 32
+    },
+    "sprites": [["boxes", { "x": 0, "y": 0 }]]
   }
 }

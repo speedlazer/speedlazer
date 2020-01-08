@@ -155,7 +155,8 @@ Crafty.c(Animation, {
         if (!elem) return;
         elem.addComponent(WayPointMotion);
         const pathDuration = (t.end - t.start) * this.animationDuration;
-        const path = paths[t.path.name];
+
+        const path = t.path.data || paths[t.path.name];
 
         elem.flyPattern(path, {
           duration: pathDuration,

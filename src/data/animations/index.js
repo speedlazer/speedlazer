@@ -107,5 +107,39 @@ export default {
         }
       }
     ]
+  },
+  "City.Intro": {
+    checkpoints: [
+      {
+        entities: [
+          ["IntroShip", { key: "ship", relativeX: -0.4, relativeY: 0.7 }]
+        ],
+        timeline: {
+          defaultDuration: 5000,
+          transitions: [
+            {
+              key: "ship",
+              start: 0.0,
+              end: 0.3,
+              path: {
+                data: [{ x: -0.4, y: 0.7 }, { x: -0.2, y: 0.7 }],
+                start: 0.0,
+                end: 1.0
+              }
+            }
+          ]
+        }
+      },
+      {
+        entities: [["IntroShip", { key: "ship" }]],
+        timeline: {
+          defaultDuration: 2000,
+          transitions: [
+            { start: 0.0, end: 0.5, key: "ship", targetState: "t2o" },
+            { start: 0.5, end: 1.0, key: "ship", targetState: "t2r" }
+          ]
+        }
+      }
+    ]
   }
 };

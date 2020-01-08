@@ -19,6 +19,12 @@
       },
       "hatch2": {
         "composition": "shipHatch"
+      },
+      "boxLocation1": {
+        "composition": "boxes"
+      },
+      "boxLocation2": {
+        "composition": "boxes"
       }
     }
   },
