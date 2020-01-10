@@ -137,8 +137,10 @@ export default {
         timeline: {
           defaultDuration: 2000,
           transitions: [
-            { start: 0.0, end: 0.5, key: "ship", targetState: "t2o" },
-            { start: 0.5, end: 1.0, key: "ship", targetState: "t2r" }
+            { start: 0.0, end: 0.3, key: "ship", targetState: "t2o" },
+            { start: 0.3, end: 0.5, key: "ship", targetState: "t2r" },
+            { start: 0.5, end: 0.7, key: "ship", targetState: "shipStart" },
+            { start: 0.9, end: 1.0, key: "ship", targetState: "shipLiftOff" }
           ]
         }
       }

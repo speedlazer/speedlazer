@@ -35,6 +35,21 @@
         }
       }
     },
+    "starting": {
+      "attachments": {
+        "trail": {
+          "particles": [
+            "ship.trail",
+            {
+              "particle": { "velocity": 50, "startSize": 10 },
+              "emitter": { "amount": 100 }
+            }
+          ]
+        },
+        "reverseTrail": null,
+        "reverseTrail2": null
+      }
+    },
     "flying": {
       "attachments": {
         "trail": {

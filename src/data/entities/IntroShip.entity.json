@@ -46,6 +46,26 @@
     },
     "t2r": {
       "attachments": { "hatch2": { "frame": "risen" } }
+    },
+    "shipStart": {
+      "attachments": {
+        "hatch2": {
+          "frame": "risen",
+          "attachments": {
+            "player1": { "state": "starting" }
+          }
+        }
+      }
+    },
+    "shipLiftOff": {
+      "attachments": {
+        "hatch2": {
+          "frame": "risen",
+          "attachments": {
+            "player1": { "state": "flying" }
+          }
+        }
+      }
     }
   },
   "habitats": [

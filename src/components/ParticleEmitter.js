@@ -88,8 +88,6 @@ Crafty.c(ParticleEmitter, {
     }
     this.initialDraw = true;
     this.trigger("Invalidate");
-    this.timeFrame = 0;
-    this.startTime = 0;
   },
 
   events: {
@@ -218,6 +216,8 @@ Crafty.c(ParticleEmitter, {
     this.attr({ w, h });
     this.emissionRate = amount / duration;
     this.shouldHaveEmitted = 0;
+    this.timeFrame = 0;
+    this.startTime = 0;
 
     if (this.particleSettings.sprite) {
       const sprite = Crafty.e(`WebGL, ${this.particleSettings.sprite}`).attr({

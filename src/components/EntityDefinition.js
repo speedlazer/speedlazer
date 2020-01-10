@@ -53,6 +53,9 @@ const setEntityStructure = (entity, state, duration) => {
   if (state.entity) {
     entity.addComponent(EntityDefinition).applyDefinition(state.entity);
   }
+  if (state.state) {
+    entity.showState(state.state, duration);
+  }
   if (state.particles) {
     if (Array.isArray(state.particles)) {
       const emitter = merge(
@@ -64,6 +67,8 @@ const setEntityStructure = (entity, state, duration) => {
         const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
         entity.emitter = e;
         entity.emitting = state.particles;
+      } else {
+        entity.emitter.particles(emitter, entity);
       }
     } else {
       const emitter = particles[state.particles];
@@ -71,6 +76,8 @@ const setEntityStructure = (entity, state, duration) => {
         const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
         entity.emitter = e;
         entity.emitting = state.particles;
+      } else {
+        entity.emitter.particles(emitter, entity);
       }
     }
   }
