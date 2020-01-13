@@ -465,13 +465,13 @@ Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
 });
 
 let currentEmitter = null;
-export const showParticleEmitter = async (emitter, { active }) => {
+export const showParticleEmitter = async (emitter, { active, warmed }) => {
   await loadAssets();
   if (inScene("ParticleEmitterPreview") && emitter === currentEmitter) {
     if (!active) {
       Crafty(ParticleEmitter).stopEmission();
     } else {
-      Crafty(ParticleEmitter).startEmission();
+      Crafty(ParticleEmitter).startEmission({ warmed });
     }
     return;
   }

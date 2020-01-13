@@ -7,14 +7,15 @@ import particles from "src/data/particles";
 
 class Particles extends Component {
   state = {
-    emission: true
+    emission: true,
+    warmed: false
   };
 
-  toggleEmission = () => {
-    this.setState(state => ({ ...state, emission: !state.emission }));
+  toggleEmission = (warmed = false) => {
+    this.setState(state => ({ ...state, emission: !state.emission, warmed }));
   };
 
-  render({ particles: p }, { emission }) {
+  render({ particles: p }, { emission, warmed }) {
     const activeParticles = particles[p];
 
     return (
@@ -30,9 +31,14 @@ class Particles extends Component {
           {activeParticles && (
             <div>
               <div>
-                <button onClick={this.toggleEmission}>
-                  {emission ? "stop" : "start"}
+                <button onClick={() => this.toggleEmission()}>
+                  {emission ? "Stop" : "Start"}
                 </button>
+                {!emission && (
+                  <button onClick={() => this.toggleEmission(true)}>
+                    Start warmed
+                  </button>
+                )}
                 <button
                   onClick={() => {
                     Crafty("Emitter").destroy();
@@ -44,6 +50,7 @@ class Particles extends Component {
               <ParticleEmitterPreview
                 emitter={activeParticles}
                 active={emission}
+                warmed={warmed}
               />
             </div>
           )}

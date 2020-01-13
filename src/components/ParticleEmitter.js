@@ -21,13 +21,15 @@ const spawnParticle = (entity, settings) => {
     (a, i) => a + randM1to1() * settings.endColorRandom[i]
   );
 
+  const start = entity.timeFrame - (settings.expired || 0.0) * life;
+
   return {
     aPosition: [x, y],
     aVelocity: [speed, (angle * Math.PI) / 180],
     aOrientation: [x, y, 0],
     aSize: [startSize, endSize],
-    aLife: [entity.timeFrame, life],
-    expire: entity.timeFrame + life,
+    aLife: [start, life],
+    expire: start + life,
     aLayer: [entity._globalZ, entity._alpha],
     aColor1: startColor,
     aColor2: endColor
@@ -260,37 +262,52 @@ Crafty.c(ParticleEmitter, {
     this.shouldHaveEmitted = 0;
   },
 
-  startEmission() {
+  startEmission({ warmed = false } = {}) {
     this.emissionRate =
       this.particleSettings.amount / this.particleSettings.duration;
-    this.shouldHaveEmitted = 0;
-    this.startTime = 0;
+    this.startTime = warmed ? -1 : 0;
+
+    this.shouldHaveEmitted = warmed
+      ? this.particleSettings.amount
+      : Math.min((this.startTime / 1000.0) * this.emissionRate, 1) *
+        this.particleSettings.amount;
   },
 
   _renderParticles({ dt, gameTime }) {
     startRender = startRender || gameTime;
     this.timeFrame = gameTime - startRender;
 
-    this.startTime += dt;
-    this.shouldHaveEmitted =
-      Math.min((this.startTime / 1000.0) * this.emissionRate, 1) *
-      this.particleSettings.amount;
+    if (this.startTime !== -1) {
+      this.startTime += dt;
+      this.shouldHaveEmitted =
+        Math.min((this.startTime / 1000.0) * this.emissionRate, 1) *
+        this.particleSettings.amount;
+    }
 
     if (
       this.timeFrame >= this.nextExpireCheck &&
       this.startTime < this.particleSettings.emitterDuration
     ) {
       this.nextExpireCheck = this.timeFrame + this.nextExpireRatio;
+      const warmingUp = this.startTime === -1;
 
       for (let i = 0; i < this.shouldHaveEmitted; i++) {
         if (this._particles[i].expire < this.timeFrame + 20) {
-          const p = spawnParticle(this, this.particleSettings);
+          const p = spawnParticle(
+            this,
+            warmingUp
+              ? { ...this.particleSettings, expired: Math.random() }
+              : this.particleSettings
+          );
           if (p.expire > this.lastExpired) {
             this.lastExpired = p.expire;
           }
           this._particles[i] = p;
           this._writeParticle(i, p);
         }
+      }
+      if (warmingUp) {
+        this.startTime = 0;
       }
     }
     if (this.autoDestruct && this.timeFrame > this.lastExpired) {

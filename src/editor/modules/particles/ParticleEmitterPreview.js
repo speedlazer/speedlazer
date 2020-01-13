@@ -32,7 +32,10 @@ export class ParticleEmitterPreview extends Component {
         this.state.craftyMounted &&
         !prevState.craftyMounted)
     ) {
-      showParticleEmitter(this.props.emitter, { active: this.props.active });
+      showParticleEmitter(this.props.emitter, {
+        active: this.props.active,
+        warmed: this.props.warmed
+      });
     }
   }
 
