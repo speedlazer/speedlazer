@@ -9,7 +9,7 @@
     ],
     "attachments": {
       "bottom": {
-        "particles": "waterSplashes"
+        "particles": ["waterSplashes", { "emitter": { "warmed": true } }]
       },
       "cabin1": {
         "composition": "battleship.firstCabin"

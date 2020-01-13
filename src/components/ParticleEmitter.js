@@ -167,7 +167,8 @@ Crafty.c(ParticleEmitter, {
         amount = 150,
         w = 10,
         h = 10,
-        duration: emitterDuration = Infinity
+        duration: emitterDuration = Infinity,
+        warmed = false
       },
       gravity = [0, 0],
       particle: {
@@ -216,10 +217,9 @@ Crafty.c(ParticleEmitter, {
     }
 
     this.attr({ w, h });
-    this.emissionRate = amount / duration;
-    this.shouldHaveEmitted = 0;
+
     this.timeFrame = 0;
-    this.startTime = 0;
+    this.startEmission({ warmed });
 
     if (this.particleSettings.sprite) {
       const sprite = Crafty.e(`WebGL, ${this.particleSettings.sprite}`).attr({
@@ -296,7 +296,7 @@ Crafty.c(ParticleEmitter, {
           const p = spawnParticle(
             this,
             warmingUp
-              ? { ...this.particleSettings, expired: Math.random() }
+              ? { ...this.particleSettings, expired: Math.random() * 0.9 }
               : this.particleSettings
           );
           if (p.expire > this.lastExpired) {

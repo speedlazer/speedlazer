@@ -11,7 +11,7 @@
       "bottom": {
         "particles": [
           "waterSplashes",
-          { "emitter": { "w": 850, "amount": 300 } }
+          { "emitter": { "w": 850, "amount": 300, "warmed": true } }
         ]
       },
       "hatch1": {
