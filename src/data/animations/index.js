@@ -122,18 +122,16 @@ export default {
               start: 0.0,
               end: 0.3,
               path: {
-                data: [{ x: -0.3, y: 0.7 }, { x: -0.15, y: 0.7 }],
+                data: [{ x: -0.3, y: 0.7 }, { x: -0.05, y: 0.7 }],
                 start: 0.0,
-                end: 1.0
+                end: 0.5
               }
             }
           ]
         }
       },
       {
-        entities: [
-          ["IntroShip", { key: "ship", relativeX: -0.15, relativeY: 0.7 }]
-        ],
+        entities: [["IntroShip", { key: "ship" }]],
         timeline: {
           defaultDuration: 2000,
           transitions: [
@@ -141,6 +139,51 @@ export default {
             { start: 0.3, end: 0.5, key: "ship", targetState: "t2r" },
             { start: 0.5, end: 0.7, key: "ship", targetState: "shipStart" },
             { start: 0.9, end: 1.0, key: "ship", targetState: "shipLiftOff" }
+          ]
+        }
+      },
+      {
+        entities: [
+          [
+            "IntroShip",
+            {
+              key: "ship",
+              state: "shipLiftOff"
+            }
+          ],
+          [
+            "PlayerShip",
+            {
+              key: "player",
+              detach: true,
+              state: "flying"
+            }
+          ]
+        ],
+        timeline: {
+          defaultDuration: 2000,
+          transitions: [
+            {
+              start: 0.0,
+              end: 0.5,
+              key: "player",
+              path: {
+                name: "playerLiftOff",
+                start: 0.0,
+                end: 1
+              }
+            },
+            {
+              start: 0.0,
+              end: 1,
+              key: "ship",
+              targetState: "closed",
+              path: {
+                data: [{ x: -0.3, y: 0.7 }, { x: -0.05, y: 0.7 }],
+                start: 0.5,
+                end: 1.0
+              }
+            }
           ]
         }
       }

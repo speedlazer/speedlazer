@@ -1,4 +1,9 @@
 export default {
+  playerLiftOff: [
+    { x: 0.2, y: 0.6 },
+    { x: 0.19, y: 0.56 },
+    { x: 0.2, y: 0.55 }
+  ],
   pattern1: [
     { x: 1.1, y: 0.5 },
     { x: 0.9, y: 0.2 },

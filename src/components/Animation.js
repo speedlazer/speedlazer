@@ -65,7 +65,16 @@ Crafty.c(Animation, {
       if (!existing) {
         const x = (settings.relativeX || 0) * Crafty.viewport.width;
         const y = (settings.relativeY || 0) * Crafty.viewport.height;
-        const e = createEntity(entity, settings).attr({ x, y, z: this.z });
+
+        const e = settings.detach
+          ? Crafty(entity)
+          : createEntity(entity, settings).attr({ x, y, z: this.z });
+        if (settings.detach) {
+          if (e._parent) {
+            e._parent.detach(e);
+          }
+        }
+
         this.elements[settings.key] = e;
         e.showState(settings.state || "default");
       } else {

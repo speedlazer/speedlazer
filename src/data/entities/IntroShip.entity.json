@@ -44,6 +44,9 @@
     "t2o": {
       "attachments": { "hatch2": { "frame": "open" } }
     },
+    "closed": {
+      "attachments": { "hatch2": { "frame": "closed" } }
+    },
     "t2r": {
       "attachments": { "hatch2": { "frame": "risen" } }
     },
