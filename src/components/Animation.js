@@ -23,7 +23,7 @@ Crafty.c(Animation, {
 
   setCheckpointLimit(limit) {
     this.maxAllowedCheckpoint = limit;
-    if (this.targetCheckpoint < limit && !this.animatingBackground) {
+    if (this.targetCheckpoint < limit && !this.playingAnimation) {
       this.setActiveCheckpoint(this.targetCheckpoint + 1);
     }
   },
@@ -32,7 +32,7 @@ Crafty.c(Animation, {
     this.unbind("EnterFrame", this.updateAnimation);
     const checkpointData = this.currentBackground.checkpoints[checkpoint];
     if (!checkpointData) return;
-    this.animatingBackground = true;
+    this.playingAnimation = true;
     this.targetCheckpoint = checkpoint;
 
     let toRemove = Object.keys(this.elements);
@@ -176,15 +176,27 @@ Crafty.c(Animation, {
 
     if (value >= 1.0) {
       this.unbind("EnterFrame", this.updateAnimation);
-      this.animatingBackground = false;
+      this.playingAnimation = false;
       if (
         this.maxAllowedCheckpoint > this.targetCheckpoint &&
         this.currentBackground.checkpoints.length > this.targetCheckpoint + 1
       ) {
         this.setActiveCheckpoint(this.targetCheckpoint + 1);
+      } else {
+        this.trigger("AnimationEnded", { checkpoint: this.targetCheckpoint });
       }
     }
   }
 });
 
 export default Animation;
+
+export const playAnimation = (animation, { max = Infinity } = {}) =>
+  new Promise(resolve => {
+    const player = Crafty.e(Animation);
+    player.setAnimation(animation, { maxCheckpoint: max });
+    player.one("AnimationEnded", () => {
+      player.destroy();
+      resolve();
+    });
+  });

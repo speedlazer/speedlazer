@@ -9,6 +9,7 @@ const stage1 = async ({
   spawnShip,
   setBackground,
   setBackgroundCheckpointLimit,
+  playAnimation,
   exec,
   wait
 }) => {
@@ -22,8 +23,9 @@ const stage1 = async ({
   setBackground("City.Sunrise");
   //await text.fadeOut(2000);
   text.remove();
+  await playAnimation("City.Intro");
 
-  await spawnShip("PlayerShip");
+  await spawnShip("PlayerShip", { existing: true });
 
   setBackgroundCheckpointLimit(4);
   await exec(droneWave(5, "pattern1", 300));

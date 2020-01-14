@@ -25,7 +25,7 @@ Crafty.c("ShipSpawnable", {
     return this;
   },
 
-  spawnShip(stats = {}) {
+  spawnShip({ existing = false }) {
     if (!this.has(ControlScheme)) {
       return;
     }
@@ -46,7 +46,10 @@ Crafty.c("ShipSpawnable", {
       this.ship = null;
     }
 
-    this.ship = createEntity(this.shipType, { location: pos });
+    this.ship = existing
+      ? Crafty(this.shipType).get(0) ||
+        createEntity(this.shipType, { location: pos })
+      : createEntity(this.shipType, { location: pos });
     this.ship.addComponent(ShipControls, ShipCollision);
 
     if (this.has(ControlScheme)) {

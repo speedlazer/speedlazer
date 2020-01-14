@@ -5,6 +5,7 @@ import {
   setBackgroundCheckpoint,
   setBackgroundCheckpointLimit
 } from "src/components/Background";
+import { playAnimation } from "src/components/Animation";
 
 const levelFunctions = () => ({
   setScrollingSpeed: async (x, y) => {
@@ -21,7 +22,9 @@ const levelFunctions = () => ({
   },
   setBackgroundCheckpoint: async checkpoint => {
     setBackgroundCheckpoint(checkpoint);
-  }
+  },
+  playAnimation: (animation, options) =>
+    playAnimation(animations[animation], options)
 });
 
 export default levelFunctions;
