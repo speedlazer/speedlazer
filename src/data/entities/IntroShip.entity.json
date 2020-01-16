@@ -76,10 +76,10 @@
       "name": "Ocean",
       "scenery": "City.Ocean",
       "position": {
-        "x": 0,
-        "y": 280
+        "x": -30,
+        "y": 380
       },
-      "scrollSpeed": { "vx": 0, "vy": 0 },
+      "scrollSpeed": { "vx": -40, "vy": 0 },
       "background": ["City.Sunrise", 0]
     }
   ]

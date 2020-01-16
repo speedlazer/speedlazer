@@ -15,7 +15,7 @@ Crafty.c(Animation, {
   },
 
   setAnimation(animation, { maxCheckpoint = 0, ...options } = {}) {
-    this.currentBackground = animation;
+    this.currentAnimation = animation;
 
     this.maxAllowedCheckpoint = maxCheckpoint;
     this.setActiveCheckpoint(0, options);
@@ -30,7 +30,7 @@ Crafty.c(Animation, {
 
   setActiveCheckpoint(checkpoint, { autoStart = true, duration = null } = {}) {
     this.unbind("EnterFrame", this.updateAnimation);
-    const checkpointData = this.currentBackground.checkpoints[checkpoint];
+    const checkpointData = this.currentAnimation.checkpoints[checkpoint];
     if (!checkpointData) return;
     this.playingAnimation = true;
     this.targetCheckpoint = checkpoint;
@@ -66,24 +66,24 @@ Crafty.c(Animation, {
         const x = (settings.relativeX || 0) * Crafty.viewport.width;
         const y = (settings.relativeY || 0) * Crafty.viewport.height;
 
-        const e = settings.detach
-          ? Crafty(entity)
-          : createEntity(entity, settings).attr({ x, y, z: this.z });
+        const e =
+          Crafty(entity).get(0) ||
+          createEntity(entity, settings).attr({ x, y, z: this.z });
         if (settings.detach) {
-          if (e._parent) {
-            e._parent.detach(e);
+          if (e.detachFromParent) {
+            e.detachFromParent();
           }
         }
 
         this.elements[settings.key] = e;
-        e.showState(settings.state || "default");
+        if (settings.state) e.showState(settings.state);
       } else {
         settings.relativeX &&
           existing.attr({ x: settings.relativeX * Crafty.viewport.width });
         settings.relativeY &&
           existing.attr({ y: settings.relativeY * Crafty.viewport.height });
         existing.attr({ z: this.z });
-        existing.showState(settings.state || "default");
+        if (settings.state) existing.showState(settings.state);
       }
     });
     toRemove.forEach(k => {
@@ -169,7 +169,8 @@ Crafty.c(Animation, {
         elem.flyPattern(path, {
           duration: pathDuration,
           start: t.path.start || 0.0,
-          end: t.path.end || 1.0
+          end: t.path.end || 1.0,
+          easing: t.path.easing || "linear"
         });
       }
     });
@@ -179,10 +180,18 @@ Crafty.c(Animation, {
       this.playingAnimation = false;
       if (
         this.maxAllowedCheckpoint > this.targetCheckpoint &&
-        this.currentBackground.checkpoints.length > this.targetCheckpoint + 1
+        this.currentAnimation.checkpoints.length > this.targetCheckpoint + 1
       ) {
         this.setActiveCheckpoint(this.targetCheckpoint + 1);
       } else {
+        const after = this.currentAnimation.after;
+        if (after && after.cleanup) {
+          after.cleanup.forEach(key => {
+            this.elements[key].destroy();
+            delete this.elements[key];
+          });
+        }
+
         this.trigger("AnimationEnded", { checkpoint: this.targetCheckpoint });
       }
     }

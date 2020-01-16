@@ -115,16 +115,14 @@ export default {
           ["IntroShip", { key: "ship", relativeX: -0.3, relativeY: 0.8 }]
         ],
         timeline: {
-          defaultDuration: 5000,
+          defaultDuration: 1500,
           transitions: [
             {
               key: "ship",
               start: 0.0,
-              end: 0.3,
+              end: 1.0,
               path: {
-                data: [{ x: -0.3, y: 0.8 }, { x: -0.05, y: 0.8 }],
-                start: 0.0,
-                end: 0.5
+                data: [{ x: -0.3, y: 0.8 }, { x: -0.2, y: 0.8 }]
               }
             }
           ]
@@ -179,14 +177,47 @@ export default {
               key: "ship",
               targetState: "closed",
               path: {
-                data: [{ x: -0.3, y: 0.8 }, { x: -0.05, y: 0.8 }],
-                start: 0.5,
-                end: 1.0
+                data: [{ x: -0.2, y: 0.8 }, { x: -0.1, y: 0.8 }]
               }
             }
           ]
         }
       }
-    ]
+    ],
+    habitat: {
+      scenery: "City.Ocean",
+      scrollSpeed: { vx: -100, vy: 0 },
+      background: ["City.Sunrise", 0]
+    }
+  },
+  "City.Intro2": {
+    checkpoints: [
+      {
+        entities: [
+          ["IntroShip", { key: "ship", relativeX: -0.1, relativeY: 0.8 }]
+        ],
+        timeline: {
+          defaultDuration: 12000,
+          transitions: [
+            {
+              key: "ship",
+              start: 0.3,
+              end: 1.0,
+              path: {
+                data: [{ x: -0.1, y: 0.8 }, { x: -1.0, y: 0.8 }]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    after: {
+      cleanup: ["ship"]
+    },
+    habitat: {
+      scenery: "City.Ocean",
+      scrollSpeed: { vx: -100, vy: 0 },
+      background: ["City.Sunrise", 0]
+    }
   }
 };

@@ -602,6 +602,10 @@ Crafty.c(Composable, {
     const targetX = hook.x - widthFactor[alignment[1]] * entity.w;
     const targetY = hook.y - heightFactor[alignment[0]] * entity.h;
     entity.attr({ x: targetX, y: targetY, z: hook.z });
+    entity.detachFromParent = () => {
+      hook.detach(entity);
+      hook.attr({ currentAttachment: null });
+    };
     hook.attach(entity);
     hook.attr({ currentAttachment: entity });
   },

@@ -8,6 +8,7 @@ import ParticleEmitter from "src/components/ParticleEmitter";
 import "src/components/LightGlare";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";
+import { playAnimation } from "src/components/Animation";
 import {
   setBackground,
   setBackgroundCheckpoint,
@@ -341,41 +342,17 @@ export const showFlyPattern = async (pattern, { showPoints, showPath }) => {
   Crafty.enterScene("FlyPatternPreview", { pattern, showPoints, showPath });
 };
 
-Crafty.defineScene(
-  "AnimationPreview",
-  ({ animation, animationLimit, activeCheckpoint }) => {
-    setBackground(animation, { maxCheckpoint: animationLimit });
-    if (activeCheckpoint !== 0) {
-      setTimeout(() => setBackgroundCheckpoint(activeCheckpoint));
-    }
-  }
-);
+Crafty.defineScene("AnimationPreview", ({ animation, animationLimit }) => {
+  setHabitat(animation.habitat);
+  playAnimation(animation, { max: animationLimit });
+});
 
-let currentBackground = null;
-let currentBackgroundLimit = 0;
-let currentBackgroundCheckpoint = 0;
 export const showAnimation = async (
   animation,
   animationLimit,
   activeCheckpoint
 ) => {
   await loadAssets();
-  if (inScene("AnimationPreview")) {
-    if (currentBackground !== animation) {
-      setBackground(animation, { maxCheckpoint: animationLimit });
-    } else if (currentBackgroundCheckpoint !== activeCheckpoint) {
-      setBackgroundCheckpoint(activeCheckpoint);
-    } else if (currentBackgroundLimit !== animationLimit) {
-      setBackgroundCheckpointLimit(animationLimit);
-    }
-    currentBackground = animation;
-    currentBackgroundLimit = animationLimit;
-    currentBackgroundCheckpoint = activeCheckpoint;
-    return;
-  }
-  currentBackground = animation;
-  currentBackgroundLimit = animationLimit;
-  currentBackgroundCheckpoint = activeCheckpoint;
   Crafty.enterScene("AnimationPreview", {
     animation,
     animationLimit,

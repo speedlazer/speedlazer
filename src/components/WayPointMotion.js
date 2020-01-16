@@ -58,6 +58,8 @@ Crafty.c(WayPointMotion, {
     this.attr({ xPath: p.x, yPath: p.y });
     if (value >= this.targetPatternValue) {
       this.unbind("EnterFrame", this.updateAcceleration);
+      // apply final path coordinates after route is finished
+      this.attr({ x: this.x + p.x, xPath: 0, y: this.y + p.y, yPath: 0 });
       this.inMotion = false;
       this.trigger("PatternCompleted");
     }

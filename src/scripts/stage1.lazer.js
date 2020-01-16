@@ -28,8 +28,20 @@ const stage1 = async ({
   await spawnShip("PlayerShip", { existing: true });
 
   setBackgroundCheckpointLimit(4);
+
+  await setScrollingSpeed(150, 0);
+  await playAnimation("City.Intro2");
+
   await exec(droneWave(5, "pattern1", 300));
-  await wait(1000);
+  await wait(500);
+  await exec(droneWave(5, "pattern1", 300));
+  await wait(500);
+  await exec(droneWave(5, "pattern1", 300));
+  await wait(500);
+  await exec(droneWave(5, "pattern1", 300));
+  await wait(500);
+  await exec(droneWave(5, "pattern1", 300));
+  await wait(500);
   await exec(droneWave(5, "pattern1", 300));
   await setScenery("City.CoastStart");
   await exec(droneWave(5, "pattern1", 300));
