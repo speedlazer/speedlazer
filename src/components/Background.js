@@ -16,6 +16,13 @@ Crafty.c(Background, {
     this.bind("ViewportScale", this.updateBackdrop);
   },
 
+  remove() {
+    Object.keys(this.elements).forEach(key => {
+      this.elements[key].destroy();
+      delete this.elements[key];
+    });
+  },
+
   updateBackdrop() {
     this.attr({
       w: Crafty.viewport.width / Crafty.viewport._scale,
