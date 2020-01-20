@@ -1,5 +1,5 @@
 {
-  "introShip": {
+  "intro.ship": {
     "attributes": {
       "width": 800,
       "height": 108
@@ -43,7 +43,7 @@
       ],
       [
         "heliStart",
-        { "x": 512, "y": -20, "z": 2, "attachAlign": ["bottom", "center"] }
+        { "x": 612, "y": -20, "z": 9, "attachAlign": ["bottom", "center"] }
       ],
       [
         "hatch2",
@@ -52,7 +52,7 @@
       ["bottom", { "x": -64, "y": 70, "z": 8, "attachAlign": ["top", "left"] }]
     ]
   },
-  "boxes": {
+  "intro.boxes": {
     "attributes": {
       "width": 32,
       "height": 32

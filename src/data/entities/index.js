@@ -5,4 +5,11 @@ import playerShip from "./PlayerShip.entity.json";
 import drone from "./Drone.entity.json";
 import weapons from "./Weapons.entity.json";
 
-export default [playerShip, battleShip, introShip, drone, sun, weapons];
+export default {
+  ...playerShip,
+  ...battleShip,
+  ...introShip,
+  ...drone,
+  ...sun,
+  ...weapons
+};

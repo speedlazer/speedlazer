@@ -131,7 +131,7 @@ Crafty.c(EntityDefinition, {
   },
 
   applyDefinition(entityName) {
-    const definition = entities.find(e => e.name === entityName);
+    const definition = entities[entityName];
     this.addComponent(entityName);
     const structure = definition.structure;
     setEntityStructure(this, structure, 0);

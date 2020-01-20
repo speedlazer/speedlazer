@@ -1,86 +1,93 @@
 {
-  "name": "IntroShip",
-  "structure": {
-    "composition": "introShip",
-    "components": [
-      "ShipSolid",
-      "GravitySolid",
-      ["HideBelow", { "hideBelow": 540, "z": -12 }]
-    ],
-    "attachments": {
-      "bottom": {
-        "particles": [
-          "waterSplashes",
-          { "emitter": { "w": 850, "amount": 300, "warmed": true } }
-        ]
+  "IntroShip": {
+    "structure": {
+      "composition": "intro.ship",
+      "components": [
+        "ShipSolid",
+        "GravitySolid",
+        ["HideBelow", { "hideBelow": 540, "z": -12 }]
+      ],
+      "attachments": {
+        "bottom": {
+          "particles": [
+            "waterSplashes",
+            { "emitter": { "w": 850, "amount": 300, "warmed": true } }
+          ]
+        },
+        "hatch1": {
+          "composition": "shipHatch"
+        },
+        "hatch2": {
+          "composition": "shipHatch",
+          "attachments": {
+            "payload": {
+              "name": "player1",
+              "entity": "PlayerShip"
+            }
+          }
+        },
+        "boxLocation1": {
+          "composition": "intro.boxes"
+        },
+        "boxLocation2": {
+          "composition": "intro.boxes"
+        },
+        "heliStart": {
+          "composition": "battleship.heli"
+        }
+      }
+    },
+    "states": {
+      "t1o": {
+        "attachments": { "hatch1": { "frame": "open" } }
       },
-      "hatch1": {
-        "composition": "shipHatch"
+      "t1r": {
+        "attachments": { "hatch1": { "frame": "risen" } }
       },
-      "hatch2": {
-        "composition": "shipHatch",
+      "t2o": {
+        "attachments": { "hatch2": { "frame": "open" } }
+      },
+      "closed": {
+        "attachments": { "hatch2": { "frame": "closed" } }
+      },
+      "t2r": {
+        "attachments": { "hatch2": { "frame": "risen" } }
+      },
+      "heliStart": {
+        "attachments": { "heliStart": { "animation": "flying" } }
+      },
+      "shipStart": {
         "attachments": {
-          "payload": {
-            "name": "player1",
-            "entity": "PlayerShip"
+          "hatch2": {
+            "frame": "risen",
+            "attachments": {
+              "player1": { "state": "starting" }
+            }
           }
         }
       },
-      "boxLocation1": {
-        "composition": "boxes"
-      },
-      "boxLocation2": {
-        "composition": "boxes"
-      }
-    }
-  },
-  "states": {
-    "t1o": {
-      "attachments": { "hatch1": { "frame": "open" } }
-    },
-    "t1r": {
-      "attachments": { "hatch1": { "frame": "risen" } }
-    },
-    "t2o": {
-      "attachments": { "hatch2": { "frame": "open" } }
-    },
-    "closed": {
-      "attachments": { "hatch2": { "frame": "closed" } }
-    },
-    "t2r": {
-      "attachments": { "hatch2": { "frame": "risen" } }
-    },
-    "shipStart": {
-      "attachments": {
-        "hatch2": {
-          "frame": "risen",
-          "attachments": {
-            "player1": { "state": "starting" }
+      "shipLiftOff": {
+        "attachments": {
+          "hatch2": {
+            "frame": "risen",
+            "attachments": {
+              "player1": { "state": "flying" }
+            }
           }
         }
       }
     },
-    "shipLiftOff": {
-      "attachments": {
-        "hatch2": {
-          "frame": "risen",
-          "attachments": {
-            "player1": { "state": "flying" }
-          }
-        }
+    "habitats": [
+      {
+        "name": "Ocean",
+        "scenery": "City.Ocean",
+        "position": {
+          "rx": -0.3,
+          "ry": 0.8
+        },
+        "scrollSpeed": { "vx": -40, "vy": 0 },
+        "background": ["City.Sunrise", 0]
       }
-    }
-  },
-  "habitats": [
-    {
-      "name": "Ocean",
-      "scenery": "City.Ocean",
-      "position": {
-        "rx": -0.3,
-        "ry": 0.8
-      },
-      "scrollSpeed": { "vx": -40, "vy": 0 },
-      "background": ["City.Sunrise", 0]
-    }
-  ]
+    ]
+  }
 }

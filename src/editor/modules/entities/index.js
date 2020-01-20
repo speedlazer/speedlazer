@@ -10,7 +10,7 @@ const Entities = ({
   stateName = "default",
   habitatName = "default"
 }) => {
-  const activeEntity = entities.find(e => e.name === entity);
+  const activeEntity = entities[entity];
   const activeHabitat =
     activeEntity &&
     activeEntity.habitats.find(({ name }) => name === habitatName);
@@ -19,7 +19,9 @@ const Entities = ({
     <section>
       <Title>Entities</Title>
       <Divider>
-        <Menu items={entities.map(({ name }) => [name, `/entities/${name}`])} />
+        <Menu
+          items={Object.keys(entities).map(name => [name, `/entities/${name}`])}
+        />
         <div>
           {activeEntity && activeEntity.states && (
             <Menu

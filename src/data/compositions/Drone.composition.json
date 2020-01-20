@@ -33,7 +33,7 @@
         {
           "x": 22,
           "y": 18,
-          "z": 1,
+          "z": -5,
           "attachAlign": ["center", "center"],
           "attachTo": "main"
         }

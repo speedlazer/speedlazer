@@ -1,16 +1,17 @@
 {
-  "name": "Sun",
-  "structure": {
-    "composition": "background.sun",
-    "components": [["LightGlare", { "glareAlphaLink": "glare" }]]
-  },
-  "states": {
-    "full": {
-      "frame": "full"
+  "Sun": {
+    "structure": {
+      "composition": "background.sun",
+      "components": [["LightGlare", { "glareAlphaLink": "glare" }]]
     },
-    "large": {
-      "frame": "large"
-    }
-  },
-  "habitats": []
+    "states": {
+      "full": {
+        "frame": "full"
+      },
+      "large": {
+        "frame": "large"
+      }
+    },
+    "habitats": []
+  }
 }

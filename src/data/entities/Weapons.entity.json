@@ -1,19 +1,20 @@
 {
-  "name": "HeliRocket",
-  "structure": {
-    "composition": "weapons.rocket",
-    "attachments": {
-      "trail": {
-        "particles": "missile.trail"
+  "HeliRocket": {
+    "structure": {
+      "composition": "weapons.rocket",
+      "attachments": {
+        "trail": {
+          "particles": "missile.trail"
+        }
       }
-    }
-  },
-  "habitats": [
-    {
-      "name": "Ocean",
-      "scenery": "City.Ocean",
-      "scrollSpeed": { "vx": -100, "vy": 0 },
-      "background": ["City.Sunrise", 2]
-    }
-  ]
+    },
+    "habitats": [
+      {
+        "name": "Ocean",
+        "scenery": "City.Ocean",
+        "scrollSpeed": { "vx": -100, "vy": 0 },
+        "background": ["City.Sunrise", 2]
+      }
+    ]
+  }
 }

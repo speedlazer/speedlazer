@@ -1,42 +1,43 @@
 {
-  "name": "WarDrone",
-  "structure": {
-    "composition": "drone",
-    "components": ["DamageSupport", "GravitySupport", "SolidCollision"],
-    "attachments": {
-      "trail": {
-        "particles": "drone.trail"
-      }
-    }
-  },
-  "states": {
-    "damaged": {
-      "frame": "damaged",
+  "WarDrone": {
+    "structure": {
+      "composition": "drone",
+      "components": ["DamageSupport", "GravitySupport", "SolidCollision"],
       "attachments": {
-        "trail": null
-      }
-    },
-    "dead": {
-      "frame": "hidden",
-      "audio": "explosion",
-      "attachments": {
-        "trail": null,
-        "explosion": {
-          "composition": "explosion",
-          "animation": "default"
-        },
-        "smoke": {
-          "particles": "drone.smoke"
+        "trail": {
+          "particles": "drone.trail"
         }
       }
-    }
-  },
-  "habitats": [
-    {
-      "name": "Ocean",
-      "scenery": "City.Ocean",
-      "scrollSpeed": { "vx": -100, "vy": 0 },
-      "background": ["City.Sunrise", 2]
-    }
-  ]
+    },
+    "states": {
+      "damaged": {
+        "frame": "damaged",
+        "attachments": {
+          "trail": null
+        }
+      },
+      "dead": {
+        "frame": "hidden",
+        "audio": "explosion",
+        "attachments": {
+          "trail": null,
+          "explosion": {
+            "composition": "explosion",
+            "animation": "default"
+          },
+          "smoke": {
+            "particles": "drone.smoke"
+          }
+        }
+      }
+    },
+    "habitats": [
+      {
+        "name": "Ocean",
+        "scenery": "City.Ocean",
+        "scrollSpeed": { "vx": -100, "vy": 0 },
+        "background": ["City.Sunrise", 2]
+      }
+    ]
+  }
 }
