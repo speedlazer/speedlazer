@@ -10,8 +10,8 @@ const stage1 = async ({
   setBackground,
   setBackgroundCheckpointLimit,
   playAnimation,
-  exec,
-  wait
+  exec
+  //wait
 }) => {
   const text = bigText("Loading...");
   text.fadeIn(2000);
@@ -29,19 +29,14 @@ const stage1 = async ({
 
   setBackgroundCheckpointLimit(4);
 
-  await setScrollingSpeed(150, 0);
+  await setScrollingSpeed(250, 0);
   await playAnimation("City.Intro2");
 
   await exec(droneWave(5, "pattern1", 300));
-  await wait(500);
+  await exec(droneWave(8, "pattern2", 300));
   await exec(droneWave(5, "pattern1", 300));
-  await wait(500);
+  await exec(droneWave(5, "pattern2", 300));
   await exec(droneWave(5, "pattern1", 300));
-  await wait(500);
-  await exec(droneWave(5, "pattern1", 300));
-  await wait(500);
-  await exec(droneWave(5, "pattern1", 300));
-  await wait(500);
   await exec(droneWave(5, "pattern1", 300));
   await setScenery("City.CoastStart");
   await exec(droneWave(5, "pattern1", 300));

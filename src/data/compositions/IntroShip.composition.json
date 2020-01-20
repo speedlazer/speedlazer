@@ -42,10 +42,14 @@
         { "x": 220, "y": -20, "z": 2, "attachAlign": ["top", "left"] }
       ],
       [
+        "heliStart",
+        { "x": 512, "y": -20, "z": 2, "attachAlign": ["bottom", "center"] }
+      ],
+      [
         "hatch2",
         { "x": 412, "y": -20, "z": 2, "attachAlign": ["top", "left"] }
       ],
-      ["bottom", { "x": -64, "y": 90, "z": 8, "attachAlign": ["top", "left"] }]
+      ["bottom", { "x": -64, "y": 70, "z": 8, "attachAlign": ["top", "left"] }]
     ]
   },
   "boxes": {

@@ -11,8 +11,7 @@ import "src/components/SpriteShader";
 import { playAnimation } from "src/components/Animation";
 import {
   setBackground,
-  setBackgroundCheckpoint,
-  setBackgroundCheckpointLimit
+  setBackgroundCheckpoint
 } from "src/components/Background";
 import { createEntity } from "src/components/EntityDefinition";
 import { setScenery, setScrollVelocity } from "src/components/Scenery";
@@ -40,6 +39,17 @@ export const mount = domElem => {
 export const unmount = () => {
   Crafty.stop();
 };
+
+const makePosition = position =>
+  Object.entries(position).reduce((acc, [key, value]) => {
+    if (key === "rx") {
+      return { ...acc, x: Crafty.viewport.width * value };
+    }
+    if (key === "ry") {
+      return { ...acc, y: Crafty.viewport.height * value };
+    }
+    return { ...acc, [key]: value };
+  }, {});
 
 Crafty.bind("UpdateFrame", fd => Crafty.trigger("GameLoop", fd));
 
@@ -173,7 +183,13 @@ Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
   const entity = createEntity(entityName);
   setHabitat(habitat);
 
-  scaleScreenForEntity(entity);
+  if (habitat && habitat.position) {
+    const position = makePosition(habitat.position);
+    entity.attr(position);
+    Crafty.viewport.scale(1.0);
+  } else {
+    scaleScreenForEntity(entity);
+  }
 });
 
 Crafty.defineScene(
@@ -267,6 +283,13 @@ export const showEntity = async (entityName, options = {}) => {
 
     if (strHabitat !== currentHabitat) {
       currentHabitat = strHabitat;
+      if (options.habitat && options.habitat.position) {
+        const position = makePosition(options.habitat.position);
+        existingEntity.attr(position);
+        Crafty.viewport.scale(1.0);
+      } else {
+        scaleScreenForEntity(existingEntity);
+      }
       setHabitat(options.habitat);
     }
     return;
