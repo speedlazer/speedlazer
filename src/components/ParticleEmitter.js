@@ -28,7 +28,7 @@ const spawnParticle = (entity, settings) => {
     aVelocity: [speed, (angle * Math.PI) / 180],
     aOrientation: [x, y, 0],
     aSize: [startSize, endSize],
-    aLife: [start, life],
+    aLife: [start, life, 0],
     expire: start + life,
     aLayer: [entity._globalZ, entity._alpha],
     aColor1: startColor,
@@ -49,7 +49,7 @@ Crafty.defaultShader(
       { name: "aOrientation", width: 3 },
       { name: "aLayer", width: 2 },
       { name: "aSize", width: 2 },
-      { name: "aLife", width: 2 },
+      { name: "aLife", width: 3 },
       { name: "aColor1", width: 4 },
       { name: "aColor2", width: 4 }
     ],
@@ -240,9 +240,9 @@ Crafty.c(ParticleEmitter, {
       .fill(0)
       .map(() =>
         spawnParticle(this, {
-          ...this.particleSettings,
-          duration: 0,
-          durationRandom: 0
+          ...this.particleSettings
+          //duration: 0,
+          //durationRandom: 0
         })
       );
 
@@ -275,44 +275,46 @@ Crafty.c(ParticleEmitter, {
 
   _renderParticles({ dt, gameTime }) {
     startRender = startRender || gameTime;
-    this.timeFrame = gameTime - startRender;
+    this.timeFrame = (gameTime - startRender) / 2;
+    //this.unbind("EnterFrame", this._renderParticles);
 
-    if (this.startTime !== -1) {
-      this.startTime += dt;
-      this.shouldHaveEmitted =
-        Math.min((this.startTime / 1000.0) * this.emissionRate, 1) *
-        this.particleSettings.amount;
-    }
+    //if (this.startTime !== -1) {
+    //this.startTime += dt;
+    //this.shouldHaveEmitted =
+    //Math.min((this.startTime / 1000.0) * this.emissionRate, 1) *
+    //this.particleSettings.amount;
+    //}
 
-    if (
-      this.timeFrame >= this.nextExpireCheck &&
-      this.startTime < this.particleSettings.emitterDuration
-    ) {
-      this.nextExpireCheck = this.timeFrame + this.nextExpireRatio;
-      const warmingUp = this.startTime === -1;
+    //if (
+    //this.timeFrame >= this.nextExpireCheck &&
+    //this.startTime < this.particleSettings.emitterDuration
+    //) {
+    //this.nextExpireCheck = this.timeFrame + this.nextExpireRatio;
 
-      for (let i = 0; i < this.shouldHaveEmitted; i++) {
-        if (this._particles[i].expire < this.timeFrame + 20) {
-          const p = spawnParticle(
-            this,
-            warmingUp
-              ? { ...this.particleSettings, expired: Math.random() * 0.9 }
-              : this.particleSettings
-          );
-          if (p.expire > this.lastExpired) {
-            this.lastExpired = p.expire;
-          }
-          this._particles[i] = p;
-          this._writeParticle(i, p);
-        }
-      }
-      if (warmingUp) {
-        this.startTime = 0;
-      }
-    }
-    if (this.autoDestruct && this.timeFrame > this.lastExpired) {
-      this.destroy();
-    }
+    ////const warmingUp = this.startTime === -1;
+
+    ////for (let i = 0; i < this.shouldHaveEmitted; i++) {
+    ////if (this._particles[i].expire < this.timeFrame + 20) {
+    ////const p = spawnParticle(
+    ////this,
+    ////warmingUp
+    ////? { ...this.particleSettings, expired: Math.random() * 0.9 }
+    ////: this.particleSettings
+    ////);
+    ////if (p.expire > this.lastExpired) {
+    ////this.lastExpired = p.expire;
+    ////}
+    ////this._particles[i] = p;
+    ////this._writeParticle(i, p);
+    ////}
+    ////}
+    ////if (warmingUp) {
+    ////this.startTime = 0;
+    ////}
+    //}
+    //if (this.autoDestruct && this.timeFrame > this.lastExpired) {
+    //this.destroy();
+    //}
   }
 });
 

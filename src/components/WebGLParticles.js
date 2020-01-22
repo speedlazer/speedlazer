@@ -1,10 +1,11 @@
 const WebGLParticles = "WebGLParticles";
 
 class ParticleBuffer {
-  constructor(context, stride, attributes) {
+  constructor(context, stride, attributes, index) {
     this.context = context;
     this.attributes = attributes;
     this.stride = stride;
+    this.bufferIndex = index;
 
     this.array_size = 16;
     this.max_size = 4096;
@@ -124,7 +125,8 @@ class RenderProgramWrapper {
       const newBuffer = new ParticleBuffer(
         this.context,
         this.stride,
-        this.attributes
+        this.attributes,
+        this.buffers.length
       );
       this.buffers.push(newBuffer);
       e.particleBuffer = newBuffer;
