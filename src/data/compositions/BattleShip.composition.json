@@ -167,6 +167,12 @@
       },
       "fly2": {
         "heli": { "sprite": "helicopter2" }
+      },
+      "tilted": {
+        "heli": { "rotation": -10 }
+      },
+      "leveled": {
+        "heli": { "rotation": 0 }
       }
     },
     "animations": {

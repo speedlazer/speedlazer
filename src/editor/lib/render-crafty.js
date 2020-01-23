@@ -15,7 +15,6 @@ import {
 } from "src/components/Background";
 import { createEntity } from "src/components/EntityDefinition";
 import { setScenery, setScrollVelocity } from "src/components/Scenery";
-import "src/components/WayPointMotion";
 import { getBezierPath } from "src/lib/BezierPath";
 import { loadAudio } from "src/lib/audio";
 
@@ -455,7 +454,7 @@ Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
   //z: 50
   //})
   //.color("#FF0000");
-  const emitterSource = Crafty.e(`2D, Emitter`).attr({
+  const emitterSource = Crafty.e(`2D, Emitter, ${WayPointMotion}`).attr({
     x: (Crafty.viewport.width - emitter.emitter.w) / 2,
     y: (Crafty.viewport.height - emitter.emitter.h) / 2,
     z: 20

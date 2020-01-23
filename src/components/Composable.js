@@ -61,12 +61,13 @@ const generateDefaultFrame = definition => {
   (definition.sprites || [])
     .filter(([, settings]) => settings.key)
     .map(
-      ([, settings]) =>
+      ([sprite, settings]) =>
         (result[settings.key] = {
           z: 0,
           rotation: 0,
           alpha: 1,
           scale: 1,
+          sprite,
           ...settings,
           x: 0,
           y: 0
@@ -154,15 +155,18 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
             ...sourceFrameData[keyName]
           });
 
-        const newSpriteName = settings.sprite || originalSettings[0];
+        const newSpriteName = settings.sprite;
 
         return acc.concat(
-          tweenFn(sprite, tweenSettings, sourceTweenSettings),
-          () => {
-            if (sprite._spriteName === newSpriteName) return;
-            sprite.sprite(newSpriteName);
-            sprite._spriteName = newSpriteName;
-          }
+          [
+            tweenFn(sprite, tweenSettings, sourceTweenSettings),
+            newSpriteName &&
+              (() => {
+                if (sprite._spriteName === newSpriteName) return;
+                sprite.sprite(newSpriteName);
+                sprite._spriteName = newSpriteName;
+              })
+          ].filter(Boolean)
         );
       }
 

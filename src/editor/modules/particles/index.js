@@ -8,14 +8,19 @@ import particles from "src/data/particles";
 class Particles extends Component {
   state = {
     emission: true,
-    warmed: false
+    warmed: false,
+    move: false
   };
 
   toggleEmission = (warmed = false) => {
     this.setState(state => ({ ...state, emission: !state.emission, warmed }));
   };
 
-  render({ particles: p }, { emission, warmed }) {
+  toggleMotion = () => {
+    this.setState(state => ({ ...state, move: !state.move }));
+  };
+
+  render({ particles: p }, { emission, warmed, move }) {
     const activeParticles = particles[p];
 
     return (
@@ -32,7 +37,7 @@ class Particles extends Component {
             <div>
               <div>
                 <button onClick={() => this.toggleEmission()}>
-                  {emission ? "Stop" : "Start"}
+                  {emission ? "Stop Emitter" : "Start Emitter"}
                 </button>
                 {!emission && (
                   <button onClick={() => this.toggleEmission(true)}>
@@ -46,11 +51,15 @@ class Particles extends Component {
                 >
                   Destroy emitter
                 </button>
+                <button onClick={() => this.toggleMotion()}>
+                  {move ? "Stop moving" : "Move emitter"}
+                </button>
               </div>
               <ParticleEmitterPreview
                 emitter={activeParticles}
                 active={emission}
                 warmed={warmed}
+                move={move}
               />
             </div>
           )}

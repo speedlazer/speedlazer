@@ -33,7 +33,7 @@
           "composition": "intro.boxes"
         },
         "heliStart": {
-          "composition": "battleship.heli"
+          "entity": "IntroHeli"
         }
       }
     },
@@ -54,7 +54,7 @@
         "attachments": { "hatch2": { "frame": "risen" } }
       },
       "heliStart": {
-        "attachments": { "heliStart": { "animation": "flying" } }
+        "attachments": { "heliStart": { "state": "liftOff" } }
       },
       "shipStart": {
         "attachments": {
@@ -89,5 +89,22 @@
         "background": ["City.Sunrise", 0]
       }
     ]
+  },
+  "IntroHeli": {
+    "structure": {
+      "composition": "battleship.heli"
+    },
+    "states": {
+      "start": {
+        "frame": "default",
+        "animation": false
+      },
+      "liftOff": {
+        "animation": "flying"
+      },
+      "flying": {
+        "frame": "tilted"
+      }
+    }
   }
 }

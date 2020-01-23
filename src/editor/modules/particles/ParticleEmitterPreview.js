@@ -37,6 +37,32 @@ export class ParticleEmitterPreview extends Component {
         warmed: this.props.warmed
       });
     }
+    if (
+      propChanged(prevProps, this.props, ["move"]) &&
+      this.state.craftyMounted
+    ) {
+      if (this.props.move) {
+        Crafty("Emitter").flyPattern(
+          [
+            { x: 0.1, y: 0.5 },
+            { x: 0.9, y: 0.2 },
+            { x: 0.7, y: 0.8 },
+            { x: 0.5, y: 0.2 },
+            { x: 0.3, y: 0.8 },
+            { x: 0.1, y: 0.5 },
+            { x: 0.3, y: 0.2 },
+            { x: 0.9, y: 0.5 },
+            { x: 0.4, y: 0.9 },
+            { x: 0.1, y: 0.5 }
+          ],
+          {
+            duration: 15000
+          }
+        );
+      } else {
+        Crafty("Emitter").stopFlyPattern();
+      }
+    }
   }
 
   render() {

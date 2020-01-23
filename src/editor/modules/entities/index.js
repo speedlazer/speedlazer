@@ -13,7 +13,7 @@ const Entities = ({
   const activeEntity = entities[entity];
   const activeHabitat =
     activeEntity &&
-    activeEntity.habitats.find(({ name }) => name === habitatName);
+    (activeEntity.habitats || []).find(({ name }) => name === habitatName);
 
   return (
     <section>
