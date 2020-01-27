@@ -182,7 +182,8 @@ Crafty.c(ParticleEmitter, {
         w = 10,
         h = 10,
         duration: emitterDuration = Infinity,
-        warmed = false
+        warmed = false,
+        fidelity = "low"
       },
       gravity = [0, 0],
       particle: {
@@ -224,7 +225,8 @@ Crafty.c(ParticleEmitter, {
       startColorRandom,
       endColor,
       endColorRandom,
-      emitterDuration
+      emitterDuration,
+      emitterFidelity: fidelity
     };
     if (attachTo) {
       this.attachToEntity(attachTo);
@@ -264,7 +266,7 @@ Crafty.c(ParticleEmitter, {
       (a, p) => (p.expire > a ? p.expire : a),
       0
     );
-    this.nextExpireRatio = duration / amount;
+    this.nextExpireRatio = fidelity === "low" ? 140 : duration / amount;
     this.nextExpireCheck = duration / amount;
 
     this.trigger("Invalidate");

@@ -3,7 +3,8 @@ export default {
     emitter: {
       w: 1300,
       h: 10,
-      amount: 500
+      amount: 500,
+      fidelity: "low"
     },
     gravity: [-80, 5],
     particle: {
@@ -22,7 +23,8 @@ export default {
     emitter: {
       w: 2,
       h: 2,
-      amount: 200
+      amount: 200,
+      fidelity: "high"
     },
     gravity: [-150, 0],
     particle: {
@@ -45,7 +47,8 @@ export default {
     emitter: {
       w: 2,
       h: 2,
-      amount: 200
+      amount: 200,
+      fidelity: "high"
     },
     gravity: [150, 0],
     particle: {
@@ -68,7 +71,8 @@ export default {
     emitter: {
       w: 2,
       h: 2,
-      amount: 200
+      amount: 200,
+      fidelity: "high"
     },
     gravity: [0, 0],
     particle: {
@@ -91,7 +95,8 @@ export default {
     emitter: {
       w: 2,
       h: 2,
-      amount: 35
+      amount: 35,
+      fidelity: "high"
     },
     gravity: [0, 0],
     particle: {
