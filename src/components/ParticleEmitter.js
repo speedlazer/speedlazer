@@ -89,6 +89,13 @@ Crafty.c(ParticleEmitter, {
       this._setupParticles(this._drawLayer);
     }
     this.initialDraw = true;
+    // Fake large collission shape, to allow rendering when emitter is offscreen
+    this._mbr = {
+      _x: 0,
+      _y: 0,
+      _w: Crafty.viewport.width,
+      _h: Crafty.viewport.height
+    };
     this.trigger("Invalidate");
   },
 
@@ -147,6 +154,13 @@ Crafty.c(ParticleEmitter, {
     entity.bind("Move", () => {
       this.x = entity.x;
       this.y = entity.y;
+      // Keep mbr static
+      this._mbr = {
+        _x: 0,
+        _y: 0,
+        _w: Crafty.viewport.width,
+        _h: Crafty.viewport.height
+      };
     });
     entity.bind("Freeze", () => {
       this.stopEmission();
