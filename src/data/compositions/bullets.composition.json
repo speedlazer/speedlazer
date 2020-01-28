@@ -8,6 +8,15 @@
     "hitbox": [2, 3, 14, 3, 14, 12, 2, 12],
     "sprites": [["sphere1", { "z": -2, "crop": [17, 6, 0, 0], "flipX": true }]]
   },
+  "weapons.lightBullet": {
+    "attributes": {
+      "width": 32,
+      "height": 32,
+      "ro": [4, 14]
+    },
+    "hitbox": [2, 12, 28, 12, 28, 18, 2, 18],
+    "sprites": [["lightBullet", { "z": -2 }]]
+  },
   "player.bullet": {
     "attributes": {
       "width": 52,

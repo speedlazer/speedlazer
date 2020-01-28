@@ -349,7 +349,7 @@ export default {
       bullet: {
         spawnPosition: [0, 0.5],
         velocity: [1050, 1200],
-        composition: "player.bullet",
+        composition: "weapons.lightBullet",
         damage: {
           laser: [1, 3]
         },
