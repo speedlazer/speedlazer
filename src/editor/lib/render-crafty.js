@@ -150,7 +150,10 @@ const applyDisplayOptions = (entity, options) => {
   Object.values(entity.currentAttachHooks).forEach(hook => {
     options.showAttachPoints
       ? hook.addComponent("SolidHitBox")
-      : hook.removeComponent("SolidHitBox");
+      : hook
+          .removeComponent("SolidHitBox")
+          .removeComponent("DebugPolygon")
+          .removeComponent("DebugCanvas");
   });
 
   if (options.showSize) {
