@@ -33,9 +33,33 @@ export const mount = domElem => {
   Crafty.init(SCREEN_WIDTH, SCREEN_HEIGHT, domElem);
   Crafty.background("#000000");
   Crafty.timer.FPS(1000 / 10); // 10ms per frame
+
+  let waitTime = 0;
+  let frameTime = 0;
+  let renderTime = 0;
+
+  Crafty.bind("MeasureWaitTime", wt => (waitTime = wt));
+  Crafty.bind("MeasureFrameTime", ft => (frameTime = ft));
+  Crafty.bind("MeasureRenderTime", rt => (renderTime = rt));
+
+  Crafty.bind("EnterScene", () => {
+    Crafty.e("2D, DOM, Text")
+      .attr({ x: 20, y: 20, w: 700 })
+      .text(
+        () => `Wait: ${waitTime} - Frame: ${frameTime} - Render: ${renderTime}`
+      )
+      .dynamicTextGeneration(true)
+      .textColor("white");
+  });
 };
 
 export const unmount = () => {
+  Crafty("2D").destroy();
+  Crafty.unbind("MeasureWaitTime");
+  Crafty.unbind("MeasureFrameTime");
+  Crafty.unbind("MeasureRenderTime");
+
+  Crafty.unbind("EnterScene");
   Crafty.stop();
 };
 
@@ -49,8 +73,6 @@ const makePosition = position =>
     }
     return { ...acc, [key]: value };
   }, {});
-
-Crafty.bind("UpdateFrame", fd => Crafty.trigger("GameLoop", fd));
 
 const updateActualSize = (actualSize, entity) => {
   actualSize.minX = Math.min(actualSize.minX, entity.x);
@@ -142,6 +164,7 @@ const applyDisplayOptions = (entity, options) => {
 };
 
 Crafty.defineScene("ComposablePreview", ({ composition, options }) => {
+  Crafty.trigger("EnterScene");
   const composable = createComposable(composition);
   applyDisplayOptions(composable, options);
   if (options.frame) {
@@ -179,6 +202,7 @@ const setHabitat = habitat => {
 };
 
 Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
+  Crafty.trigger("EnterScene");
   const entity = createEntity(entityName);
   setHabitat(habitat);
 
@@ -194,6 +218,7 @@ Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
 Crafty.defineScene(
   "SceneryPreview",
   async ({ scenery, background, checkpoint }) => {
+    Crafty.trigger("EnterScene");
     if (background) {
       setBackground(background);
       setBackgroundCheckpoint(checkpoint);
@@ -323,6 +348,7 @@ const showBezier = pattern => {
 };
 
 Crafty.defineScene("FlyPatternPreview", ({ pattern, showPath, showPoints }) => {
+  Crafty.trigger("EnterScene");
   const vpw = Crafty.viewport.width;
   const vph = Crafty.viewport.height;
   showPoints &&
@@ -365,6 +391,7 @@ export const showFlyPattern = async (pattern, { showPoints, showPath }) => {
 };
 
 Crafty.defineScene("AnimationPreview", ({ animation, animationLimit }) => {
+  Crafty.trigger("EnterScene");
   setHabitat(animation.habitat);
   playAnimation(animation, { max: animationLimit });
 });
@@ -385,6 +412,7 @@ export const showAnimation = async (
 Crafty.defineScene(
   "BulletPatternPreview",
   ({ pattern, difficulty, collisionType, swapped }) => {
+    Crafty.trigger("EnterScene");
     const red = Crafty.e(`2D, WebGL, Color, Red, ${WayPointMotion}`)
       .attr({
         x: 800,
@@ -444,6 +472,7 @@ export const showBulletPattern = async (
 };
 
 Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
+  Crafty.trigger("EnterScene");
   //Crafty.background("#FFFFFF");
   //Crafty.e("2D, We00bGL, Color")
   //.attr({
