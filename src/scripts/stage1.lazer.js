@@ -32,14 +32,14 @@ const stage1 = async ({
   await setScrollingSpeed(250, 0);
   await playAnimation("City.Intro2");
 
-  await exec(droneWave(5, "pattern1", 300));
-  await exec(droneWave(8, "pattern2", 300));
-  await exec(droneWave(5, "pattern1", 300));
-  await exec(droneWave(5, "pattern2", 300));
-  await exec(droneWave(5, "pattern1", 300));
-  await exec(droneWave(5, "pattern1", 300));
+  await exec(droneWave(5, "pattern1", 500));
+  await exec(droneWave(8, "pattern2", 500));
+  await exec(droneWave(5, "pattern1", 500));
+  await exec(droneWave(5, "pattern2", 500));
+  await exec(droneWave(5, "pattern1", 500));
+  await exec(droneWave(5, "pattern1", 500));
   await setScenery("City.CoastStart");
-  await exec(droneWave(5, "pattern1", 300));
+  await exec(droneWave(5, "pattern1", 500));
 
   await exec(battleship);
   console.log("Done!");

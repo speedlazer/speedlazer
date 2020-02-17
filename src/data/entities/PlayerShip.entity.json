@@ -2,6 +2,7 @@
   "PlayerShip": {
     "structure": {
       "composition": "player.ship",
+      "components": ["ViewportLocked"],
       "animation": null,
       "attachments": {
         "mainWeapon": {

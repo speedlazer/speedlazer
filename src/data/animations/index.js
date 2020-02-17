@@ -124,6 +124,11 @@ export default {
               path: {
                 data: [{ x: -0.3, y: 0.8 }, { x: -0.2, y: 0.8 }]
               }
+            },
+            {
+              key: "ship",
+              start: 0.3,
+              targetState: "heliStart"
             }
           ]
         }

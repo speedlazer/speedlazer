@@ -5,13 +5,9 @@ import ShipCollision from "src/components/player/ShipCollision";
 import { createEntity } from "src/components/EntityDefinition";
 
 Crafty.c("ShipSpawnable", {
-  init() {
-    this.requires(Listener);
-    this.bind("Activated", this.spawnShip);
-  },
-
-  remove() {
-    this.unbind("Activated", this.spawnShip);
+  required: Listener,
+  events: {
+    Activated: "spawnShip"
   },
 
   spawnPosition(spawnPosition) {
