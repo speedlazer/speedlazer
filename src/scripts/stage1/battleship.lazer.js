@@ -1,6 +1,6 @@
-import { getOne, pickOne } from "src/lib/utils";
-import { EASE_IN_OUT } from "src/constants/easing";
-import ShipControls from "src/components/player/ShipControls";
+//import { getOne, pickOne } from "src/lib/utils";
+//import { EASE_IN_OUT } from "src/constants/easing";
+//import ShipControls from "src/components/player/ShipControls";
 
 /**
  * NOTES:
@@ -51,35 +51,35 @@ import ShipControls from "src/components/player/ShipControls";
  *
  */
 
-const popupRandomCannon = async ({ call, until, displayFrame }, { ship }) => {
-  const hatch = pickOne([ship.hatch1, ship.hatch2, ship.hatch3]);
-  await displayFrame(hatch, "open", 500, EASE_IN_OUT);
-  await displayFrame(hatch, "risen", 500, EASE_IN_OUT);
+//const popupRandomCannon = async ({ call, until, displayFrame }, { ship }) => {
+//const hatch = pickOne([ship.hatch1, ship.hatch2, ship.hatch3]);
+//await displayFrame(hatch, "open", 500, EASE_IN_OUT);
+//await displayFrame(hatch, "risen", 500, EASE_IN_OUT);
 
-  const target = getOne(ShipControls);
-  await call(hatch.turret.aim, { target: target });
-  //await action(hatch, "fire");
-  await until(
-    async ({ wait }) => {
-      await wait(5000);
-    },
-    async ({ call, wait }) => {
-      await call(hatch.turret.aim, { target: target }); //, speed: 100 });
-      await wait(200);
-    }
-  );
-  await call(hatch.turret.resetAim);
-  await displayFrame(hatch, "open", 500, EASE_IN_OUT);
-  await displayFrame(hatch, "default", 500, EASE_IN_OUT);
-};
+//const target = getOne(ShipControls);
+//await call(hatch.turret.aim, { target: target });
+////await action(hatch, "fire");
+//await until(
+//async ({ wait }) => {
+//await wait(5000);
+//},
+//async ({ call, wait }) => {
+//await call(hatch.turret.aim, { target: target }); //, speed: 100 });
+//await wait(200);
+//}
+//);
+//await call(hatch.turret.resetAim);
+//await displayFrame(hatch, "open", 500, EASE_IN_OUT);
+//await displayFrame(hatch, "default", 500, EASE_IN_OUT);
+//};
 
 const battleship = async ({
   spawn,
   wait,
-  until,
-  call,
-  displayFrame,
-  waitWhile
+  //until,
+  call
+  //displayFrame,
+  //waitWhile
 }) => {
   // Fases:
   // - Mine cannon ✓
