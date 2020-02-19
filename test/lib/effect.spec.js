@@ -2,11 +2,10 @@ import { expect } from "chai";
 
 const addEffect = (
   target,
-  { amount = 0, velocity = 0, accelleration = 0, affects, duration = 1 }
+  { velocity = 0, accelleration = 0, affects, duration = 1 }
 ) => ({
   ...target,
   effects: (target.effects || []).concat({
-    amount,
     affects,
     duration,
     velocity,
@@ -17,12 +16,15 @@ const addEffect = (
 const processEffects = (target, duration) => {
   const { mutations, effects } = target.effects.reduce(
     (acc, effect) => {
-      const calcDuration = Math.min(duration, effect.duration);
+      const calcDuration = Math.min(duration, effect.duration) / 1000;
 
-      const value = (effect.amount / 1000) * calcDuration;
+      const delta =
+        effect.velocity * calcDuration +
+        0.5 * effect.accelleration * calcDuration * calcDuration;
+
       const mutations =
-        value !== 0
-          ? acc.mutations.concat([[effect.affects, e => e + value]])
+        delta !== 0
+          ? acc.mutations.concat([[effect.affects, e => e + delta]])
           : acc.mutations;
 
       return acc.mutations !== mutations ? { ...acc, mutations } : acc;
@@ -32,7 +34,12 @@ const processEffects = (target, duration) => {
       effects: target.effects.reduce(
         (acc, effect) =>
           effect.duration > duration
-            ? acc.concat({ ...effect, duration: effect.duration - duration })
+            ? acc.concat({
+                ...effect,
+                duration: effect.duration - duration,
+                velocity:
+                  effect.velocity + (effect.accelleration * duration) / 1000
+              })
             : acc,
         []
       )
@@ -48,13 +55,13 @@ const processEffects = (target, duration) => {
   );
 };
 
-describe("Damage model", () => {
+describe("Effect model", () => {
   it("supports direct impact damage", () => {
     const target = {
       life: 100
     };
     const damage = {
-      amount: -40 * 1000, // DPS, active for 1 ms
+      velocity: -40e3, // DPS, active for 1 ms
       affects: "life"
     };
 
@@ -68,9 +75,9 @@ describe("Damage model", () => {
       life: 100
     };
     const damage = {
-      amount: -40,
+      velocity: -40,
       affects: "life",
-      duration: 600,
+      duration: 1000,
       name: "Poison"
     };
 
@@ -80,8 +87,42 @@ describe("Damage model", () => {
     const resultLater = processEffects(result, 500);
     expect(resultLater.life).to.eq(80);
 
-    const wayLater = processEffects(resultLater, 500);
-    expect(wayLater.life).to.eq(76);
+    const endResult = processEffects(resultLater, 500);
+    expect(endResult.life).to.eq(60); // 100 - 40
+
+    const endResult2 = processEffects(resultLater, 1500);
+    expect(endResult2.life).to.eq(60);
+  });
+
+  it("supports accelleration over time", () => {
+    const target = {
+      life: 100
+    };
+    const damage = {
+      velocity: -40,
+      accelleration: 10,
+      affects: "life",
+      duration: 1000,
+      name: "Poison"
+    };
+
+    const result = addEffect(target, damage);
+    expect(result.life).to.eq(100);
+
+    const resultLater = processEffects(result, 500);
+    expect(resultLater.life).to.eq(81.25);
+
+    const endResult = processEffects(resultLater, 500);
+    expect(endResult.life).to.eq(65);
+
+    const endResult2 = processEffects(resultLater, 1500);
+    expect(endResult2.life).to.eq(65);
+
+    const endResult3 = processEffects(result, 1500);
+    expect(endResult3.life).to.eq(65);
+
+    const endResult4 = processEffects(processEffects(result, 250), 250);
+    expect(endResult4.life).to.eq(81.25);
   });
 
   it("supports area of effect");
