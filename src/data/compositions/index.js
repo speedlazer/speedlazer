@@ -11,6 +11,7 @@ import city from "./City.composition.json";
 import shipHatch from "./ShipHatch.composition.json";
 import portraits from "./portraits.composition.json";
 import playerShip from "./PlayerShip.composition.json";
+import mine from "./Mine.composition.json";
 
 const compositions = {
   ...backgrounds,
@@ -25,7 +26,8 @@ const compositions = {
   ...shipHatch,
   ...portraits,
   ...bullets,
-  ...playerShip
+  ...playerShip,
+  ...mine
 };
 
 export default compositions;

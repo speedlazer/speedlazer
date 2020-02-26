@@ -1,0 +1,83 @@
+{
+  "mine": {
+    "attributes": {
+      "width": 32,
+      "height": 32
+    },
+    "sprites": [
+      [
+        "standardMine",
+        {
+          "ro": [16, 16],
+          "key": "main"
+        }
+      ]
+    ],
+    "frames": {
+      "rotated": {
+        "main": { "rotation": 359 }
+      },
+      "opening": {
+        "main": { "sprite": "mineOpening1" }
+      },
+      "open": {
+        "main": { "sprite": "mineOpening2" }
+      },
+      "blink": {
+        "main": { "sprite": "mineBlink" }
+      }
+    },
+    "animations": {
+      "default": {
+        "repeat": true,
+        "easing": "linear",
+        "duration": 8000,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 1.0,
+            "startFrame": "default",
+            "endFrame": "rotated"
+          }
+        ]
+      },
+      "opening": {
+        "easing": "linear",
+        "duration": 200,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 0.5,
+            "startFrame": "default",
+            "endFrame": "opening"
+          },
+          {
+            "start": 0.5,
+            "end": 1.0,
+            "startFrame": "opening",
+            "endFrame": "open"
+          }
+        ]
+      },
+      "blinking": {
+        "repeat": true,
+        "easing": "linear",
+        "duration": 400,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 0.5,
+            "startFrame": "open",
+            "endFrame": "blink"
+          },
+          {
+            "start": 0.5,
+            "end": 1.0,
+            "startFrame": "blink",
+            "endFrame": "open"
+          }
+        ]
+      }
+    }
+  }
+}
