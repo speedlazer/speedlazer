@@ -3,12 +3,14 @@ import { expect } from "chai";
 const addEffect = (
   target,
   {
-    velocity = 0,
-    accelleration = 0,
     affects,
     duration = 1,
+    velocity = 0,
+    accelleration = 0,
     upperBounds = Infinity,
     lowerBounds = -Infinity,
+    origin,
+    speed,
     name = "Impact"
   }
 ) => ({
@@ -20,6 +22,9 @@ const addEffect = (
     accelleration,
     upperBounds,
     lowerBounds,
+    active: 0,
+    origin,
+    speed,
     name
   })
 });
@@ -27,7 +32,29 @@ const addEffect = (
 const processEffects = (worldRules = {}) => (target, duration) => {
   const { mutations, effects } = target.effects.reduce(
     (acc, effect) => {
-      const calcDuration = Math.min(duration, effect.duration) / 1000;
+      let travelDuration = Infinity;
+
+      if (
+        effect.origin &&
+        effect.speed &&
+        target.x !== undefined &&
+        target.y !== undefined
+      ) {
+        const distance = Math.sqrt(
+          Math.pow(target.y - effect.origin.y, 2) +
+            Math.pow(target.x - effect.origin.x, 2)
+        );
+        const traveled = ((effect.active + duration) / 1000) * effect.speed;
+        if (distance < traveled) {
+          travelDuration = ((traveled - distance) / effect.speed) * 1000;
+        } else {
+          travelDuration = 0;
+        }
+      }
+
+      const calcDuration =
+        Math.min(duration, travelDuration, effect.duration) / 1000;
+
       const worldEffect = (prop, amount) => {
         if (worldRules[prop]) {
           return worldRules[prop](amount, effect, target);
@@ -47,7 +74,7 @@ const processEffects = (worldRules = {}) => (target, duration) => {
           : delta;
 
       const mutations =
-        delta !== 0
+        clippedDelta !== 0
           ? acc.mutations.concat(
               []
                 .concat(effect.affects)
@@ -65,6 +92,7 @@ const processEffects = (worldRules = {}) => (target, duration) => {
             ? acc.concat({
                 ...effect,
                 duration: effect.duration - duration,
+                active: effect.active + duration,
                 velocity:
                   effect.velocity + (effect.accelleration * duration) / 1000
               })
@@ -90,6 +118,8 @@ const processEffects = (worldRules = {}) => (target, duration) => {
  *  - Cooldown mutations
  *  - Shockwaves
  */
+
+const round2 = number => Math.round(number * 100) / 100;
 
 describe("Effect model", () => {
   it("supports direct impact damage", () => {
@@ -272,5 +302,63 @@ describe("Effect model", () => {
     const poisonResult = applyEffects(addEffect(armoredTarget, poison), 1);
     expect(poisonResult.life).to.eq(60); // no resistance
     expect(poisonResult.mana).to.eq(360);
+  });
+
+  describe("area of effect", () => {
+    it("only affects props when effect has reached target", () => {
+      const applyEffects = processEffects();
+
+      const target = {
+        life: 100,
+        x: 10,
+        y: 10
+      };
+
+      const damage = {
+        velocity: -100,
+        accelleration: 40,
+        upperBounds: 0,
+        origin: { x: 100, y: 100 },
+        speed: 400,
+        affects: ["life"],
+        duration: 1000,
+        name: "Blast"
+      };
+
+      const result = applyEffects(addEffect(target, damage), 10);
+      expect(result.life).to.eq(100);
+
+      const result2 = applyEffects(result, 1000);
+      expect(round2(result2.life)).to.eq(40.67);
+      expect(round2(result2.x)).to.eq(10);
+    });
+
+    it("targets closer get hit harder", () => {
+      const applyEffects = processEffects();
+
+      const target = {
+        life: 100,
+        x: 80,
+        y: 80
+      };
+
+      const damage = {
+        velocity: -100,
+        accelleration: 40,
+        upperBounds: 0,
+        origin: { x: 100, y: 100 },
+        speed: 400,
+        affects: ["life"],
+        duration: 1000,
+        name: "Blast"
+      };
+
+      const result = applyEffects(addEffect(target, damage), 10);
+      expect(result.life).to.eq(100);
+
+      const result2 = applyEffects(result, 1000);
+      expect(round2(result2.life)).to.eq(24.09);
+      expect(round2(result2.x)).to.eq(80);
+    });
   });
 });
