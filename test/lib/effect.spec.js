@@ -1,5 +1,13 @@
 import { expect } from "chai";
 
+const distance = (x1, y1, x2, y2) =>
+  Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+
+const normalize = (x1, y1, x2, y2) => {
+  const dist = distance(x1, y1, x2, y2);
+  return [(x2 - x1) / dist, (y2 - y1) / dist];
+};
+
 const addEffect = (
   target,
   {
@@ -40,13 +48,15 @@ const processEffects = (worldRules = {}) => (target, duration) => {
         target.x !== undefined &&
         target.y !== undefined
       ) {
-        const distance = Math.sqrt(
-          Math.pow(target.y - effect.origin.y, 2) +
-            Math.pow(target.x - effect.origin.x, 2)
+        const dist = distance(
+          target.x,
+          target.y,
+          effect.origin.x,
+          effect.origin.y
         );
         const traveled = ((effect.active + duration) / 1000) * effect.speed;
-        if (distance < traveled) {
-          travelDuration = ((traveled - distance) / effect.speed) * 1000;
+        if (dist < traveled) {
+          travelDuration = ((traveled - dist) / effect.speed) * 1000;
         } else {
           travelDuration = 0;
         }
@@ -59,7 +69,7 @@ const processEffects = (worldRules = {}) => (target, duration) => {
         if (worldRules[prop]) {
           return worldRules[prop](amount, effect, target);
         }
-        return amount;
+        return { [prop]: amount };
       };
 
       const delta =
@@ -78,7 +88,17 @@ const processEffects = (worldRules = {}) => (target, duration) => {
           ? acc.mutations.concat(
               []
                 .concat(effect.affects)
-                .map(prop => [prop, e => e + worldEffect(prop, clippedDelta)])
+                .reduce(
+                  (acc, prop) =>
+                    acc.concat(
+                      Object.entries(worldEffect(prop, clippedDelta)).reduce(
+                        (acc, [prop, amount]) =>
+                          acc.concat([[prop, e => e + amount]]),
+                        []
+                      )
+                    ),
+                  []
+                )
             )
           : acc.mutations;
 
@@ -261,11 +281,13 @@ describe("Effect model", () => {
 
   it("supports resistance", () => {
     const applyEffects = processEffects({
-      life: (amount, damage, target) => {
-        if (damage.name === "Impact") {
-          return amount - Math.min((target.armor || 0) * 0.01 * amount, 0);
+      life: (amount, effect, target) => {
+        if (effect.name === "Impact") {
+          return {
+            life: amount - Math.min((target.armor || 0) * 0.01 * amount, 0)
+          };
         }
-        return amount;
+        return { life: amount };
       }
     });
 
@@ -359,6 +381,70 @@ describe("Effect model", () => {
       const result2 = applyEffects(result, 1000);
       expect(round2(result2.life)).to.eq(24.09);
       expect(round2(result2.x)).to.eq(80);
+    });
+
+    it("can move targets using vector from origin", () => {
+      const applyEffects = processEffects({
+        position: (amount, effect, target) => {
+          if (target.weight === undefined) return {};
+          const [normX, normY] = normalize(
+            effect.origin.x,
+            effect.origin.y,
+            target.x,
+            target.y
+          );
+          const weighted = amount - amount * target.weight * target.weight;
+
+          return {
+            x: weighted * normX,
+            y: weighted * normY
+          };
+        }
+      });
+
+      const target1 = {
+        life: 100,
+        x: 80,
+        y: 80,
+        weight: 0
+      };
+
+      const target2 = {
+        life: 100,
+        x: 200,
+        y: 80,
+        weight: 0
+      };
+
+      const target3 = {
+        life: 100,
+        x: 120,
+        y: 120,
+        weight: 0.5
+      };
+
+      const damage = {
+        velocity: 100,
+        accelleration: -10,
+        lowerBounds: 0,
+        origin: { x: 100, y: 100 },
+        speed: 400,
+        affects: ["position"],
+        duration: 1000,
+        name: "Blast"
+      };
+
+      const result = applyEffects(addEffect(target1, damage), 1000);
+      expect(round2(result.y)).to.eq(17.34);
+      expect(round2(result.x)).to.eq(17.34); // Δ 80 - 17.34 = 62.66
+
+      const result2 = applyEffects(addEffect(target2, damage), 1000);
+      expect(round2(result2.x)).to.eq(270.34);
+      expect(round2(result2.y)).to.eq(65.93);
+
+      const result3 = applyEffects(addEffect(target3, damage), 1000);
+      expect(round2(result3.x)).to.eq(166.99); // Δ 166.99 - 120 = 46.99
+      expect(round2(result3.y)).to.eq(166.99);
     });
   });
 });
