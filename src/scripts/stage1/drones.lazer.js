@@ -19,7 +19,7 @@ const droneFlight = pattern => async ({
     defaultVelocity: 400
   });
 
-  await call(drone.allowDamage, { health: 1 });
+  await call(drone.allowDamage, { health: 30 });
   const movement = moveWithPattern(drone, pattern);
 
   const healthCheck = async () => {

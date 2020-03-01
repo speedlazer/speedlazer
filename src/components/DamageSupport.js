@@ -1,4 +1,5 @@
 import { isPaused } from "src/lib/core/pauseToggle";
+import { addEffect, processEffects } from "src/lib/effects";
 
 const applyHitFlash = (entity, onOff) =>
   entity.forEachPart(part =>
@@ -7,7 +8,13 @@ const applyHitFlash = (entity, onOff) =>
     })
   );
 
+const processor = processEffects();
+
 Crafty.c("DamageSupport", {
+  events: {
+    EnterFrame: "_handleEffects"
+  },
+
   init() {
     this.attr({
       health: 0,
@@ -45,14 +52,17 @@ Crafty.c("DamageSupport", {
       return;
     }
     if (this.vulnerable) {
-      applyHitFlash(this, true);
-      if (damage.laser) {
-        this.health -= damage.laser;
-      }
+      addEffect(this, damage);
+    }
+  },
 
-      if (this.health <= 0) {
-        this.stopDamage();
-      }
+  _handleEffects({ dt }) {
+    const changes = processor(this, dt);
+    Object.assign(this, changes);
+
+    applyHitFlash(this, Object.keys(changes).includes("health"));
+    if (this.health <= 0) {
+      this.stopDamage();
     }
   }
 

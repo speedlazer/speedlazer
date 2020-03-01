@@ -351,7 +351,10 @@ export default {
         velocity: [1050, 1200],
         composition: "weapons.lightBullet",
         damage: {
-          laser: [1, 3]
+          velocity: [-20e3, -30e3],
+          affects: "health",
+          duration: [2, 4],
+          name: "Laser"
         },
         queue: [{ duration: 4000 }],
         collisions: {
