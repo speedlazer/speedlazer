@@ -2,7 +2,12 @@
   "WarDrone": {
     "structure": {
       "composition": "drone",
-      "components": ["DamageSupport", "GravitySupport", "SolidCollision"],
+      "components": [
+        "DamageSupport",
+        "GravitySupport",
+        "SolidCollision",
+        "PlayerEnemy"
+      ],
       "attachments": {
         "trail": {
           "particles": "drone.trail"

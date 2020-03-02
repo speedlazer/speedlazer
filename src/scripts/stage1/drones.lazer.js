@@ -7,7 +7,7 @@ const droneFlight = pattern => async ({
   //until,
   call,
   //displayFrame,
-  waitWhile,
+  waitForEvent,
   moveWithPattern
 }) => {
   // spawn drone off screen
@@ -23,7 +23,7 @@ const droneFlight = pattern => async ({
   const movement = moveWithPattern(drone, pattern);
 
   const healthCheck = async () => {
-    await waitWhile(drone.hasHealth);
+    await waitForEvent(drone, "Dead");
     movement.abort();
     await call(drone.showState, "dead");
     await wait(200);

@@ -9,8 +9,9 @@ const applyHitFlash = (entity, onOff) =>
   );
 
 const processor = processEffects();
+const DamageSupport = "DamageSupport";
 
-Crafty.c("DamageSupport", {
+Crafty.c(DamageSupport, {
   events: {
     EnterFrame: "_handleEffects"
   },
@@ -57,49 +58,16 @@ Crafty.c("DamageSupport", {
   },
 
   _handleEffects({ dt }) {
+    if (!this.effects) return;
     const changes = processor(this, dt);
     Object.assign(this, changes);
 
     applyHitFlash(this, Object.keys(changes).includes("health"));
     if (this.health <= 0) {
       this.stopDamage();
+      this.trigger("Dead");
     }
   }
-
-  //_onCollisonHit(collisions) {
-  //if (isPaused()) {
-  //return;
-  //}
-  //if (this.hidden) {
-  //return;
-  //}
-  //collisions.forEach(e => {
-  //const bulletOrExplosion = e.obj;
-  //if (this.vulnerable) {
-  //if (bulletOrExplosion.damage > 0) {
-  //applyHitFlash(this, true);
-  //this.absorbDamage(bulletOrExplosion);
-  //bulletOrExplosion.damage = 0;
-
-  //this.trigger("Hit", { entity: this, projectile: bulletOrExplosion });
-  //}
-  //}
-
-  //if (bulletOrExplosion.has("Bullet")) {
-  //bulletOrExplosion.trigger("BulletHit", bulletOrExplosion);
-  //}
-  //});
-  //},
-
-  //_onCollisonHitOff() {
-  //applyHitFlash(this, false);
-  //},
-
-  //absorbDamage(cause) {
-  //this.health -= cause.damage;
-
-  //if (this.health <= 0) {
-  //this.stopDamage();
-  //}
-  //}
 });
+
+export default DamageSupport;

@@ -30,6 +30,9 @@ const flowFunctions = dsl => {
     }
   };
 
+  const waitForEvent = async (entity, event) =>
+    new Promise(resolve => entity.one(event, resolve));
+
   const until = async (actionInProgress, repeatAction) => {
     let actionCompleted = false;
     actionInProgress(dsl).then(() => {
@@ -43,6 +46,7 @@ const flowFunctions = dsl => {
   return {
     until,
     waitWhile,
+    waitForEvent,
     wait,
     exec,
     call

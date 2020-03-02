@@ -1,7 +1,8 @@
+import DamageSupport from "src/components/DamageSupport";
 const ShipCollision = "ShipCollision";
 
 Crafty.c(ShipCollision, {
-  required: "Collision",
+  required: `Collision, ${DamageSupport}`,
   init() {
     this.onHit("ShipSolid", hits => {
       const delta = this.motionDelta();
@@ -69,6 +70,14 @@ Crafty.c(ShipCollision, {
       });
 
       this.shift(xCorrection, yCorrection);
+    });
+    this.onHit("PlayerEnemy", () => {
+      const damage = {
+        velocity: -10e3,
+        affects: "health",
+        name: "Impact"
+      };
+      this.processDamage(damage);
     });
   },
 

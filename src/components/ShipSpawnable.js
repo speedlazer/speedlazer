@@ -47,6 +47,7 @@ Crafty.c("ShipSpawnable", {
         createEntity(this.shipType, { location: pos })
       : createEntity(this.shipType, { location: pos });
     this.ship.addComponent(ShipControls, ShipCollision);
+    this.ship.allowDamage({ health: 50 });
 
     if (this.has(ControlScheme)) {
       this.assignControls(this.ship);
