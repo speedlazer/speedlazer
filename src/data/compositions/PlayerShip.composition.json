@@ -19,6 +19,16 @@
     "hitbox": [20, 20, 76, 24, 90, 45, 20, 45],
     "attachHooks": [
       [
+        "explosion",
+        {
+          "x": 22,
+          "y": 18,
+          "z": 2,
+          "attachAlign": ["center", "center"],
+          "attachTo": "main"
+        }
+      ],
+      [
         "mainWeapon",
         {
           "x": 48,
@@ -58,6 +68,19 @@
           "attachTo": "main"
         }
       ]
-    ]
+    ],
+    "frames": {
+      "damaged": {
+        "main": {
+          "sprite": "playerShipDamaged"
+        }
+      },
+      "hidden": {
+        "main": {
+          "hidden": true,
+          "alpha": 0
+        }
+      }
+    }
   }
 }

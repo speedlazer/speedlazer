@@ -14,6 +14,9 @@ const shipFunctions = () => ({
       this.attr({ shipType: entityDef });
       const ship = this.spawnShip(options);
       ship.showState("flying");
+      ship.one("Dead", () => {
+        ship.showState("dead");
+      });
     });
   }
 });

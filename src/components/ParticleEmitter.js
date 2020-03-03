@@ -290,6 +290,7 @@ Crafty.c(ParticleEmitter, {
   },
 
   _renderParticles({ dt, gameTime }) {
+    if (!this.particleSettings) return;
     startRender = startRender || gameTime;
     this.timeFrame = gameTime - startRender;
 

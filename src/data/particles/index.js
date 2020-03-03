@@ -43,6 +43,30 @@ export default {
       endColorRandom: [0, 0, 0, 0]
     }
   },
+  "ship.trail2": {
+    emitter: {
+      w: 2,
+      h: 2,
+      amount: 200,
+      fidelity: "high"
+    },
+    gravity: [-150, 0],
+    particle: {
+      sprite: "explosion7",
+      angle: 180,
+      angleRandom: 0,
+      duration: 500,
+      durationRandom: 0,
+      velocity: 200,
+      velocityRandom: 10,
+      startSize: 12,
+      endSize: 1,
+      startColor: [0.9, 0.5, 0.5, 0.6],
+      startColorRandom: [0, 0, 0, 0],
+      endColor: [0.9, 0.2, 0.2, 0],
+      endColorRandom: [0, 0, 0, 0]
+    }
+  },
   "ship.reverse": {
     emitter: {
       w: 2,
@@ -95,7 +119,7 @@ export default {
     emitter: {
       w: 2,
       h: 2,
-      amount: 35,
+      amount: 50,
       fidelity: "high"
     },
     gravity: [0, 0],
@@ -103,7 +127,7 @@ export default {
       sprite: "explosion7",
       angle: 0,
       angleRandom: 0,
-      duration: 50,
+      duration: 200,
       durationRandom: 0,
       velocity: 0,
       velocityRandom: 10,

@@ -26,11 +26,12 @@ const droneFlight = pattern => async ({
     await waitForEvent(drone, "Dead");
     movement.abort();
     await call(drone.showState, "dead");
-    await wait(200);
-    drone.destroy();
   };
+  healthCheck();
 
-  await Promise.race([movement.process, healthCheck()]);
+  await movement.process;
+  await wait(400);
+  drone.destroy();
 };
 
 export const droneWave = (amount, pattern, delay = 1000) => async ({

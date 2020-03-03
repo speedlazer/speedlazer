@@ -18,6 +18,23 @@
       }
     },
     "states": {
+      "dead": {
+        "frame": "hidden",
+        "audio": "explosion",
+        "attachments": {
+          "trail": null,
+          "reverseTrail": null,
+          "reverseTrail2": null,
+          "mainWeapon": null,
+          "explosion": {
+            "composition": "explosion",
+            "animation": "default"
+          }
+        }
+      },
+      "damaged": {
+        "frame": "damaged"
+      },
       "shooting": {
         "attachments": {
           "mainWeapon": {

@@ -342,6 +342,7 @@ Crafty.c(Weapon, {
   },
 
   activate() {
+    if (!this.definition.pattern) return;
     this.active = true;
     this.activatedAt = new Date() * 1;
 
