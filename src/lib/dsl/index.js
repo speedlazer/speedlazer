@@ -1,7 +1,6 @@
 import dataFunctions from "./data";
 import flowFunctions from "./flow";
 import levelFunctions from "./level";
-import shipFunctions from "./ship";
 import entityFunctions from "./entity";
 
 export const createScriptExecutionSpace = () => {
@@ -13,7 +12,6 @@ export const createScriptExecutionSpace = () => {
   const dsl = {
     ...dataFunctions(),
     ...levelFunctions(),
-    ...shipFunctions(),
     ...entityFunctions()
   };
   Object.assign(dsl, flowFunctions(dsl));

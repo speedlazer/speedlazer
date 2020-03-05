@@ -1,12 +1,12 @@
 import battleship from "./stage1/battleship.lazer";
 import { droneWave } from "./stage1/drones.lazer";
+import { playerShip } from "./playerShip.lazer";
 import { bigText } from "src/components/BigText";
 
 const stage1 = async ({
   setScrollingSpeed,
   setScenery,
   loadSpriteSheets,
-  spawnShip,
   setBackground,
   setBackgroundCheckpointLimit,
   playAnimation,
@@ -25,8 +25,7 @@ const stage1 = async ({
   text.remove();
   await playAnimation("City.Intro");
 
-  await spawnShip("PlayerShip", { existing: true });
-
+  exec(playerShip({ existing: true }));
   setBackgroundCheckpointLimit(4);
 
   await setScrollingSpeed(250, 0);
