@@ -2,10 +2,13 @@ import ShipControls from "src/components/player/ShipControls";
 import ShipCollision from "src/components/player/ShipCollision";
 import ControlScheme from "src/components/player/ControlScheme";
 
-export const playerShip = ({ existing = false }) => async ({
+export const playerShip = ({ existing = false } = {}) => async ({
   spawn,
   call,
-  waitForEvent
+  exec,
+  waitForEvent,
+  wait,
+  loseLife
 }) => {
   const player = Crafty("Player").get(0);
   const ship =
@@ -29,7 +32,12 @@ export const playerShip = ({ existing = false }) => async ({
 
   const healthCheck = async () => {
     await waitForEvent(ship, "Dead");
+    ship.attr({ disableControls: true });
     await call(ship.showState, "dead");
+    ship.destroy();
+    await loseLife();
+    await wait(1000);
+    exec(playerShip());
   };
   healthCheck();
 };
