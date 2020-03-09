@@ -1,6 +1,7 @@
 import Composable from "./Composable";
 import compositions from "src/data/compositions";
 import { createEntity } from "src/components/EntityDefinition";
+import { tweenFn } from "src/components/generic/TweenPromise";
 import paths from "src/data/paths";
 import WayPointMotion from "./WayPointMotion";
 import { LINEAR } from "src/constants/easing";
@@ -136,6 +137,14 @@ Crafty.c(Animation, {
             t.targetState,
             (t.end - t.start) * this.animationDuration
           );
+      }
+      if (t.attributes && t.key) {
+        const elem = this.elements[t.key];
+        t.handled = true;
+        if (elem) {
+          const tween = tweenFn(elem, t.attributes);
+          elem.animate(tween, (t.end - t.start) * this.animationDuration);
+        }
       }
       if (t.targetBackgroundColor) {
         if (t.sourceColor && t.ease) {
