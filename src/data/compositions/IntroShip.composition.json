@@ -43,7 +43,7 @@
       ],
       [
         "heliStart",
-        { "x": 612, "y": -20, "z": 9, "attachAlign": ["bottom", "center"] }
+        { "x": 612, "y": -20, "z": 6, "attachAlign": ["bottom", "center"] }
       ],
       [
         "hatch2",

@@ -174,6 +174,9 @@ export default {
                 name: "playerLiftOff",
                 start: 0.0,
                 end: 1
+              },
+              attributes: {
+                z: 10
               }
             },
             {
