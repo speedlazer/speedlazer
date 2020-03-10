@@ -16,6 +16,7 @@ Crafty.c(Animation, {
   },
 
   setAnimation(animation, { maxCheckpoint = 0, ...options } = {}) {
+    if (this.currentAnimation === animation) return;
     this.currentAnimation = animation;
 
     this.maxAllowedCheckpoint = maxCheckpoint;

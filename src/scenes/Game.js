@@ -1,5 +1,6 @@
 import { createScriptExecutionSpace } from "src/lib/dsl";
 import stage1 from "src/scripts/stage1.lazer";
+import stage2 from "src/scripts/stage2.lazer";
 
 import PauseMenu from "src/lib/PauseMenu";
 import Player from "src/components/player/Player";
@@ -33,8 +34,9 @@ Crafty.defineScene(
 
     Crafty.viewport.x = 0;
     Crafty.viewport.y = 0;
-    const scriptEnvironment = createScriptExecutionSpace();
-    await stage1(scriptEnvironment);
+    const runner = createScriptExecutionSpace();
+    await runner(stage1);
+    await runner(stage2);
   },
   () => {
     // destructor

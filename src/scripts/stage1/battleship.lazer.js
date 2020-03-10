@@ -157,9 +157,9 @@ const battleship = async ({
   //await displayFrame(hatch, "open", 500, EASE_IN_OUT);
   //await displayFrame(hatch, "default", 500, EASE_IN_OUT);
   await call(ship.showState, "fase4");
-  await wait(20000);
+  await wait(10000);
   await call(ship.showState, "fase5");
-  await wait(30000);
+  await wait(20000);
 
   ship.destroy();
 };

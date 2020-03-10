@@ -1,11 +1,9 @@
 const flowFunctions = dsl => {
-  const call = async (fn, ...args) => await fn(...args);
+  const call = (fn, ...args) => fn(...args);
 
-  const exec = async (script, ...args) => {
-    await script(dsl, ...args);
-  };
+  const exec = (script, ...args) => script(dsl, ...args);
 
-  const wait = async duration => {
+  const wait = duration => {
     const parts = Math.floor(duration / 40);
     return new Promise(resolve =>
       Crafty.e("Delay").delay(
@@ -30,8 +28,21 @@ const flowFunctions = dsl => {
     }
   };
 
-  const waitForEvent = async (entity, event) =>
-    new Promise(resolve => entity.one(event, resolve));
+  // Resolve on event, reject on kill
+  const waitForEvent = (entity, event, callback) =>
+    new Promise(resolve => {
+      const removeHandler = () => {
+        resolve();
+      };
+      entity.one("Remove", removeHandler);
+      entity.one(event, async () => {
+        entity.unbind("Remove", removeHandler);
+        if (dsl.currentScript()) {
+          await callback();
+        }
+        resolve();
+      });
+    });
 
   const until = async (actionInProgress, repeatAction) => {
     let actionCompleted = false;

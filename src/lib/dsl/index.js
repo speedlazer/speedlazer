@@ -4,16 +4,17 @@ import levelFunctions from "./level";
 import entityFunctions from "./entity";
 
 export const createScriptExecutionSpace = () => {
-  // determine script 'seed' to stop execution
-  //const state = {
-  //running: true
-  //};
+  let activeScript;
+  return script => {
+    const currentScript = Math.random();
+    activeScript = currentScript;
+    const dsl = {
+      currentScript: () => activeScript === currentScript
+    };
+    [dataFunctions, levelFunctions, entityFunctions, flowFunctions].forEach(
+      functionSet => Object.assign(dsl, functionSet(dsl))
+    );
 
-  const dsl = {
-    ...dataFunctions(),
-    ...levelFunctions(),
-    ...entityFunctions()
+    return script(dsl);
   };
-  Object.assign(dsl, flowFunctions(dsl));
-  return dsl;
 };

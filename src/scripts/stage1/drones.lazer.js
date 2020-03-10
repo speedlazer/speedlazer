@@ -22,12 +22,10 @@ const droneFlight = pattern => async ({
   await call(drone.allowDamage, { health: 30 });
   const movement = moveWithPattern(drone, pattern);
 
-  const healthCheck = async () => {
-    await waitForEvent(drone, "Dead");
+  waitForEvent(drone, "Dead", async () => {
     movement.abort();
     await call(drone.showState, "dead");
-  };
-  healthCheck();
+  });
 
   await movement.process;
   await wait(400);

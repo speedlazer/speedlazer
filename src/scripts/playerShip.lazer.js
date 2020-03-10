@@ -30,14 +30,12 @@ export const playerShip = ({ existing = false } = {}) => async ({
     player.assignControls(ship);
   }
 
-  const healthCheck = async () => {
-    await waitForEvent(ship, "Dead");
+  waitForEvent(ship, "Dead", async () => {
     ship.attr({ disableControls: true });
     await call(ship.showState, "dead");
     ship.destroy();
     await loseLife();
     await wait(1000);
     exec(playerShip());
-  };
-  healthCheck();
+  });
 };
