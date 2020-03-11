@@ -41,6 +41,13 @@ Crafty.c(StackableCoordinates, {
     this._stackRecalc = false;
   },
 
+  applyStackableProperty(property, mainProperty) {
+    this._stackRecalc = true;
+    this.stackableProps[mainProperty] += this.stackableProps[property];
+    this.stackableProps[property] = 0;
+    this._stackRecalc = false;
+  },
+
   _updateBaseCoords(e) {
     if (this._stackRecalc) return;
     this.stackableProps["x"] += this.x - e._x;
