@@ -78,7 +78,7 @@ Crafty.defineScene(
       this.one("Activated", () => Crafty.enterScene("Game"));
     });
 
-    Crafty.e("Delay").delay(() => Crafty.enterScene("Intro"), 20000);
+    Crafty.e("Delay").delay(() => Crafty.enterScene("Credits"), 20000);
   },
   function() {
     // destructor

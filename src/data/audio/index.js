@@ -3,6 +3,7 @@ import laserHit from "src/audio/laser-hit.ogg";
 import laserShot from "src/audio/laser-shot.ogg";
 import laugh from "src/audio/laugh.ogg";
 import powerup from "src/audio/powerup.ogg";
+import bgMusic1 from "src/audio/symsonic-hero.mp3";
 
 const audiosheets = [
   {
@@ -38,6 +39,13 @@ const audiosheets = [
     file: powerup,
     map: {
       powerup: { type: "sfx", start: 0, end: 100 }
+    }
+  },
+  {
+    name: "hero",
+    file: bgMusic1,
+    map: {
+      hero: { type: "music", start: 0, end: 100 }
     }
   }
 ];

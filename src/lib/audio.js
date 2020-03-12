@@ -33,9 +33,15 @@ export const loadAudio = async audioMap => {
 
 export const stopMusic = () => {
   if (playingPool.music !== null) {
-    playingPool.music.stop();
-    playingPool.music.disconnect();
+    playingPool.music.source.stop();
+    playingPool.music.source.disconnect();
     playingPool.music = null;
+  }
+};
+
+const currentMusic = () => {
+  if (playingPool.music !== null) {
+    return playingPool.music.sampleName;
   }
 };
 
@@ -43,13 +49,14 @@ export const playAudio = async sampleName => {
   const map = Object.values(audioData).find(e => e.map[sampleName]);
   const sampleData = map.map[sampleName];
   if (sampleData.type === "music") {
+    if (currentMusic() === sampleName) return;
     // Cross fade if track is already playing??
     stopMusic();
     const source = context.createBufferSource();
     source.buffer = map.audioData;
     source.connect(playingPool.musicGain);
     source.start();
-    playingPool.music = source;
+    playingPool.music = { source, sampleName };
     return source;
   } else {
     const source = context.createBufferSource();
