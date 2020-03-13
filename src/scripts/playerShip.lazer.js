@@ -31,7 +31,7 @@ export const playerShip = ({ existing = false } = {}) => async ({
   }
 
   waitForEvent(ship, "Dead", async () => {
-    ship.attr({ disableControls: true });
+    ship.attr({ disableControls: true, vx: 0, vy: 0 });
     await call(ship.showState, "dead");
     await wait(1000);
     ship.destroy();

@@ -2,7 +2,7 @@ import TweenPromise from "src/components/generic/TweenPromise";
 
 const stateFunctions = (_, state) => {
   const lives = Crafty.e(`2D, UILayerDOM, Text, ${TweenPromise}`)
-    .attr({ x: 20, y: 10, w: 100, alpha: 0 })
+    .attr({ x: 20, y: -10, w: 100, alpha: 0 })
     .textColor("#FFFF00")
     .textAlign("left")
     .textFont({
@@ -22,8 +22,8 @@ const stateFunctions = (_, state) => {
       }
       lives.text(`Lives: ${state.lives}`);
     },
-    showHUD: () => Crafty("UILayerDOM").tweenPromise({ alpha: 1 }, 1000),
-    hideHUD: () => Crafty("UILayerDOM").tweenPromise({ alpha: 0 }, 1000)
+    showHUD: () => Crafty("UILayerDOM").tweenPromise({ alpha: 1, y: 10 }, 300),
+    hideHUD: () => Crafty("UILayerDOM").tweenPromise({ alpha: 0, y: -10 }, 300)
   };
 };
 
