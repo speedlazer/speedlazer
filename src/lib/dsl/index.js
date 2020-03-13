@@ -4,6 +4,15 @@ import levelFunctions from "./level";
 import entityFunctions from "./entity";
 import stateFunctions from "./state";
 
+const wrap = (o, s) =>
+  Object.entries(o).reduce((a, [key, value]) => {
+    a[key] = (...args) => {
+      if (s.gameEnded === true) throw new Error("Game ended");
+      return value(...args);
+    };
+    return a;
+  }, {});
+
 export const createScriptExecutionSpace = initialState => {
   let activeScript;
   return script => {
@@ -19,8 +28,9 @@ export const createScriptExecutionSpace = initialState => {
       flowFunctions,
       stateFunctions
     ].forEach(functionSet =>
-      Object.assign(dsl, functionSet(dsl, initialState))
+      Object.assign(dsl, wrap(functionSet(dsl, initialState), initialState))
     );
+    if (initialState.gameEnded === true) return;
 
     return script(dsl);
   };

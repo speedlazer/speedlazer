@@ -3,12 +3,12 @@ import compositions from "src/data/compositions";
 import { getOne } from "src/lib/utils";
 
 export const setScenery = sceneryName => {
-  const scenery = getOne("Scenery") || Crafty.e("Scenery");
+  const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
   scenery.setNextScenery(sceneryName);
 };
 
 export const setScrollVelocity = ({ vx, vy }) => {
-  const scenery = getOne("Scenery") || Crafty.e("Scenery");
+  const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
   scenery.setScrollVelocity({ vx, vy });
 };
 
