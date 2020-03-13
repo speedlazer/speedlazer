@@ -15,7 +15,10 @@ const stateFunctions = (dsl, state) => {
   return {
     loseLife: () => {
       state.lives -= 1;
-      if (state.lives < 0) throw Error("Game Over");
+      if (state.lives < 0) {
+        state.gameEnded = true;
+        throw Error("Game Over");
+      }
       lives.text(`Lives: ${state.lives}`);
     },
     showHUD: () => Crafty("UILayerDOM").tweenPromise({ alpha: 1 }, 1000),

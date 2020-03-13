@@ -30,7 +30,7 @@ const flowFunctions = dsl => {
 
   // Resolve on event, reject on kill
   const waitForEvent = (entity, event, callback) =>
-    new Promise(resolve => {
+    new Promise((resolve, reject) => {
       const removeHandler = () => {
         resolve();
       };
@@ -42,7 +42,8 @@ const flowFunctions = dsl => {
             await callback();
           } catch (e) {
             // script needs to abort
-            console.log("Abort script");
+            reject(e);
+            return;
           }
         }
         resolve();

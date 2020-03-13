@@ -36,8 +36,13 @@ Crafty.defineScene(
     Crafty.viewport.y = 0;
     const state = { lives: 1, score: 0 };
     const runner = createScriptExecutionSpace(state);
-    await runner(stage1);
-    await runner(stage2);
+    try {
+      await runner(stage1);
+      await runner(stage2);
+      Crafty.enterScene("GameOver", { gameCompleted: true });
+    } catch (e) {
+      Crafty.enterScene("GameOver");
+    }
   },
   () => {
     // destructor
