@@ -3,7 +3,6 @@ import stage1 from "src/scripts/stage1.lazer";
 import stage2 from "src/scripts/stage2.lazer";
 import { stopMusic } from "src/lib/audio";
 
-import PauseMenu from "src/lib/PauseMenu";
 import Player from "src/components/player/Player";
 
 Crafty.defineScene(
@@ -31,11 +30,9 @@ Crafty.defineScene(
       z: 0
     });
 
-    new PauseMenu();
-
     Crafty.viewport.x = 0;
     Crafty.viewport.y = 0;
-    const state = { lives: 0, score: 20000 };
+    const state = { lives: 2, score: 0 };
     const runner = createScriptExecutionSpace(state);
     try {
       await runner(stage1);

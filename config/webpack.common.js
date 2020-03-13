@@ -82,10 +82,6 @@ module.exports = {
         options: {
           minimize: true
         }
-      },
-      {
-        test: /\.coffee$/,
-        use: ["coffee-loader"]
       }
     ]
   }
