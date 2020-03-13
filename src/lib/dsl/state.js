@@ -1,6 +1,6 @@
 import TweenPromise from "src/components/generic/TweenPromise";
 
-const stateFunctions = (dsl, state) => {
+const stateFunctions = (_, state) => {
   const lives = Crafty.e(`2D, UILayerDOM, Text, ${TweenPromise}`)
     .attr({ x: 20, y: 10, w: 100, alpha: 0 })
     .textColor("#FFFF00")
@@ -17,6 +17,7 @@ const stateFunctions = (dsl, state) => {
       state.lives -= 1;
       if (state.lives < 0) {
         state.gameEnded = true;
+        Crafty.trigger("GameOver");
         throw Error("Game Over");
       }
       lives.text(`Lives: ${state.lives}`);

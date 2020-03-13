@@ -1,14 +1,15 @@
-const flowFunctions = dsl => {
+const flowFunctions = (dsl, state) => {
   const call = (fn, ...args) => fn(...args);
 
   const exec = (script, ...args) => script(dsl, ...args);
 
   const wait = duration => {
     const parts = Math.floor(duration / 40);
-    return new Promise(resolve =>
+    return new Promise((resolve, reject) =>
       Crafty.e("Delay").delay(
         () => {
-          // add sequence verification here later
+          if (!dsl.currentScript()) resolve();
+          if (state.gameEnded === true) reject(new Error("Game Over"));
         },
         40,
         parts,
