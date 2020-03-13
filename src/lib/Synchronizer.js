@@ -22,20 +22,20 @@ class Synchronizer {
   }
 
   synchronizeOn(name, entity) {
-    const synchronization = this.synchronizations[name] || {
-      defer: WhenJS.defer(),
-      registered: []
-    };
-    this.synchronizations[name] = synchronization;
+    return new Promise(resolve => {
+      const synchronization = this.synchronizations[name] || {
+        resolve: resolve,
+        registered: []
+      };
+      this.synchronizations[name] = synchronization;
 
-    if (!synchronization.registered.includes(entity)) {
-      synchronization.registered.push(entity);
-    }
-    if (difference(this.entities, synchronization.registered).length === 0) {
-      synchronization.defer.resolve();
-    }
-
-    return synchronization.defer.promise;
+      if (!synchronization.registered.includes(entity)) {
+        synchronization.registered.push(entity);
+      }
+      if (difference(this.entities, synchronization.registered).length === 0) {
+        synchronization.resolve();
+      }
+    });
   }
 
   allowOnce(name) {
@@ -48,7 +48,7 @@ class Synchronizer {
     this.synchronization.forEach(name => {
       const sync = this.synchronizations[name];
       if (difference(this.entities, sync.registered).length === 0) {
-        sync.defer.resolve();
+        sync.resolve();
       }
     });
   }
