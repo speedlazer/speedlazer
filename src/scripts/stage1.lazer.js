@@ -12,8 +12,8 @@ const stage1 = async ({
   setBackgroundCheckpointLimit,
   playAnimation,
   showHUD,
-  exec
-  //wait
+  exec,
+  wait
 }) => {
   window.Crafty = Crafty;
   const text = bigText("Loading...");
@@ -26,20 +26,26 @@ const stage1 = async ({
   await setScrollingSpeed(100, 0);
   await setScenery("City.Ocean");
   setBackground("City.Sunrise");
-  //await text.fadeOut(2000);
   text.remove();
   await playAnimation("City.Intro");
   showHUD();
+  const ready = bigText("Get ready", { color: "#FF0000" });
+  const blink = ready.blink(200, 4);
 
   exec(playerShip({ existing: true }));
   setBackgroundCheckpointLimit(4);
 
   await setScrollingSpeed(250, 0);
-  await playAnimation("City.Intro2");
-
-  await exec(droneWave(5, "pattern1", 500));
-  await exec(droneWave(8, "pattern2", 500));
-  await exec(droneWave(5, "pattern1", 500));
+  const droneAttacks = async () => {
+    await blink;
+    await ready.zoomOut(500);
+    ready.remove();
+    await wait(900);
+    await exec(droneWave(5, "pattern1", 500));
+    await exec(droneWave(8, "pattern2", 500));
+    await exec(droneWave(5, "pattern1", 500));
+  };
+  await Promise.all([playAnimation("City.Intro2"), droneAttacks()]);
 };
 
 export default stage1;

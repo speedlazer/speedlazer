@@ -209,7 +209,7 @@ export default {
           transitions: [
             {
               key: "ship",
-              start: 0.3,
+              start: 0.1,
               end: 1.0,
               path: {
                 data: [{ x: -0.1, y: 0.8 }, { x: -1.0, y: 0.8 }]
