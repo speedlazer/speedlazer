@@ -35,7 +35,7 @@ Crafty.defineScene(
 
     Crafty.viewport.x = 0;
     Crafty.viewport.y = 0;
-    const state = { lives: 1, score: 0 };
+    const state = { lives: 0, score: 20000 };
     const runner = createScriptExecutionSpace(state);
     try {
       await runner(stage1);
