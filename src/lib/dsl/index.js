@@ -2,8 +2,9 @@ import dataFunctions from "./data";
 import flowFunctions from "./flow";
 import levelFunctions from "./level";
 import entityFunctions from "./entity";
+import stateFunctions from "./state";
 
-export const createScriptExecutionSpace = () => {
+export const createScriptExecutionSpace = initialState => {
   let activeScript;
   return script => {
     const currentScript = Math.random();
@@ -11,8 +12,14 @@ export const createScriptExecutionSpace = () => {
     const dsl = {
       currentScript: () => activeScript === currentScript
     };
-    [dataFunctions, levelFunctions, entityFunctions, flowFunctions].forEach(
-      functionSet => Object.assign(dsl, functionSet(dsl))
+    [
+      dataFunctions,
+      levelFunctions,
+      entityFunctions,
+      flowFunctions,
+      stateFunctions
+    ].forEach(functionSet =>
+      Object.assign(dsl, functionSet(dsl, initialState))
     );
 
     return script(dsl);

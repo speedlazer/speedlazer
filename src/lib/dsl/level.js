@@ -24,10 +24,7 @@ const levelFunctions = () => ({
     setBackgroundCheckpoint(checkpoint);
   },
   playAnimation: (animation, options) =>
-    playAnimation(animations[animation], options),
-  loseLife: () => {
-    console.log("losing a life!");
-  }
+    playAnimation(animations[animation], options)
 });
 
 export default levelFunctions;

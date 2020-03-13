@@ -11,6 +11,7 @@ const stage1 = async ({
   setBackground,
   setBackgroundCheckpointLimit,
   playAnimation,
+  showHUD,
   exec
   //wait
 }) => {
@@ -28,6 +29,7 @@ const stage1 = async ({
   //await text.fadeOut(2000);
   text.remove();
   await playAnimation("City.Intro");
+  showHUD();
 
   exec(playerShip({ existing: true }));
   setBackgroundCheckpointLimit(4);

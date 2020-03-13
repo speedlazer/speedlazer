@@ -34,7 +34,8 @@ Crafty.defineScene(
 
     Crafty.viewport.x = 0;
     Crafty.viewport.y = 0;
-    const runner = createScriptExecutionSpace();
+    const state = { lives: 1, score: 0 };
+    const runner = createScriptExecutionSpace(state);
     await runner(stage1);
     await runner(stage2);
   },

@@ -38,7 +38,12 @@ const flowFunctions = dsl => {
       entity.one(event, async () => {
         entity.unbind("Remove", removeHandler);
         if (dsl.currentScript()) {
-          await callback();
+          try {
+            await callback();
+          } catch (e) {
+            // script needs to abort
+            console.log("Abort script");
+          }
         }
         resolve();
       });
