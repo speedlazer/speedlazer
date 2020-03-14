@@ -27,7 +27,8 @@ export class AnimationPreview extends Component {
       showAnimation(
         this.props.animation,
         this.props.animationLimit,
-        this.props.activeCheckpoint
+        this.props.activeCheckpoint,
+        { onCheckpointChange: this.props.onCheckpointChange }
       );
     }
     if (
@@ -38,7 +39,8 @@ export class AnimationPreview extends Component {
       showAnimation(
         this.props.animation,
         this.props.animationLimit,
-        this.props.activeCheckpoint
+        this.props.activeCheckpoint,
+        { onCheckpointChange: this.props.onCheckpointChange }
       );
     }
   }

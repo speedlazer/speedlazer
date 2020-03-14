@@ -189,7 +189,6 @@ Crafty.c(Animation, {
         t.handled = true;
         const elem = this.elements[t.key];
         if (!elem) return;
-        console.log("Removing element", t.key);
         this.elements[t.key].destroy();
         delete this.elements[t.key];
       }
@@ -231,8 +230,12 @@ export const playAnimation = (
     checkpointReached = checkpoint;
     checkpointSubscriptions = checkpointSubscriptions.filter(
       ({ checkpoint: matchCheckpoint, resolver }) => {
+        if (matchCheckpoint == null) {
+          resolver(checkpoint);
+          return true;
+        }
         if (matchCheckpoint <= checkpoint) {
-          resolver();
+          resolver(checkpoint);
           return false;
         }
         return true;
@@ -247,15 +250,17 @@ export const playAnimation = (
         : new Promise((resolver, rejecter) => {
             checkpointSubscriptions.push({ checkpoint, resolver, rejecter });
           }),
+    onCheckpointChange: callback => {
+      checkpointSubscriptions.push({ checkpoint: null, resolver: callback });
+    },
     updateCheckpointLimit: newLimit => {
-      console.log("updateCheckpointLimit", newLimit);
       player.setCheckpointLimit(newLimit);
     },
     waitTillEnd: () =>
       new Promise(resolve => player.one("AnimationEnded", resolve)),
     destroy: () => {
-      checkpointSubscriptions.forEach(({ rejecter }) =>
-        rejecter(new Error("Animation destroyed"))
+      checkpointSubscriptions.forEach(
+        ({ rejecter }) => rejecter && rejecter(new Error("Animation destroyed"))
       );
       player.destroy();
     }

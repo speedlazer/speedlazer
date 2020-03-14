@@ -405,7 +405,7 @@ export const showAnimation = async (
   animation,
   animationLimit,
   activeCheckpoint,
-  { cleanup = false } = {}
+  { cleanup = false, onCheckpointChange } = {}
 ) => {
   await loadAssets();
   if (inScene("AnimationPreview") && animation === currentAnimation) {
@@ -421,6 +421,8 @@ export const showAnimation = async (
     max: animationLimit,
     cleanup
   });
+  onCheckpointChange &&
+    currentAnimationState.onCheckpointChange(onCheckpointChange);
 };
 
 Crafty.defineScene(

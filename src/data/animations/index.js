@@ -133,19 +133,29 @@ export default {
             },
             {
               key: "ship",
-              start: 0.3,
+              start: 0.8,
               targetState: "heliStart"
             }
           ]
         }
       },
       {
-        entities: [["IntroShip", { key: "ship" }]],
+        entities: [
+          ["IntroShip", { key: "ship" }],
+          [
+            "IntroHeli",
+            {
+              key: "heli",
+              detach: true
+            }
+          ]
+        ],
         timeline: {
           defaultDuration: 2000,
           transitions: [
             { start: 0.0, end: 0.3, key: "ship", targetState: "t2o" },
             { start: 0.3, end: 0.5, key: "ship", targetState: "t2r" },
+            { start: 0.7, end: 1.0, key: "heli", targetState: "flying" },
             { start: 0.5, end: 0.7, key: "ship", targetState: "shipStart" },
             { start: 0.9, end: 1.0, key: "ship", targetState: "shipLiftOff" }
           ]
@@ -160,6 +170,7 @@ export default {
               state: "shipLiftOff"
             }
           ],
+          ["IntroHeli", { key: "heli" }],
           [
             "PlayerShip",
             {
@@ -187,6 +198,13 @@ export default {
             },
             {
               start: 0.0,
+              end: 1.0,
+              key: "heli",
+              path: { name: "introHeliLiftOff", start: 0.0, end: 0.2 },
+              attributes: { z: 14 }
+            },
+            {
+              start: 0.0,
               end: 1,
               key: "ship",
               targetState: "closed",
@@ -199,11 +217,18 @@ export default {
       },
       {
         entities: [
-          ["IntroShip", { key: "ship", relativeX: -0.1, relativeY: 0.8 }]
+          ["IntroShip", { key: "ship", relativeX: -0.1, relativeY: 0.8 }],
+          ["IntroHeli", { key: "heli" }]
         ],
         timeline: {
           defaultDuration: 12000,
           transitions: [
+            {
+              start: 0.0,
+              end: 0.3,
+              key: "heli",
+              path: { name: "introHeliLiftOff", start: 0.2, end: 1.0 }
+            },
             {
               key: "ship",
               start: 0.1,
@@ -214,6 +239,12 @@ export default {
             },
             {
               key: "ship",
+              start: 1.0,
+              end: 1.0,
+              remove: true
+            },
+            {
+              key: "heli",
               start: 1.0,
               end: 1.0,
               remove: true
