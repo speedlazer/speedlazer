@@ -13,6 +13,7 @@ import "./GravitySupport";
 import "./Horizon";
 import "./Invincible";
 import "./ShipSpawnable";
+import "./Rotating";
 import "./SpriteShader";
 import "./TextInput";
 

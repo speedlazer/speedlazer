@@ -3,6 +3,7 @@ import battleShip from "./BattleShip.entity.json";
 import introShip from "./IntroShip.entity.json";
 import playerShip from "./PlayerShip.entity.json";
 import drone from "./Drone.entity.json";
+import mine from "./Mine.entity.json";
 import weapons from "./Weapons.entity.json";
 
 export default {
@@ -11,5 +12,6 @@ export default {
   ...introShip,
   ...drone,
   ...sun,
-  ...weapons
+  ...weapons,
+  ...mine
 };
