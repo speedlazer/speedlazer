@@ -15,7 +15,10 @@ Crafty.c(Animation, {
     this.elements = {};
   },
 
-  setAnimation(animation, { maxCheckpoint = 0, ...options } = {}) {
+  setAnimation(
+    animation,
+    { maxCheckpoint = 0, cleanup = true, ...options } = {}
+  ) {
     if (this.currentAnimation === animation) return;
     this.currentAnimation = animation;
 
@@ -89,7 +92,6 @@ Crafty.c(Animation, {
       }
     });
     toRemove.forEach(k => {
-      this.elements[k].destroy();
       delete this.elements[k];
     });
 
@@ -183,6 +185,14 @@ Crafty.c(Animation, {
           easing: t.path.easing || "linear"
         });
       }
+      if (t.remove && t.key) {
+        t.handled = true;
+        const elem = this.elements[t.key];
+        if (!elem) return;
+        console.log("Removing element", t.key);
+        this.elements[t.key].destroy();
+        delete this.elements[t.key];
+      }
     });
 
     if (value >= 1.0) {
@@ -192,16 +202,15 @@ Crafty.c(Animation, {
         this.maxAllowedCheckpoint > this.targetCheckpoint &&
         this.currentAnimation.checkpoints.length > this.targetCheckpoint + 1
       ) {
+        this.trigger("CheckpointReached", {
+          checkpoint: this.targetCheckpoint + 1
+        });
         this.setActiveCheckpoint(this.targetCheckpoint + 1);
+        // Emit an event that checkpoint is updated
       } else {
-        const after = this.currentAnimation.after;
-        if (after && after.cleanup) {
-          after.cleanup.forEach(key => {
-            this.elements[key].destroy();
-            delete this.elements[key];
-          });
-        }
-
+        this.trigger("CheckpointReached", {
+          checkpoint: this.targetCheckpoint + 1
+        });
         this.trigger("AnimationEnded", { checkpoint: this.targetCheckpoint });
       }
     }
@@ -210,12 +219,45 @@ Crafty.c(Animation, {
 
 export default Animation;
 
-export const playAnimation = (animation, { max = Infinity } = {}) =>
-  new Promise(resolve => {
-    const player = Crafty.e(Animation);
-    player.setAnimation(animation, { maxCheckpoint: max });
-    player.one("AnimationEnded", () => {
-      player.destroy();
-      resolve();
-    });
+export const playAnimation = (
+  animation,
+  { max = Infinity, cleanup = true } = {}
+) => {
+  const player = Crafty.e(Animation);
+  player.setAnimation(animation, { maxCheckpoint: max, cleanup });
+  let checkpointReached = null;
+  let checkpointSubscriptions = [];
+  player.bind("CheckpointReached", ({ checkpoint }) => {
+    checkpointReached = checkpoint;
+    checkpointSubscriptions = checkpointSubscriptions.filter(
+      ({ checkpoint: matchCheckpoint, resolver }) => {
+        if (matchCheckpoint <= checkpoint) {
+          resolver();
+          return false;
+        }
+        return true;
+      }
+    );
   });
+
+  return {
+    waitTillCheckpoint: checkpoint =>
+      checkpoint <= checkpointReached
+        ? Promise.resolve()
+        : new Promise((resolver, rejecter) => {
+            checkpointSubscriptions.push({ checkpoint, resolver, rejecter });
+          }),
+    updateCheckpointLimit: newLimit => {
+      console.log("updateCheckpointLimit", newLimit);
+      player.setCheckpointLimit(newLimit);
+    },
+    waitTillEnd: () =>
+      new Promise(resolve => player.one("AnimationEnded", resolve)),
+    destroy: () => {
+      checkpointSubscriptions.forEach(({ rejecter }) =>
+        rejecter(new Error("Animation destroyed"))
+      );
+      player.destroy();
+    }
+  };
+};

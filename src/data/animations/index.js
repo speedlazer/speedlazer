@@ -77,6 +77,12 @@ export default {
                 start: 0.2,
                 end: 0.4
               }
+            },
+            {
+              key: "night",
+              start: 1.0,
+              end: 1.0,
+              remove: true
             }
           ]
         }
@@ -190,16 +196,7 @@ export default {
             }
           ]
         }
-      }
-    ],
-    habitat: {
-      scenery: "City.Ocean",
-      scrollSpeed: { vx: -100, vy: 0 },
-      background: ["City.Sunrise", 0]
-    }
-  },
-  "City.Intro2": {
-    checkpoints: [
+      },
       {
         entities: [
           ["IntroShip", { key: "ship", relativeX: -0.1, relativeY: 0.8 }]
@@ -214,14 +211,17 @@ export default {
               path: {
                 data: [{ x: -0.1, y: 0.8 }, { x: -1.0, y: 0.8 }]
               }
+            },
+            {
+              key: "ship",
+              start: 1.0,
+              end: 1.0,
+              remove: true
             }
           ]
         }
       }
     ],
-    after: {
-      cleanup: ["ship"]
-    },
     habitat: {
       scenery: "City.Ocean",
       scrollSpeed: { vx: -100, vy: 0 },

@@ -8,7 +8,8 @@ import { h, Component } from "preact";
 
 class Animations extends Component {
   state = {
-    animationLimit: 0
+    animationLimit: 0,
+    currentCheckpoint: 0
   };
 
   increaseLimit = () => {
@@ -18,7 +19,24 @@ class Animations extends Component {
     }));
   };
 
-  render({ animation, checkpoint }, { animationLimit }) {
+  onCheckpointChange = newCheckpoint => {
+    this.setState(s => ({
+      ...s,
+      currentCheckpoint: newCheckpoint
+    }));
+  };
+
+  componentDidUpdate(oldProps) {
+    if (oldProps.animation !== this.props.animation) {
+      this.setState(s => ({
+        ...s,
+        currentCheckpoint: 0,
+        animationLimit: 0
+      }));
+    }
+  }
+
+  render({ animation, checkpoint }, { animationLimit, currentCheckpoint }) {
     const activeAnimation = animations[animation];
     return (
       <section>
@@ -42,6 +60,7 @@ class Animations extends Component {
                 >
                   Increase allowed checkpoint
                 </button>
+                <Text>Currently at: {currentCheckpoint}</Text>
               </div>
               <Menu
                 horizontal={true}
@@ -54,6 +73,7 @@ class Animations extends Component {
                 animation={activeAnimation}
                 activeCheckpoint={checkpoint ? parseInt(checkpoint, 10) : 0}
                 animationLimit={animationLimit}
+                onCheckpointChange={this.onCheckpointChange}
               />
             </div>
           )}

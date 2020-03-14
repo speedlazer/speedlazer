@@ -27,7 +27,8 @@ const stage1 = async ({
   await setScenery("City.Ocean");
   setBackground("City.Sunrise");
   text.remove();
-  await playAnimation("City.Intro");
+  const introAnimation = playAnimation("City.Intro");
+  await introAnimation.waitTillCheckpoint(3);
   showHUD();
   const ready = bigText("Get ready", { color: "#FF0000" });
   const blink = ready.blink(200, 4);
@@ -45,7 +46,8 @@ const stage1 = async ({
     await exec(droneWave(8, "pattern2", 500));
     await exec(droneWave(5, "pattern1", 500));
   };
-  await Promise.all([playAnimation("City.Intro2"), droneAttacks()]);
+  await Promise.all([introAnimation.waitTillEnd(), droneAttacks()]);
+  introAnimation.destroy();
 };
 
 export default stage1;

@@ -393,22 +393,33 @@ export const showFlyPattern = async (pattern, { showPoints, showPath }) => {
   Crafty.enterScene("FlyPatternPreview", { pattern, showPoints, showPath });
 };
 
-Crafty.defineScene("AnimationPreview", ({ animation, animationLimit }) => {
+Crafty.defineScene("AnimationPreview", ({ animation }) => {
   Crafty.trigger("EnterScene");
   setHabitat(animation.habitat);
-  playAnimation(animation, { max: animationLimit });
 });
+
+let currentAnimation = null;
+let currentAnimationState = null;
 
 export const showAnimation = async (
   animation,
   animationLimit,
-  activeCheckpoint
+  activeCheckpoint,
+  { cleanup = false } = {}
 ) => {
   await loadAssets();
+  if (inScene("AnimationPreview") && animation === currentAnimation) {
+    // take direct control over running animation
+    currentAnimationState.updateCheckpointLimit(animationLimit);
+    return;
+  }
+  currentAnimation = animation;
   Crafty.enterScene("AnimationPreview", {
-    animation,
-    animationLimit,
-    activeCheckpoint
+    animation
+  });
+  currentAnimationState = playAnimation(animation, {
+    max: animationLimit,
+    cleanup
   });
 };
 
