@@ -229,27 +229,39 @@ const Composable = "Composable";
 Crafty.c(Composable, {
   required: Animator,
 
+  events: {
+    Reorder() {
+      const zDelta = this.z - this.currentZ;
+
+      this.forEachPart(part => {
+        part.z += zDelta;
+      });
+
+      Object.entries(this.currentAttachHooks).forEach(([, hook]) => {
+        hook.z += zDelta;
+        hook.currentAttachment && (hook.currentAttachment.z += zDelta);
+      });
+      this.currentZ = this.z;
+    },
+    Freeze() {
+      this.appliedDefinition;
+      this.stopAnimation();
+      this._children.forEach(child => child.freeze && child.freeze());
+    },
+    Unfreeze() {
+      this._children.forEach(child => child.unfreeze && child.unfreeze());
+      if (this.getAnimation("default")) {
+        this.playAnimation("default");
+      }
+    }
+  },
+
   init() {
     this.appliedDefinition = definitionStructure;
     this.composableParts = [];
     this.gradientParts = [];
     this.currentAttachHooks = {};
     this.currentZ = this.z;
-    this.bind("Reorder", this.updateChildrenOrder);
-    this.bind("Freeze", this.composableFreeze);
-    this.bind("Unfreeze", this.composableUnfreeze);
-  },
-
-  composableFreeze() {
-    this.appliedDefinition;
-    this.stopAnimation();
-    this._children.forEach(child => child.freeze && child.freeze());
-  },
-  composableUnfreeze() {
-    this._children.forEach(child => child.unfreeze && child.unfreeze());
-    if (this.getAnimation("default")) {
-      this.playAnimation("default");
-    }
   },
 
   compose(proposedDefinition, { autoStartAnimation = true } = {}) {
@@ -364,20 +376,6 @@ Crafty.c(Composable, {
     if (t >= 1.0 && !this.activeAnimation.data.repeat) {
       this.stopAnimation();
     }
-  },
-
-  updateChildrenOrder() {
-    const zDelta = this.z - this.currentZ;
-
-    this.forEachPart(part => {
-      part.z += zDelta;
-    });
-
-    Object.entries(this.currentAttachHooks).forEach(([, hook]) => {
-      hook.z += zDelta;
-      hook.currentAttachment && (hook.currentAttachment.z += zDelta);
-    });
-    this.currentZ = this.z;
   },
 
   setOwnAttributes(attributes) {
