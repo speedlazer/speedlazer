@@ -26,9 +26,13 @@ const Entities = ({
           {activeEntity && activeEntity.states && (
             <Menu
               horizontal={true}
-              items={["default", ...Object.keys(activeEntity.states)].map(
-                key => [key, `/entities/${entity}/states/${key}/${habitatName}`]
-              )}
+              items={[
+                "default",
+                ...Object.keys(activeEntity.states)
+              ].map(key => [
+                key,
+                `/entities/${entity}/states/${key}/${habitatName}`
+              ])}
             />
           )}
           {activeEntity && activeEntity.habitats && (

@@ -37,4 +37,3 @@ const stage2 = async ({
 };
 
 export default stage2;
-

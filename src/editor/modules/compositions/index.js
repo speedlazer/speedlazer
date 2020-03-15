@@ -119,12 +119,12 @@ class Compositions extends Component {
                     ])
                     .concat(
                       activeComposition.animations ? [["|", ""]] : [],
-                      Object.keys(activeComposition.animations || {}).map(
-                        key => [
-                          key,
-                          `/compositions/${compositionName}/animations/${key}`
-                        ]
-                      )
+                      Object.keys(
+                        activeComposition.animations || {}
+                      ).map(key => [
+                        key,
+                        `/compositions/${compositionName}/animations/${key}`
+                      ])
                     )}
                 />
               )}

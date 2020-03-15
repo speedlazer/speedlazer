@@ -15,10 +15,7 @@ Crafty.c(Animation, {
     this.elements = {};
   },
 
-  setAnimation(
-    animation,
-    { maxCheckpoint = 0, cleanup = true, ...options } = {}
-  ) {
+  setAnimation(animation, { maxCheckpoint = 0, ...options } = {}) {
     if (this.currentAnimation === animation) return;
     this.currentAnimation = animation;
 

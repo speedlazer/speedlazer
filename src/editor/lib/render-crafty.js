@@ -85,10 +85,7 @@ const updateActualSize = (actualSize, entity) => {
 const createComposable = composition =>
   Crafty.e(["2D", "WebGL", Composable, "DebugComposable"].join(", "))
     .attr({ x: 0, y: 0, w: 40, h: 40 })
-    .compose(
-      composition,
-      { autoStartAnimation: false }
-    );
+    .compose(composition, { autoStartAnimation: false });
 
 const addColor = (entity, color) =>
   entity.attach(
