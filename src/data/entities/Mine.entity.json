@@ -7,7 +7,16 @@
         "SolidCollision",
         "PlayerEnemy",
         ["Rotating", { "vr": 0 }]
-      ]
+      ],
+      "attachments": {
+        "explosion": {
+          "weapon": {
+            "pattern": "mine.explosion",
+            "target": "PlayerShip",
+            "angle": 0
+          }
+        }
+      }
     },
     "states": {
       "rotate": {
@@ -23,11 +32,11 @@
       "explode": {
         "components": [["Rotating", { "vr": 0 }]],
         "frame": "hidden",
-        "audio": "explosion",
         "attachments": {
           "explosion": {
-            "composition": "explosion",
-            "animation": "default"
+            "weapon": {
+              "active": true
+            }
           },
           "smoke": {
             "particles": "drone.smoke"

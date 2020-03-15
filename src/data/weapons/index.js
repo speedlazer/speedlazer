@@ -334,6 +334,29 @@ export default {
       }
     }
   },
+  "mine.explosion": {
+    spawnRhythm: {
+      initialDelay: 1,
+      burst: 1,
+      shotDelay: 0,
+      burstDelay: 0,
+      spawns: [["explosion", {}]]
+    },
+    spawnables: {
+      explosion: {
+        spawnPosition: [0.5, 0.5],
+        velocity: [0, 0],
+        composition: "weapons.explosion",
+        damage: {
+          velocity: [-20e3, -30e3],
+          affects: "health",
+          duration: [2, 4],
+          name: "Explosion"
+        },
+        queue: [{ duration: 100, audio: "explosion" }, { duration: 2000 }]
+      }
+    }
+  },
   "ship.bullets": {
     spawnRhythm: {
       initialDelay: 1,

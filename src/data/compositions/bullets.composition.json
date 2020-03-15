@@ -77,7 +77,8 @@
   "weapons.explosion": {
     "attributes": {
       "width": 96,
-      "height": 96
+      "height": 96,
+      "ro": [48, 48]
     },
     "sprites": [["explosion1", { "scale": 1, "x": 0, "y": 0, "key": "main" }]],
     "animations": {

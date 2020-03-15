@@ -8,6 +8,7 @@ import ParticleEmitter from "src/components/ParticleEmitter";
 import "src/components/LightGlare";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";
+import "src/components/Rotating";
 import { playAnimation } from "src/components/Animation";
 import {
   setBackground,
