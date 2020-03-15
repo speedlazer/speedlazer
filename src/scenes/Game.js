@@ -1,6 +1,5 @@
 import { createScriptExecutionSpace } from "src/lib/dsl";
-import stage1 from "src/scripts/stage1.lazer";
-import stage2 from "src/scripts/stage2.lazer";
+import gameStructure from "src/scripts";
 import { stopMusic } from "src/lib/audio";
 
 import Player from "src/components/player/Player";
@@ -35,8 +34,9 @@ Crafty.defineScene(
     const state = { lives: 2, score: 0 };
     const runner = createScriptExecutionSpace(state);
     try {
-      await runner(stage1);
-      await runner(stage2);
+      for (const item of gameStructure) {
+        await runner(item.script);
+      }
       Crafty.enterScene("GameOver", {
         gameCompleted: true,
         score: state.score

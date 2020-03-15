@@ -1,6 +1,6 @@
-import battleship from "./stage1/battleship.lazer";
-import { droneWave } from "./stage1/drones.lazer";
-import { playerShip } from "./playerShip.lazer";
+import battleship from "./enemies/battleship.lazer";
+import { droneWave } from "./enemies/drones.lazer";
+import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
 import { playAudio } from "src/lib/audio";
 
@@ -37,3 +37,4 @@ const stage2 = async ({
 };
 
 export default stage2;
+

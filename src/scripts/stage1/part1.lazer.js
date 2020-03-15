@@ -1,5 +1,5 @@
-import { droneWave } from "./stage1/drones.lazer";
-import { playerShip } from "./playerShip.lazer";
+import { droneWave } from "./enemies/drones.lazer";
+import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
 import { playAudio } from "src/lib/audio";
 
