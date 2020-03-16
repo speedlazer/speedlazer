@@ -10,7 +10,8 @@ module.exports = {
         },
         modules: false,
         loose: true,
-        useBuiltIns: "usage"
+        useBuiltIns: "usage",
+        corejs: 3
       }
     ]
   ],
