@@ -1,4 +1,3 @@
-import "@babel/polyfill";
 import "!style-loader!css-loader!postcss-loader!sass-loader!./styles/normalize.css";
 import "!style-loader!css-loader!postcss-loader!sass-loader!./styles/style.css";
 import "./components";
