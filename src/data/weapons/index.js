@@ -51,7 +51,10 @@ export default {
       burst: [3, 9],
       shotDelay: [150, 90],
       burstDelay: [3000, 400],
-      spawns: [["bullet", {}], ["muzzleFlash", {}]]
+      spawns: [
+        ["bullet", {}],
+        ["muzzleFlash", {}]
+      ]
     },
     spawnables: {
       bullet: {
@@ -282,7 +285,10 @@ export default {
       burst: [3, 5],
       shotDelay: [350, 250],
       burstDelay: [3000, 400],
-      spawns: [["bullet", {}], ["muzzleFlash", {}]]
+      spawns: [
+        ["bullet", {}],
+        ["muzzleFlash", {}]
+      ]
     },
     spawnables: {
       bullet: {

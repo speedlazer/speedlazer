@@ -69,10 +69,10 @@ const calcHitPosition = (objA, objB) => {
   const yTopOverlap = objA.y < objB.y && objA.h + objA.y > objB.y;
   const yBottomOverlap = objA.y < objB.w + objB.h && objA.y + objA.h > objB.y;
 
-  if (xLeftOverlap && (!yTopOverlap && !yBottomOverlap)) {
+  if (xLeftOverlap && !yTopOverlap && !yBottomOverlap) {
     x = objB.x;
     y = objA.y + objA.h / 2;
-  } else if (xRightOverlap && (!yTopOverlap && !yBottomOverlap)) {
+  } else if (xRightOverlap && !yTopOverlap && !yBottomOverlap) {
     x = objB.x + objB.w;
     y = objA.y + objA.h / 2;
   } else if (yTopOverlap) {
