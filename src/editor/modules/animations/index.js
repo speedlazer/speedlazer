@@ -1,15 +1,53 @@
+import Composable from "src/components/Composable";
+import { EntityDefinition } from "src/components/EntityDefinition";
+
 import { AnimationPreview } from "./AnimationPreview";
 import animations from "src/data/animations";
 import { Menu } from "../../components/Menu";
+import Log from "../../components/Log";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
 import { Text } from "../../components/Text";
 import { h, Component } from "preact";
 
+const round3 = num => Math.round(num * 1000) / 1000;
+
+const entityReport = entity => {
+  if (entity.has(EntityDefinition)) {
+    return {
+      line: "Entity",
+      props: {
+        name: entity.appliedEntityName,
+        state: entity.appliedEntityState,
+        relativeX: round3(entity.x / Crafty.viewport.width),
+        relativeY: round3(entity.y / Crafty.viewport.height)
+      }
+    };
+  }
+  if (entity.has(Composable)) {
+    return {
+      line: "Composable",
+      props: {
+        relativeX: round3(entity.x / Crafty.viewport.width),
+        relativeY: round3(entity.y / Crafty.viewport.height)
+      }
+    };
+  }
+  return { line: "Unknown" };
+};
+
+const createSceneReport = player =>
+  Object.entries(player.elements).reduce(
+    (lines, [key, entity]) =>
+      lines.concat({ pre: key, ...entityReport(entity) }),
+    []
+  );
+
 class Animations extends Component {
   state = {
     animationLimit: 0,
-    currentCheckpoint: 0
+    currentCheckpoint: 0,
+    report: []
   };
 
   increaseLimit = () => {
@@ -19,10 +57,11 @@ class Animations extends Component {
     }));
   };
 
-  onCheckpointChange = newCheckpoint => {
+  onCheckpointChange = ({ checkpoint, player }) => {
     this.setState(s => ({
       ...s,
-      currentCheckpoint: newCheckpoint
+      currentCheckpoint: checkpoint,
+      report: createSceneReport(player)
     }));
   };
 
@@ -31,12 +70,16 @@ class Animations extends Component {
       this.setState(s => ({
         ...s,
         currentCheckpoint: 0,
-        animationLimit: 0
+        animationLimit: 0,
+        report: []
       }));
     }
   }
 
-  render({ animation, checkpoint }, { animationLimit, currentCheckpoint }) {
+  render(
+    { animation, checkpoint },
+    { animationLimit, currentCheckpoint, report }
+  ) {
     const activeAnimation = animations[animation];
     return (
       <section>
@@ -75,6 +118,7 @@ class Animations extends Component {
                 animationLimit={animationLimit}
                 onCheckpointChange={this.onCheckpointChange}
               />
+              <Log log={report} />
             </div>
           )}
         </Divider>

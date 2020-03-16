@@ -15,12 +15,12 @@ Crafty.c(Animation, {
     this.elements = {};
   },
 
-  setAnimation(animation, { maxCheckpoint = 0, ...options } = {}) {
+  setAnimation(animation, { maxCheckpoint = 0, start = 0, ...options } = {}) {
     if (this.currentAnimation === animation) return;
     this.currentAnimation = animation;
 
     this.maxAllowedCheckpoint = maxCheckpoint;
-    this.setActiveCheckpoint(0, options);
+    this.setActiveCheckpoint(start, options);
   },
 
   setCheckpointLimit(limit) {
@@ -70,24 +70,25 @@ Crafty.c(Animation, {
 
         const e =
           Crafty(entity).get(0) ||
-          createEntity(entity, settings).attr({ x, y, z: this.z });
-        if (settings.detach) {
-          if (e.detachFromParent) {
-            e.detachFromParent();
-          }
+          createEntity(entity, settings).attr({
+            x,
+            y,
+            z: this.z + (settings.z || 0)
+          });
+        if (settings.detach && e.detachFromParent) {
+          e.detachFromParent();
         }
 
         this.elements[settings.key] = e;
         if (settings.state) e.showState(settings.state);
       } else {
-        settings.relativeX &&
-          existing.attr({ x: settings.relativeX * Crafty.viewport.width });
-        settings.relativeY &&
-          existing.attr({ y: settings.relativeY * Crafty.viewport.height });
         existing.attr({ z: this.z });
         if (settings.state) existing.showState(settings.state);
       }
     });
+    if (checkpointData.background) {
+      setBackgroundColor(checkpointData.background);
+    }
     toRemove.forEach(k => {
       delete this.elements[k];
     });
@@ -217,10 +218,10 @@ export default Animation;
 
 export const playAnimation = (
   animation,
-  { max = Infinity, cleanup = true } = {}
+  { max = Infinity, start = 0 } = {}
 ) => {
   const player = Crafty.e(Animation);
-  player.setAnimation(animation, { maxCheckpoint: max, cleanup });
+  player.setAnimation(animation, { maxCheckpoint: max, start });
   let checkpointReached = null;
   let checkpointSubscriptions = [];
   player.bind("CheckpointReached", ({ checkpoint }) => {
@@ -228,7 +229,7 @@ export const playAnimation = (
     checkpointSubscriptions = checkpointSubscriptions.filter(
       ({ checkpoint: matchCheckpoint, resolver }) => {
         if (matchCheckpoint == null) {
-          resolver(checkpoint);
+          resolver({ checkpoint, player });
           return true;
         }
         if (matchCheckpoint <= checkpoint) {
@@ -249,6 +250,9 @@ export const playAnimation = (
           }),
     onCheckpointChange: callback => {
       checkpointSubscriptions.push({ checkpoint: null, resolver: callback });
+    },
+    updateCheckpoint: start => {
+      player.setActiveCheckpoint(start);
     },
     updateCheckpointLimit: newLimit => {
       player.setCheckpointLimit(newLimit);

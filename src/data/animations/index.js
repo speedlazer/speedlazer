@@ -58,7 +58,12 @@ export default {
           ["background.night", { key: "night", frame: "end" }],
           ["background.sky", { key: "sky", frame: "dawn5" }]
         ],
-        entities: [["Sun", { key: "sun", state: "large" }]],
+        entities: [
+          [
+            "Sun",
+            { key: "sun", state: "large", relativeX: 0.848, relativeY: 0.42 }
+          ]
+        ],
         backgroundColor: "#FD7321",
         timeline: {
           defaultDuration: 60000,
@@ -89,7 +94,9 @@ export default {
       },
       {
         composables: [["background.sky", { key: "sky", frame: "dawn7" }]],
-        entities: [["Sun", { key: "sun", state: "full" }]],
+        entities: [
+          ["Sun", { key: "sun", state: "full", relativeX: 0.8, relativeY: 0.3 }]
+        ],
         backgroundColor: "#FCC67B",
         timeline: {
           defaultDuration: 120000,
@@ -144,7 +151,10 @@ export default {
       },
       {
         entities: [
-          ["IntroShip", { key: "ship" }],
+          [
+            "IntroShip",
+            { key: "ship", state: "heliStart", relativeX: -0.2, relativeY: 0.8 }
+          ],
           [
             "IntroHeli",
             {
@@ -170,10 +180,12 @@ export default {
             "IntroShip",
             {
               key: "ship",
-              state: "shipLiftOff"
+              state: "shipLiftOff",
+              relativeX: -0.2,
+              relativeY: 0.8
             }
           ],
-          ["IntroHeli", { key: "heli" }],
+          ["IntroHeli", { key: "heli", state: "flying", detach: true }],
           [
             "PlayerShip",
             {
@@ -224,7 +236,17 @@ export default {
       {
         entities: [
           ["IntroShip", { key: "ship", relativeX: -0.1, relativeY: 0.8 }],
-          ["IntroHeli", { key: "heli" }]
+          [
+            "IntroHeli",
+            {
+              key: "heli",
+              state: "flying",
+              relativeX: 0.466,
+              relativeY: 0.458,
+              z: 10,
+              detach: true
+            }
+          ]
         ],
         timeline: {
           defaultDuration: 12000,

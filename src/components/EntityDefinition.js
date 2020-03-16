@@ -127,6 +127,8 @@ const setEntityStructure = (entity, state, duration) => {
 Crafty.c(EntityDefinition, {
   init() {
     this.appliedEntityDefinition = null;
+    this.appliedEntityName = null;
+    this.appliedEntityState = "default";
     this.showState = this.showState.bind(this);
   },
 
@@ -137,6 +139,7 @@ Crafty.c(EntityDefinition, {
     setEntityStructure(this, structure, 0);
 
     this.appliedEntityDefinition = definition;
+    this.appliedEntityName = entityName;
     return this;
   },
 
@@ -146,6 +149,7 @@ Crafty.c(EntityDefinition, {
         ? this.appliedEntityDefinition.structure
         : this.appliedEntityDefinition.states[stateName];
     if (!stateDefinition) return;
+    this.appliedEntityState = stateName;
     setEntityStructure(this, stateDefinition, duration);
   }
 });

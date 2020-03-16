@@ -398,27 +398,34 @@ Crafty.defineScene("AnimationPreview", ({ animation }) => {
 
 let currentAnimation = null;
 let currentAnimationState = null;
+let animationStartCheckpoint = null;
 
 export const showAnimation = async (
   animation,
   animationLimit,
   activeCheckpoint,
-  { cleanup = false, onCheckpointChange } = {}
+  { onCheckpointChange } = {}
 ) => {
   await loadAssets();
-  if (inScene("AnimationPreview") && animation === currentAnimation) {
+  if (
+    inScene("AnimationPreview") &&
+    animation === currentAnimation &&
+    activeCheckpoint === animationStartCheckpoint
+  ) {
     // take direct control over running animation
     currentAnimationState.updateCheckpointLimit(animationLimit);
     return;
   }
   currentAnimation = animation;
+  animationStartCheckpoint = activeCheckpoint;
   Crafty.enterScene("AnimationPreview", {
     animation
   });
   currentAnimationState = playAnimation(animation, {
     max: animationLimit,
-    cleanup
+    start: activeCheckpoint
   });
+
   onCheckpointChange &&
     currentAnimationState.onCheckpointChange(onCheckpointChange);
 };

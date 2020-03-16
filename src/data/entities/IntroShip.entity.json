@@ -103,7 +103,8 @@
         "animation": "flying"
       },
       "flying": {
-        "frame": "tilted"
+        "frame": "tilted",
+        "animation": "flying"
       }
     }
   }
