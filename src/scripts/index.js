@@ -4,8 +4,8 @@ import s1p3 from "./stage1/part3.lazer";
 
 const gameStructure = [
   { name: "stage1.intro", script: s1p1 },
-  { name: "state1.mines", script: s1p2 },
-  { name: "state1.battleship", script: s1p3 }
+  { name: "stage1.mines", script: s1p2 },
+  { name: "stage1.battleship", script: s1p3 }
 ];
 
 export default gameStructure;

@@ -10,6 +10,7 @@ import Animations from "src/editor/modules/animations";
 import Paths from "src/editor/modules/paths";
 import Weapons from "src/editor/modules/weapons";
 import Particles from "src/editor/modules/particles";
+import Game from "src/editor/modules/game";
 
 export const App = () => (
   <div>
@@ -24,7 +25,8 @@ export const App = () => (
         ["Particles", "/particles"],
         ["Animations", "/animations"],
         ["Sceneries", "/sceneries"],
-        ["Entities", "/entities"]
+        ["Entities", "/entities"],
+        ["Game", "/game"]
       ]}
     />
     <Router>
@@ -43,6 +45,7 @@ export const App = () => (
       <Paths path="/editor/paths/:pattern?" />
       <Weapons path="/editor/weapons/:weapon?" />
       <Particles path="/editor/particles/:particles?" />
+      <Game path="/editor/game/:stage?" />
     </Router>
   </div>
 );

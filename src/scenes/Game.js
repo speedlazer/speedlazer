@@ -7,9 +7,6 @@ import Player from "src/components/player/Player";
 Crafty.defineScene(
   "Game",
   async () => {
-    // import from globals
-    Game.backgroundColor = null;
-
     Crafty.createLayer("UILayerDOM", "DOM", {
       scaleResponse: 0,
       yResponse: 0,

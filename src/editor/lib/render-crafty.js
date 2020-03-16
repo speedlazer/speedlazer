@@ -18,6 +18,13 @@ import { createEntity } from "src/components/EntityDefinition";
 import { setScenery, setScrollVelocity } from "src/components/Scenery";
 import { getBezierPath } from "src/lib/BezierPath";
 import { loadAudio } from "src/lib/audio";
+import gameStructure from "src/scripts";
+import { createScriptExecutionSpace } from "src/lib/dsl";
+import { stopMusic } from "src/lib/audio";
+import Player from "src/components/player/Player";
+import AnalogKeyboardControls from "src/components/controls/AnalogKeyboardControls";
+import GamepadControls from "src/components/controls/GamepadControls";
+import PlayerAssignable from "src/components/player/PlayerAssignable";
 
 Crafty.paths({
   audio: "",
@@ -54,6 +61,12 @@ export const mount = domElem => {
   });
 };
 
+Crafty.defineScene(
+  "Stop",
+  () => {},
+  () => {}
+);
+
 export const unmount = () => {
   Crafty("2D").destroy();
   Crafty.unbind("MeasureWaitTime");
@@ -61,6 +74,7 @@ export const unmount = () => {
   Crafty.unbind("MeasureRenderTime");
 
   Crafty.unbind("EnterScene");
+  Crafty.enterScene("Stop");
   Crafty.stop();
 };
 
@@ -529,5 +543,96 @@ export const showParticleEmitter = async (emitter, { active, warmed }) => {
   Crafty.enterScene("ParticleEmitterPreview", {
     emitter,
     active
+  });
+};
+
+Crafty.defineScene(
+  "GamePreview",
+  async ({ stage }) => {
+    Crafty.createLayer("UILayerDOM", "DOM", {
+      scaleResponse: 0,
+      yResponse: 0,
+      xResponse: 0,
+      z: 40
+    });
+    Crafty.createLayer("UILayerWebGL", "WebGL", {
+      scaleResponse: 0,
+      yResponse: 0,
+      xResponse: 0,
+      z: 35
+    });
+    Crafty.createLayer("StaticBackground", "WebGL", {
+      scaleResponse: 0,
+      yResponse: 0,
+      xResponse: 0,
+      z: 0
+    });
+    Crafty.e([Player, "Color"].join(", "))
+      .attr({ name: "Player 1", z: 0, playerNumber: 1 })
+      .setName("Player 1")
+      .color("#FF0000");
+
+    Crafty.e([AnalogKeyboardControls, PlayerAssignable].join(", ")).controls({
+      fire: Crafty.keys.SPACE,
+      switchWeapon: Crafty.keys.Z,
+      heavy: Crafty.keys.C,
+      shield: Crafty.keys.X,
+      up: Crafty.keys.UP_ARROW,
+      down: Crafty.keys.DOWN_ARROW,
+      left: Crafty.keys.LEFT_ARROW,
+      right: Crafty.keys.RIGHT_ARROW,
+      pause: Crafty.keys.P
+    });
+
+    Crafty.e([GamepadControls, PlayerAssignable].join(", ")).controls({
+      gamepadIndex: 0,
+      fire: 0,
+      switchWeapon: 2,
+      super: 4,
+      pause: 9,
+      up: 12,
+      down: 13,
+      left: 14,
+      right: 15
+    });
+
+    Crafty.viewport.x = 0;
+    Crafty.viewport.y = 0;
+    const state = { lives: 0, score: 0 };
+    const runner = createScriptExecutionSpace(state);
+    const item = gameStructure.find(({ name }) => name === stage);
+
+    const p = new Promise(resolve =>
+      Crafty(Player).each(function() {
+        this.one("Activated", resolve);
+      })
+    );
+    await p;
+
+    try {
+      Crafty.trigger("EnterScene");
+      await runner(item.script);
+      //Crafty.enterScene("GameOver", {
+      //gameCompleted: true,
+      //score: state.score
+      //});
+    } catch (e) {
+      //Crafty.enterScene("GameOver", { score: state.score });
+    }
+  },
+  () => {
+    // destructor
+    stopMusic();
+    Crafty(Player).each(function() {
+      this.removeComponent("ShipSpawnable");
+    });
+    //Crafty.unbind("GameOver");
+    //Crafty.unbind("ScriptFinished");
+    //Crafty.unbind("GamePause");
+  }
+);
+export const showGame = stage => {
+  Crafty.enterScene("GamePreview", {
+    stage
   });
 };
