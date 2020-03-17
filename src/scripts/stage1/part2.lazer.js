@@ -25,9 +25,9 @@ const stage2 = async ({
   text.remove();
   exec(playerShip({ existing: true }));
 
-  await exec(mineWave(5, "pattern2", 500));
-  await exec(mineWave(5, "pattern2", 500));
-  await exec(mineWave(5, "pattern2", 500));
+  await exec(mineWave());
+  await exec(mineWave());
+  await exec(mineWave());
   await wait(3000);
 };
 
