@@ -1,7 +1,7 @@
 //import { getOne, pickOne } from "src/lib/utils";
 //import { EASE_IN_OUT } from "src/constants/easing";
 
-const droneFlight = pattern => async ({
+const mineFlight = pattern => async ({
   spawn,
   wait,
   //until,
@@ -11,7 +11,7 @@ const droneFlight = pattern => async ({
   moveWithPattern
 }) => {
   // spawn drone off screen
-  const drone = spawn("WarDrone", {
+  const mine = spawn("Mine", {
     location: {
       rx: 1.1,
       ry: 0.5
@@ -19,20 +19,20 @@ const droneFlight = pattern => async ({
     defaultVelocity: 400
   });
 
-  await call(drone.allowDamage, { health: 30 });
-  const movement = moveWithPattern(drone, pattern);
+  await call(mine.allowDamage, { health: 40 });
+  const movement = moveWithPattern(mine, pattern);
 
-  waitForEvent(drone, "Dead", async () => {
+  waitForEvent(mine, "Dead", async () => {
     movement.abort();
-    await call(drone.showState, "dead");
+    await call(mine.showState, "dead");
   });
 
   await movement.process;
   await wait(400);
-  drone.destroy();
+  mine.destroy();
 };
 
-export const droneWave = (amount, pattern, delay = 1000) => async ({
+export const mineWave = (amount, pattern, delay = 1000) => async ({
   exec,
   wait
 }) => {
@@ -40,7 +40,7 @@ export const droneWave = (amount, pattern, delay = 1000) => async ({
     .fill()
     .map(async (e, index) => {
       await wait(index * delay);
-      await exec(droneFlight(pattern));
+      await exec(mineFlight(pattern));
     });
   await Promise.all(items);
 };

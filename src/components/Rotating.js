@@ -1,7 +1,7 @@
 const component = "Rotating";
 
 Crafty.c(component, {
-  requires: "2D",
+  required: "2D",
   events: {
     EnterFrame({ dt }) {
       // vr = velocity of rotation

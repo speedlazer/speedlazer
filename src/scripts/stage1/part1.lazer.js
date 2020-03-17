@@ -15,7 +15,6 @@ const stage1 = async ({
   exec,
   wait
 }) => {
-  window.Crafty = Crafty;
   const text = bigText("Loading...");
   text.fadeIn(2000);
 

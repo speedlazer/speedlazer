@@ -622,7 +622,9 @@ Crafty.defineScene(
     try {
       Crafty.trigger("EnterScene");
       await runner(item.script);
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
 
     if (activeStage !== thisStage) return;
     Crafty.enterScene("Stop");

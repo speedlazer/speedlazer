@@ -13,7 +13,6 @@ const stage2 = async ({
   exec
   //wait
 }) => {
-  window.Crafty = Crafty;
   const text = bigText("Loading...");
   text.fadeIn(2000);
 
@@ -22,9 +21,8 @@ const stage2 = async ({
   playAudio("hero");
 
   await setScrollingSpeed(100, 0);
-  await setScenery("City.CoastStart");
+  await setScenery("City.Coast");
   setBackground("City.Sunrise");
-  //await text.fadeOut(2000);
   text.remove();
   exec(playerShip({ existing: true }));
 

@@ -5,6 +5,7 @@
       "height": 32,
       "ro": [16, 16]
     },
+    "hitbox": [4, 16, 16, 4, 28, 16, 16, 28],
     "sprites": [["standardMine", { "key": "main" }]],
     "frames": {
       "opening": {
