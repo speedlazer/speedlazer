@@ -1,6 +1,7 @@
 import spritesheets from "src/data/spritesheets";
 import animations from "src/data/animations";
 import audiosheets from "src/data/audio";
+import { bigText } from "src/components/BigText";
 import Composable from "src/components/Composable";
 import Weapon from "src/components/Weapon";
 import WayPointMotion from "src/components/WayPointMotion";
@@ -546,9 +547,13 @@ export const showParticleEmitter = async (emitter, { active, warmed }) => {
   });
 };
 
+let activeStage = null;
+
 Crafty.defineScene(
   "GamePreview",
-  async ({ stage }) => {
+  async function({ stage }) {
+    const thisStage = Math.random();
+    activeStage = thisStage;
     Crafty.createLayer("UILayerDOM", "DOM", {
       scaleResponse: 0,
       yResponse: 0,
@@ -567,6 +572,9 @@ Crafty.defineScene(
       xResponse: 0,
       z: 0
     });
+    const start = bigText("Use controller to start", { sup: stage });
+    start.show();
+
     Crafty.e([Player, "Color"].join(", "))
       .attr({ name: "Player 1", z: 0, playerNumber: 1 })
       .setName("Player 1")
@@ -598,8 +606,8 @@ Crafty.defineScene(
 
     Crafty.viewport.x = 0;
     Crafty.viewport.y = 0;
-    const state = { lives: 0, score: 0 };
-    const runner = createScriptExecutionSpace(state);
+    this.state = { lives: 0, score: 0 };
+    const runner = createScriptExecutionSpace(this.state);
     const item = gameStructure.find(({ name }) => name === stage);
 
     const p = new Promise(resolve =>
@@ -608,27 +616,23 @@ Crafty.defineScene(
       })
     );
     await p;
+    start.remove();
+    if (activeStage !== thisStage) return;
 
     try {
       Crafty.trigger("EnterScene");
       await runner(item.script);
-      //Crafty.enterScene("GameOver", {
-      //gameCompleted: true,
-      //score: state.score
-      //});
-    } catch (e) {
-      //Crafty.enterScene("GameOver", { score: state.score });
-    }
+    } catch (e) {}
+
+    if (activeStage !== thisStage) return;
+    Crafty.enterScene("Stop");
   },
-  () => {
-    // destructor
+  function() {
+    this.state.gameEnded = true;
     stopMusic();
     Crafty(Player).each(function() {
       this.removeComponent("ShipSpawnable");
     });
-    //Crafty.unbind("GameOver");
-    //Crafty.unbind("ScriptFinished");
-    //Crafty.unbind("GamePause");
   }
 );
 export const showGame = stage => {

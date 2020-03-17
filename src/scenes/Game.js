@@ -6,7 +6,7 @@ import Player from "src/components/player/Player";
 
 Crafty.defineScene(
   "Game",
-  async () => {
+  async function() {
     Crafty.createLayer("UILayerDOM", "DOM", {
       scaleResponse: 0,
       yResponse: 0,
@@ -28,23 +28,24 @@ Crafty.defineScene(
 
     Crafty.viewport.x = 0;
     Crafty.viewport.y = 0;
-    const state = { lives: 2, score: 0 };
-    const runner = createScriptExecutionSpace(state);
+    this.state = { lives: 0, score: 0 };
+    const runner = createScriptExecutionSpace(this.state);
     try {
       for (const item of gameStructure) {
         await runner(item.script);
       }
       Crafty.enterScene("GameOver", {
         gameCompleted: true,
-        score: state.score
+        score: this.state.score
       });
     } catch (e) {
-      Crafty.enterScene("GameOver", { score: state.score });
+      Crafty.enterScene("GameOver", { score: this.state.score });
     }
   },
-  () => {
-    // destructor
+  function() {
+    this.state.gameEnded = true;
     stopMusic();
+    // destructor
     Crafty(Player).each(function() {
       this.removeComponent("ShipSpawnable");
     });
