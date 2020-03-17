@@ -12,6 +12,20 @@ import { normalize, addEffect, processEffects } from "../../src/lib/effects";
 const round2 = number => Math.round(number * 100) / 100;
 
 describe("Effect model", () => {
+  it("returns false if there are no effects active", () => {
+    const applyEffects = processEffects();
+    const target = {
+      life: 100
+    };
+    const damage = {
+      velocity: -40e3, // DPS, active for 1 ms
+      affects: "life"
+    };
+
+    const result = applyEffects(target, 1);
+    expect(result).to.eq(false);
+  });
+
   it("supports direct impact damage", () => {
     const applyEffects = processEffects();
     const target = {

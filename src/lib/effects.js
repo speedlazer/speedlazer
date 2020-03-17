@@ -36,7 +36,7 @@ export const addEffect = (
 };
 
 export const processEffects = (worldRules = {}) => (target, duration) => {
-  if (target.effects === undefined || target.effects.length === 0) return {};
+  if (target.effects === undefined || target.effects.length === 0) return false;
   const { mutations, effects } = target.effects.reduce(
     (acc, effect) => {
       let travelDuration = Infinity;

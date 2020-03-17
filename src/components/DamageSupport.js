@@ -60,6 +60,10 @@ Crafty.c(DamageSupport, {
   _handleEffects({ dt }) {
     if (!this.effects) return;
     const changes = processor(this, dt);
+    if (changes === false) {
+      applyHitFlash(this, false);
+      return;
+    }
     Object.assign(this, changes);
 
     applyHitFlash(this, Object.keys(changes).includes("health"));
