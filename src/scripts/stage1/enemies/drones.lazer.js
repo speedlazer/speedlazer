@@ -10,7 +10,6 @@ const droneFlight = pattern => async ({
   waitForEvent,
   moveWithPattern
 }) => {
-  // spawn drone off screen
   const drone = spawn("WarDrone", {
     location: {
       rx: 1.1,

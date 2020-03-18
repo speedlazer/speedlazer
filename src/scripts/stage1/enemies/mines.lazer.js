@@ -10,7 +10,8 @@ const mineFlight = (coord, synchronize) => async ({
   waitForEvent,
   moveTo
 }) => {
-  // spawn drone off screen
+  let activeMovement = null;
+
   const mine = spawn("Mine", {
     location: {
       rx: 1.1,
@@ -21,23 +22,24 @@ const mineFlight = (coord, synchronize) => async ({
   await call(mine.showState, "rotate");
 
   await call(mine.allowDamage, { health: 40 });
-  const movement = moveTo(mine, { x: coord.x }, null, EASE_OUT);
+  activeMovement = moveTo(mine, { x: coord.x }, null, EASE_OUT);
 
   waitForEvent(mine, "Dead", async () => {
-    movement.abort();
+    activeMovement && activeMovement.abort();
+    synchronize();
     await call(mine.showState, "explode");
   });
 
-  await movement.process;
+  await activeMovement.process;
   await synchronize();
-  const movement2 = moveTo(mine, { y: coord.y }, 200, EASE_IN_OUT);
-  await movement2.process;
+  activeMovement = moveTo(mine, { y: coord.y }, 200, EASE_IN_OUT);
+  await activeMovement.process;
 
-  await wait(2000);
-  await call(mine.showState, "open");
-  await wait(500);
+  await wait(200 + Math.round(Math.random() * 3000));
+  await call(mine.showState, "open", 500);
+  await wait(100);
   await call(mine.showState, "blinking");
-  await wait(2000);
+  await wait(1000);
   await call(mine.showState, "explode");
   await wait(400);
   mine.destroy();
