@@ -25,7 +25,7 @@ const mineFlight = (coord, synchronize) => async ({
 
   waitForEvent(mine, "Dead", async () => {
     movement.abort();
-    await call(mine.showState, "dead");
+    await call(mine.showState, "explode");
   });
 
   await movement.process;
