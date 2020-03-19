@@ -9,14 +9,15 @@ import { tweenFn } from "src/components/generic/TweenPromise";
 import { easingFunctions } from "src/constants/easing";
 import { playAudio } from "src/lib/audio";
 
+const numArray = e =>
+  Array.isArray(e) && e.length === 2 && e.every(i => typeof i === "number");
+
 const adjustForDifficulty = (difficulty, numberOrArray, defaultValue = 0) =>
   numberOrArray === undefined
     ? defaultValue
-    : typeof numberOrArray === "number"
-    ? numberOrArray
-    : typeof numberOrArray === "string"
-    ? numberOrArray
-    : numberOrArray[0] + (numberOrArray[1] - numberOrArray[0]) * difficulty;
+    : numArray(numberOrArray)
+    ? numberOrArray[0] + (numberOrArray[1] - numberOrArray[0]) * difficulty
+    : numberOrArray;
 
 const applyDifficultyToObj = (difficulty, obj) =>
   obj &&
@@ -96,8 +97,9 @@ Crafty.c(Bullet, {
     const firstObj = hitData[0].obj;
     const position = calcHitPosition(this, firstObj);
 
-    firstObj.processDamage &&
+    if (firstObj.processDamage && this.bulletSettings.damage) {
       firstObj.processDamage(this.bulletSettings.damage);
+    }
 
     (collisionConfig.spawns || []).forEach(([name, settings]) => {
       spawnItem(
@@ -125,10 +127,11 @@ Crafty.c(Bullet, {
         ...applyDifficultyToObj(this.difficulty, event)
       })
     );
-    this.bulletSettings.damage = applyDifficultyToObj(
-      this.difficulty,
-      settings.damage
-    );
+    this.bulletSettings.damage =
+      settings.damage &&
+      settings.damage.map(damage =>
+        applyDifficultyToObj(this.difficulty, damage)
+      );
 
     const initialVelocity = adjustForDifficulty(
       this.difficulty,
@@ -328,6 +331,23 @@ const spawnItem = (
         y: position.y - spawn._origin.y
       });
     }
+    if (itemDef.emitDamage) {
+      itemDef.emitDamage.forEach(damage => {
+        const damageObj = {
+          ...applyDifficultyToObj(spawner.difficulty, damage),
+          origin: { ...position }
+        };
+        const ownId = spawner.sourceEntity[0];
+        const result = damage.targets
+          .reduce((a, t) => a.concat(Array.from(Crafty(t))), [])
+          .filter((id, i, l) => l.indexOf(id) === i && id !== ownId);
+        result.forEach(id => {
+          const ent = Crafty(id);
+          if (ent.processDamage) ent.processDamage(damageObj);
+        });
+      });
+    }
+
     spawn.bullet(definition, settings, target);
   });
 };

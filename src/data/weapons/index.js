@@ -353,12 +353,18 @@ export default {
         spawnPosition: [0.5, 0.5],
         velocity: [0, 0],
         composition: "weapons.explosion",
-        damage: {
-          velocity: [-20e3, -30e3],
-          affects: "health",
-          duration: [2, 4],
-          name: "Explosion"
-        },
+        emitDamage: [
+          {
+            targets: ["Mine"],
+            velocity: 100,
+            accelleration: -50,
+            lowerBounds: 0,
+            speed: 400,
+            affects: ["position"],
+            duration: 1000,
+            name: "Explosion"
+          }
+        ],
         queue: [{ duration: 100, audio: "explosion" }, { duration: 2000 }]
       }
     }
@@ -379,12 +385,14 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: [1050, 1200],
         composition: "weapons.lightBullet",
-        damage: {
-          velocity: [-20e3, -30e3],
-          affects: "health",
-          duration: [2, 4],
-          name: "Laser"
-        },
+        damage: [
+          {
+            velocity: [-20e3, -30e3],
+            affects: "health",
+            duration: [2, 4],
+            name: "Laser"
+          }
+        ],
         queue: [{ duration: 4000 }],
         collisions: {
           SolidCollision: {

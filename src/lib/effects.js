@@ -40,7 +40,6 @@ export const processEffects = (worldRules = {}) => (target, duration) => {
   const { mutations, effects } = target.effects.reduce(
     (acc, effect) => {
       let travelDuration = Infinity;
-
       if (
         effect.origin &&
         effect.speed &&

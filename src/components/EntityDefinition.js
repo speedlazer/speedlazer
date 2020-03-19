@@ -28,7 +28,7 @@ export const createEntity = (entityName, options = {}) => {
 
 export const EntityDefinition = "EntityDefinition";
 
-const setEntityStructure = (entity, state, duration) => {
+const setEntityStructure = (root, entity, state, duration) => {
   if (state.composition) {
     const composition = compositions[state.composition];
     entity.addComponent(Composable).compose(composition);
@@ -109,9 +109,10 @@ const setEntityStructure = (entity, state, duration) => {
         if (attachDefinition) {
           const itemName = attachDefinition.name || attachPoint;
           const attachment =
-            entity[itemName] || Crafty.e("2D").attr({ w: 1, h: 1 });
+            entity[itemName] ||
+            Crafty.e("2D").attr({ w: 1, h: 1, sourceEntity: root });
 
-          setEntityStructure(attachment, attachDefinition, duration);
+          setEntityStructure(root, attachment, attachDefinition, duration);
           entity.attachEntity(attachPoint, attachment);
 
           entity[itemName] = attachment;
@@ -136,7 +137,7 @@ Crafty.c(EntityDefinition, {
     const definition = entities[entityName];
     this.addComponent(entityName);
     const structure = definition.structure;
-    setEntityStructure(this, structure, 0);
+    setEntityStructure(this, this, structure, 0);
 
     this.appliedEntityDefinition = definition;
     this.appliedEntityName = entityName;
@@ -150,6 +151,6 @@ Crafty.c(EntityDefinition, {
         : this.appliedEntityDefinition.states[stateName];
     if (!stateDefinition) return;
     this.appliedEntityState = stateName;
-    setEntityStructure(this, stateDefinition, duration);
+    setEntityStructure(this, this, stateDefinition, duration);
   }
 });

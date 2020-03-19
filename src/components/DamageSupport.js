@@ -1,5 +1,6 @@
+//import StackableCoordinates from "./StackableCoordinates";
 import { isPaused } from "src/lib/core/pauseToggle";
-import { addEffect, processEffects } from "src/lib/effects";
+import { addEffect, normalize, processEffects } from "src/lib/effects";
 
 const applyHitFlash = (entity, onOff) =>
   entity.forEachPart(part =>
@@ -8,15 +9,36 @@ const applyHitFlash = (entity, onOff) =>
     })
   );
 
-const processor = processEffects();
+const processor = processEffects({
+  position: (amount, effect, target) => {
+    if (target.weight === undefined) return {};
+    const [normX, normY] = normalize(
+      effect.origin.x,
+      effect.origin.y,
+      target.x,
+      target.y
+    );
+
+    const weighted = amount - amount * target.weight * target.weight;
+
+    return {
+      x: weighted * normX,
+      y: weighted * normY
+    };
+  }
+});
+
 const DamageSupport = "DamageSupport";
 
 Crafty.c(DamageSupport, {
+  //required: StackableCoordinates,
   events: {
     EnterFrame: "_handleEffects"
   },
 
   init() {
+    //this.createStackablePropertyFor("xEffect", "x");
+    //this.createStackablePropertyFor("yEffect", "y");
     this.attr({
       health: 0,
       vulnerable: false
@@ -53,7 +75,8 @@ Crafty.c(DamageSupport, {
       return;
     }
     if (this.vulnerable) {
-      addEffect(this, damage);
+      const target = this;
+      [].concat(damage).forEach(d => addEffect(target, d));
     }
   },
 

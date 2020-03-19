@@ -3,7 +3,7 @@
     "structure": {
       "composition": "mine",
       "components": [
-        "DamageSupport",
+        ["DamageSupport", { "weight": 0.2 }],
         "SolidCollision",
         "PlayerEnemy",
         ["Rotating", { "vr": 0 }]

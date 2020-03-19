@@ -35,7 +35,7 @@ const mineFlight = (coord, synchronize) => async ({
   activeMovement = moveTo(mine, { y: coord.y }, 200, EASE_IN_OUT);
   await activeMovement.process;
 
-  await wait(200 + Math.round(Math.random() * 3000));
+  await wait(200 + Math.round(Math.random() * 8000));
   await call(mine.showState, "open", 500);
   await wait(100);
   await call(mine.showState, "blinking");
