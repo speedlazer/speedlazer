@@ -1,6 +1,11 @@
-//import StackableCoordinates from "./StackableCoordinates";
+import StackableCoordinates from "./StackableCoordinates";
 import { isPaused } from "src/lib/core/pauseToggle";
-import { addEffect, normalize, processEffects } from "src/lib/effects";
+import {
+  applyForce,
+  addEffect,
+  normalize,
+  processEffects
+} from "src/lib/effects";
 
 const applyHitFlash = (entity, onOff) =>
   entity.forEachPart(part =>
@@ -18,12 +23,9 @@ const processor = processEffects({
       target.x,
       target.y
     );
-
-    const weighted = amount - amount * target.weight * target.weight;
-
     return {
-      x: weighted * normX,
-      y: weighted * normY
+      xForce: normX,
+      yForce: normY
     };
   }
 });
@@ -31,17 +33,23 @@ const processor = processEffects({
 const DamageSupport = "DamageSupport";
 
 Crafty.c(DamageSupport, {
-  //required: StackableCoordinates,
+  required: StackableCoordinates,
   events: {
     EnterFrame: "_handleEffects"
   },
 
   init() {
-    //this.createStackablePropertyFor("xEffect", "x");
-    //this.createStackablePropertyFor("yEffect", "y");
+    this.createStackablePropertyFor("xMomentumShift", "x");
+    this.createStackablePropertyFor("yMomentumShift", "y");
     this.attr({
       health: 0,
-      vulnerable: false
+      vulnerable: false,
+      xMomentum: 0,
+      yMomentum: 0,
+      xMomentumShift: 0,
+      yMomentumShift: 0,
+      xForce: 0,
+      yForce: 0
     });
     this.allowDamage = this.allowDamage.bind(this);
     this.hasHealth = this.hasHealth.bind(this);
@@ -81,13 +89,34 @@ Crafty.c(DamageSupport, {
   },
 
   _handleEffects({ dt }) {
-    if (!this.effects) return;
+    //if (!this.effects) return;
     const changes = processor(this, dt);
-    if (changes === false) {
-      applyHitFlash(this, false);
-      return;
+    //if (changes === false) {
+    //applyHitFlash(this, false);
+    //return;
+    //}
+
+    if (this.xMomentum > 0 || changes) {
+      this.xMomentum = applyForce(
+        this.xMomentum,
+        Math.abs((changes && changes.xForce) || 0),
+        (this.weight || 0) * 200
+      );
     }
-    Object.assign(this, changes);
+    if (this.yMomentum > 0 || changes) {
+      this.yMomentum = applyForce(
+        this.yMomentum,
+        Math.abs((changes && changes.yForce) || 0),
+        (this.weight || 0) * 200
+      );
+    }
+
+    if (changes !== false) {
+      Object.assign(this, changes);
+    }
+
+    this.xMomentumShift += this.xMomentum * this.xForce;
+    this.yMomentumShift += this.yMomentum * this.yForce;
 
     applyHitFlash(this, Object.keys(changes).includes("health"));
     if (this.health <= 0) {

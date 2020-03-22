@@ -337,7 +337,7 @@ const spawnItem = (
           ...applyDifficultyToObj(spawner.difficulty, damage),
           origin: { ...position }
         };
-        const ownId = spawner.sourceEntity[0];
+        const ownId = spawner.sourceEntity && spawner.sourceEntity[0];
         const result = damage.targets
           .reduce((a, t) => a.concat(Array.from(Crafty(t))), [])
           .filter((id, i, l) => l.indexOf(id) === i && id !== ownId);

@@ -356,12 +356,12 @@ export default {
         emitDamage: [
           {
             targets: ["Mine"],
-            velocity: 100,
-            accelleration: -50,
+            velocity: 50,
+            accelleration: -15,
             lowerBounds: 0,
-            speed: 400,
+            speed: 2000,
             affects: ["position"],
-            duration: 1000,
+            duration: 300,
             name: "Explosion"
           }
         ],

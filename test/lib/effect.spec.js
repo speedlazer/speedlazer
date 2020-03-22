@@ -1,5 +1,10 @@
 import { expect } from "chai";
-import { normalize, addEffect, processEffects } from "../../src/lib/effects";
+import {
+  applyForce,
+  normalize,
+  addEffect,
+  processEffects
+} from "../../src/lib/effects";
 
 /**
  * Goals:
@@ -356,5 +361,21 @@ describe("Effect model", () => {
     expect(result.foo).to.be.undefined;
     expect(result.bar).to.be.undefined;
     expect(result.effects).to.eql([]);
+  });
+
+  describe("applyForce", () => {
+    it("accellerates when applied", () => {
+      let activeForce = 0;
+      const mass = 20;
+
+      for (let i = 0; i < 10; i++) {
+        activeForce = applyForce(activeForce, 3, mass);
+        console.log(activeForce);
+      }
+      for (let i = 0; i < 10; i++) {
+        activeForce = applyForce(activeForce, 0, mass);
+        console.log(activeForce);
+      }
+    });
   });
 });

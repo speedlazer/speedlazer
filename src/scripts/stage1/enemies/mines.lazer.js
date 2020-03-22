@@ -15,7 +15,7 @@ const mineFlight = (coord, synchronize) => async ({
   const mine = spawn("Mine", {
     location: {
       rx: 1.1,
-      ry: 0.4
+      ry: 0.5
     },
     defaultVelocity: 400
   });
@@ -35,7 +35,7 @@ const mineFlight = (coord, synchronize) => async ({
   activeMovement = moveTo(mine, { y: coord.y }, 200, EASE_IN_OUT);
   await activeMovement.process;
 
-  await wait(200 + Math.round(Math.random() * 8000));
+  await wait(200 + Math.random() * 2000);
   await call(mine.showState, "open", 500);
   await wait(100);
   await call(mine.showState, "blinking");
@@ -65,14 +65,14 @@ const makeSynchronization = amount => {
 export const mineWave = () => async ({ exec, wait }) => {
   const amount = 10;
   const gridX = [0.2, 0.4, 0.6, 0.8];
-  const gridY = [0.1, 0.3, 0.5, 0.7];
+  const gridY = [0.2, 0.4, 0.6];
 
   const coords = shuffle(
     gridX.reduce((list, x) => list.concat(gridY.map(y => ({ x, y }))), [])
   );
 
   const items = makeSynchronization(amount).map(async (res, index) => {
-    await wait(index * 500);
+    await wait(index * 200);
     await exec(mineFlight(coords.pop(), res));
   });
   await Promise.all(items);

@@ -128,3 +128,8 @@ export const processEffects = (worldRules = {}) => (target, duration) => {
     { effects }
   );
 };
+
+const clamp = num => (num > 1 ? 1 : num < 0 ? 0 : num);
+
+export const applyForce = (prevForce, currentForce, mass) =>
+  clamp(prevForce * 0.8 + currentForce / mass);
