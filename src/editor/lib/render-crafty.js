@@ -355,6 +355,16 @@ const showBezier = pattern => {
   }));
   const bezierPath = getBezierPath(normalizedPath);
 
+  pattern.forEach(({ triggers = [] }, index) => {
+    const part = bezierPath.curves[index];
+    triggers.forEach(([perc]) => {
+      const p = part.curve.get(perc);
+      Crafty.e("2D, WebGL, Color, BezierPath")
+        .attr({ x: p.x, y: p.y, w: 4, h: 4 })
+        .color("#FFFF00");
+    });
+  });
+
   for (let t = 0.0; t < 1.0; t += 0.01) {
     const p = bezierPath.get(t);
     Crafty.e("2D, WebGL, Color, BezierPath")
