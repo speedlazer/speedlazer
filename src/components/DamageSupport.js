@@ -89,6 +89,9 @@ Crafty.c(DamageSupport, {
   },
 
   _handleEffects({ dt }) {
+    /**
+     * TODO: Split behavior of 'force' from the rest
+     */
     //if (!this.effects) return;
     const changes = processor(this, dt);
     //if (changes === false) {
