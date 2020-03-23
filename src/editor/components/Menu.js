@@ -1,5 +1,6 @@
 import styles from "./Menu.scss";
 import { Link } from "preact-router/match";
+import { getCurrentUrl } from "preact-router";
 import { h, Component } from "preact";
 
 const classes = def =>
@@ -10,6 +11,11 @@ const classes = def =>
 
 const isFolder = name => f => f.type === "folder" && f.name === name;
 
+const folderPath = (name, path) => {
+  const parts = path.split("/");
+  return `${parts.slice(0, -1).join("/")}/${name.split(".")[0]}`;
+};
+
 const makeFolders = (acc, [name, path]) => {
   if (name.includes(".")) {
     const [folder, ...itemName] = name.split(".");
@@ -17,6 +23,7 @@ const makeFolders = (acc, [name, path]) => {
     if (!existingFolder) {
       return acc.concat({
         name: folder,
+        path: `/editor${folderPath(name, path)}`,
         type: "folder",
         items: [[itemName.join("."), path]]
       });
@@ -55,6 +62,13 @@ const Item = ({ name, path }) => (
 
 class Folder extends Component {
   state = { open: false };
+
+  componentDidMount() {
+    if (getCurrentUrl().startsWith(this.props.path)) {
+      this.setState({ open: true });
+    }
+  }
+
   render({ name, items }, { open }) {
     return (
       <li
@@ -78,7 +92,12 @@ const createStructure = items =>
   items
     .filter(({ type }) => type === "folder")
     .map(folder => (
-      <Folder key={folder.name} name={folder.name} items={folder.items} />
+      <Folder
+        key={folder.name}
+        name={folder.name}
+        path={folder.path}
+        items={folder.items}
+      />
     ))
     .concat(
       items
