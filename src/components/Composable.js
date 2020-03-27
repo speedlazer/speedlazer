@@ -483,7 +483,8 @@ Crafty.c(Composable, {
   },
 
   createAndAttachGradient(options) {
-    const subElem = Crafty.e(["2D, WebGL", Gradient, Delta2D].join(", "));
+    const renderLayer = this._drawLayer ? this._drawLayer.name : "WebGL";
+    const subElem = Crafty.e(["2D", renderLayer, Gradient, Delta2D].join(", "));
     this.applyGradientOptions(subElem, options);
     subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });
     this.attach(subElem);
@@ -524,8 +525,9 @@ Crafty.c(Composable, {
   },
 
   createAndAttachSprite([spriteName, options]) {
+    const renderLayer = this._drawLayer ? this._drawLayer.name : "WebGL";
     const subElem = Crafty.e(
-      ["2D, WebGL", Delta2D, Scalable, spriteName].join(", ")
+      ["2D", renderLayer, Delta2D, Scalable, spriteName].join(", ")
     );
     this.applySpriteOptions(subElem, options);
     subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });

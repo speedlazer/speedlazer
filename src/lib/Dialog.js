@@ -1,4 +1,7 @@
-export const say = (speaker, text, settings) =>
+import compositions from "src/data/compositions";
+import Composable from "src/components/Composable";
+
+export const say = (speaker, text, { portrait = null } = {}) =>
   new Promise(resolve => {
     Crafty("Dialog").each(function() {
       this.trigger("Abort");
@@ -7,54 +10,48 @@ export const say = (speaker, text, settings) =>
 
     const lines = text.split("\n");
 
-    const avatar = {
-      General: { n: "pGeneral", l: [0, 0] },
-      John: { n: "pPilot", l: [0, 4] }
-    }[speaker];
-
     const x = 60;
     const w = Crafty.viewport.width * 0.8;
-    const h = Math.max(avatar ? 4 : 0, lines.length + 1 + (speaker ? 1 : 0));
+    const bottom = Crafty.viewport.height - 20;
+    const h = Math.max(4, lines.length + 1 + (speaker ? 1 : 0));
 
     const back = Crafty.e("2D, UILayerWebGL, Color, Tween, Dialog")
-      .attr({ w, h: h * 20, alpha: 0.7 })
+      .attr({ w, h: h * 20, alpha: 0 })
       .color("#000000")
       .attr({
         x: x - 10,
-        y: settings.bottom - h * 20,
+        y: bottom + 50,
         z: 100
       });
     back.bind("Abort", resolve);
 
-    const avatarOffset = avatar ? 100 : 0;
-    if (avatar) {
-      const portrait = Crafty.e("2D, UILayerWebGL, SpriteAnimation")
-        .addComponent(avatar.n)
-        .sprite(avatar.l, 4, 4)
-        .attr({
-          x: back.x + 5,
-          y: back.y - 20,
-          z: back.z + 1,
-          w: 96,
-          h: 96
-        })
-        .reel("talk", 400, [avatar.l, [avatar.l[0] + 4, avatar.l[1]]])
-        .animate("talk", lines.length * 6);
-      back.attach(portrait);
+    let avatarOffset = 0;
 
-      // add noise to level
-      if (settings.noise !== "none" && avatar) {
-        portrait.addComponent("Delay");
-        portrait.delay(
-          () =>
-            portrait.attr({
-              alpha: 0.6 + Math.random() * 0.3
-            }),
-          150,
-          -1
-        );
-      }
+    const portraitDef = portrait && compositions[portrait];
+    let portraitEntity = null;
+    if (portraitDef) {
+      portraitEntity = Crafty.e(
+        ["2D", "UILayerWebGL", Composable, "Dialog"].join(", ")
+      )
+        .attr({ x: 0, y: 0, w: 40, h: 40 })
+        .compose(portraitDef, { autoStartAnimation: false });
+
+      portraitEntity.attr({
+        x: back.x + 5,
+        y: back.y + back.h - portraitEntity.h,
+        z: back.z + 1
+      });
+      avatarOffset = portraitEntity.w + 10;
+      back.attach(portraitEntity);
     }
+
+    back.tween(
+      {
+        y: bottom - h * 20,
+        alpha: 0.8
+      },
+      200
+    );
 
     let offset = 15;
     if (speaker) {
@@ -97,15 +94,37 @@ export const say = (speaker, text, settings) =>
     });
 
     const wordCount = lines.join(" ").split(" ").length;
+    const repeats = 1 + Math.ceil(wordCount / 4);
+    let i = 0;
 
     Crafty.e("Dialog, Delay").delay(
       function() {
-        resolve();
-        Crafty("Dialog").each(function() {
-          this.destroy();
-        });
+        i++;
+        if (portraitEntity) {
+          if (i === repeats) {
+            portraitEntity.stopAnimation();
+            portraitEntity.displayFrame("idle");
+          } else {
+            portraitEntity.playAnimation("talking");
+          }
+        }
       },
-      1500 * Math.ceil(wordCount / 5),
-      0
+      1000,
+      repeats,
+      function() {
+        back.one("TweenEnd", () => {
+          Crafty("Dialog").each(function() {
+            this.destroy();
+          });
+          resolve();
+        });
+        back.tween(
+          {
+            y: bottom + 50,
+            alpha: 0
+          },
+          200
+        );
+      }
     );
   });

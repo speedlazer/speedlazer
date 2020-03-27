@@ -19,12 +19,6 @@ Crafty.defineScene(
       xResponse: 0,
       z: 35
     });
-    Crafty.createLayer("StaticBackground", "WebGL", {
-      scaleResponse: 0,
-      yResponse: 0,
-      xResponse: 0,
-      z: 0
-    });
 
     Crafty.viewport.x = 0;
     Crafty.viewport.y = 0;
