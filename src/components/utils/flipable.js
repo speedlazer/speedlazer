@@ -1,4 +1,6 @@
-Crafty.c("Flipable", {
+const Component = "Flipable";
+
+Crafty.c(Component, {
   flipX() {
     if (this.xFlipped) {
       return;
@@ -26,7 +28,7 @@ Crafty.c("Flipable", {
 
     this._mirrorCollision();
     this._mirrorRotationPoints();
-    this._mirrorWeaponOrigin();
+    this._mirrorAttachPoints();
     return this;
   },
 
@@ -55,12 +57,12 @@ Crafty.c("Flipable", {
     }
     this._mirrorCollision();
     this._mirrorRotationPoints();
-    this._mirrorWeaponOrigin();
+    this._mirrorAttachPoints();
     return this;
   },
 
   _mirrorCollision() {
-    if (!this.map.points) {
+    if (!this.map || !this.map.points) {
       return;
     }
 
@@ -73,6 +75,26 @@ Crafty.c("Flipable", {
     }
   },
 
+  _mirrorAttachPoints() {
+    Object.entries(this.currentAttachHooks || {}).forEach(([name, hook]) => {
+      const relX = this.x + this.w - (hook.x + hook.w);
+      if (typeof hook.attr === "function") {
+        hook.attr({
+          x: this.x + relX
+        });
+      }
+      if (typeof hook.unflip === "function") {
+        hook.unflip("X");
+      }
+      if (hook.currentAttachment) {
+        const settings = this.attachHookSettings(name);
+        const xAlign = settings.attachAlign[1];
+        const aspect = { left: 0, right: 1, center: 0.5 }[xAlign] || 0;
+        hook.currentAttachment.x = hook.x - hook.currentAttachment.w * aspect;
+      }
+    });
+  },
+
   _mirrorRotationPoints() {
     this._origin.x = this.w - this._origin.x;
     Array.from(this._children).forEach(child => {
@@ -81,15 +103,7 @@ Crafty.c("Flipable", {
       }
       child.rotation = (360 + (360 - child.rotation)) % 360;
     });
-  },
-
-  _mirrorWeaponOrigin() {
-    if (this.weaponOrigin == null) {
-      return;
-    }
-    return (this.weaponOrigin = [
-      this.w - this.weaponOrigin[0],
-      this.weaponOrigin[1]
-    ]);
   }
 });
+
+export default Component;

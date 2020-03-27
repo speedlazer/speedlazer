@@ -21,6 +21,9 @@
           "trail": null
         }
       },
+      "turned": {
+        "frame": "turned"
+      },
       "dead": {
         "frame": "hidden",
         "audio": "explosion",

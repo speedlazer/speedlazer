@@ -45,6 +45,9 @@
           "sprite": "standardDroneDamage"
         }
       },
+      "turned": {
+        "flipX": true
+      },
       "hidden": {
         "main": {
           "hidden": true,

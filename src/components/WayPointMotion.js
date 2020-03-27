@@ -3,6 +3,13 @@ import StackableCoordinates from "./StackableCoordinates";
 
 const WayPointMotion = "WayPointMotion";
 
+const executeEvent = (event, entity) => {
+  const eventData = event.event;
+  if (eventData.setState && entity.showState) {
+    entity.showState(eventData.setState[0], eventData.setState[1]);
+  }
+};
+
 Crafty.c(WayPointMotion, {
   required: StackableCoordinates,
 
@@ -25,6 +32,16 @@ Crafty.c(WayPointMotion, {
       y: (y - base.y) * vph
     }));
     this.bezierPath = getBezierPath(normalizedPath);
+    this.eventQueue = pattern.reduce((acc, item, index) => {
+      if (item.events === undefined) return acc;
+      const part = this.bezierPath.curves[index];
+      return acc.concat(
+        item.events.map(([t, data]) => ({
+          pos: part.min + (part.length * t) / this.bezierPath.length,
+          event: data
+        }))
+      );
+    }, []);
 
     const duration = d || (this.bezierPath.length / velocity) * 1000;
 
@@ -57,6 +74,14 @@ Crafty.c(WayPointMotion, {
     this.wayPointEasing.tick(dt);
     const value = this.wayPointEasing.value();
     const p = this.bezierPath.get(value);
+    this.eventQueue = this.eventQueue.filter(e => {
+      if (e.pos <= value) {
+        // execute Event
+        executeEvent(e, this);
+        return false;
+      }
+      return true;
+    });
 
     this.attr({
       xPath: p.x - this.pathOffset.x,

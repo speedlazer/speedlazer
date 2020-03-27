@@ -355,9 +355,9 @@ const showBezier = pattern => {
   }));
   const bezierPath = getBezierPath(normalizedPath);
 
-  pattern.forEach(({ triggers = [] }, index) => {
+  pattern.forEach(({ events = [] }, index) => {
     const part = bezierPath.curves[index];
-    triggers.forEach(([perc]) => {
+    events.forEach(([perc]) => {
       const p = part.curve.get(perc);
       Crafty.e("2D, WebGL, Color, BezierPath")
         .attr({ x: p.x, y: p.y, w: 4, h: 4 })

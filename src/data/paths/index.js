@@ -17,17 +17,17 @@ export default {
     { x: 0.7, y: 0.8 },
     { x: 0.5, y: 0.2 },
     { x: 0.3, y: 0.8 },
-    { x: 0.1, y: 0.5 },
-    { x: 0.3, y: 0.2 },
+    { x: 0.1, y: 0.5, events: [[0.2, { setState: ["turned", 500] }]] },
+    { x: 0.3, y: 0.2, events: [[0.9, { setState: ["turned", 500] }]] },
     { x: 0.9, y: 0.5 },
     { x: -0.1, y: 0.6 }
   ],
   pattern2: [
     { x: 1.1, y: 0.5 },
     { x: 0.5, y: 0.7 },
-    { x: 0.1, y: 0.5, triggers: [[0.1, "TurnAround"]] },
+    { x: 0.1, y: 0.5, events: [[0.1, { setState: ["turned", 500] }]] },
     { x: 0.3, y: 0.2 },
-    { x: 0.8, y: 0.2, triggers: [[0.6, "TurnAround"]] },
+    { x: 0.8, y: 0.2, events: [[0.6, { setState: ["turned", 500] }]] },
     { x: 0.9, y: 0.4 },
     { x: 0.4, y: 0.5 },
     { x: -0.1, y: 0.2 }

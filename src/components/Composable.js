@@ -7,6 +7,7 @@ import { colorFadeFn } from "src/components/generic/ColorFade";
 import Delta2D from "src/components/generic/Delta2D";
 import Gradient from "src/components/Gradient";
 import ColorEffects from "src/components/ColorEffects";
+import Flipable from "src/components/utils/flipable";
 import { globalStartTime } from "src/lib/time";
 import { easingFunctions } from "src/constants/easing";
 
@@ -126,6 +127,15 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
 
         return acc.concat(tweenFn(entity, tweenSettings, sourceTweenSettings));
       }
+      if (keyName === "flipX") {
+        entity.addComponent(Flipable);
+        const xFlipped = entity.xFlipped;
+        return acc.concat(() => {
+          if (xFlipped === entity.xFlipped) {
+            entity.xFlipped ? entity.unflipX() : entity.flipX();
+          }
+        });
+      }
       const sprite = entity.composableParts.find(
         part => part.attr("key") === keyName
       );
@@ -237,7 +247,7 @@ Crafty.c(Composable, {
         part.z += zDelta;
       });
 
-      Object.entries(this.currentAttachHooks).forEach(([, hook]) => {
+      Object.values(this.currentAttachHooks).forEach(hook => {
         hook.z += zDelta;
         hook.currentAttachment && (hook.currentAttachment.z += zDelta);
       });
@@ -583,11 +593,12 @@ Crafty.c(Composable, {
     return this.appliedDefinition.sprites[index][1];
   },
 
+  attachHookSettings(targetHookName) {
+    return getHookSettings(this.appliedDefinition, targetHookName);
+  },
+
   attachEntity(targetHookName, entity) {
-    const hookSettings = getHookSettings(
-      this.appliedDefinition,
-      targetHookName
-    );
+    const hookSettings = this.attachHookSettings(targetHookName);
     const hook = this.currentAttachHooks[targetHookName];
     if (!hook) return;
     if (hook.currentAttachment && hook.currentAttachment !== entity) {
