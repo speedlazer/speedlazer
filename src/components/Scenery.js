@@ -12,6 +12,11 @@ export const setScrollVelocity = ({ vx, vy }) => {
   scenery.setScrollVelocity({ vx, vy });
 };
 
+export const setAltitude = newAltitude => {
+  const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
+  scenery.setAltitude(newAltitude);
+};
+
 const PIXEL_BUFFER = 300;
 
 Crafty.c("SceneryBlock", {
@@ -47,13 +52,12 @@ Crafty.c("SceneryBlock", {
       v3: Infinity,
       v4: -Infinity
     };
+    const dx = this.dx;
+    const dy = this.dy;
 
     this._children.forEach(child => {
       if (child.distance === 1) return;
-      child.shift(
-        -this.dx * (1 - child.distance),
-        -this.dy * (1 - child.distance)
-      );
+      child.shift(-dx * (1 - child.distance), -dy * (1 - child.distance));
       if (child.distance === this.farthestDistance) {
         if (child.x < sceneryVectors.v3) sceneryVectors.v3 = child.x;
         if (child.x + child.w > sceneryVectors.v4)
@@ -137,6 +141,7 @@ Crafty.c("Scenery", {
   init() {
     this.currentScenery = null;
     this.movingDirection = { vx: 0, vy: 0 };
+    this.altitude = 0;
     this.blocks = [];
     this.delay = null;
     this.bind("UpdateFrame", this.verifySceneryContent);
@@ -159,8 +164,13 @@ Crafty.c("Scenery", {
 
   startScenery(
     sceneryName,
-    { startXPos = 0, startYPos = 0, direction = SCENERY_DIRECTIONS.RIGHT } = {}
+    {
+      startXPos = 0,
+      startYPos = null,
+      direction = SCENERY_DIRECTIONS.RIGHT
+    } = {}
   ) {
+    this.altitude = startYPos || this.altitude;
     const scenery = sceneries[sceneryName];
     let block = this.blocks.find(
       b => b.__frozen && b.sceneryName === sceneryName
@@ -169,12 +179,12 @@ Crafty.c("Scenery", {
     if (block) {
       block.unfreeze();
       const dx = startXPos - block.x;
-      const dy = startYPos - block.y;
+      const dy = this.altitude - block.y;
       block.moveScenery(dx, dy, this.movingDirection);
     } else {
       let staleBlock = this.blocks.find(b => b.__frozen);
 
-      block = createBlock(scenery, startXPos, startYPos);
+      block = createBlock(scenery, startXPos, this.altitude);
       block.sceneryName = sceneryName;
       if (staleBlock) {
         const index = this.blocks.indexOf(staleBlock);
@@ -196,7 +206,7 @@ Crafty.c("Scenery", {
         this.currentScenery = null;
         this.startScenery(nextBlock, {
           startXPos: nextPos,
-          startYPos,
+          startYPos: this.altitude,
           direction: SCENERY_DIRECTIONS.RIGHT
         });
       }
@@ -212,7 +222,7 @@ Crafty.c("Scenery", {
         this.currentScenery = null;
         this.startScenery(nextBlock, {
           startXPos: nextPos,
-          startYPos,
+          startYPos: this.altitude,
           direction: SCENERY_DIRECTIONS.LEFT
         });
       }
@@ -223,6 +233,15 @@ Crafty.c("Scenery", {
     this.movingDirection = { vx, vy };
     this.blocks.forEach(block => block.attr({ vx, vy }));
     this.checkCountDown = this.blocks.length === 0 ? Infinity : 5;
+  },
+
+  setAltitude(newAltitude) {
+    this.blocks.forEach(
+      block =>
+        !block.__frozen &&
+        block.moveScenery(0, newAltitude - this.altitude, this.movingDirection)
+    );
+    this.altitude = newAltitude;
   },
 
   verifySceneryContent() {
@@ -282,7 +301,7 @@ Crafty.c("Scenery", {
       this.currentScenery = null;
       this.startScenery(nextBlock, {
         startXPos: fullSceneryVector.v2 + vx / fps,
-        startYPos: 0, // TODO: Support vertical movement
+        startYPos: this.altitude,
         direction: SCENERY_DIRECTIONS.RIGHT
       });
       return;
@@ -298,7 +317,7 @@ Crafty.c("Scenery", {
       const nextPos = fullSceneryVector.v1 - leftScenery.width;
       this.startScenery(nextBlock, {
         startXPos: nextPos + vx / fps,
-        startYPos: 0, // TODO: Support vertical movement
+        startYPos: this.altitude,
         direction: SCENERY_DIRECTIONS.LEFT
       });
       return;

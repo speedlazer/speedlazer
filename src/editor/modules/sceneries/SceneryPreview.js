@@ -1,7 +1,7 @@
 import { h, Component } from "preact";
 import { unmount, mount, showScenery } from "src/editor/lib/render-crafty";
 import Preview from "src/editor/components/Preview";
-import { setScrollVelocity } from "src/components/Scenery";
+import { setScrollVelocity, setAltitude } from "src/components/Scenery";
 
 export class SceneryPreview extends Component {
   constructor() {
@@ -41,6 +41,13 @@ export class SceneryPreview extends Component {
       this.state.craftyMounted
     ) {
       setScrollVelocity({ vx: this.props.scrollSpeed, vy: 0 });
+    }
+    if (
+      prevProps.altitude !== this.props.altitude &&
+      this.props.scenery &&
+      this.state.craftyMounted
+    ) {
+      setAltitude(this.props.altitude);
     }
   }
 

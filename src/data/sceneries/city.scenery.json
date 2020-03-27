@@ -5,6 +5,7 @@
     "right": "City.Coast",
     "left": "City.Coast",
     "backgrounds": [["City.Sunrise", 2]],
+    "altitudes": [0, 100],
     "elements": [
       {
         "x": 0,
