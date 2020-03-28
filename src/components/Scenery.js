@@ -1,6 +1,7 @@
 import sceneries from "src/data/sceneries";
 import compositions from "src/data/compositions";
 import { getOne } from "src/lib/utils";
+import merge from "lodash/merge";
 
 export const setScenery = sceneryName => {
   const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
@@ -101,8 +102,19 @@ const createBlock = (scenery, x, y) => {
 
     let entity;
     if (element.composition) {
+      let def;
+      if (typeof element.composition === "string") {
+        def = compositions[element.composition];
+      } else {
+        def = merge(
+          {},
+          compositions[element.composition[0]],
+          element.composition[1]
+        );
+      }
+
       entity = Crafty.e("2D, Composable")
-        .compose(compositions[element.composition])
+        .compose(def)
         .attr({ z: element.z });
     }
     if (element.components) {

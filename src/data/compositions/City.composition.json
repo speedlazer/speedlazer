@@ -41,15 +41,38 @@
     },
     "sprites": [["cityBridge", { "z": -305, "horizon": [0.4, 0.4] }]]
   },
-  "city.bridge.deck": {
+  "city.bridge.deck-green": {
     "attributes": {
       "width": 1024,
       "height": 192
     },
     "sprites": [
-      ["bridgeDeck", { "z": -305 }],
-      ["bridgeDeck", { "z": -305, "x": 512, "flipX": true }]
+      ["bridgeDeck", { "z": -305, "accentColor": "#2ba04c" }],
+      [
+        "bridgeDeck",
+        { "z": -305, "x": 511, "flipX": true, "accentColor": "#2ba04c" }
+      ]
     ]
+  },
+  "city.bridge.deck-red": {
+    "attributes": {
+      "width": 1024,
+      "height": 192
+    },
+    "sprites": [
+      ["bridgeDeck", { "z": -305, "accentColor": "#b15a5a" }],
+      [
+        "bridgeDeck",
+        { "z": -305, "x": 511, "flipX": true, "accentColor": "#b15a5a" }
+      ]
+    ]
+  },
+  "city.bridge.pillar": {
+    "attributes": {
+      "width": 192,
+      "height": 544
+    },
+    "sprites": [["bridgePillar", { "z": -305 }]]
   },
   "explosion": {
     "attributes": { "width": 96, "height": 96 },

@@ -257,6 +257,49 @@
         "y": -210,
         "composition": "city.layer2",
         "distance": 0.375
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "z": 400,
+        "composition": "city.bridge.deck-green",
+        "distance": 1.0
+      },
+      {
+        "x": 0,
+        "y": 35,
+        "z": 399,
+        "composition": [
+          "city.bridge.deck-red",
+          {
+            "attributes": { "scale": 0.9 }
+          }
+        ],
+        "distance": 0.9
+      },
+      {
+        "x": 0,
+        "y": 70,
+        "z": 397,
+        "composition": [
+          "city.bridge.deck-green",
+          {
+            "attributes": { "scale": 0.8 }
+          }
+        ],
+        "distance": 0.8
+      },
+      {
+        "x": 0,
+        "y": 100,
+        "z": 395,
+        "composition": [
+          "city.bridge.deck-red",
+          {
+            "attributes": { "scale": 0.7 }
+          }
+        ],
+        "distance": 0.7
       }
     ]
   }
