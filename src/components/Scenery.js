@@ -17,6 +17,11 @@ export const setAltitude = newAltitude => {
   scenery.setAltitude(newAltitude);
 };
 
+export const getAltitude = () => {
+  const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
+  return scenery.altitude;
+};
+
 const PIXEL_BUFFER = 300;
 
 Crafty.c("SceneryBlock", {

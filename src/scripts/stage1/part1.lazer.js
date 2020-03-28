@@ -7,6 +7,7 @@ import { say } from "src/lib/Dialog";
 const stage1 = async ({
   setScrollingSpeed,
   setScenery,
+  setAltitude,
   loadSpriteSheets,
   loadAudio,
   setBackground,
@@ -60,10 +61,15 @@ const stage1 = async ({
     await say("John", "Let's go!", { portrait: "portraits.pilot" });
     await exec(droneWave(5, "pattern1", 500));
     await exec(droneWave(8, "pattern2", 500));
-    await exec(droneWave(5, "pattern1", 500));
   };
-  await Promise.all([introAnimation.waitTillEnd(), droneAttacks()]);
+  const flyHeight = async () => {
+    await introAnimation.waitTillEnd();
+    await setAltitude(200);
+  };
+  await Promise.all([flyHeight(), droneAttacks()]);
   introAnimation.destroy();
+  await setAltitude(0);
+  await exec(droneWave(5, "pattern1", 500));
 };
 
 export default stage1;
