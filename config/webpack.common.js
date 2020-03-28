@@ -15,6 +15,10 @@ module.exports = {
     filename: "[name].[hash].js",
     path: path.resolve(__dirname, "..", "dist")
   },
+  watchOptions: {
+    poll: 1000,
+    ignored: /node_modules/
+  },
   resolve: {
     alias: {
       src: path.resolve(__dirname, "..", "src/")
