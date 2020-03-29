@@ -66,7 +66,7 @@
       "width": 192,
       "height": 544
     },
-    "sprites": [["bridgePillar", { "z": -305 }]]
+    "sprites": [["bridgePillar", { "z": 0 }]]
   },
   "explosion": {
     "attributes": { "width": 96, "height": 96 },

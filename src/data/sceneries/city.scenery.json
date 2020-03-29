@@ -299,14 +299,15 @@
       },
       {
         "x": 0,
-        "y": -730,
+        "y": -760,
         "z": 300,
         "composition": [
           "city.bridge.deck",
           {
             "attributes": { "scale": 1.1 },
             "spriteAttributes": {
-              "accentColor": "#b15a5a"
+              "accentColor": "#b15a5a",
+              "lightness": 0.6
             }
           }
         ],
@@ -315,6 +316,37 @@
       {
         "x": 0,
         "y": -590,
+        "z": 300,
+        "composition": [
+          "city.bridge.pillar",
+          {
+            "attributes": { "scale": 1.1 },
+            "spriteAttributes": {
+              "lightness": 0.6
+            }
+          }
+        ],
+        "distance": 1.1
+      },
+      {
+        "x": 920,
+        "y": -590,
+        "z": 300,
+        "composition": [
+          "city.bridge.pillar",
+          {
+            "attributes": { "scale": 1.1 },
+            "spriteAttributes": {
+              "lightness": 0.6,
+              "flipX": true
+            }
+          }
+        ],
+        "distance": 1.1
+      },
+      {
+        "x": 0,
+        "y": -610,
         "z": -40,
         "composition": [
           "city.bridge.deck",
@@ -328,7 +360,7 @@
       },
       {
         "x": 0,
-        "y": -460,
+        "y": -470,
         "z": -42,
         "composition": [
           "city.bridge.deck",
@@ -367,6 +399,37 @@
             "spriteAttributes": {
               "accentColor": "#b15a5a",
               "horizon": [0.2, 0.2]
+            }
+          }
+        ],
+        "distance": 0.7
+      },
+      {
+        "x": 20,
+        "y": -190,
+        "z": -47,
+        "composition": [
+          "city.bridge.pillar",
+          {
+            "attributes": { "scale": 0.5 },
+            "spriteAttributes": {
+              "horizon": [0.2, 0.2]
+            }
+          }
+        ],
+        "distance": 0.7
+      },
+      {
+        "x": 600,
+        "y": -190,
+        "z": -46,
+        "composition": [
+          "city.bridge.pillar",
+          {
+            "attributes": { "scale": 0.5 },
+            "spriteAttributes": {
+              "horizon": [0.2, 0.2],
+              "flipX": true
             }
           }
         ],
