@@ -2,7 +2,7 @@
   "PlayerShip": {
     "structure": {
       "composition": "player.ship",
-      "components": ["ViewportLocked", "DamageSupport"],
+      "components": ["ViewportLocked", "DamageSupport", "SunBlock"],
       "animation": null,
       "attachments": {
         "mainWeapon": {

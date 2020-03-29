@@ -123,12 +123,16 @@ const createBlock = (scenery, x, y) => {
         .attr({ z: element.z });
     }
     if (element.components) {
-      const components = ["2D"].concat(element.components);
-      entity = Crafty.e(components.join(", ")).attr({
-        z: element.z || 0,
-        w: element.w,
-        h: element.h
-      });
+      if (!entity) {
+        const components = ["2D"].concat(element.components);
+        entity = Crafty.e(components.join(", ")).attr({
+          z: element.z || 0,
+          w: element.w,
+          h: element.h
+        });
+      } else {
+        element.components.forEach(comp => entity.addComponent(comp));
+      }
     }
     const centerX =
       blockCenter.x * distance + cameraCenter.x * (1.0 - distance);

@@ -40,6 +40,7 @@ const TWEEN_WHITELIST = [
   "h",
   "rotation",
   "alpha",
+  "maxAlpha",
   "scale",
   "scaleX",
   "scaleY"
@@ -571,7 +572,8 @@ Crafty.c(Composable, {
     elem.attr({
       w: options.w || elem.w,
       h: options.h || elem.h,
-      alpha: options.alpha === undefined ? 1 : options.alpha
+      alpha: options.alpha === undefined ? 1 : options.alpha,
+      maxAlpha: options.maxAlpha === undefined ? 1 : options.maxAlpha
     });
     if (options.flipX) elem.flip("X");
     if (options.ro) {

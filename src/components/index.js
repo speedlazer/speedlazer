@@ -18,3 +18,4 @@ import "./SpriteShader";
 import "./TextInput";
 
 import "./LightGlare";
+import "./Overlap";
