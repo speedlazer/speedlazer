@@ -1,7 +1,12 @@
 import { h, Component } from "preact";
 import { unmount, mount, showScenery } from "src/editor/lib/render-crafty";
 import Preview from "src/editor/components/Preview";
-import { setScrollVelocity, setAltitude } from "src/components/Scenery";
+import { EASE_IN_OUT } from "src/constants/easing";
+import {
+  setScrollVelocity,
+  setAltitude,
+  getAltitude
+} from "src/components/Scenery";
 
 export class SceneryPreview extends Component {
   constructor() {
@@ -47,7 +52,25 @@ export class SceneryPreview extends Component {
       this.props.scenery &&
       this.state.craftyMounted
     ) {
-      setAltitude(this.props.altitude);
+      new Promise(resolve => {
+        const altPSec = 50 / 1000;
+        const startAlt = getAltitude();
+        const delta = Math.abs(this.props.altitude - startAlt);
+
+        const ease = new Crafty.easing(delta / altPSec, EASE_IN_OUT);
+        const f = ({ dt }) => {
+          ease.tick(dt);
+          const v = ease.value();
+          if (v >= 1.0) {
+            Crafty.unbind("EnterFrame", f);
+            resolve();
+          }
+          const alt = startAlt * (1 - v) + this.props.altitude * v;
+          setAltitude(alt);
+        };
+
+        Crafty.bind("EnterFrame", f);
+      });
     }
   }
 

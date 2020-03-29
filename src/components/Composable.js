@@ -284,7 +284,7 @@ Crafty.c(Composable, {
     };
 
     this.setOwnAttributes(definition.attributes);
-    this.buildSprites(definition.sprites);
+    this.buildSprites(definition.sprites, definition.spriteAttributes);
     this.buildGradients(definition.gradients);
     this.appliedDefinition = proposedDefinition;
 
@@ -400,7 +400,7 @@ Crafty.c(Composable, {
     this.attr(attrs);
   },
 
-  buildSprites(spriteList) {
+  buildSprites(spriteList, spriteAttributes) {
     const additions = [];
 
     const currentlyApplied = this.appliedDefinition.sprites;
@@ -417,7 +417,7 @@ Crafty.c(Composable, {
           this.composableParts.splice(
             currentPointer,
             0,
-            this.createAndAttachSprite(sprite)
+            this.createAndAttachSprite(sprite, spriteAttributes)
           );
           currentPointer++;
           return;
@@ -430,13 +430,16 @@ Crafty.c(Composable, {
         this.composableParts.splice(
           currentPointer,
           1,
-          this.createAndAttachSprite(sprite)
+          this.createAndAttachSprite(sprite, spriteAttributes)
         );
         currentPointer++;
       } else if (sprite[0] === current[0]) {
         // same sprite
         const toUpdate = this.composableParts[currentPointer];
-        this.applySpriteOptions(toUpdate, sprite[1]);
+        this.applySpriteOptions(toUpdate, {
+          ...spriteAttributes,
+          ...sprite[1]
+        });
         currentPointer++;
       }
     });
@@ -449,7 +452,9 @@ Crafty.c(Composable, {
     this.composableParts = this.composableParts
       .slice(0, currentPointer)
       .concat(
-        additions.map(spriteData => this.createAndAttachSprite(spriteData))
+        additions.map(spriteData =>
+          this.createAndAttachSprite(spriteData, spriteAttributes)
+        )
       );
   },
 
@@ -524,12 +529,12 @@ Crafty.c(Composable, {
     }
   },
 
-  createAndAttachSprite([spriteName, options]) {
+  createAndAttachSprite([spriteName, options], spriteAttributes) {
     const renderLayer = this._drawLayer ? this._drawLayer.name : "WebGL";
     const subElem = Crafty.e(
       ["2D", renderLayer, Delta2D, Scalable, spriteName].join(", ")
     );
-    this.applySpriteOptions(subElem, options);
+    this.applySpriteOptions(subElem, { ...spriteAttributes, ...options });
     subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });
     this.attach(subElem);
     return subElem;

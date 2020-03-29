@@ -48,7 +48,10 @@ Crafty.c("SceneryBlock", {
 
     this._children.forEach(child => {
       if (child.distance === 1) return;
-      child.shift(-vDx * (1 - child.distance), -vDy * (1 - child.distance));
+      child.shift(
+        -vDx * (1 - child.distance),
+        -vDy * (1 - child.distance * child.distance)
+      );
     });
   },
   sceneryBlockMoved() {
@@ -63,7 +66,10 @@ Crafty.c("SceneryBlock", {
 
     this._children.forEach(child => {
       if (child.distance === 1) return;
-      child.shift(-dx * (1 - child.distance), -dy * (1 - child.distance));
+      child.shift(
+        -dx * (1 - child.distance),
+        -dy * (1 - child.distance * child.distance)
+      );
       if (child.distance === this.farthestDistance) {
         if (child.x < sceneryVectors.v3) sceneryVectors.v3 = child.x;
         if (child.x + child.w > sceneryVectors.v4)
@@ -96,8 +102,7 @@ const createBlock = (scenery, x, y) => {
   scenery.elements.forEach(element => {
     const distance = element.distance === undefined ? 1 : element.distance;
     const elementX = (element.x < 0 ? scenery.width * distance : 0) + element.x;
-    const elementY =
-      (element.y < 0 ? scenery.height * distance : 0) + element.y;
+    const elementY = scenery.height * (distance * distance) + element.y;
     if (distance < farthestDistance) farthestDistance = distance;
 
     let entity;
@@ -128,9 +133,10 @@ const createBlock = (scenery, x, y) => {
     const centerX =
       blockCenter.x * distance + cameraCenter.x * (1.0 - distance);
     const centerY =
-      blockCenter.y * distance + cameraCenter.y * (1.0 - distance);
+      blockCenter.y * (distance * distance) +
+      cameraCenter.y * (1.0 - distance * distance);
     const left = centerX - halfW * distance;
-    const top = centerY - halfH * distance;
+    const top = centerY - halfH * (distance * distance);
 
     entity.attr({
       x: left + elementX,

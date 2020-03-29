@@ -9,7 +9,7 @@
     "elements": [
       {
         "x": 0,
-        "y": -65,
+        "y": -85,
         "composition": "ocean.front"
       },
       {
@@ -21,7 +21,7 @@
       },
       {
         "x": 0,
-        "y": -30,
+        "y": 5,
         "composition": "ocean.middle",
         "distance": 0.5
       },
@@ -45,10 +45,11 @@
     "right": "City.Coast",
     "left": "City.Ocean",
     "backgrounds": [["City.Sunrise", 1]],
+    "altitudes": [0, 250],
     "elements": [
       {
         "x": 0,
-        "y": -65,
+        "y": -85,
         "composition": "ocean.front"
       },
       {
@@ -60,7 +61,7 @@
       },
       {
         "x": 0,
-        "y": -30,
+        "y": 5,
         "composition": "ocean.middle",
         "distance": 0.5
       },
@@ -84,10 +85,11 @@
     "right": "City.Ocean",
     "left": "City.Ocean",
     "backgrounds": [["City.Sunrise", 0]],
+    "altitudes": [0, 250],
     "elements": [
       {
         "x": 0,
-        "y": -65,
+        "y": -85,
         "composition": "ocean.front"
       },
       {
@@ -99,7 +101,7 @@
       },
       {
         "x": 0,
-        "y": -30,
+        "y": 5,
         "composition": "ocean.middle",
         "distance": 0.5
       },
@@ -117,10 +119,11 @@
     "right": "City.Bay",
     "left": "City.Coast",
     "backgrounds": [["City.Sunrise", 2]],
+    "altitudes": [0, 250],
     "elements": [
       {
         "x": 0,
-        "y": -65,
+        "y": -85,
         "composition": "ocean.front"
       },
       {
@@ -132,7 +135,7 @@
       },
       {
         "x": 0,
-        "y": -30,
+        "y": 5,
         "composition": "ocean.middle",
         "distance": 0.5
       },
@@ -150,7 +153,7 @@
       },
       {
         "x": 0,
-        "y": -180,
+        "y": -138,
         "composition": "city.cityStart",
         "distance": 0.5
       }
@@ -162,10 +165,11 @@
     "left": "City.Bay",
     "right": "City.Bay",
     "backgrounds": [["City.Sunrise", 3]],
+    "altitudes": [0, 250],
     "elements": [
       {
         "x": 0,
-        "y": -65,
+        "y": -85,
         "z": -20,
         "composition": "ocean.front"
       },
@@ -178,7 +182,7 @@
       },
       {
         "x": 0,
-        "y": -30,
+        "y": 5,
         "composition": "ocean.middle",
         "distance": 0.5
       },
@@ -196,13 +200,60 @@
       },
       {
         "x": 0,
-        "y": -180,
+        "y": -138,
         "composition": "city.city",
         "distance": 0.5
       },
       {
         "x": 0,
-        "y": -210,
+        "y": -120,
+        "composition": "city.layer2",
+        "distance": 0.375
+      }
+    ]
+  },
+  "City.BayFull": {
+    "width": 1023,
+    "height": 576,
+    "left": "City.BayFull",
+    "right": "City.BayFull",
+    "backgrounds": [["City.Sunrise", 3]],
+    "altitudes": [0, 250, 500, 700, 900],
+    "elements": [
+      {
+        "x": 0,
+        "y": -85,
+        "z": -20,
+        "composition": "ocean.front"
+      },
+      {
+        "x": 0,
+        "y": -45,
+        "components": ["ShipSolid", "BulletSolid", "GravityLiquid"],
+        "w": 1024,
+        "h": 45
+      },
+      {
+        "x": 0,
+        "y": 5,
+        "composition": "ocean.middle",
+        "distance": 0.5
+      },
+      {
+        "x": 0,
+        "y": -45,
+        "composition": "city.cityDistance",
+        "distance": 0.25
+      },
+      {
+        "x": 0,
+        "y": -138,
+        "composition": "city.city",
+        "distance": 0.5
+      },
+      {
+        "x": 0,
+        "y": -120,
         "composition": "city.layer2",
         "distance": 0.375
       }
@@ -212,12 +263,12 @@
     "width": 1023,
     "height": 576,
     "left": "City.Bay",
-    "right": "City.Bay",
+    "right": "City.BayFull",
     "backgrounds": [["City.Sunrise", 3]],
     "elements": [
       {
         "x": 0,
-        "y": -65,
+        "y": -85,
         "z": -20,
         "composition": "ocean.front"
       },
@@ -230,76 +281,144 @@
       },
       {
         "x": 0,
-        "y": -30,
+        "y": 5,
         "composition": "ocean.middle",
         "distance": 0.5
       },
       {
         "x": 0,
-        "y": -30,
-        "composition": "ocean.horizon",
+        "y": -45,
+        "composition": "city.cityDistance",
         "distance": 0.25
       },
       {
         "x": 0,
-        "y": -46,
-        "composition": "city.horizon",
-        "distance": 0.25
-      },
-      {
-        "x": 0,
-        "y": -52,
+        "y": -10,
         "composition": "city.bridge.foot",
         "distance": 0.5
       },
       {
         "x": 0,
-        "y": -210,
-        "composition": "city.layer2",
-        "distance": 0.375
+        "y": -730,
+        "z": 300,
+        "composition": [
+          "city.bridge.deck",
+          {
+            "attributes": { "scale": 1.1 },
+            "spriteAttributes": {
+              "accentColor": "#b15a5a"
+            }
+          }
+        ],
+        "distance": 1.1
       },
       {
         "x": 0,
-        "y": 0,
-        "z": 400,
-        "composition": "city.bridge.deck-green",
+        "y": -590,
+        "z": -40,
+        "composition": [
+          "city.bridge.deck",
+          {
+            "spriteAttributes": {
+              "accentColor": "#2ba04c"
+            }
+          }
+        ],
         "distance": 1.0
       },
       {
         "x": 0,
-        "y": 35,
-        "z": 399,
+        "y": -460,
+        "z": -42,
         "composition": [
-          "city.bridge.deck-red",
+          "city.bridge.deck",
           {
-            "attributes": { "scale": 0.9 }
+            "attributes": { "scale": 0.9 },
+            "spriteAttributes": {
+              "accentColor": "#b15a5a"
+            }
           }
         ],
         "distance": 0.9
       },
       {
         "x": 0,
-        "y": 70,
-        "z": 397,
+        "y": -335,
+        "z": -44,
         "composition": [
-          "city.bridge.deck-green",
+          "city.bridge.deck",
           {
-            "attributes": { "scale": 0.8 }
+            "attributes": { "scale": 0.8 },
+            "spriteAttributes": {
+              "accentColor": "#2ba04c"
+            }
           }
         ],
         "distance": 0.8
       },
       {
         "x": 0,
-        "y": 100,
-        "z": 395,
+        "y": -230,
+        "z": -46,
         "composition": [
-          "city.bridge.deck-red",
+          "city.bridge.deck",
           {
-            "attributes": { "scale": 0.7 }
+            "attributes": { "scale": 0.7 },
+            "spriteAttributes": {
+              "accentColor": "#b15a5a",
+              "horizon": [0.2, 0.2]
+            }
           }
         ],
         "distance": 0.7
+      },
+      {
+        "x": 0,
+        "y": -150,
+        "z": -48,
+        "composition": [
+          "city.bridge.deck",
+          {
+            "attributes": { "scale": 0.62 },
+            "spriteAttributes": {
+              "accentColor": "#2ba04c",
+              "horizon": [0.3, 0.3]
+            }
+          }
+        ],
+        "distance": 0.62
+      },
+      {
+        "x": 0,
+        "y": -80,
+        "z": -50,
+        "composition": [
+          "city.bridge.deck",
+          {
+            "attributes": { "scale": 0.55 },
+            "spriteAttributes": {
+              "accentColor": "#b15a5a",
+              "horizon": [0.3, 0.3]
+            }
+          }
+        ],
+        "distance": 0.55
+      },
+      {
+        "x": 0,
+        "y": -30,
+        "z": -52,
+        "composition": [
+          "city.bridge.deck",
+          {
+            "attributes": { "scale": 0.5 },
+            "spriteAttributes": {
+              "accentColor": "#2ba04c",
+              "horizon": [0.4, 0.4]
+            }
+          }
+        ],
+        "distance": 0.5
       }
     ]
   }

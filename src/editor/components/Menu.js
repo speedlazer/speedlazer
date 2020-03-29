@@ -102,9 +102,9 @@ const createStructure = items =>
     .concat(
       items
         .filter(({ type }) => type === "item")
-        .map(item => (
+        .map((item, i) => (
           <Item
-            key={item.path}
+            key={i}
             name={item.name}
             path={
               typeof item.path === "string"
