@@ -4,10 +4,11 @@ import { bigText } from "src/components/BigText";
 import { playAudio } from "src/lib/audio";
 import { say } from "src/lib/Dialog";
 
+const parallel = list => Promise.all(list.map(l => l()));
+
 const stage1 = async ({
   setScrollingSpeed,
   setScenery,
-  setAltitude,
   loadSpriteSheets,
   loadAudio,
   setBackground,
@@ -49,26 +50,31 @@ const stage1 = async ({
   setBackgroundCheckpointLimit(4);
 
   await setScrollingSpeed(250, 0);
-  const droneAttacks = async () => {
-    await blink;
-    await ready.zoomOut(500);
-    ready.remove();
-    await say(
-      "General",
-      "We send some drones for some last manual target practice",
-      { portrait: "portraits.general" }
-    );
-    await say("John", "Let's go!", { portrait: "portraits.pilot" });
-    await exec(droneWave(5, "pattern1", 500));
-    await exec(droneWave(8, "pattern2", 500));
-  };
-  const flyHeight = async () => {
-    await introAnimation.waitTillEnd();
-    await setAltitude(200);
-  };
-  await Promise.all([flyHeight(), droneAttacks()]);
+  await parallel([
+    async () => {
+      await introAnimation.waitTillEnd();
+    },
+    async () => {
+      await blink;
+      await ready.zoomOut(500);
+      ready.remove();
+      await parallel([
+        async () => {
+          await say(
+            "General",
+            "We send some drones for some last manual target practice",
+            { portrait: "portraits.general" }
+          );
+          await say("John", "Let's go!", { portrait: "portraits.pilot" });
+        },
+        async () => {
+          await exec(droneWave(5, "pattern1", 500));
+          await exec(droneWave(8, "pattern2", 500));
+        }
+      ]);
+    }
+  ]);
   introAnimation.destroy();
-  await setAltitude(0);
   await exec(droneWave(5, "pattern1", 500));
 };
 
