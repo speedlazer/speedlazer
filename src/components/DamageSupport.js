@@ -1,4 +1,4 @@
-import StackableCoordinates from "./StackableCoordinates";
+//import StackableCoordinates from "./StackableCoordinates";
 import { isPaused } from "src/lib/core/pauseToggle";
 import { addEffect, normalize, processEffects } from "src/lib/effects";
 
@@ -28,23 +28,23 @@ const processor = processEffects({
 const DamageSupport = "DamageSupport";
 
 Crafty.c(DamageSupport, {
-  required: StackableCoordinates,
+  //required: StackableCoordinates,
   events: {
     EnterFrame: "_handleEffects"
   },
 
   init() {
-    this.createStackablePropertyFor("xMomentumShift", "x");
-    this.createStackablePropertyFor("yMomentumShift", "y");
+    //this.createStackablePropertyFor("xMomentumShift", "x");
+    //this.createStackablePropertyFor("yMomentumShift", "y");
     this.attr({
       health: 0,
-      vulnerable: false,
-      xMomentum: 0,
-      yMomentum: 0,
-      xMomentumShift: 0,
-      yMomentumShift: 0,
-      xForce: 0,
-      yForce: 0
+      vulnerable: false
+      //xMomentum: 0,
+      //yMomentum: 0,
+      //xMomentumShift: 0,
+      //yMomentumShift: 0,
+      //xForce: 0,
+      //yForce: 0
     });
     this.allowDamage = this.allowDamage.bind(this);
     this.hasHealth = this.hasHealth.bind(this);

@@ -28,21 +28,26 @@ const mineFlight = (coord, synchronize) => async ({
     activeMovement && activeMovement.abort();
     synchronize();
     await call(mine.showState, "explode");
+    // FIXME: Since this showState is activating a weapon,
+    // the promise does not wait for it... and the entity is
+    // destroyed to soon.
+    mine.destroy();
   });
 
   await activeMovement.process;
-  await synchronize();
-  activeMovement = moveTo(mine, { y: coord.y }, 200, EASE_IN_OUT);
-  await activeMovement.process;
-
-  await wait(200 + Math.random() * 2000);
-  await call(mine.showState, "open", 500);
-  await wait(100);
-  await call(mine.showState, "blinking");
-  await wait(1000);
-  await call(mine.showState, "explode");
-  await wait(400);
-  mine.destroy();
+  if (activeMovement.wasCompleted()) {
+    await synchronize();
+    activeMovement = moveTo(mine, { y: coord.y }, 200, EASE_IN_OUT);
+    await activeMovement.process;
+    if (activeMovement.wasCompleted()) {
+      await wait(200 + Math.random() * 2000);
+      await call(mine.showState, "open", 500);
+      call(mine.showState, "blinking");
+      await wait(1000);
+      await call(mine.showState, "explode");
+      mine.destroy();
+    }
+  }
 };
 
 const makeSynchronization = amount => {

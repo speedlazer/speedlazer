@@ -32,6 +32,7 @@
       "explode": {
         "components": [["Rotating", { "vr": 0 }]],
         "frame": "hidden",
+        "removeComponents": ["SolidCollision", "PlayerEnemy"],
         "attachments": {
           "explosion": {
             "weapon": {

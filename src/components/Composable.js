@@ -273,6 +273,7 @@ Crafty.c(Composable, {
     this.gradientParts = [];
     this.currentAttachHooks = {};
     this.currentZ = this.z;
+    this.animationListeners = [];
   },
 
   compose(proposedDefinition, { autoStartAnimation = true } = {}) {
@@ -348,6 +349,7 @@ Crafty.c(Composable, {
         ? globalStartTime()
         : new Date() * 1;
     this.bind("EnterFrame", this.updateAnimationFrame);
+    await new Promise(resolve => this.animationListeners.push(resolve));
   },
 
   animationPlaying() {
@@ -357,6 +359,8 @@ Crafty.c(Composable, {
   stopAnimation() {
     this.unbind("EnterFrame", this.updateAnimationFrame);
     this.activeAnimation = null;
+    this.animationListeners.forEach(listener => listener());
+    this.animationListeners = [];
   },
 
   updateAnimationFrame({ gameTime }) {

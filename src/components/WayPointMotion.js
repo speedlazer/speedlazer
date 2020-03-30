@@ -93,7 +93,7 @@ Crafty.c(WayPointMotion, {
       this.applyStackableProperty("xPath", "x");
       this.applyStackableProperty("yPath", "y");
       this.inMotion = false;
-      this.trigger("PatternCompleted");
+      this.trigger("PatternCompleted", { patternCompleted: true });
     }
   }
 });

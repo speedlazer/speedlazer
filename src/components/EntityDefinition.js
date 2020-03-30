@@ -29,23 +29,27 @@ export const createEntity = (entityName, options = {}) => {
 export const EntityDefinition = "EntityDefinition";
 
 const setEntityStructure = (root, entity, state, duration) => {
+  const tasks = [];
+
   if (state.composition) {
     const composition = compositions[state.composition];
     entity.addComponent(Composable).compose(composition);
     if (!state.frame) {
-      entity.displayFrame("default", duration);
+      tasks.push(entity.displayFrame("default", duration));
     }
     if (!state.animation) {
       entity.stopAnimation();
     }
   }
   if (state.animation !== undefined && entity.has(Composable)) {
-    state.animation
-      ? entity.playAnimation(state.animation)
-      : entity.stopAnimation();
+    tasks.push(
+      state.animation
+        ? entity.playAnimation(state.animation)
+        : entity.stopAnimation()
+    );
   }
   if (state.frame && entity.has(Composable)) {
-    entity.displayFrame(state.frame, duration);
+    tasks.push(entity.displayFrame(state.frame, duration));
   }
   if (state.audio) {
     playAudio(state.audio);
@@ -54,7 +58,7 @@ const setEntityStructure = (root, entity, state, duration) => {
     entity.addComponent(EntityDefinition).applyDefinition(state.entity);
   }
   if (state.state) {
-    entity.showState(state.state, duration);
+    tasks.push(entity.showState(state.state, duration));
   }
   if (state.particles) {
     if (Array.isArray(state.particles)) {
@@ -92,6 +96,9 @@ const setEntityStructure = (root, entity, state, duration) => {
       }
     });
   }
+  if (state.removeComponents) {
+    state.removeComponents.forEach(comp => entity.removeComponent(comp));
+  }
   if (state.weapon) {
     if (!entity.has(Weapon)) {
       const pattern = weapons[state.weapon.pattern];
@@ -112,7 +119,9 @@ const setEntityStructure = (root, entity, state, duration) => {
             entity[itemName] ||
             Crafty.e("2D").attr({ w: 1, h: 1, sourceEntity: root });
 
-          setEntityStructure(root, attachment, attachDefinition, duration);
+          tasks.push(
+            setEntityStructure(root, attachment, attachDefinition, duration)
+          );
           entity.attachEntity(attachPoint, attachment);
 
           entity[itemName] = attachment;
@@ -123,6 +132,7 @@ const setEntityStructure = (root, entity, state, duration) => {
       }
     );
   }
+  return Promise.all(tasks);
 };
 
 Crafty.c(EntityDefinition, {
@@ -151,6 +161,6 @@ Crafty.c(EntityDefinition, {
         : this.appliedEntityDefinition.states[stateName];
     if (!stateDefinition) return;
     this.appliedEntityState = stateName;
-    setEntityStructure(this, this, stateDefinition, duration);
+    return setEntityStructure(this, this, stateDefinition, duration);
   }
 });

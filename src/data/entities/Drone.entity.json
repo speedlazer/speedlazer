@@ -27,6 +27,7 @@
       "dead": {
         "frame": "hidden",
         "audio": "explosion",
+        "removeComponents": ["SolidCollision", "PlayerEnemy"],
         "attachments": {
           "trail": null,
           "explosion": {

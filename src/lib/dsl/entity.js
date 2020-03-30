@@ -7,10 +7,13 @@ const move = (entity, flyPattern, velocity, easing, state) => {
   entity.addComponent("WayPointMotion");
   const v = velocity || entity.defaultVelocity;
   entity.flyPattern(flyPattern, { velocity: v, easing });
+  let completed = null;
 
   return {
+    wasCompleted: () => completed,
     process: new Promise((resolve, reject) => {
-      const complete = () => {
+      const complete = eventData => {
+        completed = eventData && eventData.patternCompleted;
         entity.unbind("PatternCompleted", complete);
         entity.unbind("PatternAborted", complete);
         Crafty.unbind("GameOver", complete);

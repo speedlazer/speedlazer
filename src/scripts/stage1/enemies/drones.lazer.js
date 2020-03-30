@@ -1,12 +1,6 @@
-//import { getOne, pickOne } from "src/lib/utils";
-//import { EASE_IN_OUT } from "src/constants/easing";
-
 const droneFlight = pattern => async ({
   spawn,
-  wait,
-  //until,
   call,
-  //displayFrame,
   waitForEvent,
   moveWithPattern
 }) => {
@@ -24,11 +18,13 @@ const droneFlight = pattern => async ({
   waitForEvent(drone, "Dead", async () => {
     movement.abort();
     await call(drone.showState, "dead");
+    drone.destroy();
   });
 
   await movement.process;
-  await wait(400);
-  drone.destroy();
+  if (movement.wasCompleted()) {
+    drone.destroy();
+  }
 };
 
 export const droneWave = (amount, pattern, delay = 1000) => async ({
