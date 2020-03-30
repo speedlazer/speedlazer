@@ -92,40 +92,44 @@ Crafty.c(DamageSupport, {
     /**
      * TODO: Split behavior of 'force' from the rest
      */
-    //if (!this.effects) return;
+    if (!this.effects) return;
     const changes = processor(this, dt);
-    //if (changes === false) {
-    //applyHitFlash(this, false);
-    //return;
+    if (changes === false) {
+      applyHitFlash(this, false);
+      return;
+    }
+
+    //if (this.xMomentum > 0 || changes) {
+    //this.xMomentum = applyForce(
+    //this.xMomentum,
+    //Math.abs((changes && changes.xForce) || 0),
+    //(this.weight || 0) * 200
+    //);
+    //}
+    //if (this.yMomentum > 0 || changes) {
+    //this.yMomentum = applyForce(
+    //this.yMomentum,
+    //Math.abs((changes && changes.yForce) || 0),
+    //(this.weight || 0) * 200
+    //);
     //}
 
-    if (this.xMomentum > 0 || changes) {
-      this.xMomentum = applyForce(
-        this.xMomentum,
-        Math.abs((changes && changes.xForce) || 0),
-        (this.weight || 0) * 200
-      );
-    }
-    if (this.yMomentum > 0 || changes) {
-      this.yMomentum = applyForce(
-        this.yMomentum,
-        Math.abs((changes && changes.yForce) || 0),
-        (this.weight || 0) * 200
-      );
-    }
+    //if (changes !== false) {
+    Object.assign(this, changes);
+    //}
 
-    if (changes !== false) {
-      Object.assign(this, changes);
-    }
+    //this.xMomentumShift += this.xMomentum * this.xForce;
+    //this.yMomentumShift += this.yMomentum * this.yForce;
 
-    this.xMomentumShift += this.xMomentum * this.xForce;
-    this.yMomentumShift += this.yMomentum * this.yForce;
-
+    //if (changes) {
     applyHitFlash(this, Object.keys(changes).includes("health"));
     if (this.health <= 0) {
       this.stopDamage();
       this.trigger("Dead");
     }
+    //} else {
+    //applyHitFlash(this, false);
+    //}
   }
 });
 

@@ -22,7 +22,7 @@ Crafty.defineScene(
 
     Crafty.viewport.x = 0;
     Crafty.viewport.y = 0;
-    this.state = { lives: 0, score: 0 };
+    this.state = { lives: 2, score: 0 };
     const runner = createScriptExecutionSpace(this.state);
     try {
       for (const item of gameStructure) {
