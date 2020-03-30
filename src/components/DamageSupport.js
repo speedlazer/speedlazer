@@ -1,11 +1,6 @@
 import StackableCoordinates from "./StackableCoordinates";
 import { isPaused } from "src/lib/core/pauseToggle";
-import {
-  applyForce,
-  addEffect,
-  normalize,
-  processEffects
-} from "src/lib/effects";
+import { addEffect, normalize, processEffects } from "src/lib/effects";
 
 const applyHitFlash = (entity, onOff) =>
   entity.forEachPart(part =>
