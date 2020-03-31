@@ -9,8 +9,7 @@ const stage2 = async ({
   loadSpriteSheets,
   loadAudio,
   setBackground,
-  exec,
-  wait
+  exec
 }) => {
   const text = bigText("Loading...");
   text.fadeIn(2000);
@@ -28,7 +27,6 @@ const stage2 = async ({
   await exec(mineWave());
   await exec(mineWave());
   await exec(mineWave());
-  await wait(3000);
 };
 
 export default stage2;

@@ -355,13 +355,13 @@ export default {
         composition: "weapons.explosion",
         emitDamage: [
           {
-            targets: ["Mine"],
-            velocity: 50,
-            accelleration: -15,
-            lowerBounds: 0,
+            targets: ["Mine", "PlayerShip"],
+            velocity: -1000,
+            accelleration: 50,
+            upperBounds: 0,
             speed: 2000,
-            affects: ["position"],
-            duration: 300,
+            affects: ["health"],
+            duration: 100,
             name: "Explosion"
           }
         ],

@@ -1,7 +1,7 @@
 import { EASE_OUT, EASE_IN_OUT } from "src/constants/easing";
 import shuffle from "lodash/shuffle";
 
-const mineFlight = (coord, synchronize) => async ({
+const mineFlight = (index, coord, synchronize) => async ({
   spawn,
   wait,
   //until,
@@ -11,13 +11,14 @@ const mineFlight = (coord, synchronize) => async ({
   moveTo
 }) => {
   let activeMovement = null;
+  await wait(index * 50);
 
   const mine = spawn("Mine", {
     location: {
       rx: 1.1,
-      ry: 0.5
+      ry: 0.9
     },
-    defaultVelocity: 400
+    defaultVelocity: 450
   });
   await call(mine.showState, "rotate");
 
@@ -27,25 +28,27 @@ const mineFlight = (coord, synchronize) => async ({
   waitForEvent(mine, "Dead", async () => {
     activeMovement && activeMovement.abort();
     synchronize();
+    if (mine.appliedEntityState === "explode") return;
     await call(mine.showState, "explode");
-    // FIXME: Since this showState is activating a weapon,
-    // the promise does not wait for it... and the entity is
-    // destroyed to soon.
+    await wait(500);
     mine.destroy();
   });
 
   await activeMovement.process;
   if (activeMovement.wasCompleted()) {
     await synchronize();
-    activeMovement = moveTo(mine, { y: coord.y }, 200, EASE_IN_OUT);
+    activeMovement = moveTo(mine, { y: coord.y }, null, EASE_IN_OUT);
     await activeMovement.process;
     if (activeMovement.wasCompleted()) {
       await wait(200 + Math.random() * 2000);
       await call(mine.showState, "open", 500);
       call(mine.showState, "blinking");
       await wait(1000);
-      await call(mine.showState, "explode");
-      mine.destroy();
+      if (mine.appliedEntityState !== "explode") {
+        call(mine.showState, "explode");
+        await wait(500);
+        mine.destroy();
+      }
     }
   }
 };
@@ -68,17 +71,16 @@ const makeSynchronization = amount => {
 };
 
 export const mineWave = () => async ({ exec, wait }) => {
-  const amount = 10;
-  const gridX = [0.2, 0.4, 0.6, 0.8];
-  const gridY = [0.2, 0.4, 0.6];
+  const amount = 16;
+  const gridX = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9];
+  const gridY = [0.2, 0.4, 0.6, 0.8];
 
   const coords = shuffle(
     gridX.reduce((list, x) => list.concat(gridY.map(y => ({ x, y }))), [])
   );
 
   const items = makeSynchronization(amount).map(async (res, index) => {
-    await wait(index * 200);
-    await exec(mineFlight(coords.pop(), res));
+    await exec(mineFlight(index, coords.pop(), res));
   });
   await Promise.all(items);
 };

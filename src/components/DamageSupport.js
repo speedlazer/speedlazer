@@ -10,6 +10,7 @@ const applyHitFlash = (entity, onOff) =>
   );
 
 const processor = processEffects({
+  health: amount => ({ health: Math.ceil(amount) }),
   position: (amount, effect, target) => {
     if (target.weight === undefined) return {};
     const [normX, normY] = normalize(
@@ -108,6 +109,7 @@ Crafty.c(DamageSupport, {
     //(this.weight || 0) * 200
     //);
     //}
+    applyHitFlash(this, changes.health && changes.health < this.health);
 
     //if (changes !== false) {
     Object.assign(this, changes);
@@ -117,7 +119,6 @@ Crafty.c(DamageSupport, {
     //this.yMomentumShift += this.yMomentum * this.yForce;
 
     //if (changes) {
-    applyHitFlash(this, Object.keys(changes).includes("health"));
     if (this.health <= 0) {
       this.stopDamage();
       this.trigger("Dead");
