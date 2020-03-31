@@ -163,6 +163,7 @@ export class BezierPath {
 
   get(t) {
     const c = this.curves.find(c => c.min <= t && c.max >= t);
+    if (!c) return null;
     const localT = (t - c.min) / (c.max - c.min);
     return c.curve.get(localT);
   }

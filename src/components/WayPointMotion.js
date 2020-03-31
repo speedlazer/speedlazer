@@ -73,7 +73,6 @@ Crafty.c(WayPointMotion, {
   updateAcceleration({ dt }) {
     this.wayPointEasing.tick(dt);
     const value = this.wayPointEasing.value();
-    const p = this.bezierPath.get(value);
     this.eventQueue = this.eventQueue.filter(e => {
       if (e.pos <= value) {
         // execute Event
@@ -83,11 +82,14 @@ Crafty.c(WayPointMotion, {
       return true;
     });
 
-    this.attr({
-      xPath: p.x - this.pathOffset.x,
-      yPath: p.y - this.pathOffset.y
-    });
-    if (value >= this.targetPatternValue) {
+    const p = this.bezierPath.get(value);
+    if (p) {
+      this.attr({
+        xPath: p.x - this.pathOffset.x,
+        yPath: p.y - this.pathOffset.y
+      });
+    }
+    if (value >= this.targetPatternValue || !p) {
       this.unbind("EnterFrame", this.updateAcceleration);
       // apply final path coordinates after route is finished
       this.applyStackableProperty("xPath", "x");
