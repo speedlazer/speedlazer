@@ -4,6 +4,7 @@ import shuffle from "lodash/shuffle";
 const mineFlight = (index, coord, synchronize) => async ({
   spawn,
   wait,
+  addScreenTrauma,
   //until,
   call,
   //displayFrame,
@@ -29,7 +30,9 @@ const mineFlight = (index, coord, synchronize) => async ({
     activeMovement && activeMovement.abort();
     synchronize();
     if (mine.appliedEntityState === "explode") return;
-    await call(mine.showState, "explode");
+    call(mine.showState, "explode");
+    addScreenTrauma(0.2);
+
     await wait(500);
     mine.destroy();
   });
@@ -46,6 +49,7 @@ const mineFlight = (index, coord, synchronize) => async ({
       await wait(1000);
       if (mine.appliedEntityState !== "explode") {
         call(mine.showState, "explode");
+        addScreenTrauma(0.2);
         await wait(500);
         mine.destroy();
       }

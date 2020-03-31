@@ -6,10 +6,13 @@ import stateFunctions from "./state";
 
 const wrap = (o, s) =>
   Object.entries(o).reduce((a, [key, value]) => {
-    a[key] = (...args) => {
-      if (s.gameEnded === true) throw new Error("Game ended");
-      return value(...args);
-    };
+    a[key] =
+      typeof value === "function"
+        ? (...args) => {
+            if (s.gameEnded === true) throw new Error("Game ended");
+            return value(...args);
+          }
+        : value;
     return a;
   }, {});
 
