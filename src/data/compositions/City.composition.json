@@ -73,7 +73,7 @@
     "sprites": [["explosion1", { "key": "main" }]],
     "animations": {
       "default": {
-        "duration": 1000,
+        "duration": 350,
         "timeline": [
           {
             "start": 0.0,
