@@ -7,7 +7,6 @@ export const playerShip = ({ existing = false } = {}) => async ({
   call,
   exec,
   waitForEvent,
-  wait,
   loseLife
 }) => {
   const player = Crafty("Player").get(0);

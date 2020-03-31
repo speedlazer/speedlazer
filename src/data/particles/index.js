@@ -35,10 +35,10 @@ export default {
       durationRandom: 0,
       velocity: 200,
       velocityRandom: 10,
-      startSize: 18,
+      startSize: 12,
       endSize: 1,
-      startColor: [0.9, 0.5, 0.5, 0.6],
-      startColorRandom: [0, 0, 0, 0],
+      startColor: [1.0, 0.8, 0.5, 0.6],
+      startColorRandom: [0, 0.05, 0, 0],
       endColor: [0.9, 0.2, 0.2, 0],
       endColorRandom: [0, 0, 0, 0]
     }
@@ -59,10 +59,10 @@ export default {
       durationRandom: 0,
       velocity: 200,
       velocityRandom: 10,
-      startSize: 12,
+      startSize: 8,
       endSize: 1,
-      startColor: [0.9, 0.5, 0.5, 0.6],
-      startColorRandom: [0, 0, 0, 0],
+      startColor: [1.0, 0.8, 0.5, 0.6],
+      startColorRandom: [0, 0.05, 0, 0],
       endColor: [0.9, 0.2, 0.2, 0],
       endColorRandom: [0, 0, 0, 0]
     }
@@ -85,8 +85,8 @@ export default {
       velocityRandom: 10,
       startSize: 5,
       endSize: 1,
-      startColor: [0.9, 0.5, 0.5, 0.6],
-      startColorRandom: [0, 0, 0, 0],
+      startColor: [1.0, 0.8, 0.5, 0.6],
+      startColorRandom: [0, 0.05, 0, 0],
       endColor: [0.9, 0.2, 0.2, 0],
       endColorRandom: [0, 0, 0, 0]
     }
