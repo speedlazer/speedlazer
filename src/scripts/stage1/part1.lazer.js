@@ -6,7 +6,7 @@ import { say } from "src/lib/Dialog";
 
 const parallel = list => Promise.all(list.map(l => l()));
 
-const stage1 = async ({
+const part = async ({
   setScrollingSpeed,
   setScenery,
   loadSpriteSheets,
@@ -78,4 +78,4 @@ const stage1 = async ({
   await exec(droneWave(5, "pattern1", 500));
 };
 
-export default stage1;
+export default part;

@@ -193,12 +193,7 @@
       "height": 32,
       "ro": [28, 16]
     },
-    "sprites": [
-      [
-        "muzzleFlash",
-        { "z": 20, "flipX": true, "key": "flash", "overrideColor": "#ff8080" }
-      ]
-    ],
+    "sprites": [["muzzleFlash", { "z": 20, "flipX": true, "key": "flash" }]],
     "frames": {
       "normal": {
         "flash": { "alpha": 1.0 }

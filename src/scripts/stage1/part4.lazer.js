@@ -1,4 +1,5 @@
-import { helicopter } from "./enemies/helicopter.lazer";
+import battleship from "./enemies/battleship.lazer";
+import { droneWave } from "./enemies/drones.lazer";
 import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
 import { playAudio } from "src/lib/audio";
@@ -8,9 +9,9 @@ const part = async ({
   setScenery,
   loadSpriteSheets,
   loadAudio,
-  wait,
   setBackground,
   exec
+  //wait
 }) => {
   const text = bigText("Loading...");
   text.fadeIn(2000);
@@ -20,13 +21,17 @@ const part = async ({
   playAudio("hero");
 
   await setScrollingSpeed(100, 0);
+  await setScenery("City.Coast");
   setBackground("City.Sunrise");
-  await setScenery("City.Ocean");
   text.remove();
   exec(playerShip({ existing: true }));
 
-  await exec(helicopter("heli.pattern1"));
-  await wait(14000);
+  await exec(droneWave(5, "pattern2", 500));
+  await exec(droneWave(5, "pattern1", 500));
+  await exec(droneWave(5, "pattern1", 500));
+  await exec(droneWave(5, "pattern1", 500));
+
+  await exec(battleship);
 };
 
 export default part;

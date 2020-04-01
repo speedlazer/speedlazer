@@ -7,6 +7,7 @@ import Weapon from "src/components/Weapon";
 import WayPointMotion from "src/components/WayPointMotion";
 import ParticleEmitter from "src/components/ParticleEmitter";
 import "src/components/LightGlare";
+import "src/components/GravitySupport";
 import "src/components/Overlap";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";

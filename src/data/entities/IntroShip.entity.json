@@ -92,7 +92,10 @@
   },
   "IntroHeli": {
     "structure": {
-      "composition": "battleship.heli"
+      "composition": "helicopter",
+      "attributes": {
+        "scale": 0.8
+      }
     },
     "states": {
       "start": {

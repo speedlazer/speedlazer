@@ -1,17 +1,15 @@
-import battleship from "./enemies/battleship.lazer";
-import { droneWave } from "./enemies/drones.lazer";
+import { mineWave } from "./enemies/mines.lazer";
 import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
 import { playAudio } from "src/lib/audio";
 
-const stage2 = async ({
+const part = async ({
   setScrollingSpeed,
   setScenery,
   loadSpriteSheets,
   loadAudio,
   setBackground,
   exec
-  //wait
 }) => {
   const text = bigText("Loading...");
   text.fadeIn(2000);
@@ -21,17 +19,14 @@ const stage2 = async ({
   playAudio("hero");
 
   await setScrollingSpeed(100, 0);
-  await setScenery("City.Coast");
   setBackground("City.Sunrise");
+  await setScenery("City.CoastStart");
   text.remove();
   exec(playerShip({ existing: true }));
 
-  await exec(droneWave(5, "pattern2", 500));
-  await exec(droneWave(5, "pattern1", 500));
-  await exec(droneWave(5, "pattern1", 500));
-  await exec(droneWave(5, "pattern1", 500));
-
-  await exec(battleship);
+  await exec(mineWave());
+  await exec(mineWave());
+  await exec(mineWave());
 };
 
-export default stage2;
+export default part;

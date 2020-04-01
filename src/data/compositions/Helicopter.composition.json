@@ -1,0 +1,84 @@
+{
+  "helicopter": {
+    "attributes": {
+      "width": 128,
+      "height": 64
+    },
+    "hitbox": [10, 45, 50, 10, 125, 20, 110, 50, 13, 57],
+    "sprites": [["helicopterLanded", { "x": 0, "y": 0, "key": "heli" }]],
+    "attachHooks": [
+      [
+        "gun",
+        {
+          "x": 0,
+          "y": 62,
+          "z": 1,
+          "attachAlign": ["center", "left"],
+          "attachTo": "heli"
+        }
+      ],
+      [
+        "rockets",
+        {
+          "x": 60,
+          "y": 42,
+          "z": 1,
+          "attachAlign": ["center", "center"],
+          "attachTo": "heli"
+        }
+      ],
+      [
+        "smoke",
+        {
+          "x": 60,
+          "y": 52,
+          "z": -1,
+          "attachAlign": ["center", "center"],
+          "attachTo": "heli"
+        }
+      ]
+    ],
+    "frames": {
+      "fly1": {
+        "heli": { "sprite": "helicopter" }
+      },
+      "fly2": {
+        "heli": { "sprite": "helicopter2" }
+      },
+      "damaged": {
+        "heli": { "sprite": "heliDamaged" }
+      },
+      "tilted": {
+        "attributes": {
+          "rotation": -10
+        }
+      },
+      "leveled": {
+        "attributes": {
+          "rotation": 0
+        }
+      }
+    },
+    "animations": {
+      "flying": {
+        "repeat": true,
+        "easing": "linear",
+        "duration": 500,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 0.5,
+            "startFrame": "fly1",
+            "endFrame": "fly2"
+          },
+          {
+            "start": 0.5,
+            "end": 1,
+            "startFrame": "fly2",
+            "endFrame": "fly1"
+          }
+        ]
+      }
+    }
+  }
+}

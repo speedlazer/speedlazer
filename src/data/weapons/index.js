@@ -1,29 +1,34 @@
 export default {
   "heli.rocket": {
     spawnRhythm: {
-      initialDelay: [1500, 150],
+      initialDelay: [4500, 3500],
       burst: 1,
-      shotDelay: [250, 190],
+      shotDelay: [500, 250],
       burstDelay: [3000, 2000],
-      spawns: [
-        ["rocket", { angle: 90, autoRotate: false }],
-        ["rocket", { angle: -90, autoRotate: false }]
-      ]
+      spawns: [["rocket", { angle: -90, autoRotate: false }]]
     },
     spawnables: {
       rocket: {
         spawnPosition: [0, 0.5],
-        velocity: [250, 400],
+        velocity: [400, 500],
         entity: "HeliRocket",
+        damage: [
+          {
+            velocity: [-20e3, -30e3],
+            affects: "health",
+            duration: [4, 8],
+            name: "Blast"
+          }
+        ],
         queue: [
           { duration: 130 },
           { velocity: 0, angle: 0, autoRotate: true },
           { duration: 500 },
-          { velocity: [250, 400], steering: 180 },
-          { duration: 14000 }
+          { velocity: [450, 500], steering: 110 },
+          { duration: 6000 }
         ],
         collisions: {
-          SolidCollision: {
+          PlayerShip: {
             spawns: [["hit", {}]]
           },
           WaterCollision: {
@@ -36,6 +41,61 @@ export default {
         velocity: 0,
         composition: "weapons.explosion",
         queue: [{ duration: 350 }]
+      },
+      splash: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.waterHit",
+        queue: [{ duration: 305 }]
+      }
+    }
+  },
+  "heli.gun": {
+    spawnRhythm: {
+      initialDelay: [1500, 150],
+      burst: [5, 9],
+      shotDelay: [100, 60],
+      burstDelay: [3000, 400],
+      spawns: [
+        ["bullet", {}],
+        ["muzzleFlash", {}]
+      ]
+    },
+    spawnables: {
+      bullet: {
+        spawnPosition: [0, 0.5],
+        velocity: [350, 500],
+        composition: "weapons.bullet",
+        queue: [{ duration: 4000 }],
+        damage: [
+          {
+            velocity: [-10e3, -15e3],
+            affects: "health",
+            duration: [2, 4],
+            name: "Laser"
+          }
+        ],
+        collisions: {
+          PlayerShip: {
+            spawns: [["spark", {}]]
+          },
+          WaterCollision: {
+            spawns: [["splash", {}]]
+          }
+        }
+      },
+      muzzleFlash: {
+        spawnPosition: [0, 0.5],
+        attached: true,
+        velocity: 0,
+        composition: "weapons.muzzleFlash",
+        queue: [{ duration: 400 }]
+      },
+      spark: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.solidHit",
+        queue: [{ duration: 100 }]
       },
       splash: {
         spawnPosition: "outside",

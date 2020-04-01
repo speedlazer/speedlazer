@@ -6,7 +6,7 @@ Crafty.c("GravitySupport", {
 
   activateGravity() {
     this.addComponent("Motion", "Collision");
-    this.ay = 900;
+    this.ay = 400;
 
     this.bind("HitOn", this._onGravityCollisonHit);
     this.checkHits("GravitySolid", "GravityLiquid");

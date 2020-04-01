@@ -109,7 +109,7 @@ export default {
       velocityRandom: 0,
       startSize: 10,
       endSize: 1,
-      startColor: [0.3, 0.3, 0.3, 0.6],
+      startColor: [0.7, 0.7, 0.5, 0.6],
       startColorRandom: [0, 0, 0, 0],
       endColor: [0.3, 0.3, 0.3, 0],
       endColorRandom: [0, 0, 0, 0]

@@ -5,6 +5,7 @@ import playerShip from "./PlayerShip.entity.json";
 import drone from "./Drone.entity.json";
 import mine from "./Mine.entity.json";
 import weapons from "./Weapons.entity.json";
+import helicopter from "./Helicopter.entity.json";
 
 export default {
   ...playerShip,
@@ -13,5 +14,6 @@ export default {
   ...drone,
   ...sun,
   ...weapons,
-  ...mine
+  ...mine,
+  ...helicopter
 };

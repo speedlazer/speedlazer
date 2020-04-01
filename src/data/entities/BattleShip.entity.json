@@ -59,8 +59,14 @@
             }
           }
         },
-        "heliPlace1": { "composition": "battleship.heli" },
-        "heliPlace2": { "composition": "battleship.heli" }
+        "heliPlace1": {
+          "composition": "helicopter",
+          "attributes": { "scale": 0.8 }
+        },
+        "heliPlace2": {
+          "composition": "helicopter",
+          "attributes": { "scale": 0.8 }
+        }
       }
     },
     "states": {

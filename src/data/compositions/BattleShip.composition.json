@@ -153,48 +153,5 @@
     },
     "hitbox": [16, 16, 80, 16, 80, 80, 16, 80],
     "sprites": [["aircraftCarrierEngine", { "x": 0, "y": 0 }]]
-  },
-  "battleship.heli": {
-    "attributes": {
-      "width": 128,
-      "height": 64,
-      "scale": 0.8
-    },
-    "sprites": [["helicopterLanded", { "x": 0, "y": 0, "key": "heli" }]],
-    "frames": {
-      "fly1": {
-        "heli": { "sprite": "helicopter" }
-      },
-      "fly2": {
-        "heli": { "sprite": "helicopter2" }
-      },
-      "tilted": {
-        "heli": { "rotation": -10 }
-      },
-      "leveled": {
-        "heli": { "rotation": 0 }
-      }
-    },
-    "animations": {
-      "flying": {
-        "repeat": true,
-        "easing": "linear",
-        "duration": 500,
-        "timeline": [
-          {
-            "start": 0.0,
-            "end": 0.5,
-            "startFrame": "fly1",
-            "endFrame": "fly2"
-          },
-          {
-            "start": 0.5,
-            "end": 1,
-            "startFrame": "fly2",
-            "endFrame": "fly1"
-          }
-        ]
-      }
-    }
   }
 }
