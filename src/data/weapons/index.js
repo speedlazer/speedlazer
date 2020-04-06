@@ -24,7 +24,7 @@ export default {
           { duration: 130 },
           { velocity: 0, angle: 0, autoRotate: true },
           { duration: 500 },
-          { velocity: [450, 500], steering: 110 },
+          { velocity: [450, 500], steering: 110, sight: 25 },
           { duration: 6000 }
         ],
         collisions: {

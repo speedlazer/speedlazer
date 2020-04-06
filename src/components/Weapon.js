@@ -173,7 +173,10 @@ Crafty.c(Bullet, {
           this.addComponent(ScreenBound);
         }
         if (upcoming.steering !== undefined) {
-          this.addComponent(Steering).attr({ steering: upcoming.steering });
+          this.addComponent(Steering).attr({
+            steering: upcoming.steering,
+            sight: upcoming.sight
+          });
         }
         if (upcoming.aimOnTarget !== undefined) {
           const potentialTargets = Crafty(this.target);

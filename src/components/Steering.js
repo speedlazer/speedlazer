@@ -51,6 +51,8 @@ Crafty.c(Steering, {
     const diffB = (aimAngle - this.angle + 360) % 360;
     const diff = Math.abs(diffA) < Math.abs(diffB) ? diffA : diffB;
 
+    if (this.sight && (diff > this.sight || diff < -this.sight)) return;
+
     if (diff > steering) {
       this.attr({
         angle: (360 + this.angle + steering) % 360,
