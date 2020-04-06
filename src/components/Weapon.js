@@ -100,6 +100,9 @@ Crafty.c(Bullet, {
     if (firstObj.processDamage && this.bulletSettings.damage) {
       firstObj.processDamage(this.bulletSettings.damage);
     }
+    if (collisionConfig.state) {
+      this.showState(collisionConfig.state);
+    }
 
     (collisionConfig.spawns || []).forEach(([name, settings]) => {
       spawnItem(
@@ -239,6 +242,9 @@ const getItemFromPool = itemDefinition => {
     e => e.__frozen && e.bulletDefinition === itemDefinition
   );
   if (available) {
+    if (itemDefinition.entity) {
+      available.showState("default");
+    }
     available.unfreeze();
     return available;
   }

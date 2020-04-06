@@ -5,6 +5,26 @@
       "attachments": {
         "trail": {
           "particles": "missile.trail"
+        },
+        "tip": null
+      }
+    },
+    "states": {
+      "hide": {
+        "attachments": {
+          "trail": null,
+          "tip": null
+        }
+      },
+      "waterHit": {
+        "attachments": {
+          "trail": null,
+          "tip": {
+            "particles": [
+              "fountain",
+              { "emitter": { "w": 60, "duration": 1000 } }
+            ]
+          }
         }
       }
     },

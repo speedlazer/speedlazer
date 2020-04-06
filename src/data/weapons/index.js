@@ -1,7 +1,7 @@
 export default {
   "heli.rocket": {
     spawnRhythm: {
-      initialDelay: [4500, 3500],
+      initialDelay: [3500, 2500],
       burst: 1,
       shotDelay: [500, 250],
       burstDelay: [3000, 2000],
@@ -29,10 +29,12 @@ export default {
         ],
         collisions: {
           PlayerShip: {
+            state: "hide",
             spawns: [["hit", {}]]
           },
-          WaterCollision: {
-            spawns: [["splash", {}]]
+          GravityLiquid: {
+            state: "waterHit",
+            spawns: [["hit", {}]]
           }
         }
       },
@@ -40,13 +42,7 @@ export default {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.explosion",
-        queue: [{ duration: 350 }]
-      },
-      splash: {
-        spawnPosition: "outside",
-        velocity: 0,
-        composition: "weapons.waterHit",
-        queue: [{ duration: 305 }]
+        queue: [{ duration: 100, audio: "explosion" }, { duration: 2000 }]
       }
     }
   },
