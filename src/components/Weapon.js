@@ -317,6 +317,9 @@ const spawnItem = (
   target
 ) => {
   const itemDef = definition.spawnables[itemName];
+  if (!itemDef) {
+    throw new Error(`Spawn ${itemName} not defined`);
+  }
   generator(itemDef, itemSettings, position, spawner.difficulty, settings => {
     const spawn = getItemFromPool(itemDef);
     const autoRotate = settings.autoRotate !== false;

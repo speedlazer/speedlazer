@@ -402,7 +402,10 @@ export default {
       burst: 1,
       shotDelay: 0,
       burstDelay: 0,
-      spawns: [["explosion", {}]]
+      spawns: [
+        ["explosion", {}],
+        ["bullet", { angleRange: { from: 45, to: 405, step: 90 } }]
+      ]
     },
     spawnables: {
       explosion: {
@@ -422,6 +425,31 @@ export default {
           }
         ],
         queue: [{ duration: 100, audio: "explosion" }, { duration: 2000 }]
+      },
+      bullet: {
+        spawnPosition: [0, 0.5],
+        velocity: 400,
+        composition: "weapons.bullet",
+        damage: [
+          {
+            velocity: [-20e3, -30e3],
+            affects: "health",
+            duration: [2, 4],
+            name: "Laser"
+          }
+        ],
+        queue: [{ cleanOutOfScreen: true }, { duration: 13000 }],
+        collisions: {
+          PlayerShip: {
+            spawns: [["spark", {}]]
+          }
+        }
+      },
+      spark: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.solidHit",
+        queue: [{ duration: 100 }]
       }
     }
   },
