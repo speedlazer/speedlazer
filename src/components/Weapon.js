@@ -100,6 +100,9 @@ Crafty.c(Bullet, {
     if (firstObj.processDamage && this.bulletSettings.damage) {
       firstObj.processDamage(this.bulletSettings.damage);
     }
+    if (collisionConfig.state) {
+      this.showState(collisionConfig.state);
+    }
 
     (collisionConfig.spawns || []).forEach(([name, settings]) => {
       spawnItem(
@@ -173,7 +176,10 @@ Crafty.c(Bullet, {
           this.addComponent(ScreenBound);
         }
         if (upcoming.steering !== undefined) {
-          this.addComponent(Steering).attr({ steering: upcoming.steering });
+          this.addComponent(Steering).attr({
+            steering: upcoming.steering,
+            sight: upcoming.sight
+          });
         }
         if (upcoming.aimOnTarget !== undefined) {
           const potentialTargets = Crafty(this.target);
@@ -236,6 +242,9 @@ const getItemFromPool = itemDefinition => {
     e => e.__frozen && e.bulletDefinition === itemDefinition
   );
   if (available) {
+    if (itemDefinition.entity) {
+      available.showState("default");
+    }
     available.unfreeze();
     return available;
   }
@@ -308,6 +317,9 @@ const spawnItem = (
   target
 ) => {
   const itemDef = definition.spawnables[itemName];
+  if (!itemDef) {
+    throw new Error(`Spawn ${itemName} not defined`);
+  }
   generator(itemDef, itemSettings, position, spawner.difficulty, settings => {
     const spawn = getItemFromPool(itemDef);
     const autoRotate = settings.autoRotate !== false;

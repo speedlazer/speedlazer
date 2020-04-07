@@ -245,7 +245,7 @@ export default {
     particle: {
       sprite: "explosion7",
       angle: -90,
-      angleRandom: 20,
+      angleRandom: 50,
       velocity: 120,
       startSize: 10,
       endSize: 10,
