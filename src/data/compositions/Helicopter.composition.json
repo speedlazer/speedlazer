@@ -5,7 +5,9 @@
       "height": 64
     },
     "hitbox": [10, 45, 50, 10, 125, 20, 110, 50, 13, 57],
-    "sprites": [["helicopterLanded", { "x": 0, "y": 0, "key": "heli" }]],
+    "sprites": [
+      ["helicopterLanded", { "x": 0, "y": 0, "key": "heli", "w": 128, "h": 64 }]
+    ],
     "attachHooks": [
       [
         "gun",
@@ -13,8 +15,7 @@
           "x": 0,
           "y": 62,
           "z": 1,
-          "attachAlign": ["center", "left"],
-          "attachTo": "heli"
+          "attachAlign": ["center", "left"]
         }
       ],
       [
@@ -23,8 +24,7 @@
           "x": 60,
           "y": 42,
           "z": 1,
-          "attachAlign": ["center", "center"],
-          "attachTo": "heli"
+          "attachAlign": ["center", "center"]
         }
       ],
       [
@@ -33,8 +33,7 @@
           "x": 60,
           "y": 52,
           "z": -1,
-          "attachAlign": ["center", "center"],
-          "attachTo": "heli"
+          "attachAlign": ["center", "center"]
         }
       ]
     ],
@@ -47,6 +46,25 @@
       },
       "damaged": {
         "heli": { "sprite": "heliDamaged" }
+      },
+      "turn1": {
+        "heli": {
+          "sprite": "helicopterTurning1",
+          "w": 64,
+          "x": 32,
+          "h": 64
+        }
+      },
+      "turn2": {
+        "heli": {
+          "sprite": "helicopterTurning2",
+          "w": 64,
+          "x": 32,
+          "h": 64
+        }
+      },
+      "turned": {
+        "flipX": true
       },
       "tilted": {
         "attributes": {
@@ -63,6 +81,7 @@
       "flying": {
         "repeat": true,
         "easing": "linear",
+        "startEase": { "easing": "linear", "duration": 250 },
         "duration": 500,
         "timeline": [
           {
@@ -76,6 +95,65 @@
             "end": 1,
             "startFrame": "fly2",
             "endFrame": "fly1"
+          }
+        ]
+      },
+      "turning": {
+        "repeat": true,
+        "easing": "linear",
+        "startEase": { "easing": "linear", "duration": 250 },
+        "duration": 500,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 0.5,
+            "startFrame": "turn1",
+            "endFrame": "turn2"
+          },
+          {
+            "start": 0.5,
+            "end": 1,
+            "startFrame": "turn2",
+            "endFrame": "turn1"
+          }
+        ]
+      },
+      "turnAround": {
+        "easing": "linear",
+        "duration": 500,
+        "after": {
+          "animation": "flying"
+        },
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 0.05,
+            "startFrame": "fly1",
+            "endFrame": "turn2"
+          },
+          {
+            "start": 0.25,
+            "end": 0.5,
+            "startFrame": "turn2",
+            "endFrame": "turn1"
+          },
+          {
+            "start": 0.5,
+            "end": 0.55,
+            "startFrame": "turn1",
+            "endFrame": "turned"
+          },
+          {
+            "start": 0.55,
+            "end": 0.75,
+            "startFrame": "turn1",
+            "endFrame": "turn2"
+          },
+          {
+            "start": 0.75,
+            "end": 1,
+            "startFrame": "turn2",
+            "endFrame": "fly2"
           }
         ]
       }

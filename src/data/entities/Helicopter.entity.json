@@ -19,10 +19,10 @@
         "rockets": {
           "weapon": {
             "pattern": "heli.rocket",
-            "target": "PlayerShip",
-            "angle": -5
+            "target": "PlayerShip"
           }
-        }
+        },
+        "smoke": null
       }
     },
     "states": {
@@ -52,11 +52,12 @@
         }
       },
       "flying": {
-        "frame": "tilted",
         "animation": "flying"
       },
+      "turning": {
+        "animation": "turnAround"
+      },
       "shooting": {
-        "frame": "tilted",
         "animation": "flying",
         "attachments": {
           "gun": {

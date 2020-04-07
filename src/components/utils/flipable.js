@@ -6,6 +6,8 @@ Crafty.c(Component, {
       return;
     }
     this.xFlipped = true;
+    const rot = this._rotation;
+    this.rotation = 0;
     try {
       if (typeof this.flip === "function") {
         this.flip("X");
@@ -29,6 +31,8 @@ Crafty.c(Component, {
     this._mirrorCollision();
     this._mirrorRotationPoints();
     this._mirrorAttachPoints();
+
+    this.rotation = -rot;
     return this;
   },
 
@@ -37,6 +41,8 @@ Crafty.c(Component, {
       return;
     }
     this.xFlipped = false;
+    const rot = this._rotation;
+    this.rotation = 0;
     try {
       if (typeof this.unflip === "function") {
         this.unflip("X");
@@ -58,6 +64,7 @@ Crafty.c(Component, {
     this._mirrorCollision();
     this._mirrorRotationPoints();
     this._mirrorAttachPoints();
+    this.rotation = -rot;
     return this;
   },
 
@@ -77,14 +84,17 @@ Crafty.c(Component, {
 
   _mirrorAttachPoints() {
     Object.entries(this.currentAttachHooks || {}).forEach(([name, hook]) => {
-      const relX = this.x + this.w - (hook.x + hook.w);
-      if (typeof hook.attr === "function") {
-        hook.attr({
-          x: this.x + relX
-        });
-      }
-      if (typeof hook.unflip === "function") {
-        hook.unflip("X");
+      const parent = hook._parent;
+      if (parent !== this) {
+        const relX = parent.x + parent.w - (hook.x + hook.w);
+        if (typeof hook.attr === "function") {
+          hook.attr({
+            x: this.x + relX
+          });
+        }
+        if (typeof hook.unflip === "function") {
+          hook.unflip("X");
+        }
       }
       if (hook.currentAttachment) {
         const settings = this.attachHookSettings(name);
@@ -96,13 +106,20 @@ Crafty.c(Component, {
   },
 
   _mirrorRotationPoints() {
+    const updateChildren = entity => {
+      Array.from(entity._children).forEach(child => {
+        if (typeof child.attr === "function") {
+          if (child.origin !== null) {
+            child._origin.x = child.w - child._origin.x;
+            //child.rotation = (360 + (360 - child.rotation)) % 360;
+          }
+          updateChildren(child);
+        }
+      });
+    };
     this._origin.x = this.w - this._origin.x;
-    Array.from(this._children).forEach(child => {
-      if (child.origin != null) {
-        child._origin.x = child.w - child._origin.x;
-      }
-      child.rotation = (360 + (360 - child.rotation)) % 360;
-    });
+    //this.rotation = (360 + (360 - this.rotation)) % 360;
+    updateChildren(this);
   }
 });
 

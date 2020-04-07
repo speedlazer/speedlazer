@@ -389,7 +389,11 @@ Crafty.c(Composable, {
       event.animateFn(localV);
     });
     if (t >= 1.0 && !this.activeAnimation.data.repeat) {
+      const after = this.activeAnimation.data.after;
       this.stopAnimation();
+      if (after && after.animation) {
+        this.playAnimation(after.animation);
+      }
     }
   },
 

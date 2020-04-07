@@ -86,6 +86,8 @@
     "helicopter2": [4, 54, 4, 2],
     "heliDamaged": [8, 54, 4, 2],
     "helicopterLanded": [12, 56, 4, 2],
+    "helicopterTurning1": [16, 56, 2, 2],
+    "helicopterTurning2": [18, 56, 2, 2],
     "standardLargeDrone": [0, 56, 3, 3],
     "eyeStart": [6, 48, 1, 1],
     "wingLoaded": [12, 50, 2, 1],
