@@ -1,4 +1,4 @@
-import "src/components/Horizon";
+import Horizon from "src/components/Horizon";
 import Scalable from "src/components/utils/Scalable";
 import "src/components/utils/HideBelow";
 import Animator from "src/components/generic/Animator";
@@ -600,7 +600,7 @@ Crafty.c(Composable, {
     }
     if (options.horizon) {
       const [bottom, top] = options.horizon;
-      elem.addComponent("Horizon").saturationGradient(bottom, top);
+      elem.addComponent(Horizon).saturationGradient(bottom, top);
     }
   },
 

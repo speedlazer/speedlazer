@@ -8,6 +8,8 @@ let currentBackground = {
   _strength: 1
 };
 
+const Component = "Horizon";
+
 export const getBackgroundColor = () => currentBackground;
 
 export const setBackgroundColor = color => {
@@ -18,13 +20,15 @@ export const setBackgroundColor = color => {
     Crafty.assignColor(color, c);
   }
   currentBackground = c;
-  Crafty("Horizon").forEach(entity => entity.colorDesaturation(c));
+  Crafty(Component).forEach(entity => entity.colorDesaturation(c));
 };
 
-Crafty.c("Horizon", {
+Crafty.c(Component, {
   required: [ColorEffects].join(","),
 
   init() {
     this.colorDesaturation(currentBackground);
   }
 });
+
+export default Component;
