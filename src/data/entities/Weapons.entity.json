@@ -2,6 +2,7 @@
   "HeliRocket": {
     "structure": {
       "composition": "weapons.rocket",
+      "frame": "small",
       "attachments": {
         "trail": {
           "particles": "missile.trail"

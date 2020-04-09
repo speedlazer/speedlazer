@@ -12,7 +12,7 @@
       [
         "gun",
         {
-          "x": 0,
+          "x": 2,
           "y": 62,
           "z": 1,
           "attachAlign": ["center", "left"]
@@ -144,16 +144,16 @@
             "endFrame": "turned"
           },
           {
-            "start": 0.55,
-            "end": 0.75,
+            "start": 0.75,
+            "end": 0.9,
             "startFrame": "turn1",
             "endFrame": "turn2"
           },
           {
-            "start": 0.75,
+            "start": 0.95,
             "end": 1,
             "startFrame": "turn2",
-            "endFrame": "fly2"
+            "endFrame": "fly1"
           }
         ]
       }

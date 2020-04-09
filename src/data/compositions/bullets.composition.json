@@ -66,7 +66,8 @@
     "attributes": {
       "width": 47,
       "height": 16,
-      "ro": [4, 8]
+      "ro": [4, 8],
+      "scale": 1
     },
     "hitbox": [2, 3, 45, 3, 45, 12, 2, 12],
     "sprites": [["standardRocket", { "z": -2 }]],
@@ -76,7 +77,14 @@
         { "x": 47, "y": 8, "z": -2, "attachAlign": ["center", "left"] }
       ],
       ["tip", { "x": 0, "y": 8, "z": -2, "attachAlign": ["center", "left"] }]
-    ]
+    ],
+    "frames": {
+      "small": {
+        "attributes": {
+          "scale": 0.8
+        }
+      }
+    }
   },
   "weapons.explosion": {
     "attributes": {

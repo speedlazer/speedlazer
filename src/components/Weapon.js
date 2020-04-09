@@ -9,6 +9,9 @@ import { EntityDefinition } from "src/components/EntityDefinition";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import { easingFunctions } from "src/constants/easing";
 import { playAudio } from "src/lib/audio";
+import flipRotation from "src/lib/flipRotation";
+
+const flipAngle = (xFlipped, angle) => (xFlipped ? flipRotation(angle) : angle);
 
 const numArray = e =>
   Array.isArray(e) && e.length === 2 && e.every(i => typeof i === "number");
@@ -171,7 +174,7 @@ Crafty.c(Bullet, {
           this.attr({ velocity: upcoming.velocity });
         }
         if (upcoming.angle !== undefined) {
-          this.attr({ angle: upcoming.angle });
+          this.attr({ angle: flipAngle(this.xFlipped, upcoming.angle) });
         }
         if (upcoming.cleanOutOfScreen !== undefined) {
           this.addComponent(ScreenBound);
@@ -250,6 +253,12 @@ const getItemFromPool = itemDefinition => {
       available.showState("default");
     }
     available.unfreeze();
+    available.attr({
+      x: 3000,
+      y: 3000,
+      angle: 0,
+      rotation: 0
+    });
     return available;
   }
 
@@ -327,15 +336,21 @@ const spawnItem = (
   generator(itemDef, itemSettings, position, spawner.difficulty, settings => {
     const spawn = getItemFromPool(itemDef);
     const autoRotate = settings.autoRotate !== false;
+    const angle = flipAngle(spawner.xFlipped, settings.angle || 0);
+
+    const rotValue = autoRotate ? angle : 0;
+    const rotation = flipAngle(spawner.xFlipped, rotValue);
+
     spawn.attr({
+      xFlipped: spawner.xFlipped,
       difficulty: spawner.difficulty,
       x: position.x - spawn.w / 2,
       y: position.y - spawn.h / 2,
       z: spawner.z,
       autoRotate,
-      angle: settings.angle,
+      angle,
       steering: 0,
-      rotation: autoRotate ? settings.angle : 0
+      rotation
     });
 
     if (typeof settings.spawnPosition === "object") {
@@ -386,13 +401,17 @@ Crafty.c(Weapon, {
   flip(axis) {
     if (axis !== "X") return;
     this.xFlipped = !this.xFlipped;
-    this.definition.angle = 180 - (this.definition.angle || 0);
+    if (this.definition.angle !== undefined) {
+      this.definition.angle = flipRotation(this.definition.angle || 0);
+    }
   },
 
   unflip(axis) {
     if (axis !== "X") return;
     this.xFlipped = !this.xFlipped;
-    this.definition.angle = 180 - (this.definition.angle || 0);
+    if (this.definition.angle !== undefined) {
+      this.definition.angle = flipRotation(this.definition.angle || 0);
+    }
   },
 
   activate() {
@@ -424,7 +443,7 @@ Crafty.c(Weapon, {
         {
           x: this.x + (this.definition.x || 0),
           y: this.y + (this.definition.y || 0),
-          angle: this.definition.angle || 0
+          angle: this.definition.angle
         },
         this.definition.target
       );

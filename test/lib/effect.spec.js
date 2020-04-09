@@ -363,7 +363,7 @@ describe("Effect model", () => {
     expect(result.effects).to.eql([]);
   });
 
-  describe("applyForce", () => {
+  describe.skip("applyForce", () => {
     it("accellerates when applied", () => {
       let activeForce = 0;
       const mass = 20;
