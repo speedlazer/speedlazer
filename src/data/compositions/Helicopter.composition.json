@@ -2,13 +2,14 @@
   "helicopter": {
     "attributes": {
       "width": 128,
-      "height": 64
+      "height": 64,
+      "scale": 1
     },
     "hitbox": [10, 45, 50, 10, 125, 20, 110, 50, 13, 57],
     "sprites": [
       [
         "helicopterLanded",
-        { "x": 0, "y": 0, "key": "heli", "w": 128, "h": 64 }
+        { "x": 0, "y": 0, "key": "heli", "w": 128, "h": 64, "horizon": [0, 0] }
       ],
       [
         "helicopterGun",
@@ -19,7 +20,8 @@
           "key": "barrel",
           "w": 32,
           "h": 32,
-          "ro": [20, 10]
+          "ro": [20, 10],
+          "horizon": [0, 0]
         }
       ]
     ],
@@ -54,6 +56,32 @@
       ]
     ],
     "frames": {
+      "background": {
+        "flipX": true,
+        "attributes": {
+          "scale": 0.7
+        },
+        "heli": {
+          "horizon": [0.7, 0.7]
+        },
+        "barrel": {
+          "horizon": [0.7, 0.7]
+        }
+      },
+      "flyBackground1": {
+        "attributes": {
+          "scale": 0.7
+        },
+        "heli": { "sprite": "helicopter", "horizon": [0.7, 0.7] },
+        "barrel": { "alpha": 1, "horizon": [0.7, 0.7] }
+      },
+      "flyBackground2": {
+        "attributes": {
+          "scale": 0.7
+        },
+        "heli": { "sprite": "helicopter2", "horizon": [0.7, 0.7] },
+        "barrel": { "alpha": 1, "horizon": [0.7, 0.7] }
+      },
       "fly1": {
         "heli": { "sprite": "helicopter" },
         "barrel": { "alpha": 1 }
@@ -122,6 +150,26 @@
             "end": 1,
             "startFrame": "fly2",
             "endFrame": "fly1"
+          }
+        ]
+      },
+      "flyingBackground": {
+        "repeat": true,
+        "easing": "linear",
+        "startEase": { "easing": "linear", "duration": 250 },
+        "duration": 500,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 0.5,
+            "startFrame": "flyBackground1",
+            "endFrame": "flyBackground2"
+          },
+          {
+            "start": 0.5,
+            "end": 1,
+            "startFrame": "flyBackground2",
+            "endFrame": "flyBackground1"
           }
         ]
       },

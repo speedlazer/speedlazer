@@ -9,6 +9,9 @@ export const tweenFn = (entity, next, current = undefined) => {
         : acc,
     []
   );
+  if (transitions.length == 0) {
+    return false;
+  }
 
   return t => {
     transitions.forEach(({ key, current, newValue }) => {
