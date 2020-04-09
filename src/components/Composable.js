@@ -41,6 +41,7 @@ const TWEEN_WHITELIST = [
   "rotation",
   "alpha",
   "maxAlpha",
+  "horizon",
   "scale",
   "scaleX",
   "scaleY"
@@ -49,14 +50,23 @@ const TWEEN_WHITELIST = [
 const deltaSettings = settings =>
   Object.entries(settings)
     .filter(([name]) => TWEEN_WHITELIST.includes(name))
-    .map(([name, value]) =>
-      name === "x"
-        ? ["dx", value]
-        : name === "y"
-        ? ["dy", value]
-        : [name, value]
-    )
-    .reduce((result, [key, value]) => ({ ...result, [key]: value }), {});
+    .reduce((result, [key, value]) => {
+      switch (key) {
+        case "x":
+          result["dx"] = value;
+          break;
+        case "y":
+          result["dy"] = value;
+          break;
+        case "horizon":
+          result["topDesaturation"] = value[1];
+          result["bottomDesaturation"] = value[0];
+          break;
+        default:
+          result[key] = value;
+      }
+      return result;
+    }, {});
 
 const generateDefaultFrame = definition => {
   const result = {};
@@ -69,6 +79,8 @@ const generateDefaultFrame = definition => {
           rotation: 0,
           alpha: 1,
           scale: 1,
+          topDesaturation: 0,
+          bottomDesaturation: 0,
           sprite,
           ...settings,
           x: 0,
@@ -114,8 +126,8 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
   if (!targetFrameData) return () => {};
   const sourceFrameData = getFrameData(entity, sourceFrame);
 
-  const fns = Object.entries(targetFrameData).reduce(
-    (acc, [keyName, settings]) => {
+  const fns = Object.entries(targetFrameData)
+    .reduce((acc, [keyName, settings]) => {
       if (keyName === "attributes") {
         const tweenSettings = deltaSettings({
           ...settings
@@ -150,10 +162,17 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
           alpha: 1,
           scaleX: 1,
           scaleY: 1,
+          horizon: [0, 0],
           ...(originalSettings && originalSettings[1]),
           x: 0,
           y: 0
         };
+        if (defaultSettings.w && entity.scale !== undefined) {
+          defaultSettings.w = defaultSettings.w * entity.scale;
+        }
+        if (defaultSettings.h && entity.scale !== undefined) {
+          defaultSettings.h = defaultSettings.h * entity.scale;
+        }
 
         const tweenSettings = deltaSettings({
           ...defaultSettings,
@@ -166,19 +185,21 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
             ...sourceFrameData[keyName]
           });
 
+        if (tweenSettings.topDesaturation !== 0) {
+          sprite.addComponent(Horizon);
+        }
+
         const newSpriteName = settings.sprite;
 
-        return acc.concat(
-          [
-            tweenFn(sprite, tweenSettings, sourceTweenSettings),
-            newSpriteName &&
-              (() => {
-                if (sprite._spriteName === newSpriteName) return;
-                sprite.sprite(newSpriteName);
-                sprite._spriteName = newSpriteName;
-              })
-          ].filter(Boolean)
-        );
+        return acc.concat([
+          tweenFn(sprite, tweenSettings, sourceTweenSettings),
+          newSpriteName &&
+            (() => {
+              if (sprite._spriteName === newSpriteName) return;
+              sprite.sprite(newSpriteName);
+              sprite._spriteName = newSpriteName;
+            })
+        ]);
       }
 
       const gradient = entity.gradientParts.find(
@@ -212,9 +233,9 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
           colorFadeFn(gradient, settings.topColor, settings.bottomColor)
         );
       }
-    },
-    []
-  );
+      return acc;
+    }, [])
+    .filter(Boolean);
   return t => fns.forEach(f => f(t));
 };
 
