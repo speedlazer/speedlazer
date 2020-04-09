@@ -4,6 +4,7 @@ import particles from "src/data/particles";
 import Composable from "src/components/Composable";
 import AngleMotion from "src/components/AngleMotion";
 import Steering from "src/components/Steering";
+import Flipable from "src/components/utils/flipable";
 import { EntityDefinition } from "src/components/EntityDefinition";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import { easingFunctions } from "src/constants/easing";
@@ -90,7 +91,7 @@ const calcHitPosition = (objA, objB) => {
 const Bullet = "Bullet";
 
 Crafty.c(Bullet, {
-  required: `2D, Motion, WebGL, ${AngleMotion}`,
+  required: `2D, Motion, WebGL, ${AngleMotion}, ${Flipable}`,
 
   _bulletHit(collisionType, hitData) {
     const collisionConfig = this.bulletSettings.collisions[collisionType];
@@ -228,6 +229,9 @@ Crafty.c(Bullet, {
 
     if (this.bulletTime > this.maxBulletTime) {
       this.unbind("EnterFrame", this._updateBullet);
+      if (this._parent) {
+        this._parent.detach(this);
+      }
       this.bulletTime = 0;
       this.freeze();
     }
@@ -333,9 +337,6 @@ const spawnItem = (
       steering: 0,
       rotation: autoRotate ? settings.angle : 0
     });
-    if (itemDef.attached) {
-      spawner.attach(spawn);
-    }
 
     if (typeof settings.spawnPosition === "object") {
       spawn.attr({
@@ -343,6 +344,11 @@ const spawnItem = (
         y: position.y - spawn._origin.y
       });
     }
+
+    if (itemDef.attached) {
+      spawner.attach(spawn);
+    }
+
     if (itemDef.emitDamage) {
       itemDef.emitDamage.forEach(damage => {
         const damageObj = {
@@ -367,10 +373,26 @@ const spawnItem = (
 const Weapon = "Weapon";
 
 Crafty.c(Weapon, {
+  init() {
+    this.xFlipped = false;
+  },
+
   weapon(definition) {
     this.definition = definition;
     this.active = false;
     return this;
+  },
+
+  flip(axis) {
+    if (axis !== "X") return;
+    this.xFlipped = !this.xFlipped;
+    this.definition.angle = 180 - (this.definition.angle || 0);
+  },
+
+  unflip(axis) {
+    if (axis !== "X") return;
+    this.xFlipped = !this.xFlipped;
+    this.definition.angle = 180 - (this.definition.angle || 0);
   },
 
   activate() {
