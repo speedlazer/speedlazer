@@ -33,7 +33,7 @@ const part = async ({
   await Promise.all([
     introAnimation.waitTillCheckpoint(3),
     (async () => {
-      await wait(1000);
+      await wait(1500);
       await say(
         "General",
         "Let us escort you to the factory to install\n" +

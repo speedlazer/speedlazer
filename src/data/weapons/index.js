@@ -99,7 +99,7 @@ export default {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.solidHit",
-        queue: [{ duration: 100 }]
+        queue: [{ duration: 100, audio: "hit" }]
       },
       splash: {
         spawnPosition: "outside",
