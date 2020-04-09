@@ -19,6 +19,12 @@ export const setBackgroundColor = color => {
   } else {
     Crafty.assignColor(color, c);
   }
+  if (
+    currentBackground._red === c._red &&
+    currentBackground._green === c._green &&
+    currentBackground._blue === c._blue
+  )
+    return;
   currentBackground = c;
   Crafty(Component).forEach(entity => entity.colorDesaturation(c));
 };
