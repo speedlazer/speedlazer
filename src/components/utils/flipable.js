@@ -12,25 +12,27 @@ Crafty.c(Component, {
       if (typeof this.flip === "function") {
         this.flip("X");
       }
-
-      Array.from(this._children).forEach(child => {
-        const relX = child.x - this.x;
-        if (typeof child.attr === "function") {
-          child.attr({
-            x: this.x + this.w - child.w - relX
-          });
-        }
-        if (typeof child.flip === "function") {
-          child.flip("X");
-        }
-      });
+      const flipChildren = entity => {
+        Array.from(entity._children).forEach(child => {
+          const relX = child.x - entity.x;
+          if (typeof child.attr === "function") {
+            child.attr({
+              x: entity.x + entity.w - child.w - relX
+            });
+          }
+          if (typeof child.flip === "function") {
+            child.flip("X");
+          }
+          if (child._children) flipChildren(child);
+        });
+      };
+      flipChildren(this);
     } catch (e) {
       console.log(e);
     }
 
     this._mirrorCollision();
     this._mirrorRotationPoints();
-    this._mirrorAttachPoints();
 
     this.rotation = -rot;
     return this;
@@ -47,23 +49,26 @@ Crafty.c(Component, {
       if (typeof this.unflip === "function") {
         this.unflip("X");
       }
-      Array.from(this._children).forEach(child => {
-        const relX = this.x + this.w - (child.x + child.w);
-        if (typeof child.attr === "function") {
-          child.attr({
-            x: this.x + relX
-          });
-        }
-        if (typeof child.unflip === "function") {
-          child.unflip("X");
-        }
-      });
+      const unflipChildren = entity => {
+        Array.from(entity._children).forEach(child => {
+          const relX = entity.x + entity.w - (child.x + child.w);
+          if (typeof child.attr === "function") {
+            child.attr({
+              x: entity.x + relX
+            });
+          }
+          if (typeof child.unflip === "function") {
+            child.unflip("X");
+          }
+          if (child._children) unflipChildren(child);
+        });
+      };
+      unflipChildren(this);
     } catch (e) {
       console.log(e);
     }
     this._mirrorCollision();
     this._mirrorRotationPoints();
-    this._mirrorAttachPoints();
     this.rotation = -rot;
     return this;
   },
@@ -82,29 +87,6 @@ Crafty.c(Component, {
     }
   },
 
-  _mirrorAttachPoints() {
-    Object.entries(this.currentAttachHooks || {}).forEach(([name, hook]) => {
-      const parent = hook._parent;
-      if (parent !== this) {
-        const relX = parent.x + parent.w - (hook.x + hook.w);
-        if (typeof hook.attr === "function") {
-          hook.attr({
-            x: this.x + relX
-          });
-        }
-        if (typeof hook.unflip === "function") {
-          hook.unflip("X");
-        }
-      }
-      if (hook.currentAttachment) {
-        const settings = this.attachHookSettings(name);
-        const xAlign = settings.attachAlign[1];
-        const aspect = { left: 0, right: 1, center: 0.5 }[xAlign] || 0;
-        hook.currentAttachment.x = hook.x - hook.currentAttachment.w * aspect;
-      }
-    });
-  },
-
   _mirrorRotationPoints() {
     const updateChildren = entity => {
       Array.from(entity._children).forEach(child => {
@@ -118,7 +100,6 @@ Crafty.c(Component, {
       });
     };
     this._origin.x = this.w - this._origin.x;
-    //this.rotation = (360 + (360 - this.rotation)) % 360;
     updateChildren(this);
   }
 });
