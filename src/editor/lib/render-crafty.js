@@ -164,11 +164,12 @@ const resetScreenScaling = entity => {
 const applyDisplayOptions = (entity, options) => {
   Object.values(entity.currentAttachHooks).forEach(hook => {
     options.showAttachPoints
-      ? hook.addComponent("SolidHitBox")
+      ? hook.addComponent("SolidHitBox").attr({ w: 10, h: 10 })
       : hook
           .removeComponent("SolidHitBox")
           .removeComponent("DebugPolygon")
-          .removeComponent("DebugCanvas");
+          .removeComponent("DebugCanvas")
+          .attr({ w: 1, h: 1 });
   });
 
   if (options.showSize) {

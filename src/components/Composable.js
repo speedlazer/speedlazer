@@ -655,8 +655,8 @@ Crafty.c(Composable, {
         x: this.x + (options.x || 0),
         y: this.y + (options.y || 0),
         z: this.z + (options.z || 0),
-        w: 10,
-        h: 10,
+        w: 1,
+        h: 1,
         currentAttachment: hook.currentAttachment || null
       });
       if (options.attachTo) {
