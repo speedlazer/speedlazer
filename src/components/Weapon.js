@@ -433,7 +433,7 @@ Crafty.c(Weapon, {
     return this;
   },
 
-  _weaponSpawn(spawnRhythm) {
+  _weaponSpawn(spawnRhythm, angle = 0) {
     spawnRhythm.spawns.forEach(([name, overrideSettings]) => {
       spawnItem(
         this.definition.pattern,
@@ -443,7 +443,7 @@ Crafty.c(Weapon, {
         {
           x: this.x + (this.definition.x || 0),
           y: this.y + (this.definition.y || 0),
-          angle: this.definition.angle
+          angle: this.definition.angle + angle
         },
         this.definition.target
       );
@@ -453,10 +453,50 @@ Crafty.c(Weapon, {
   _updateSpawnFrame({ dt }) {
     const spawnRhythm = this.definition.pattern.spawnRhythm;
 
+    // aim weapon
+    const aimSettings = this.definition.pattern.aiming;
+    let angle = 0;
+    if (aimSettings) {
+      const potentialTargets = Crafty(this.definition.target);
+      if (potentialTargets.length > 0) {
+        const target = Crafty(
+          potentialTargets[Math.floor(Math.random() * potentialTargets.length)]
+        );
+        const targetLocation = {
+          x: target.x + target.w / 2,
+          y: target.y + target.h / 2
+        };
+
+        const aimVector = {
+          x: this.x - targetLocation.x,
+          y: this.y - targetLocation.y
+        };
+        const radians = Math.atan2(aimVector.y, aimVector.x);
+        const targetAngle = (radians / Math.PI) * 180;
+        const parent = this._parent._parent; // reach through attachpoint
+
+        const possibleRotation = Crafty.math.clamp(
+          targetAngle,
+          aimSettings.range[1],
+          aimSettings.range[0]
+        );
+        const maxRotate = aimSettings.rotateSpeed * 0.001 * dt;
+        const delta = Crafty.math.clamp(
+          possibleRotation - parent.rotation,
+          -maxRotate,
+          maxRotate
+        );
+        const rotation = parent.rotation + delta;
+        angle = rotation - (aimSettings.offsetAimAngle || 0);
+
+        parent.attr({ rotation });
+      }
+    }
+
     if (this.initialDelay > 0) {
       this.initialDelay -= dt;
       if (this.initialDelay <= 0) {
-        this._weaponSpawn(spawnRhythm);
+        this._weaponSpawn(spawnRhythm, angle);
         this.shotIndex = 0;
         this.shotDelay = adjustForDifficulty(
           this.difficulty,
@@ -477,7 +517,7 @@ Crafty.c(Weapon, {
           spawnRhythm.burstDelay
         );
       } else {
-        this._weaponSpawn(spawnRhythm);
+        this._weaponSpawn(spawnRhythm, angle);
         this.shotDelay = adjustForDifficulty(
           this.difficulty,
           spawnRhythm.shotDelay

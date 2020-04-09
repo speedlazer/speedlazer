@@ -93,9 +93,8 @@ Crafty.c(Component, {
         if (typeof child.attr === "function") {
           if (child.origin !== null) {
             child._origin.x = child.w - child._origin.x;
-            //child.rotation = (360 + (360 - child.rotation)) % 360;
           }
-          updateChildren(child);
+          if (child._children) updateChildren(child);
         }
       });
     };

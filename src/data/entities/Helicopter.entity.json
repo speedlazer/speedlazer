@@ -55,7 +55,17 @@
         "animation": "flying"
       },
       "turning": {
-        "animation": "turnAround"
+        "animation": "turnAround",
+        "gun": {
+          "weapon": {
+            "active": false
+          }
+        },
+        "rockets": {
+          "weapon": {
+            "active": false
+          }
+        }
       },
       "shooting": {
         "animation": "flying",

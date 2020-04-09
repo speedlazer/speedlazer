@@ -6,7 +6,22 @@
     },
     "hitbox": [10, 45, 50, 10, 125, 20, 110, 50, 13, 57],
     "sprites": [
-      ["helicopterLanded", { "x": 0, "y": 0, "key": "heli", "w": 128, "h": 64 }]
+      [
+        "helicopterLanded",
+        { "x": 0, "y": 0, "key": "heli", "w": 128, "h": 64 }
+      ],
+      [
+        "helicopterGun",
+        {
+          "x": -5,
+          "y": 43,
+          "z": -1,
+          "key": "barrel",
+          "w": 32,
+          "h": 32,
+          "ro": [20, 10]
+        }
+      ]
     ],
     "attachHooks": [
       [
@@ -15,7 +30,8 @@
           "x": 2,
           "y": 62,
           "z": 1,
-          "attachAlign": ["center", "left"]
+          "attachAlign": ["center", "left"],
+          "attachTo": "barrel"
         }
       ],
       [
@@ -39,13 +55,22 @@
     ],
     "frames": {
       "fly1": {
-        "heli": { "sprite": "helicopter" }
+        "heli": { "sprite": "helicopter" },
+        "barrel": { "alpha": 1 }
       },
       "fly2": {
-        "heli": { "sprite": "helicopter2" }
+        "heli": { "sprite": "helicopter2" },
+        "barrel": { "alpha": 1 }
       },
       "damaged": {
-        "heli": { "sprite": "heliDamaged" }
+        "heli": { "sprite": "heliDamaged" },
+        "barrel": { "alpha": 1 }
+      },
+      "gunRotate1": {
+        "barrel": { "rotation": 10 }
+      },
+      "gunRotate2": {
+        "barrel": { "rotation": -50 }
       },
       "turn1": {
         "heli": {
@@ -53,7 +78,8 @@
           "w": 64,
           "x": 32,
           "h": 64
-        }
+        },
+        "barrel": { "alpha": 0 }
       },
       "turn2": {
         "heli": {
@@ -61,7 +87,8 @@
           "w": 64,
           "x": 32,
           "h": 64
-        }
+        },
+        "barrel": { "alpha": 0 }
       },
       "turned": {
         "flipX": true
@@ -138,7 +165,7 @@
             "endFrame": "turn1"
           },
           {
-            "start": 0.5,
+            "start": 0.52,
             "end": 0.55,
             "startFrame": "turn1",
             "endFrame": "turned"

@@ -47,6 +47,14 @@ export default {
     }
   },
   "heli.gun": {
+    aiming: {
+      rotateParent: true,
+      offsetAimAngle: -5,
+      sight: 25,
+      resetOnDeactivation: true,
+      rotateSpeed: 60,
+      range: [10, -50]
+    },
     spawnRhythm: {
       initialDelay: [1500, 150],
       burst: [5, 9],
