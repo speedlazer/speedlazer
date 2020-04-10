@@ -225,6 +225,17 @@ Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
   const entity = createEntity(entityName);
   setHabitat(habitat);
 
+  const dummyPlayer = Crafty.e("2D, PlayerShip").attr({
+    x: 0,
+    y: 0,
+    w: 1,
+    h: 1
+  });
+  const rect = Crafty.stage.elem.getBoundingClientRect();
+  Crafty.s("Mouse").bind("MouseMove", function(e) {
+    dummyPlayer.attr({ x: e.realX - rect.x, y: e.realY - rect.y });
+  });
+
   if (habitat && habitat.position) {
     const position = makePosition(habitat.position);
     entity.attr(position);
