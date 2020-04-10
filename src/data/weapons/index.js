@@ -48,7 +48,6 @@ export default {
   },
   "heli.gun": {
     aiming: {
-      rotateParent: true,
       offsetAimAngle: -5,
       sight: 25,
       resetOnDeactivation: true,

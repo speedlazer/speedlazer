@@ -102,6 +102,10 @@ const setEntityStructure = (root, entity, state, duration) => {
   if (state.weapon) {
     if (!entity.has(Weapon)) {
       const pattern = weapons[state.weapon.pattern];
+      if (state.weapon.barrel) {
+        const barrel = root.getElementByKey(state.weapon.barrel);
+        entity.barrel = barrel;
+      }
       entity
         .attr({ difficulty: 0 })
         .addComponent(Weapon)

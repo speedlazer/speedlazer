@@ -456,7 +456,7 @@ Crafty.c(Weapon, {
     // aim weapon
     const aimSettings = this.definition.pattern.aiming;
     let angle = 0;
-    if (aimSettings) {
+    if (aimSettings && this.barrel) {
       const potentialTargets = Crafty(this.definition.target);
       if (potentialTargets.length > 0) {
         const target = Crafty(
@@ -473,7 +473,6 @@ Crafty.c(Weapon, {
         };
         const radians = Math.atan2(aimVector.y, aimVector.x);
         const targetAngle = (radians / Math.PI) * 180;
-        const parent = this._parent._parent; // reach through attachpoint
 
         const possibleRotation = Crafty.math.clamp(
           targetAngle,
@@ -482,14 +481,14 @@ Crafty.c(Weapon, {
         );
         const maxRotate = aimSettings.rotateSpeed * 0.001 * dt;
         const delta = Crafty.math.clamp(
-          possibleRotation - parent.rotation,
+          possibleRotation - this.barrel.rotation,
           -maxRotate,
           maxRotate
         );
-        const rotation = parent.rotation + delta;
+        const rotation = this.barrel.rotation + delta;
         angle = rotation - (aimSettings.offsetAimAngle || 0);
 
-        parent.attr({ rotation });
+        this.barrel.attr({ rotation });
       }
     }
 

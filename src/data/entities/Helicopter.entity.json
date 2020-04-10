@@ -13,7 +13,8 @@
           "weapon": {
             "pattern": "heli.gun",
             "target": "PlayerShip",
-            "angle": -5
+            "angle": -5,
+            "barrel": "barrel"
           }
         },
         "rockets": {
