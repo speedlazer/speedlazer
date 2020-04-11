@@ -114,7 +114,8 @@
   "IntroHeliBackground": {
     "structure": {
       "composition": "helicopter",
-      "frame": "background"
+      "frame": "background",
+      "components": ["DamageSupport"]
     },
     "states": {
       "flying": {

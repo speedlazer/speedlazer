@@ -124,7 +124,11 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: 400,
         composition: "weapons.sphere",
-        queue: [{ duration: 4000 }],
+        queue: [
+          { cleanOutOfScreen: true },
+          { aimOnTarget: true, duration: 0 },
+          { duration: 4000 }
+        ],
         collisions: {
           IntroHeliBackground: {
             spawns: [

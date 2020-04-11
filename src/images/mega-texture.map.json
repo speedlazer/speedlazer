@@ -93,7 +93,6 @@
     "standardLargeDroneDamage1": [3, 56, 3, 3],
     "standardLargeDroneDamage2": [6, 56, 3, 3],
     "standardLargeDroneDamage3": [9, 56, 3, 3],
-    "eyeStart": [6, 48, 1, 1],
     "wingLoaded": [12, 50, 2, 1],
     "rapidFireBoost": [11, 48, 1, 1],
     "speedBoost": [12, 48, 1, 1],

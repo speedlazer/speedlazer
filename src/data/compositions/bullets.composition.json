@@ -44,7 +44,9 @@
       "height": 16,
       "ro": [8, 8]
     },
-    "sprites": [["sphere1", { "z": -2, "crop": [0, 6, 17, 0], "key": "main" }]],
+    "sprites": [
+      ["sphere1", { "z": -2, "crop": [0, 17, 17, 0], "key": "main" }]
+    ],
     "animations": {
       "default": {
         "repeat": true,
@@ -70,13 +72,13 @@
       "scale": 1
     },
     "hitbox": [2, 3, 45, 3, 45, 12, 2, 12],
-    "sprites": [["standardRocket", { "z": -2 }]],
+    "sprites": [["standardRocket", { "z": 1 }]],
     "attachHooks": [
       [
         "trail",
-        { "x": 47, "y": 8, "z": -2, "attachAlign": ["center", "left"] }
+        { "x": 47, "y": 8, "z": -1, "attachAlign": ["center", "left"] }
       ],
-      ["tip", { "x": 0, "y": 8, "z": -2, "attachAlign": ["center", "left"] }]
+      ["tip", { "x": 0, "y": 8, "z": 1, "attachAlign": ["center", "left"] }]
     ],
     "frames": {
       "small": {

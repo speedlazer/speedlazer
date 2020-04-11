@@ -1,4 +1,5 @@
 import { droneWave } from "./enemies/drones.lazer";
+import { backgroundHeli, heliAttack } from "./animations/backgroundHeli.lazer";
 import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
 import { playAudio } from "src/lib/audio";
@@ -49,6 +50,8 @@ const part = async ({
   exec(playerShip({ existing: true }));
   setBackgroundCheckpointLimit(4);
 
+  let helicopter;
+
   await setScrollingSpeed(250, 0);
   await parallel([
     async () => {
@@ -58,6 +61,7 @@ const part = async ({
       await blink;
       await ready.zoomOut(500);
       ready.remove();
+      helicopter = exec(backgroundHeli({ existing: true }));
       await parallel([
         async () => {
           await say(
@@ -76,6 +80,12 @@ const part = async ({
   ]);
   introAnimation.destroy();
   await exec(droneWave(5, "pattern1", 500));
+  await exec(droneWave(8, "pattern2", 500));
+  await say("John", "Well that was fun. I will miss the manual mode..", {
+    portrait: "portraits.pilot"
+  });
+  await helicopter;
+  await exec(heliAttack({ existing: true }));
 };
 
 export default part;

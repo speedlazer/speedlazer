@@ -57,32 +57,22 @@
       "attachments": {
         "trail": {
           "particles": ["drone.trail", { "particle": { "startSize": 15 } }]
+        },
+        "gun": {
+          "weapon": {
+            "pattern": "largeDrone.takeover",
+            "target": "IntroHeliBackground"
+          }
         }
       }
     },
     "states": {
-      "damaged": {
-        "frame": "damaged",
-        "attachments": {
-          "trail": null
-        }
+      "eyeMove": {
+        "animation": "eye"
       },
-      "turned": {
-        "frame": "turned"
-      },
-      "dead": {
-        "frame": "hidden",
-        "audio": "explosion",
-        "removeComponents": ["SolidCollision", "PlayerEnemy"],
+      "shoot": {
         "attachments": {
-          "trail": null,
-          "explosion": {
-            "composition": "explosion",
-            "animation": "default"
-          },
-          "smoke": {
-            "particles": "drone.smoke"
-          }
+          "gun": { "weapon": { "active": true } }
         }
       }
     },
