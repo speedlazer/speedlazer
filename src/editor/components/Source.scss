@@ -10,3 +10,27 @@
     color: orange;
     font-family: monospace;
 }
+
+.jsonString {
+    color: orange;
+}
+
+.jsonNumber {
+    color: yellow;
+}
+
+.jsonNull {
+    color: lightGrey;
+}
+
+.jsonBool {
+    color: lightblue;
+}
+
+.jsonKey {
+    color: #ddd;
+}
+
+.indent {
+    padding-left: 1em;
+}
