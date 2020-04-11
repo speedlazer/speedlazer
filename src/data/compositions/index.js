@@ -4,6 +4,7 @@ import bulletCannon from "./BulletCannon.composition.json";
 import dino from "./Dino.composition.json";
 import bullets from "./bullets.composition.json";
 import drone from "./Drone.composition.json";
+import droneBoss from "./DroneBoss.composition.json";
 import droneShip from "./DroneShip.composition.json";
 import introShip from "./IntroShip.composition.json";
 import ocean from "./Ocean.composition.json";
@@ -21,6 +22,7 @@ const compositions = {
   ...city,
   ...dino,
   ...drone,
+  ...droneBoss,
   ...droneShip,
   ...introShip,
   ...ocean,

@@ -4,12 +4,23 @@ export default {
     { x: 0.19, y: 0.56 },
     { x: 0.2, y: 0.55 }
   ],
-  introHeliLiftOff: [
+  "intro.HeliLiftOff": [
     { x: 0.3, y: 0.6 },
     { x: 0.32, y: 0.46 },
     { x: 0.3, y: 0.35 },
     { x: 0.15, y: 0.4 },
     { x: -0.25, y: 0.35 }
+  ],
+  "intro.HeliBackground": [
+    { x: -0.3, y: 0.3 },
+    { x: 0.1, y: 0.37 },
+    { x: 0.3, y: 0.3 },
+    { x: 0.5, y: 0.37 }
+  ],
+  "intro.DroneBackground": [
+    { x: 1.1, y: 0.3 },
+    { x: 0.9, y: 0.25 },
+    { x: 0.7, y: 0.37 }
   ],
   pattern1: [
     { x: 1.1, y: 0.5 },

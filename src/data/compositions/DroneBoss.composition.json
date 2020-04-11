@@ -1,0 +1,79 @@
+{
+  "droneBoss": {
+    "attributes": {
+      "width": 90,
+      "height": 70,
+      "scale": 1
+    },
+    "hitbox": [0, 20, 50, 0, 60, 40, 0, 50],
+    "sprites": [
+      [
+        "standardLargeDrone",
+        { "x": 0, "y": 0, "key": "main", "horizon": [1, 1] }
+      ]
+    ],
+    "attachHooks": [
+      [
+        "trail",
+        {
+          "x": 40,
+          "y": 18,
+          "z": -2,
+          "attachAlign": ["center", "right"],
+          "attachTo": "main"
+        }
+      ],
+      [
+        "explosion",
+        {
+          "x": 22,
+          "y": 18,
+          "z": 2,
+          "attachAlign": ["center", "center"],
+          "attachTo": "main"
+        }
+      ],
+      [
+        "smoke",
+        {
+          "x": 22,
+          "y": 18,
+          "z": -5,
+          "attachAlign": ["center", "center"],
+          "attachTo": "main"
+        }
+      ]
+    ],
+    "frames": {
+      "background": {
+        "attributes": {
+          "scale": 0.7
+        },
+        "main": {
+          "horizon": [0.7, 0.7]
+        }
+      },
+      "damaged1": {
+        "main": {
+          "sprite": "standardLargeDroneDamage1"
+        }
+      },
+      "damaged2": {
+        "main": {
+          "sprite": "standardLargeDroneDamage2"
+        }
+      },
+      "damaged3": {
+        "main": {
+          "sprite": "standardLargeDroneDamage3"
+        }
+      },
+      "hidden": {
+        "main": {
+          "hidden": true,
+          "alpha": 0
+        }
+      }
+    }
+  }
+}
