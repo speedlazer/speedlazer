@@ -3,15 +3,19 @@
     padding: 0;
 
     &.horizontal {
-        width: 100%;
+        width: 1024px;
         background: #111;
         margin: 0;
         padding: 0;
         display: flex;
+        flex-wrap: wrap;
 
         > li {
             padding: 0.5em 1em;
         }
+    }
+    &.fullWidth {
+        width: 100%;
     }
 }
 .item {

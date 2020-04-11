@@ -117,12 +117,16 @@ const createStructure = items =>
         ))
     );
 
-export const Menu = ({ items, horizontal }) =>
+export const Menu = ({ items, horizontal, fullWidth }) =>
   items.length === 0 ? (
     undefined
   ) : (
     <menu
-      class={classes({ [styles.menu]: true, [styles.horizontal]: horizontal })}
+      class={classes({
+        [styles.menu]: true,
+        [styles.horizontal]: horizontal,
+        [styles.fullWidth]: fullWidth
+      })}
     >
       {createStructure(items.reduce(makeFolders, []))}
     </menu>

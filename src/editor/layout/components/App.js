@@ -16,6 +16,7 @@ export const App = () => (
   <div>
     <Menu
       horizontal={true}
+      fullWidth={true}
       items={[
         ["Sprites", "/sprites"],
         ["Audio", "/audio"],
