@@ -65,6 +65,31 @@
       }
     }
   },
+  "background.horizon": {
+    "attributes": {
+      "width": 1024,
+      "height": 50
+    },
+    "gradients": [
+      {
+        "z": 2,
+        "w": 1024,
+        "h": 50,
+        "key": "sky",
+        "topColor": ["#DDDD00", 0],
+        "bottomColor": ["#DDDD00", 1]
+      }
+    ],
+    "frames": {
+      "dawn": {
+        "sky": {
+          "h": 80,
+          "topColor": ["#DDDD00", 0.0],
+          "bottomColor": ["#DDDD00", 0.6]
+        }
+      }
+    }
+  },
   "background.sky": {
     "attributes": {
       "width": 1024,

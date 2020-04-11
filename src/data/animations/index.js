@@ -8,7 +8,7 @@ export default {
         ],
         backgroundColor: "#000010",
         timeline: {
-          defaultDuration: 60000,
+          defaultDuration: 45000,
           transitions: [
             { key: "night", start: 0.0, end: 1.0, targetFrame: "middle" },
             { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn" },
@@ -21,7 +21,11 @@ export default {
       {
         composables: [
           ["background.night", { key: "night", frame: "middle" }],
-          ["background.sky", { key: "sky", frame: "dawn2" }]
+          ["background.sky", { key: "sky", frame: "dawn2" }],
+          [
+            "background.horizon",
+            { key: "stripe", frame: "default", relativeY: 0.49 }
+          ]
         ],
         entities: [
           [
@@ -41,6 +45,17 @@ export default {
             { start: 0.3, end: 0.85, targetBackgroundColor: "#27273D" },
             { start: 0.85, end: 1.0, targetBackgroundColor: "#FD7321" },
             {
+              key: "stripe",
+              start: 0.1,
+              end: 0.6,
+              path: {
+                data: [
+                  { x: 0, y: 0.49 },
+                  { x: 0, y: 0.46 }
+                ]
+              }
+            },
+            {
               key: "sun",
               start: 0.5,
               end: 1.0,
@@ -56,7 +71,11 @@ export default {
       {
         composables: [
           ["background.night", { key: "night", frame: "end" }],
-          ["background.sky", { key: "sky", frame: "dawn5" }]
+          ["background.sky", { key: "sky", frame: "dawn5" }],
+          [
+            "background.horizon",
+            { key: "stripe", frame: "default", relativeY: 0.46 }
+          ]
         ],
         entities: [
           [
@@ -84,9 +103,36 @@ export default {
               }
             },
             {
+              key: "stripe",
+              targetFrame: "dawn",
+              start: 0.0,
+              end: 0.2,
+              path: {
+                data: [
+                  { x: 0, y: 0.46 },
+                  { x: 0, y: 0.43 }
+                ]
+              }
+            },
+            {
+              key: "stripe",
+              start: 0.7,
+              end: 1.0,
+              path: {
+                data: [
+                  { x: 0, y: 0.43 },
+                  { x: 0, y: 0.8 }
+                ]
+              }
+            },
+            {
               key: "night",
               start: 1.0,
-              end: 1.0,
+              remove: true
+            },
+            {
+              key: "stripe",
+              start: 1.0,
               remove: true
             }
           ]
@@ -215,7 +261,7 @@ export default {
               start: 0.0,
               end: 1.0,
               key: "heli",
-              path: { name: "introHeliLiftOff", start: 0.0, end: 0.2 },
+              path: { name: "intro.HeliLiftOff", start: 0.0, end: 0.2 },
               attributes: { z: 14 }
             },
             {
@@ -255,7 +301,7 @@ export default {
               start: 0.0,
               end: 0.3,
               key: "heli",
-              path: { name: "introHeliLiftOff", start: 0.2, end: 1.0 }
+              path: { name: "intro.HeliLiftOff", start: 0.2, end: 1.0 }
             },
             {
               key: "ship",
@@ -279,6 +325,68 @@ export default {
               start: 1.0,
               end: 1.0,
               remove: true
+            }
+          ]
+        }
+      }
+    ],
+    habitat: {
+      scenery: "City.Ocean",
+      scrollSpeed: { vx: -100, vy: 0 },
+      background: ["City.Sunrise", 0]
+    }
+  },
+  "City.Hacked": {
+    checkpoints: [
+      {
+        entities: [
+          [
+            "IntroHeliBackground",
+            { key: "heli", state: "flying", relativeX: -0.3, relativeY: 0.3 }
+          ]
+        ],
+        timeline: {
+          defaultDuration: 20000,
+          transitions: [
+            {
+              key: "heli",
+              start: 0.0,
+              end: 1.0,
+              path: { name: "intro.HeliBackground", start: 0.0, end: 0.7 }
+            }
+          ]
+        }
+      },
+      {
+        entities: [
+          [
+            "IntroHeliBackground",
+            {
+              key: "heli",
+              state: "flying",
+              relativeX: 0.268,
+              relativeY: 0.309
+            }
+          ],
+          [
+            "LargeBackgroundDrone",
+            { key: "drone", relativeX: 1.1, relativeY: 0.3 }
+          ]
+        ],
+        timeline: {
+          defaultDuration: 6000,
+          transitions: [
+            {
+              key: "heli",
+              start: 0.1,
+              end: 1.0,
+              path: { name: "intro.HeliBackground", start: 0.7, end: 1.0 }
+            },
+            {
+              key: "drone",
+              start: 0.4,
+              end: 1.0,
+              path: { name: "intro.DroneBackground", start: 0.0, end: 1.0 }
             }
           ]
         }
