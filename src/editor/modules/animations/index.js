@@ -4,6 +4,7 @@ import { EntityDefinition } from "src/components/EntityDefinition";
 import { AnimationPreview } from "./AnimationPreview";
 import animations from "src/data/animations";
 import { Menu } from "../../components/Menu";
+import { Source } from "../../components/Source";
 import Log from "../../components/Log";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
@@ -118,6 +119,7 @@ class Animations extends Component {
                 animationLimit={animationLimit}
                 onCheckpointChange={this.onCheckpointChange}
               />
+              <Source code={activeAnimation} />
               <Log log={report} />
             </div>
           )}

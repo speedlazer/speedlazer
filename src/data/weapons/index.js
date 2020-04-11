@@ -108,6 +108,53 @@ export default {
       }
     }
   },
+  "largeDrone.takeover": {
+    spawnRhythm: {
+      initialDelay: 10,
+      burst: 2,
+      shotDelay: 200,
+      burstDelay: 8000,
+      spawns: [
+        ["bullet", {}],
+        ["muzzleFlash", {}]
+      ]
+    },
+    spawnables: {
+      bullet: {
+        spawnPosition: [0, 0.5],
+        velocity: 400,
+        composition: "weapons.sphere",
+        queue: [{ duration: 4000 }],
+        collisions: {
+          IntroHeliBackground: {
+            spawns: [
+              ["sparks", {}],
+              ["sparkHit", {}]
+            ]
+          }
+        }
+      },
+      muzzleFlash: {
+        spawnPosition: [0, 0.5],
+        attached: true,
+        velocity: 0,
+        composition: "weapons.muzzleFlash",
+        queue: [{ duration: 400 }]
+      },
+      sparks: {
+        spawnPosition: "outside",
+        velocity: 0,
+        particles: "sparks",
+        queue: [{ duration: 200 }]
+      },
+      sparkHit: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.solidHit",
+        queue: [{ duration: 100, audio: "hit" }]
+      }
+    }
+  },
   "turret.bullet": {
     spawnRhythm: {
       initialDelay: [1500, 150],

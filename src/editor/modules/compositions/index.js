@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
 import { CompositionPreview } from "./CompositionPreview";
 import { Menu } from "../../components/Menu";
+import { Source } from "../../components/Source";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
 import { Setting } from "../../components/Setting";
@@ -141,6 +142,7 @@ class Compositions extends Component {
                 showAttachPoints={showAttachPoints}
               />
             )}
+            <Source code={activeComposition} />
           </div>
         </Divider>
       </section>

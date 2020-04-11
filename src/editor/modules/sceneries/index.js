@@ -2,6 +2,7 @@ import { SceneryPreview } from "./SceneryPreview";
 import sceneries from "src/data/sceneries";
 import animations from "src/data/animations";
 import { Menu } from "../../components/Menu";
+import { Source } from "../../components/Source";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
 import { Text } from "../../components/Text";
@@ -74,6 +75,7 @@ class Sceneries extends Component {
                 backgroundCheckpoint={backgroundSetting && backgroundSetting[1]}
                 scrollSpeed={scrollSpeed}
               />
+              <Source code={activeScenery} />
             </div>
           )}
         </Divider>

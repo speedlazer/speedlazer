@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
 import { Title } from "../../components/Title";
 import { Menu } from "../../components/Menu";
+import { Source } from "../../components/Source";
 import { Divider } from "../../components/Divider";
 import { Setting } from "../../components/Setting";
 import FlyPatternPreview from "./FlyPatternPreview";
@@ -64,6 +65,7 @@ class FlyPatterns extends Component {
                 showPoints={showPoints}
               />
             )}
+            {activePattern && <Source code={activePattern} />}
           </div>
         </Divider>
       </section>

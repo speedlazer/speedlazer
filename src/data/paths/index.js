@@ -14,8 +14,7 @@ export default {
   "intro.HeliBackground": [
     { x: -0.3, y: 0.3 },
     { x: 0.1, y: 0.37 },
-    { x: 0.3, y: 0.3 },
-    { x: 0.5, y: 0.37 }
+    { x: 0.4, y: 0.3 }
   ],
   "intro.DroneBackground": [
     { x: 1.1, y: 0.3 },

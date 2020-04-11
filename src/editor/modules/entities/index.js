@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { EntityPreview } from "./EntityPreview";
 import { Menu } from "../../components/Menu";
+import { Source } from "../../components/Source";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
 import entities from "src/data/entities";
@@ -54,6 +55,7 @@ const Entities = ({
               habitat={activeHabitat}
             />
           )}
+          {activeEntity && <Source code={activeEntity} />}
         </div>
       </Divider>
     </section>
