@@ -9,7 +9,6 @@ const part = async ({
   loadSpriteSheets,
   loadAudio,
   setAltitude,
-  wait,
   setBackground,
   exec
 }) => {
