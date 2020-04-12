@@ -47,13 +47,13 @@ const TWEEN_WHITELIST = [
   "scaleY"
 ];
 
-const deltaSettings = settings =>
+const entityDeltaSettings = entity => settings =>
   Object.entries(settings)
     .filter(([name]) => TWEEN_WHITELIST.includes(name))
     .reduce((result, [key, value]) => {
       switch (key) {
         case "x":
-          result["dx"] = value;
+          result["dx"] = entity.xFlipped ? -value : value;
           break;
         case "y":
           result["dy"] = value;
@@ -125,6 +125,7 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
   const targetFrameData = getFrameData(entity, targetFrame);
   if (!targetFrameData) return () => {};
   const sourceFrameData = getFrameData(entity, sourceFrame);
+  const deltaSettings = entityDeltaSettings(entity);
 
   const fns = Object.entries(targetFrameData)
     .reduce((acc, [keyName, settings]) => {

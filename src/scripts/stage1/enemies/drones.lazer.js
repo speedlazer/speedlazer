@@ -1,6 +1,6 @@
 import paths from "src/data/paths";
 
-const droneFlight = pattern => async ({
+const droneFlight = (pattern, yOffset = 0) => async ({
   spawn,
   call,
   waitForEvent,
@@ -10,7 +10,7 @@ const droneFlight = pattern => async ({
   const drone = spawn("WarDrone", {
     location: {
       rx: flyPattern[0].x,
-      ry: flyPattern[0].y
+      ry: flyPattern[0].y + yOffset
     },
     defaultVelocity: 400
   });
@@ -30,15 +30,17 @@ const droneFlight = pattern => async ({
   }
 };
 
-export const droneWave = (amount, pattern, delay = 1000) => async ({
-  exec,
-  wait
-}) => {
+export const droneWave = (
+  amount,
+  pattern,
+  delay = 1000,
+  yOffset = 0
+) => async ({ exec, wait }) => {
   const items = Array(amount)
     .fill()
     .map(async (e, index) => {
       await wait(index * delay);
-      await exec(droneFlight(pattern));
+      await exec(droneFlight(pattern, yOffset));
     });
   await Promise.all(items);
 };

@@ -1,4 +1,5 @@
 import { EASE_IN_OUT } from "src/constants/easing";
+import { EASE_IN } from "src/constants/easing";
 
 export const backgroundHeli = ({ existing = false } = {}) => async ({
   spawn,
@@ -41,7 +42,12 @@ export const heliAttack = ({ existing = false } = {}) => async ({
   call(heli.showState, "flying");
   let heliFleeing;
   waitForEvent(heli, "Dead", async () => {
-    const movement = moveWithPattern(heli, "intro.HeliBackgroundCrash");
+    const movement = moveWithPattern(
+      heli,
+      "intro.HeliBackgroundCrash",
+      150,
+      EASE_IN
+    );
     heliFleeing = movement.process;
   });
   waitForEvent(heli, "Escape1", async () => {

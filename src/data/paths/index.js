@@ -72,6 +72,20 @@ export default {
     { x: 0.5, y: 0.5 },
     { x: -0.1, y: 0.7 }
   ],
+  "drone.pattern5": [
+    { x: -0.2, y: 0.5, events: [[0.0, { setState: ["turned", 0] }]] },
+    { x: 0.5, y: 0.8 },
+    { x: 0.93, y: 0.69, events: [[0.0, { setState: ["turned", 0] }]] },
+    { x: 0.8, y: 0.5 },
+    { x: 0.5, y: 0.5 },
+    { x: -0.1, y: 0.7 }
+  ],
+  "drone.pattern6": [
+    { x: 1.1, y: 0.2 },
+    { x: 0.2, y: 0.4, events: [[0.0, { setState: ["turned", 0] }]] },
+    { x: 0.6, y: 0.2 },
+    { x: 1.1, y: 0.2 }
+  ],
   sunrise: [
     { x: 0.9, y: 0.7 },
     { x: 0.8, y: 0.3 },

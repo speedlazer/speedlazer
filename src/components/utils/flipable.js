@@ -19,6 +19,9 @@ Crafty.c(Component, {
             child.attr({
               x: entity.x + entity.w - child.w - relX
             });
+            if (child._dx !== undefined) {
+              child._dx = -child._dx;
+            }
           }
           if (typeof child.flip === "function") {
             child.flip("X");
