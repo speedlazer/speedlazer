@@ -1,3 +1,7 @@
+import ParticleEmitter from "src/components/ParticleEmitter";
+import particles from "src/data/particles";
+import merge from "lodash/merge";
+
 Crafty.c("GravitySupport", {
   init() {
     this.activateGravity = this.activateGravity.bind(this);
@@ -14,16 +18,16 @@ Crafty.c("GravitySupport", {
 
   _onGravityCollisonHit(collisions) {
     let groundType = "none";
-    let surfaceY = null;
+    let surfaceEntity = null;
     collisions.forEach(e => {
       const surface = e.obj;
       if (surface.has("GravitySolid")) {
         groundType = "solid";
-        surfaceY = surface.y;
+        surfaceEntity = surface;
       }
       if (surface.has("GravityLiquid")) {
         groundType = "liquid";
-        surfaceY = surface.y;
+        surfaceEntity = surface;
       }
     });
 
@@ -41,8 +45,38 @@ Crafty.c("GravitySupport", {
         ay: 0,
         vx: 0,
         vy: this.vy / 8,
-        hideBelow: surfaceY + 30
+        hideBelow: surfaceEntity.y + 30,
+        surfaceLevel: surfaceEntity.y
       });
+      if (this.liquidParticles) {
+        const settings = [].concat(this.liquidParticles, {});
+
+        const emitter = merge({}, particles[settings[0]], settings[1]);
+        this.liquidEmitter = Crafty.e(ParticleEmitter)
+          .attr({ x: this.x, y: surfaceEntity.y + 20 })
+          .particles(emitter);
+      }
+
+      this.uniqueBind("EnterFrame", this._sinkAway);
+    }
+  },
+
+  _sinkAway() {
+    const sunk = this.y > this.hideBelow;
+    Object.values(this.currentAttachHooks).forEach(hook => {
+      if (
+        hook.currentAttachment &&
+        hook.currentAttachment.emitter &&
+        hook.currentAttachment.emitter.emissionRate > 0 &&
+        hook.y > this.hideBelow
+      ) {
+        hook.currentAttachment.emitter.stopEmission();
+      }
+    });
+    if (sunk) {
+      this.liquidEmitter.stopEmission();
+      this.liquidEmitter.autoDestruct = true;
+      this.unbind("EnterFrame", this._sinkAway);
     }
   }
 });

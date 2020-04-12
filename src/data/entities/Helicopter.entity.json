@@ -4,7 +4,17 @@
       "composition": "helicopter",
       "components": [
         "DamageSupport",
-        "GravitySupport",
+        [
+          "GravitySupport",
+          {
+            "liquidParticles": [
+              "waterSplashes",
+              {
+                "emitter": { "w": 128, "h": 10, "amount": 150 }
+              }
+            ]
+          }
+        ],
         "SolidCollision",
         "PlayerEnemy"
       ],
