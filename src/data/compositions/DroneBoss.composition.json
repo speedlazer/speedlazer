@@ -101,6 +101,9 @@
           "sprite": "standardLargeDroneDamage3"
         }
       },
+      "turned": {
+        "flipX": true
+      },
       "hidden": {
         "main": {
           "hidden": true,

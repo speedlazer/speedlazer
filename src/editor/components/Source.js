@@ -24,7 +24,7 @@ const replacer = (key, value) => {
     return <span class={jsonNull}>null</span>;
   }
   if (value === true || value === false) {
-    return <span class={jsonBool}>{value}</span>;
+    return <span class={jsonBool}>{`${value}`}</span>;
   }
   if (Array.isArray(value)) {
     return (

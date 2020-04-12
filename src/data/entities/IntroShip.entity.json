@@ -134,5 +134,22 @@
         "background": ["City.Sunrise", 0]
       }
     ]
+  },
+  "IntroParachute": {
+    "structure": {
+      "composition": "intro.parachute"
+    },
+    "habitats": [
+      {
+        "name": "Ocean",
+        "scenery": "City.Ocean",
+        "position": {
+          "rx": 0.3,
+          "ry": 0.3
+        },
+        "scrollSpeed": { "vx": -80, "vy": 0 },
+        "background": ["City.Sunrise", 0]
+      }
+    ]
   }
 }

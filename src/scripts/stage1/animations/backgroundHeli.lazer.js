@@ -1,3 +1,5 @@
+import { EASE_IN_OUT } from "src/constants/easing";
+
 export const backgroundHeli = ({ existing = false } = {}) => async ({
   spawn,
   call,
@@ -22,6 +24,8 @@ export const heliAttack = ({ existing = false } = {}) => async ({
   spawn,
   call,
   moveWithPattern,
+  waitForEvent,
+  moveTo,
   wait
 }) => {
   const heli =
@@ -35,7 +39,27 @@ export const heliAttack = ({ existing = false } = {}) => async ({
       defaultVelocity: 70
     });
   call(heli.showState, "flying");
-  // TODO:  Setup trigger when hit
+  let heliFleeing;
+  waitForEvent(heli, "Dead", async () => {
+    const movement = moveWithPattern(heli, "intro.HeliBackgroundCrash");
+    heliFleeing = movement.process;
+  });
+  waitForEvent(heli, "Escape", async () => {
+    const soldier = spawn("IntroParachute", {
+      x: heli.x + 10,
+      y: heli.y,
+      z: -290,
+      defaultVelocity: 20
+    });
+    const parachuteDrop = moveTo(
+      soldier,
+      { y: 0.6, x: 0.4 },
+      null,
+      EASE_IN_OUT
+    );
+    await parachuteDrop.process;
+    soldier.destroy();
+  });
 
   const drone =
     (existing && Crafty("LargeBackgroundDrone").get(0)) ||
@@ -51,8 +75,9 @@ export const heliAttack = ({ existing = false } = {}) => async ({
   await call(heli.allowDamage, { health: 10 });
   const movement = moveWithPattern(drone, "intro.DroneBackground");
   await movement.process;
-  call(drone.showState, "shoot");
-  // TODO: Move away
 
-  await wait(5000);
+  await wait(100);
+  await heliFleeing;
+  heli.destroy();
+  drone.destroy();
 };

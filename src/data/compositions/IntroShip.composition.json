@@ -58,5 +58,47 @@
       "height": 32
     },
     "sprites": [["boxes", { "x": 0, "y": 0 }]]
+  },
+  "intro.parachute": {
+    "attributes": {
+      "width": 32,
+      "height": 32,
+      "rotation": 0,
+      "ro": [14, 2]
+    },
+    "sprites": [["chute", { "x": 0, "y": 0, "horizon": [0.6, 0.6] }]],
+    "frames": {
+      "left": {
+        "attributes": {
+          "rotation": 20
+        }
+      },
+      "right": {
+        "attributes": {
+          "rotation": -20
+        }
+      }
+    },
+    "animations": {
+      "default": {
+        "repeat": true,
+        "easing": "linear",
+        "duration": 5000,
+        "timeline": [
+          {
+            "start": 0.0,
+            "end": 0.5,
+            "startFrame": "left",
+            "endFrame": "right"
+          },
+          {
+            "start": 0.5,
+            "end": 1,
+            "startFrame": "right",
+            "endFrame": "left"
+          }
+        ]
+      }
+    }
   }
 }

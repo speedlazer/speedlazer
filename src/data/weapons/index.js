@@ -124,6 +124,14 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: 400,
         composition: "weapons.sphere",
+        damage: [
+          {
+            velocity: [-20e3, -30e3],
+            affects: "health",
+            duration: [2, 4],
+            name: "Laser"
+          }
+        ],
         queue: [
           { cleanOutOfScreen: true },
           { aimOnTarget: true, duration: 0 },

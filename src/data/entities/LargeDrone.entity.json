@@ -70,6 +70,7 @@
       "eyeMove": {
         "animation": "eye"
       },
+      "turned": {},
       "shoot": {
         "attachments": {
           "gun": { "weapon": { "active": true } }

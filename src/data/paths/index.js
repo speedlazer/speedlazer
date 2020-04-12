@@ -16,10 +16,23 @@ export default {
     { x: 0.1, y: 0.37 },
     { x: 0.4, y: 0.3 }
   ],
+  "intro.HeliBackgroundCrash": [
+    { x: 0.4, y: 0.3 },
+    { x: 0.35, y: 0.35, events: [[0.9, { event: "Escape" }]] },
+    { x: 0.45, y: 0.4 },
+    { x: 0.5, y: 0.3 },
+    { x: 0.45, y: 0.2 },
+    { x: 0.4, y: 0.25 },
+    { x: 1.2, y: 0.2 }
+  ],
   "intro.DroneBackground": [
     { x: 1.1, y: 0.3 },
-    { x: 0.9, y: 0.25 },
-    { x: 0.7, y: 0.37 }
+    { x: 0.9, y: 0.2 },
+    { x: 0.7, y: 0.3, events: [[0, { setState: ["shoot", 0] }]] },
+    { x: 0.7, y: 0.47, events: [[0.6, { setState: ["turned", 500] }]] },
+    { x: 0.8, y: 0.3 },
+    { x: 0.95, y: 0.15 },
+    { x: 1.2, y: 0.1 }
   ],
   pattern1: [
     { x: 1.1, y: 0.5 },

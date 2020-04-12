@@ -8,6 +8,9 @@ const executeEvent = (event, entity) => {
   if (eventData.setState && entity.showState) {
     entity.showState(eventData.setState[0], eventData.setState[1]);
   }
+  if (eventData.event) {
+    entity.trigger(eventData.event);
+  }
 };
 
 Crafty.c(WayPointMotion, {
