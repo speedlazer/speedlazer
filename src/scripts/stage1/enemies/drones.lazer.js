@@ -1,13 +1,16 @@
+import paths from "src/data/paths";
+
 const droneFlight = pattern => async ({
   spawn,
   call,
   waitForEvent,
   moveWithPattern
 }) => {
+  const flyPattern = paths[pattern];
   const drone = spawn("WarDrone", {
     location: {
-      rx: 1.1,
-      ry: 0.5
+      rx: flyPattern[0].x,
+      ry: flyPattern[0].y
     },
     defaultVelocity: 400
   });

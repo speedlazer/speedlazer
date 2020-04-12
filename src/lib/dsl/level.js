@@ -62,26 +62,28 @@ const levelFunctions = state => ({
   setScrollingSpeed: async (x, y) => {
     setScrollVelocity({ vx: -x, vy: y });
   },
-  setAltitude: async y =>
-    new Promise(resolve => {
-      const altPSec = 50 / 1000;
-      const startAlt = getAltitude();
-      const delta = Math.abs(y - startAlt);
+  setAltitude: async (y, { speed = 50, instant = false } = {}) =>
+    instant
+      ? setAltitude(y)
+      : new Promise(resolve => {
+          const altPSec = speed / 1000;
+          const startAlt = getAltitude();
+          const delta = Math.abs(y - startAlt);
 
-      const ease = new Crafty.easing(delta / altPSec, EASE_IN_OUT);
-      const f = ({ dt }) => {
-        ease.tick(dt);
-        const v = ease.value();
-        if (v >= 1.0) {
-          Crafty.unbind("EnterFrame", f);
-          resolve();
-        }
-        const alt = startAlt * (1 - v) + y * v;
-        setAltitude(alt);
-      };
+          const ease = new Crafty.easing(delta / altPSec, EASE_IN_OUT);
+          const f = ({ dt }) => {
+            ease.tick(dt);
+            const v = ease.value();
+            if (v >= 1.0) {
+              Crafty.unbind("EnterFrame", f);
+              resolve();
+            }
+            const alt = startAlt * (1 - v) + y * v;
+            setAltitude(alt);
+          };
 
-      Crafty.bind("EnterFrame", f);
-    }),
+          Crafty.bind("EnterFrame", f);
+        }),
   setScenery: async sceneryName => {
     setScenery(sceneryName);
   },

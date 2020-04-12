@@ -15,6 +15,7 @@ const part = async ({
   setBackground,
   setBackgroundCheckpointLimit,
   playAnimation,
+  setAltitude,
   showHUD,
   exec,
   wait
@@ -72,20 +73,37 @@ const part = async ({
           await say("John", "Let's go!", { portrait: "portraits.pilot" });
         },
         async () => {
-          await exec(droneWave(5, "pattern1", 500));
-          await exec(droneWave(8, "pattern2", 500));
+          await exec(droneWave(5, "drone.pattern1", 500));
+          await exec(droneWave(8, "drone.pattern2", 500));
         }
       ]);
     }
   ]);
   introAnimation.destroy();
-  await exec(droneWave(5, "pattern1", 500));
-  await exec(droneWave(8, "pattern2", 500));
+  setAltitude(200);
+  await exec(droneWave(5, "drone.pattern1", 500));
+  await exec(droneWave(8, "drone.pattern2", 500));
   await say("John", "Well that was fun. I will miss the manual mode..", {
     portrait: "portraits.pilot"
   });
   await helicopter;
-  await exec(heliAttack({ existing: true }));
+  exec(heliAttack({ existing: true }));
+  await say("General", "What is that!", { portrait: "portraits.general" });
+  await say("General", "Evacuate! now!", { portrait: "portraits.general" });
+  await wait(1000);
+  await say("General", "The helicopter is out of control!", {
+    portrait: "portraits.general"
+  });
+  await wait(2000);
+  const chapter1 = bigText("Hacked", { color: "#FFFFFF", sup: "Chapter 1:" });
+  await chapter1.fadeIn(500);
+  await wait(2000);
+  await chapter1.fadeOut(500);
+  chapter1.remove();
+  await parallel([
+    () => exec(droneWave(5, "drone.pattern3", 500)),
+    () => exec(droneWave(5, "drone.pattern4", 500))
+  ]);
 };
 
 export default part;

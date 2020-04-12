@@ -8,6 +8,7 @@ const part = async ({
   setScenery,
   loadSpriteSheets,
   loadAudio,
+  setAltitude,
   wait,
   setBackground,
   exec
@@ -20,13 +21,14 @@ const part = async ({
   playAudio("hero");
 
   await setScrollingSpeed(100, 0);
+  setAltitude(200, { instant: true });
   setBackground("City.Sunrise");
   await setScenery("City.Ocean");
   text.remove();
   exec(playerShip({ existing: true }));
 
+  setAltitude(0);
   await exec(helicopter("heli.pattern1"));
-  await wait(14000);
 };
 
 export default part;

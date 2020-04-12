@@ -18,10 +18,10 @@ export default {
   ],
   "intro.HeliBackgroundCrash": [
     { x: 0.4, y: 0.3 },
-    { x: 0.35, y: 0.35, events: [[0.9, { event: "Escape" }]] },
+    { x: 0.35, y: 0.35, events: [[0.9, { event: "Escape1" }]] },
     { x: 0.45, y: 0.4 },
     { x: 0.5, y: 0.3 },
-    { x: 0.45, y: 0.2 },
+    { x: 0.45, y: 0.2, events: [[0.5, { event: "Escape2" }]] },
     { x: 0.4, y: 0.25 },
     { x: 1.2, y: 0.2 }
   ],
@@ -34,7 +34,7 @@ export default {
     { x: 0.95, y: 0.15 },
     { x: 1.2, y: 0.1 }
   ],
-  pattern1: [
+  "drone.pattern1": [
     { x: 1.1, y: 0.5 },
     { x: 0.9, y: 0.2 },
     { x: 0.7, y: 0.8 },
@@ -45,7 +45,7 @@ export default {
     { x: 0.9, y: 0.5 },
     { x: -0.1, y: 0.6 }
   ],
-  pattern2: [
+  "drone.pattern2": [
     { x: 1.1, y: 0.5 },
     { x: 0.5, y: 0.7 },
     { x: 0.1, y: 0.5, events: [[0.1, { setState: ["turned", 500] }]] },
@@ -54,6 +54,23 @@ export default {
     { x: 0.9, y: 0.4 },
     { x: 0.4, y: 0.5 },
     { x: -0.1, y: 0.2 }
+  ],
+  "drone.pattern3": [
+    { x: 0.5, y: -0.1 },
+    { x: 0.5, y: 0.2 },
+    { x: 0.7, y: 0.31 },
+    { x: 0.8, y: 0.5 },
+    { x: 0.5, y: 0.5 },
+    { x: -0.1, y: 0.3 }
+  ],
+  "drone.pattern4": [
+    { x: 0.5, y: 1.11 },
+    { x: 0.5, y: 0.8 },
+    { x: 0.7, y: 0.8 },
+    { x: 0.93, y: 0.69 },
+    { x: 0.8, y: 0.5 },
+    { x: 0.5, y: 0.5 },
+    { x: -0.1, y: 0.7 }
   ],
   sunrise: [
     { x: 0.9, y: 0.7 },

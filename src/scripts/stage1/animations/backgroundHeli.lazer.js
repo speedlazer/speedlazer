@@ -44,7 +44,7 @@ export const heliAttack = ({ existing = false } = {}) => async ({
     const movement = moveWithPattern(heli, "intro.HeliBackgroundCrash");
     heliFleeing = movement.process;
   });
-  waitForEvent(heli, "Escape", async () => {
+  waitForEvent(heli, "Escape1", async () => {
     const soldier = spawn("IntroParachute", {
       x: heli.x + 10,
       y: heli.y,
@@ -53,7 +53,24 @@ export const heliAttack = ({ existing = false } = {}) => async ({
     });
     const parachuteDrop = moveTo(
       soldier,
-      { y: 0.6, x: 0.4 },
+      { y: 0.6, x: 0.2 },
+      null,
+      EASE_IN_OUT
+    );
+    await parachuteDrop.process;
+    soldier.destroy();
+  });
+
+  waitForEvent(heli, "Escape2", async () => {
+    const soldier = spawn("IntroParachute", {
+      x: heli.x + 10,
+      y: heli.y,
+      z: -290,
+      defaultVelocity: 20
+    });
+    const parachuteDrop = moveTo(
+      soldier,
+      { y: 0.6, x: 0.2 },
       null,
       EASE_IN_OUT
     );
@@ -69,7 +86,7 @@ export const heliAttack = ({ existing = false } = {}) => async ({
         ry: 0.3
       },
       z: -280,
-      defaultVelocity: 120
+      defaultVelocity: 200
     });
   call(drone.showState, "eyeMove");
   await call(heli.allowDamage, { health: 10 });
