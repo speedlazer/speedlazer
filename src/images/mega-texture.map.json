@@ -47,8 +47,11 @@
     "aircraftCarrierEngine": [15, 40, 3, 3],
     "aircraftCarrierEngineMeter": [14, 42, 1, 1],
 
-    "aircraftCarrierOpenHatch": [31, 38, 5, 1],
-    "aircraftCarrierHatchLid": [31, 39, 5, 1],
+    "aircraftCarrierOpenHatch": [31, 38, 4, 1],
+    "aircraftCarrierHatchLid": [31, 39, 4, 1],
+
+    "aircraftCarrierLowCabin": [14, 38, 1, 2],
+    "aircraftCarrierLowCabinStart": [15, 38, 1, 2],
 
     "aircraftCarrierCabinStart": [7, 38, 1, 6],
     "aircraftCarrierCabinRadar": [8, 38, 2, 6],
