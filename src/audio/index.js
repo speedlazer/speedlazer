@@ -1,9 +1,9 @@
-import explosion from "src/audio/explosion.ogg";
-import laserHit from "src/audio/laser-hit.ogg";
-import laserShot from "src/audio/laser-shot.ogg";
-import laugh from "src/audio/laugh.ogg";
-import powerup from "src/audio/powerup.ogg";
-import bgMusic1 from "src/audio/symsonic-hero.mp3";
+import explosion from "./explosion.ogg";
+import laserHit from "./laser-hit.ogg";
+import laserShot from "./laser-shot.ogg";
+import laugh from "./laugh.ogg";
+import powerup from "./powerup.ogg";
+import bgMusic1 from "./symsonic-hero.mp3";
 
 const audiosheets = [
   {

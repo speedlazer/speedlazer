@@ -3,7 +3,7 @@ import { Title } from "../../components/Title";
 import { Text } from "../../components/Text";
 import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
-import audiosheets from "src/data/audio";
+import audiosheets from "src/audio";
 import { loadAudio, playAudio } from "src/lib/audio";
 
 const pad = (num, length) => ("0".repeat(length) + num).slice(-length);

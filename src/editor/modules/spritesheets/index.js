@@ -7,7 +7,7 @@ import { ScrollBox } from "../../components/ScrollBox";
 import { Text } from "../../components/Text";
 import { Highlight } from "./Highlight";
 import { Title } from "../../components/Title";
-import spritesheets from "src/data/spritesheets";
+import spritesheets from "src/images";
 import { route } from "preact-router";
 
 class Spritesheets extends Component {

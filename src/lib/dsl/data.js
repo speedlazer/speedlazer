@@ -1,5 +1,5 @@
-import spritesheets from "src/data/spritesheets";
-import audiosheets from "src/data/audio";
+import spritesheets from "src/images";
+import audiosheets from "src/audio";
 import { loadAudio } from "src/lib/audio";
 
 const dataFunctions = () => ({

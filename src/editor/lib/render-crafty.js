@@ -1,5 +1,5 @@
-import spritesheets from "src/data/spritesheets";
-import audiosheets from "src/data/audio";
+import spritesheets from "src/images";
+import audiosheets from "src/audio";
 import { animations } from "src/data/structure.data";
 import { bigText } from "src/components/BigText";
 import Composable from "src/components/Composable";
