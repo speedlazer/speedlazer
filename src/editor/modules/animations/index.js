@@ -2,7 +2,7 @@ import Composable from "src/components/Composable";
 import { EntityDefinition } from "src/components/EntityDefinition";
 
 import { AnimationPreview } from "./AnimationPreview";
-import animations from "src/data/animations";
+import { animations, animationsData } from "src/data/structure.data";
 import { Menu } from "../../components/Menu";
 import { Source } from "../../components/Source";
 import Log from "../../components/Log";
@@ -81,13 +81,13 @@ class Animations extends Component {
     { animation, checkpoint },
     { animationLimit, currentCheckpoint, report }
   ) {
-    const activeAnimation = animations[animation];
+    const activeAnimation = animations(animation);
     return (
       <section>
         <Title>Animations</Title>
         <Divider>
           <Menu
-            items={Object.keys(animations).map(key => [
+            items={Object.keys(animationsData).map(key => [
               key,
               `/animations/${key}`
             ])}

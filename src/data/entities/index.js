@@ -8,6 +8,7 @@ import mine from "./Mine.entity.json";
 import weapons from "./Weapons.entity.json";
 import helicopter from "./Helicopter.entity.json";
 import largeDrone from "./LargeDrone.entity.json";
+import bulletCannon from "./BulletCannon.entity";
 
 export default {
   ...playerShip,
@@ -19,5 +20,6 @@ export default {
   ...sun,
   ...weapons,
   ...mine,
-  ...helicopter
+  ...helicopter,
+  ...bulletCannon
 };

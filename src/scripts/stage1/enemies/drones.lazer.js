@@ -1,4 +1,4 @@
-import paths from "src/data/paths";
+import { paths } from "src/data/structure.data";
 
 const droneFlight = (pattern, yOffset = 0) => async ({
   spawn,
@@ -6,7 +6,7 @@ const droneFlight = (pattern, yOffset = 0) => async ({
   waitForEvent,
   moveWithPattern
 }) => {
-  const flyPattern = paths[pattern];
+  const flyPattern = paths(pattern);
   const drone = spawn("WarDrone", {
     location: {
       rx: flyPattern[0].x,

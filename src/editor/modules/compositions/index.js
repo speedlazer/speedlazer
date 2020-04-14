@@ -5,7 +5,7 @@ import { Source } from "../../components/Source";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
 import { Setting } from "../../components/Setting";
-import compositions from "src/data/compositions";
+import { compositions, compositionsData } from "src/data/structure.data";
 
 const DEFAULT_STATE = {
   showSize: false,
@@ -66,7 +66,7 @@ class Compositions extends Component {
       scaleViewport
     }
   ) {
-    const activeComposition = compositions[compositionName];
+    const activeComposition = compositions(compositionName);
     storeState(this.state);
 
     return (
@@ -74,7 +74,7 @@ class Compositions extends Component {
         <Title>Compositions</Title>
         <Divider>
           <Menu
-            items={Object.keys(compositions).map(key => [
+            items={Object.keys(compositionsData).map(key => [
               key,
               `/compositions/${key}`
             ])}

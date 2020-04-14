@@ -1,10 +1,12 @@
 import Composable from "src/components/Composable";
 import Weapon from "src/components/Weapon";
 import ParticleEmitter from "src/components/ParticleEmitter";
-import entities from "src/data/entities";
-import compositions from "src/data/compositions";
-import particles from "src/data/particles";
-import weapons from "src/data/weapons";
+import {
+  compositions,
+  entities,
+  particles,
+  weapons
+} from "src/data/structure.data";
 import merge from "lodash/merge";
 import { playAudio } from "src/lib/audio";
 
@@ -32,7 +34,7 @@ const setEntityStructure = (root, entity, state, duration) => {
   const tasks = [];
 
   if (state.composition) {
-    const composition = compositions[state.composition];
+    const composition = compositions(state.composition);
     entity.addComponent(Composable).compose(composition);
     if (!state.frame) {
       tasks.push(entity.displayFrame("default", duration));
@@ -64,7 +66,7 @@ const setEntityStructure = (root, entity, state, duration) => {
     if (Array.isArray(state.particles)) {
       const emitter = merge(
         {},
-        particles[state.particles[0]],
+        particles(state.particles[0]),
         state.particles[1]
       );
       if (!entity.emitter) {
@@ -75,7 +77,7 @@ const setEntityStructure = (root, entity, state, duration) => {
         entity.emitter.particles(emitter, entity);
       }
     } else {
-      const emitter = particles[state.particles];
+      const emitter = particles(state.particles);
       if (!entity.emitter) {
         const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
         entity.emitter = e;
@@ -101,7 +103,7 @@ const setEntityStructure = (root, entity, state, duration) => {
   }
   if (state.weapon) {
     if (!entity.has(Weapon)) {
-      const pattern = weapons[state.weapon.pattern];
+      const pattern = weapons(state.weapon.pattern);
       if (state.weapon.barrel) {
         const barrel = root.getElementByKey(state.weapon.barrel);
         entity.barrel = barrel;
@@ -148,7 +150,7 @@ Crafty.c(EntityDefinition, {
   },
 
   applyDefinition(entityName) {
-    const definition = entities[entityName];
+    const definition = entities(entityName);
     this.addComponent(entityName);
     const structure = definition.structure;
     setEntityStructure(this, this, structure, 0);

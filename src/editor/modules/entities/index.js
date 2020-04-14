@@ -4,14 +4,14 @@ import { Menu } from "../../components/Menu";
 import { Source } from "../../components/Source";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
-import entities from "src/data/entities";
+import { entities, entitiesData } from "src/data/structure.data";
 
 const Entities = ({
   entity,
   stateName = "default",
   habitatName = "default"
 }) => {
-  const activeEntity = entities[entity];
+  const activeEntity = entities(entity);
   const activeHabitat =
     activeEntity &&
     (activeEntity.habitats || []).find(({ name }) => name === habitatName);
@@ -21,7 +21,10 @@ const Entities = ({
       <Title>Entities</Title>
       <Divider>
         <Menu
-          items={Object.keys(entities).map(name => [name, `/entities/${name}`])}
+          items={Object.keys(entitiesData).map(name => [
+            name,
+            `/entities/${name}`
+          ])}
         />
         <div>
           {activeEntity && activeEntity.states && (

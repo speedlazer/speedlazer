@@ -23,7 +23,7 @@ module.exports = {
     alias: {
       src: path.resolve(__dirname, "..", "src/")
     },
-    extensions: [".js", ".coffee"]
+    extensions: [".js"]
   },
   plugins: [
     new CleanWebpackPlugin(["dist"], cleanOptions),
@@ -85,6 +85,18 @@ module.exports = {
         options: {
           minimize: true
         }
+      },
+      {
+        test: /\.data$/,
+        use: [
+          {
+            loader: "babel-loader",
+            options: babel
+          },
+          {
+            loader: path.resolve("config/loaders/data")
+          }
+        ]
       }
     ]
   }

@@ -4,7 +4,7 @@ import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
 import { Text } from "../../components/Text";
 import BulletPatternPreview from "./BulletPatternPreview";
-import weapons from "src/data/weapons";
+import { weapons, weaponsData } from "src/data/structure.data";
 
 const weaponCollisionTypes = activeWeapon =>
   !activeWeapon
@@ -49,7 +49,7 @@ class Weapons extends Component {
   };
 
   render({ weapon }, { firing, difficulty, collisionType, moveBlue, swapped }) {
-    const activeWeapon = weapons[weapon];
+    const activeWeapon = weapons(weapon);
 
     storeState(this.state);
     const collisionTypes = weaponCollisionTypes(activeWeapon);
@@ -58,7 +58,10 @@ class Weapons extends Component {
         <Title>Weapons</Title>
         <Divider>
           <Menu
-            items={Object.keys(weapons).map(key => [key, `/weapons/${key}`])}
+            items={Object.keys(weaponsData).map(key => [
+              key,
+              `/weapons/${key}`
+            ])}
           />
           {activeWeapon && (
             <div>

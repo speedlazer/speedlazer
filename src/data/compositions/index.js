@@ -1,6 +1,6 @@
-import backgrounds from "./backgrounds.composition.json";
+import backgrounds from "./backgrounds.composition";
 import battleShip from "./BattleShip.composition.js";
-import bulletCannon from "./BulletCannon.composition.json";
+import bulletCannon from "./BulletCannon.composition";
 import dino from "./Dino.composition.json";
 import bullets from "./bullets.composition.json";
 import drone from "./Drone.composition.json";
@@ -13,7 +13,7 @@ import shipHatch from "./ShipHatch.composition.js";
 import portraits from "./portraits.composition.json";
 import playerShip from "./PlayerShip.composition.json";
 import mine from "./Mine.composition.json";
-import helicopter from "./Helicopter.composition.json";
+import helicopter from "./Helicopter.composition";
 
 const compositions = {
   ...backgrounds,

@@ -21,12 +21,12 @@ export const App = () => (
         ["Sprites", "/sprites"],
         ["Audio", "/audio"],
         ["Compositions", "/compositions"],
+        ["Entities", "/entities"],
         ["Paths", "/paths"],
         ["Weapons", "/weapons"],
         ["Particles", "/particles"],
-        ["Animations", "/animations"],
         ["Sceneries", "/sceneries"],
-        ["Entities", "/entities"],
+        ["Animations", "/animations"],
         ["Game", "/game"]
       ]}
     />

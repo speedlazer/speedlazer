@@ -5,7 +5,7 @@ import {
   setAltitude,
   getAltitude
 } from "src/components/Scenery";
-import animations from "src/data/animations";
+import { animations } from "src/data/structure.data";
 import {
   setBackground,
   setBackgroundCheckpoint,
@@ -88,7 +88,7 @@ const levelFunctions = state => ({
     setScenery(sceneryName);
   },
   setBackground: async backgroundName => {
-    setBackground(animations[backgroundName]);
+    setBackground(animations(backgroundName));
   },
   setBackgroundCheckpointLimit: async limit => {
     setBackgroundCheckpointLimit(limit);
@@ -97,7 +97,7 @@ const levelFunctions = state => ({
     setBackgroundCheckpoint(checkpoint);
   },
   playAnimation: (animation, options) =>
-    playAnimation(animations[animation], options)
+    playAnimation(animations(animation), options)
 });
 
 export default levelFunctions;

@@ -13,10 +13,11 @@ export default {
       ["aircraftCarrierEnd", { x: 448, y: 0 }]
     ],
     attachHooks: [
-      ["boxLocation1", { x: 400, y: 30, z: 23 }],
+      ["boxLocation1", { x: 420, y: 30, z: 13 }],
       ["cabin1", { x: 164, y: 24, z: 7, attachAlign: ["bottom", "left"] }],
       ["hatch1", { x: 220, y: 32, z: 2, attachAlign: ["top", "left"] }],
-      ["bottom", { x: 10, y: 130, z: 2, attachAlign: ["top", "left"] }]
+      ["bottom", { x: 10, y: 130, z: 2, attachAlign: ["top", "left"] }],
+      ["gun", { x: 360, y: 90, z: 22, attachAlign: ["bottom", "center"] }]
     ]
   },
   "droneShip.cabin": {

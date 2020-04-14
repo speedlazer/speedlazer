@@ -1,4 +1,4 @@
-import compositions from "src/data/compositions";
+import { compositions } from "src/data/structure.data";
 import Composable from "src/components/Composable";
 
 export const say = (speaker, text, { portrait = null } = {}) =>
@@ -27,7 +27,7 @@ export const say = (speaker, text, { portrait = null } = {}) =>
 
     let avatarOffset = 0;
 
-    const portraitDef = portrait && compositions[portrait];
+    const portraitDef = portrait && compositions(portrait);
     let portraitEntity = null;
     if (portraitDef) {
       portraitEntity = Crafty.e(

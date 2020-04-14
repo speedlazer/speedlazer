@@ -46,6 +46,68 @@ export default {
       }
     }
   },
+  "cannon.gun": {
+    aiming: {
+      offsetAimAngle: 0,
+      sight: 95,
+      resetOnDeactivation: true,
+      rotateSpeed: 60,
+      range: [70, -2]
+    },
+    spawnRhythm: {
+      initialDelay: [500, 150],
+      burst: [5, 9],
+      shotDelay: [200, 100],
+      burstDelay: [2000, 400],
+      spawns: [
+        ["bullet", {}],
+        ["muzzleFlash", {}]
+      ]
+    },
+    spawnables: {
+      bullet: {
+        spawnPosition: [0, 0.5],
+        velocity: [250, 400],
+        composition: "weapons.bullet",
+        queue: [{ duration: 4000 }],
+        damage: [
+          {
+            velocity: [-10e3, -15e3],
+            affects: "health",
+            duration: [2, 4],
+            name: "Laser"
+          }
+        ],
+        collisions: {
+          PlayerShip: {
+            spawns: [["spark", {}]]
+          },
+          WaterCollision: {
+            spawns: [["splash", {}]]
+          }
+        }
+      },
+      muzzleFlash: {
+        spawnPosition: [0, 0.5],
+        attached: true,
+        velocity: 0,
+        composition: "weapons.muzzleFlash",
+        queue: [{ duration: 400 }]
+      },
+      spark: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.solidHit",
+        queue: [{ duration: 100, audio: "hit" }]
+      },
+      splash: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.waterHit",
+        queue: [{ duration: 305 }]
+      }
+    }
+  },
   "heli.gun": {
     aiming: {
       offsetAimAngle: -5,

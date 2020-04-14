@@ -13,6 +13,9 @@ export default {
         hatch1: {
           composition: "shipHatch"
         },
+        gun: {
+          entity: "BulletCannon"
+        },
         boxLocation1: {
           composition: "intro.boxes"
         },
@@ -28,6 +31,21 @@ export default {
       },
       t1r: {
         attachments: { hatch1: { frame: "risen" } }
+      },
+      activateGun: {
+        attachments: {
+          gun: { state: "shooting" }
+        }
+      },
+      deactivateGun: {
+        attachments: {
+          gun: { state: "default" }
+        }
+      },
+      gunDestroyed: {
+        attachments: {
+          gun: { state: "dead" }
+        }
       }
     },
     habitats: [

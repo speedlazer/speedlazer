@@ -1,6 +1,5 @@
-import compositions from "src/data/compositions";
+import { compositions, particles } from "src/data/structure.data";
 import ParticleEmitter from "src/components/ParticleEmitter";
-import particles from "src/data/particles";
 import Composable from "src/components/Composable";
 import AngleMotion from "src/components/AngleMotion";
 import Steering from "src/components/Steering";
@@ -273,11 +272,11 @@ const getItemFromPool = itemDefinition => {
     spawn.addComponent(itemDefinition.sprite);
   }
   if (itemDefinition.composition) {
-    const composeData = compositions[itemDefinition.composition];
+    const composeData = compositions(itemDefinition.composition);
     spawn.addComponent(Composable).compose(composeData);
   }
   if (itemDefinition.particles) {
-    const particleData = particles[itemDefinition.particles];
+    const particleData = particles(itemDefinition.particles);
     Crafty.e(ParticleEmitter).particles(particleData, spawn);
   }
   if (itemDefinition.entity) {

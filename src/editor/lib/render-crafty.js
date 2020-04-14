@@ -1,6 +1,6 @@
 import spritesheets from "src/data/spritesheets";
-import animations from "src/data/animations";
 import audiosheets from "src/data/audio";
+import { animations } from "src/data/structure.data";
 import { bigText } from "src/components/BigText";
 import Composable from "src/components/Composable";
 import Weapon from "src/components/Weapon";
@@ -57,7 +57,10 @@ export const mount = domElem => {
     Crafty.e("2D, DOM, Text")
       .attr({ x: 20, y: 20, w: 700 })
       .text(
-        () => `Wait: ${waitTime} - Frame: ${frameTime} - Render: ${renderTime}`
+        () =>
+          `Wait: ${waitTime} - Frame: ${frameTime} - Render: ${renderTime} - Entities: ${Crafty(
+            "Renderable"
+          ).length - 1}`
       )
       .dynamicTextGeneration(true)
       .textColor("white");
@@ -207,7 +210,7 @@ const setHabitat = habitat => {
     setScenery(habitat.scenery);
 
   if (habitat && habitat.background) {
-    setBackground(animations[habitat.background[0]]);
+    setBackground(animations(habitat.background[0]));
     setBackgroundCheckpoint(habitat.background[1]);
   } else {
     Crafty("Background").destroy();

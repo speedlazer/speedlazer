@@ -5,7 +5,7 @@ import { Source } from "../../components/Source";
 import { Divider } from "../../components/Divider";
 import { Setting } from "../../components/Setting";
 import FlyPatternPreview from "./FlyPatternPreview";
-import paths from "src/data/paths";
+import { paths, pathsData } from "src/data/structure.data";
 
 const DEFAULT_STATE = {
   showPoints: true,
@@ -42,13 +42,15 @@ class FlyPatterns extends Component {
   };
 
   render({ pattern }, { showPoints, showPath }) {
-    const activePattern = paths[pattern];
+    const activePattern = paths(pattern);
     storeState(this.state);
     return (
       <section>
         <Title>Paths</Title>
         <Divider>
-          <Menu items={Object.keys(paths).map(key => [key, `/paths/${key}`])} />
+          <Menu
+            items={Object.keys(pathsData).map(key => [key, `/paths/${key}`])}
+          />
           <div>
             <div>
               <Setting checked={showPoints} onCheck={this.updateShowPoints}>

@@ -1,6 +1,5 @@
 import { SceneryPreview } from "./SceneryPreview";
-import sceneries from "src/data/sceneries";
-import animations from "src/data/animations";
+import { sceneriesData, sceneries, animations } from "src/data/structure.data";
 import { Menu } from "../../components/Menu";
 import { Source } from "../../components/Source";
 import { Divider } from "../../components/Divider";
@@ -27,13 +26,13 @@ class Sceneries extends Component {
   };
 
   render({ scenery }, { scrollSpeed, altIndex }) {
-    const activeScenery = sceneries[scenery];
+    const activeScenery = sceneries(scenery);
 
     const backgroundSetting =
       activeScenery &&
       activeScenery.backgrounds &&
       activeScenery.backgrounds[0];
-    const background = backgroundSetting && animations[backgroundSetting[0]];
+    const background = backgroundSetting && animations(backgroundSetting[0]);
 
     const altitudes = activeScenery && activeScenery.altitudes;
     const altitude = (altitudes && altitudes[altIndex]) || 0;
@@ -43,7 +42,7 @@ class Sceneries extends Component {
         <Title>Scenery</Title>
         <Divider>
           <Menu
-            items={Object.keys(sceneries).map(key => [
+            items={Object.keys(sceneriesData).map(key => [
               key,
               `/sceneries/${key}`
             ])}

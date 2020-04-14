@@ -1,5 +1,5 @@
 import ParticleEmitter from "src/components/ParticleEmitter";
-import particles from "src/data/particles";
+import { particles } from "src/data/structure.data";
 import merge from "lodash/merge";
 
 Crafty.c("GravitySupport", {
@@ -51,7 +51,7 @@ Crafty.c("GravitySupport", {
       if (this.liquidParticles) {
         const settings = [].concat(this.liquidParticles, {});
 
-        const emitter = merge({}, particles[settings[0]], settings[1]);
+        const emitter = merge({}, particles(settings[0]), settings[1]);
         this.liquidEmitter = Crafty.e(ParticleEmitter)
           .attr({ x: this.x, y: surfaceEntity.y + 20 })
           .particles(emitter);

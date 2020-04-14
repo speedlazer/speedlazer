@@ -1,8 +1,7 @@
 import Composable from "./Composable";
-import compositions from "src/data/compositions";
+import { compositions, paths } from "src/data/structure.data";
 import { createEntity } from "src/components/EntityDefinition";
 import { tweenFn } from "src/components/generic/TweenPromise";
-import paths from "src/data/paths";
 import WayPointMotion from "./WayPointMotion";
 import { LINEAR } from "src/constants/easing";
 import { getBackgroundColor, setBackgroundColor } from "src/components/Horizon";
@@ -39,7 +38,7 @@ Crafty.c(Animation, {
 
     let toRemove = Object.keys(this.elements);
     (checkpointData.composables || []).forEach(([composable, settings]) => {
-      const composition = compositions[composable];
+      const composition = compositions(composable);
 
       const existing = this.elements[settings.key];
       toRemove = toRemove.filter(k => k !== settings.key);
@@ -174,7 +173,7 @@ Crafty.c(Animation, {
         elem.addComponent(WayPointMotion);
         const pathDuration = (t.end - t.start) * this.animationDuration;
 
-        const path = t.path.data || paths[t.path.name];
+        const path = t.path.data || paths(t.path.name);
 
         elem.flyPattern(path, {
           duration: pathDuration,
