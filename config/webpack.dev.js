@@ -18,7 +18,8 @@ module.exports = merge(common, {
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      "process.env.VERSION": JSON.stringify(`${buildVersion()} DEV`)
+      "process.env.VERSION": JSON.stringify(`${buildVersion()} DEV`),
+      "process.env.APP_ENV": JSON.stringify("development")
     }),
     new HtmlWebpackPlugin({
       template: "src/editor.html",
@@ -29,12 +30,17 @@ module.exports = merge(common, {
   devtool: "inline-source-map",
   devServer: {
     contentBase: "../dist",
-    publicPath: "/",
     hot: true,
+    publicPath: "/",
     host: "0.0.0.0",
     historyApiFallback: {
       rewrites: [{ from: /^\/editor\//, to: "/editor.html" }]
     },
-    port: 9000
+    port: 9000,
+    after: (/*app*/) => {
+      //app.post("/path", (req, res) => {
+      //res.send(JSON.stringify({ message: "POST request to path" }));
+      //});
+    }
   }
 });

@@ -1,4 +1,4 @@
-import { sceneries, compositions } from "src/data/structure.data";
+import { sceneries, compositions } from "data";
 import { getOne } from "src/lib/utils";
 import merge from "lodash/merge";
 

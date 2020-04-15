@@ -5,7 +5,7 @@ import {
   setAltitude,
   getAltitude
 } from "src/components/Scenery";
-import { animations } from "src/data/structure.data";
+import { animations } from "data";
 import {
   setBackground,
   setBackgroundCheckpoint,

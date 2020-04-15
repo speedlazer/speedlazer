@@ -5,7 +5,7 @@ import { Source } from "../../components/Source";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
 import { Setting } from "../../components/Setting";
-import { compositions, compositionsData } from "src/data/structure.data";
+import { compositions, compositionsData } from "data";
 
 const DEFAULT_STATE = {
   showSize: false,

@@ -1,12 +1,7 @@
 import Composable from "src/components/Composable";
 import Weapon from "src/components/Weapon";
 import ParticleEmitter from "src/components/ParticleEmitter";
-import {
-  compositions,
-  entities,
-  particles,
-  weapons
-} from "src/data/structure.data";
+import { compositions, entities, particles, weapons } from "data";
 import merge from "lodash/merge";
 import { playAudio } from "src/lib/audio";
 

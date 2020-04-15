@@ -1,5 +1,5 @@
 import { SceneryPreview } from "./SceneryPreview";
-import { sceneriesData, sceneries, animations } from "src/data/structure.data";
+import { sceneriesData, sceneries, animations } from "data";
 import { Menu } from "../../components/Menu";
 import { Source } from "../../components/Source";
 import { Divider } from "../../components/Divider";

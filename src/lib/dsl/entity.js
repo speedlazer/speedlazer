@@ -1,6 +1,6 @@
 import { LINEAR } from "src/constants/easing";
 import { createEntity } from "src/components/EntityDefinition";
-import { paths } from "src/data/structure.data";
+import { paths } from "data";
 import "src/components/WayPointMotion";
 
 const move = (entity, flyPattern, velocity, easing, state) => {

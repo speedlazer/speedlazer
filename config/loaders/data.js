@@ -20,21 +20,21 @@ const toHuman = amount => {
 // https://v8.dev/blog/cost-of-javascript-2019#json
 
 module.exports = function(input) {
-  this.cacheable();
+  this.cacheable(true);
 
   const folders = JSON.parse(input);
   const path = this.resourcePath.split("/").slice(0, -1);
 
   const allData = folders.reduce((acc, folder) => {
     const dirPath = path.concat(folder);
+    this.addContextDependency(dirPath.join("/"));
     const entries = fs.readdirSync(dirPath.join("/"));
 
     const struct = entries.reduce((acc, entry) => {
       if (entry.endsWith(".js")) {
         const filePath = dirPath.concat(entry);
-        // watch this file now as well
-        this.addDependency(filePath.join("/"));
 
+        delete require.cache[require.resolve(filePath.join("/"))];
         const file = require(filePath.join("/"));
         const fileContent = file.default;
         return { ...acc, ...fileContent };

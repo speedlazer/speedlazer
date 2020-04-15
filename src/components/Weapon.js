@@ -1,4 +1,4 @@
-import { compositions, particles } from "src/data/structure.data";
+import { compositions, particles } from "data";
 import ParticleEmitter from "src/components/ParticleEmitter";
 import Composable from "src/components/Composable";
 import AngleMotion from "src/components/AngleMotion";

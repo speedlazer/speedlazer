@@ -46,6 +46,13 @@ export default {
         attachments: {
           gun: { state: "dead" }
         }
+      },
+      radarPulse: {
+        attachments: {
+          cabin1: {
+            attachments: { radar: { animation: "pulse" } }
+          }
+        }
       }
     },
     habitats: [

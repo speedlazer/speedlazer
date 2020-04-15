@@ -4,7 +4,7 @@ import { Menu } from "../../components/Menu";
 import { Source } from "../../components/Source";
 import { Divider } from "../../components/Divider";
 import { Title } from "../../components/Title";
-import { entities, entitiesData } from "src/data/structure.data";
+import { entities, entitiesData } from "data";
 
 const Entities = ({
   entity,

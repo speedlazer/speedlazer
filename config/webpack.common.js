@@ -21,7 +21,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      src: path.resolve(__dirname, "..", "src/")
+      src: path.resolve(__dirname, "..", "src/"),
+      data: path.resolve(__dirname, "..", "src/data/structure.data")
     },
     extensions: [".js"]
   },

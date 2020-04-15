@@ -1,5 +1,5 @@
 import Composable from "./Composable";
-import { compositions, paths } from "src/data/structure.data";
+import { compositions, paths } from "data";
 import { createEntity } from "src/components/EntityDefinition";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import WayPointMotion from "./WayPointMotion";

@@ -1,4 +1,4 @@
-import { paths } from "src/data/structure.data";
+import { paths } from "data";
 
 const droneFlight = (pattern, yOffset = 0) => async ({
   spawn,

@@ -1,6 +1,6 @@
 import spritesheets from "src/images";
 import audiosheets from "src/audio";
-import { animations } from "src/data/structure.data";
+import { animations } from "data";
 import { bigText } from "src/components/BigText";
 import Composable from "src/components/Composable";
 import Weapon from "src/components/Weapon";

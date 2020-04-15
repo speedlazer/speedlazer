@@ -40,6 +40,35 @@ export default {
       width: 64,
       height: 28
     },
-    sprites: [["aircraftCarrierRadar", { x: 0, y: -6 }]]
+    sprites: [
+      ["aircraftCarrierRadar", { x: 0, y: -6, key: "main" }],
+      [
+        "aircraftCarrierRadarEmit",
+        { x: 0, y: 0, z: -1, key: "emit", scale: 0.9 }
+      ]
+    ],
+    frames: {
+      emitStart: {
+        emit: { x: 0, y: 0, alpha: 1, scale: 0.9 }
+      },
+      emitEnd: {
+        emit: { x: 0, y: -32, alpha: 0.0, scale: 3.0 }
+      }
+    },
+    animations: {
+      pulse: {
+        repeat: true,
+        easing: "linear",
+        duration: 1500,
+        timeline: [
+          {
+            start: 0.0,
+            end: 1.0,
+            startFrame: "emitStart",
+            endFrame: "emitEnd"
+          }
+        ]
+      }
+    }
   }
 };

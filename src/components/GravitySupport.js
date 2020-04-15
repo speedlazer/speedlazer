@@ -1,5 +1,5 @@
 import ParticleEmitter from "src/components/ParticleEmitter";
-import { particles } from "src/data/structure.data";
+import { particles } from "data";
 import merge from "lodash/merge";
 
 Crafty.c("GravitySupport", {

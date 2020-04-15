@@ -1,4 +1,4 @@
-import { compositions } from "src/data/structure.data";
+import { compositions } from "data";
 import Composable from "src/components/Composable";
 
 export const say = (speaker, text, { portrait = null } = {}) =>

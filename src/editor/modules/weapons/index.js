@@ -4,7 +4,7 @@ import { Menu } from "../../components/Menu";
 import { Divider } from "../../components/Divider";
 import { Text } from "../../components/Text";
 import BulletPatternPreview from "./BulletPatternPreview";
-import { weapons, weaponsData } from "src/data/structure.data";
+import { weapons, weaponsData } from "data";
 
 const weaponCollisionTypes = activeWeapon =>
   !activeWeapon

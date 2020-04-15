@@ -59,9 +59,7 @@
     "prettier": "prettier '{,!(node_modules|dist|.tmp)/**/}*.{js,css,scss,json}' --write"
   },
   "babel": {
-    "presets": [
-      "@babel/env"
-    ],
+    "presets": ["@babel/env"],
     "plugins": [
       [
         "@babel/plugin-transform-react-jsx",

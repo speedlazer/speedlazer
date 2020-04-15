@@ -2,7 +2,7 @@ import Composable from "src/components/Composable";
 import { EntityDefinition } from "src/components/EntityDefinition";
 
 import { AnimationPreview } from "./AnimationPreview";
-import { animations, animationsData } from "src/data/structure.data";
+import { animations, animationsData } from "data";
 import { Menu } from "../../components/Menu";
 import { Source } from "../../components/Source";
 import Log from "../../components/Log";
