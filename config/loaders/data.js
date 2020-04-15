@@ -1,6 +1,6 @@
 /* eslint-env node */
+require("@babel/register");
 const fs = require("fs");
-require("@babel/register")({});
 
 const assignUnit = (amount, unitLevel = 0) =>
   amount > 1024
