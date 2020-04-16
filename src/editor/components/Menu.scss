@@ -2,6 +2,14 @@
     list-style-type: none;
     padding: 0;
 
+    &.hoverHide {
+        transition: width 1s;
+        width: 20px;
+    }
+    &.hoverHide:hover {
+        width: 300px;
+    }
+
     &.horizontal {
         width: 1024px;
         background: #111;

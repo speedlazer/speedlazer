@@ -234,8 +234,8 @@ Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
     w: 1,
     h: 1
   });
-  const rect = Crafty.stage.elem.getBoundingClientRect();
   Crafty.s("Mouse").bind("MouseMove", function(e) {
+    const rect = Crafty.stage.elem.getBoundingClientRect();
     dummyPlayer.attr({ x: e.realX - rect.x, y: e.realY - rect.y });
   });
 

@@ -71,9 +71,10 @@ class Compositions extends Component {
 
     return (
       <section>
-        <Title>Compositions</Title>
+        <Title>Compositions - {compositionName}</Title>
         <Divider>
           <Menu
+            hoverHide={activeComposition}
             items={Object.keys(compositionsData).map(key => [
               key,
               `/compositions/${key}`

@@ -55,9 +55,10 @@ class Weapons extends Component {
     const collisionTypes = weaponCollisionTypes(activeWeapon);
     return (
       <section>
-        <Title>Weapons</Title>
+        <Title>Weapons - {weapon}</Title>
         <Divider>
           <Menu
+            hoverHide={activeWeapon}
             items={Object.keys(weaponsData).map(key => [
               key,
               `/weapons/${key}`

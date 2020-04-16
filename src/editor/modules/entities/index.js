@@ -18,9 +18,10 @@ const Entities = ({
 
   return (
     <section>
-      <Title>Entities</Title>
+      <Title>Entities - {entity}</Title>
       <Divider>
         <Menu
+          hoverHide={activeEntity}
           items={Object.keys(entitiesData).map(name => [
             name,
             `/entities/${name}`

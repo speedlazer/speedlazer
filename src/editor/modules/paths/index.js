@@ -50,9 +50,9 @@ class FlyPatterns extends Component {
     );
     return (
       <section>
-        <Title>Paths</Title>
+        <Title>Paths - {pattern}</Title>
         <Divider>
-          <Menu items={items} />
+          <Menu hoverHide={activePattern} items={items} />
           <div>
             <div>
               <Setting checked={showPoints} onCheck={this.updateShowPoints}>
