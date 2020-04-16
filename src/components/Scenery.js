@@ -12,6 +12,11 @@ export const setScrollVelocity = ({ vx, vy }) => {
   scenery.setScrollVelocity({ vx, vy });
 };
 
+export const getScrollVelocity = () => {
+  const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
+  return scenery.movingDirection;
+};
+
 export const setAltitude = newAltitude => {
   const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
   scenery.setAltitude(newAltitude);

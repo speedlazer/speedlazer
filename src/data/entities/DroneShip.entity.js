@@ -19,10 +19,7 @@ export default {
         boxLocation1: {
           composition: "intro.boxes"
         },
-        cabin1: {
-          composition: "droneShip.cabin",
-          attachments: { radar: { entity: "Radar", state: "stopPulse" } }
-        }
+        radar: { entity: "Radar", state: "stopPulse" }
       }
     },
     states: {
@@ -48,25 +45,13 @@ export default {
         }
       },
       radarPulse: {
-        attachments: {
-          cabin1: {
-            attachments: { radar: { state: "pulse" } }
-          }
-        }
+        attachments: { radar: { state: "pulse" } }
       },
       radarStopPulse: {
-        attachments: {
-          cabin1: {
-            attachments: { radar: { state: "stopPulse" } }
-          }
-        }
+        attachments: { radar: { state: "stopPulse" } }
       },
       radarDestroyed: {
-        attachments: {
-          cabin1: {
-            attachments: { radar: { state: "dead" } }
-          }
-        }
+        attachments: { radar: { state: "dead" } }
       }
     },
     habitats: [

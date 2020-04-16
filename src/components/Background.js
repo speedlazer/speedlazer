@@ -43,6 +43,11 @@ export const setBackgroundCheckpoint = checkpoint => {
   backdrop.setActiveCheckpoint(checkpoint);
 };
 
+export const getBackgroundCheckpoint = () => {
+  const backdrop = Crafty(Background).get(0) || Crafty.e(Background);
+  return backdrop.targetCheckpoint;
+};
+
 export const setBackgroundCheckpointLimit = limit => {
   const backdrop = Crafty(Background).get(0) || Crafty.e(Background);
   backdrop.setCheckpointLimit(limit);

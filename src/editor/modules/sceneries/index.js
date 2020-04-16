@@ -39,7 +39,7 @@ class Sceneries extends Component {
 
     return (
       <section>
-        <Title>Scenery</Title>
+        <Title>Scenery{scenery && ` - ${scenery}`}</Title>
         <Divider>
           <Menu
             items={Object.keys(sceneriesData).map(key => [

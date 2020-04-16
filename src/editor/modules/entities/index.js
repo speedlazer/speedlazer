@@ -18,7 +18,7 @@ const Entities = ({
 
   return (
     <section>
-      <Title>Entities - {entity}</Title>
+      <Title>Entities{entity && ` - ${entity}`}</Title>
       <Divider>
         <Menu
           hoverHide={activeEntity}

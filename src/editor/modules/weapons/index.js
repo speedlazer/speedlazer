@@ -55,7 +55,7 @@ class Weapons extends Component {
     const collisionTypes = weaponCollisionTypes(activeWeapon);
     return (
       <section>
-        <Title>Weapons - {weapon}</Title>
+        <Title>Weapons{weapon && ` - ${weapon}`}</Title>
         <Divider>
           <Menu
             hoverHide={activeWeapon}

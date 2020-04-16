@@ -2,8 +2,7 @@ export default {
   Radar: {
     structure: {
       composition: "droneShip.radar",
-      frame: "emitEnd",
-      components: ["DamageSupport", "SolidCollision", "PlayerEnemy"]
+      frame: "emitEnd"
     },
     states: {
       pulse: {

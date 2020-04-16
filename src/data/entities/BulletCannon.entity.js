@@ -2,7 +2,6 @@ export default {
   BulletCannon: {
     structure: {
       composition: "bulletCannon",
-      components: ["DamageSupport", "SolidCollision", "PlayerEnemy"],
       attachments: {
         gun: {
           weapon: {

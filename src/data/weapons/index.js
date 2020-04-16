@@ -56,9 +56,9 @@ export default {
     },
     spawnRhythm: {
       initialDelay: [500, 150],
-      burst: [5, 9],
-      shotDelay: [200, 100],
-      burstDelay: [2000, 400],
+      burst: [5, 7],
+      shotDelay: [150, 100],
+      burstDelay: [1000, 400],
       spawns: [
         ["bullet", {}],
         ["muzzleFlash", {}]
@@ -67,7 +67,7 @@ export default {
     spawnables: {
       bullet: {
         spawnPosition: [0, 0.5],
-        velocity: [250, 400],
+        velocity: [400, 500],
         composition: "weapons.bullet",
         queue: [{ duration: 4000 }],
         damage: [

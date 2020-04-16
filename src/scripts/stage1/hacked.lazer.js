@@ -5,8 +5,6 @@ import { bigText } from "src/components/BigText";
 import { playAudio } from "src/lib/audio";
 import { droneWave } from "./enemies/drones.lazer";
 
-const parallel = list => Promise.all(list.map(l => l()));
-
 const part = async ({
   setScrollingSpeed,
   setScenery,
@@ -16,6 +14,7 @@ const part = async ({
   setAltitude,
   setBackground,
   setBackgroundCheckpoint,
+  parallel,
   exec
 }) => {
   const text = bigText("Loading...");
@@ -25,7 +24,7 @@ const part = async ({
   await loadAudio(["laser-shot", "laser-hit", "explosion", "hero"]);
   playAudio("hero");
 
-  await setScrollingSpeed(100, 0);
+  await setScrollingSpeed(250, 0, { instant: true });
   setAltitude(200, { instant: true });
   setBackground("City.Sunrise");
   setBackgroundCheckpoint(1);
@@ -52,9 +51,9 @@ const part = async ({
       await exec(droneWave(4, "drone.pattern6", 500, 0.4));
     }
   ]);
+  await setScenery("City.CoastStart");
   await exec(droneWave(4, "drone.pattern5", 500));
   await exec(droneShip());
-  await wait(40e3);
 };
 
 export default part;

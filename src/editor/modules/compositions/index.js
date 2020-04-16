@@ -71,7 +71,7 @@ class Compositions extends Component {
 
     return (
       <section>
-        <Title>Compositions - {compositionName}</Title>
+        <Title>Compositions{compositionName && ` - ${compositionName}`}</Title>
         <Divider>
           <Menu
             hoverHide={activeComposition}

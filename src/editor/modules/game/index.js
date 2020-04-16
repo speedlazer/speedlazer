@@ -9,7 +9,10 @@ const Game = ({ stage }) => (
   <section>
     <Title>Game{stage && ` - ${stage}`}</Title>
     <Divider>
-      <Menu items={gameStructure.map(({ name }) => [name, `/game/${name}`])} />
+      <Menu
+        hoverHide={stage}
+        items={gameStructure.map(({ name }) => [name, `/game/${name}`])}
+      />
       <div>{stage && <GamePreview stage={stage} />}</div>
     </Divider>
   </section>

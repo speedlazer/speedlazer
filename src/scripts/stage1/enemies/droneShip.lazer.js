@@ -1,11 +1,13 @@
-import { EASE_OUT, EASE_IN_OUT } from "src/constants/easing";
+import { EASE_OUT, EASE_IN } from "src/constants/easing";
+import { droneWave } from "./drones.lazer";
 
 export const droneShip = () => async ({
   spawn,
   call,
   waitForEvent,
+  until,
+  parallel,
   wait,
-  moveWithPattern,
   moveTo
 }) => {
   let activeMovement = null;
@@ -14,8 +16,42 @@ export const droneShip = () => async ({
       rx: 1.1,
       ry: 0.7
     },
-    defaultVelocity: 100
+    defaultVelocity: 120
+  });
+  call(ship.showState, "activateGun");
+  ship.gun
+    .addComponent("SolidCollision")
+    .addComponent("DamageSupport")
+    .addComponent("PlayerEnemy");
+  await call(ship.gun.allowDamage, { health: 500 });
+  waitForEvent(ship.gun, "Dead", async () => {
+    call(ship.gun.showState, "dead");
   });
   activeMovement = moveTo(ship, { x: 0.5 }, null, EASE_OUT);
   await activeMovement.process;
+
+  await parallel([
+    async () => {
+      call(ship.showState, "radarPulse");
+      ship.radar.addComponent("SolidCollision").addComponent("DamageSupport");
+      await call(ship.radar.allowDamage, { health: 300 });
+
+      until(
+        () =>
+          waitForEvent(ship.radar, "Dead", async () => {
+            call(ship.radar.showState, "dead");
+          }),
+        async ({ exec }) => {
+          exec(droneWave(2, "drone.pattern2", 500));
+          await wait(1500);
+        }
+      );
+    },
+    async () => {
+      activeMovement = moveTo(ship, { x: -0.8 }, null, EASE_IN);
+      await activeMovement.process;
+    }
+  ]);
+
+  ship.destroy();
 };

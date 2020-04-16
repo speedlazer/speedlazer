@@ -5,8 +5,6 @@ import { bigText } from "src/components/BigText";
 import { playAudio } from "src/lib/audio";
 import { say } from "src/lib/Dialog";
 
-const parallel = list => Promise.all(list.map(l => l()));
-
 const part = async ({
   setScrollingSpeed,
   setScenery,
@@ -17,6 +15,7 @@ const part = async ({
   playAnimation,
   setAltitude,
   showHUD,
+  parallel,
   exec,
   wait
 }) => {
@@ -27,7 +26,7 @@ const part = async ({
   await loadAudio(["laser-shot", "laser-hit", "explosion", "hero"]);
   playAudio("hero");
 
-  await setScrollingSpeed(100, 0);
+  await setScrollingSpeed(100, 0, { instant: true });
   await setScenery("City.Ocean");
   setBackground("City.Sunrise");
   text.remove();

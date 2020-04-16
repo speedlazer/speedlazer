@@ -2,6 +2,7 @@ const flowFunctions = (dsl, state) => {
   const call = (fn, ...args) => fn(...args);
 
   const exec = (script, ...args) => script(dsl, ...args);
+  const parallel = list => Promise.all(list.map(l => l()));
 
   const wait = duration => {
     const parts = Math.floor(duration / 40);
@@ -67,6 +68,7 @@ const flowFunctions = (dsl, state) => {
     waitForEvent,
     wait,
     exec,
+    parallel,
     call
   };
 };

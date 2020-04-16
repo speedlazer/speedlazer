@@ -18,9 +18,9 @@ const part = async ({
   await loadAudio(["laser-shot", "laser-hit", "explosion", "hero"]);
   playAudio("hero");
 
-  await setScrollingSpeed(100, 0);
+  await setScrollingSpeed(250, 0, { instant: true });
   setBackground("City.Sunrise");
-  await setScenery("City.CoastStart");
+  await setScenery("City.Coast");
   text.remove();
   exec(playerShip({ existing: true }));
 

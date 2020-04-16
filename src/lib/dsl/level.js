@@ -2,6 +2,7 @@ import { Noise } from "noisejs";
 import {
   setScenery,
   setScrollVelocity,
+  getScrollVelocity,
   setAltitude,
   getAltitude
 } from "src/components/Scenery";
@@ -9,6 +10,7 @@ import { animations } from "data";
 import {
   setBackground,
   setBackgroundCheckpoint,
+  getBackgroundCheckpoint,
   setBackgroundCheckpointLimit
 } from "src/components/Background";
 import { lookup } from "src/lib/random";
@@ -59,9 +61,31 @@ const levelFunctions = state => ({
       Crafty.bind("EnterFrame", state.trauma.handler);
     }
   },
-  setScrollingSpeed: async (x, y) => {
-    setScrollVelocity({ vx: -x, vy: y });
-  },
+  setScrollingSpeed: async (x, y, { speed = 50, instant = false } = {}) =>
+    instant
+      ? setScrollVelocity({ vx: -x, vy: y })
+      : new Promise(resolve => {
+          const vPSec = speed / 1000;
+          const { vx: startX, vy: startY } = getScrollVelocity();
+          const deltaY = Math.abs(y - startY);
+          const deltaX = Math.abs(x - -startX);
+          const delta = Math.max(deltaX, deltaY);
+
+          const ease = new Crafty.easing(delta / vPSec, EASE_IN_OUT);
+          const f = ({ dt }) => {
+            ease.tick(dt);
+            const v = ease.value();
+            if (v >= 1.0) {
+              Crafty.unbind("EnterFrame", f);
+              resolve();
+            }
+            const vy = startY * (1 - v) + y * v;
+            const vx = -startX * (1 - v) + x * v;
+            setScrollVelocity({ vx: -vx, vy });
+          };
+
+          Crafty.bind("EnterFrame", f);
+        }),
   setAltitude: async (y, { speed = 50, instant = false } = {}) =>
     instant
       ? setAltitude(y)
@@ -94,7 +118,9 @@ const levelFunctions = state => ({
     setBackgroundCheckpointLimit(limit);
   },
   setBackgroundCheckpoint: async checkpoint => {
-    setBackgroundCheckpoint(checkpoint);
+    if (getBackgroundCheckpoint() < checkpoint) {
+      setBackgroundCheckpoint(checkpoint);
+    }
   },
   playAnimation: (animation, options) =>
     playAnimation(animations(animation), options)
