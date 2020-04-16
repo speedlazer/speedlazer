@@ -17,7 +17,7 @@ export default {
     },
     states: {
       dead: {
-        frame: "dead",
+        frame: ["dead", { duration: 0 }],
         animation: null,
         audio: "explosion",
         removeComponents: ["SolidCollision", "PlayerEnemy"],

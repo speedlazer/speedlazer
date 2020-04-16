@@ -46,7 +46,11 @@ const setEntityStructure = (root, entity, state, duration) => {
     );
   }
   if (state.frame && entity.has(Composable)) {
-    tasks.push(entity.displayFrame(state.frame, duration));
+    const [frame, settings] =
+      typeof state.frame === "string"
+        ? [state.frame, { duration }]
+        : state.frame;
+    tasks.push(entity.displayFrame(frame, settings.duration));
   }
   if (state.audio) {
     playAudio(state.audio);

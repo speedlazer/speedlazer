@@ -57,6 +57,15 @@ export default {
           z: 1,
           attachAlign: ["center", "left"]
         }
+      ],
+      [
+        "explosion",
+        {
+          x: 32,
+          y: 28,
+          z: 1,
+          attachAlign: ["center", "center"]
+        }
       ]
     ],
     frames: {
@@ -66,9 +75,9 @@ export default {
       emitEnd: {
         emit: { x: 0, y: -32, alpha: 0.0, scale: 3.0 }
       },
-      hidden: {
-        emit: { alpha: 0 },
-        main: { hidden: true, alpha: 0 }
+      broken: {
+        emit: { x: 0, y: -32, alpha: 0.0, scale: 3.0 },
+        main: { hidden: true, sprite: "aircraftCarrierRadarBroken" }
       }
     },
     animations: {

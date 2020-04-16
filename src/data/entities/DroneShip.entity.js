@@ -21,7 +21,7 @@ export default {
         },
         cabin1: {
           composition: "droneShip.cabin",
-          attachments: { radar: { composition: "droneShip.radar" } }
+          attachments: { radar: { entity: "Radar", state: "stopPulse" } }
         }
       }
     },
@@ -50,7 +50,21 @@ export default {
       radarPulse: {
         attachments: {
           cabin1: {
-            attachments: { radar: { animation: "pulse" } }
+            attachments: { radar: { state: "pulse" } }
+          }
+        }
+      },
+      radarStopPulse: {
+        attachments: {
+          cabin1: {
+            attachments: { radar: { state: "stopPulse" } }
+          }
+        }
+      },
+      radarDestroyed: {
+        attachments: {
+          cabin1: {
+            attachments: { radar: { state: "dead" } }
           }
         }
       }
