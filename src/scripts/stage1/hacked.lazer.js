@@ -1,4 +1,5 @@
 import { helicopter } from "./enemies/helicopter.lazer";
+import { droneShip } from "./enemies/droneShip.lazer";
 import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
 import { playAudio } from "src/lib/audio";
@@ -14,6 +15,7 @@ const part = async ({
   wait,
   setAltitude,
   setBackground,
+  setBackgroundCheckpoint,
   exec
 }) => {
   const text = bigText("Loading...");
@@ -26,12 +28,18 @@ const part = async ({
   await setScrollingSpeed(100, 0);
   setAltitude(200, { instant: true });
   setBackground("City.Sunrise");
+  setBackgroundCheckpoint(1);
   await setScenery("City.Ocean");
   text.remove();
   exec(playerShip({ existing: true }));
 
-  setAltitude(0);
-  await exec(helicopter("heli.pattern1"));
+  await parallel([
+    async () => {
+      await wait(2000);
+      await setAltitude(0);
+    },
+    () => exec(helicopter("heli.pattern1"))
+  ]);
 
   await parallel([
     () => exec(droneWave(4, "drone.pattern6", 500)),
@@ -45,6 +53,8 @@ const part = async ({
     }
   ]);
   await exec(droneWave(4, "drone.pattern5", 500));
+  await exec(droneShip());
+  await wait(40e3);
 };
 
 export default part;

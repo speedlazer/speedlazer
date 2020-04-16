@@ -69,7 +69,12 @@ export const mount = domElem => {
 
 Crafty.defineScene(
   "Stop",
-  () => {},
+  ({ text, color = "#FFFFFF" } = {}) => {
+    if (text) {
+      const start = bigText(text, { color });
+      start.show();
+    }
+  },
   () => {}
 );
 
@@ -640,15 +645,27 @@ Crafty.defineScene(
     start.remove();
     if (activeStage !== thisStage) return;
 
+    let gameOver = false;
     try {
       Crafty.trigger("EnterScene");
       await runner(item.script);
+      const start = bigText("Congratulations!");
+      await start.fadeIn(2000);
+      await new Promise(resolve => Crafty.e("Delay").delay(resolve, 4000));
     } catch (e) {
+      if (e.message === "Game Over") {
+        gameOver = true;
+        const start = bigText("Game Over", { color: "#FF0000" });
+        await start.fadeIn(2000);
+      }
       console.error(e);
     }
 
     if (activeStage !== thisStage) return;
-    Crafty.enterScene("Stop");
+    Crafty.enterScene("Stop", {
+      text: gameOver ? "Game Over" : "Congratulations!",
+      color: gameOver ? "#FF0000" : "#FFFFFF"
+    });
   },
   function() {
     this.state.gameEnded = true;
