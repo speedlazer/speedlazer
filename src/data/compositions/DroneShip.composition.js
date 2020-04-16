@@ -40,11 +40,23 @@ export default {
       width: 64,
       height: 28
     },
+    hitbox: [4, 24, 32, 0, 60, 24, 32, 42],
     sprites: [
       ["aircraftCarrierRadar", { x: 0, y: -6, key: "main" }],
       [
         "aircraftCarrierRadarEmit",
         { x: 0, y: 0, z: -1, key: "emit", scale: 0.9 }
+      ]
+    ],
+    attachHooks: [
+      [
+        "smoke",
+        {
+          x: 32,
+          y: 28,
+          z: 1,
+          attachAlign: ["center", "left"]
+        }
       ]
     ],
     frames: {
@@ -53,6 +65,10 @@ export default {
       },
       emitEnd: {
         emit: { x: 0, y: -32, alpha: 0.0, scale: 3.0 }
+      },
+      hidden: {
+        emit: { alpha: 0 },
+        main: { hidden: true, alpha: 0 }
       }
     },
     animations: {
