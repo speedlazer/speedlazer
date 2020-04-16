@@ -658,8 +658,9 @@ Crafty.defineScene(
         const start = bigText("Game Over", { color: "#FF0000" });
         await start.fadeIn(4000);
         await new Promise(resolve => Crafty.e("Delay").delay(resolve, 4000));
+      } else {
+        console.error(e);
       }
-      console.error(e);
     }
 
     if (activeStage !== thisStage) return;

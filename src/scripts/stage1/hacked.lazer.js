@@ -54,6 +54,7 @@ const part = async ({
   await setScenery("City.CoastStart");
   await exec(droneWave(4, "drone.pattern5", 500));
   await exec(droneShip());
+  await exec(droneWave(4, "drone.pattern1", 500));
 };
 
 export default part;
