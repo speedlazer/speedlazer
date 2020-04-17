@@ -4,17 +4,7 @@ export default {
       composition: "helicopter",
       components: [
         "DamageSupport",
-        [
-          "GravitySupport",
-          {
-            liquidParticles: [
-              "waterSplashes",
-              {
-                emitter: { w: 128, h: 10, amount: 150 }
-              }
-            ]
-          }
-        ],
+        "GravitySupport",
         "SolidCollision",
         "PlayerEnemy"
       ],

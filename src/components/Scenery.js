@@ -138,6 +138,9 @@ const createBlock = (scenery, x, y) => {
         element.components.forEach(comp => entity.addComponent(comp));
       }
     }
+    if (element.attributes) {
+      entity.attr(element.attributes);
+    }
     const centerX =
       blockCenter.x * distance + cameraCenter.x * (1.0 - distance);
     const centerY =

@@ -17,7 +17,8 @@ export default {
         y: -45,
         components: ["ShipSolid", "BulletSolid", "GravityLiquid"],
         w: 1024,
-        h: 45
+        h: 45,
+        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 }
       },
       {
         x: 0,
@@ -57,7 +58,8 @@ export default {
         y: -45,
         components: ["ShipSolid", "BulletSolid", "GravityLiquid"],
         w: 1024,
-        h: 45
+        h: 45,
+        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 }
       },
       {
         x: 0,
@@ -97,7 +99,8 @@ export default {
         y: -45,
         components: ["ShipSolid", "BulletSolid", "GravityLiquid"],
         w: 1024,
-        h: 45
+        h: 45,
+        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 }
       },
       {
         x: 0,
@@ -131,7 +134,8 @@ export default {
         y: -45,
         components: ["ShipSolid", "BulletSolid", "GravityLiquid"],
         w: 1024,
-        h: 45
+        h: 45,
+        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 }
       },
       {
         x: 0,
@@ -178,7 +182,8 @@ export default {
         y: -45,
         components: ["ShipSolid", "BulletSolid", "GravityLiquid"],
         w: 1024,
-        h: 45
+        h: 45,
+        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 }
       },
       {
         x: 0,
@@ -231,7 +236,8 @@ export default {
         y: -45,
         components: ["ShipSolid", "BulletSolid", "GravityLiquid"],
         w: 1024,
-        h: 45
+        h: 45,
+        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 }
       },
       {
         x: 0,
@@ -277,7 +283,8 @@ export default {
         y: -45,
         components: ["ShipSolid", "BulletSolid", "GravityLiquid"],
         w: 1024,
-        h: 45
+        h: 45,
+        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 }
       },
       {
         x: 0,

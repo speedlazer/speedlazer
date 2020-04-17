@@ -44,12 +44,18 @@ Crafty.c("GravitySupport", {
         ax: 0,
         ay: 0,
         vx: 0,
-        vy: this.vy / 8,
+        vy: this.vy / surfaceEntity.liquidDensity,
         hideBelow: surfaceEntity.y + 30,
         surfaceLevel: surfaceEntity.y
       });
-      if (this.liquidParticles) {
-        const settings = [].concat(this.liquidParticles, {});
+      if (surfaceEntity.liquidParticles) {
+        const settings = [].concat(surfaceEntity.liquidParticles, {
+          emitter: {
+            w: this.w,
+            h: 10,
+            amount: this.w * 1.5
+          }
+        });
 
         const emitter = merge({}, particles(settings[0]), settings[1]);
         this.liquidEmitter = Crafty.e(ParticleEmitter)
