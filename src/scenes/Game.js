@@ -40,7 +40,9 @@ Crafty.defineScene(
         score: this.state.score
       });
     } catch (e) {
-      console.log(checkpoint);
+      if (e.message !== "Game Over") {
+        console.error(e);
+      }
       Crafty.enterScene("GameOver", {
         score: this.state.score,
         checkpoint

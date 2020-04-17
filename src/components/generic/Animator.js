@@ -6,6 +6,9 @@ Crafty.c(Animator, {
   },
 
   animate(transitionFn, duration, easing = "linear") {
+    if (!transitionFn) {
+      return Promise.resolve();
+    }
     if (duration === 0) {
       transitionFn(1);
       return Promise.resolve();

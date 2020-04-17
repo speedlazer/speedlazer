@@ -22,8 +22,24 @@ const stateFunctions = (_, state) => {
       }
       lives.text(`Lives: ${state.lives}`);
     },
-    showHUD: () => Crafty("HUD").tweenPromise({ alpha: 1, y: 10 }, 300),
-    hideHUD: () => Crafty("HUD").tweenPromise({ alpha: 0, y: -10 }, 300)
+    showHUD: () => {
+      const results = [];
+      Crafty("HUD").each(function() {
+        if (this.tweenPromise) {
+          results.push(this.tweenPromise({ alpha: 1, y: 10 }, 300));
+        }
+      });
+      return Promise.all(results);
+    },
+    hideHUD: () => {
+      const results = [];
+      Crafty("HUD").each(function() {
+        if (this.tweenPromise) {
+          results.push(this.tweenPromise({ alpha: 0, y: -10 }, 300));
+        }
+      });
+      return Promise.all(results);
+    }
   };
 };
 

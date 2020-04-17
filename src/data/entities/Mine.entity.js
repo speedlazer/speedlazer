@@ -5,6 +5,7 @@ export default {
       components: [
         ["DamageSupport", { weight: 20 }],
         "SolidCollision",
+        ["SubmergeSupport", { submergeSprite: "shadow" }],
         "PlayerEnemy",
         ["Rotating", { vr: 0 }]
       ],

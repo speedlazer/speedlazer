@@ -16,11 +16,13 @@ const mineFlight = (index, coord, synchronize) => async ({
 
   const mine = spawn("Mine", {
     location: {
-      rx: 1.1,
-      ry: 0.9
+      rx: 1.2,
+      ry: 0.7
     },
-    defaultVelocity: 450
+    defaultVelocity: 200
   });
+  activeMovement = moveTo(mine, { y: 1.1 }, null, EASE_OUT);
+  await activeMovement.process;
   await call(mine.showState, "rotate");
 
   await call(mine.allowDamage, { health: 40 });

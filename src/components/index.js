@@ -10,6 +10,7 @@ import "./ViewportLocked";
 import "./DebugInfo";
 import "./Gradient";
 import "./GravitySupport";
+import "./SubmergeSupport";
 import "./Horizon";
 import "./Invincible";
 import "./ShipSpawnable";
