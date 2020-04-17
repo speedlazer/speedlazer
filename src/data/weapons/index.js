@@ -524,7 +524,7 @@ export default {
       }
     }
   },
-  "mine.explosion": {
+  "mine.blast": {
     spawnRhythm: {
       initialDelay: 1,
       burst: 1,
@@ -532,7 +532,7 @@ export default {
       burstDelay: 0,
       spawns: [
         ["explosion", {}],
-        ["bullet", { angleRange: { from: 45, to: 405, step: 90 } }]
+        ["bullet", { angleRange: { from: 45, to: 405, step: 45 } }]
       ]
     },
     spawnables: {
@@ -578,6 +578,35 @@ export default {
         velocity: 0,
         composition: "weapons.solidHit",
         queue: [{ duration: 100 }]
+      }
+    }
+  },
+  "mine.explosion": {
+    spawnRhythm: {
+      initialDelay: 1,
+      burst: 1,
+      shotDelay: 0,
+      burstDelay: 0,
+      spawns: [["explosion", {}]]
+    },
+    spawnables: {
+      explosion: {
+        spawnPosition: [0.5, 0.5],
+        velocity: [0, 0],
+        composition: "weapons.explosion",
+        emitDamage: [
+          {
+            targets: ["Mine", "PlayerShip"],
+            velocity: -1000,
+            accelleration: 50,
+            upperBounds: 0,
+            speed: 2000,
+            affects: ["health"],
+            duration: 100,
+            name: "Explosion"
+          }
+        ],
+        queue: [{ duration: 100, audio: "explosion" }, { duration: 2000 }]
       }
     }
   },

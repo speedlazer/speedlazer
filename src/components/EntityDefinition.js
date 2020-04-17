@@ -101,16 +101,23 @@ const setEntityStructure = (root, entity, state, duration) => {
     state.removeComponents.forEach(comp => entity.removeComponent(comp));
   }
   if (state.weapon) {
-    if (!entity.has(Weapon)) {
+    if (state.weapon.pattern) {
       const pattern = weapons(state.weapon.pattern);
-      if (state.weapon.barrel) {
-        const barrel = root.getElementByKey(state.weapon.barrel);
-        entity.barrel = barrel;
+      if (
+        !entity.has(Weapon) ||
+        (entity.definition && entity.definition.pattern !== pattern)
+      ) {
+        if (state.weapon.barrel) {
+          const barrel = root.getElementByKey(state.weapon.barrel);
+          entity.barrel = barrel;
+        } else {
+          entity.barrel = null;
+        }
+        entity
+          .attr({ difficulty: 0 })
+          .addComponent(Weapon)
+          .weapon({ ...state.weapon, pattern });
       }
-      entity
-        .attr({ difficulty: 0 })
-        .addComponent(Weapon)
-        .weapon({ ...state.weapon, pattern });
     }
     state.weapon.active ? entity.activate() : entity.deactivate();
   }

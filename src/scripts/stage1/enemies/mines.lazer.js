@@ -29,8 +29,12 @@ const mineFlight = (index, coord, synchronize) => async ({
   waitForEvent(mine, "Dead", async () => {
     activeMovement && activeMovement.abort();
     synchronize();
-    if (mine.appliedEntityState === "explode") return;
-    call(mine.showState, "explode");
+    if (
+      mine.appliedEntityState === "explode" ||
+      mine.appliedEntityState === "dead"
+    )
+      return;
+    call(mine.showState, "dead");
     addScreenTrauma(0.2);
 
     await wait(500);

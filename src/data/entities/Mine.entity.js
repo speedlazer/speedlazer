@@ -9,13 +9,7 @@ export default {
         ["Rotating", { vr: 0 }]
       ],
       attachments: {
-        explosion: {
-          weapon: {
-            pattern: "mine.explosion",
-            target: "PlayerShip",
-            angle: 0
-          }
-        }
+        explosion: {}
       }
     },
     states: {
@@ -29,6 +23,24 @@ export default {
         components: [["Rotating", { vr: 120 }]],
         animation: "blinking"
       },
+      dead: {
+        components: [["Rotating", { vr: 0 }]],
+        frame: "hidden",
+        removeComponents: ["SolidCollision", "PlayerEnemy"],
+        attachments: {
+          explosion: {
+            weapon: {
+              pattern: "mine.explosion",
+              target: "PlayerShip",
+              angle: 0,
+              active: true
+            }
+          },
+          smoke: {
+            particles: "drone.smoke"
+          }
+        }
+      },
       explode: {
         components: [["Rotating", { vr: 0 }]],
         frame: "hidden",
@@ -36,6 +48,9 @@ export default {
         attachments: {
           explosion: {
             weapon: {
+              pattern: "mine.blast",
+              target: "PlayerShip",
+              angle: 0,
               active: true
             }
           },
