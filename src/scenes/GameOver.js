@@ -4,7 +4,7 @@ import CryptoJS from "crypto-js";
 
 Crafty.defineScene(
   "GameOver",
-  async ({ gameCompleted = false, score = 0 } = {}) => {
+  async ({ gameCompleted = false, score = 0, checkpoint = null } = {}) => {
     // constructor
     Crafty.background("#000");
     Crafty.viewport.x = 0;
@@ -178,7 +178,11 @@ Crafty.defineScene(
           Crafty("Player").each(function() {
             this.reset();
             // add checkpoint mechanic
-            this.one("Activated", () => Crafty.enterScene("Game", {}));
+            this.one("Activated", () =>
+              Crafty.enterScene("Game", {
+                start: checkpoint
+              })
+            );
           });
         } else {
           this.delay(() => Crafty.enterScene("Scores"), 5000);

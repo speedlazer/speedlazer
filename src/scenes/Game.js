@@ -6,7 +6,7 @@ import Player from "src/components/player/Player";
 
 Crafty.defineScene(
   "Game",
-  async function() {
+  async function({ start = null } = {}) {
     Crafty.createLayer("UILayerDOM", "DOM", {
       scaleResponse: 0,
       yResponse: 0,
@@ -24,8 +24,15 @@ Crafty.defineScene(
     Crafty.viewport.y = 0;
     this.state = { lives: 2, score: 0 };
     const runner = createScriptExecutionSpace(this.state);
+    let checkpoint = null;
     try {
+      let started = false;
       for (const item of gameStructure) {
+        if (!started && start !== null && start !== item.name) {
+          continue;
+        }
+        started = true;
+        checkpoint = item.name;
         await runner(item.script);
       }
       Crafty.enterScene("GameOver", {
@@ -33,7 +40,11 @@ Crafty.defineScene(
         score: this.state.score
       });
     } catch (e) {
-      Crafty.enterScene("GameOver", { score: this.state.score });
+      console.log(checkpoint);
+      Crafty.enterScene("GameOver", {
+        score: this.state.score,
+        checkpoint
+      });
     }
   },
   function() {
