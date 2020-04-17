@@ -60,6 +60,9 @@ Crafty.c(Component, {
               x: entity.x + relX
             });
           }
+          if (child._dx !== undefined) {
+            child._dx = -child._dx;
+          }
           if (typeof child.unflip === "function") {
             child.unflip("X");
           }

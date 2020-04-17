@@ -104,18 +104,14 @@ export default {
       turn1: {
         heli: {
           sprite: "helicopterTurning1",
-          w: 64,
-          x: 32,
-          h: 64
+          scaleX: 0.5
         },
         barrel: { alpha: 0 }
       },
       turn2: {
         heli: {
           sprite: "helicopterTurning2",
-          w: 64,
-          x: 32,
-          h: 64
+          scaleX: 0.5
         },
         barrel: { alpha: 0 }
       },

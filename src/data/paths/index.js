@@ -29,7 +29,14 @@ export default {
     { x: 1.1, y: 0.3 },
     { x: 0.9, y: 0.2 },
     { x: 0.7, y: 0.3, events: [[0, { setState: ["shoot", 0] }]] },
-    { x: 0.7, y: 0.47, events: [[0.6, { setState: ["turned", 500] }]] },
+    {
+      x: 0.7,
+      y: 0.47,
+      events: [
+        [0.6, { setState: ["turned", 0] }],
+        [0.7, { setState: ["eyeMove", 0] }]
+      ]
+    },
     { x: 0.8, y: 0.3 },
     { x: 0.95, y: 0.15 },
     { x: 1.2, y: 0.1 }

@@ -70,7 +70,9 @@ export default {
       eyeMove: {
         animation: "eye"
       },
-      turned: {},
+      turned: {
+        frame: "turned"
+      },
       shoot: {
         attachments: {
           gun: { weapon: { active: true } }
