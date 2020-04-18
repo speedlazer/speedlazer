@@ -25,7 +25,14 @@ export class GamePreview extends Component {
         that.timestamp = new Date() * 1;
         that.interval = setInterval(() => {
           const ts = new Date() * 1 - that.timestamp;
-          that.stats = that.stats.concat({ ts, amount: Crafty("*").length });
+          let counter = 0;
+          Crafty("Renderable, WebGL").each(function() {
+            if (!this.__frozen) counter++;
+          });
+          that.stats = that.stats.concat({
+            ts,
+            amount: counter
+          });
           that.props.onStats(that.stats);
         }, 1000);
       },
