@@ -85,7 +85,7 @@ export default {
         ],
         backgroundColor: "#FD7321",
         timeline: {
-          defaultDuration: 60000,
+          defaultDuration: 120000,
           transitions: [
             { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn6" },
             { key: "sky", start: 0.5, end: 1.0, targetFrame: "dawn7" },
@@ -163,6 +163,20 @@ export default {
               }
             }
           ]
+        }
+      },
+      {
+        composables: [["background.sky", { key: "sky", frame: "dawn9" }]],
+        entities: [
+          [
+            "Sun",
+            { key: "sun", state: "default", relativeX: 0.4, relativeY: 0.1 }
+          ]
+        ],
+        backgroundColor: "#BABCD9",
+        timeline: {
+          defaultDuration: 1000,
+          transitions: []
         }
       }
     ]

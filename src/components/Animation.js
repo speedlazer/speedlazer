@@ -91,17 +91,18 @@ Crafty.c(Animation, {
     toRemove.forEach(k => {
       delete this.elements[k];
     });
+    if (checkpointData.backgroundColor) {
+      const backgroundColor = strToColor([checkpointData.backgroundColor, 1.0]);
+      setBackgroundColor(backgroundColor);
+    }
 
-    if (autoStart && checkpointData.timeline) {
+    if (
+      autoStart &&
+      checkpointData.timeline &&
+      checkpoint < this.maxAllowedCheckpoint
+    ) {
       this.animationDuration =
         duration || checkpointData.timeline.defaultDuration;
-      if (checkpointData.backgroundColor) {
-        const backgroundColor = strToColor([
-          checkpointData.backgroundColor,
-          1.0
-        ]);
-        setBackgroundColor(backgroundColor);
-      }
       if (this.animationDuration) {
         this.animationTimer = new Crafty.easing(this.animationDuration, LINEAR);
         this.timeLineEvents = checkpointData.timeline.transitions.map(t => ({

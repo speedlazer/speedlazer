@@ -109,7 +109,7 @@ class Animations extends Component {
               <Menu
                 horizontal={true}
                 items={activeAnimation.checkpoints.map((a, i) => [
-                  `${i + 1}`,
+                  `${i}`,
                   `/animations/${animation}/checkpoints/${i}`
                 ])}
               />

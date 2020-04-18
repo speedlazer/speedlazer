@@ -27,6 +27,7 @@ const part = async ({
   await setScrollingSpeed(100, 0, { instant: true });
   await setScenery("City.Ocean");
   setBackground("City.Sunrise");
+  setBackgroundCheckpointLimit(2);
   text.remove();
 
   const introAnimation = playAnimation("City.Intro");
@@ -47,7 +48,6 @@ const part = async ({
   const blink = ready.blink(200, 4);
 
   exec(playerShip({ existing: true }));
-  setBackgroundCheckpointLimit(4);
 
   let helicopter;
 

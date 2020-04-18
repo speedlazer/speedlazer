@@ -10,6 +10,8 @@ const part = async ({
   loadSpriteSheets,
   loadAudio,
   setBackground,
+  setBackgroundCheckpoint,
+  setBackgroundCheckpointLimit,
   exec
   //wait
 }) => {
@@ -23,6 +25,8 @@ const part = async ({
   await setScrollingSpeed(100, 0);
   await setScenery("City.Coast");
   setBackground("City.Sunrise");
+  setBackgroundCheckpointLimit(2);
+  setBackgroundCheckpoint(2);
   text.remove();
   exec(playerShip({ existing: true }));
 

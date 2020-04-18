@@ -15,6 +15,7 @@ const part = async ({
   setAltitude,
   setBackground,
   setBackgroundCheckpoint,
+  setBackgroundCheckpointLimit,
   parallel,
   showHUD,
   exec
@@ -28,6 +29,7 @@ const part = async ({
   setAltitude(200, { instant: true });
   setBackground("City.Sunrise");
   setBackgroundCheckpoint(1);
+  setBackgroundCheckpointLimit(2);
   await setScenery("City.Ocean");
   showHUD();
   text.remove();
