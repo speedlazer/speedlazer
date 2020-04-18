@@ -1,8 +1,14 @@
 const flowFunctions = (dsl, state) => {
   const call = (fn, ...args) => fn(...args);
 
-  const exec = (script, ...args) => script(dsl, ...args);
+  const exec = async (script, ...args) => {
+    // Make a pool to collect running promises
+    await script(dsl, ...args);
+    // reject all open promises
+  };
+
   const parallel = list => Promise.all(list.map(l => l()));
+  const race = list => Promise.race(list.map(l => l()));
 
   const wait = duration => {
     const parts = Math.floor(duration / 40);
@@ -69,6 +75,7 @@ const flowFunctions = (dsl, state) => {
     wait,
     exec,
     parallel,
+    race,
     call
   };
 };

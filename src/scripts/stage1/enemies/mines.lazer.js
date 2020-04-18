@@ -9,6 +9,7 @@ const mineFlight = (index, coord, synchronize) => async ({
   call,
   //displayFrame,
   waitForEvent,
+  race,
   moveTo
 }) => {
   let activeMovement = null;
@@ -28,39 +29,41 @@ const mineFlight = (index, coord, synchronize) => async ({
   await call(mine.allowDamage, { health: 40 });
   activeMovement = moveTo(mine, { x: coord.x }, null, EASE_OUT);
 
-  waitForEvent(mine, "Dead", async () => {
-    activeMovement && activeMovement.abort();
-    synchronize();
-    if (
-      mine.appliedEntityState === "explode" ||
-      mine.appliedEntityState === "dead"
-    )
-      return;
-    call(mine.showState, "dead");
-    addScreenTrauma(0.2);
-
-    await wait(500);
-    mine.destroy();
-  });
-
-  await activeMovement.process;
-  if (activeMovement.wasCompleted()) {
-    await synchronize();
-    activeMovement = moveTo(mine, { y: coord.y }, null, EASE_IN_OUT);
-    await activeMovement.process;
-    if (activeMovement.wasCompleted()) {
-      await wait(200 + Math.random() * 2000);
-      await call(mine.showState, "open", 500);
-      call(mine.showState, "blinking");
-      await wait(1000);
-      if (mine.appliedEntityState !== "dead") {
-        call(mine.showState, "explode");
+  await race([
+    () =>
+      waitForEvent(mine, "Dead", async () => {
+        activeMovement && activeMovement.abort();
+        synchronize();
+        if (mine.appliedEntityState === "explode") return;
+        call(mine.showState, "dead");
         addScreenTrauma(0.2);
+
         await wait(500);
         mine.destroy();
+        activeMovement && activeMovement.abort();
+      }),
+    async () => {
+      await activeMovement.process;
+      if (activeMovement.wasCompleted()) {
+        await synchronize();
+        if (mine.appliedEntityState === "dead") return;
+        activeMovement = moveTo(mine, { y: coord.y }, null, EASE_IN_OUT);
+        await activeMovement.process;
+        if (activeMovement.wasCompleted()) {
+          await wait(200 + Math.random() * 2000);
+          await call(mine.showState, "open", 500);
+          call(mine.showState, "blinking");
+          await wait(1000);
+          if (mine.appliedEntityState !== "dead") {
+            call(mine.showState, "explode");
+            addScreenTrauma(0.2);
+            await wait(500);
+            mine.destroy();
+          }
+        }
       }
     }
-  }
+  ]);
 };
 
 const makeSynchronization = amount => {
