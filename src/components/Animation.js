@@ -23,9 +23,14 @@ Crafty.c(Animation, {
   },
 
   setCheckpointLimit(limit) {
+    const prevLimit = this.maxAllowedCheckpoint;
     this.maxAllowedCheckpoint = limit;
     if (this.targetCheckpoint < limit && !this.playingAnimation) {
-      this.setActiveCheckpoint(this.targetCheckpoint + 1);
+      this.setActiveCheckpoint(
+        this.targetCheckpoint === prevLimit
+          ? this.targetCheckpoint
+          : this.targetCheckpoint + 1
+      );
     }
   },
 
@@ -33,7 +38,6 @@ Crafty.c(Animation, {
     this.unbind("EnterFrame", this.updateAnimation);
     const checkpointData = this.currentAnimation.checkpoints[checkpoint];
     if (!checkpointData) return;
-    this.playingAnimation = true;
     this.targetCheckpoint = checkpoint;
 
     let toRemove = Object.keys(this.elements);
@@ -101,6 +105,7 @@ Crafty.c(Animation, {
       checkpointData.timeline &&
       checkpoint < this.maxAllowedCheckpoint
     ) {
+      this.playingAnimation = true;
       this.animationDuration =
         duration || checkpointData.timeline.defaultDuration;
       if (this.animationDuration) {

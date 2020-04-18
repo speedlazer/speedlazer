@@ -11,7 +11,6 @@ const part = async ({
   loadSpriteSheets,
   loadAudio,
   setBackground,
-  setBackgroundCheckpointLimit,
   playAnimation,
   setAltitude,
   showHUD,
@@ -26,8 +25,7 @@ const part = async ({
   playAudio("hero");
   await setScrollingSpeed(100, 0, { instant: true });
   await setScenery("City.Ocean");
-  setBackground("City.Sunrise");
-  setBackgroundCheckpointLimit(2);
+  setBackground("City.Sunrise", 0, 2);
   text.remove();
 
   const introAnimation = playAnimation("City.Intro");

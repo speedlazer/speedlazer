@@ -111,8 +111,16 @@ const levelFunctions = state => ({
   setScenery: async sceneryName => {
     setScenery(sceneryName);
   },
-  setBackground: async backgroundName => {
+  setBackground: async (backgroundName, checkpoint, limit) => {
     setBackground(animations(backgroundName));
+    if (limit !== undefined) {
+      setBackgroundCheckpointLimit(limit);
+    }
+    if (checkpoint !== undefined) {
+      if (getBackgroundCheckpoint() === 0) {
+        setBackgroundCheckpoint(checkpoint);
+      }
+    }
   },
   setBackgroundCheckpointLimit: async limit => {
     setBackgroundCheckpointLimit(limit);

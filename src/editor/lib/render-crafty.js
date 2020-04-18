@@ -684,11 +684,13 @@ Crafty.defineScene(
   }
 );
 
+let activeGamePart = null;
+
 export const showGame = (stage, options) => {
   appliedGameOptions.start = options.onStart;
   appliedGameOptions.stop = options.onStop;
 
-  if (inScene("GamePreview")) {
+  if (inScene("GamePreview") && stage === activeGamePart) {
     if (options.invincible !== appliedGameOptions.invincible) {
       const player = Crafty(Player).get(0);
       if (player) {
@@ -697,6 +699,7 @@ export const showGame = (stage, options) => {
       appliedGameOptions.invincible = options.invincible;
     }
   } else {
+    activeGamePart = stage;
     Crafty.enterScene("GamePreview", {
       stage,
       ...options

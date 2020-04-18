@@ -14,8 +14,6 @@ const part = async ({
   wait,
   setAltitude,
   setBackground,
-  setBackgroundCheckpoint,
-  setBackgroundCheckpointLimit,
   parallel,
   showHUD,
   exec
@@ -27,9 +25,7 @@ const part = async ({
   playAudio("hero");
   await setScrollingSpeed(250, 0, { instant: true });
   setAltitude(200, { instant: true });
-  setBackground("City.Sunrise");
-  setBackgroundCheckpoint(1);
-  setBackgroundCheckpointLimit(2);
+  setBackground("City.Sunrise", 1, 2);
   await setScenery("City.Ocean");
   showHUD();
   text.remove();
