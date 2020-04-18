@@ -82,7 +82,7 @@ class RenderProgramWrapper {
     this.draw = function() {};
 
     this.array_size = 0;
-    this.max_size = 24;
+    this.max_size = 96;
   }
 
   // Takes an array of attributes; see WebGLLayer's getProgramWrapper method

@@ -22,6 +22,7 @@ module.exports = {
   resolve: {
     alias: {
       src: path.resolve(__dirname, "..", "src/"),
+      editor: path.resolve(__dirname, "..", "src/editor/"),
       data: path.resolve(__dirname, "..", "src/data/structure.data")
     },
     extensions: [".js"]

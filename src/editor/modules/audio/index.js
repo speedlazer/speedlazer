@@ -1,8 +1,8 @@
 import { h, Component } from "preact";
-import { Title } from "../../components/Title";
-import { Text } from "../../components/Text";
-import { Menu } from "../../components/Menu";
-import { Divider } from "../../components/Divider";
+import { Title } from "editor/components/Title";
+import { Text } from "editor/components/Text";
+import { Menu } from "editor/components/Menu";
+import { Divider } from "editor/components/Divider";
 import audiosheets from "src/audio";
 import { loadAudio, playAudio } from "src/lib/audio";
 

@@ -1,11 +1,11 @@
-import { SceneryPreview } from "./SceneryPreview";
-import { sceneriesData, sceneries, animations } from "data";
-import { Menu } from "../../components/Menu";
-import { Source } from "../../components/Source";
-import { Divider } from "../../components/Divider";
-import { Title } from "../../components/Title";
-import { Text } from "../../components/Text";
 import { h, Component } from "preact";
+import { SceneryPreview } from "./SceneryPreview";
+import { Menu } from "editor/components/Menu";
+import { Source } from "editor/components/Source";
+import { Divider } from "editor/components/Divider";
+import { Title } from "editor/components/Title";
+import { Text } from "editor/components/Text";
+import { sceneriesData, sceneries, animations } from "data";
 
 class Sceneries extends Component {
   state = {

@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
-import { unmount, mount, showScenery } from "src/editor/lib/render-crafty";
-import Preview from "src/editor/components/Preview";
+import { unmount, mount, showScenery } from "editor/lib/render-crafty";
+import Preview from "editor/components/Preview";
 import { EASE_IN_OUT } from "src/constants/easing";
 import {
   setScrollVelocity,

@@ -19,7 +19,9 @@ export const playerShip = ({ existing = false } = {}) => async ({
       },
       defaultVelocity: 400
     });
-  await call(ship.allowDamage, { health: 50 });
+  if (!player.invincible) {
+    await call(ship.allowDamage, { health: 50 });
+  }
   call(ship.showState, "flying");
 
   // TODO: Refactor adding these components to the entity definition

@@ -1,9 +1,9 @@
 import { h } from "preact";
 import { EntityPreview } from "./EntityPreview";
-import { Menu } from "../../components/Menu";
-import { Source } from "../../components/Source";
-import { Divider } from "../../components/Divider";
-import { Title } from "../../components/Title";
+import { Menu } from "editor/components/Menu";
+import { Source } from "editor/components/Source";
+import { Divider } from "editor/components/Divider";
+import { Title } from "editor/components/Title";
 import { entities, entitiesData } from "data";
 
 const Entities = ({

@@ -581,10 +581,11 @@ export const showParticleEmitter = async (emitter, { active, warmed }) => {
 };
 
 let activeStage = null;
+const appliedGameOptions = {};
 
 Crafty.defineScene(
   "GamePreview",
-  async function({ stage }) {
+  async function({ stage, invincible }) {
     const thisStage = Math.random();
     activeStage = thisStage;
     Crafty.createLayer("UILayerDOM", "DOM", {
@@ -603,7 +604,7 @@ Crafty.defineScene(
     start.show();
 
     Crafty.e([Player, "Color"].join(", "))
-      .attr({ name: "Player 1", z: 0, playerNumber: 1 })
+      .attr({ name: "Player 1", z: 0, playerNumber: 1, invincible })
       .setName("Player 1")
       .color("#FF0000");
 
@@ -649,6 +650,9 @@ Crafty.defineScene(
     let gameOver = false;
     try {
       Crafty.trigger("EnterScene");
+      appliedGameOptions &&
+        appliedGameOptions.start &&
+        appliedGameOptions.start();
       await runner(item.script);
       const start = bigText("Congratulations!");
       await start.fadeIn(4000);
@@ -663,6 +667,7 @@ Crafty.defineScene(
         console.error(e);
       }
     }
+    appliedGameOptions && appliedGameOptions.stop && appliedGameOptions.stop();
 
     if (activeStage !== thisStage) return;
     Crafty.enterScene("Stop", {
@@ -678,8 +683,23 @@ Crafty.defineScene(
     });
   }
 );
-export const showGame = stage => {
-  Crafty.enterScene("GamePreview", {
-    stage
-  });
+
+export const showGame = (stage, options) => {
+  appliedGameOptions.start = options.onStart;
+  appliedGameOptions.stop = options.onStop;
+
+  if (inScene("GamePreview")) {
+    if (options.invincible !== appliedGameOptions.invincible) {
+      const player = Crafty(Player).get(0);
+      if (player) {
+        player.attr({ invincible: options.invincible });
+      }
+      appliedGameOptions.invincible = options.invincible;
+    }
+  } else {
+    Crafty.enterScene("GamePreview", {
+      stage,
+      ...options
+    });
+  }
 };

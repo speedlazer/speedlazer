@@ -1,14 +1,14 @@
 import { h, Component } from "preact";
-import { Divider } from "../../components/Divider";
-import { Grid } from "../../components/Grid";
-import { LayerBox } from "../../components/LayerBox";
-import { Menu } from "../../components/Menu";
-import { ScrollBox } from "../../components/ScrollBox";
-import { Text } from "../../components/Text";
-import { Highlight } from "./Highlight";
-import { Title } from "../../components/Title";
-import spritesheets from "src/images";
 import { route } from "preact-router";
+import { Divider } from "editor/components/Divider";
+import { Grid } from "editor/components/Grid";
+import { LayerBox } from "editor/components/LayerBox";
+import { Menu } from "editor/components/Menu";
+import { ScrollBox } from "editor/components/ScrollBox";
+import { Text } from "editor/components/Text";
+import { Highlight } from "./Highlight";
+import { Title } from "editor/components/Title";
+import spritesheets from "src/images";
 
 class Spritesheets extends Component {
   constructor(props) {
