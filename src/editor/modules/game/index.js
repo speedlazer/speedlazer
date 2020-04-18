@@ -1,12 +1,14 @@
 import { h, Component } from "preact";
 import { GamePreview } from "./GamePreview";
-import { Setting } from "../../components/Setting";
-import { Menu } from "../../components/Menu";
-import { Divider } from "../../components/Divider";
-import { Title } from "../../components/Title";
+import { Setting } from "editor/components/Setting";
+import { Menu } from "editor/components/Menu";
+import { Divider } from "editor/components/Divider";
+import { Title } from "editor/components/Title";
+import { BarChart } from "editor/components/BarChart";
 import gameStructure from "src/scripts";
 
 const DEFAULT_STATE = {
+  stats: [],
   invincible: false
 };
 
@@ -35,7 +37,11 @@ class Game extends Component {
     this.setState(s => ({ ...s, invincible: checked }));
   };
 
-  render({ stage }, { invincible }) {
+  setStats = stats => {
+    this.setState(s => ({ ...s, stats }));
+  };
+
+  render({ stage }, { invincible, stats }) {
     storeState(this.state);
     return (
       <section>
@@ -50,7 +56,14 @@ class Game extends Component {
               Invincible
             </Setting>
 
-            {stage && <GamePreview stage={stage} invincible={invincible} />}
+            {stage && (
+              <GamePreview
+                stage={stage}
+                invincible={invincible}
+                onStats={this.setStats}
+              />
+            )}
+            <BarChart data={stats} />
           </div>
         </Divider>
       </section>

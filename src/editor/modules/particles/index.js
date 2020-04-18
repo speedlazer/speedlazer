@@ -1,10 +1,10 @@
 import { h, Component } from "preact";
-import { Title } from "../../components/Title";
-import { Menu } from "../../components/Menu";
-import { Source } from "../../components/Source";
-import { Divider } from "../../components/Divider";
+import { Title } from "editor/components/Title";
+import { Menu } from "editor/components/Menu";
+import { Source } from "editor/components/Source";
+import { Divider } from "editor/components/Divider";
 import ParticleEmitterPreview from "./ParticleEmitterPreview";
-import particles from "src/data/particles";
+import { particlesData, particles } from "data";
 
 class Particles extends Component {
   state = {
@@ -22,14 +22,14 @@ class Particles extends Component {
   };
 
   render({ particles: p }, { emission, warmed, move }) {
-    const activeParticles = particles[p];
+    const activeParticles = particles(p);
 
     return (
       <section>
         <Title>Particles</Title>
         <Divider>
           <Menu
-            items={Object.keys(particles).map(key => [
+            items={Object.keys(particlesData).map(key => [
               key,
               `/particles/${key}`
             ])}

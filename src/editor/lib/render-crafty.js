@@ -581,6 +581,7 @@ export const showParticleEmitter = async (emitter, { active, warmed }) => {
 };
 
 let activeStage = null;
+const appliedGameOptions = {};
 
 Crafty.defineScene(
   "GamePreview",
@@ -649,6 +650,9 @@ Crafty.defineScene(
     let gameOver = false;
     try {
       Crafty.trigger("EnterScene");
+      appliedGameOptions &&
+        appliedGameOptions.start &&
+        appliedGameOptions.start();
       await runner(item.script);
       const start = bigText("Congratulations!");
       await start.fadeIn(4000);
@@ -663,6 +667,7 @@ Crafty.defineScene(
         console.error(e);
       }
     }
+    appliedGameOptions && appliedGameOptions.stop && appliedGameOptions.stop();
 
     if (activeStage !== thisStage) return;
     Crafty.enterScene("Stop", {
@@ -678,9 +683,23 @@ Crafty.defineScene(
     });
   }
 );
+
 export const showGame = (stage, options) => {
-  Crafty.enterScene("GamePreview", {
-    stage,
-    ...options
-  });
+  appliedGameOptions.start = options.onStart;
+  appliedGameOptions.stop = options.onStop;
+
+  if (inScene("GamePreview")) {
+    if (options.invincible !== appliedGameOptions.invincible) {
+      const player = Crafty(Player).get(0);
+      if (player) {
+        player.attr({ invincible: options.invincible });
+      }
+      appliedGameOptions.invincible = options.invincible;
+    }
+  } else {
+    Crafty.enterScene("GamePreview", {
+      stage,
+      ...options
+    });
+  }
 };

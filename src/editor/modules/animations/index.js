@@ -3,12 +3,12 @@ import { EntityDefinition } from "src/components/EntityDefinition";
 
 import { AnimationPreview } from "./AnimationPreview";
 import { animations, animationsData } from "data";
-import { Menu } from "../../components/Menu";
-import { Source } from "../../components/Source";
-import Log from "../../components/Log";
-import { Divider } from "../../components/Divider";
-import { Title } from "../../components/Title";
-import { Text } from "../../components/Text";
+import { Menu } from "editor/components/Menu";
+import { Source } from "editor/components/Source";
+import Log from "editor/components/Log";
+import { Divider } from "editor/components/Divider";
+import { Title } from "editor/components/Title";
+import { Text } from "editor/components/Text";
 import { h, Component } from "preact";
 
 const round3 = num => Math.round(num * 1000) / 1000;
