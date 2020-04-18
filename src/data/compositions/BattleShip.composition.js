@@ -41,7 +41,7 @@ export default {
       ["heliPlace1", { x: 496, y: 24, z: 2, attachAlign: ["bottom", "left"] }],
       ["heliPlace2", { x: 652, y: 24, z: 1, attachAlign: ["bottom", "left"] }],
       ["cabin2", { x: 832, y: 24, z: 7, attachAlign: ["bottom", "left"] }],
-      ["engineCore", { x: 976, y: -60, z: 8, attachAlign: ["top", "left"] }],
+      ["engineCore", { x: 960, y: -62, z: 8, attachAlign: ["top", "left"] }],
       ["hatch1", { x: 320, y: 32, z: 2, attachAlign: ["top", "left"] }],
       ["hatch2", { x: 512, y: 32, z: 2, attachAlign: ["top", "left"] }],
       ["hatch3", { x: 704, y: 32, z: 2, attachAlign: ["top", "left"] }],
@@ -97,29 +97,15 @@ export default {
       ["aircraftCarrierCabinStart", { x: 240, y: -15, flipX: true }],
       ["aircraftCarrierAntenna", { x: 64, y: -63, z: 1, flipX: true }],
       ["aircraftCarrierAntenna", { x: 160, y: -63, z: 1, flipX: true }],
-      ["aircraftCarrierClosed", { x: 128, y: 49, z: 1 }],
+      ["aircraftCarrierClosed", { x: 128, y: 50, z: 1 }],
+      ["aircraftCarrierDoor", { x: 134, y: 56, w: 84, z: 4, key: "door" }],
       ["aircraftCarrier5", { x: 76, y: 40, z: 1 }]
-    ]
-  },
-  "battleship.secondCabinOpen": {
-    attributes: {
-      width: 256,
-      height: 130
-    },
-    sprites: [
-      [
-        "aircraftCarrierCabinEnd",
-        { x: -12, y: -15, flipX: true, crop: [0, 4, 0, 0] }
-      ],
-      ["aircraftCarrierCabinRadar", { x: 48, y: -15, flipX: true }],
-      ["aircraftCarrierCabin", { x: 112, y: -15 }],
-      ["aircraftCarrierCabin", { x: 176, y: -15 }],
-      ["aircraftCarrierCabinStart", { x: 240, y: -15, flipX: true }],
-      ["aircraftCarrierAntenna", { x: 64, y: -63, z: 1, flipX: true }],
-      ["aircraftCarrierAntenna", { x: 160, y: -63, z: 1, flipX: true }],
-      ["aircraftCarrierOpened", { x: 114, y: 47, z: 1 }],
-      ["aircraftCarrier5", { x: 76, y: 40, z: 1 }]
-    ]
+    ],
+    frames: {
+      open: {
+        door: { y: -64 }
+      }
+    }
   },
   "battleship.secondCabinDestroyed": {
     attributes: {

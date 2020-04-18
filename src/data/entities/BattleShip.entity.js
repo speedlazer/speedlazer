@@ -93,7 +93,7 @@ export default {
           cabin1: { composition: "battleship.firstCabin" },
           cabin1burn: null,
           cabin2burn: null,
-          cabin2: { composition: "battleship.secondCabinOpen" },
+          cabin2: { composition: "battleship.secondCabin", frame: "open" },
           engineCore: { composition: "battleship.engine" }
         }
       },
@@ -102,7 +102,7 @@ export default {
           cabin1: { composition: "battleship.firstCabinDestroyed" },
           cabin1burn: { particles: ["smoke", { emitter: { w: 160 } }] },
           cabin2burn: null,
-          cabin2: { composition: "battleship.secondCabinOpen" },
+          cabin2: { composition: "battleship.secondCabin", frame: "open" },
           engineCore: { composition: "battleship.engine" }
         }
       },
