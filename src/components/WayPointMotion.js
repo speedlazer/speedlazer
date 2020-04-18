@@ -21,6 +21,10 @@ Crafty.c(WayPointMotion, {
     this.createStackablePropertyFor("yPath", "y");
   },
 
+  remove() {
+    this.stopFlyPattern();
+  },
+
   flyPattern(
     pattern,
     { duration: d, velocity, easing = "linear", start = 0.0, end = 1.0 } = {}
