@@ -102,6 +102,10 @@ const part = async ({
     () => exec(droneWave(5, "drone.pattern3", 500)),
     () => exec(droneWave(5, "drone.pattern4", 500))
   ]);
+  await parallel([
+    () => exec(droneWave(5, "drone.pattern3", 500)),
+    () => exec(droneWave(5, "drone.pattern4", 500))
+  ]);
 };
 
 export default part;

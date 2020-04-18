@@ -4,6 +4,7 @@ import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
 import { playAudio } from "src/lib/audio";
 import { droneWave } from "./enemies/drones.lazer";
+import { mineWave } from "./enemies/mines.lazer";
 
 const part = async ({
   setScrollingSpeed,
@@ -55,6 +56,19 @@ const part = async ({
   await exec(droneWave(4, "drone.pattern5", 500));
   await exec(droneShip());
   await exec(droneWave(4, "drone.pattern1", 500));
+  await exec(mineWave());
+  await exec(mineWave());
+  await parallel([
+    () => exec(droneWave(4, "drone.pattern6", 500)),
+    async () => {
+      await wait(2000);
+      await exec(droneWave(4, "drone.pattern6", 500, 0.2));
+    },
+    async () => {
+      await wait(4000);
+      await exec(droneWave(4, "drone.pattern6", 500, 0.4));
+    }
+  ]);
 };
 
 export default part;

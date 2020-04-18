@@ -61,7 +61,7 @@ export const mount = domElem => {
         () =>
           `Wait: ${waitTime} - Frame: ${frameTime} - Render: ${renderTime} - Entities: ${Crafty(
             "Renderable"
-          ).length - 1}`
+          ).length - 1} / 1024`
       )
       .dynamicTextGeneration(true)
       .textColor("white");

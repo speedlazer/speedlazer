@@ -31,6 +31,10 @@ Crafty.defineScene(
         if (!started && start !== null && start !== item.name) {
           continue;
         }
+        /* eslint-env node */
+        if (item.wip === true && process.env.APP_ENV !== "development") {
+          continue;
+        }
         started = true;
         checkpoint = item.name;
         await runner(item.script);
