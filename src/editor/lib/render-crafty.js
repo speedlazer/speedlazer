@@ -584,7 +584,7 @@ let activeStage = null;
 
 Crafty.defineScene(
   "GamePreview",
-  async function({ stage }) {
+  async function({ stage, invincible }) {
     const thisStage = Math.random();
     activeStage = thisStage;
     Crafty.createLayer("UILayerDOM", "DOM", {
@@ -603,7 +603,7 @@ Crafty.defineScene(
     start.show();
 
     Crafty.e([Player, "Color"].join(", "))
-      .attr({ name: "Player 1", z: 0, playerNumber: 1 })
+      .attr({ name: "Player 1", z: 0, playerNumber: 1, invincible })
       .setName("Player 1")
       .color("#FF0000");
 
@@ -678,8 +678,9 @@ Crafty.defineScene(
     });
   }
 );
-export const showGame = stage => {
+export const showGame = (stage, options) => {
   Crafty.enterScene("GamePreview", {
-    stage
+    stage,
+    ...options
   });
 };

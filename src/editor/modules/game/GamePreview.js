@@ -17,9 +17,9 @@ export class GamePreview extends Component {
     this.state.craftyMounted && unmount();
   }
 
-  render({ stage }, { craftyMounted }) {
+  render({ stage, invincible }, { craftyMounted }) {
     if (craftyMounted) {
-      showGame(stage);
+      showGame(stage, { invincible });
     }
     return <Preview onMount={this.mountCrafty} />;
   }
