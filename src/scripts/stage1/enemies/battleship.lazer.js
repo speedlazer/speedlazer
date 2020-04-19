@@ -1,13 +1,25 @@
 import { bigText } from "src/components/BigText";
+import { say } from "src/lib/Dialog";
 import { EASE_IN_OUT } from "src/constants/easing";
 
-const battleship = async ({ spawn, wait, moveTo, setScrollingSpeed }) => {
+const battleship = async ({
+  parallel,
+  spawn,
+  wait,
+  moveTo,
+  setScrollingSpeed
+}) => {
   let activeMovement;
   const text = bigText("Warning!", { color: "#FF0000" });
-  await text.blink(500, 4);
+  await parallel([
+    () => text.blink(500, 4),
+    () => setScrollingSpeed(100, 0),
+    () =>
+      say("John", "Battleship approaching!", { portrait: "portraits.pilot" })
+  ]);
 
   text.remove();
-  await setScrollingSpeed(100, 0);
+
   // Fases:
   // - Mine cannon
   // - Cabin 2 - low stress, Single cannon, invincible

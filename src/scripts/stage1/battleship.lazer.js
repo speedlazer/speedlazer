@@ -10,7 +10,8 @@ const part = async ({
   loadSpriteSheets,
   loadAudio,
   setBackground,
-  exec
+  exec,
+  showHUD
   //wait
 }) => {
   const text = bigText("Loading...");
@@ -23,6 +24,7 @@ const part = async ({
   await setScrollingSpeed(250, 0, { instant: true });
   await setScenery("City.Coast");
   setBackground("City.Sunrise", 2, 2);
+  showHUD();
   text.remove();
   exec(playerShip({ existing: true }));
 
