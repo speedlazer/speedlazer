@@ -12,7 +12,12 @@ export default {
           particles: ["waterSplashes", { emitter: { warmed: true } }]
         },
         cabin1: {
-          composition: "battleship.firstCabin"
+          composition: "battleship.firstCabin",
+          attachments: {
+            radar: {
+              entity: "Radar"
+            }
+          }
         },
         cabin1burn: null,
         cabin2burn: null,
@@ -20,16 +25,17 @@ export default {
           composition: "battleship.secondCabin",
           components: ["DamageSupport"]
         },
+        deckGun1: {
+          entity: "BulletCannon"
+        },
+        deckGun2: {
+          entity: "BulletCannon"
+        },
         hatch1: {
           composition: "shipHatch",
           attachments: {
             payload: {
-              name: "turret",
-              composition: "bulletCannon",
-              components: [
-                "DamageSupport",
-                ["Aimable", { aimParts: ["barrel"] }]
-              ]
+              entity: "BulletCannon"
             }
           }
         },
@@ -37,12 +43,7 @@ export default {
           composition: "shipHatch",
           attachments: {
             payload: {
-              name: "turret",
-              composition: "bulletCannon",
-              components: [
-                "DamageSupport",
-                ["Aimable", { aimParts: ["barrel"] }]
-              ]
+              entity: "BulletCannon"
             }
           }
         },
@@ -50,12 +51,7 @@ export default {
           composition: "shipHatch",
           attachments: {
             payload: {
-              name: "turret",
-              composition: "bulletCannon",
-              components: [
-                "DamageSupport",
-                ["Aimable", { aimParts: ["barrel"] }]
-              ]
+              entity: "BulletCannon"
             }
           }
         },
@@ -93,7 +89,10 @@ export default {
           cabin1: { composition: "battleship.firstCabin" },
           cabin1burn: null,
           cabin2burn: null,
-          cabin2: { composition: "battleship.secondCabin", frame: "open" },
+          cabin2: {
+            composition: "battleship.secondCabin",
+            frame: ["open", { easing: "easeInOutQuad", duration: 2000 }]
+          },
           engineCore: { composition: "battleship.engine" }
         }
       },
@@ -118,13 +117,43 @@ export default {
     },
     habitats: [
       {
-        name: "Ocean",
+        name: "Start",
         scenery: "City.Coast",
         position: {
-          x: 0,
+          rx: 0.8,
           ry: 0.7
         },
         scrollSpeed: { vx: -100, vy: 0 },
+        background: ["City.Sunrise", 2]
+      },
+      {
+        name: "Fase 1",
+        scenery: "City.Coast",
+        position: {
+          rx: 0.5,
+          ry: 0.7
+        },
+        scrollSpeed: { vx: -100, vy: 0 },
+        background: ["City.Sunrise", 2]
+      },
+      {
+        name: "Fase 2",
+        scenery: "City.Coast",
+        position: {
+          rx: 0.1,
+          ry: 0.7
+        },
+        scrollSpeed: { vx: -100, vy: 0 },
+        background: ["City.Sunrise", 2]
+      },
+      {
+        name: "Fase 3",
+        scenery: "City.Coast",
+        position: {
+          rx: -0.7,
+          ry: 0.7
+        },
+        scrollSpeed: { vx: 100, vy: 0 },
         background: ["City.Sunrise", 2]
       }
     ]

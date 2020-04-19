@@ -37,6 +37,8 @@ export default {
       ["aircraftCarrierHole", { x: 830, y: 120, z: 1 }]
     ],
     attachHooks: [
+      ["deckGun1", { x: 356, y: 100, z: 7, attachAlign: ["bottom", "center"] }],
+      ["deckGun2", { x: 866, y: 100, z: 7, attachAlign: ["bottom", "center"] }],
       ["cabin1", { x: 294, y: 24, z: 7, attachAlign: ["bottom", "left"] }],
       ["heliPlace1", { x: 496, y: 24, z: 2, attachAlign: ["bottom", "left"] }],
       ["heliPlace2", { x: 652, y: 24, z: 1, attachAlign: ["bottom", "left"] }],
@@ -63,9 +65,11 @@ export default {
       ["aircraftCarrierCabinRadar", { x: 48, y: -15, flipX: true }],
       ["aircraftCarrierCabin", { x: 112, y: -15 }],
       ["aircraftCarrierCabinStart", { x: 176, y: -15, flipX: true }],
-      ["aircraftCarrierRadar", { x: 64, y: -23, z: 1 }],
       ["aircraftCarrierAntenna", { x: 128, y: -65, z: 1, flipX: true }],
       ["aircraftCarrier5", { x: 128, y: 55, z: 1 }]
+    ],
+    attachHooks: [
+      ["radar", { x: 72, y: 11, z: 1, attachAlign: ["bottom", "center"] }]
     ]
   },
   "battleship.firstCabinDestroyed": {

@@ -50,7 +50,9 @@ const setEntityStructure = (root, entity, state, duration) => {
       typeof state.frame === "string"
         ? [state.frame, { duration }]
         : state.frame;
-    tasks.push(entity.displayFrame(frame, settings.duration));
+    tasks.push(
+      entity.displayFrame(frame, settings.duration || duration, settings.easing)
+    );
   }
   if (state.audio) {
     playAudio(state.audio);
