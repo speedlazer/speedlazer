@@ -98,12 +98,15 @@ export default {
       ["aircraftCarrierAntenna", { x: 64, y: -63, z: 1, flipX: true }],
       ["aircraftCarrierAntenna", { x: 160, y: -63, z: 1, flipX: true }],
       ["aircraftCarrierClosed", { x: 128, y: 50, z: 1 }],
-      ["aircraftCarrierDoor", { x: 134, y: 56, w: 84, z: 4, key: "door" }],
+      [
+        "aircraftCarrierDoor",
+        { x: 134, y: 56, w: 84, z: 4, key: "door", hideAbove: 56 }
+      ],
       ["aircraftCarrier5", { x: 76, y: 40, z: 1 }]
     ],
     frames: {
       open: {
-        door: { y: -64 }
+        door: { y: -68 }
       }
     }
   },

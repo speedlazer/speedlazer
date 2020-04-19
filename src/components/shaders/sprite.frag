@@ -33,37 +33,18 @@ vec3 hsv2rgb(vec3 c) {
 
 void main() {
   highp vec2 coord = vTextureCoord.xy / uTextureDimensions;
-  float blur = vGradient.z;
 
   if ((vGradient.a >= 0.0) && (vTextureCoord.y >= vGradient.a)) {
     gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
     return;
   }
 
-  mediump vec4 texelColor = texture2D(uSampler, coord);
-
-  if (blur > 0.0) {
-    vec4 color = vec4(0.0);
-    float total = 0.0;
-
-    // randomize the lookup values to hide the fixed number of samples
-    float offset = random(vec3(12.9898, 78.233, 151.7182), 0.0);
-
-    for (float t = -30.0; t <= 30.0; t++) {
-      float percent = (t + offset - 0.5) / 30.0;
-      float weight = 1.0 - abs(percent);
-      vec4 sample = texture2D(uSampler, coord + (blur * percent) / uTextureDimensions);
-      // switch to pre-multiplied alpha to correctly blur transparent images
-      sample.rgb *= sample.a;
-
-      color += sample * weight;
-      total += weight;
-    }
-
-    texelColor = color / total;
-    texelColor.rgb /= texelColor.a + 0.00001;
+  if ((vGradient.z >= 0.0) && (vTextureCoord.y <= vGradient.z)) {
+    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+    return;
   }
 
+  mediump vec4 texelColor = texture2D(uSampler, coord);
   mediump float yCoord = (vTextureCoord.y - vSpriteDimensions.y) / vSpriteDimensions.a;
   mediump float mixFactor = (vGradient.x * (1.0 - yCoord)) + (vGradient.y * yCoord);
 

@@ -558,6 +558,11 @@ Crafty.c(Composable, {
         hideBelow: options.hideBelow
       });
     }
+    if (options.hideAbove) {
+      elem.addComponent("HideBelow").attr({
+        hideAbove: options.hideAbove
+      });
+    }
   },
 
   createAndAttachSprite([spriteName, options], spriteAttributes) {
@@ -618,6 +623,11 @@ Crafty.c(Composable, {
     if (options.hideBelow) {
       elem.addComponent("HideBelow").attr({
         hideBelow: options.hideBelow
+      });
+    }
+    if (options.hideAbove) {
+      elem.addComponent("HideBelow").attr({
+        hideAbove: options.hideAbove
       });
     }
     if (options.horizon) {

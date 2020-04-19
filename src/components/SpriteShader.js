@@ -15,9 +15,28 @@ const collectHideBelow = entity => {
   }
 };
 
+const collectHideAbove = entity => {
+  if (entity._parent) {
+    const result = [];
+    if (entity.hideAbove) {
+      const hideAbove = entity._parent.y + entity.hideAbove;
+      result.push(hideAbove);
+    }
+
+    return result.concat(collectHideAbove(entity._parent));
+  } else {
+    return entity.hideAbove ? [entity.hideAbove] : [];
+  }
+};
+
 const findHideBelow = entity => {
   const belows = collectHideBelow(entity);
   return belows.length === 0 ? null : Math.min(...belows);
+};
+
+const findHideAbove = entity => {
+  const aboves = collectHideAbove(entity);
+  return aboves.length === 0 ? null : Math.min(...aboves);
 };
 
 Crafty.defaultShader(
@@ -66,7 +85,6 @@ Crafty.defaultShader(
       } else {
         s = 1;
       }
-      const blur = ent.blur != null ? ent.blur : 0;
       const tds = ent.topDesaturation != null ? ent.topDesaturation : 0;
       const bds = ent.bottomDesaturation != null ? ent.bottomDesaturation : 0;
 
@@ -116,11 +134,17 @@ Crafty.defaultShader(
         hideAt = Math.max(0, co.y + ((hideBelow - ent.y) / ent.h) * co.h);
       }
 
+      let hideTopAt = -1.0;
+      const hideAbove = findHideAbove(ent);
+      if (hideAbove !== null) {
+        hideTopAt = Math.max(0, co.y + ((hideAbove - ent.y) / ent.h) * co.h);
+      }
+
       e.program.writeVector(
         "aGradient",
         topSaturation,
         bottomSaturation,
-        blur,
+        hideTopAt,
         hideAt
       );
     }
