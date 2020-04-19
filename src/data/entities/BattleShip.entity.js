@@ -25,6 +25,9 @@ export default {
           composition: "battleship.secondCabin",
           components: ["DamageSupport"]
         },
+        mineCannon: {
+          entity: "MineCannon"
+        },
         deckGun1: {
           entity: "BulletCannon"
         },
@@ -66,6 +69,12 @@ export default {
       }
     },
     states: {
+      risen: {
+        frame: "risen"
+      },
+      lowered: {
+        frame: "lowered"
+      },
       t1o: {
         attachments: { hatch1: { frame: "open" } }
       },
@@ -121,7 +130,7 @@ export default {
         scenery: "City.Coast",
         position: {
           rx: 0.8,
-          ry: 0.7
+          ry: 0.75
         },
         scrollSpeed: { vx: -100, vy: 0 },
         background: ["City.Sunrise", 2]
@@ -131,7 +140,7 @@ export default {
         scenery: "City.Coast",
         position: {
           rx: 0.5,
-          ry: 0.7
+          ry: 0.75
         },
         scrollSpeed: { vx: -100, vy: 0 },
         background: ["City.Sunrise", 2]
@@ -151,7 +160,7 @@ export default {
         scenery: "City.Coast",
         position: {
           rx: -0.7,
-          ry: 0.7
+          ry: 0.75
         },
         scrollSpeed: { vx: 100, vy: 0 },
         background: ["City.Sunrise", 2]

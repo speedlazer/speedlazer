@@ -7,7 +7,7 @@ export default {
     sprites: [
       ["turretFoot", { x: 64, y: 24, key: "foot" }],
       [
-        "mineCannon",
+        "bulletCannon",
         {
           x: 0,
           y: 0,

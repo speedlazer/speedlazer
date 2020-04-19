@@ -20,14 +20,13 @@ const part = async ({
   await loadAudio(["laser-shot", "laser-hit", "explosion", "hero"]);
   playAudio("hero");
 
-  await setScrollingSpeed(100, 0);
+  await setScrollingSpeed(250, 0, { instant: true });
   await setScenery("City.Coast");
   setBackground("City.Sunrise", 2, 2);
   text.remove();
   exec(playerShip({ existing: true }));
 
   await exec(droneWave(5, "drone.pattern2", 500));
-  await exec(droneWave(5, "drone.pattern1", 500));
   await exec(droneWave(5, "drone.pattern1", 500));
   await exec(droneWave(5, "drone.pattern1", 500));
 

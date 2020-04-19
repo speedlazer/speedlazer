@@ -234,6 +234,20 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
           colorFadeFn(gradient, settings.topColor, settings.bottomColor)
         );
       }
+
+      const hook = entity.currentAttachHooks[keyName];
+      if (hook) {
+        hook.addComponent(Delta2D);
+        const defaultSettings = {
+          x: 0,
+          y: 0
+        };
+        const tweenSettings = deltaSettings({
+          ...defaultSettings,
+          ...settings
+        });
+        return acc.concat([tweenFn(hook, tweenSettings)]);
+      }
       return acc;
     }, [])
     .filter(Boolean);
@@ -397,7 +411,7 @@ Crafty.c(Composable, {
     const v = this.activeAnimation.easing(t);
 
     this.activeAnimation.timeline.forEach(event => {
-      if (event.start > v || v >= event.end) return;
+      if (event.start > v || v > event.end) return;
       if (!event.animateFn)
         event.animateFn =
           (event.startFrame &&

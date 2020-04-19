@@ -35,6 +35,7 @@ Crafty.c(Animator, {
       timer.tick(dt);
       transition(timer.value());
       if (timer.complete) {
+        transition(1);
         toRemove.push(i);
         resolver();
       }

@@ -37,6 +37,10 @@ export default {
       ["aircraftCarrierHole", { x: 830, y: 120, z: 1 }]
     ],
     attachHooks: [
+      [
+        "mineCannon",
+        { x: 120, y: 48, z: 7, attachAlign: ["bottom", "center"] }
+      ],
       ["deckGun1", { x: 356, y: 100, z: 7, attachAlign: ["bottom", "center"] }],
       ["deckGun2", { x: 866, y: 100, z: 7, attachAlign: ["bottom", "center"] }],
       ["cabin1", { x: 294, y: 24, z: 7, attachAlign: ["bottom", "left"] }],
@@ -47,10 +51,18 @@ export default {
       ["hatch1", { x: 320, y: 32, z: 2, attachAlign: ["top", "left"] }],
       ["hatch2", { x: 512, y: 32, z: 2, attachAlign: ["top", "left"] }],
       ["hatch3", { x: 704, y: 32, z: 2, attachAlign: ["top", "left"] }],
-      ["bottom", { x: 10, y: 150, z: 2, attachAlign: ["top", "left"] }],
+      ["bottom", { x: 10, y: 135, z: 2, attachAlign: ["top", "left"] }],
       ["cabin1burn", { x: 314, y: -16, z: 2, attachAlign: ["top", "left"] }],
       ["cabin2burn", { x: 850, y: -16, z: 2, attachAlign: ["top", "left"] }]
-    ]
+    ],
+    frames: {
+      risen: {
+        bottom: { y: 25 }
+      },
+      lowered: {
+        bottom: { y: 0 }
+      }
+    }
   },
   "battleship.firstCabin": {
     attributes: {

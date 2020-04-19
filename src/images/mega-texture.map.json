@@ -110,7 +110,8 @@
     "lightBullet": [9, 51, 1, 1],
     "laserTank": [0, 59, 6, 3],
     "laserTankBarrel": [6, 59, 4, 2],
-    "mineCannon": [13, 55, 3, 1],
+    "bulletCannon": [13, 55, 3, 1],
+    "mineCannon": [11, 51, 2, 1],
     "turretFoot": [12, 55, 1, 1],
 
     "general1": [16, 48, 4, 4],
