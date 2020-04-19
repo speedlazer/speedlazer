@@ -57,12 +57,14 @@ export const mount = domElem => {
   Crafty.bind("EnterScene", () => {
     Crafty.e("2D, DOM, Text")
       .attr({ x: 20, y: 20, w: 700 })
-      .text(
-        () =>
-          `Wait: ${waitTime} - Frame: ${frameTime} - Render: ${renderTime} - Entities: ${Crafty(
-            "Renderable"
-          ).length - 1} / 1024`
-      )
+      .text(() => {
+        let counter = 0;
+        Crafty("Renderable, WebGL").each(function() {
+          if (!this.__frozen) counter++;
+        });
+
+        return `Wait: ${waitTime} - Frame: ${frameTime} - Render: ${renderTime} - Entities: ${counter} / 1024`;
+      })
       .dynamicTextGeneration(true)
       .textColor("white");
   });
