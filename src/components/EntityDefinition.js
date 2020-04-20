@@ -1,3 +1,4 @@
+import flipRotation from "src/lib/flipRotation";
 import Composable from "src/components/Composable";
 import Weapon from "src/components/Weapon";
 import ParticleEmitter from "src/components/ParticleEmitter";
@@ -86,6 +87,11 @@ const setEntityStructure = (root, entity, state, duration) => {
       } else {
         entity.emitter.particles(emitter, entity);
       }
+    }
+    if (root.xFlipped) {
+      const angle = entity.angle || 0;
+      entity.angle = flipRotation(angle);
+      entity.trigger("Change", { angle: entity.angle });
     }
   }
 

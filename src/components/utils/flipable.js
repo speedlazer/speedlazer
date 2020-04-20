@@ -1,4 +1,14 @@
+import flipRotation from "src/lib/flipRotation";
+
 const Component = "Flipable";
+
+const mirrorParticles = entity => {
+  if (!entity.emitter) return;
+  const angle = entity.angle || 0;
+  entity.emitter.xFlipped = !entity.emitter.xFlipped;
+  entity.angle = flipRotation(angle);
+  entity.trigger("Change", { angle: entity.angle });
+};
 
 Crafty.c(Component, {
   flipX() {
@@ -10,7 +20,11 @@ Crafty.c(Component, {
     this.rotation = 0;
     try {
       if (typeof this.flip === "function") {
-        this.flip("X");
+        if (this._flipX) {
+          this.unflip("X");
+        } else {
+          this.flip("X");
+        }
       }
       const flipChildren = entity => {
         Array.from(entity._children).forEach(child => {
@@ -24,8 +38,13 @@ Crafty.c(Component, {
             }
           }
           if (typeof child.flip === "function") {
-            child.flip("X");
+            if (child._flipX) {
+              child.unflip("X");
+            } else {
+              child.flip("X");
+            }
           }
+          mirrorParticles(child);
           if (child._children) flipChildren(child);
         });
       };
@@ -50,7 +69,11 @@ Crafty.c(Component, {
     this.rotation = 0;
     try {
       if (typeof this.unflip === "function") {
-        this.unflip("X");
+        if (this._flipX) {
+          this.unflip("X");
+        } else {
+          this.flip("X");
+        }
       }
       const unflipChildren = entity => {
         Array.from(entity._children).forEach(child => {
@@ -64,8 +87,13 @@ Crafty.c(Component, {
             child._dx = -child._dx;
           }
           if (typeof child.unflip === "function") {
-            child.unflip("X");
+            if (child._flipX) {
+              child.unflip("X");
+            } else {
+              child.flip("X");
+            }
           }
+          mirrorParticles(child);
           if (child._children) unflipChildren(child);
         });
       };

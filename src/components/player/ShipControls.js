@@ -4,7 +4,10 @@ Crafty.c(ShipControls, {
   init() {
     this.bind("NewDirection", direction => {
       if (this.disableControls) return;
-      if (direction.x === -1) {
+      if (
+        (direction.x === -1 && !this.xFlipped) ||
+        (direction.x === 1 && this.xFlipped)
+      ) {
         this.showState("reverse");
       } else {
         this.showState("flying");

@@ -87,6 +87,9 @@ export default {
             particles: "ship.reverse"
           }
         }
+      },
+      turned: {
+        frame: "turned"
       }
     },
     habitats: [

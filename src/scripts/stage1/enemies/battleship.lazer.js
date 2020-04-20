@@ -6,6 +6,7 @@ const battleship = async ({
   parallel,
   spawn,
   wait,
+  call,
   moveTo,
   setScrollingSpeed
 }) => {
@@ -53,14 +54,23 @@ const battleship = async ({
 
   await wait(4000);
 
-  activeMovement = moveTo(ship, { x: -1.1 }, null, EASE_IN_OUT);
+  activeMovement = moveTo(ship, { x: -0.8 }, null, EASE_IN_OUT);
   await activeMovement.process;
-  await setScrollingSpeed(-50, 0);
+  activeMovement = moveTo(ship, { x: -1.1 }, null, EASE_IN_OUT);
+
+  const playerShip = Crafty("PlayerShip").get(0);
+  await parallel([
+    () => activeMovement.process,
+    async () => {
+      await wait(2000);
+      await call(playerShip.showState, "turned");
+      await setScrollingSpeed(-50, 0);
+    }
+  ]);
+
   activeMovement = moveTo(ship, { x: -0.9 }, null, EASE_IN_OUT);
   await activeMovement.process;
   await wait(4000);
-
-  await setScrollingSpeed(-50, 0);
 
   activeMovement = moveTo(ship, { x: -0.4 }, null, EASE_IN_OUT);
   await activeMovement.process;
@@ -69,7 +79,7 @@ const battleship = async ({
 
   activeMovement = moveTo(ship, { x: 0.4 }, null, EASE_IN_OUT);
   await activeMovement.process;
-
+  await call(playerShip.showState, "turned");
   await setScrollingSpeed(100, 0);
 
   await wait(4000);

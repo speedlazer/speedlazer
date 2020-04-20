@@ -80,6 +80,9 @@ export default {
           hidden: true,
           alpha: 0
         }
+      },
+      turned: {
+        flipX: true
       }
     }
   }
