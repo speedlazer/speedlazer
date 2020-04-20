@@ -28,7 +28,7 @@ const part = async ({
   text.remove();
   exec(playerShip({ existing: true }));
 
-  //await exec(droneWave(5, "drone.pattern2", 500));
+  await exec(droneWave(5, "drone.pattern2", 500));
   //await exec(droneWave(5, "drone.pattern1", 500));
   //await exec(droneWave(5, "drone.pattern1", 500));
 
