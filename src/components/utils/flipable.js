@@ -10,6 +10,28 @@ const mirrorParticles = entity => {
   entity.trigger("Change", { angle: entity.angle });
 };
 
+const flipChildren = entity => {
+  Array.from(entity._children).forEach(child => {
+    if (typeof child.attr === "function") {
+      child.attr({
+        x: entity.x + (entity.w - child.w) - (child.x - entity.x)
+      });
+    }
+    if (child._dx !== undefined) {
+      child._dx = -child._dx;
+    }
+    if (typeof child.flip === "function") {
+      if (child._flipX) {
+        child.unflip("X");
+      } else {
+        child.flip("X");
+      }
+    }
+    mirrorParticles(child);
+    if (child._children) flipChildren(child);
+  });
+};
+
 Crafty.c(Component, {
   flipX() {
     if (this.xFlipped) {
@@ -26,28 +48,6 @@ Crafty.c(Component, {
           this.flip("X");
         }
       }
-      const flipChildren = entity => {
-        Array.from(entity._children).forEach(child => {
-          const relX = child.x - entity.x;
-          if (typeof child.attr === "function") {
-            child.attr({
-              x: entity.x + entity.w - child.w - relX
-            });
-            if (child._dx !== undefined) {
-              child._dx = -child._dx;
-            }
-          }
-          if (typeof child.flip === "function") {
-            if (child._flipX) {
-              child.unflip("X");
-            } else {
-              child.flip("X");
-            }
-          }
-          mirrorParticles(child);
-          if (child._children) flipChildren(child);
-        });
-      };
       flipChildren(this);
     } catch (e) {
       console.log(e);
@@ -75,29 +75,7 @@ Crafty.c(Component, {
           this.flip("X");
         }
       }
-      const unflipChildren = entity => {
-        Array.from(entity._children).forEach(child => {
-          const relX = entity.x + entity.w - (child.x + child.w);
-          if (typeof child.attr === "function") {
-            child.attr({
-              x: entity.x + relX
-            });
-          }
-          if (child._dx !== undefined) {
-            child._dx = -child._dx;
-          }
-          if (typeof child.unflip === "function") {
-            if (child._flipX) {
-              child.unflip("X");
-            } else {
-              child.flip("X");
-            }
-          }
-          mirrorParticles(child);
-          if (child._children) unflipChildren(child);
-        });
-      };
-      unflipChildren(this);
+      flipChildren(this);
     } catch (e) {
       console.log(e);
     }

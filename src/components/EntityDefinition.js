@@ -88,8 +88,9 @@ const setEntityStructure = (root, entity, state, duration) => {
         entity.emitter.particles(emitter, entity);
       }
     }
-    if (root.xFlipped) {
+    if (!!root.xFlipped !== !!entity.emitter.xFlipped) {
       const angle = entity.angle || 0;
+      entity.emitter.xFlipped = !entity.emitter.xFlipped;
       entity.angle = flipRotation(angle);
       entity.trigger("Change", { angle: entity.angle });
     }

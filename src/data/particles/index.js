@@ -26,7 +26,6 @@ export default {
       amount: 200,
       fidelity: "high"
     },
-    gravity: [-150, 0],
     particle: {
       sprite: "explosion7",
       angle: 180,
@@ -50,7 +49,6 @@ export default {
       amount: 200,
       fidelity: "high"
     },
-    gravity: [-150, 0],
     particle: {
       sprite: "explosion7",
       angle: 180,
@@ -74,7 +72,6 @@ export default {
       amount: 200,
       fidelity: "high"
     },
-    gravity: [150, 0],
     particle: {
       sprite: "explosion7",
       angle: 0,

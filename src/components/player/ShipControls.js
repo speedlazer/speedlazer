@@ -8,9 +8,13 @@ Crafty.c(ShipControls, {
         (direction.x === -1 && !this.xFlipped) ||
         (direction.x === 1 && this.xFlipped)
       ) {
-        this.showState("reverse");
+        if (this.appliedEntityState !== "reverse") {
+          this.showState("reverse");
+        }
       } else {
-        this.showState("flying");
+        if (this.appliedEntityState !== "flying") {
+          this.showState("flying");
+        }
       }
     });
   },

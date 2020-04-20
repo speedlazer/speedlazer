@@ -151,6 +151,8 @@ Crafty.c(ParticleEmitter, {
           this.particleSettings.angle + changes.angle;
       }
     });
+    this.particleSettings.currentAngle =
+      this.particleSettings.angle + (entity.angle || 0);
     entity.bind("Move", () => {
       this.x = entity.x;
       this.y = entity.y;
