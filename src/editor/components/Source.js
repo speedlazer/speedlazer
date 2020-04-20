@@ -1,7 +1,6 @@
-import { h, Component } from "preact";
+import { h } from "preact";
 import {
   sourceCode,
-  toggleSource,
   jsonString,
   jsonNull,
   jsonKey,
@@ -9,6 +8,7 @@ import {
   jsonNumber,
   indent
 } from "./Source.scss";
+import ToggleBox from "./ToggleBox";
 
 const replacer = (key, value) => {
   if (typeof value === "string" && key === value) {
@@ -62,23 +62,8 @@ const replacer = (key, value) => {
   return value;
 };
 
-export class Source extends Component {
-  state = { collapsed: true };
-
-  toggleSource = e => {
-    e.preventDefault();
-    this.setState(state => ({ ...state, collapsed: !state.collapsed }));
-    return false;
-  };
-
-  render({ code }, { collapsed }) {
-    return (
-      <div>
-        <a class={toggleSource} href="#" onClick={this.toggleSource}>
-          {collapsed ? "Show" : "Hide"} source
-        </a>
-        {!collapsed && <div class={sourceCode}>{replacer("", code)}</div>}
-      </div>
-    );
-  }
-}
+export const Source = ({ code }) => (
+  <ToggleBox term="source">
+    <div class={sourceCode}>{replacer("", code)}</div>
+  </ToggleBox>
+);
