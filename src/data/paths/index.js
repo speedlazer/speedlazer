@@ -93,6 +93,17 @@ export default {
     { x: 0.6, y: 0.2 },
     { x: 1.1, y: 0.2 }
   ],
+  "mineCannon.lowShot": [
+    { x: 0.8, y: 0.6, events: [[0.8, { event: "Loose" }]] },
+    { x: 0.7, y: 0.6 },
+    { x: 0.6, y: 0.9 }
+  ],
+  "mineCannon.highShot": [
+    { x: 0.8, y: 0.6, events: [[0.8, { event: "Loose" }]] },
+    { x: 0.6, y: 0.3 },
+    { x: 0.3, y: 0.5 },
+    { x: 0.1, y: 0.9 }
+  ],
   sunrise: [
     { x: 0.9, y: 0.7 },
     { x: 0.8, y: 0.3 },

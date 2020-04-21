@@ -31,6 +31,9 @@ export default {
       },
       aimHigh: {
         frame: ["aimHigh", { duration: 1500 }]
+      },
+      shoot: {
+        animation: "blinking"
       }
     }
   }

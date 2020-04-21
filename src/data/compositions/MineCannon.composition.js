@@ -35,8 +35,8 @@ export default {
         "gun",
         {
           x: 0,
-          y: 18,
-          z: 1,
+          y: 8,
+          z: -20,
           attachAlign: ["center", "left"],
           attachTo: "barrel"
         }

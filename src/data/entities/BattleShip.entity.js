@@ -114,7 +114,8 @@ export default {
               angle: 0,
               active: true
             }
-          }
+          },
+          cabin1burn: { particles: ["smoke", { emitter: { w: 160 } }] }
         }
       },
       cabin1Smoke: {
@@ -133,7 +134,8 @@ export default {
               angle: 0,
               active: true
             }
-          }
+          },
+          cabin2burn: { particles: ["smoke", { emitter: { w: 220 } }] }
         }
       },
       cabin2Smoke: {

@@ -1,18 +1,99 @@
 import { bigText } from "src/components/BigText";
 import { say } from "src/lib/Dialog";
-import { EASE_IN_OUT } from "src/constants/easing";
+import { EASE_IN_OUT, EASE_OUT } from "src/constants/easing";
 
-const part1 = ship => async ({ call, waitForEvent }) => {
+const shootMineCannon = (cannon, high) => async ({
+  call,
+  spawn,
+  moveWithPattern,
+  moveTo,
+  addScreenTrauma,
+  wait,
+  waitForEvent,
+  race
+}) => {
+  await call(cannon.showState, high ? "aimHigh" : "aimLow");
+  const spawnPoint = cannon.currentAttachHooks.gun;
+
+  const mine = spawn("Mine", {
+    location: {
+      x: spawnPoint.x,
+      y: spawnPoint.y
+    },
+    defaultVelocity: 300
+  }).attr({ z: spawnPoint.z });
+
+  const movement = moveWithPattern(
+    mine,
+    high ? "mineCannon.highShot" : "mineCannon.lowShot",
+    null,
+    EASE_OUT
+  );
+  await call(cannon.showState, "shoot");
+
+  movement.process.then(async () => {
+    await call(mine.allowDamage, { health: 40 });
+
+    const ship = Crafty("PlayerShip").get(0);
+    let searchMovement = moveTo(mine, { x: ship.x / Crafty.viewport.width });
+    await searchMovement.process;
+
+    searchMovement = moveTo(mine, { y: ship.y / Crafty.viewport.height });
+    await race([
+      () =>
+        waitForEvent(mine, "Dead", async () => {
+          searchMovement && searchMovement.abort();
+          if (mine.appliedEntityState === "explode") return;
+          call(mine.showState, "dead");
+          addScreenTrauma(0.2);
+
+          await wait(500);
+          mine.destroy();
+          searchMovement && searchMovement.abort();
+        }),
+      async () => {
+        await searchMovement.process;
+        if (searchMovement.wasCompleted()) {
+          if (mine.appliedEntityState === "dead") return;
+          await call(mine.showState, "open", 500);
+          call(mine.showState, "blinking");
+          await wait(1000);
+          if (mine.appliedEntityState !== "dead") {
+            call(mine.showState, "explode");
+            addScreenTrauma(0.2);
+            await wait(500);
+            mine.destroy();
+          }
+        }
+      }
+    ]);
+  });
+};
+
+const part1 = ship => async ({ call, waitForEvent, race, until }) => {
   const mineCannon = ship.mineCannon;
   mineCannon
     .addComponent("SolidCollision")
     .addComponent("DamageSupport")
     .addComponent("PlayerEnemy");
+
   const killed = waitForEvent(mineCannon, "Dead", async () => {
     call(mineCannon.showState, "dead");
   });
-  await call(mineCannon.allowDamage, { health: 500 });
-  await killed;
+  await race([
+    async () => {
+      await call(mineCannon.allowDamage, { health: 500 });
+      let high = false;
+      await until(
+        () => killed,
+        async ({ exec }) => {
+          await exec(shootMineCannon(mineCannon, high));
+          high = !high;
+        }
+      );
+    },
+    () => killed
+  ]);
 };
 
 const part2 = ship => async ({ call, waitForEvent }) => {
@@ -53,7 +134,7 @@ const part5 = ship => async ({ call, waitForEvent, wait }) => {
   cabin.addComponent("SolidCollision").addComponent("DamageSupport");
   const killed = waitForEvent(cabin, "Dead", async () => {
     call(ship.showState, "cabin1Explode");
-    await wait(1000);
+    await wait(2000);
     call(ship.showState, "cabin1Smoke");
   });
   await call(cabin.allowDamage, { health: 500 });
@@ -66,7 +147,7 @@ const part6 = ship => async ({ call, waitForEvent, wait }) => {
   cabin.addComponent("SolidCollision").addComponent("DamageSupport");
   const killed = waitForEvent(cabin, "Dead", async () => {
     call(ship.showState, "cabin2Explode");
-    await wait(1000);
+    await wait(2000);
     call(ship.showState, "cabin2Smoke");
   });
   await call(cabin.allowDamage, { health: 500 });

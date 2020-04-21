@@ -60,11 +60,13 @@ const flowFunctions = (dsl, state) => {
 
   const until = async (actionInProgress, repeatAction) => {
     let actionCompleted = false;
+    let counter = 0;
     actionInProgress(dsl).then(() => {
       actionCompleted = true;
     });
     while (!actionCompleted) {
-      await repeatAction(dsl);
+      await repeatAction(dsl, counter);
+      counter++;
     }
   };
 

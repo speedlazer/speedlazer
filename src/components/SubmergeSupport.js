@@ -8,6 +8,7 @@ Crafty.c("SubmergeSupport", {
     this.addComponent("Motion", "Collision");
     this.bind("HitOn", this._onGravityCollisonHit);
     this.checkHits("GravityLiquid");
+    this.clearShadow = this.clearShadow.bind(this);
   },
 
   _onGravityCollisonHit(collisions) {
@@ -42,6 +43,13 @@ Crafty.c("SubmergeSupport", {
     this.uniqueBind("EnterFrame", this._sinkAway);
   },
 
+  clearShadow() {
+    if (this.shadow) {
+      this.shadow.destroy();
+      this.shadow = null;
+    }
+  },
+
   _sinkAway() {
     const sunk = this.y > this.hideBelow;
     const risen = this.y + this.h < this.hideBelow - 30;
@@ -70,6 +78,7 @@ Crafty.c("SubmergeSupport", {
           x: this.x,
           y: this.hideBelow - 20
         });
+        this.uniqueBind("Remove", this.clearShadow);
       }
     } else if (this.liquidEmitter === null && !sunk && !risen) {
       if (this.shadow) {
