@@ -353,9 +353,13 @@ const spawnItem = (
     });
 
     if (typeof settings.spawnPosition === "object") {
+      const { w = 0, h = 0 } = settings.spawnBox || {};
+      const randX = -(w / 2) + Math.random() * w;
+      const randY = -(h / 2) + Math.random() * h;
+
       spawn.attr({
-        x: position.x - spawn._origin.x,
-        y: position.y - spawn._origin.y
+        x: position.x - spawn._origin.x + randX,
+        y: position.y - spawn._origin.y + randY
       });
     }
 
