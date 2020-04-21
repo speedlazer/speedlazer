@@ -93,7 +93,7 @@ export default {
       t3r: {
         attachments: { hatch3: { frame: "risen" } }
       },
-      fase3: {
+      engineDoorOpen: {
         attachments: {
           cabin1: { composition: "battleship.firstCabin" },
           cabin1burn: null,
@@ -105,20 +105,40 @@ export default {
           engineCore: { composition: "battleship.engine" }
         }
       },
-      fase4: {
+      cabin1Explode: {
         attachments: {
-          cabin1: { composition: "battleship.firstCabinDestroyed" },
-          cabin1burn: { particles: ["smoke", { emitter: { w: 160 } }] },
-          cabin2burn: null,
-          cabin2: { composition: "battleship.secondCabin", frame: "open" },
-          engineCore: { composition: "battleship.engine" }
+          cabin1explode: {
+            weapon: {
+              pattern: "building.explosion",
+              target: "PlayerShip",
+              angle: 0,
+              active: true
+            }
+          }
         }
       },
-      fase5: {
+      cabin1Smoke: {
         attachments: {
           cabin1: { composition: "battleship.firstCabinDestroyed" },
-          cabin2: { composition: "battleship.secondCabinDestroyed" },
           cabin1burn: { particles: ["smoke", { emitter: { w: 160 } }] },
+          cabin2burn: null
+        }
+      },
+      cabin2Explode: {
+        attachments: {
+          cabin2explode: {
+            weapon: {
+              pattern: "building.explosion2",
+              target: "PlayerShip",
+              angle: 0,
+              active: true
+            }
+          }
+        }
+      },
+      cabin2Smoke: {
+        attachments: {
+          cabin2: { composition: "battleship.secondCabinDestroyed" },
           cabin2burn: { particles: ["smoke", { emitter: { w: 220 } }] },
           engineCore: null
         }

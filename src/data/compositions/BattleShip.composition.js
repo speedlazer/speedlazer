@@ -53,7 +53,15 @@ export default {
       ["hatch3", { x: 704, y: 32, z: 2, attachAlign: ["top", "left"] }],
       ["bottom", { x: 10, y: 135, z: 2, attachAlign: ["top", "left"] }],
       ["cabin1burn", { x: 314, y: -16, z: 2, attachAlign: ["top", "left"] }],
-      ["cabin2burn", { x: 850, y: -16, z: 2, attachAlign: ["top", "left"] }]
+      ["cabin2burn", { x: 850, y: -16, z: 2, attachAlign: ["top", "left"] }],
+      [
+        "cabin1explode",
+        { x: 360, y: -56, z: 10, attachAlign: ["bottom", "center"] }
+      ],
+      [
+        "cabin2explode",
+        { x: 950, y: -56, z: 14, attachAlign: ["bottom", "center"] }
+      ]
     ],
     frames: {
       risen: {

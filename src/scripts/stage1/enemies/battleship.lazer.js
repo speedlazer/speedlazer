@@ -30,7 +30,7 @@ const part3 = ship => async ({ call, waitForEvent }) => {
   const cabin = ship.cabin2;
   cabin.addComponent("SolidCollision").addComponent("DamageSupport");
   const open = waitForEvent(cabin, "Dead", async () => {
-    call(ship.showState, "fase3");
+    call(ship.showState, "engineDoorOpen");
   });
   await call(cabin.allowDamage, { health: 500 });
   await open;
@@ -48,22 +48,26 @@ const part4 = ship => async ({ call, waitForEvent }) => {
   engine.removeComponent("SolidCollision");
 };
 
-const part5 = ship => async ({ call, waitForEvent }) => {
+const part5 = ship => async ({ call, waitForEvent, wait }) => {
   const cabin = ship.cabin1;
   cabin.addComponent("SolidCollision").addComponent("DamageSupport");
   const killed = waitForEvent(cabin, "Dead", async () => {
-    call(ship.showState, "fase4");
+    call(ship.showState, "cabin1Explode");
+    await wait(1000);
+    call(ship.showState, "cabin1Smoke");
   });
   await call(cabin.allowDamage, { health: 500 });
   await killed;
   cabin.removeComponent("SolidCollision");
 };
 
-const part6 = ship => async ({ call, waitForEvent }) => {
+const part6 = ship => async ({ call, waitForEvent, wait }) => {
   const cabin = ship.cabin2;
   cabin.addComponent("SolidCollision").addComponent("DamageSupport");
   const killed = waitForEvent(cabin, "Dead", async () => {
-    call(ship.showState, "fase5");
+    call(ship.showState, "cabin2Explode");
+    await wait(1000);
+    call(ship.showState, "cabin2Smoke");
   });
   await call(cabin.allowDamage, { health: 500 });
   await killed;

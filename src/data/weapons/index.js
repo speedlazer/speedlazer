@@ -504,14 +504,50 @@ export default {
   "building.explosion": {
     spawnRhythm: {
       initialDelay: 1,
-      burst: 10,
+      burst: 14,
       shotDelay: 200,
       burstDelay: 0,
       spawns: [
         [
           "explosion",
           {
-            spawnBox: { w: 100, h: 100 }
+            spawnBox: { w: 150, h: 100 }
+          }
+        ]
+      ]
+    },
+    spawnables: {
+      explosion: {
+        spawnPosition: [0.5, 0.5],
+        velocity: [0, 0],
+        composition: "weapons.explosion",
+        emitDamage: [
+          {
+            targets: ["PlayerShip"],
+            velocity: -1000,
+            accelleration: 50,
+            upperBounds: 0,
+            speed: 2000,
+            affects: ["health"],
+            duration: 100,
+            name: "Explosion"
+          }
+        ],
+        queue: [{ duration: 100, audio: "explosion" }, { duration: 1000 }]
+      }
+    }
+  },
+  "building.explosion2": {
+    spawnRhythm: {
+      initialDelay: 1,
+      burst: 18,
+      shotDelay: 180,
+      burstDelay: 0,
+      spawns: [
+        [
+          "explosion",
+          {
+            spawnBox: { w: 250, h: 100 }
           }
         ]
       ]
