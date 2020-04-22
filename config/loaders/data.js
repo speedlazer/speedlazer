@@ -1,5 +1,6 @@
 /* eslint-env node */
 require("@babel/register");
+const validate = require("jsonschema").validate;
 const fs = require("fs");
 
 const assignUnit = (amount, unitLevel = 0) =>
@@ -25,7 +26,31 @@ module.exports = function(input) {
   const folders = JSON.parse(input);
   const path = this.resourcePath.split("/").slice(0, -1);
 
-  const allData = folders.reduce((acc, folder) => {
+  const schemas = {};
+  const validateJSON = (filePath, fileContent, folder) => {
+    const schema = schemas[folder];
+    if (!schema) return;
+    const relativePath = path.slice(0, -2).join("/");
+    const result = validate(fileContent, schema);
+    result.errors.forEach(e =>
+      this.emitWarning(
+        new Error(`${filePath.slice(relativePath.length + 1)}: ${e.stack}`)
+      )
+    );
+  };
+
+  const allData = folders.reduce((acc, { name: folder, schema }) => {
+    if (schema) {
+      const schemaPath = path
+        .slice(0, -2)
+        .concat(schema)
+        .join("/");
+      this.addDependency(schemaPath);
+
+      const schemaContents = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
+      schemas[folder] = schemaContents;
+    }
+
     const dirPath = path.concat(folder);
     this.addContextDependency(dirPath.join("/"));
     const entries = fs.readdirSync(dirPath.join("/"));
@@ -37,6 +62,7 @@ module.exports = function(input) {
         delete require.cache[require.resolve(filePath.join("/"))];
         const file = require(filePath.join("/"));
         const fileContent = file.default;
+        validateJSON(filePath.join("/"), fileContent, folder);
         return { ...acc, ...fileContent };
       }
       if (entry.endsWith(".json")) {
@@ -46,6 +72,7 @@ module.exports = function(input) {
 
         const file = fs.readFileSync(filePath.join("/"), "utf8");
         const fileContent = JSON.parse(file);
+        validateJSON(filePath.join("/"), fileContent, folder);
         return { ...acc, ...fileContent };
       }
 
@@ -60,7 +87,7 @@ module.exports = function(input) {
 const data = JSON.parse("${stringData.replace(/"/g, '\\"')}");
 `;
   const exports = folders.map(
-    folder =>
+    ({ name: folder }) =>
       `
 export const ${folder}Data = data.${folder};
 export const ${folder} = name => ${folder}Data[name];

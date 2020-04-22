@@ -1,1 +1,9 @@
-["animations", "compositions", "entities", "particles", "paths", "sceneries", "weapons"]
+[
+  { "name": "animations" },
+  { "name": "compositions" },
+  { "name": "entities" },
+  { "name": "particles" },
+  { "name": "paths", "schema": "docs/schemas/paths.json" },
+  { "name": "sceneries" },
+  { "name": "weapons" }
+]
