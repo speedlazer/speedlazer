@@ -18,6 +18,7 @@
               "maxItems": 2,
               "items": [
                 {
+                  "title": "location along path",
                   "type": "number",
                   "minimum": 0,
                   "maximum": 1
@@ -32,9 +33,11 @@
                       "maxItems": 2,
                       "items": [
                         {
+                          "title": "state name",
                           "type": "string"
                         },
                         {
+                          "title": "duration in ms",
                           "type": "number"
                         }
                       ]
