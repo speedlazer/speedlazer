@@ -116,6 +116,40 @@ export default {
       }
     }
   },
+  "weapons.largeExplosion": {
+    attributes: {
+      width: 96,
+      height: 96,
+      scale: 1.75,
+      ro: [48, 48]
+    },
+    sprites: [["explosion1", { scale: 1, x: 0, y: 0, key: "main" }]],
+    animations: {
+      default: {
+        duration: 350,
+        timeline: [
+          {
+            start: 0.0,
+            end: 1.0,
+            spriteAnimation: {
+              key: "main",
+              sprites: [
+                "explosion1",
+                "explosion3",
+                "explosion5",
+                "explosion7",
+                "explosion9",
+                "explosion11",
+                "explosion13",
+                "explosion15",
+                "explosion17"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
   "weapons.solidHit": {
     attributes: {
       width: 8,

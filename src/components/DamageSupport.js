@@ -2,12 +2,17 @@
 import { isPaused } from "src/lib/core/pauseToggle";
 import { addEffect, normalize, processEffects } from "src/lib/effects";
 
-const applyHitFlash = (entity, onOff) =>
-  entity.forEachPart(part =>
-    part.attr({
-      hitFlash: onOff ? { _red: 1, _green: 1, _blue: 1 } : false
-    })
-  );
+const applyHitFlash = (entity, onOff) => {
+  entity.forEachPart
+    ? entity.forEachPart(part =>
+        part.attr({
+          hitFlash: onOff ? { _red: 1, _green: 1, _blue: 1 } : false
+        })
+      )
+    : entity.attr({
+        hitFlash: onOff ? { _red: 1, _green: 1, _blue: 1 } : false
+      });
+};
 
 const processor = processEffects({
   health: amount => ({ health: Math.ceil(amount) }),

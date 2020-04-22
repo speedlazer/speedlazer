@@ -123,13 +123,14 @@ const part2 = ship => async ({ call, waitForEvent, parallel }) => {
 
 const part3 = ship => async ({ call, waitForEvent }) => {
   const cabin = ship.cabin2;
-  cabin.addComponent("SolidCollision").addComponent("DamageSupport");
-  const open = waitForEvent(cabin, "Dead", async () => {
+  const door = cabin.getElementByKey("door");
+  door.addComponent("SolidCollision").addComponent("DamageSupport");
+  const open = waitForEvent(door, "Dead", async () => {
     call(ship.showState, "engineDoorOpen");
   });
-  await call(cabin.allowDamage, { health: 500 });
+  await call(door.allowDamage, { health: 500 });
   await open;
-  cabin.removeComponent("SolidCollision");
+  door.removeComponent("SolidCollision");
 };
 
 const part4 = ship => async ({ call, waitForEvent }) => {
@@ -208,9 +209,7 @@ const battleship = async ({
     defaultVelocity: 85
   });
   activeMovement = moveTo(ship, { x: 0.8 }, null, EASE_IN_OUT);
-  await activeMovement.process;
-
-  await exec(part1(ship));
+  await parallel([() => activeMovement.process, () => exec(part1(ship))]);
 
   activeMovement = moveTo(ship, { x: 0.5 }, null, EASE_IN_OUT);
   await activeMovement.process;
