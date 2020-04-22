@@ -72,6 +72,7 @@ export const playAudio = async (sampleName, { volume = 1.0 } = {}) => {
     const sampleVolume =
       volume *
       (sampleSettings.volume === undefined ? 1.0 : sampleSettings.volume);
+    source.loop = sampleSettings.loop;
 
     const sampleGain = context.createGain();
     sampleGain.connect(playingPool.effectsGain);
