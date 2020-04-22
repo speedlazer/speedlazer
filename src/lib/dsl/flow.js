@@ -1,5 +1,3 @@
-import { subscribe } from "./endgame";
-
 const flowFunctions = (dsl, state) => {
   const call = (fn, ...args) => fn(...args);
 
@@ -41,17 +39,14 @@ const flowFunctions = (dsl, state) => {
   // Resolve on event, reject on kill
   const waitForEvent = (entity, event, callback) =>
     new Promise((resolve, reject) => {
-      const unsub = subscribe(() => {
-        resolve();
-      });
       const removeHandler = () => {
-        unsub();
         resolve();
       };
       entity.one("Remove", removeHandler);
+      entity.one("GameOver", removeHandler);
       entity.one(event, async () => {
         entity.unbind("Remove", removeHandler);
-        unsub();
+        entity.unbind("GameOver", removeHandler);
         if (dsl.currentScript()) {
           try {
             await callback();
