@@ -17,6 +17,12 @@ const assignAudioBuffer = (audioMap, decodedData) => {
   };
 };
 
+export const setEffectVolume = volume =>
+  playingPool.effectsGain.gain.setValueAtTime(volume, context.currentTime);
+
+export const setMusicVolume = volume =>
+  playingPool.musicGain.gain.setValueAtTime(volume, context.currentTime);
+
 export const loadAudio = async audioMap => {
   const name = audioMap.name;
   if (audioData[name]) {
@@ -45,7 +51,7 @@ const currentMusic = () => {
   }
 };
 
-export const playAudio = async sampleName => {
+export const playAudio = async (sampleName, { volume = 1.0 } = {}) => {
   const map = Object.values(audioData).find(e => e.map[sampleName]);
   const sampleData = map.map[sampleName];
   if (sampleData.type === "music") {
@@ -61,7 +67,17 @@ export const playAudio = async sampleName => {
   } else {
     const source = context.createBufferSource();
     source.buffer = map.audioData;
-    source.connect(playingPool.effectsGain);
+
+    const sampleSettings = map.map[sampleName];
+    const sampleVolume =
+      volume *
+      (sampleSettings.volume === undefined ? 1.0 : sampleSettings.volume);
+
+    const sampleGain = context.createGain();
+    sampleGain.connect(playingPool.effectsGain);
+    sampleGain.gain.setValueAtTime(sampleVolume, context.currentTime);
+
+    source.connect(sampleGain);
     source.start();
     return source;
   }

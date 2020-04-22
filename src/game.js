@@ -6,6 +6,10 @@ import AnalogKeyboardControls from "src/components/controls/AnalogKeyboardContro
 import GamepadControls from "src/components/controls/GamepadControls";
 import Player from "src/components/player/Player";
 import PlayerAssignable from "src/components/player/PlayerAssignable";
+import { setEffectVolume, setMusicVolume } from "src/lib/audio";
+
+setEffectVolume(0.4);
+setMusicVolume(0.4);
 
 /*
  * Destructure this file into multiple components
@@ -40,7 +44,6 @@ const Game = {
     });
 
     Crafty.paths({
-      audio: "./",
       images: "./"
     });
     // Start crafty and set a background color so that we can see it's working

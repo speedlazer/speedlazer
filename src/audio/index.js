@@ -24,7 +24,7 @@ const audiosheets = [
     name: "laser-shot",
     file: laserShot,
     map: {
-      shot: { type: "sfx", start: 0, end: 100 }
+      shot: { type: "sfx", start: 0, end: 100, volume: 0.2 }
     }
   },
   {

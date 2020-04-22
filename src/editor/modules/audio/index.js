@@ -4,7 +4,15 @@ import { Text } from "editor/components/Text";
 import { Menu } from "editor/components/Menu";
 import { Divider } from "editor/components/Divider";
 import audiosheets from "src/audio";
-import { loadAudio, playAudio } from "src/lib/audio";
+import {
+  loadAudio,
+  playAudio,
+  setEffectVolume,
+  setMusicVolume
+} from "src/lib/audio";
+
+setEffectVolume(0.4);
+setMusicVolume(0.5);
 
 const pad = (num, length) => ("0".repeat(length) + num).slice(-length);
 
@@ -14,6 +22,11 @@ const duration = durationInSeconds => {
   const rest = durationInSeconds % 1 || "0.0";
 
   return `${mins}:${pad(seconds, 2)}.${rest.toString().slice(2, 5)}`;
+};
+
+const percent = (value, defaultValue) => {
+  const perc = (value === undefined ? defaultValue : value) * 100;
+  return `${Math.round(perc)}%`;
 };
 
 class Audiosheets extends Component {
@@ -31,7 +44,7 @@ class Audiosheets extends Component {
     if (this.state.playing) {
       this.audio && this.audio.stop();
     } else {
-      this.audio = await playAudio(this.props.activeSample);
+      this.audio = await playAudio(this.props.activeSample, { volume: 1 });
       this.audio.onended = () => {
         this.setState(s => ({ ...s, playing: false }));
       };
@@ -63,7 +76,7 @@ class Audiosheets extends Component {
 
     return (
       <section>
-        <Title>Audio sheets</Title>
+        <Title>Audio sheets{activeSample && ` - ${map}.${activeSample}`}</Title>
         <Divider>
           <Menu
             items={audiosheets.reduce(
@@ -88,6 +101,9 @@ class Audiosheets extends Component {
             )}
             {activeAudio && (
               <Text>Duration: {duration(activeAudio.audioData.duration)}</Text>
+            )}
+            {highlight && (
+              <Text>Volume Adjustment: {percent(highlight.volume, 1.0)}</Text>
             )}
           </div>
         </Divider>
