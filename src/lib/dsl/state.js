@@ -1,4 +1,5 @@
 import TweenPromise from "src/components/generic/TweenPromise";
+import { endGame } from "./endgame";
 
 const stateFunctions = (_, state) => {
   const lives = (
@@ -19,6 +20,7 @@ const stateFunctions = (_, state) => {
       state.lives -= 1;
       if (state.lives < 0) {
         state.gameEnded = true;
+        endGame();
         Crafty.trigger("GameOver");
         throw Error("Game Over");
       }

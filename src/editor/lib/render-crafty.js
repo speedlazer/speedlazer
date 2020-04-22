@@ -656,7 +656,11 @@ Crafty.defineScene(
         appliedGameOptions.start &&
         appliedGameOptions.start();
       await runner(item.script);
-      const start = bigText("Congratulations!");
+      gameOver = this.state.gameEnded;
+
+      const start = bigText(gameOver ? "Game Over" : "Congratulations!", {
+        color: gameOver ? "#FF0000" : "#FFFFFF"
+      });
       await start.fadeIn(4000);
       await new Promise(resolve => Crafty.e("Delay").delay(resolve, 4000));
     } catch (e) {

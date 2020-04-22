@@ -40,7 +40,7 @@ Crafty.defineScene(
         await runner(item.script);
       }
       Crafty.enterScene("GameOver", {
-        gameCompleted: true,
+        gameCompleted: !this.state.gameEnded,
         score: this.state.score
       });
     } catch (e) {

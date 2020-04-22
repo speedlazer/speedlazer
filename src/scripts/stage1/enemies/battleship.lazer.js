@@ -14,6 +14,7 @@ const shootMineCannon = (cannon, high) => async ({
 }) => {
   await call(cannon.showState, high ? "aimHigh" : "aimLow");
   const spawnPoint = cannon.currentAttachHooks.gun;
+  if (!cannon.hasHealth()) return;
 
   const mine = spawn("Mine", {
     location: {
@@ -82,7 +83,7 @@ const part1 = ship => async ({ call, waitForEvent, race, until }) => {
   });
   await race([
     async () => {
-      await call(mineCannon.allowDamage, { health: 500 });
+      await call(mineCannon.allowDamage, { health: 1500 });
       let high = false;
       await until(
         () => killed,
@@ -96,15 +97,28 @@ const part1 = ship => async ({ call, waitForEvent, race, until }) => {
   ]);
 };
 
-const part2 = ship => async ({ call, waitForEvent }) => {
+const part2 = ship => async ({ call, waitForEvent, parallel }) => {
   const radar = ship.cabin1.radar;
+  const gun = ship.deckGun1;
+
   radar.addComponent("SolidCollision").addComponent("DamageSupport");
   const killed = waitForEvent(radar, "Dead", async () => {
     call(radar.showState, "dead");
   });
   call(radar.showState, "pulse");
+  const gunKilled = waitForEvent(gun, "Dead", async () => {
+    call(gun.showState, "dead");
+  });
+  gun
+    .addComponent("SolidCollision")
+    .addComponent("DamageSupport")
+    .addComponent("PlayerEnemy");
+
   await call(radar.allowDamage, { health: 500 });
-  await killed;
+  await call(gun.allowDamage, { health: 500 });
+  call(gun.showState, "shooting");
+
+  await parallel([() => killed, () => gunKilled]);
 };
 
 const part3 = ship => async ({ call, waitForEvent }) => {

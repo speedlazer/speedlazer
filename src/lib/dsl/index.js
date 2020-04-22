@@ -9,7 +9,7 @@ const wrap = (o, s) =>
     a[key] =
       typeof value === "function"
         ? (...args) => {
-            if (s.gameEnded === true) throw new Error("Game ended");
+            if (s.gameEnded === true) throw new Error("Game Over");
             return value(...args);
           }
         : value;
