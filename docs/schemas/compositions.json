@@ -181,13 +181,91 @@
           }
         },
         "frames": {
-          "type": "object"
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+$": {
+              "type": "object",
+              "properties": {
+                "flipX": {
+                  "type": "boolean"
+                },
+                "attributes": {
+                  "type": "object",
+                  "properties": {
+                    "scale": { "type": "number" },
+                    "rotation": { "type": "integer" },
+                    "z": { "type": "integer" }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "patternProperties": {
+                "^(?!flipX)(?!attributes)[a-zA-Z0-9.]+$": {
+                  "type": "object",
+                  "properties": {
+                    "h": { "type": "integer" },
+                    "x": { "type": "integer" },
+                    "y": { "type": "integer" },
+                    "rotation": { "type": "number" },
+                    "horizon": {
+                      "type": "array",
+                      "minItems": 2,
+                      "maxItems": 2,
+                      "items": { "type": "number" }
+                    },
+                    "hidden": { "type": "boolean" },
+                    "scale": { "type": "number" },
+                    "scaleX": { "type": "number" },
+                    "scaleY": { "type": "number" },
+                    "alpha": { "type": "number" },
+                    "maxAlpha": { "type": "number" },
+                    "sprite": { "type": "string" },
+                    "topColor": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "string",
+                          "pattern": "^#[0-9a-f]{6}$"
+                        },
+                        {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        }
+                      ],
+                      "additionalItems": false
+                    },
+                    "bottomColor": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "string",
+                          "pattern": "^#[0-9a-f]{6}$"
+                        },
+                        {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        }
+                      ],
+                      "additionalItems": false
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
         },
         "animations": {
-          "type": "object"
+          "type": "object",
+          "additionalProperties": true
         }
       },
       "additionalProperties": false
     }
-  }
+  },
+  "additionalProperties": false
 }
