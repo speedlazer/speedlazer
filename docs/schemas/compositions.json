@@ -1,0 +1,167 @@
+{
+  "type": "object",
+  "patternProperties": {
+    "^[a-zA-Z0-9.]+$": {
+      "type": "object",
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "height": { "type": "integer", "minimum": 0 },
+            "width": { "type": "integer", "minimum": 0 },
+            "scale": { "type": "number", "minimum": 0 },
+            "rotation": { "type": "integer" },
+            "ro": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [
+                {
+                  "title": "x offset",
+                  "type": "integer"
+                },
+                {
+                  "title": "y offset",
+                  "type": "integer"
+                }
+              ]
+            }
+          },
+          "required": ["width", "height"]
+        },
+        "spriteAttributes": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "accentColor": { "type": "string", "pattern": "^#[0-9a-f]{6}$" }
+          }
+        },
+        "sprites": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": [
+              { "title": "name of sprite", "type": "string" },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "crop": {
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "items": { "type": "integer" }
+                  },
+                  "key": { "type": "string" },
+                  "attachTo": { "type": "string" },
+                  "x": { "type": "integer" },
+                  "y": { "type": "integer" },
+                  "z": { "type": "integer" },
+                  "h": { "type": "integer" },
+                  "w": { "type": "integer" },
+                  "alpha": { "type": "number", "minimum": 0, "maximum": 1 },
+                  "scale": { "type": "number", "minimum": 0 },
+                  "scaleX": { "type": "number", "minimum": 0 },
+                  "scaleY": { "type": "number", "minimum": 0 },
+                  "hideAbove": { "type": "number" },
+                  "hideBelow": { "type": "number" },
+                  "flipX": { "type": "boolean" },
+                  "overrideColor": {
+                    "type": "string",
+                    "pattern": "^#[0-9a-f]{6}$"
+                  },
+                  "accentColor": {
+                    "type": "string",
+                    "pattern": "^#[0-9a-f]{6}$"
+                  },
+                  "horizon": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": { "type": "number" }
+                  },
+                  "ro": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "items": { "type": "integer" }
+                  },
+                  "rotation": { "type": "number" },
+                  "hitbox": {
+                    "type": "array",
+                    "minItems": 6,
+                    "items": { "type": "integer" }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "gradients": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "key": { "type": "string" },
+              "w": { "type": "integer" },
+              "h": { "type": "integer" },
+              "z": { "type": "integer" },
+              "topColor": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "string",
+                    "pattern": "^#[0-9a-f]{6}$"
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                ],
+                "additionalItems": false
+              },
+              "bottomColor": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "string",
+                    "pattern": "^#[0-9a-f]{6}$"
+                  },
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  }
+                ],
+                "additionalItems": false
+              }
+            },
+            "required": ["topColor", "bottomColor"]
+          }
+        },
+        "hitbox": {
+          "type": "array",
+          "minItems": 6,
+          "items": { "type": "integer" }
+        },
+        "attachHooks": {
+          "type": "array"
+        },
+        "frames": {
+          "type": "object"
+        },
+        "animations": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

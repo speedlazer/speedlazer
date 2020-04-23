@@ -76,16 +76,16 @@ export default {
         w: 1024,
         h: 50,
         key: "sky",
-        topColor: ["#DDDD00", 0],
-        bottomColor: ["#DDDD00", 1]
+        topColor: ["#dddd00", 0],
+        bottomColor: ["#dddd00", 1]
       }
     ],
     frames: {
       dawn: {
         sky: {
           h: 80,
-          topColor: ["#DDDD00", 0.0],
-          bottomColor: ["#DDDD00", 0.6]
+          topColor: ["#dddd00", 0.0],
+          bottomColor: ["#dddd00", 0.6]
         }
       }
     }
@@ -107,31 +107,31 @@ export default {
     ],
     frames: {
       dawn: {
-        sky: { topColor: ["#000020", 0.3], bottomColor: ["#213A9E", 0.6] }
+        sky: { topColor: ["#000020", 0.3], bottomColor: ["#213a9e", 0.6] }
       },
       dawn2: {
-        sky: { topColor: ["#0F1630", 0.5], bottomColor: ["#5E6D9F", 0.8] }
+        sky: { topColor: ["#0f1630", 0.5], bottomColor: ["#5e6d9f", 0.8] }
       },
       dawn3: {
-        sky: { topColor: ["#191F3D", 0.8], bottomColor: ["#8B8289", 1.0] }
+        sky: { topColor: ["#191f3d", 0.8], bottomColor: ["#8b8289", 1.0] }
       },
       dawn4: {
-        sky: { topColor: ["#27273D", 1.0], bottomColor: ["#CB8946", 1.0] }
+        sky: { topColor: ["#27273d", 1.0], bottomColor: ["#cb8946", 1.0] }
       },
       dawn5: {
-        sky: { topColor: ["#3E2D30", 1.0], bottomColor: ["#FD7321", 1.0] }
+        sky: { topColor: ["#3e2d30", 1.0], bottomColor: ["#fd7321", 1.0] }
       },
       dawn6: {
-        sky: { topColor: ["#383B65", 1.0], bottomColor: ["#FDAB3A", 1.0] }
+        sky: { topColor: ["#383b65", 1.0], bottomColor: ["#fdab3a", 1.0] }
       },
       dawn7: {
-        sky: { topColor: ["#354898", 1.0], bottomColor: ["#FCC67B", 1.0] }
+        sky: { topColor: ["#354898", 1.0], bottomColor: ["#fcc67b", 1.0] }
       },
       dawn8: {
-        sky: { topColor: ["#3856C1", 1.0], bottomColor: ["#F3D7B1", 1.0] }
+        sky: { topColor: ["#3856c1", 1.0], bottomColor: ["#f3d7b1", 1.0] }
       },
       dawn9: {
-        sky: { topColor: ["#477CFC", 1.0], bottomColor: ["#BABCD9", 1.0] }
+        sky: { topColor: ["#477cfc", 1.0], bottomColor: ["#babcd9", 1.0] }
       }
     }
   },

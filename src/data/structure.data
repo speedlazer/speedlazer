@@ -1,6 +1,6 @@
 [
   { "name": "animations" },
-  { "name": "compositions" },
+  { "name": "compositions", "schema": "docs/schemas/compositions.json" },
   { "name": "entities" },
   { "name": "particles" },
   { "name": "paths", "schema": "docs/schemas/paths.json" },
