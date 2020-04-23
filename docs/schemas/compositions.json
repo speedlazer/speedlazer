@@ -261,7 +261,63 @@
         },
         "animations": {
           "type": "object",
-          "additionalProperties": true
+          "patternProperties": {
+            "^[a-zA-Z0-9.]+$": {
+              "type": "object",
+              "properties": {
+                "repeat": { "type": "boolean" },
+                "duration": { "type": "integer", "minimum": 0 },
+                "easing": { "type": "string", "enum": ["linear"] },
+                "after": {
+                  "type": "object",
+                  "properties": {
+                    "animation": { "type": "string" }
+                  },
+                  "additionalProperties": false
+                },
+                "startEase": {
+                  "type": "object",
+                  "properties": {
+                    "easing": { "type": "string", "enum": ["linear"] },
+                    "duration": { "type": "integer", "minimum": 0 }
+                  },
+                  "additionalProperties": false
+                },
+                "timer": { "type": "string", "enum": ["global"] },
+                "timeline": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "end": { "type": "number", "minimum": 0, "maximum": 1 },
+                      "startFrame": { "type": "string" },
+                      "endFrame": { "type": "string" },
+                      "spriteAnimation": {
+                        "type": "object",
+                        "properties": {
+                          "key": { "type": "string" },
+                          "sprites": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": { "type": "string" }
+                          }
+                        },
+                        "required": ["key", "sprites"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": ["start", "end"],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+
+          "additionalProperties": false
         }
       },
       "additionalProperties": false
