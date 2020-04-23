@@ -41,6 +41,10 @@ export default {
     { x: 0.95, y: 0.15 },
     { x: 1.2, y: 0.1 }
   ],
+  "drone.straight": [
+    { x: 1.1, y: 0.5 },
+    { x: -0.1, y: 0.5 }
+  ],
   "drone.pattern1": [
     { x: 1.1, y: 0.5 },
     { x: 0.9, y: 0.2 },

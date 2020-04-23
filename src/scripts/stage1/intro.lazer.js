@@ -69,6 +69,17 @@ const part = async ({
           await say("John", "Let's go!", { portrait: "portraits.pilot" });
         },
         async () => {
+          await parallel([
+            () => exec(droneWave(4, "drone.straight", 500, 0.1)),
+            async () => {
+              await wait(1500);
+              await exec(droneWave(4, "drone.straight", 500, -0.1));
+            },
+            async () => {
+              await wait(3000);
+              await exec(droneWave(4, "drone.straight", 500, -0.3));
+            }
+          ]);
           await exec(droneWave(5, "drone.pattern1", 500));
           await exec(droneWave(8, "drone.pattern2", 500));
         }
