@@ -40,6 +40,8 @@ window.Crafty = Crafty;
 const SCREEN_WIDTH = 1024;
 const SCREEN_HEIGHT = 576;
 
+const round3 = x => Math.round(x * 1000) / 1000;
+
 export const mount = domElem => {
   if (!domElem) return;
   Crafty.init(SCREEN_WIDTH, SCREEN_HEIGHT, domElem);
@@ -49,10 +51,12 @@ export const mount = domElem => {
   let waitTime = 0;
   let frameTime = 0;
   let renderTime = 0;
+  let extra = "";
 
   Crafty.bind("MeasureWaitTime", wt => (waitTime = wt));
   Crafty.bind("MeasureFrameTime", ft => (frameTime = ft));
   Crafty.bind("MeasureRenderTime", rt => (renderTime = rt));
+  Crafty.bind("MeasureExtra", ex => (extra = ex));
 
   Crafty.bind("EnterScene", () => {
     Crafty.e("2D, DOM, Text")
@@ -63,7 +67,7 @@ export const mount = domElem => {
           if (!this.__frozen) counter++;
         });
 
-        return `Wait: ${waitTime} - Frame: ${frameTime} - Render: ${renderTime} - Entities: ${counter} / 1024`;
+        return `Wait: ${waitTime} - Frame: ${frameTime} - Render: ${renderTime} - Entities: ${counter} / 1024 ${extra}`;
       })
       .dynamicTextGeneration(true)
       .textColor("white");
@@ -244,7 +248,15 @@ Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
   });
   Crafty.s("Mouse").bind("MouseMove", function(e) {
     const rect = Crafty.stage.elem.getBoundingClientRect();
-    dummyPlayer.attr({ x: e.realX - rect.x, y: e.realY - rect.y });
+    const x = e.realX - rect.x;
+    const y = e.realY - rect.y;
+    dummyPlayer.attr({ x, y });
+    Crafty.trigger(
+      "MeasureExtra",
+      `- ${round3(x / Crafty.viewport.width)} / ${round3(
+        y / Crafty.viewport.height
+      )}`
+    );
   });
 
   if (habitat && habitat.position) {
@@ -379,6 +391,7 @@ const showBezier = pattern => {
     y: y * vph
   }));
   const bezierPath = getBezierPath(normalizedPath);
+  const stepSize = 1 / (bezierPath.length / 10);
 
   pattern.forEach(({ events = [] }, index) => {
     const part = bezierPath.curves[index];
@@ -390,7 +403,7 @@ const showBezier = pattern => {
     });
   });
 
-  for (let t = 0.0; t < 1.0; t += 0.01) {
+  for (let t = 0.0; t < 1.0; t += stepSize) {
     const p = bezierPath.get(t);
     Crafty.e("2D, WebGL, Color, BezierPath")
       .attr({ x: p.x, y: p.y, w: 3, h: 3 })
