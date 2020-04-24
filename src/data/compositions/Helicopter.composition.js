@@ -56,6 +56,18 @@ export default {
       ]
     ],
     frames: {
+      landed: {
+        attributes: {
+          scale: 0.8,
+          z: -100
+        }
+      },
+      foreground: {
+        attributes: {
+          scale: 1.0,
+          z: 10
+        }
+      },
       background: {
         flipX: true,
         attributes: {

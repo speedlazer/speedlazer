@@ -2,12 +2,7 @@ export default {
   Helicopter: {
     structure: {
       composition: "helicopter",
-      components: [
-        "DamageSupport",
-        "GravitySupport",
-        "SolidCollision",
-        "PlayerEnemy"
-      ],
+      components: ["DamageSupport", "GravitySupport", "PlayerEnemy"],
       attachments: {
         gun: {
           weapon: {
@@ -30,6 +25,12 @@ export default {
       damaged: {
         frame: "damaged"
       },
+      landed: {
+        frame: "landed"
+      },
+      foreground: {
+        frame: "foreground"
+      },
       dead: {
         frame: "damaged",
         animation: null,
@@ -51,6 +52,15 @@ export default {
       },
       flying: {
         animation: "flying"
+      },
+      toForeground: {
+        animation: "turning"
+      },
+      tilted: {
+        frame: "tilted"
+      },
+      leveled: {
+        frame: "leveled"
       },
       turning: {
         animation: "turnAround",

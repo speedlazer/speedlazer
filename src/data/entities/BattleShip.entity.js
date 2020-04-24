@@ -59,12 +59,12 @@ export default {
           }
         },
         heliPlace1: {
-          composition: "helicopter",
-          attributes: { scale: 0.8 }
+          entity: "Helicopter",
+          state: "landed"
         },
         heliPlace2: {
-          composition: "helicopter",
-          attributes: { scale: 0.8 }
+          entity: "Helicopter",
+          state: "landed"
         }
       }
     },
@@ -191,7 +191,7 @@ export default {
         name: "Fase 2",
         scenery: "City.Coast",
         position: {
-          rx: 0.1,
+          rx: -0.17,
           ry: 0.7
         },
         scrollSpeed: { vx: -100, vy: 0 },
