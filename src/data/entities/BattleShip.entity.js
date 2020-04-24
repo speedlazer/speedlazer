@@ -105,6 +105,26 @@ export default {
           engineCore: { composition: "battleship.engine" }
         }
       },
+      engineTilt: {
+        attachments: {
+          cabin1: { composition: "battleship.firstCabin" },
+          cabin1burn: null,
+          cabin2burn: null,
+          cabin2: {
+            composition: "battleship.secondCabin",
+            frame: ["open", { easing: "easeInOutQuad", duration: 2000 }]
+          },
+          engineCore: {
+            composition: "battleship.engine",
+            animation: "heavyShake",
+            attachments: {
+              smoke: {
+                particles: ["smoke", { emitter: { w: 60, amount: 50 } }]
+              }
+            }
+          }
+        }
+      },
       cabin1Explode: {
         attachments: {
           cabin1explode: {

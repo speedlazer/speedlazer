@@ -1,4 +1,5 @@
 import { bigText } from "src/components/BigText";
+import { droneWave } from "./drones.lazer";
 import { say } from "src/lib/Dialog";
 import { EASE_IN_OUT, EASE_OUT } from "src/constants/easing";
 
@@ -97,14 +98,11 @@ const part1 = ship => async ({ call, waitForEvent, race, until }) => {
   ]);
 };
 
-const part2 = ship => async ({ call, waitForEvent, parallel }) => {
+const part2 = ship => async ({ call, waitForEvent, parallel, until, wait }) => {
   const radar = ship.cabin1.radar;
   const gun = ship.deckGun1;
 
   radar.addComponent("SolidCollision").addComponent("DamageSupport");
-  const killed = waitForEvent(radar, "Dead", async () => {
-    call(radar.showState, "dead");
-  });
   call(radar.showState, "pulse");
   const gunKilled = waitForEvent(gun, "Dead", async () => {
     call(gun.showState, "dead");
@@ -118,7 +116,21 @@ const part2 = ship => async ({ call, waitForEvent, parallel }) => {
   await call(gun.allowDamage, { health: 500 });
   call(gun.showState, "shooting");
 
-  await parallel([() => killed, () => gunKilled]);
+  await parallel([
+    () =>
+      until(
+        () =>
+          waitForEvent(radar, "Dead", async () => {
+            call(radar.showState, "dead");
+          }),
+        async ({ exec }) => {
+          exec(droneWave(2, "drone.pattern2", 500));
+          await wait(1000);
+        }
+      ),
+
+    () => gunKilled
+  ]);
 };
 
 const part3 = ship => async ({ call, waitForEvent }) => {
@@ -212,14 +224,10 @@ const battleship = async ({
   await parallel([() => activeMovement.process, () => exec(part1(ship))]);
 
   activeMovement = moveTo(ship, { x: 0.5 }, null, EASE_IN_OUT);
-  await activeMovement.process;
-
-  await exec(part2(ship));
+  await parallel([() => activeMovement.process, () => exec(part2(ship))]);
 
   activeMovement = moveTo(ship, { x: -0.2 }, null, EASE_IN_OUT);
-  await activeMovement.process;
-
-  await exec(part3(ship));
+  await parallel([() => activeMovement.process, () => exec(part3(ship))]);
 
   activeMovement = moveTo(ship, { x: -0.8 }, null, EASE_IN_OUT);
   await activeMovement.process;

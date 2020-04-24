@@ -47,7 +47,7 @@ export default {
       ["heliPlace1", { x: 496, y: 24, z: 2, attachAlign: ["bottom", "left"] }],
       ["heliPlace2", { x: 652, y: 24, z: 1, attachAlign: ["bottom", "left"] }],
       ["cabin2", { x: 832, y: 24, z: 7, attachAlign: ["bottom", "left"] }],
-      ["engineCore", { x: 960, y: -62, z: 8, attachAlign: ["top", "left"] }],
+      ["engineCore", { x: 960, y: -62, z: 9, attachAlign: ["top", "left"] }],
       ["hatch1", { x: 320, y: 32, z: 2, attachAlign: ["top", "left"] }],
       ["hatch2", { x: 512, y: 32, z: 2, attachAlign: ["top", "left"] }],
       ["hatch3", { x: 704, y: 32, z: 2, attachAlign: ["top", "left"] }],
@@ -153,6 +153,62 @@ export default {
       height: 96
     },
     hitbox: [16, 16, 80, 16, 80, 80, 16, 80],
-    sprites: [["aircraftCarrierEngine", { x: 0, y: 0 }]]
+    sprites: [
+      ["aircraftCarrierEngine", { x: 0, y: 0, key: "cabin" }],
+      [
+        "aircraftCarrierEngineMeter",
+        { x: 32, y: 26, ro: [16, 22], key: "meter", attachTo: "cabin" }
+      ]
+    ],
+    attachHooks: [["smoke", { x: 36, y: 52, z: -1 }]],
+    frames: {
+      perc0: { meter: { rotation: -90 } },
+      perc25: { meter: { rotation: -45 } },
+      perc50: { meter: { rotation: 0 } },
+      perc75: { meter: { rotation: 45 } },
+      perc100: { meter: { rotation: 90 } },
+      shake1: { cabin: { x: 2, y: -1 } },
+      shake2: { cabin: { x: -2, y: 1 } },
+      shake3: { cabin: { x: 1 } },
+      shake4: { cabin: { x: -1 } }
+    },
+    animations: {
+      shake: {
+        repeat: true,
+        duration: 500,
+        timeline: [
+          {
+            start: 0,
+            end: 0.5,
+            startFrame: "shake3",
+            endFrame: "shake4"
+          },
+          {
+            start: 0.5,
+            end: 1,
+            startFrame: "shake4",
+            endFrame: "shake3"
+          }
+        ]
+      },
+      heavyShake: {
+        repeat: true,
+        duration: 100,
+        timeline: [
+          {
+            start: 0,
+            end: 0.5,
+            startFrame: "shake1",
+            endFrame: "shake2"
+          },
+          {
+            start: 0,
+            end: 1,
+            startFrame: "shake1",
+            endFrame: "shake2"
+          }
+        ]
+      }
+    }
   }
 };
