@@ -1,7 +1,7 @@
 import { EASE_OUT, EASE_IN_OUT } from "src/constants/easing";
 import shuffle from "lodash/shuffle";
 
-const mineFlight = (index, coord, synchronize) => async ({
+const mineFlight = (index, start, coord, synchronize) => async ({
   spawn,
   wait,
   addScreenTrauma,
@@ -17,8 +17,8 @@ const mineFlight = (index, coord, synchronize) => async ({
 
   const mine = spawn("Mine", {
     location: {
-      rx: 1.2,
-      ry: 0.7
+      rx: start.x,
+      ry: start.y
     },
     defaultVelocity: 200
   });
@@ -93,7 +93,27 @@ export const mineWave = () => async ({ exec }) => {
   );
 
   const items = makeSynchronization(amount).map(async (res, index) => {
-    await exec(mineFlight(index, coords.pop(), res));
+    await exec(mineFlight(index, { x: 1.2, y: 0.7 }, coords.pop(), res));
+  });
+  await Promise.all(items);
+};
+
+export const battleshipMines = () => async ({ exec }) => {
+  const amount = 9;
+  const gridX = [0.05, 0.14, 0.27, 0.36, 0.45, 0.54, 0.63, 0.77, 0.86];
+  const gridY = [0.2, 0.4, 0.6, 0.8];
+
+  const yCoord = shuffle(gridY);
+
+  const items = makeSynchronization(amount).map(async (res, index) => {
+    await exec(
+      mineFlight(
+        index,
+        { x: gridX[index], y: 1.2 },
+        { x: gridX[index], y: yCoord[index % yCoord.length] },
+        res
+      )
+    );
   });
   await Promise.all(items);
 };
