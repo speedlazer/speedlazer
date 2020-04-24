@@ -1,7 +1,8 @@
 import { bigText } from "src/components/BigText";
 import { droneWave } from "./drones.lazer";
 import { say } from "src/lib/Dialog";
-import { EASE_IN_OUT, EASE_OUT } from "src/constants/easing";
+import { battleshipMines } from "./mines.lazer.js";
+import { EASE_IN_OUT, EASE_OUT, LINEAR } from "src/constants/easing";
 
 const shootMineCannon = (cannon, high) => async ({
   call,
@@ -24,6 +25,9 @@ const shootMineCannon = (cannon, high) => async ({
     },
     defaultVelocity: 300
   }).attr({ z: spawnPoint.z });
+  waitForEvent(mine, "Loose", async () => {
+    mine.attr({ z: mine.z + 30 });
+  });
 
   const movement = moveWithPattern(
     mine,
@@ -133,16 +137,80 @@ const part2 = ship => async ({ call, waitForEvent, parallel, until, wait }) => {
   ]);
 };
 
-const part3 = ship => async ({ call, waitForEvent }) => {
-  const cabin = ship.cabin2;
-  const door = cabin.getElementByKey("door");
-  door.addComponent("SolidCollision").addComponent("DamageSupport");
-  const open = waitForEvent(door, "Dead", async () => {
-    call(ship.showState, "engineDoorOpen");
+const mineAttack = ship => async ({ moveTo, exec, parallel, call }) => {
+  await parallel([
+    () => {
+      const upwards = moveTo(ship, { y: 0.7 }, 20, EASE_IN_OUT);
+      return upwards.process;
+    },
+    () => call(ship.showState, "risen", 2000)
+  ]);
+  await exec(battleshipMines());
+  await parallel([
+    () => {
+      const downwards = moveTo(ship, { y: 0.75 }, 20, EASE_IN_OUT);
+      return downwards.process;
+    },
+    () => call(ship.showState, "lowered", 2000)
+  ]);
+};
+
+const activateDeckGun2 = ship => async ({ call, waitForEvent }) => {
+  const gun = ship.deckGun2;
+  const gunKilled = waitForEvent(gun, "Dead", async () => {
+    call(gun.showState, "dead");
   });
-  await call(door.allowDamage, { health: 500 });
-  await open;
-  door.removeComponent("SolidCollision");
+  gun
+    .addComponent("SolidCollision")
+    .addComponent("DamageSupport")
+    .addComponent("PlayerEnemy");
+  await call(gun.allowDamage, { health: 500 });
+  call(gun.showState, "shooting");
+  await gunKilled;
+};
+
+const helicopter1 = ship => async ({
+  call,
+  wait,
+  waitForEvent,
+  moveWithPattern
+}) => {
+  const helicopter = ship.heliPlace1;
+  call(helicopter.showState, "flying");
+  await wait(1000);
+  await call(helicopter.showState, "tilted", 2000);
+  const movement = moveWithPattern(helicopter, "heli.battleship1", 150, LINEAR);
+  waitForEvent(helicopter, "detach", async () => {
+    helicopter.detachFromParent();
+  });
+  waitForEvent(helicopter, "active", async () => {
+    helicopter
+      .addComponent("SolidCollision")
+      .addComponent("DamageSupport")
+      .addComponent("PlayerEnemy");
+    await call(helicopter.allowDamage, { health: 600 });
+  });
+  waitForEvent(helicopter, "Dead", async () => {
+    movement.abort();
+    await call(helicopter.showState, "dead");
+    await call(helicopter.activateGravity);
+  });
+  await movement.process;
+};
+
+const part3 = ship => async ({ call, wait, exec, parallel }) => {
+  await wait(2000);
+  await parallel([
+    async () => {
+      await exec(activateDeckGun2(ship));
+      await call(ship.showState, "engineDoorOpen");
+    },
+    () => exec(helicopter1(ship))
+  ]);
+  // Mines from below
+  await exec(mineAttack(ship));
+  // 2 helicopters
+  // Guns from hatches?
 };
 
 const part4 = ship => async ({ call, waitForEvent }) => {
@@ -226,7 +294,7 @@ const battleship = async ({
   activeMovement = moveTo(ship, { x: 0.5 }, null, EASE_IN_OUT);
   await parallel([() => activeMovement.process, () => exec(part2(ship))]);
 
-  activeMovement = moveTo(ship, { x: -0.2 }, null, EASE_IN_OUT);
+  activeMovement = moveTo(ship, { x: -0.17 }, null, EASE_IN_OUT);
   await parallel([() => activeMovement.process, () => exec(part3(ship))]);
 
   activeMovement = moveTo(ship, { x: -0.8 }, null, EASE_IN_OUT);

@@ -36,6 +36,7 @@ const widthFactor = {
 const TWEEN_WHITELIST = [
   "x",
   "y",
+  "z",
   "w",
   "h",
   "rotation",
@@ -54,6 +55,9 @@ const entityDeltaSettings = entity => settings =>
       switch (key) {
         case "x":
           result["dx"] = entity.xFlipped ? -value : value;
+          break;
+        case "z":
+          result["z"] = entity.z + value;
           break;
         case "y":
           result["dy"] = value;

@@ -65,7 +65,7 @@ export default {
       foreground: {
         attributes: {
           scale: 1.0,
-          z: 10
+          z: 100
         }
       },
       background: {

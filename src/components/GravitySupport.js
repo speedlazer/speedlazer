@@ -32,11 +32,14 @@ Crafty.c("GravitySupport", {
     });
 
     if (groundType === "solid") {
-      if (this.vy > 400) {
+      if (this.vy > 200) {
         // little bounce
         this.attr({ vy: -this.vy / 4 });
       } else {
         this.attr({ ay: 0, ax: 0, vx: 0, vy: 0 });
+        this.showState && this.showState("crashed");
+        // TODO: Destroy if surface is destroyed or frozen
+        surfaceEntity.attach(this);
       }
     }
     if (groundType === "liquid") {
@@ -82,6 +85,7 @@ Crafty.c("GravitySupport", {
     if (sunk) {
       this.liquidEmitter.stopEmission();
       this.liquidEmitter.autoDestruct = true;
+      this.destroy();
       this.unbind("EnterFrame", this._sinkAway);
     }
   }

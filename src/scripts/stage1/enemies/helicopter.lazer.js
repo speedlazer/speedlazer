@@ -21,8 +21,6 @@ export const helicopter = pattern => async ({
     movement.abort();
     await call(heli.showState, "dead");
     await call(heli.activateGravity);
-    await wait(4000);
-    heli.destroy();
   });
 
   await movement.process;

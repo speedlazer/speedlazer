@@ -25,6 +25,17 @@ export default {
       damaged: {
         frame: "damaged"
       },
+      crashed: {
+        frame: "damaged",
+        attachments: {
+          smoke: {
+            particles: [
+              "smoke",
+              { emitter: { w: 50, h: 10, amount: 100, duration: 2000 } }
+            ]
+          }
+        }
+      },
       landed: {
         frame: "landed"
       },
@@ -45,7 +56,7 @@ export default {
             animation: "default"
           },
           smoke: {
-            particles: ["smoke", { emitter: { w: 50, h: 10, amount: 150 } }]
+            particles: ["smoke", { emitter: { w: 50, h: 10, amount: 100 } }]
           },
           gun: null
         }
