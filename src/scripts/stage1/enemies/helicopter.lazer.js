@@ -12,6 +12,7 @@ export const helicopter = pattern => async ({
     },
     defaultVelocity: 100
   });
+  heli.addComponent("SolidCollision");
   await call(heli.allowDamage, { health: 600 });
   call(heli.showState, "shooting");
   const movement = moveWithPattern(heli, pattern);
