@@ -210,7 +210,8 @@ Crafty.c(Bullet, {
       }
       if (upcoming.duration > 0) {
         if (upcoming.audio) {
-          playAudio(upcoming.audio);
+          const [sample, settings] = [].concat(upcoming.audio);
+          playAudio(sample, settings);
           upcoming.audio = null;
         }
         if (!upcoming.animateFn && upcoming.velocity !== undefined) {

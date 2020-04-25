@@ -22,7 +22,7 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: [400, 500],
         composition: "weapons.bullet",
-        queue: [{ duration: 4000 }],
+        queue: [{ duration: 4000, audio: ["shot", { volume: 0.8 }] }],
         damage: [
           {
             velocity: [-10e3, -15e3],

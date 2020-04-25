@@ -27,7 +27,7 @@ export default {
       [
         "payload",
         {
-          x: 52,
+          x: 64,
           y: 86,
           z: 6,
           attachAlign: ["bottom", "center"],

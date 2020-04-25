@@ -5,7 +5,7 @@ export default {
       components: [
         "ShipSolid",
         "GravitySolid",
-        ["HideBelow", { hideBelow: 570, z: -12 }]
+        ["HideBelow", { hideBelow: 540, z: -12 }]
       ],
       attachments: {
         bottom: {
@@ -38,7 +38,8 @@ export default {
           composition: "shipHatch",
           attachments: {
             payload: {
-              entity: "BulletCannon"
+              entity: "BulletCannon",
+              state: "mirrored"
             }
           }
         },
@@ -172,7 +173,7 @@ export default {
         scenery: "City.Coast",
         position: {
           rx: 0.8,
-          ry: 0.75
+          ry: 0.7
         },
         scrollSpeed: { vx: -100, vy: 0 },
         background: ["City.Sunrise", 2]
@@ -182,7 +183,7 @@ export default {
         scenery: "City.Coast",
         position: {
           rx: 0.5,
-          ry: 0.75
+          ry: 0.7
         },
         scrollSpeed: { vx: -100, vy: 0 },
         background: ["City.Sunrise", 2]
@@ -192,7 +193,7 @@ export default {
         scenery: "City.Coast",
         position: {
           rx: -0.17,
-          ry: 0.7
+          ry: 0.65
         },
         scrollSpeed: { vx: -100, vy: 0 },
         background: ["City.Sunrise", 2]
@@ -202,7 +203,7 @@ export default {
         scenery: "City.Coast",
         position: {
           rx: -0.7,
-          ry: 0.75
+          ry: 0.7
         },
         scrollSpeed: { vx: 100, vy: 0 },
         background: ["City.Sunrise", 2]

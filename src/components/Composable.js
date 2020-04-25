@@ -315,6 +315,7 @@ Crafty.c(Composable, {
     this.currentAttachHooks = {};
     this.currentZ = this.z;
     this.animationListeners = [];
+    this.displayFrame = this.displayFrame.bind(this);
   },
 
   compose(proposedDefinition, { autoStartAnimation = true } = {}) {

@@ -76,6 +76,19 @@ const shootMineCannon = (cannon, high) => async ({
   });
 };
 
+const activateGun = gun => async ({ call, waitForEvent }) => {
+  const gunKilled = waitForEvent(gun, "Dead", async () => {
+    call(gun.showState, "dead");
+  });
+  gun
+    .addComponent("SolidCollision")
+    .addComponent("DamageSupport")
+    .addComponent("PlayerEnemy");
+  await call(gun.allowDamage, { health: 1000 });
+  call(gun.showState, "shooting");
+  await gunKilled;
+};
+
 const part1 = ship => async ({ call, waitForEvent, race, until }) => {
   const mineCannon = ship.mineCannon;
   mineCannon
@@ -88,8 +101,8 @@ const part1 = ship => async ({ call, waitForEvent, race, until }) => {
   });
   await race([
     async () => {
-      await call(mineCannon.allowDamage, { health: 1500 });
-      let high = false;
+      await call(mineCannon.allowDamage, { health: 2000 });
+      let high = true;
       await until(
         () => killed,
         async ({ exec }) => {
@@ -102,23 +115,19 @@ const part1 = ship => async ({ call, waitForEvent, race, until }) => {
   ]);
 };
 
-const part2 = ship => async ({ call, waitForEvent, parallel, until, wait }) => {
+const part2 = ship => async ({
+  call,
+  exec,
+  waitForEvent,
+  parallel,
+  until,
+  wait
+}) => {
   const radar = ship.cabin1.radar;
-  const gun = ship.deckGun1;
 
   radar.addComponent("SolidCollision").addComponent("DamageSupport");
   call(radar.showState, "pulse");
-  const gunKilled = waitForEvent(gun, "Dead", async () => {
-    call(gun.showState, "dead");
-  });
-  gun
-    .addComponent("SolidCollision")
-    .addComponent("DamageSupport")
-    .addComponent("PlayerEnemy");
-
   await call(radar.allowDamage, { health: 500 });
-  await call(gun.allowDamage, { health: 500 });
-  call(gun.showState, "shooting");
 
   await parallel([
     () =>
@@ -132,15 +141,14 @@ const part2 = ship => async ({ call, waitForEvent, parallel, until, wait }) => {
           await wait(1000);
         }
       ),
-
-    () => gunKilled
+    () => exec(activateGun(ship.deckGun1))
   ]);
 };
 
 const mineAttack = ship => async ({ wait, moveTo, exec, parallel, call }) => {
   await parallel([
     () => {
-      const upwards = moveTo(ship, { y: 0.7 }, 20, EASE_IN_OUT);
+      const upwards = moveTo(ship, { y: 0.65 }, 20, EASE_IN_OUT);
       return upwards.process;
     },
     () => call(ship.showState, "risen", 2000),
@@ -151,25 +159,11 @@ const mineAttack = ship => async ({ wait, moveTo, exec, parallel, call }) => {
   ]);
   await parallel([
     () => {
-      const downwards = moveTo(ship, { y: 0.75 }, 20, EASE_IN_OUT);
+      const downwards = moveTo(ship, { y: 0.7 }, 20, EASE_IN_OUT);
       return downwards.process;
     },
     () => call(ship.showState, "lowered", 2000)
   ]);
-};
-
-const activateDeckGun2 = ship => async ({ call, waitForEvent }) => {
-  const gun = ship.deckGun2;
-  const gunKilled = waitForEvent(gun, "Dead", async () => {
-    call(gun.showState, "dead");
-  });
-  gun
-    .addComponent("SolidCollision")
-    .addComponent("DamageSupport")
-    .addComponent("PlayerEnemy");
-  await call(gun.allowDamage, { health: 500 });
-  call(gun.showState, "shooting");
-  await gunKilled;
 };
 
 const helicopter1 = ship => async ({
@@ -202,18 +196,39 @@ const helicopter1 = ship => async ({
 };
 
 const part3 = ship => async ({ call, wait, exec, parallel }) => {
-  await wait(2000);
+  await wait(1000);
   await parallel([
     async () => {
-      await exec(activateDeckGun2(ship));
+      await wait(1000);
+      await exec(activateGun(ship.deckGun2));
       await call(ship.showState, "engineDoorOpen");
+      await wait(1000);
+      await call(ship.engineCore.displayFrame, "perc25");
+      await call(ship.showState, "t3o", 2000);
+      await call(ship.showState, "t3r", 2000);
+      await exec(activateGun(ship.hatch3.payload));
     },
     () => exec(helicopter1(ship))
   ]);
   // Mines from below
   await exec(mineAttack(ship));
+  await parallel([
+    async () => {
+      await call(ship.showState, "t2o", 2000);
+      await call(ship.showState, "t2r", 2000);
+      await exec(activateGun(ship.hatch2.payload));
+      await call(ship.engineCore.displayFrame, "perc50");
+    },
+    async () => {
+      await call(ship.showState, "t1o", 2000);
+      await call(ship.showState, "t1r", 2000);
+      await exec(activateGun(ship.hatch1.payload));
+      await call(ship.engineCore.displayFrame, "perc50");
+    }
+  ]);
+  await exec(mineAttack(ship));
+  await call(ship.engineCore.displayFrame, "perc75");
   // 2 helicopters
-  // Guns from hatches?
 };
 
 const part4 = ship => async ({ call, waitForEvent }) => {
@@ -287,7 +302,7 @@ const battleship = async ({
   const ship = spawn("BattleShip", {
     location: {
       rx: 1.1,
-      ry: 0.75
+      ry: 0.7
     },
     defaultVelocity: 85
   });

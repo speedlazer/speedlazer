@@ -33,7 +33,8 @@ export default {
         frame: ["aimHigh", { duration: 1500 }]
       },
       shoot: {
-        animation: "blinking"
+        animation: "blinking",
+        audio: "explosion"
       }
     }
   }
