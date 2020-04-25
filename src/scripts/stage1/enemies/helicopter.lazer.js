@@ -2,7 +2,6 @@ export const helicopter = pattern => async ({
   spawn,
   call,
   waitForEvent,
-  wait,
   moveWithPattern
 }) => {
   const heli = spawn("Helicopter", {
