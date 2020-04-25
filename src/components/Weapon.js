@@ -471,27 +471,52 @@ Crafty.c(Weapon, {
         };
 
         const aimVector = {
-          x: this.x - targetLocation.x,
-          y: this.y - targetLocation.y
+          x: this.barrel.ox - targetLocation.x,
+          y: this.barrel.oy - targetLocation.y
         };
         const radians = Math.atan2(aimVector.y, aimVector.x);
-        const targetAngle = (radians / Math.PI) * 180;
 
-        const possibleRotation = Crafty.math.clamp(
-          targetAngle,
-          aimSettings.range[1],
-          aimSettings.range[0]
-        );
-        const maxRotate = aimSettings.rotateSpeed * 0.001 * dt;
-        const delta = Crafty.math.clamp(
-          possibleRotation - this.barrel.rotation,
-          -maxRotate,
-          maxRotate
-        );
-        const rotation = this.barrel.rotation + delta;
-        angle = rotation - (aimSettings.offsetAimAngle || 0);
+        if (this.barrel.root.xFlipped) {
+          const targetAngle = (radians / Math.PI) * 180 - 180;
+          const possibleRotation = flipRotation(
+            Crafty.math.clamp(
+              flipRotation(targetAngle < 0 ? targetAngle + 180 : targetAngle),
+              aimSettings.range[1],
+              aimSettings.range[0]
+            )
+          );
+          const corrected =
+            (possibleRotation < 0 ? possibleRotation + 360 : possibleRotation) -
+            180;
+          const maxRotate = aimSettings.rotateSpeed * 0.001 * dt;
+          const delta = Crafty.math.clamp(
+            corrected - this.barrel.rotation,
+            -maxRotate,
+            maxRotate
+          );
+          const rotation = this.barrel.rotation + delta;
+          angle = rotation + (aimSettings.offsetAimAngle || 0);
 
-        this.barrel.attr({ rotation });
+          this.barrel.attr({ rotation });
+        } else {
+          const targetAngle = (radians / Math.PI) * 180;
+          const possibleRotation = Crafty.math.clamp(
+            targetAngle,
+            aimSettings.range[1],
+            aimSettings.range[0]
+          );
+
+          const maxRotate = aimSettings.rotateSpeed * 0.001 * dt;
+          const delta = Crafty.math.clamp(
+            possibleRotation - this.barrel.rotation,
+            -maxRotate,
+            maxRotate
+          );
+          const rotation = this.barrel.rotation + delta;
+          angle = rotation - (aimSettings.offsetAimAngle || 0);
+
+          this.barrel.attr({ rotation });
+        }
       }
     }
 

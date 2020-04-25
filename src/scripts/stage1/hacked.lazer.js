@@ -50,11 +50,11 @@ const part = async ({
       await exec(droneWave(4, "drone.pattern6", 500, 0.4));
     }
   ]);
-  await setScenery("City.CoastStart");
   await exec(droneWave(4, "drone.pattern5", 500));
   await exec(droneShip());
   await exec(droneWave(4, "drone.pattern1", 500));
   await exec(mineWave());
+  await setScenery("City.CoastStart");
   await exec(mineWave());
   await parallel([
     () => exec(droneWave(4, "drone.pattern6", 500)),

@@ -54,6 +54,9 @@ export default {
       },
       up: {
         barrel: { rotation: 90 }
+      },
+      mirrored: {
+        flipX: true
       }
     }
   }

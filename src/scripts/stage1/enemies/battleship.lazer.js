@@ -137,15 +137,18 @@ const part2 = ship => async ({ call, waitForEvent, parallel, until, wait }) => {
   ]);
 };
 
-const mineAttack = ship => async ({ moveTo, exec, parallel, call }) => {
+const mineAttack = ship => async ({ wait, moveTo, exec, parallel, call }) => {
   await parallel([
     () => {
       const upwards = moveTo(ship, { y: 0.7 }, 20, EASE_IN_OUT);
       return upwards.process;
     },
-    () => call(ship.showState, "risen", 2000)
+    () => call(ship.showState, "risen", 2000),
+    async () => {
+      await wait(1000);
+      await exec(battleshipMines());
+    }
   ]);
-  await exec(battleshipMines());
   await parallel([
     () => {
       const downwards = moveTo(ship, { y: 0.75 }, 20, EASE_IN_OUT);

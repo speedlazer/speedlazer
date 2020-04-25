@@ -8,6 +8,7 @@ import Delta2D from "src/components/generic/Delta2D";
 import Gradient from "src/components/Gradient";
 import ColorEffects from "src/components/ColorEffects";
 import Flipable from "src/components/utils/flipable";
+import flipRotation from "src/lib/flipRotation";
 import { globalStartTime } from "src/lib/time";
 import { easingFunctions } from "src/constants/easing";
 
@@ -590,6 +591,7 @@ Crafty.c(Composable, {
     );
     this.applySpriteOptions(subElem, { ...spriteAttributes, ...options });
     subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });
+    subElem.root = this;
     this.attach(subElem);
     return subElem;
   },

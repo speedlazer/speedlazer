@@ -65,7 +65,8 @@ export default {
         heliPlace2: {
           entity: "Helicopter",
           state: "landed"
-        }
+        },
+        engineCore: { composition: "battleship.engine", frame: "perc0" }
       }
     },
     states: {
@@ -101,8 +102,7 @@ export default {
           cabin2: {
             composition: "battleship.secondCabin",
             frame: ["open", { easing: "easeInOutQuad", duration: 2000 }]
-          },
-          engineCore: { composition: "battleship.engine" }
+          }
         }
       },
       engineTilt: {

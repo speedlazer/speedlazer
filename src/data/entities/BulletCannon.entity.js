@@ -15,6 +15,7 @@ export default {
       }
     },
     states: {
+      mirrored: { frame: "mirrored" },
       dead: {
         frame: ["dead", { duration: 0 }],
         animation: null,
