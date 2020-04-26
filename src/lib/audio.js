@@ -20,7 +20,8 @@ const convertAudioMap = map =>
         type: entry.type,
         start,
         end: start + entry.duration,
-        duration: entry.duration
+        duration: entry.duration,
+        loop: entry.loop
       }
     };
   }, {});
@@ -85,7 +86,11 @@ export const playAudio = async (sampleName, { volume = 1.0 } = {}) => {
 
     const sampleVolume =
       volume * (sampleData.volume === undefined ? 1.0 : sampleData.volume);
-    source.loop = sampleData.loop;
+    if (sampleData.loop) {
+      source.loop = true;
+      source.loopStart = sampleData.start / 1000;
+      source.loopEnd = sampleData.end / 1000;
+    }
 
     const sampleGain = context.createGain();
     sampleGain.connect(playingPool.effectsGain);
@@ -95,7 +100,7 @@ export const playAudio = async (sampleName, { volume = 1.0 } = {}) => {
     source.start(
       context.currentTime,
       sampleData.start / 1000,
-      sampleData.duration / 1000
+      source.loop ? undefined : sampleData.duration / 1000
     );
     return source;
   }

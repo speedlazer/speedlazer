@@ -130,6 +130,7 @@ class Audiosheets extends Component {
                 <Text label="Volume adjustment:">
                   {percent(highlight.volume, 1.0)}
                 </Text>
+                <Text label="Loop:">{highlight.loop ? "Yes" : "No"}</Text>
               </Table>
             )}
           </div>
