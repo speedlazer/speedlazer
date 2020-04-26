@@ -57,7 +57,6 @@ class Audiosheets extends Component {
     if (this.state.playing) {
       this.audio && this.audio.stop();
     } else {
-      console.log(this.props.activeSample);
       this.audio = await playAudio(this.props.activeSample, { volume: 1 });
       this.audio.onended = () => {
         this.setState(s => ({ ...s, playing: false }));

@@ -41,7 +41,10 @@ const shootMineCannon = (cannon, high) => async ({
     await call(mine.allowDamage, { health: 40 });
 
     const ship = Crafty("PlayerShip").get(0);
-    let searchMovement = moveTo(mine, { x: ship.x / Crafty.viewport.width });
+    let searchMovement;
+    searchMovement = moveTo(mine, { y: 1 });
+    await searchMovement.process;
+    searchMovement = moveTo(mine, { x: ship.x / Crafty.viewport.width });
     await searchMovement.process;
 
     searchMovement = moveTo(mine, { y: ship.y / Crafty.viewport.height });
