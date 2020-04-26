@@ -5,20 +5,19 @@ const audiosheets = [
   {
     name: "effects",
     file: effects,
-    map: {
-      explosion: { type: "sfx", start: 0, end: 629 },
-      hit: { type: "sfx", start: 629, end: 896 },
-      shot: { type: "sfx", start: 896, end: 1349, volume: 0.2 },
-      laugh: { type: "sfx", start: 1349, end: 3044 },
-      powerup: { type: "sfx", start: 3044, end: 3950 }
-    }
+    map: [
+      { name: "explosion", type: "sfx", duration: 629 },
+      { name: "gun-shot", type: "sfx", duration: 295 },
+      { name: "laser-hit", type: "sfx", duration: 267 },
+      { name: "laser-shot", type: "sfx", duration: 453, volume: 0.2 },
+      { name: "laugh", type: "sfx", duration: 1695 },
+      { name: "powerup", type: "sfx", duration: 906 }
+    ]
   },
   {
     name: "hero",
     file: bgMusic1,
-    map: {
-      hero: { type: "music", start: 0, end: 100 }
-    }
+    map: [{ name: "hero", type: "music" }]
   }
 ];
 

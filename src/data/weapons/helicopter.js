@@ -69,7 +69,7 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: [350, 500],
         composition: "weapons.bullet",
-        queue: [{ duration: 4000, audio: ["shot", { volume: 0.8 }] }],
+        queue: [{ duration: 4000, audio: ["gun-shot", { volume: 0.8 }] }],
         damage: [
           {
             velocity: [-10e3, -15e3],
@@ -98,7 +98,7 @@ export default {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.solidHit",
-        queue: [{ duration: 100, audio: "hit" }]
+        queue: [{ duration: 100, audio: "laser-hit" }]
       },
       splash: {
         spawnPosition: "outside",

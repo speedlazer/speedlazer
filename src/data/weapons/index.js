@@ -22,7 +22,7 @@ export default {
         spawnPosition: [0, 0.5],
         velocity: [400, 500],
         composition: "weapons.bullet",
-        queue: [{ duration: 4000, audio: ["shot", { volume: 0.8 }] }],
+        queue: [{ duration: 4000, audio: ["gun-shot", { volume: 0.8 }] }],
         damage: [
           {
             velocity: [-10e3, -15e3],
@@ -51,7 +51,7 @@ export default {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.solidHit",
-        queue: [{ duration: 100, audio: "hit" }]
+        queue: [{ duration: 100, audio: "laser-hit" }]
       },
       splash: {
         spawnPosition: "outside",
@@ -116,7 +116,7 @@ export default {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.solidHit",
-        queue: [{ duration: 100, audio: "hit" }]
+        queue: [{ duration: 100, audio: "laser-hit" }]
       }
     }
   },
@@ -615,13 +615,13 @@ export default {
         attached: true,
         velocity: 0,
         composition: "weapons.muzzleFlash",
-        queue: [{ duration: 120, audio: "shot" }]
+        queue: [{ duration: 120, audio: "laser-shot" }]
       },
       sparkHit: {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.solidHit",
-        queue: [{ duration: 100, audio: "hit" }]
+        queue: [{ duration: 100, audio: "laser-hit" }]
       },
       sparks: {
         spawnPosition: "outside",

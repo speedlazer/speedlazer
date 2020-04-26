@@ -10,10 +10,25 @@ const playingPool = {
 playingPool.effectsGain.connect(context.destination);
 playingPool.musicGain.connect(context.destination);
 
+const convertAudioMap = map =>
+  map.reduce((acc, entry, i, l) => {
+    const previous = i > 0 && acc[l[i - 1].name];
+    const start = i === 0 ? 0 : previous.end;
+    return {
+      ...acc,
+      [entry.name]: {
+        type: entry.type,
+        start,
+        end: start + entry.duration,
+        duration: entry.duration
+      }
+    };
+  }, {});
+
 const assignAudioBuffer = (audioMap, decodedData) => {
   audioData[audioMap.name] = {
     audioData: decodedData,
-    map: audioMap.map
+    map: convertAudioMap(audioMap.map)
   };
 };
 
@@ -68,11 +83,9 @@ export const playAudio = async (sampleName, { volume = 1.0 } = {}) => {
     const source = context.createBufferSource();
     source.buffer = map.audioData;
 
-    const sampleSettings = map.map[sampleName];
     const sampleVolume =
-      volume *
-      (sampleSettings.volume === undefined ? 1.0 : sampleSettings.volume);
-    source.loop = sampleSettings.loop;
+      volume * (sampleData.volume === undefined ? 1.0 : sampleData.volume);
+    source.loop = sampleData.loop;
 
     const sampleGain = context.createGain();
     sampleGain.connect(playingPool.effectsGain);
@@ -81,8 +94,8 @@ export const playAudio = async (sampleName, { volume = 1.0 } = {}) => {
     source.connect(sampleGain);
     source.start(
       context.currentTime,
-      sampleSettings.start / 1000,
-      (sampleSettings.end - sampleSettings.start) / 1000
+      sampleData.start / 1000,
+      sampleData.duration / 1000
     );
     return source;
   }

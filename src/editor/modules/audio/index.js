@@ -57,6 +57,7 @@ class Audiosheets extends Component {
     if (this.state.playing) {
       this.audio && this.audio.stop();
     } else {
+      console.log(this.props.activeSample);
       this.audio = await playAudio(this.props.activeSample, { volume: 1 });
       this.audio.onended = () => {
         this.setState(s => ({ ...s, playing: false }));
@@ -85,7 +86,9 @@ class Audiosheets extends Component {
   render({ map, activeSample }, { activeAudio, playing }) {
     const activeMap = audiosheets.find(m => m.name === map) || audiosheets[0];
 
-    const highlight = (activeSample && activeMap.map[activeSample]) || null;
+    const highlight =
+      (activeSample && activeMap.map.find(e => e.name === activeSample)) ||
+      null;
 
     return (
       <section>
@@ -93,11 +96,11 @@ class Audiosheets extends Component {
         <Divider>
           <Menu
             items={audiosheets.reduce(
-              (acc, map) =>
+              (acc, sheet) =>
                 acc.concat(
-                  Object.keys(map.map).map(spriteName => [
-                    `${map.name}.${spriteName}`,
-                    `/audio/${map.name}/${spriteName}`
+                  sheet.map.map(sprite => [
+                    `${sheet.name}.${sprite.name}`,
+                    `/audio/${sheet.name}/${sprite.name}`
                   ])
                 ),
               []
@@ -119,11 +122,11 @@ class Audiosheets extends Component {
                     {duration(activeAudio.audioData.duration)}
                   </Text>
                 )}
-                <Text label="Sample duration:">
-                  {numb(highlight.end - highlight.start)}ms
-                </Text>
-                <Text label="Start:">{numb(highlight.start)}ms</Text>
-                <Text label="End:">{numb(highlight.end)}ms</Text>
+                {highlight.duration && (
+                  <Text label="Sample duration:">
+                    {numb(highlight.duration)}ms
+                  </Text>
+                )}
                 <Text label="Volume adjustment:">
                   {percent(highlight.volume, 1.0)}
                 </Text>
