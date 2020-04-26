@@ -16,7 +16,7 @@ export default {
         }
       ]
     ],
-    hitbox: [20, 20, 76, 24, 90, 45, 20, 45],
+    hitbox: [10, 14, 64, 18, 75, 38, 20, 38],
     attachHooks: [
       [
         "explosion",
