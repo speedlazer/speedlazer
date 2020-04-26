@@ -3,7 +3,7 @@ attribute vec2 aVelocity;
 attribute vec3 aOrientation;
 attribute vec2 aLayer;
 attribute vec2 aSize;
-attribute vec2 aLife;
+attribute vec4 aLife;
 attribute vec4 aColor1;
 attribute vec4 aColor2;
 
@@ -36,7 +36,7 @@ void main() {
   float dist = aVelocity.x * (duration / 1000.0);
 
   vec2 movement = vec2(cos(aVelocity.y) * dist, sin(aVelocity.y) * dist);
-  vec2 gravityDisplacement = vec2(gravity(uTimeOffset.y, duration), gravity(uTimeOffset.z, duration));
+  vec2 gravityDisplacement = vec2(gravity(aLife.z, duration), gravity(aLife.a, duration));
 
   pos = pos + movement + gravityDisplacement;
 

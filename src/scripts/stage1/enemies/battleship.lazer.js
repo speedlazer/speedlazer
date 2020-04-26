@@ -88,7 +88,7 @@ const activateGun = gun => async ({ call, waitForEvent }) => {
     .addComponent("SolidCollision")
     .addComponent("DamageSupport")
     .addComponent("PlayerEnemy");
-  await call(gun.allowDamage, { health: 600 });
+  await call(gun.allowDamage, { health: 750 });
   call(gun.showState, "shooting");
   await gunKilled;
 };

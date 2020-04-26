@@ -28,7 +28,7 @@ const spawnParticle = (entity, settings) => {
     aVelocity: [speed, (angle * Math.PI) / 180],
     aOrientation: [x, y, 0],
     aSize: [startSize, endSize],
-    aLife: [start, life],
+    aLife: [start, life, settings.gravity[0], settings.gravity[1]],
     expire: start + life,
     aLayer: [entity._globalZ, entity._alpha],
     aColor1: startColor,
@@ -49,7 +49,7 @@ Crafty.defaultShader(
       { name: "aOrientation", width: 3 },
       { name: "aLayer", width: 2 },
       { name: "aSize", width: 2 },
-      { name: "aLife", width: 2 },
+      { name: "aLife", width: 4 },
       { name: "aColor1", width: 4 },
       { name: "aColor2", width: 4 }
     ],
@@ -57,9 +57,7 @@ Crafty.defaultShader(
       const gl = e.program.context;
 
       if (startRender && !e.program.hasTime) {
-        const gx = entity.particleSettings.gravity[0];
-        const gy = entity.particleSettings.gravity[1];
-        gl.uniform4f(e.program.shader.time, entity.timeFrame, gx, gy, 0);
+        gl.uniform4f(e.program.shader.time, entity.timeFrame, 0, 0, 0);
         e.program.hasTime = entity.timeFrame;
       }
 

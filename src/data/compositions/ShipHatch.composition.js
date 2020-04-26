@@ -10,7 +10,7 @@ export default {
         "aircraftCarrierHatchLid",
         { y: -2, x: 0, key: "lid", crop: [2, 0, 0, 0], z: 3 }
       ],
-      ["aircraftCarrierWires", { x: 68, y: -20, z: -1 }],
+      ["aircraftCarrierWires", { x: 68, y: -20, z: -2 }],
       [
         "aircraftCarrierHatchLid",
         {

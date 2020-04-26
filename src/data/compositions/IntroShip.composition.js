@@ -43,7 +43,7 @@ export default {
         { x: 612, y: -20, z: 6, attachAlign: ["bottom", "center"] }
       ],
       ["hatch2", { x: 412, y: -20, z: 2, attachAlign: ["top", "left"] }],
-      ["bottom", { x: -64, y: 70, z: 8, attachAlign: ["top", "left"] }]
+      ["bottom", { x: -64, y: 70, z: 21, attachAlign: ["top", "left"] }]
     ]
   },
   "intro.boxes": {
