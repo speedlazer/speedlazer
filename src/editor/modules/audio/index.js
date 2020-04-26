@@ -1,5 +1,6 @@
 import { h, Component } from "preact";
 import { Title } from "editor/components/Title";
+import { Table } from "editor/components/Table";
 import { Text } from "editor/components/Text";
 import { Menu } from "editor/components/Menu";
 import { Divider } from "editor/components/Divider";
@@ -28,6 +29,18 @@ const percent = (value, defaultValue) => {
   const perc = (value === undefined ? defaultValue : value) * 100;
   return `${Math.round(perc)}%`;
 };
+
+const numb = value =>
+  `${value}`
+    .split("")
+    .reverse()
+    .reduce(
+      (acc, c, i) =>
+        i % 3 === 0 && i > 0 ? acc.concat(".", c) : acc.concat(c),
+      []
+    )
+    .reverse()
+    .join("");
 
 class Audiosheets extends Component {
   state = {
@@ -99,11 +112,22 @@ class Audiosheets extends Component {
                 {playing ? "Stop" : "Play"}
               </button>
             )}
-            {activeAudio && (
-              <Text>Duration: {duration(activeAudio.audioData.duration)}</Text>
-            )}
             {highlight && (
-              <Text>Volume Adjustment: {percent(highlight.volume, 1.0)}</Text>
+              <Table>
+                {activeAudio && (
+                  <Text label="File duration:">
+                    {duration(activeAudio.audioData.duration)}
+                  </Text>
+                )}
+                <Text label="Sample duration:">
+                  {numb(highlight.end - highlight.start)}ms
+                </Text>
+                <Text label="Start:">{numb(highlight.start)}ms</Text>
+                <Text label="End:">{numb(highlight.end)}ms</Text>
+                <Text label="Volume adjustment:">
+                  {percent(highlight.volume, 1.0)}
+                </Text>
+              </Table>
             )}
           </div>
         </Divider>

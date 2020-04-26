@@ -18,7 +18,7 @@ const part = async ({
   text.fadeIn(2000);
 
   await loadSpriteSheets(["mega-texture"]);
-  await loadAudio(["laser-shot", "laser-hit", "explosion", "hero"]);
+  await loadAudio(["effects", "hero"]);
   playAudio("hero");
 
   await setScrollingSpeed(250, 0, { instant: true });

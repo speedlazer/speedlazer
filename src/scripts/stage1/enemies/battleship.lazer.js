@@ -84,7 +84,7 @@ const activateGun = gun => async ({ call, waitForEvent }) => {
     .addComponent("SolidCollision")
     .addComponent("DamageSupport")
     .addComponent("PlayerEnemy");
-  await call(gun.allowDamage, { health: 1000 });
+  await call(gun.allowDamage, { health: 750 });
   call(gun.showState, "shooting");
   await gunKilled;
 };
@@ -138,7 +138,7 @@ const part2 = ship => async ({
           }),
         async ({ exec }) => {
           exec(droneWave(2, "drone.pattern2", 500));
-          await wait(1000);
+          await wait(2000);
         }
       ),
     () => exec(activateGun(ship.deckGun1))
@@ -203,7 +203,7 @@ const part3 = ship => async ({ call, wait, exec, parallel }) => {
       await exec(activateGun(ship.deckGun2));
       await call(ship.showState, "engineDoorOpen");
       await wait(1000);
-      await call(ship.engineCore.displayFrame, "perc25");
+      await call(ship.engineCore.displayFrame, "perc25", 1000);
       await call(ship.showState, "t3o", 2000);
       await call(ship.showState, "t3r", 2000);
       await exec(activateGun(ship.hatch3.payload));
@@ -217,17 +217,18 @@ const part3 = ship => async ({ call, wait, exec, parallel }) => {
       await call(ship.showState, "t2o", 2000);
       await call(ship.showState, "t2r", 2000);
       await exec(activateGun(ship.hatch2.payload));
-      await call(ship.engineCore.displayFrame, "perc50");
+      await call(ship.engineCore.displayFrame, "perc50", 1000);
     },
     async () => {
       await call(ship.showState, "t1o", 2000);
       await call(ship.showState, "t1r", 2000);
       await exec(activateGun(ship.hatch1.payload));
-      await call(ship.engineCore.displayFrame, "perc50");
+      await call(ship.engineCore.displayFrame, "perc50", 1000);
     }
   ]);
   await exec(mineAttack(ship));
-  await call(ship.engineCore.displayFrame, "perc75");
+  await call(ship.engineCore.displayFrame, "perc75", 1000);
+  call(ship.engineCore.playAnimation, "shake");
   // 2 helicopters
 };
 
@@ -308,9 +309,11 @@ const battleship = async ({
   });
   activeMovement = moveTo(ship, { x: 0.8 }, null, EASE_IN_OUT);
   await parallel([() => activeMovement.process, () => exec(part1(ship))]);
+  await wait(1000);
 
   activeMovement = moveTo(ship, { x: 0.5 }, null, EASE_IN_OUT);
   await parallel([() => activeMovement.process, () => exec(part2(ship))]);
+  await wait(1000);
 
   activeMovement = moveTo(ship, { x: -0.17 }, null, EASE_IN_OUT);
   await parallel([() => activeMovement.process, () => exec(part3(ship))]);

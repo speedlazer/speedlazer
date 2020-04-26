@@ -1,0 +1,18 @@
+.table {
+    border: 1px solid #444;
+    margin: 1em 0;
+}
+.row:nth-child(odd) {
+    background: #222;
+}
+
+.rowLabel {
+    color: #eee;
+    text-align: left;
+    padding: 0.3em;
+}
+.rowData {
+    color: #eee;
+    text-align: left;
+    padding: 0.3em;
+}

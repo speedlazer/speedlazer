@@ -79,7 +79,11 @@ export const playAudio = async (sampleName, { volume = 1.0 } = {}) => {
     sampleGain.gain.setValueAtTime(sampleVolume, context.currentTime);
 
     source.connect(sampleGain);
-    source.start();
+    source.start(
+      context.currentTime,
+      sampleSettings.start / 1000,
+      (sampleSettings.end - sampleSettings.start) / 1000
+    );
     return source;
   }
 };

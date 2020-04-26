@@ -1,44 +1,16 @@
-import explosion from "./explosion.ogg";
-import laserHit from "./laser-hit.ogg";
-import laserShot from "./laser-shot.ogg";
-import laugh from "./laugh.ogg";
-import powerup from "./powerup.ogg";
 import bgMusic1 from "./symsonic-hero.mp3";
+import effects from "./effects.ogg";
 
 const audiosheets = [
   {
-    name: "explosion",
-    file: explosion,
+    name: "effects",
+    file: effects,
     map: {
-      explosion: { type: "sfx", start: 0, end: 100 }
-    }
-  },
-  {
-    name: "laser-hit",
-    file: laserHit,
-    map: {
-      hit: { type: "sfx", start: 0, end: 100 }
-    }
-  },
-  {
-    name: "laser-shot",
-    file: laserShot,
-    map: {
-      shot: { type: "sfx", start: 0, end: 100, volume: 0.2 }
-    }
-  },
-  {
-    name: "laugh",
-    file: laugh,
-    map: {
-      laugh: { type: "sfx", start: 0, end: 100 }
-    }
-  },
-  {
-    name: "powerup",
-    file: powerup,
-    map: {
-      powerup: { type: "sfx", start: 0, end: 100 }
+      explosion: { type: "sfx", start: 0, end: 629 },
+      hit: { type: "sfx", start: 629, end: 896 },
+      shot: { type: "sfx", start: 896, end: 1349, volume: 0.2 },
+      laugh: { type: "sfx", start: 1349, end: 3044 },
+      powerup: { type: "sfx", start: 3044, end: 3950 }
     }
   },
   {

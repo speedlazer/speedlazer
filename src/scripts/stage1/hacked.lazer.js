@@ -21,7 +21,7 @@ const part = async ({
   const text = bigText("Loading...");
   text.fadeIn(2000);
   await loadSpriteSheets(["mega-texture"]);
-  await loadAudio(["laser-shot", "laser-hit", "explosion", "hero"]);
+  await loadAudio(["effects", "hero"]);
   playAudio("hero");
   await setScrollingSpeed(250, 0, { instant: true });
   setAltitude(200, { instant: true });
