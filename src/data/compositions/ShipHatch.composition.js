@@ -29,7 +29,7 @@ export default {
         {
           x: 64,
           y: 86,
-          z: 20,
+          z: 5,
           attachAlign: ["bottom", "center"],
           attachTo: "floor"
         }

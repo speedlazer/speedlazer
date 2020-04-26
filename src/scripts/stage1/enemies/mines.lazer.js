@@ -1,13 +1,11 @@
 import { EASE_OUT, EASE_IN_OUT } from "src/constants/easing";
 import shuffle from "lodash/shuffle";
 
-const mineFlight = (index, start, coord, synchronize) => async ({
+const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({
   spawn,
   wait,
   addScreenTrauma,
-  //until,
   call,
-  //displayFrame,
   waitForEvent,
   race,
   moveTo
@@ -18,12 +16,14 @@ const mineFlight = (index, start, coord, synchronize) => async ({
   const mine = spawn("Mine", {
     location: {
       rx: start.x,
-      ry: start.y
+      ry: start.y > 1 ? 0.9 : start.y
     },
     defaultVelocity: 200
   });
-  activeMovement = moveTo(mine, { y: 1.1 }, null, EASE_OUT);
-  await activeMovement.process;
+  if (start.y > 1) {
+    activeMovement = moveTo(mine, { y: start.y }, null, EASE_OUT);
+    await activeMovement.process;
+  }
   await call(mine.showState, "rotate");
 
   await call(mine.allowDamage, { health: 40 });
@@ -46,6 +46,7 @@ const mineFlight = (index, start, coord, synchronize) => async ({
       await activeMovement.process;
       if (activeMovement.wasCompleted()) {
         await synchronize();
+        await wait(moveDelay);
         if (mine.appliedEntityState === "dead") return;
         activeMovement = moveTo(mine, { y: coord.y }, null, EASE_IN_OUT);
         await activeMovement.process;
@@ -93,7 +94,7 @@ export const mineWave = () => async ({ exec }) => {
   );
 
   const items = makeSynchronization(amount).map(async (res, index) => {
-    await exec(mineFlight(index, { x: 1.2, y: 0.7 }, coords.pop(), res));
+    await exec(mineFlight(index, { x: 1.2, y: 1.1 }, coords.pop(), res));
   });
   await Promise.all(items);
 };
@@ -101,7 +102,7 @@ export const mineWave = () => async ({ exec }) => {
 export const battleshipMines = () => async ({ exec }) => {
   const amount = 9;
   const gridX = [0.05, 0.14, 0.27, 0.36, 0.45, 0.54, 0.63, 0.77, 0.86];
-  const gridY = [0.2, 0.4, 0.6, 0.8];
+  const gridY = [0.2, 0.4, 0.6];
 
   const yCoord = shuffle(gridY);
 
@@ -109,9 +110,10 @@ export const battleshipMines = () => async ({ exec }) => {
     await exec(
       mineFlight(
         index,
-        { x: gridX[index], y: 1.2 },
+        { x: gridX[index], y: 0.88 },
         { x: gridX[index], y: yCoord[index % yCoord.length] },
-        res
+        res,
+        1500
       )
     );
   });

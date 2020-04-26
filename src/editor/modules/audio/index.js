@@ -58,9 +58,9 @@ class Audiosheets extends Component {
       this.audio && this.audio.stop();
     } else {
       this.audio = await playAudio(this.props.activeSample, { volume: 1 });
-      this.audio.onended = () => {
+      this.audio.process.then(() => {
         this.setState(s => ({ ...s, playing: false }));
-      };
+      });
       this.setState(s => ({ ...s, playing: true }));
     }
   };
@@ -116,6 +116,7 @@ class Audiosheets extends Component {
             )}
             {highlight && (
               <Table>
+                <Text label="Type:">{highlight.type}</Text>
                 {activeAudio && (
                   <Text label="File duration:">
                     {duration(activeAudio.audioData.duration)}

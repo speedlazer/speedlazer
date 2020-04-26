@@ -104,7 +104,7 @@ export default {
         attached: true,
         velocity: 0,
         composition: "weapons.muzzleFlash",
-        queue: [{ duration: 400 }]
+        queue: [{ duration: 400, audio: "laser-shot" }]
       },
       sparks: {
         spawnPosition: "outside",

@@ -2,6 +2,7 @@ import { bigText } from "src/components/BigText";
 import { droneWave } from "./drones.lazer";
 import { say } from "src/lib/Dialog";
 import { battleshipMines } from "./mines.lazer.js";
+import { playAudio } from "src/lib/audio";
 import { EASE_IN_OUT, EASE_OUT, LINEAR } from "src/constants/easing";
 
 const shootMineCannon = (cannon, high) => async ({
@@ -87,7 +88,7 @@ const activateGun = gun => async ({ call, waitForEvent }) => {
     .addComponent("SolidCollision")
     .addComponent("DamageSupport")
     .addComponent("PlayerEnemy");
-  await call(gun.allowDamage, { health: 750 });
+  await call(gun.allowDamage, { health: 600 });
   call(gun.showState, "shooting");
   await gunKilled;
 };
@@ -104,7 +105,7 @@ const part1 = ship => async ({ call, waitForEvent, race, until }) => {
   });
   await race([
     async () => {
-      await call(mineCannon.allowDamage, { health: 2000 });
+      await call(mineCannon.allowDamage, { health: 1500 });
       let high = true;
       await until(
         () => killed,
@@ -176,6 +177,8 @@ const helicopter1 = ship => async ({
   moveWithPattern
 }) => {
   const helicopter = ship.heliPlace1;
+  const heliAudio = playAudio("helicopter", { volume: 0.01 });
+  heliAudio.setVolume(0.9, 1000);
   call(helicopter.showState, "flying");
   await wait(1000);
   await call(helicopter.showState, "tilted", 2000);
@@ -190,7 +193,11 @@ const helicopter1 = ship => async ({
       .addComponent("PlayerEnemy");
     await call(helicopter.allowDamage, { health: 600 });
   });
+  waitForEvent(helicopter, "Remove", async () => {
+    heliAudio.stop();
+  });
   waitForEvent(helicopter, "Dead", async () => {
+    heliAudio.stop();
     movement.abort();
     await call(helicopter.showState, "dead");
     await call(helicopter.activateGravity);

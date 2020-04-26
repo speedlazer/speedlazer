@@ -2,7 +2,7 @@ export default {
   Helicopter: {
     structure: {
       composition: "helicopter",
-      components: ["DamageSupport", "GravitySupport", "PlayerEnemy"],
+      components: ["DamageSupport", "GravitySupport"],
       attachments: {
         gun: {
           weapon: {

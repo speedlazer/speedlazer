@@ -21,7 +21,7 @@ export const backgroundHeli = ({ existing = false } = {}) => async ({
   await movement.process;
 };
 
-export const heliAttack = ({ existing = false } = {}) => async ({
+export const heliAttack = ({ existing = false } = {}, heliAudio) => async ({
   spawn,
   call,
   moveWithPattern,
@@ -82,6 +82,11 @@ export const heliAttack = ({ existing = false } = {}) => async ({
     );
     await parachuteDrop.process;
     soldier.destroy();
+  });
+  waitForEvent(heli, "Escape3", async () => {
+    heliAudio.setVolume(0, 4000);
+    await wait(4000);
+    heliAudio.stop();
   });
 
   const drone =

@@ -23,15 +23,16 @@ const part = async ({
   await loadSpriteSheets(["mega-texture"]);
   await loadAudio(["effects", "hero"]);
   playAudio("hero");
+  const heliAudio = playAudio("helicopter", { volume: 0.01 });
   await setScrollingSpeed(100, 0, { instant: true });
   await setScenery("City.Ocean");
   setBackground("City.Sunrise", 0, 2);
   text.remove();
 
   const introAnimation = playAnimation("City.Intro");
-  await Promise.all([
-    introAnimation.waitTillCheckpoint(3),
-    (async () => {
+  await parallel([
+    () => introAnimation.waitTillCheckpoint(3),
+    async () => {
       await wait(1500);
       await say(
         "General",
@@ -39,8 +40,13 @@ const part = async ({
           "the AI controlled defence systems. You are the last ship.",
         { portrait: "portraits.general" }
       );
-    })()
+    },
+    async () => {
+      await wait(1000);
+      heliAudio.setVolume(2.0, 1000);
+    }
   ]);
+  heliAudio.setVolume(0.6, 4000);
   showHUD();
   const ready = bigText("Get ready", { color: "#FF0000" });
   const blink = ready.blink(200, 4);
@@ -94,7 +100,7 @@ const part = async ({
     portrait: "portraits.pilot"
   });
   await helicopter;
-  exec(heliAttack({ existing: true }));
+  exec(heliAttack({ existing: true }, heliAudio));
   await say("General", "What is that!", { portrait: "portraits.general" });
   await say("General", "Evacuate! now!", { portrait: "portraits.general" });
   await wait(1000);

@@ -22,7 +22,7 @@ export default {
     { x: 0.45, y: 0.4 },
     { x: 0.5, y: 0.3 },
     { x: 0.45, y: 0.2, events: [[0.5, { event: "Escape2" }]] },
-    { x: 0.4, y: 0.25 },
+    { x: 0.4, y: 0.25, events: [[0.8, { event: "Escape3" }]] },
     { x: 1.2, y: 0.2 }
   ],
   "intro.DroneBackground": [

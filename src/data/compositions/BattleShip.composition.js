@@ -43,11 +43,11 @@ export default {
       ],
       [
         "deckGun1",
-        { x: 356, y: 100, z: 12, attachAlign: ["bottom", "center"] }
+        { x: 356, y: 100, z: 20, attachAlign: ["bottom", "center"] }
       ],
       [
         "deckGun2",
-        { x: 866, y: 100, z: 12, attachAlign: ["bottom", "center"] }
+        { x: 866, y: 100, z: 20, attachAlign: ["bottom", "center"] }
       ],
       ["cabin1", { x: 294, y: 24, z: 7, attachAlign: ["bottom", "left"] }],
       ["heliPlace1", { x: 540, y: 24, z: 2, attachAlign: ["bottom", "left"] }],
@@ -57,7 +57,7 @@ export default {
       ["hatch1", { x: 420, y: 32, z: 2, attachAlign: ["top", "left"] }],
       ["hatch2", { x: 612, y: 32, z: 2, attachAlign: ["top", "left"] }],
       ["hatch3", { x: 804, y: 32, z: 2, attachAlign: ["top", "left"] }],
-      ["bottom", { x: 10, y: 135, z: 2, attachAlign: ["top", "left"] }],
+      ["bottom", { x: 10, y: 135, z: 20, attachAlign: ["top", "left"] }],
       ["cabin1burn", { x: 314, y: -16, z: 2, attachAlign: ["top", "left"] }],
       ["cabin2burn", { x: 850, y: -16, z: 2, attachAlign: ["top", "left"] }],
       [

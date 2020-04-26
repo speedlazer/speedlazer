@@ -21,6 +21,7 @@ const convertAudioMap = map =>
         start,
         end: start + entry.duration,
         duration: entry.duration,
+        volume: entry.volume,
         loop: entry.loop
       }
     };
@@ -67,7 +68,7 @@ const currentMusic = () => {
   }
 };
 
-export const playAudio = async (sampleName, { volume = 1.0 } = {}) => {
+export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
   const map = Object.values(audioData).find(e => e.map[sampleName]);
   const sampleData = map.map[sampleName];
   if (sampleData.type === "music") {
@@ -79,13 +80,19 @@ export const playAudio = async (sampleName, { volume = 1.0 } = {}) => {
     source.connect(playingPool.musicGain);
     source.start();
     playingPool.music = { source, sampleName };
-    return source;
+    const process = new Promise(resolve => (source.onended = resolve));
+
+    return {
+      stop: () => source.stop(),
+      process
+    };
   } else {
     const source = context.createBufferSource();
     source.buffer = map.audioData;
 
-    const sampleVolume =
-      volume * (sampleData.volume === undefined ? 1.0 : sampleData.volume);
+    const baseVolume =
+      sampleData.volume === undefined ? 1.0 : sampleData.volume;
+    const sampleVolume = volume * baseVolume;
     if (sampleData.loop) {
       source.loop = true;
       source.loopStart = sampleData.start / 1000;
@@ -102,7 +109,19 @@ export const playAudio = async (sampleName, { volume = 1.0 } = {}) => {
       sampleData.start / 1000,
       source.loop ? undefined : sampleData.duration / 1000
     );
-    return source;
+    const process = new Promise(resolve => (source.onended = resolve));
+
+    return {
+      stop: () => source.stop(),
+      setVolume: async (value, duration = 0) => {
+        const newVolume = value * baseVolume;
+        sampleGain.gain.exponentialRampToValueAtTime(
+          newVolume === 0 ? 0.01 : newVolume,
+          context.currentTime + duration / 1000
+        );
+      },
+      process
+    };
   }
 };
 

@@ -23,7 +23,7 @@ export const droneShip = () => async ({
     .addComponent("SolidCollision")
     .addComponent("DamageSupport")
     .addComponent("PlayerEnemy");
-  await call(ship.gun.allowDamage, { health: 500 });
+  await call(ship.gun.allowDamage, { health: 600 });
 
   const gun = waitForEvent(ship.gun, "Dead", async () => {
     call(ship.gun.showState, "dead");
