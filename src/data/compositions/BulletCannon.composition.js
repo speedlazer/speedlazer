@@ -4,6 +4,7 @@ export default {
       width: 100,
       height: 42
     },
+    hitbox: [64, 24, 96, 24, 96, 45, 64, 45],
     sprites: [
       ["turretFoot", { x: 64, y: 24, key: "foot" }],
       [

@@ -5,9 +5,10 @@ const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({
   spawn,
   wait,
   addScreenTrauma,
-  call,
   waitForEvent,
   race,
+  showState,
+  allowDamage,
   moveTo
 }) => {
   let activeMovement = null;
@@ -24,9 +25,9 @@ const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({
     activeMovement = moveTo(mine, { y: start.y }, null, EASE_OUT);
     await activeMovement.process;
   }
-  await call(mine.showState, "rotate");
+  await showState(mine, "rotate");
 
-  await call(mine.allowDamage, { health: 40 });
+  await allowDamage(mine, { health: 40 });
   activeMovement = moveTo(mine, { x: coord.x }, null, EASE_OUT);
 
   await race([
@@ -35,7 +36,7 @@ const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({
         activeMovement && activeMovement.abort();
         synchronize();
         if (mine.appliedEntityState === "explode") return;
-        call(mine.showState, "dead");
+        showState(mine, "dead");
         addScreenTrauma(0.2);
 
         await wait(500);
@@ -52,11 +53,11 @@ const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({
         await activeMovement.process;
         if (activeMovement.wasCompleted()) {
           await wait(200 + Math.random() * 2000);
-          await call(mine.showState, "open", 500);
-          call(mine.showState, "blinking");
+          await showState(mine, "open", 500);
+          showState(mine, "blinking");
           await wait(1000);
           if (mine.appliedEntityState !== "dead") {
-            call(mine.showState, "explode");
+            showState(mine, "explode");
             addScreenTrauma(0.2);
             await wait(500);
             mine.destroy();
@@ -99,23 +100,76 @@ export const mineWave = () => async ({ exec }) => {
   await Promise.all(items);
 };
 
+const battleShipMineStrike = (index, start, coord) => async ({
+  spawn,
+  wait,
+  addScreenTrauma,
+  waitForEvent,
+  race,
+  allowDamage,
+  showState,
+  moveTo
+}) => {
+  let activeMovement = null;
+  await wait(index * 50);
+
+  const mine = spawn("Mine", {
+    location: {
+      rx: start.x,
+      ry: start.y > 1 ? 0.9 : start.y
+    },
+    defaultVelocity: 200
+  });
+  await showState(mine, "rotate");
+  await allowDamage(mine, { health: 40 });
+  showState(mine, "blinking");
+
+  await race([
+    () =>
+      waitForEvent(mine, "Dead", async () => {
+        activeMovement && activeMovement.abort();
+        if (mine.appliedEntityState === "explode") return;
+        showState(mine, "dead");
+        addScreenTrauma(0.2);
+
+        await wait(500);
+        mine.destroy();
+        activeMovement && activeMovement.abort();
+      }),
+    async () => {
+      if (mine.appliedEntityState === "dead") return;
+      activeMovement = moveTo(mine, { y: coord.y }, null, EASE_IN_OUT);
+      await activeMovement.process;
+      if (activeMovement.wasCompleted()) {
+        await showState(mine, "open", 500);
+        if (mine.appliedEntityState !== "dead") {
+          showState(mine, "dead");
+          addScreenTrauma(0.2);
+          await wait(500);
+          mine.destroy();
+        }
+      }
+    }
+  ]);
+};
+
 export const battleshipMines = () => async ({ exec }) => {
   const amount = 9;
   const gridX = [0.05, 0.14, 0.27, 0.36, 0.45, 0.54, 0.63, 0.77, 0.86];
-  const gridY = [0.2, 0.4, 0.6];
+  const gridY = [0.2, 0.3, 0.4, 0.5];
 
   const yCoord = shuffle(gridY);
 
-  const items = makeSynchronization(amount).map(async (res, index) => {
-    await exec(
-      mineFlight(
-        index,
-        { x: gridX[index], y: 0.88 },
-        { x: gridX[index], y: yCoord[index % yCoord.length] },
-        res,
-        1500
-      )
-    );
-  });
+  const items = Array(amount)
+    .fill()
+    .map(async (_, index) => {
+      await exec(
+        battleShipMineStrike(
+          index,
+          { x: gridX[index], y: 0.88 },
+          { x: gridX[index], y: yCoord[index % yCoord.length] }
+        )
+      );
+    });
   await Promise.all(items);
 };

@@ -3,7 +3,7 @@ import { EASE_IN } from "src/constants/easing";
 
 export const backgroundHeli = ({ existing = false } = {}) => async ({
   spawn,
-  call,
+  showState,
   moveWithPattern
 }) => {
   const heli =
@@ -16,14 +16,15 @@ export const backgroundHeli = ({ existing = false } = {}) => async ({
       z: -300,
       defaultVelocity: 70
     });
-  call(heli.showState, "flying");
+  showState(heli, "flying");
   const movement = moveWithPattern(heli, "intro.HeliBackground");
   await movement.process;
 };
 
 export const heliAttack = ({ existing = false } = {}, heliAudio) => async ({
   spawn,
-  call,
+  showState,
+  allowDamage,
   moveWithPattern,
   waitForEvent,
   moveTo,
@@ -39,7 +40,7 @@ export const heliAttack = ({ existing = false } = {}, heliAudio) => async ({
       z: -300,
       defaultVelocity: 70
     });
-  call(heli.showState, "flying");
+  showState(heli, "flying");
   let heliFleeing;
   waitForEvent(heli, "Dead", async () => {
     const movement = moveWithPattern(
@@ -99,8 +100,8 @@ export const heliAttack = ({ existing = false } = {}, heliAudio) => async ({
       z: -280,
       defaultVelocity: 200
     });
-  call(drone.showState, "eyeMove");
-  await call(heli.allowDamage, { health: 10 });
+  showState(drone, "eyeMove");
+  await allowDamage(heli, { health: 10 });
   const movement = moveWithPattern(drone, "intro.DroneBackground");
   await movement.process;
 

@@ -3,14 +3,20 @@ import { isPaused } from "src/lib/core/pauseToggle";
 import { addEffect, normalize, processEffects } from "src/lib/effects";
 
 const applyHitFlash = (entity, onOff) => {
+  if (onOff && entity._isFlashing > 0) return;
+  if (!onOff && entity._isFlashing < 1) return;
+  entity._isFlashing = onOff ? 2 : 0;
+  entity._isFlashing--;
+  const bool = entity._isFlashing > 0;
+
   entity.forEachPart
     ? entity.forEachPart(part =>
         part.attr({
-          hitFlash: onOff ? { _red: 1, _green: 1, _blue: 1 } : false
+          hitFlash: bool ? { _red: 0.9, _green: 0.9, _blue: 0.9 } : false
         })
       )
     : entity.attr({
-        hitFlash: onOff ? { _red: 1, _green: 1, _blue: 1 } : false
+        hitFlash: bool ? { _red: 0.9, _green: 0.9, _blue: 0.9 } : false
       });
 };
 
@@ -93,7 +99,10 @@ Crafty.c(DamageSupport, {
     /**
      * TODO: Split behavior of 'force' from the rest
      */
-    if (!this.effects) return;
+    if (!this.effects || this.effects.length === 0) {
+      applyHitFlash(this, false);
+      return;
+    }
     const changes = processor(this, dt);
     if (changes === false) {
       applyHitFlash(this, false);

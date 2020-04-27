@@ -5,7 +5,9 @@ export const helicopter = pattern => async ({
   call,
   waitForEvent,
   wait,
-  moveWithPattern
+  allowDamage,
+  moveWithPattern,
+  showState
 }) => {
   const heli = spawn("Helicopter", {
     location: {
@@ -14,19 +16,21 @@ export const helicopter = pattern => async ({
     },
     defaultVelocity: 100
   });
-  heli.addComponent("SolidCollision").addComponent("PlayerEnemy");
-  await call(heli.allowDamage, { health: 600 });
+  heli
+    .addCollisionComponent("SolidCollision")
+    .addCollisionComponent("PlayerEnemy");
+  await allowDamage(heli, { health: 600 });
   const heliAudio = playAudio("helicopter", { volume: 0.01 });
   heliAudio.setVolume(2.0, 2000);
   await wait(2000);
-  call(heli.showState, "shooting");
+  showState(heli, "shooting");
 
   const movement = moveWithPattern(heli, pattern);
 
   waitForEvent(heli, "Dead", async () => {
     movement.abort();
     heliAudio.stop();
-    await call(heli.showState, "dead");
+    await showState(heli, "dead");
     await call(heli.activateGravity);
   });
   waitForEvent(heli, "Remove", async () => {

@@ -310,6 +310,7 @@ Crafty.c(Composable, {
   init() {
     this.appliedDefinition = definitionStructure;
     this.composableParts = [];
+    this.collisionComponents = [];
     this.gradientParts = [];
     this.currentAttachHooks = {};
     this.currentZ = this.z;
@@ -724,6 +725,36 @@ Crafty.c(Composable, {
 
   getElementByKey(key) {
     return getSpriteByKey(this, key);
+  },
+
+  addCollisionComponent(c, passthrough = []) {
+    this.collisionComponents.push(c);
+    if (this.has("Collision") || passthrough.length > 0) {
+      this.addComponent(c);
+    }
+    this.composableParts.forEach(
+      p =>
+        p.has("Collision") &&
+        (passthrough.length > 0
+          ? passthrough.forEach(
+              fName =>
+                (p[fName] = function(...args) {
+                  this.root[fName](...args);
+                })
+            )
+          : p.addComponent(c))
+    );
+
+    return this;
+  },
+
+  clearCollisionComponents() {
+    this.collisionComponents.forEach(c => this.removeComponent(c));
+    this.composableParts.forEach(p =>
+      this.collisionComponents.forEach(c => p.removeComponent(c))
+    );
+    this.collisionComponents = [];
+    return this;
   },
 
   async displayFrame(frameName, duration = 0, easing = undefined) {

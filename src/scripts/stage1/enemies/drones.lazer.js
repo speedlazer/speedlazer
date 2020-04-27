@@ -2,8 +2,9 @@ import { paths } from "data";
 
 const droneFlight = (pattern, yOffset = 0) => async ({
   spawn,
-  call,
+  showState,
   waitForEvent,
+  allowDamage,
   moveWithPattern
 }) => {
   const flyPattern = paths(pattern);
@@ -15,12 +16,12 @@ const droneFlight = (pattern, yOffset = 0) => async ({
     defaultVelocity: 400
   });
 
-  await call(drone.allowDamage, { health: 30 });
+  await allowDamage(drone, { health: 30 });
   const movement = moveWithPattern(drone, pattern);
 
   waitForEvent(drone, "Dead", async () => {
     movement.abort();
-    await call(drone.showState, "dead");
+    await showState(drone, "dead");
     drone.destroy();
   });
 

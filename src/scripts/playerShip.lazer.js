@@ -4,9 +4,10 @@ import ControlScheme from "src/components/player/ControlScheme";
 
 export const playerShip = ({ existing = false } = {}) => async ({
   spawn,
-  call,
   exec,
   waitForEvent,
+  allowDamage,
+  showState,
   loseLife
 }) => {
   const player = Crafty("Player").get(0);
@@ -20,9 +21,9 @@ export const playerShip = ({ existing = false } = {}) => async ({
       defaultVelocity: 400
     });
   if (!player.invincible) {
-    await call(ship.allowDamage, { health: 50 });
+    await allowDamage(ship, { health: 50 });
   }
-  call(ship.showState, "flying");
+  showState(ship, "flying");
 
   // TODO: Refactor adding these components to the entity definition
   ship.addComponent(ShipControls, ShipCollision);
@@ -33,7 +34,7 @@ export const playerShip = ({ existing = false } = {}) => async ({
 
   waitForEvent(ship, "Dead", async () => {
     ship.attr({ disableControls: true, vx: 0, vy: 0 });
-    await call(ship.showState, "dead");
+    await showState(ship, "dead");
     ship.destroy();
     await loseLife();
     exec(playerShip());

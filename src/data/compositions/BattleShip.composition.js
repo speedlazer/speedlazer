@@ -41,14 +41,8 @@ export default {
         "mineCannon",
         { x: 120, y: 48, z: 8, attachAlign: ["bottom", "center"] }
       ],
-      [
-        "deckGun1",
-        { x: 356, y: 100, z: 20, attachAlign: ["bottom", "center"] }
-      ],
-      [
-        "deckGun2",
-        { x: 866, y: 100, z: 20, attachAlign: ["bottom", "center"] }
-      ],
+      ["deckGun1", { x: 356, y: 90, z: 20, attachAlign: ["bottom", "center"] }],
+      ["deckGun2", { x: 866, y: 90, z: 20, attachAlign: ["bottom", "center"] }],
       ["cabin1", { x: 294, y: 24, z: 6, attachAlign: ["bottom", "left"] }],
       ["heliPlace1", { x: 540, y: 24, z: 2, attachAlign: ["bottom", "left"] }],
       ["heliPlace2", { x: 700, y: 24, z: 1, attachAlign: ["bottom", "left"] }],

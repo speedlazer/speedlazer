@@ -33,6 +33,16 @@ const entityFunctions = (_, state) => ({
   displayFrame: async (entity, frameName, duration, easing = LINEAR) => {
     await entity.displayFrame(frameName, duration, easing);
   },
+  showState: async (entity, state, duration, easing = LINEAR) => {
+    await entity.showState(state, duration, easing);
+  },
+  showAnimation: async (entity, animation) => {
+    await entity.playAnimation(animation);
+  },
+  allowDamage: (entity, settings) => {
+    entity.addCollisionComponent("DamageSupport", ["processDamage"]);
+    entity.allowDamage(settings);
+  },
   moveWithPattern: (entity, pattern, velocity = null, easing = LINEAR) => {
     const flyPattern = paths(pattern);
     return move(entity, flyPattern, velocity, easing, state);
