@@ -206,6 +206,7 @@
                     "h": { "type": "integer" },
                     "x": { "type": "integer" },
                     "y": { "type": "integer" },
+                    "z": { "type": "integer" },
                     "rotation": { "type": "number" },
                     "horizon": {
                       "type": "array",
@@ -267,7 +268,10 @@
               "properties": {
                 "repeat": { "type": "boolean" },
                 "duration": { "type": "integer", "minimum": 0 },
-                "easing": { "type": "string", "enum": ["linear"] },
+                "easing": {
+                  "type": "string",
+                  "enum": ["linear", "easeOutQuad", "easeInQuad"]
+                },
                 "after": {
                   "type": "object",
                   "properties": {
@@ -278,9 +282,13 @@
                 "startEase": {
                   "type": "object",
                   "properties": {
-                    "easing": { "type": "string", "enum": ["linear"] },
+                    "easing": {
+                      "type": "string",
+                      "enum": ["linear", "easeOutQuad", "easeInQuad"]
+                    },
                     "duration": { "type": "integer", "minimum": 0 }
                   },
+                  "required": ["duration"],
                   "additionalProperties": false
                 },
                 "timer": { "type": "string", "enum": ["global"] },
@@ -313,6 +321,7 @@
                   }
                 }
               },
+              "required": ["timeline", "duration"],
               "additionalProperties": false
             }
           },

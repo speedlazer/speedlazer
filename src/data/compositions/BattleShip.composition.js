@@ -77,6 +77,7 @@ export default {
       width: 192,
       height: 130
     },
+    hitbox: [0, 128, 0, 50, 32, 32, 32, 0, 193, 0, 193, 128],
     sprites: [
       [
         "aircraftCarrierCabinEnd",

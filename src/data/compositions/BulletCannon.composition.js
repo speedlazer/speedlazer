@@ -56,8 +56,44 @@ export default {
       up: {
         barrel: { rotation: 90 }
       },
+      dead1: {
+        barrel: { rotation: -90, y: -100, x: 0 }
+      },
+      dead2: {
+        barrel: { rotation: -180, y: -5, x: -40, z: -2 }
+      },
+      dead3: {
+        barrel: { rotation: -180, y: -15, x: -40, z: -2 }
+      },
       mirrored: {
         flipX: true
+      }
+    },
+    animations: {
+      dead: {
+        duration: 1000,
+        startEase: { duration: 250, easing: "easeOutQuad" },
+        easing: "easeInQuad",
+        timeline: [
+          {
+            start: 0,
+            end: 0.5,
+            startFrame: "dead1",
+            endFrame: "dead2"
+          },
+          {
+            start: 0.5,
+            end: 0.75,
+            startFrame: "dead2",
+            endFrame: "dead3"
+          },
+          {
+            start: 0.75,
+            end: 1.0,
+            startFrame: "dead3",
+            endFrame: "dead2"
+          }
+        ]
       }
     }
   }
