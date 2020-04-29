@@ -95,6 +95,18 @@ Crafty.c(ParticleEmitter, {
       _h: Crafty.viewport.height
     };
     this.trigger("Invalidate");
+    this.bind("Freeze", () => {
+      this.stopEmission();
+    });
+    this.bind("Unfreeze", () => {
+      this.startEmission();
+    });
+    this.bind("Change", changes => {
+      if (Object.prototype.hasOwnProperty.call(changes, "angle")) {
+        this.particleSettings.currentAngle =
+          this.particleSettings.angle + changes.angle;
+      }
+    });
   },
 
   events: {

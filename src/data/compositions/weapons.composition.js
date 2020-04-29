@@ -17,6 +17,15 @@ export default {
     hitbox: [2, 12, 28, 12, 28, 18, 2, 18],
     sprites: [["lightBullet", { z: -2 }]]
   },
+  "weapons.laser": {
+    attributes: {
+      width: 700,
+      height: 8,
+      ro: [4, 4]
+    },
+    hitbox: [2, 3, 700, 3, 700, 5, 2, 5],
+    sprites: [["lightBullet", { x: -10, h: 8, w: 700, z: -2 }]]
+  },
   "player.bullet": {
     attributes: {
       width: 52,

@@ -34,6 +34,7 @@ const part = async ({
     () => introAnimation.waitTillCheckpoint(3),
     async () => {
       await wait(1500);
+      exec(playerShip({ existing: true }));
       await say(
         "General",
         "Let us escort you to the factory to install\n" +
@@ -50,8 +51,6 @@ const part = async ({
   showHUD();
   const ready = bigText("Get ready", { color: "#FF0000" });
   const blink = ready.blink(200, 4);
-
-  exec(playerShip({ existing: true }));
 
   let helicopter;
 

@@ -34,6 +34,10 @@ export default {
         deckGun2: {
           entity: "BulletCannon"
         },
+        deckGun3: {
+          entity: "LaserCannon",
+          state: "mirrored"
+        },
         hatch1: {
           composition: "shipHatch",
           attachments: {

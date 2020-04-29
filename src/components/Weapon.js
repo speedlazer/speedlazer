@@ -118,9 +118,11 @@ Crafty.c(Bullet, {
       );
     });
 
-    this.unbind("EnterFrame", this._updateBullet);
-    this.bulletTime = 0;
-    this.freeze();
+    if (collisionConfig.remove !== false) {
+      this.unbind("EnterFrame", this._updateBullet);
+      this.bulletTime = 0;
+      this.freeze();
+    }
   },
 
   bullet(weaponDefinition, settings, target) {
@@ -278,7 +280,7 @@ const getItemFromPool = itemDefinition => {
   }
   if (itemDefinition.particles) {
     const particleData = particles(itemDefinition.particles);
-    Crafty.e(ParticleEmitter).particles(particleData, spawn);
+    spawn.addComponent(ParticleEmitter).particles(particleData);
   }
   if (itemDefinition.entity) {
     spawn.addComponent(EntityDefinition).applyDefinition(itemDefinition.entity);

@@ -3,10 +3,11 @@ import gameStructure from "src/scripts";
 import { stopMusic } from "src/lib/audio";
 
 import Player from "src/components/player/Player";
+const DEFAULT_TAGS = ["campaign"];
 
 Crafty.defineScene(
   "Game",
-  async function({ start = null } = {}) {
+  async function({ start = null, tags = DEFAULT_TAGS } = {}) {
     Crafty.createLayer("UILayerDOM", "DOM", {
       scaleResponse: 0,
       yResponse: 0,
@@ -31,8 +32,11 @@ Crafty.defineScene(
         if (!started && start !== null && start !== item.name) {
           continue;
         }
+        if (!tags.every(tag => item.tags[tag] === true)) {
+          continue;
+        }
         /* eslint-env node */
-        if (item.wip === true && process.env.APP_ENV !== "development") {
+        if (item.tags.wip === true && process.env.APP_ENV !== "development") {
           continue;
         }
         started = true;

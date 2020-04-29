@@ -58,7 +58,7 @@ class Spritesheets extends Component {
           <div>
             <Menu
               items={spritesheets.map(map => [
-                map.name,
+                `${map.name} (${Object.keys(map.map.map).length})`,
                 `/sprites/${map.name}`
               ])}
             />
