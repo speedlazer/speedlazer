@@ -107,13 +107,16 @@ Crafty.defaultShader(
 
       let overrideMode = 0.0;
       if (ent.overrideColor != null) {
-        overrideMode = 1.0;
+        overrideMode = 1.0 + ent.overrideColorStrength;
       }
       if (ent.overrideColorMode === "partial") {
-        overrideMode = 2.0;
+        overrideMode = 4.0 + ent.overrideColorStrength;
+      }
+      if (ent.overrideColorMode === "none") {
+        overrideMode = 0.0;
       }
       if (ent.hitFlash) {
-        overrideMode = 3.0;
+        overrideMode = 6.0;
       }
 
       e.program.writeVector(

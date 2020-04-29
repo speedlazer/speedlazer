@@ -48,14 +48,15 @@ void main() {
   mediump float yCoord = (vTextureCoord.y - vSpriteDimensions.y) / vSpriteDimensions.a;
   mediump float mixFactor = (vGradient.x * (1.0 - yCoord)) + (vGradient.y * yCoord);
 
-  mediump float lightness = (0.2126*texelColor.r + 0.7152*texelColor.g + 0.0722*texelColor.b);
-  if (vOverrideColor.a == 1.0) {
-    texelColor = vec4(vOverrideColor.rgb * (lightness * 1.3), texelColor.a);
+  mediump float lightness = (0.2126 * texelColor.r + 0.7152 * texelColor.g + 0.0722 * texelColor.b);
+  if (vOverrideColor.a >= 1.0 && vOverrideColor.a <= 2.0) {
+    mediump float overrideLightness = (0.2126 * vOverrideColor.r + 0.7152 * vOverrideColor.g + 0.0722 * vOverrideColor.b);
+    texelColor = mix(texelColor, vec4(vOverrideColor.rgb * (lightness + overrideLightness), texelColor.a), vOverrideColor.a - 1.0);
   }
-  if (vOverrideColor.a == 3.0) {
+  if (vOverrideColor.a == 6.0) {
     texelColor = vec4(vOverrideColor.rgb, texelColor.a);
   }
-  if (vOverrideColor.a == 2.0) {
+  if (vOverrideColor.a >= 4.0 && vOverrideColor.a <= 5.0) {
     vec3 texelHSV = rgb2hsv(texelColor.rgb);
     if ((texelHSV.x < .84) && (texelHSV.x > .82)) {
       vec3 overrideHSV = rgb2hsv(vOverrideColor.rgb);
@@ -63,7 +64,7 @@ void main() {
       texelHSV.y *= overrideHSV.y;
       texelHSV.z *= overrideHSV.z;
       vec3 texelRGB = hsv2rgb(texelHSV);
-      texelColor = vec4(texelRGB.rgb, texelColor.a);
+      texelColor = mix(texelColor, vec4(texelRGB.rgb, texelColor.a), vOverrideColor.a - 4.0);
     }
   }
 

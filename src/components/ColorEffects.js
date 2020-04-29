@@ -1,8 +1,20 @@
 import isObject from "lodash/isObject";
 
-const component = "ColorEffects";
+const Component = "ColorEffects";
 
-Crafty.c(component, {
+Crafty.c(Component, {
+  init() {
+    this.attr({
+      overrideColor: {
+        _red: 0,
+        _green: 0,
+        _blue: 0
+      },
+      overrideColorMode: "none",
+      overrideColorStrength: 0
+    });
+  },
+
   colorDesaturation(color) {
     if (color === null) {
       return this;
@@ -20,7 +32,7 @@ Crafty.c(component, {
   },
 
   // mode: 'all', 'partial'
-  colorOverride(color, mode = "all") {
+  colorOverride(color, mode = "all", strength = 1.0) {
     if (color == null) {
       return this;
     }
@@ -36,7 +48,8 @@ Crafty.c(component, {
         _green: c._green / 255,
         _blue: c._blue / 255
       },
-      overrideColorMode: mode
+      overrideColorMode: mode,
+      overrideColorStrength: strength
     });
 
     this.trigger("Invalidate");
@@ -44,7 +57,7 @@ Crafty.c(component, {
   },
 
   clearColorOverride() {
-    this.attr({ overrideColor: null, overrideColorMode: "all" });
+    this.attr({ overrideColorMode: "none" });
     this.trigger("Invalidate");
     return this;
   },
@@ -55,4 +68,4 @@ Crafty.c(component, {
   }
 });
 
-export default component;
+export default Component;

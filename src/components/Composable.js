@@ -10,6 +10,7 @@ import ColorEffects from "src/components/ColorEffects";
 import Flipable from "src/components/utils/flipable";
 import { globalStartTime } from "src/lib/time";
 import { easingFunctions } from "src/constants/easing";
+import { convertColor } from "src/lib/color";
 
 const definitionStructure = {
   sprites: [],
@@ -42,6 +43,8 @@ const TWEEN_WHITELIST = [
   "rotation",
   "alpha",
   "maxAlpha",
+  "overrideColor",
+  "overrideColorStrength",
   "horizon",
   "scale",
   "scaleX",
@@ -62,6 +65,15 @@ const entityDeltaSettings = entity => settings =>
         case "y":
           result["dy"] = value;
           break;
+        case "overrideColor": {
+          if (value === null) {
+            result["overrideColorStrength"] = 0.0;
+          } else {
+            result["overrideColor"] = convertColor(value);
+            result["overrideColorStrength"] = 1.0;
+          }
+          break;
+        }
         case "horizon":
           result["topDesaturation"] = value[1];
           result["bottomDesaturation"] = value[0];
@@ -85,6 +97,7 @@ const generateDefaultFrame = definition => {
           scale: 1,
           topDesaturation: 0,
           bottomDesaturation: 0,
+          overrideColorStrength: 0,
           sprite,
           ...settings,
           x: 0,
@@ -168,6 +181,7 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
           scaleX: 1,
           scaleY: 1,
           horizon: [0, 0],
+          overrideColorStrength: 0.0,
           ...(originalSettings && originalSettings[1]),
           x: 0,
           y: 0
@@ -189,6 +203,11 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
             ...defaultSettings,
             ...sourceFrameData[keyName]
           });
+
+        if (tweenSettings.overrideColor) {
+          sprite.addComponent(ColorEffects);
+          sprite["overrideColorMode"] = "all";
+        }
 
         if (tweenSettings.topDesaturation !== 0) {
           sprite.addComponent(Horizon);

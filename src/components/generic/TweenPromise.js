@@ -15,7 +15,15 @@ export const tweenFn = (entity, next, current = undefined) => {
 
   return t => {
     transitions.forEach(({ key, current, newValue }) => {
-      entity[key] = (1 - t) * current + t * newValue;
+      if (key === "overrideColor") {
+        entity[key] = {
+          _red: (1 - t) * current._red + t * newValue._red,
+          _green: (1 - t) * current._green + t * newValue._green,
+          _blue: (1 - t) * current._blue + t * newValue._blue
+        };
+      } else {
+        entity[key] = (1 - t) * current + t * newValue;
+      }
     });
   };
 };

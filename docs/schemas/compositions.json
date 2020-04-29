@@ -208,6 +208,10 @@
                     "y": { "type": "integer" },
                     "z": { "type": "integer" },
                     "rotation": { "type": "number" },
+                    "overrideColor": {
+                      "type": ["string", "null"],
+                      "pattern": "^#[0-9a-f]{6}$"
+                    },
                     "horizon": {
                       "type": "array",
                       "minItems": 2,
