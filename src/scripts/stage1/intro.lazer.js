@@ -16,6 +16,7 @@ const part = async ({
   showHUD,
   parallel,
   exec,
+  onScriptClose,
   wait
 }) => {
   const text = bigText("Loading...");
@@ -24,6 +25,9 @@ const part = async ({
   await loadAudio(["effects", "hero"]);
   playAudio("hero");
   const heliAudio = playAudio("helicopter", { volume: 0.01 });
+  onScriptClose(() => {
+    heliAudio.stop();
+  });
   await setScrollingSpeed(100, 0, { instant: true });
   await setScenery("City.Ocean");
   setBackground("City.Sunrise", 0, 2);
@@ -34,7 +38,6 @@ const part = async ({
     () => introAnimation.waitTillCheckpoint(3),
     async () => {
       await wait(1500);
-      exec(playerShip({ existing: true }));
       await say(
         "General",
         "Let us escort you to the factory to install\n" +
@@ -48,6 +51,7 @@ const part = async ({
     }
   ]);
   heliAudio.setVolume(0.6, 4000);
+  exec(playerShip({ existing: true }));
   showHUD();
   const ready = bigText("Get ready", { color: "#FF0000" });
   const blink = ready.blink(200, 4);

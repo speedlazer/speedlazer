@@ -290,7 +290,7 @@ export default {
       },
       bullet: {
         spawnPosition: [0, 0.5],
-        velocity: 400,
+        velocity: 100,
         composition: "weapons.bullet",
         damage: [
           {
@@ -300,7 +300,11 @@ export default {
             name: "Laser"
           }
         ],
-        queue: [{ cleanOutOfScreen: true }, { duration: 13000 }],
+        queue: [
+          { cleanOutOfScreen: true },
+          { duration: 500, velocity: 500 },
+          { duration: 11000 }
+        ],
         collisions: {
           PlayerShip: {
             spawns: [["spark", {}]]

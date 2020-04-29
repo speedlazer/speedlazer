@@ -18,7 +18,7 @@ const wrap = (o, s) =>
 
 export const createScriptExecutionSpace = initialState => {
   let activeScript;
-  return script => {
+  return async script => {
     const currentScript = Math.random();
     activeScript = currentScript;
     const dsl = {
@@ -35,6 +35,10 @@ export const createScriptExecutionSpace = initialState => {
     );
     if (initialState.gameEnded === true) return;
 
-    return script(dsl);
+    try {
+      return await script(dsl);
+    } finally {
+      dsl.closeScript();
+    }
   };
 };

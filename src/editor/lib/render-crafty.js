@@ -86,6 +86,7 @@ Crafty.defineScene(
 );
 
 export const unmount = () => {
+  Crafty.trigger("SceneDestroy");
   Crafty("2D").destroy();
   Crafty.unbind("MeasureWaitTime");
   Crafty.unbind("MeasureFrameTime");
@@ -653,6 +654,9 @@ Crafty.defineScene(
     const runner = createScriptExecutionSpace(this.state);
     const item = gameStructure.find(({ name }) => name === stage);
 
+    Crafty.one("SceneDestroy", () => {
+      this.state.gameEnded = true;
+    });
     const p = new Promise(resolve =>
       Crafty(Player).each(function() {
         this.one("Activated", resolve);

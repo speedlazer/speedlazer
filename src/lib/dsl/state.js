@@ -1,6 +1,6 @@
 import TweenPromise from "src/components/generic/TweenPromise";
 
-const stateFunctions = (_, state) => {
+const stateFunctions = (dsl, state) => {
   const lives = (
     Crafty("HUDLives").get(0) ||
     Crafty.e(`2D, HUDLives, UILayerDOM, Text, HUD, ${TweenPromise}`)
@@ -13,8 +13,20 @@ const stateFunctions = (_, state) => {
         family: "Press Start 2P"
       })
   ).text(`Lives: ${state.lives}`);
+  const closeScripts = [];
+
+  const onSceneDestroy = () => dsl.closeScript();
+  Crafty.one("SceneDestroy", onSceneDestroy);
+
+  dsl.closeScript = () => {
+    Crafty.unbind("SceneDestroy", onSceneDestroy);
+    closeScripts.forEach(c => c());
+  };
 
   return {
+    onScriptClose: callback => {
+      closeScripts.push(callback);
+    },
     loseLife: () => {
       state.lives -= 1;
       if (state.lives < 0) {
