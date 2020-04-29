@@ -9,7 +9,7 @@ const gameStructure = [
   {
     name: "stage1.battleship",
     script: s1p3,
-    tags: { campaign: true, wip: true }
+    tags: { campaign: true }
   },
   { name: "end", script: end, tags: { campaign: true } }
 ];
