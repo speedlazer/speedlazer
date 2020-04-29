@@ -1,0 +1,84 @@
+{
+  "type": "object",
+  "patternProperties": {
+    "^[a-zA-Z0-9.]+$": {
+      "type": "object",
+      "properties": {
+        "emitter": {
+          "type": "object",
+          "properties": {
+            "w": { "type": "integer" },
+            "h": { "type": "integer" },
+            "amount": { "type": "integer" },
+            "duration": { "type": "integer" },
+            "fidelity": { "type": "string", "enum": ["high", "low"] }
+          },
+          "additionalProperties": false
+        },
+        "gravity": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {
+              "title": "x accelleration in px/sec",
+              "type": "integer"
+            },
+            {
+              "title": "y accelleration in px/sec",
+              "type": "integer"
+            }
+          ]
+        },
+        "particle": {
+          "type": "object",
+          "properties": {
+            "sprite": { "type": "string" },
+            "angles": {
+              "type": "array",
+              "items": { "type": "integer" },
+              "minItems": 1
+            },
+            "startColor": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": { "type": "number" }
+            },
+            "startColorRandom": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": { "type": "number" }
+            },
+            "endColor": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": { "type": "number" }
+            },
+            "endColorRandom": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": { "type": "number" }
+            },
+            "startSize": { "type": "integer" },
+            "startSizeRandom": { "type": "integer" },
+            "endSize": { "type": "integer" },
+            "endSizeRandom": { "type": "integer" },
+            "velocity": { "type": "integer" },
+            "velocityRandom": { "type": "integer" },
+            "duration": { "type": "integer" },
+            "durationRandom": { "type": "integer" },
+            "angle": { "type": "integer" },
+            "angleRandom": { "type": "integer" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

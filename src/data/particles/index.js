@@ -165,8 +165,7 @@ export default {
       w: 2,
       h: 2,
       amount: 200,
-      duration: 500,
-      mode: "expand"
+      duration: 500
     },
     gravity: [0, 40],
     particle: {
