@@ -444,7 +444,7 @@ export default {
             name: "Laser"
           }
         ],
-        queue: [{ duration: 4000 }],
+        queue: [{ cleanOutOfScreen: true }, { duration: 4000 }],
         collisions: {
           SolidCollision: {
             spawns: [
