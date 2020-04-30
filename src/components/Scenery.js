@@ -266,7 +266,6 @@ Crafty.c("Scenery", {
   setScrollVelocity({ vx, vy }) {
     this.movingDirection = { vx, vy };
     this.blocks.forEach(block => block.attr({ vx, vy }));
-    this.checkCountDown = this.blocks.length === 0 ? Infinity : 5;
   },
 
   setAltitude(newAltitude) {

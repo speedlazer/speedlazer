@@ -15,7 +15,7 @@ export const say = (speaker, text, { portrait = null } = {}) =>
     const bottom = Crafty.viewport.height - 20;
     const h = Math.max(4, lines.length + 1 + (speaker ? 1 : 0));
 
-    const back = Crafty.e("2D, UILayerWebGL, Color, Tween, Dialog")
+    const back = Crafty.e("UILayerWebGL, 2D, Color, Tween, Dialog")
       .attr({ w, h: h * 20, alpha: 0 })
       .color("#000000")
       .attr({
@@ -31,7 +31,7 @@ export const say = (speaker, text, { portrait = null } = {}) =>
     let portraitEntity = null;
     if (portraitDef) {
       portraitEntity = Crafty.e(
-        ["2D", "UILayerWebGL", Composable, "Dialog"].join(", ")
+        ["UILayerWebGL", "2D", Composable, "Dialog"].join(", ")
       )
         .attr({ x: 0, y: 0, w: 40, h: 40 })
         .compose(portraitDef, { autoStartAnimation: false });
@@ -55,7 +55,7 @@ export const say = (speaker, text, { portrait = null } = {}) =>
 
     let offset = 15;
     if (speaker) {
-      const speakerText = Crafty.e("2D, UILayerDOM, Text")
+      const speakerText = Crafty.e("UILayerDOM, 2D, Text")
         .attr({
           w: w - 20,
           x: back.x + 10 + avatarOffset,
@@ -76,7 +76,7 @@ export const say = (speaker, text, { portrait = null } = {}) =>
 
     lines.forEach((line, i) => {
       back.attach(
-        Crafty.e("2D, UILayerDOM, Text")
+        Crafty.e("UILayerDOM, 2D, Text")
           .attr({
             w: w - 20,
             x: back.x + 10 + avatarOffset,

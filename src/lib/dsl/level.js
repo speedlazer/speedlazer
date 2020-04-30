@@ -1,4 +1,5 @@
 import { Noise } from "noisejs";
+import { getOne } from "src/lib/utils";
 import { fadeIn, fadeOut } from "src/components/generic/ColorFade";
 import {
   setScenery,
@@ -62,9 +63,10 @@ const levelFunctions = state => ({
       Crafty.bind("EnterFrame", state.trauma.handler);
     }
   },
-  setScrollingSpeed: async (x, y, { speed = 50, instant = false } = {}) =>
+  setScrollingSpeed: async (x, y, { speed = 50, instant = false } = {}) => {
+    const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
     instant
-      ? setScrollVelocity({ vx: -x, vy: y })
+      ? scenery.setScrollVelocity({ vx: -x, vy: y })
       : new Promise(resolve => {
           const vPSec = speed / 1000;
           const { vx: startX, vy: startY } = getScrollVelocity();
@@ -82,11 +84,12 @@ const levelFunctions = state => ({
             }
             const vy = startY * (1 - v) + y * v;
             const vx = -startX * (1 - v) + x * v;
-            setScrollVelocity({ vx: -vx, vy });
+            scenery.setScrollVelocity({ vx: -vx, vy });
           };
 
           Crafty.bind("EnterFrame", f);
-        }),
+        });
+  },
   setAltitude: async (y, { speed = 50, instant = false } = {}) =>
     instant
       ? setAltitude(y)
