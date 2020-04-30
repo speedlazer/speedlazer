@@ -47,6 +47,44 @@ export const colorFadeFn = (
 };
 
 export const ColorFade = "ColorFade";
+
+const getFader = () =>
+  Crafty("ScreenFader").get(0) ||
+  Crafty.e(`UILayerWebGL, 2D, ScreenFader, ${ColorFade}`).attr({
+    z: 200,
+    x: 0,
+    y: 0,
+    w: Crafty.viewport.width,
+    h: Crafty.viewport.height
+  });
+
+export const fadeIn = (color = "#000000") => {
+  const fader = getFader();
+  fader.topColor(color, 1.0);
+  fader.bottomColor(color, 1.0);
+
+  return {
+    start: async duration => {
+      await fader.colorFade([color, 1.0], [color, 0.0], duration / 2);
+      await fader.colorFade([color, 0.0], [color, 0.0], duration / 2);
+      fader.destroy();
+    }
+  };
+};
+
+export const fadeOut = (color = "#000000") => {
+  const fader = getFader();
+  fader.topColor(color, 0.0);
+  fader.bottomColor(color, 0.0);
+
+  return {
+    start: async duration => {
+      await fader.colorFade([color, 1.0], [color, 0.0], duration / 2);
+      await fader.colorFade([color, 1.0], [color, 1.0], duration / 2);
+    }
+  };
+};
+
 Crafty.c(ColorFade, {
   required: [Animator, Gradient].join(","),
 

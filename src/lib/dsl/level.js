@@ -1,4 +1,5 @@
 import { Noise } from "noisejs";
+import { fadeIn, fadeOut } from "src/components/generic/ColorFade";
 import {
   setScenery,
   setScrollVelocity,
@@ -122,6 +123,8 @@ const levelFunctions = state => ({
       }
     }
   },
+  fadeIn: fadeIn,
+  fadeOut: fadeOut,
   setBackgroundCheckpointLimit: async limit => {
     setBackgroundCheckpointLimit(limit);
   },

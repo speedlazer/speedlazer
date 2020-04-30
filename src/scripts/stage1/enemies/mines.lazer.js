@@ -86,9 +86,9 @@ const makeSynchronization = amount => {
 };
 
 export const mineWave = () => async ({ exec }) => {
-  const amount = 10;
-  const gridX = [0.1, 0.25, 0.4, 0.55, 0.7, 0.85];
-  const gridY = [0.2, 0.4, 0.6, 0.8];
+  const amount = 6;
+  const gridX = [0.1, 0.3, 0.5, 0.7, 0.9];
+  const gridY = [0.2, 0.4, 0.8];
 
   const coords = shuffle(
     gridX.reduce((list, x) => list.concat(gridY.map(y => ({ x, y }))), [])
@@ -123,6 +123,7 @@ const battleShipMineStrike = (index, start, coord) => async ({
   await showState(mine, "rotate");
   await allowDamage(mine, { health: 40 });
   showState(mine, "blinking");
+  await wait(2000);
 
   await race([
     () =>

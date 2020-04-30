@@ -17,8 +17,10 @@ const part = async ({
   parallel,
   exec,
   onScriptClose,
+  fadeIn,
   wait
 }) => {
+  const fade = fadeIn();
   const text = bigText("Loading...");
   text.fadeIn(2000);
   await loadSpriteSheets(["mega-texture"]);
@@ -34,6 +36,8 @@ const part = async ({
   text.remove();
 
   const introAnimation = playAnimation("City.Intro");
+  await fade.start(1000);
+
   await parallel([
     () => introAnimation.waitTillCheckpoint(3),
     async () => {

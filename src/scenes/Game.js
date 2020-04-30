@@ -1,6 +1,7 @@
 import { createScriptExecutionSpace } from "src/lib/dsl";
 import gameStructure from "src/scripts";
 import { stopMusic } from "src/lib/audio";
+import { fadeOut } from "src/components/generic/ColorFade";
 
 import Player from "src/components/player/Player";
 const DEFAULT_TAGS = ["campaign"];
@@ -43,6 +44,8 @@ Crafty.defineScene(
         checkpoint = item.name;
         await runner(item.script);
       }
+      const fade = fadeOut();
+      await fade.start(2000);
       Crafty.enterScene("GameOver", {
         gameCompleted: !this.state.gameEnded,
         score: this.state.score
@@ -51,6 +54,8 @@ Crafty.defineScene(
       if (e.message !== "Game Over") {
         console.error(e);
       }
+      const fade = fadeOut();
+      await fade.start(2000);
       Crafty.enterScene("GameOver", {
         score: this.state.score,
         checkpoint

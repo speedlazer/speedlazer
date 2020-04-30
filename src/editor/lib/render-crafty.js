@@ -2,6 +2,7 @@ import spritesheets from "src/images";
 import audiosheets from "src/audio";
 import { animations } from "data";
 import { bigText } from "src/components/BigText";
+import { fadeOut } from "src/components/generic/ColorFade";
 import Composable from "src/components/Composable";
 import Weapon from "src/components/Weapon";
 import WayPointMotion from "src/components/WayPointMotion";
@@ -675,17 +676,19 @@ Crafty.defineScene(
       await runner(item.script);
       gameOver = this.state.gameEnded;
 
+      const fade = fadeOut();
       const start = bigText(gameOver ? "Game Over" : "Congratulations!", {
         color: gameOver ? "#FF0000" : "#FFFFFF"
       });
       await start.fadeIn(4000);
-      await new Promise(resolve => Crafty.e("Delay").delay(resolve, 4000));
+      await fade.start(4000);
     } catch (e) {
       if (e.message === "Game Over") {
         gameOver = true;
+        const fade = fadeOut();
         const start = bigText("Game Over", { color: "#FF0000" });
         await start.fadeIn(4000);
-        await new Promise(resolve => Crafty.e("Delay").delay(resolve, 4000));
+        await fade.start(4000);
       } else {
         console.error(e);
       }
