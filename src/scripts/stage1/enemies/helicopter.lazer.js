@@ -19,7 +19,7 @@ export const helicopter = pattern => async ({
   heli
     .addCollisionComponent("SolidCollision")
     .addCollisionComponent("PlayerEnemy");
-  await allowDamage(heli, { health: 600 });
+  await allowDamage(heli, { health: 800 });
   const heliAudio = playAudio("helicopter", { volume: 0.01 });
   heliAudio.setVolume(2.0, 2000);
   await wait(2000);
