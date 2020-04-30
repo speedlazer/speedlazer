@@ -58,7 +58,9 @@ export default {
       width: 512,
       height: 192
     },
-    sprites: [["waterMiddle", { z: -500, key: "middle", horizon: [0.8, 0.1] }]],
+    sprites: [
+      ["waterMiddle", { z: -500, w: 513, key: "middle", horizon: [0.8, 0.1] }]
+    ],
     frames: {
       wave: {
         middle: { y: 4 }
@@ -89,9 +91,9 @@ export default {
   },
   "ocean.horizon": {
     attributes: {
-      width: 256,
+      width: 260,
       height: 160
     },
-    sprites: [["waterHorizon", { z: -600, horizon: [1.0, 0.4] }]]
+    sprites: [["waterHorizon", { z: -600, w: 260, horizon: [1.0, 0.4] }]]
   }
 };
