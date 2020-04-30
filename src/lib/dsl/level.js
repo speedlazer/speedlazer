@@ -3,7 +3,6 @@ import { getOne } from "src/lib/utils";
 import { fadeIn, fadeOut } from "src/components/generic/ColorFade";
 import {
   setScenery,
-  setScrollVelocity,
   getScrollVelocity,
   setAltitude,
   getAltitude
