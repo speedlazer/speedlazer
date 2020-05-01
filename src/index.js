@@ -2,6 +2,7 @@ import "!style-loader!css-loader!postcss-loader!sass-loader!./styles/normalize.c
 import "!style-loader!css-loader!postcss-loader!sass-loader!./styles/style.css";
 import "./components";
 import "./scenes";
+import { setupControls } from "./setup-game";
 import { isPaused } from "./lib/core/pauseToggle";
 import Player from "src/components/player/Player";
 import AnalogKeyboardControls from "src/components/controls/AnalogKeyboardControls";
@@ -20,37 +21,14 @@ Crafty.paths({
 // Start crafty and set a background color so that we can see it's working
 const stage = document.getElementById("cr-stage");
 Crafty.init(1024, 576, stage); // PAL+
-//Crafty.pixelart(true)
 Crafty.background("#000000");
-Crafty.timer.FPS(1000 / 10); // 17ms per frame
+Crafty.timer.FPS(60); // 17ms per frame
 Crafty.e([Player, "Color"].join(", "))
   .attr({ name: "Player 1", z: 0, playerNumber: 1 })
   .setName("Player 1")
   .color("#FF0000");
 
-Crafty.e([AnalogKeyboardControls, PlayerAssignable].join(", ")).controls({
-  fire: Crafty.keys.SPACE,
-  switchWeapon: Crafty.keys.Z,
-  heavy: Crafty.keys.C,
-  shield: Crafty.keys.X,
-  up: Crafty.keys.UP_ARROW,
-  down: Crafty.keys.DOWN_ARROW,
-  left: Crafty.keys.LEFT_ARROW,
-  right: Crafty.keys.RIGHT_ARROW,
-  pause: Crafty.keys.P
-});
-
-Crafty.e([GamepadControls, PlayerAssignable].join(", ")).controls({
-  gamepadIndex: 0,
-  fire: 0,
-  switchWeapon: 2,
-  super: 4,
-  pause: 9,
-  up: 12,
-  down: 13,
-  left: 14,
-  right: 15
-});
+setupControls();
 
 let gameTime = 0;
 Crafty.bind("UpdateFrame", fd => {
