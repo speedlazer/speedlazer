@@ -120,6 +120,14 @@ export default {
     states: {
       flying: {
         animation: "flyingBackground"
+      },
+      shot: {
+        animation: "flyingBackground",
+        attachments: {
+          sparks: {
+            particles: "electric"
+          }
+        }
       }
     },
     habitats: [

@@ -46,6 +46,15 @@ export default {
         }
       ],
       [
+        "sparks",
+        {
+          x: 60,
+          y: 42,
+          z: 2,
+          attachAlign: ["center", "center"]
+        }
+      ],
+      [
         "smoke",
         {
           x: 60,

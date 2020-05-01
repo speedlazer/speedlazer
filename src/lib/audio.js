@@ -68,6 +68,12 @@ const currentMusic = () => {
   }
 };
 
+export const fadeMusicVolume = (volume = 0, duration = 1000) => {
+  if (playingPool.music !== null) {
+    return playingPool.music.setVolume(volume, duration);
+  }
+};
+
 export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
   const map = Object.values(audioData).find(e => e.map[sampleName]);
   const sampleData = map.map[sampleName];
@@ -75,15 +81,39 @@ export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
     if (currentMusic() === sampleName) return;
     // Cross fade if track is already playing??
     stopMusic();
+
+    const baseVolume =
+      sampleData.volume === undefined ? 1.0 : sampleData.volume;
+
+    const sampleVolume = volume * baseVolume;
     const source = context.createBufferSource();
     source.buffer = map.audioData;
-    source.connect(playingPool.musicGain);
+
+    const trackGain = context.createGain();
+    trackGain.connect(playingPool.musicGain);
+    trackGain.gain.setValueAtTime(
+      sampleVolume === 0 ? 0.01 : sampleVolume,
+      context.currentTime
+    );
+
+    source.connect(trackGain);
     source.start();
-    playingPool.music = { source, sampleName };
+
     const process = new Promise(resolve => (source.onended = resolve));
+
+    const setVolume = async (value, duration = 0) => {
+      const newVolume = value * baseVolume;
+      trackGain.gain.exponentialRampToValueAtTime(
+        newVolume === 0 ? 0.01 : newVolume,
+        context.currentTime + duration / 1000.0
+      );
+    };
+
+    playingPool.music = { source, sampleName, setVolume };
 
     return {
       stop: () => source.stop(),
+      setVolume,
       process
     };
   } else {
@@ -95,19 +125,22 @@ export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
     const sampleVolume = volume * baseVolume;
     if (sampleData.loop) {
       source.loop = true;
-      source.loopStart = sampleData.start / 1000;
-      source.loopEnd = sampleData.end / 1000;
+      source.loopStart = sampleData.start / 1000.0;
+      source.loopEnd = sampleData.end / 1000.0;
     }
 
     const sampleGain = context.createGain();
     sampleGain.connect(playingPool.effectsGain);
-    sampleGain.gain.setValueAtTime(sampleVolume, context.currentTime);
+    sampleGain.gain.setValueAtTime(
+      sampleVolume === 0 ? 0.01 : sampleVolume,
+      context.currentTime
+    );
 
     source.connect(sampleGain);
     source.start(
       context.currentTime,
-      sampleData.start / 1000,
-      source.loop ? undefined : sampleData.duration / 1000
+      sampleData.start / 1000.0,
+      source.loop ? undefined : sampleData.duration / 1000.0
     );
     const process = new Promise(resolve => (source.onended = resolve));
 
@@ -117,7 +150,7 @@ export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
         const newVolume = value * baseVolume;
         sampleGain.gain.exponentialRampToValueAtTime(
           newVolume === 0 ? 0.01 : newVolume,
-          context.currentTime + duration / 1000
+          context.currentTime + duration / 1000.0
         );
       },
       process

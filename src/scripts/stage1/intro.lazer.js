@@ -26,7 +26,7 @@ const part = async ({
   await loadSpriteSheets(["mega-texture"]);
   await loadAudio(["effects", "hero"]);
   playAudio("hero");
-  const heliAudio = playAudio("helicopter", { volume: 0.01 });
+  const heliAudio = playAudio("helicopter", { volume: 0 });
   onScriptClose(() => {
     heliAudio.stop();
   });
@@ -50,11 +50,11 @@ const part = async ({
       );
     },
     async () => {
-      await wait(1000);
-      heliAudio.setVolume(2.0, 1000);
+      await wait(500);
+      heliAudio.setVolume(2.0, 1500);
     }
   ]);
-  heliAudio.setVolume(0.6, 4000);
+  heliAudio.setVolume(0.6, 3000);
   exec(playerShip({ existing: true }));
   showHUD();
   const ready = bigText("Get ready", { color: "#FF0000" });

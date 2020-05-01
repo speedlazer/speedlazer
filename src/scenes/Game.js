@@ -1,6 +1,6 @@
 import { createScriptExecutionSpace } from "src/lib/dsl";
 import gameStructure from "src/scripts";
-import { stopMusic } from "src/lib/audio";
+import { stopMusic, fadeMusicVolume } from "src/lib/audio";
 import { fadeOut } from "src/components/generic/ColorFade";
 
 import Player from "src/components/player/Player";
@@ -45,6 +45,7 @@ Crafty.defineScene(
         await runner(item.script);
       }
       const fade = fadeOut();
+      fadeMusicVolume(0, 2000);
       await fade.start(2000);
       Crafty.enterScene("GameOver", {
         gameCompleted: !this.state.gameEnded,
@@ -55,6 +56,7 @@ Crafty.defineScene(
         console.error(e);
       }
       const fade = fadeOut();
+      fadeMusicVolume(0, 2000);
       await fade.start(2000);
       Crafty.enterScene("GameOver", {
         score: this.state.score,

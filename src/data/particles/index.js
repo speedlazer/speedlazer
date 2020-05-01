@@ -183,6 +183,31 @@ export default {
       endColorRandom: [0, 0, 0, 0]
     }
   },
+  electric: {
+    emitter: {
+      w: 70,
+      h: 15,
+      amount: 150,
+      duration: 1500
+    },
+    particle: {
+      sprite: "explosion7",
+      angle: 0,
+      angleRandom: 20,
+      duration: 800,
+      durationRandom: 0,
+      velocity: 20,
+      velocityRandom: 0,
+      startSize: 4,
+      startSizeRandom: 2,
+      endSize: 2,
+      endSizeRandom: 1,
+      startColor: [1.0, 1.0, 0.0, 0.4],
+      startColorRandom: [0, 0, 0, 0],
+      endColor: [0.2, 0.5, 1.0, 0.1],
+      endColorRandom: [0, 0, 0, 0]
+    }
+  },
   sparks: {
     emitter: {
       w: 2,

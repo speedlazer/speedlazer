@@ -43,6 +43,7 @@ export const heliAttack = ({ existing = false } = {}, heliAudio) => async ({
   showState(heli, "flying");
   let heliFleeing;
   waitForEvent(heli, "Dead", async () => {
+    showState(heli, "shot");
     const movement = moveWithPattern(
       heli,
       "intro.HeliBackgroundCrash",

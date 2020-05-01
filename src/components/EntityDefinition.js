@@ -82,6 +82,7 @@ const setEntityStructure = (root, entity, state, duration) => {
       const emitter = particles(state.particles);
       if (!entity.emitter) {
         const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
+        entity.attr({ w: emitter.emitter.w, h: emitter.emitter.h });
         entity.emitter = e;
         entity.emitting = state.particles;
       } else {
