@@ -1,3 +1,5 @@
+import { highscores } from "src/lib/highscores";
+
 const getNum = num => {
   switch (num) {
     case 0:
@@ -46,7 +48,7 @@ Crafty.defineScene(
         family: "Press Start 2P"
       });
 
-    const scores = Game.highscores();
+    const scores = highscores();
     let i = 0;
     Crafty.e("Delay").delay(
       function() {

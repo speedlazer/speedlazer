@@ -1,4 +1,4 @@
-//import Test from "src/lazerscripts/Test";
+import { highscores } from "src/lib/highscores";
 import Player from "src/components/player/Player";
 
 Crafty.defineScene(
@@ -54,7 +54,7 @@ Crafty.defineScene(
         -1
       );
 
-    const entry = Game.highscores()[0];
+    const entry = highscores()[0];
 
     Crafty.e("2D, DOM, Text")
       .attr({ x: 0, y: h * 0.85, w })
@@ -69,11 +69,7 @@ Crafty.defineScene(
 
     Crafty(Player).each(function() {
       this.reset();
-      this.one("Activated", () =>
-        Crafty.enterScene("Game", {
-          //script: Test
-        })
-      ); // checkpoint: value
+      this.one("Activated", () => Crafty.enterScene("Game", {}));
     });
 
     Crafty.e("Delay").delay(() => Crafty.enterScene("Scores"), 20000);

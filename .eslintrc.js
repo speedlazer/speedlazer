@@ -28,8 +28,6 @@ module.exports = {
     "react/display-name": "off"
   },
   globals: {
-    Game: false,
-    Crafty: false,
-    WhenJS: false
+    Crafty: false
   }
 };

@@ -1,6 +1,7 @@
 import clone from "lodash/clone";
 import sortBy from "lodash/sortBy";
 import CryptoJS from "crypto-js";
+import { highscores } from "src/lib/highscores";
 
 Crafty.defineScene(
   "GameOver",
@@ -26,7 +27,7 @@ Crafty.defineScene(
       });
 
     const collect = [];
-    let hs = clone(Game.highscores());
+    let hs = clone(highscores());
 
     const task = data => async () => {
       let s;

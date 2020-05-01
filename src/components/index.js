@@ -7,7 +7,6 @@ import "./ColorShader";
 import "./Composable";
 import "./DamageSupport";
 import "./ViewportLocked";
-import "./DebugInfo";
 import "./Gradient";
 import "./GravitySupport";
 import "./SubmergeSupport";
