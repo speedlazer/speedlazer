@@ -273,7 +273,7 @@ export default {
       explosion: {
         spawnPosition: [0.5, 0.5],
         velocity: [0, 0],
-        composition: "weapons.explosion",
+        composition: "weapons.largeExplosion",
         emitDamage: [
           {
             targets: ["Mine", "PlayerShip"],
@@ -331,7 +331,7 @@ export default {
       explosion: {
         spawnPosition: [0.5, 0.5],
         velocity: [0, 0],
-        composition: "weapons.explosion",
+        composition: "weapons.largeExplosion",
         emitDamage: [
           {
             targets: ["Mine", "PlayerShip"],

@@ -130,7 +130,7 @@ export default {
       width: 96,
       height: 96,
       scale: 1.75,
-      ro: [48, 48]
+      ro: [84, 84]
     },
     sprites: [["explosion1", { scale: 1, x: 0, y: 0, key: "main" }]],
     animations: {

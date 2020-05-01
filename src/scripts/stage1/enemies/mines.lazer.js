@@ -86,16 +86,20 @@ const makeSynchronization = amount => {
 };
 
 export const mineWave = () => async ({ exec }) => {
-  const amount = 6;
-  const gridX = [0.1, 0.3, 0.5, 0.7, 0.9];
-  const gridY = [0.2, 0.4, 0.8];
+  const amount = 7;
 
-  const coords = shuffle(
-    gridX.reduce((list, x) => list.concat(gridY.map(y => ({ x, y }))), [])
-  );
+  const coords = [
+    { x: 0.1, y: 0.2 },
+    { x: 0.3, y: 0.8 },
+    { x: 0.5, y: 0.2 },
+    { x: 0.5, y: 0.4 },
+    { x: 0.9, y: 0.2 },
+    { x: 0.9, y: 0.4 },
+    { x: 0.9, y: 0.8 }
+  ];
 
   const items = makeSynchronization(amount).map(async (res, index) => {
-    await exec(mineFlight(index, { x: 1.2, y: 1.1 }, coords.pop(), res));
+    await exec(mineFlight(index, { x: 1.2, y: 1.1 }, coords[index], res));
   });
   await Promise.all(items);
 };
