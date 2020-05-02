@@ -85,11 +85,12 @@ export default {
     spawnables: {
       laser: {
         spawnPosition: [0, 0.5],
-        velocity: 500, //2500,
+        attached: true,
+        velocity: 2500,
         composition: "weapons.laser",
         queue: [
           {
-            duration: 1250 // 240
+            duration: 240
           },
           { velocity: 0 },
           { duration: 3000 }

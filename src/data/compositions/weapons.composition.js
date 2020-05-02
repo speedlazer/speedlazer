@@ -19,12 +19,24 @@ export default {
   },
   "weapons.laser": {
     attributes: {
-      width: 700,
-      height: 8,
-      ro: [4, 4]
+      width: 4,
+      height: 5,
+      ro: [2, 3]
     },
-    hitbox: [2, 3, 700, 3, 700, 5, 2, 5],
-    sprites: [["lightBullet", { x: -10, h: 8, w: 700, z: -2 }]]
+    sprites: [
+      ["lightBullet", { x: 0, y: -7, h: 20, w: 4, z: -2, crop: [0, 15, 0, 15] }]
+    ],
+    frames: {
+      short: {
+        attributes: { w: 200 }
+      },
+      long: {
+        attributes: { w: 500 }
+      },
+      rotate: {
+        attributes: { rotation: 10 }
+      }
+    }
   },
   "player.bullet": {
     attributes: {

@@ -2,6 +2,7 @@ import { compositions, particles } from "data";
 import ParticleEmitter from "src/components/ParticleEmitter";
 import Composable from "src/components/Composable";
 import AngleMotion from "src/components/AngleMotion";
+import Beam from "src/components/Beam";
 import Steering from "src/components/Steering";
 import Flipable from "src/components/utils/flipable";
 import { EntityDefinition } from "src/components/EntityDefinition";
@@ -93,7 +94,7 @@ const calcHitPosition = (objA, objB) => {
 const Bullet = "Bullet";
 
 Crafty.c(Bullet, {
-  required: `2D, Motion, WebGL, ${AngleMotion}, ${Flipable}`,
+  required: `2D, Motion, WebGL, ${AngleMotion}, ${Beam}, ${Flipable}`,
 
   _bulletHit(collisionType, hitData) {
     const collisionConfig = this.bulletSettings.collisions[collisionType];
@@ -146,7 +147,12 @@ Crafty.c(Bullet, {
       settings.velocity
     );
 
-    this.attr({ angle: settings.angle, velocity: initialVelocity, target });
+    this.attr({
+      angle: settings.angle,
+      velocity: this.bulletSettings.attached ? 0 : initialVelocity,
+      beamVelocity: this.bulletSettings.attached ? initialVelocity : 0,
+      target
+    });
 
     // add lifecycle stuff, bullet entity pools, etc.
     this.bulletTime = 0;
@@ -172,7 +178,9 @@ Crafty.c(Bullet, {
 
       if (upcoming.delay <= 0 && upcoming.duration === 0) {
         if (upcoming.velocity !== undefined) {
-          this.attr({ velocity: upcoming.velocity });
+          this.bulletSettings.attached
+            ? this.attr({ beamVelocity: upcoming.velocity })
+            : this.attr({ velocity: upcoming.velocity });
         }
         if (upcoming.angle !== undefined) {
           this.attr({ angle: flipAngle(this.xFlipped, upcoming.angle) });
@@ -217,9 +225,14 @@ Crafty.c(Bullet, {
           upcoming.audio = null;
         }
         if (!upcoming.animateFn && upcoming.velocity !== undefined) {
-          const animateFn = tweenFn(this, {
-            velocity: upcoming.velocity
-          });
+          const animateFn = tweenFn(
+            this,
+            this.bulletSettings.attached
+              ? { beamVelocity: upcoming.velocity }
+              : {
+                  velocity: upcoming.velocity
+                }
+          );
           const easing = easingFunctions[upcoming.easing || "linear"];
           upcoming.animateFn = t => animateFn(easing(t));
         }

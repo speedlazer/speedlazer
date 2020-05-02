@@ -45,7 +45,7 @@ export const mount = domElem => {
   if (!domElem) return;
   Crafty.init(SCREEN_WIDTH, SCREEN_HEIGHT, domElem);
   Crafty.background("#000000");
-  Crafty.timer.FPS(1000 / 10); // 10ms per frame
+  Crafty.timer.FPS(60);
 
   let waitTime = 0;
   let frameTime = 0;
@@ -122,7 +122,14 @@ const createComposable = composition =>
 const addColor = (entity, color) =>
   entity.attach(
     Crafty.e("2D, WebGL, Color, SizeBox")
-      .attr({ x: entity.x, y: entity.y, w: entity.w, h: entity.h, z: -5000 })
+      .attr({
+        x: entity.x,
+        y: entity.y,
+        w: entity.w,
+        h: entity.h,
+        z: -5000,
+        rotation: entity.rotation
+      })
       .color(color)
   );
 

@@ -5,9 +5,6 @@ import "./scenes";
 import { setupControls } from "./setup-game";
 import { isPaused } from "./lib/core/pauseToggle";
 import Player from "src/components/player/Player";
-import AnalogKeyboardControls from "src/components/controls/AnalogKeyboardControls";
-import GamepadControls from "src/components/controls/GamepadControls";
-import PlayerAssignable from "src/components/player/PlayerAssignable";
 import { setGameSpeed, getGameSpeed } from "./lib/core/gameSpeed";
 import { setEffectVolume, setMusicVolume } from "src/lib/audio";
 
@@ -22,7 +19,7 @@ Crafty.paths({
 const stage = document.getElementById("cr-stage");
 Crafty.init(1024, 576, stage); // PAL+
 Crafty.background("#000000");
-Crafty.timer.FPS(60); // 17ms per frame
+Crafty.timer.FPS(60);
 Crafty.e([Player, "Color"].join(", "))
   .attr({ name: "Player 1", z: 0, playerNumber: 1 })
   .setName("Player 1")

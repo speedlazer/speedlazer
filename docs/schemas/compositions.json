@@ -194,6 +194,7 @@
                   "properties": {
                     "scale": { "type": "number" },
                     "rotation": { "type": "integer" },
+                    "w": { "type": "integer" },
                     "z": { "type": "integer" }
                   },
                   "additionalProperties": false

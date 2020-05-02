@@ -5,7 +5,7 @@ export default {
       attachments: {
         gun: {
           weapon: {
-            pattern: "cannon.gun",
+            pattern: "cannon.laser",
             target: "PlayerShip",
             angle: 0,
             barrel: "barrel"
