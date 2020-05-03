@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
 import { Title } from "editor/components/Title";
 import { Menu } from "editor/components/Menu";
+import { Source } from "editor/components/Source";
 import { Divider } from "editor/components/Divider";
 import { Text } from "editor/components/Text";
 import BulletPatternPreview from "./BulletPatternPreview";
@@ -120,6 +121,7 @@ class Weapons extends Component {
                 moveBlue={moveBlue}
                 swapped={swapped}
               />
+              <Source code={activeWeapon} />
             </div>
           )}
         </Divider>
