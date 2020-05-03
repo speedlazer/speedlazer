@@ -67,6 +67,12 @@
                   "scale": { "type": "number", "minimum": 0 },
                   "scaleX": { "type": "number", "minimum": 0 },
                   "scaleY": { "type": "number", "minimum": 0 },
+                  "stretch": {
+                    "type": "array",
+                    "minItems": 4,
+                    "maxItems": 4,
+                    "items": { "type": "number", "minimum": 0, "maximum": 1 }
+                  },
                   "hideAbove": { "type": "number" },
                   "hideBelow": { "type": "number" },
                   "flipX": { "type": "boolean" },
@@ -207,6 +213,8 @@
                     "h": { "type": "integer" },
                     "x": { "type": "integer" },
                     "y": { "type": "integer" },
+                    "rx": { "type": "integer" },
+                    "ry": { "type": "integer" },
                     "z": { "type": "integer" },
                     "rotation": { "type": "number" },
                     "overrideColor": {

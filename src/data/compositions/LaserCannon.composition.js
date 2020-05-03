@@ -95,25 +95,28 @@ export default {
       down: {
         barrel: { rotation: 0 }
       },
+      half: {
+        barrel: { rotation: 45 }
+      },
       up: {
         barrel: { rotation: 90 }
       },
       open: {
-        top: { rotation: -2, y: -5 },
-        bottom: { rotation: 2, y: 5 },
-        core1: { x: -3 },
+        top: { rotation: -2, ry: -5 },
+        bottom: { rotation: 2, ry: 5 },
+        core1: { rx: -3 },
         core2: { overrideColor: null }
       },
       charge: {
-        top: { rotation: -2, y: -5 },
-        bottom: { rotation: 2, y: 5 },
-        core1: { x: -3, overrideColor: "#ff4040" },
+        top: { rotation: -2, ry: -5 },
+        bottom: { rotation: 2, ry: 5 },
+        core1: { rx: -3, overrideColor: "#ff4040" },
         core2: { overrideColor: "#ff4040" }
       },
       close: {
-        top: { rotation: 0, y: 0 },
-        bottom: { rotation: 0, y: 0 },
-        core1: { x: 0 }
+        top: { rotation: 0, ry: 0 },
+        bottom: { rotation: 0, ry: 0 },
+        core1: { rx: 0 }
       },
       dead1: {
         barrel: { rotation: -90, y: -100, x: 0 },

@@ -8,6 +8,7 @@ import Delta2D from "src/components/generic/Delta2D";
 import Gradient from "src/components/Gradient";
 import ColorEffects from "src/components/ColorEffects";
 import Flipable from "src/components/utils/flipable";
+import { Stretchable, Stretcher } from "src/components/utils/Stretchable";
 import { globalStartTime } from "src/lib/time";
 import { easingFunctions } from "src/constants/easing";
 import { convertColor } from "src/lib/color";
@@ -40,6 +41,8 @@ const TWEEN_WHITELIST = [
   "z",
   "w",
   "h",
+  "rx",
+  "ry",
   "rotation",
   "alpha",
   "maxAlpha",
@@ -59,11 +62,20 @@ const entityDeltaSettings = entity => settings =>
         case "x":
           result["dx"] = entity.xFlipped ? -value : value;
           break;
+        case "y":
+          result["dy"] = value;
+          break;
         case "z":
           result["z"] = entity.z + value;
           break;
-        case "y":
-          result["dy"] = value;
+        case "rx":
+          result["drx"] = entity.xFlipped ? -value : value;
+          break;
+        case "ry":
+          result["dry"] = value;
+          break;
+        case "w":
+          result["sw"] = value;
           break;
         case "overrideColor": {
           if (value === null) {
@@ -150,6 +162,9 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
         const tweenSettings = deltaSettings({
           ...settings
         });
+        if (tweenSettings.sw !== undefined) {
+          entity.addComponent(Stretchable);
+        }
         const sourceTweenSettings =
           sourceFrameData &&
           deltaSettings({
@@ -195,7 +210,10 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
 
         const tweenSettings = deltaSettings({
           ...defaultSettings,
-          ...settings
+          ...settings,
+          ...(settings.rotation !== undefined && {
+            rotation: sprite._parent.rotation + settings.rotation
+          })
         });
         const sourceTweenSettings =
           sourceFrameData &&
@@ -314,7 +332,6 @@ Crafty.c(Composable, {
       this.currentZ = this.z;
     },
     Freeze() {
-      this.appliedDefinition;
       this.stopAnimation();
       this._children.forEach(child => child.freeze && child.freeze());
     },
@@ -610,10 +627,15 @@ Crafty.c(Composable, {
     const subElem = Crafty.e(
       [renderLayer, "2D", Delta2D, Scalable, spriteName].join(", ")
     );
-    this.applySpriteOptions(subElem, { ...spriteAttributes, ...options });
+    const opts = { ...spriteAttributes, ...options };
+    this.applySpriteOptions(subElem, opts);
     subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });
     subElem.root = this;
     this.attach(subElem);
+    if (opts.stretch) {
+      subElem.activateStretch(this);
+    }
+
     return subElem;
   },
 
@@ -627,6 +649,10 @@ Crafty.c(Composable, {
     if (options.scale) elem.attr({ scale: options.scale });
     if (options.scaleX) elem.attr({ scale: options.scaleX });
     if (options.scaleY) elem.attr({ scale: options.scaleY });
+    if (options.stretch) {
+      elem.addComponent(Stretcher);
+      elem.attr({ stretch: options.stretch });
+    }
     if (options.overrideColor) {
       elem.addComponent(ColorEffects);
       elem.colorOverride(options.overrideColor);

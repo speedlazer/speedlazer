@@ -75,25 +75,26 @@ export default {
       shotDelay: 6000,
       burstDelay: 1,
       spawns: [
-        ["laser", { angle: 0 }],
-        ["laser", { angle: 20 }],
-        ["laser", { angle: -20 }],
-        ["laser", { angle: 40 }],
-        ["laser", { angle: -40 }]
+        ["laser", { angle: 180 }],
+        ["laser", { angle: 200 }],
+        ["laser", { angle: 160 }],
+        ["laser", { angle: 220 }],
+        ["laser", { angle: 140 }]
       ]
     },
     spawnables: {
       laser: {
         spawnPosition: [0, 0.5],
         attached: true,
-        velocity: 2500,
+        velocity: 2000,
         composition: "weapons.laser",
         queue: [
           {
-            duration: 240
+            duration: 300
           },
           { velocity: 0 },
-          { duration: 3000 }
+          { duration: 1000 },
+          { duration: 1000, frame: "disappear" }
         ],
         damage: [
           {
@@ -105,6 +106,7 @@ export default {
         ],
         collisions: {
           PlayerShip: {
+            spawns: [["sparks", {}]],
             remove: false
           },
           WaterCollision: {
@@ -113,17 +115,17 @@ export default {
           }
         }
       },
-      spark: {
-        spawnPosition: "outside",
-        velocity: 0,
-        composition: "weapons.solidHit",
-        queue: [{ duration: 100, audio: "laser-hit" }]
-      },
       splash: {
         spawnPosition: "outside",
         velocity: 0,
         composition: "weapons.waterHit",
         queue: [{ duration: 305 }]
+      },
+      sparks: {
+        spawnPosition: "outside",
+        velocity: 0,
+        particles: "sparks",
+        queue: [{ duration: 500 }]
       }
     }
   },

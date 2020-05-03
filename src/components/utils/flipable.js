@@ -1,4 +1,4 @@
-import flipRotation from "src/lib/flipRotation";
+import { flipRotation } from "src/lib/rotation";
 
 const Component = "Flipable";
 

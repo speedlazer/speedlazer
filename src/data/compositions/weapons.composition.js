@@ -19,22 +19,75 @@ export default {
   },
   "weapons.laser": {
     attributes: {
-      width: 4,
+      width: 20,
       height: 5,
       ro: [2, 3]
     },
     sprites: [
-      ["lightBullet", { x: 0, y: -7, h: 20, w: 4, z: -2, crop: [0, 15, 0, 15] }]
+      [
+        "lightBullet",
+        {
+          alpha: 1,
+          x: 0,
+          y: -7,
+          h: 20,
+          w: 5,
+          z: -2,
+          crop: [0, 15, 0, 0],
+          key: "beam1"
+        }
+      ],
+      [
+        "lightBullet",
+        {
+          alpha: 1,
+          x: 5,
+          y: -7,
+          h: 20,
+          w: 10,
+          z: -2,
+          stretch: [0, 1, 0, 0],
+          crop: [0, 15, 0, 15],
+          key: "beam2"
+        }
+      ],
+      [
+        "lightBullet",
+        {
+          alpha: 1,
+          x: 15,
+          y: -7,
+          h: 20,
+          w: 5,
+          z: -2,
+          stretch: [0, 1, 0, 1],
+          crop: [0, 0, 0, 15],
+          key: "beam3"
+        }
+      ]
     ],
     frames: {
       short: {
         attributes: { w: 200 }
+      },
+      reset: {
+        beam1: { alpha: 1 },
+        beam2: { alpha: 1 },
+        beam3: { alpha: 1 }
+      },
+      disappear: {
+        beam1: { alpha: 0 },
+        beam2: { alpha: 0 },
+        beam3: { alpha: 0 }
       },
       long: {
         attributes: { w: 500 }
       },
       rotate: {
         attributes: { rotation: 10 }
+      },
+      rotate2: {
+        attributes: { rotation: -50 }
       }
     }
   },

@@ -1,6 +1,9 @@
+import { Stretchable } from "src/components/utils/Stretchable";
+
 const Beam = "Beam";
 
 Crafty.c(Beam, {
+  required: Stretchable,
   properties: {
     beamVelocity: {
       set: function(value) {
@@ -20,7 +23,8 @@ Crafty.c(Beam, {
   },
   events: {
     Freeze() {
-      this.w = this._initialBeamLength;
+      this.sw = this._initialBeamLength;
+      this._beamVelocity = 0;
     }
   },
 
@@ -34,7 +38,7 @@ Crafty.c(Beam, {
 
   _updateBeam({ dt }) {
     const add = this._beamVelocity * (dt / 1000);
-    this.w -= add;
+    this.sw += add;
   }
 });
 

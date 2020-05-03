@@ -9,7 +9,7 @@ import { EntityDefinition } from "src/components/EntityDefinition";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import { easingFunctions } from "src/constants/easing";
 import { playAudio } from "src/lib/audio";
-import flipRotation from "src/lib/flipRotation";
+import { flipRotation } from "src/lib/rotation";
 
 const flipAngle = (xFlipped, angle) => (xFlipped ? flipRotation(angle) : angle);
 
@@ -223,6 +223,10 @@ Crafty.c(Bullet, {
           const [sample, settings] = [].concat(upcoming.audio);
           playAudio(sample, settings);
           upcoming.audio = null;
+        }
+        if (upcoming.frame !== undefined) {
+          this.displayFrame(upcoming.frame, upcoming.duration);
+          upcoming.frame = null;
         }
         if (!upcoming.animateFn && upcoming.velocity !== undefined) {
           const animateFn = tweenFn(

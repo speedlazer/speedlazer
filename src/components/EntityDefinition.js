@@ -1,4 +1,4 @@
-import flipRotation from "src/lib/flipRotation";
+import { flipRotation } from "src/lib/rotation";
 import Composable from "src/components/Composable";
 import Weapon from "src/components/Weapon";
 import ParticleEmitter from "src/components/ParticleEmitter";
