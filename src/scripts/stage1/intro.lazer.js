@@ -83,14 +83,14 @@ const part = async ({
         },
         async () => {
           await parallel([
-            () => exec(droneWave(4, "drone.straight", 500, 0.1)),
+            () => exec(droneWave(2, "drone.straight", 300, 0.1)),
             async () => {
               await wait(1500);
-              await exec(droneWave(4, "drone.straight", 500, -0.1));
+              await exec(droneWave(2, "drone.straight", 300, -0.1));
             },
             async () => {
               await wait(3000);
-              await exec(droneWave(4, "drone.straight", 500, -0.3));
+              await exec(droneWave(2, "drone.straight", 300, -0.3));
             }
           ]);
           await exec(droneWave(5, "drone.pattern1", 500));
