@@ -72,7 +72,7 @@ export default {
     spawnRhythm: {
       initialDelay: [500, 150],
       burst: 1,
-      shotDelay: 6000,
+      shotDelay: 4000,
       burstDelay: 1,
       spawns: [
         ["laser", { angle: 180 }],
@@ -86,15 +86,15 @@ export default {
       laser: {
         spawnPosition: [0, 0.5],
         attached: true,
-        velocity: 2000,
+        velocity: 2500,
         composition: "weapons.laser",
         queue: [
           {
             duration: 300
           },
           { velocity: 0 },
-          { duration: 1000 },
-          { duration: 1000, frame: "disappear" }
+          { duration: 1000 }
+          //{ duration: 1000, frame: "disappear" }
         ],
         damage: [
           {
