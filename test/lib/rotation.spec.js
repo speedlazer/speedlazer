@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import flipRotation from "../../src/lib/flipRotation";
+import { flipRotation } from "../../src/lib/rotation";
 
 describe("flipRotation", () => {
   it("flips the rotation over the y axis", () => {
