@@ -12,7 +12,6 @@ const part = async ({
   setBackground,
   exec,
   showHUD
-  //wait
 }) => {
   const text = bigText("Loading...");
   text.fadeIn(2000);
@@ -29,8 +28,6 @@ const part = async ({
   exec(playerShip({ existing: true }));
 
   await exec(droneWave(5, "drone.pattern2", 500));
-  //await exec(droneWave(5, "drone.pattern1", 500));
-  //await exec(droneWave(5, "drone.pattern1", 500));
 
   await exec(battleship);
 };
