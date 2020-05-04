@@ -75,9 +75,14 @@ export default {
           alpha: 0.0
         }
       },
-      eyeAppear: {
+      eyeReset: {
         eye: {
           alpha: 0.0
+        }
+      },
+      eyeAppear: {
+        eye: {
+          alpha: 1.0
         }
       },
       damaged1: {
@@ -118,7 +123,7 @@ export default {
           {
             start: 0.0,
             end: 0.7,
-            startFrame: "default",
+            startFrame: "eyeAppear",
             endFrame: "eyeMove"
           },
           {
@@ -131,13 +136,13 @@ export default {
             start: 0.8,
             end: 0.9,
             startFrame: "eyeDisappear",
-            endFrame: "eyeAppear"
+            endFrame: "eyeReset"
           },
           {
             start: 0.9,
             end: 1,
-            startFrame: "eyeAppear",
-            endFrame: "default"
+            startFrame: "eyeReset",
+            endFrame: "eyeAppear"
           }
         ]
       }

@@ -96,7 +96,9 @@ const entityDeltaSettings = entity => settings =>
       return result;
     }, {});
 
-const generateDefaultFrame = definition => {
+const orDefault = (v, def) => (v === undefined ? def : v);
+
+const generateDefaultFrame = (entity, definition) => {
   const result = {};
   (definition.sprites || [])
     .filter(([, settings]) => settings.key)
@@ -128,7 +130,16 @@ const generateDefaultFrame = definition => {
           y: 0
         })
     );
-  result.attributes = definition.attributes;
+
+  result.attributes = {
+    w: definition.attributes.width,
+    h: definition.attributes.height,
+    rotation: orDefault(definition.attributes.rotation, 0),
+    scale: orDefault(definition.attributes.scale, 1)
+  };
+  if (entity.xFlipped === true) {
+    result.flipX = true;
+  }
   return result;
 };
 
@@ -147,7 +158,7 @@ const getHookSettings = (definition, name) =>
 
 const getFrameData = (entity, frameName) =>
   frameName === "default"
-    ? generateDefaultFrame(entity.appliedDefinition)
+    ? generateDefaultFrame(entity, entity.appliedDefinition)
     : frameName && entity.appliedDefinition.frames[frameName];
 
 const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
@@ -159,9 +170,20 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
   const fns = Object.entries(targetFrameData)
     .reduce((acc, [keyName, settings]) => {
       if (keyName === "attributes") {
+        const fixedSettings = {};
+        if (entity.scale !== undefined || settings.scale !== undefined) {
+          if (settings.w) {
+            fixedSettings.w = settings.w * (settings.scale || entity.scale);
+          }
+          if (settings.h) {
+            fixedSettings.h = settings.h * (settings.scale || entity.scale);
+          }
+        }
         const tweenSettings = deltaSettings({
-          ...settings
+          ...settings,
+          ...fixedSettings
         });
+
         if (tweenSettings.sw !== undefined) {
           entity.addComponent(Stretchable);
         }
@@ -309,6 +331,7 @@ const displaySpriteAnimationFn = (entity, animationDefinition) => {
     );
     const name = animationDefinition.sprites[spriteIndex];
     sprite.sprite(name);
+    sprite._spriteName = name;
   };
 };
 
