@@ -14,7 +14,7 @@ export default {
             { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn" },
             { key: "sky", start: 0.5, end: 1.0, targetFrame: "dawn2" },
             { start: 0.0, end: 0.5, targetBackgroundColor: "#030820" },
-            { start: 0.5, end: 1.0, targetBackgroundColor: "#0F1630" }
+            { start: 0.5, end: 1.0, targetBackgroundColor: "#0f1630" }
           ]
         }
       },
@@ -33,7 +33,7 @@ export default {
             { key: "sun", state: "large", relativeX: 0.9, relativeY: 0.7 }
           ]
         ],
-        backgroundColor: "#0F1630",
+        backgroundColor: "#0f1630",
         timeline: {
           defaultDuration: 60000,
           transitions: [
@@ -41,9 +41,9 @@ export default {
             { key: "sky", start: 0.0, end: 0.3, targetFrame: "dawn3" },
             { key: "sky", start: 0.3, end: 0.7, targetFrame: "dawn4" },
             { key: "sky", start: 0.7, end: 1.0, targetFrame: "dawn5" },
-            { start: 0.0, end: 0.3, targetBackgroundColor: "#191F3D" },
-            { start: 0.3, end: 0.85, targetBackgroundColor: "#27273D" },
-            { start: 0.85, end: 1.0, targetBackgroundColor: "#FD7321" },
+            { start: 0.0, end: 0.3, targetBackgroundColor: "#191f3d" },
+            { start: 0.3, end: 0.85, targetBackgroundColor: "#27273d" },
+            { start: 0.85, end: 1.0, targetBackgroundColor: "#fd7321" },
             {
               key: "stripe",
               start: 0.1,
@@ -83,14 +83,14 @@ export default {
             { key: "sun", state: "large", relativeX: 0.848, relativeY: 0.42 }
           ]
         ],
-        backgroundColor: "#FD7321",
+        backgroundColor: "#fd7321",
         timeline: {
           defaultDuration: 120000,
           transitions: [
             { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn6" },
             { key: "sky", start: 0.5, end: 1.0, targetFrame: "dawn7" },
-            { start: 0.0, end: 0.5, targetBackgroundColor: "#FDAB3A" },
-            { start: 0.5, end: 1.0, targetBackgroundColor: "#FCC67B" },
+            { start: 0.0, end: 0.5, targetBackgroundColor: "#fdab3a" },
+            { start: 0.5, end: 1.0, targetBackgroundColor: "#fcc67b" },
             { start: 0.0, end: 1.0, key: "sun", targetState: "full" },
             {
               key: "sun",
@@ -143,14 +143,14 @@ export default {
         entities: [
           ["Sun", { key: "sun", state: "full", relativeX: 0.8, relativeY: 0.3 }]
         ],
-        backgroundColor: "#FCC67B",
+        backgroundColor: "#fcc67b",
         timeline: {
           defaultDuration: 120000,
           transitions: [
             { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn8" },
             { key: "sky", start: 0.5, end: 1.0, targetFrame: "dawn9" },
-            { start: 0.0, end: 0.5, targetBackgroundColor: "#F3D7B1" },
-            { start: 0.5, end: 1.0, targetBackgroundColor: "#BABCD9" },
+            { start: 0.0, end: 0.5, targetBackgroundColor: "#f3d7b1" },
+            { start: 0.5, end: 1.0, targetBackgroundColor: "#babcd9" },
             { start: 0.0, end: 1.0, key: "sun", targetState: "default" },
             {
               key: "sun",
@@ -173,7 +173,7 @@ export default {
             { key: "sun", state: "default", relativeX: 0.4, relativeY: 0.1 }
           ]
         ],
-        backgroundColor: "#BABCD9",
+        backgroundColor: "#babcd9",
         timeline: {
           defaultDuration: 1000,
           transitions: []

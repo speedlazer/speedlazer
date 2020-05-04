@@ -1,5 +1,5 @@
 [
-  { "name": "animations" },
+  { "name": "animations", "schema": "docs/schemas/animations.json" },
   { "name": "compositions", "schema": "docs/schemas/compositions.json" },
   { "name": "entities" },
   { "name": "particles", "schema": "docs/schemas/particles.json" },
