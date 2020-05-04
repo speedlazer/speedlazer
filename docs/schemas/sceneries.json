@@ -1,0 +1,67 @@
+{
+  "type": "object",
+  "patternProperties": {
+    "^[A-Z][a-zA-Z0-9.]+$": {
+      "type": "object",
+      "properties": {
+        "width": { "type": "integer" },
+        "height": { "type": "integer" },
+        "left": { "type": "string", "pattern": "^[A-Z][a-zA-Z0-9.]+$" },
+        "right": { "type": "string", "pattern": "^[A-Z][a-zA-Z0-9.]+$" },
+        "backgrounds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": [{ "type": "string" }, { "type": "integer" }]
+          }
+        },
+        "altitudes": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "integer" }
+        },
+        "elements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "x": { "type": "integer" },
+              "y": { "type": "integer" },
+              "z": { "type": "integer" },
+              "w": { "type": "integer" },
+              "h": { "type": "integer" },
+              "distance": { "type": "number", "minimum": 0 },
+              "composition": {
+                "type": ["string", "array"],
+                "minItems": 2,
+                "maxItems": 2,
+                "items": [
+                  { "type": "string" },
+                  {
+                    "type": "object",
+                    "description": "Same as composition frame data"
+                  }
+                ]
+              },
+              "components": {
+                "type": "array",
+                "minItems": 1,
+                "items": { "type": "string" }
+              },
+              "attributes": { "type": "object" }
+            },
+            "required": ["x", "y"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["width", "height", "left", "right", "elements"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

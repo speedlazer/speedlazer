@@ -4,6 +4,6 @@
   { "name": "entities" },
   { "name": "particles", "schema": "docs/schemas/particles.json" },
   { "name": "paths", "schema": "docs/schemas/paths.json" },
-  { "name": "sceneries" },
+  { "name": "sceneries", "schema": "docs/schemas/sceneries.json" },
   { "name": "weapons" }
 ]
