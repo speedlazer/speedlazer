@@ -95,8 +95,16 @@ const Bullet = "Bullet";
 
 Crafty.c(Bullet, {
   required: `2D, Motion, WebGL, ${AngleMotion}, ${Beam}, ${Flipable}`,
+  init() {
+    this.cooldowns = {};
+  },
 
   _bulletHit(collisionType, hitData) {
+    if (this.cooldowns[collisionType]) {
+      return;
+    }
+    this.cooldowns[collisionType] = hitData.cooldown || 30;
+
     const collisionConfig = this.bulletSettings.collisions[collisionType];
     const firstObj = hitData[0].obj;
     const position = calcHitPosition(this, firstObj);
@@ -166,6 +174,14 @@ Crafty.c(Bullet, {
 
   _updateBullet({ dt }) {
     this.bulletTime += dt;
+    if (this.bulletSettings.collisions) {
+      Object.keys(this.bulletSettings.collisions).forEach(c => {
+        const v = this.cooldowns[c];
+        if (v !== undefined && v > 0) {
+          this.cooldowns[c] = v - dt;
+        }
+      });
+    }
 
     const upcoming = this.bulletSettings.queue[0];
     if (upcoming) {

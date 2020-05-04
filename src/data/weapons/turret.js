@@ -106,10 +106,12 @@ export default {
         ],
         collisions: {
           PlayerShip: {
+            cooldown: 300,
             spawns: [["sparks", {}]],
             remove: false
           },
           WaterCollision: {
+            cooldown: 300,
             spawns: [["splash", {}]],
             remove: false
           }
