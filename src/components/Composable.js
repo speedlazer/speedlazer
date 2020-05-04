@@ -362,6 +362,8 @@ Crafty.c(Composable, {
       this._children.forEach(child => child.unfreeze && child.unfreeze());
       if (this.getAnimation("default")) {
         this.playAnimation("default");
+      } else {
+        this.displayFrame("default");
       }
     }
   },
