@@ -95,6 +95,12 @@ const Bullet = "Bullet";
 
 Crafty.c(Bullet, {
   required: `2D, Motion, WebGL, ${AngleMotion}, ${Beam}, ${Flipable}`,
+  events: {
+    Freeze() {
+      this.cooldowns = {};
+    }
+  },
+
   init() {
     this.cooldowns = {};
   },
