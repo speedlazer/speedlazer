@@ -32,6 +32,11 @@ export default {
           }
         }
       },
+      charged: {
+        attachments: {
+          charge: null
+        }
+      },
       dead: {
         animation: "dead",
         audio: "explosion",

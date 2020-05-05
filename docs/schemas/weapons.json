@@ -1,0 +1,226 @@
+{
+  "type": "object",
+  "patternProperties": {
+    "^[a-zA-Z0-9.-]+$": {
+      "type": "object",
+      "properties": {
+        "spawnRhythm": {
+          "type": "object",
+          "properties": {
+            "spawns": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": [
+                  { "type": "string" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "angle": { "type": "integer" },
+                      "angleRange": {
+                        "type": "object",
+                        "properties": {
+                          "step": {
+                            "type": ["array", "integer"],
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": { "type": "integer" }
+                          },
+                          "from": {
+                            "type": ["array", "integer"],
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": { "type": "integer" }
+                          },
+                          "to": {
+                            "type": ["array", "integer"],
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": { "type": "integer" }
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "spawnBox": {
+                        "type": "object",
+                        "properties": {
+                          "w": { "type": "integer" },
+                          "h": { "type": "integer" }
+                        },
+                        "additionalProperties": false
+                      },
+                      "autoRotate": { "type": "boolean" }
+                    },
+
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "initialDelay": {
+              "type": ["array", "integer"],
+              "minItems": 2,
+              "maxItems": 2,
+              "items": { "type": "integer" }
+            },
+            "shotDelay": {
+              "type": ["array", "integer"],
+              "minItems": 2,
+              "maxItems": 2,
+              "items": { "type": "integer" }
+            },
+            "burstDelay": {
+              "type": ["array", "integer"],
+              "minItems": 2,
+              "maxItems": 2,
+              "items": { "type": "integer" }
+            },
+            "burst": {
+              "type": ["array", "integer"],
+              "minItems": 2,
+              "maxItems": 2,
+              "items": { "type": "integer" }
+            }
+          },
+          "additionalProperties": false
+        },
+        "spawnables": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9.-]+$": {
+              "type": "object",
+              "properties": {
+                "velocity": {
+                  "type": ["array", "integer"],
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": { "type": "integer" }
+                },
+                "composition": { "type": "string" },
+                "entity": { "type": "string" },
+                "attached": { "type": "boolean" },
+                "spawnPosition": {
+                  "oneOf": [
+                    {
+                      "type": "array",
+                      "minItems": 2,
+                      "maxItems": 2,
+                      "items": { "type": "number", "minimum": 0, "maximum": 1 }
+                    },
+                    { "type": "string", "enum": ["outside"] }
+                  ]
+                },
+                "queue": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "duration": {
+                        "type": ["array", "integer"],
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "items": { "type": "integer" }
+                      },
+                      "velocity": {
+                        "type": ["array", "integer"],
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "items": { "type": "integer" }
+                      },
+                      "cleanOutOfScreen": { "type": "boolean" },
+                      "aimOnTarget": { "type": "boolean" },
+                      "sight": { "type": "integer", "minimum": 0 },
+                      "steering": { "type": "integer", "minimum": 0 },
+                      "angle": { "type": "integer" },
+                      "autoRotate": { "type": "boolean" },
+                      "easing": { "type": "string", "enum": ["easeOutQuad"] },
+                      "frame": { "type": "string" },
+                      "audio": {
+                        "oneOf": [
+                          { "type": "string" },
+                          {
+                            "type": "array",
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": [
+                              { "type": "string" },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "volume": { "type": "number", "minimum": 0 }
+                                },
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "collisions": {
+                  "type": "object",
+                  "patternProperties": {
+                    "^[A-Z][a-zA-Z0-9]+$": {
+                      "type": "object",
+                      "properties": {
+                        "state": { "type": "string" },
+                        "remove": { "type": "boolean" },
+                        "cooldown": { "type": "integer" },
+                        "spawns": {
+                          "type": "array",
+                          "minItems": 1,
+                          "items": {
+                            "type": "array",
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": [
+                              { "type": "string" },
+                              {
+                                "type": "object",
+                                "additionalProperties": true
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "particles": { "type": "string" },
+                "damage": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                },
+                "emitDamage": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "aiming": { "type": "object", "additionalProperties": true }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
