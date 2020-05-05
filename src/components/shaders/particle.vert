@@ -1,5 +1,5 @@
 attribute vec2 aPosition;
-attribute vec2 aVelocity;
+attribute vec3 aVelocity;
 attribute vec3 aOrientation;
 attribute vec2 aLayer;
 attribute vec2 aSize;
@@ -31,6 +31,9 @@ void main() {
   pos = entityRotationMatrix * (pos - entityOrigin) + entityOrigin;
 
   float duration = uTimeOffset.x - aLife.x;
+  if (aVelocity.z == -1.0) {
+    duration = aLife.y - duration;
+  }
   float durationScale = duration / aLife.y;
 
   float dist = aVelocity.x * (duration / 1000.0);

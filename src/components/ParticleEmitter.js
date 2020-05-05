@@ -25,7 +25,11 @@ const spawnParticle = (entity, settings) => {
 
   return {
     aPosition: [x, y],
-    aVelocity: [speed, (angle * Math.PI) / 180],
+    aVelocity: [
+      speed,
+      (angle * Math.PI) / 180,
+      settings.emitterReverse ? -1 : 1
+    ],
     aOrientation: [x, y, 0],
     aSize: [startSize, endSize],
     aLife: [start, life, settings.gravity[0], settings.gravity[1]],
@@ -45,7 +49,7 @@ Crafty.defaultShader(
     particleFragmentShader,
     [
       { name: "aPosition", width: 2 },
-      { name: "aVelocity", width: 2 },
+      { name: "aVelocity", width: 3 },
       { name: "aOrientation", width: 3 },
       { name: "aLayer", width: 2 },
       { name: "aSize", width: 2 },
@@ -195,6 +199,7 @@ Crafty.c(ParticleEmitter, {
         h = 10,
         duration: emitterDuration = Infinity,
         warmed = false,
+        reverse: emitterReverse = false,
         fidelity = "low"
       },
       gravity = [0, 0],
@@ -238,6 +243,7 @@ Crafty.c(ParticleEmitter, {
       endColor,
       endColorRandom,
       emitterDuration,
+      emitterReverse,
       emitterFidelity: fidelity
     };
     if (attachTo) {

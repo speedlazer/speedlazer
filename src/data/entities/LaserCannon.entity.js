@@ -16,9 +16,22 @@ export default {
     },
     states: {
       mirrored: { frame: "mirrored" },
-      close: { frame: "close" },
+      close: {
+        frame: "close",
+        attachments: {
+          gun: null,
+          charge: null
+        }
+      },
       open: { frame: "open" },
-      charge: { frame: "charge" },
+      charge: {
+        frame: ["charge", { duration: 4000 }],
+        attachments: {
+          charge: {
+            particles: "laserCharge"
+          }
+        }
+      },
       dead: {
         animation: "dead",
         audio: "explosion",
@@ -30,6 +43,7 @@ export default {
               { emitter: { w: 10, h: 2, amount: 100, duration: 3000 } }
             ]
           },
+          charge: null,
           gun: null,
           explosion: {
             composition: "explosion",

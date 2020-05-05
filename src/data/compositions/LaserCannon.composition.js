@@ -72,6 +72,16 @@ export default {
         }
       ],
       [
+        "charge",
+        {
+          x: 62,
+          y: 15,
+          z: 2,
+          attachAlign: ["center", "left"],
+          attachTo: "barrel"
+        }
+      ],
+      [
         "smoke",
         {
           x: 80,

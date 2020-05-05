@@ -33,7 +33,11 @@ const setEntityStructure = (root, entity, state, duration) => {
     const composition = compositions(state.composition);
     entity.addComponent(Composable).compose(composition);
     if (!state.frame) {
-      tasks.push(entity.displayFrame("default", duration));
+      if (entity.getAnimation("default")) {
+        tasks.push(entity.playAnimation("default"));
+      } else {
+        tasks.push(entity.displayFrame("default", duration));
+      }
     }
     if (!state.animation) {
       entity.stopAnimation();

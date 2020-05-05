@@ -11,6 +11,7 @@
             "h": { "type": "integer" },
             "amount": { "type": "integer" },
             "duration": { "type": "integer" },
+            "reverse": { "type": "boolean" },
             "fidelity": { "type": "string", "enum": ["high", "low"] }
           },
           "additionalProperties": false
