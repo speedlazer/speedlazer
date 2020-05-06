@@ -142,7 +142,7 @@
     "explosion17": [27, 57, 3, 3],
     "explosion18": [30, 57, 3, 3],
 
-    "laserGunCore": [7, 48, 1, 1],
+    "laserGunCore": [7, 48, 2, 1],
     "laserGunHandle": [8, 48, 2, 1],
     "laserGunBarrel": [7, 49, 3, 1]
   }

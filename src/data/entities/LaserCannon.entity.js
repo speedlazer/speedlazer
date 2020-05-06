@@ -65,6 +65,17 @@ export default {
           }
         }
       }
-    }
+    },
+    habitats: [
+      {
+        name: "Test walls",
+        scenery: "Test.Walls",
+        position: {
+          rx: 0.4,
+          ry: 0.6
+        },
+        scrollSpeed: { vx: 0, vy: 0 }
+      }
+    ]
   }
 };

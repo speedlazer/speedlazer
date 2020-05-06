@@ -10,11 +10,12 @@ export default {
       [
         "laserGunHandle",
         {
-          x: 32,
+          x: 54,
           y: 0,
           key: "barrel",
-          ro: [50, 24],
-          hitbox: [-27, 10, 62, 0, 62, 28, -27, 28]
+          ro: [23, 18],
+          hitbox: [-49, 10, 40, 0, 40, 28, -49, 28],
+          crop: [0, 0, 0, 22]
         }
       ],
       [
@@ -45,6 +46,7 @@ export default {
           x: 6,
           y: 0,
           z: -2,
+          crop: [0, 13, 0, 0],
           key: "core1",
           attachTo: "barrel"
         }
@@ -55,6 +57,7 @@ export default {
           x: 35,
           y: 0,
           z: -3,
+          crop: [0, 13, 0, 0],
           key: "core2",
           attachTo: "core1"
         }
@@ -65,7 +68,7 @@ export default {
         "gun",
         {
           x: 5,
-          y: 18,
+          y: 15,
           z: -1,
           attachAlign: ["center", "left"],
           attachTo: "barrel"
@@ -114,13 +117,13 @@ export default {
       open: {
         top: { rotation: -2, ry: -5 },
         bottom: { rotation: 2, ry: 5 },
-        core1: { rx: -3 },
+        core1: { rx: -6 },
         core2: { overrideColor: null }
       },
       charge: {
         top: { rotation: -2, ry: -5 },
         bottom: { rotation: 2, ry: 5 },
-        core1: { rx: -3, overrideColor: "#ff8040" },
+        core1: { rx: -6, overrideColor: "#ff8040" },
         core2: { overrideColor: "#ff8040" }
       },
       done: {
@@ -133,17 +136,19 @@ export default {
         core1: { rx: 0 }
       },
       dead1: {
-        barrel: { rotation: -90, y: -100, x: 0 },
+        barrel: { rotation: -90, y: -100, x: 0, overrideColor: "#606060" },
         core1: { x: -3, overrideColor: "#505050" },
-        core2: { overrideColor: "#505050" }
+        core2: { overrideColor: "#505050" },
+        top: { overrideColor: "#606060" },
+        bottom: { overrideColor: "#606060" }
       },
       dead2: {
         foot: { z: 5 },
-        barrel: { rotation: -180, y: -15, x: -40 }
+        barrel: { rotation: -180, y: -15, x: -40, overrideColor: "#606060" }
       },
       dead3: {
         foot: { z: 5 },
-        barrel: { rotation: -180, y: -25, x: -40 }
+        barrel: { rotation: -180, y: -25, x: -40, overrideColor: "#606060" }
       },
       mirrored: {
         flipX: true
