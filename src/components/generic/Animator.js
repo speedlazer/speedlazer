@@ -1,6 +1,14 @@
 const Animator = "Animator";
 
 Crafty.c(Animator, {
+  events: {
+    Freeze() {
+      this.animations = [];
+      this.animating = false;
+      this.unbind("UpdateFrame", this._animateTick);
+    }
+  },
+
   init() {
     this.animations = [];
   },

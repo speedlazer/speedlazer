@@ -1,0 +1,147 @@
+{
+  "type": "object",
+  "patternProperties": {
+    "^[A-Z][a-zA-Z0-9.]+$": {
+      "type": "object",
+      "properties": {
+        "checkpoints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "entities": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": [
+                    { "type": "string" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "key": { "type": "string" },
+                        "relativeX": { "type": "number" },
+                        "relativeY": { "type": "number" },
+                        "z": { "type": "integer" },
+                        "state": { "type": "string" },
+                        "detach": { "type": "boolean" }
+                      },
+                      "required": ["key"],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              },
+              "composables": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": [
+                    { "type": "string" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "key": { "type": "string" },
+                        "relativeX": { "type": "number" },
+                        "relativeY": { "type": "number" },
+                        "frame": { "type": "string" }
+                      },
+                      "required": ["key"],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              },
+              "backgroundColor": {
+                "type": "string",
+                "pattern": "^#[0-9a-f]{6}$"
+              },
+              "timeline": {
+                "type": "object",
+                "properties": {
+                  "defaultDuration": { "type": "integer" },
+                  "transitions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": { "type": "string" },
+                        "start": { "type": "number" },
+                        "end": { "type": "number" },
+                        "remove": { "type": "boolean" },
+                        "targetState": { "type": "string" },
+                        "targetFrame": { "type": "string" },
+                        "targetBackgroundColor": {
+                          "type": "string",
+                          "pattern": "^#[0-9a-f]{6}$"
+                        },
+                        "attributes": {
+                          "type": "object"
+                        },
+                        "path": {
+                          "type": "object",
+                          "properties": {
+                            "name": { "type": "string" },
+                            "start": { "type": "number" },
+                            "end": { "type": "number" },
+                            "data": {
+                              "type": "array",
+                              "minItems": 2,
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "x": { "type": "number" },
+                                  "y": { "type": "number" }
+                                },
+                                "additionalProperties": false
+                              }
+                            }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "habitat": {
+          "type": "object",
+          "properties": {
+            "scenery": { "type": "string" },
+            "scrollSpeed": {
+              "type": "object",
+              "properties": {
+                "vx": { "type": "integer" },
+                "vy": { "type": "integer" }
+              },
+              "required": ["vx", "vy"],
+              "additionalProperties": false
+            },
+            "background": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": [{ "type": "string" }, { "type": "integer" }]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["checkpoints"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

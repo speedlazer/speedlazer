@@ -440,6 +440,7 @@ Crafty.c(Weapon, {
   weapon(definition) {
     this.definition = definition;
     this.active = false;
+    this.aimingEnabled = true;
     return this;
   },
 
@@ -501,7 +502,7 @@ Crafty.c(Weapon, {
     // aim weapon
     const aimSettings = this.definition.pattern.aiming;
     let angle = 0;
-    if (aimSettings && this.barrel) {
+    if (aimSettings && this.barrel && this.aimingEnabled) {
       const potentialTargets = Crafty(this.definition.target);
       if (potentialTargets.length > 0) {
         const target = Crafty(

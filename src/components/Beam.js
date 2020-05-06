@@ -7,9 +7,6 @@ Crafty.c(Beam, {
   properties: {
     beamVelocity: {
       set: function(value) {
-        if (this._initialBeamLength === undefined && this._beamVelocity === 0) {
-          this._initialBeamLength = this._w;
-        }
         this._beamVelocity = value;
         this._setBeamVelocity(this._beamVelocity);
       },
@@ -23,7 +20,6 @@ Crafty.c(Beam, {
   },
   events: {
     Freeze() {
-      this.sw = this._initialBeamLength;
       this._beamVelocity = 0;
     }
   },
