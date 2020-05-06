@@ -25,7 +25,7 @@ export default {
       },
       open: { frame: "open" },
       charge: {
-        frame: ["charge", { duration: 4000 }],
+        frame: "charge",
         attachments: {
           charge: {
             particles: "laserCharge"
@@ -33,6 +33,12 @@ export default {
         }
       },
       charged: {
+        attachments: {
+          charge: null
+        }
+      },
+      discharge: {
+        frame: "done",
         attachments: {
           charge: null
         }

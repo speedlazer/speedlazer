@@ -121,8 +121,6 @@ export default {
         core2: { overrideColor: null }
       },
       charge: {
-        top: { rotation: -2, ry: -5 },
-        bottom: { rotation: 2, ry: 5 },
         core1: { rx: -6, overrideColor: "#ff8040" },
         core2: { overrideColor: "#ff8040" }
       },

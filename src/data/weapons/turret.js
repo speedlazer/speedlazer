@@ -72,8 +72,15 @@ export default {
     spawnRhythm: {
       initialDelay: [500, 150],
       burst: 1,
-      shotDelay: 3000,
-      burstDelay: 1,
+      shotDelay: 1,
+      burstDelay: 3000,
+      shot: [
+        { state: "charge", duration: 3000 },
+        { state: "charged", stopAiming: true, duration: 1000 },
+        { spawn: true, duration: 1000 },
+        { state: "discharge", duration: 500 },
+        { stopAiming: false, duration: 0 }
+      ],
       spawns: [
         ["laser", { angle: 180 }],
         ["laser", { angle: 200 }],

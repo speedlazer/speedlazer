@@ -435,6 +435,7 @@ const Weapon = "Weapon";
 Crafty.c(Weapon, {
   init() {
     this.xFlipped = false;
+    this.spawnQueue = [];
   },
 
   weapon(definition) {
@@ -464,13 +465,30 @@ Crafty.c(Weapon, {
     if (!this.definition.pattern) return;
     this.active = true;
     this.activatedAt = new Date() * 1;
+    const spawnRhythm = this.definition.pattern.spawnRhythm;
 
     this.initialDelay = adjustForDifficulty(
       this.difficulty,
-      this.definition.pattern.spawnRhythm.initialDelay
+      spawnRhythm.initialDelay
     );
+    this._makeQueue();
+
     this.uniqueBind("EnterFrame", this._updateSpawnFrame);
     return this;
+  },
+
+  _makeQueue() {
+    const spawnRhythm = this.definition.pattern.spawnRhythm;
+    this.shotQueue = (spawnRhythm.shot || [{ spawn: true, duration: 0 }]).map(
+      qItem => ({
+        ...qItem,
+        duration: adjustForDifficulty(this.difficulty, qItem.duration || 0)
+      })
+    );
+    this.shotQueueLength = this.shotQueue.reduce(
+      (acc, i) => acc + i.duration,
+      0
+    );
   },
 
   deactivate() {
@@ -496,13 +514,13 @@ Crafty.c(Weapon, {
     });
   },
 
-  _updateSpawnFrame({ dt }) {
-    const spawnRhythm = this.definition.pattern.spawnRhythm;
-
-    // aim weapon
+  _aimBarrel({ dt }) {
     const aimSettings = this.definition.pattern.aiming;
     let angle = 0;
-    if (aimSettings && this.barrel && this.aimingEnabled) {
+    if (aimSettings && this.barrel) {
+      if (!this.aimingEnabled) {
+        return this.barrel.rotation;
+      }
       const potentialTargets = Crafty(this.definition.target);
       if (potentialTargets.length > 0) {
         const target = Crafty(
@@ -562,22 +580,68 @@ Crafty.c(Weapon, {
         }
       }
     }
+    return angle;
+  },
+
+  _updateSpawnFrame({ dt }) {
+    const spawnRhythm = this.definition.pattern.spawnRhythm;
+    const angle = this._aimBarrel({ dt });
 
     if (this.initialDelay > 0) {
       this.initialDelay -= dt;
       if (this.initialDelay <= 0) {
-        this._weaponSpawn(spawnRhythm, angle);
         this.shotIndex = 0;
         this.shotDelay = adjustForDifficulty(
           this.difficulty,
           spawnRhythm.shotDelay
         );
+      } else {
+        return;
       }
-      return;
     }
-    this.shotDelay -= dt;
+
     if (this.shotDelay <= 0) {
-      this.shotIndex++;
+      const qPos = 0 - this.shotDelay;
+      const entity = this.barrel && this.barrel.root;
+
+      const upcoming = this.shotQueue[0];
+      if (upcoming) {
+        upcoming.delay = (upcoming.delay || 0) - dt;
+        const localV =
+          upcoming.duration === 0
+            ? 1
+            : (upcoming.duration - (upcoming.duration + upcoming.delay)) /
+              upcoming.duration;
+        if (upcoming.state && entity) {
+          entity.showState(upcoming.state, upcoming.duration);
+          upcoming.state = undefined;
+        }
+        if (upcoming.stopAiming === true) {
+          this.aimingEnabled = false;
+          upcoming.stopAiming = undefined;
+        }
+        if (upcoming.stopAiming === false) {
+          this.aimingEnabled = true;
+          upcoming.stopAiming = undefined;
+        }
+        if (upcoming.spawn) {
+          this._weaponSpawn(spawnRhythm, angle);
+          upcoming.spawn = false;
+        }
+        if (localV >= 1) {
+          this.shotQueue.shift();
+        }
+      }
+
+      if (qPos > this.shotQueueLength && this.shotQueue.length === 0) {
+        this._makeQueue();
+        this.shotIndex++;
+        this.shotDelay = adjustForDifficulty(
+          this.difficulty,
+          spawnRhythm.shotDelay
+        );
+      }
+
       if (
         this.shotIndex >=
         adjustForDifficulty(this.difficulty, spawnRhythm.burst)
@@ -586,14 +650,10 @@ Crafty.c(Weapon, {
           this.difficulty,
           spawnRhythm.burstDelay
         );
-      } else {
-        this._weaponSpawn(spawnRhythm, angle);
-        this.shotDelay = adjustForDifficulty(
-          this.difficulty,
-          spawnRhythm.shotDelay
-        );
+        return;
       }
     }
+    this.shotDelay -= dt;
   }
 });
 
