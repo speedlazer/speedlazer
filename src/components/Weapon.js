@@ -634,12 +634,14 @@ Crafty.c(Weapon, {
       }
 
       if (qPos > this.shotQueueLength && this.shotQueue.length === 0) {
-        this._makeQueue();
         this.shotIndex++;
         this.shotDelay = adjustForDifficulty(
           this.difficulty,
           spawnRhythm.shotDelay
         );
+        if (this.shotDelay > 0) {
+          this._makeQueue();
+        }
       }
 
       if (

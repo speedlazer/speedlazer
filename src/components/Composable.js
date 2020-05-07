@@ -363,7 +363,15 @@ Crafty.c(Composable, {
       if (this.getAnimation("default")) {
         this.playAnimation("default");
       } else {
-        this.displayFrame("default");
+        if (
+          this.appliedEntityDefinition &&
+          this.appliedEntityDefinition.structure &&
+          this.appliedEntityDefinition.structure.frame
+        ) {
+          this.displayFrame(this.appliedEntityDefinition.structure.frame);
+        } else {
+          this.displayFrame("default");
+        }
       }
     }
   },

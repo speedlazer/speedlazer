@@ -175,14 +175,25 @@ export default {
               key: "main",
               sprites: [
                 "explosion1",
+                "explosion2",
                 "explosion3",
+                "explosion4",
                 "explosion5",
+                "explosion6",
                 "explosion7",
+                "explosion8",
                 "explosion9",
+                "explosion10",
                 "explosion11",
+                "explosion12",
                 "explosion13",
+                "explosion14",
                 "explosion15",
-                "explosion17"
+                "explosion16",
+                "explosion17",
+                "explosion18",
+                "explosion19",
+                "explosion20"
               ]
             }
           }
@@ -209,14 +220,25 @@ export default {
               key: "main",
               sprites: [
                 "explosion1",
+                "explosion2",
                 "explosion3",
+                "explosion4",
                 "explosion5",
+                "explosion6",
                 "explosion7",
+                "explosion8",
                 "explosion9",
+                "explosion10",
                 "explosion11",
+                "explosion12",
                 "explosion13",
+                "explosion14",
                 "explosion15",
-                "explosion17"
+                "explosion16",
+                "explosion17",
+                "explosion18",
+                "explosion19",
+                "explosion20"
               ]
             }
           }

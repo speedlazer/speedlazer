@@ -34,6 +34,21 @@ export default {
           }
         }
       },
+      shells: {
+        attachments: {
+          explosion: {
+            particles: [
+              "shells",
+              { emitter: { w: 10, h: 10, amount: 170, duration: 200 } }
+            ]
+          }
+        }
+      },
+      noshells: {
+        attachments: {
+          explosion: null
+        }
+      },
       shooting: {
         attachments: {
           gun: {

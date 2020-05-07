@@ -12,6 +12,11 @@ export default {
       burst: [5, 7],
       shotDelay: [150, 100],
       burstDelay: [1000, 400],
+      shot: [
+        { state: "shells", duration: 0 },
+        { spawn: true, duration: 50 },
+        { state: "noshells", duration: 0 }
+      ],
       spawns: [
         ["bullet", {}],
         ["muzzleFlash", {}]

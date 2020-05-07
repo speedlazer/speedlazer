@@ -98,7 +98,9 @@ export default {
                 "explosion15",
                 "explosion16",
                 "explosion17",
-                "explosion18"
+                "explosion18",
+                "explosion19",
+                "explosion20"
               ]
             }
           }
