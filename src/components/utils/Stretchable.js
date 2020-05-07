@@ -8,7 +8,7 @@ Crafty.c(Stretchable, {
     sw: {
       set(v) {
         if (v === this._w) return;
-        this._stretch(v, this._h);
+        this._stretch(v, this._h, "w");
       },
       get() {
         return this._w;
@@ -19,7 +19,7 @@ Crafty.c(Stretchable, {
     sh: {
       set(v) {
         if (v === this._h) return;
-        this._stretch(this._w, v);
+        this._stretch(this._w, v, "h");
       },
       get() {
         return this._h;
@@ -29,10 +29,18 @@ Crafty.c(Stretchable, {
     }
   },
 
-  _stretch(_w, _h) {
+  _stretch(_w, _h, axis) {
     this.trigger("Stretch", { dw: _w - this._w, dh: _h - this._h });
+    const resizeData = {
+      axis: axis,
+      amount: axis === "w" ? _w - this._w : _h - this._h
+    };
+
     this._w = _w;
     this._h = _h;
+    this._calculateMBR();
+
+    this.trigger("Resize", resizeData);
     this.trigger("Invalidate");
   }
 });

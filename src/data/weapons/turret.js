@@ -78,13 +78,13 @@ export default {
       initialDelay: [500, 150],
       burst: 1,
       shotDelay: 1,
-      burstDelay: 3000,
+      burstDelay: 100,
       shot: [
-        { state: "charge", duration: 2700 },
+        { state: "charge", duration: 2200 },
         { state: "charged", duration: 300 },
-        { stopAiming: true, duration: 1000 },
-        { spawn: true, duration: 1000 },
-        { state: "discharge", duration: 500 },
+        { stopAiming: true, duration: 500 },
+        { spawn: true, duration: 500 },
+        { state: "discharge", duration: 200 },
         { stopAiming: false, duration: 0 }
       ],
       spawns: [
@@ -106,7 +106,7 @@ export default {
             duration: 300
           },
           { velocity: 0 },
-          { duration: 1000 },
+          { duration: 200 },
           { duration: 300, frame: "disappear" }
         ],
         damage: [
@@ -118,14 +118,14 @@ export default {
           }
         ],
         collisions: {
-          PlayerShip: {
-            cooldown: 300,
-            spawns: [["sparks", {}]],
-            remove: false
-          },
-          WaterCollision: {
-            cooldown: 300,
-            spawns: [["splash", {}]],
+          BulletSolid: {
+            cooldown: 10,
+            spawns: [
+              [
+                "sparks",
+                { angle: 180, emitter: { amount: 1000, duration: 500 } }
+              ]
+            ],
             remove: false
           }
         }
@@ -140,7 +140,7 @@ export default {
         spawnPosition: "outside",
         velocity: 0,
         particles: "sparks",
-        queue: [{ duration: 500 }]
+        queue: [{ duration: 1500 }]
       }
     }
   },

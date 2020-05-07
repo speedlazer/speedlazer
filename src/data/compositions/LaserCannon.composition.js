@@ -152,10 +152,14 @@ export default {
       },
       dead2: {
         foot: { z: 5 },
+        core1: { x: -3, overrideColor: "#505050" },
+        core2: { overrideColor: "#505050" },
         barrel: { rotation: -180, y: -15, x: -40, overrideColor: "#606060" }
       },
       dead3: {
         foot: { z: 5 },
+        core1: { x: -3, overrideColor: "#505050" },
+        core2: { overrideColor: "#505050" },
         barrel: { rotation: -180, y: -25, x: -40, overrideColor: "#606060" }
       },
       mirrored: {

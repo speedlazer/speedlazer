@@ -9,7 +9,7 @@ import { EntityDefinition } from "src/components/EntityDefinition";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import { easingFunctions } from "src/constants/easing";
 import { playAudio } from "src/lib/audio";
-import { flipRotation } from "src/lib/rotation";
+import { flipRotation, rotX } from "src/lib/rotation";
 
 const flipAngle = (xFlipped, angle) => (xFlipped ? flipRotation(angle) : angle);
 
@@ -60,32 +60,39 @@ Crafty.c(ScreenBound, {
   }
 });
 
-const calcHitPosition = (objA, objB) => {
+const calcHitPosition = (objA, hit) => {
   let x = null;
   let y = null;
 
-  const xLeftOverlap =
-    (objA.x < objB.x && objA.w + objA.x > objB.x) ||
-    (objA.vx !== undefined && objA.vx > 0);
-  const xRightOverlap =
-    (objA.x < objB.x + objB.w && objA.x + objA.w > objB.x) ||
-    (objA.vx !== undefined && objA.vx < 0);
+  if (hit.type === "SAT") {
+    const [rx, ry] = rotX(objA, objA.w);
+    x = objA.x + rx - hit.overlap * hit.nx;
+    y = objA.y + ry - hit.overlap * hit.ny;
+  } else {
+    const objB = hit.obj;
+    const xLeftOverlap =
+      (objA.x < objB.x && objA.w + objA.x > objB.x) ||
+      (objA.vx !== undefined && objA.vx > 0);
+    const xRightOverlap =
+      (objA.x < objB.x + objB.w && objA.x + objA.w > objB.x) ||
+      (objA.vx !== undefined && objA.vx < 0);
 
-  const yTopOverlap = objA.y < objB.y && objA.h + objA.y > objB.y;
-  const yBottomOverlap = objA.y < objB.w + objB.h && objA.y + objA.h > objB.y;
+    const yTopOverlap = objA.y < objB.y && objA.h + objA.y > objB.y;
+    const yBottomOverlap = objA.y < objB.w + objB.h && objA.y + objA.h > objB.y;
 
-  if (xLeftOverlap && !yTopOverlap && !yBottomOverlap) {
-    x = objB.x;
-    y = objA.y + objA.h / 2;
-  } else if (xRightOverlap && !yTopOverlap && !yBottomOverlap) {
-    x = objB.x + objB.w;
-    y = objA.y + objA.h / 2;
-  } else if (yTopOverlap) {
-    x = objA.x + objA.w / 2;
-    y = objB.y;
-  } else if (yBottomOverlap) {
-    x = objA.x + objA.w / 2;
-    y = objB.y + objB.h;
+    if (xLeftOverlap && !yTopOverlap && !yBottomOverlap) {
+      x = objB.x;
+      y = objA.y + objA.h / 2;
+    } else if (xRightOverlap && !yTopOverlap && !yBottomOverlap) {
+      x = objB.x + objB.w;
+      y = objA.y + objA.h / 2;
+    } else if (yTopOverlap) {
+      x = objA.x + objA.w / 2;
+      y = objB.y;
+    } else if (yBottomOverlap) {
+      x = objA.x + objA.w / 2;
+      y = objB.y + objB.h;
+    }
   }
 
   return { x, y, angle: objA.angle };
@@ -113,7 +120,12 @@ Crafty.c(Bullet, {
 
     const collisionConfig = this.bulletSettings.collisions[collisionType];
     const firstObj = hitData[0].obj;
-    const position = calcHitPosition(this, firstObj);
+    const position = calcHitPosition(this, hitData[0]);
+
+    if (this.bulletSettings.attached) {
+      this.beamVelocity = 0;
+      this.sw += hitData[0].nx * hitData[0].overlap;
+    }
 
     if (firstObj.processDamage && this.bulletSettings.damage) {
       firstObj.processDamage(this.bulletSettings.damage);
