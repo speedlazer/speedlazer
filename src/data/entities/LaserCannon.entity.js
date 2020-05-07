@@ -40,7 +40,13 @@ export default {
       discharge: {
         frame: "done",
         attachments: {
-          charge: null
+          charge: null,
+          discharge: {
+            particles: [
+              "smoke",
+              { emitter: { w: 10, h: 2, amount: 200, duration: 300 } }
+            ]
+          }
         }
       },
       dead: {

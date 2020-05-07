@@ -85,11 +85,21 @@ export default {
         }
       ],
       [
+        "discharge",
+        {
+          x: 62,
+          y: 15,
+          z: -10,
+          attachAlign: ["center", "left"],
+          attachTo: "barrel"
+        }
+      ],
+      [
         "smoke",
         {
           x: 80,
           y: 32,
-          z: -1,
+          z: -10,
           attachAlign: ["center", "center"]
         }
       ],
