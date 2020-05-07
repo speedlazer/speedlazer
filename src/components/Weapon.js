@@ -664,6 +664,9 @@ Crafty.c(Weapon, {
           this.difficulty,
           spawnRhythm.burstDelay
         );
+        if (this.initialDelay === 0) {
+          this.deactivate();
+        }
         return;
       }
     }
