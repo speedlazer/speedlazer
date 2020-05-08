@@ -6,13 +6,13 @@ export default {
     left: "Test.Walls",
     elements: [
       {
-        components: ["BulletSolid", "Collision"],
+        components: ["BulletSolid", "LaserSolid", "Collision"],
         x: 100,
         y: -385,
         composition: "test.wall"
       },
       {
-        components: ["BulletSolid", "Collision"],
+        components: ["BulletSolid", "LaserSolid", "Collision"],
         x: 700,
         y: -485,
         composition: "test.wall"

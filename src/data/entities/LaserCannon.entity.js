@@ -23,7 +23,7 @@ export default {
           charge: null
         }
       },
-      open: { frame: "open" },
+      open: { frame: ["open", { duration: 300 }] },
       charge: {
         frame: "charge",
         attachments: {

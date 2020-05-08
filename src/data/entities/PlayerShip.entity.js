@@ -2,7 +2,7 @@ export default {
   PlayerShip: {
     structure: {
       composition: "player.ship",
-      components: ["ViewportLocked", "DamageSupport", "SunBlock"],
+      components: ["ViewportLocked", "DamageSupport", "SunBlock", "LaserSolid"],
       animation: null,
       attachments: {
         mainWeapon: {

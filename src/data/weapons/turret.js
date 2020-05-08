@@ -78,10 +78,10 @@ export default {
       initialDelay: [500, 150],
       burst: 1,
       shotDelay: 1,
-      burstDelay: 100,
+      burstDelay: 1000,
       shot: [
-        { state: "charge", duration: 2200 },
-        { state: "charged", duration: 300 },
+        { state: "charge", duration: 1200 },
+        { state: "charged", duration: 100 },
         { stopAiming: true, duration: 500 },
         { spawn: true, duration: 500 },
         { state: "discharge", duration: 200 },
@@ -111,14 +111,14 @@ export default {
         ],
         damage: [
           {
-            velocity: [-10e3, -15e3],
+            velocity: [-30e3, -45e3],
             affects: "health",
             duration: [2, 4],
             name: "Laser"
           }
         ],
         collisions: {
-          BulletSolid: {
+          LaserSolid: {
             cooldown: 10,
             spawns: [["sparks", { angle: 180 }]],
             remove: false
