@@ -234,6 +234,32 @@ export default {
       endColorRandom: [0, 0, 0, 0]
     }
   },
+  laserHit: {
+    emitter: {
+      w: 4,
+      h: 4,
+      amount: 200,
+      duration: 500
+    },
+    gravity: [0, 100],
+    particle: {
+      sprite: "explosion7",
+      angle: 0,
+      angleRandom: 70,
+      duration: 500,
+      durationRandom: 0,
+      velocity: 50,
+      velocityRandom: 0,
+      startSize: 10,
+      startSizeRandom: 4,
+      endSize: 4,
+      endSizeRandom: 2,
+      startColor: [1.0, 0.8, 0.4, 0.8],
+      startColorRandom: [0.2, 0.3, 0.2, 0],
+      endColor: [1.0, 1.0, 0.0, 0.2],
+      endColorRandom: [0, 0, 0, 0]
+    }
+  },
   laserCharge: {
     emitter: {
       w: 2,

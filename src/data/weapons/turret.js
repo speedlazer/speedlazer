@@ -120,12 +120,7 @@ export default {
         collisions: {
           BulletSolid: {
             cooldown: 10,
-            spawns: [
-              [
-                "sparks",
-                { angle: 180, emitter: { amount: 1000, duration: 500 } }
-              ]
-            ],
+            spawns: [["sparks", { angle: 180 }]],
             remove: false
           }
         }
@@ -139,7 +134,7 @@ export default {
       sparks: {
         spawnPosition: "outside",
         velocity: 0,
-        particles: "sparks",
+        particles: "laserHit",
         queue: [{ duration: 1500 }]
       }
     }
