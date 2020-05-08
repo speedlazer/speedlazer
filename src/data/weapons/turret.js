@@ -85,6 +85,7 @@ export default {
         { duration: 100 },
         { spawn: true, duration: 100 },
         { state: "discharge", duration: 500 },
+        { duration: 500 },
         { stopAiming: false, duration: 0 }
       ],
       spawns: [
