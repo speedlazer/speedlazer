@@ -81,10 +81,10 @@ export default {
       burstDelay: 1000,
       shot: [
         { state: "charge", duration: 1200 },
-        { state: "charged", duration: 100 },
-        { stopAiming: true, duration: 500 },
-        { spawn: true, duration: 500 },
-        { state: "discharge", duration: 200 },
+        { stopAiming: true, state: "charged", duration: 500 },
+        { duration: 100 },
+        { spawn: true, duration: 100 },
+        { state: "discharge", duration: 500 },
         { stopAiming: false, duration: 0 }
       ],
       spawns: [

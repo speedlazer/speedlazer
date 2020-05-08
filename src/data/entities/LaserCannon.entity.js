@@ -17,7 +17,7 @@ export default {
     states: {
       mirrored: { frame: "mirrored" },
       close: {
-        frame: "close",
+        frame: ["close", { duration: 300 }],
         attachments: {
           gun: null,
           charge: null
@@ -25,7 +25,6 @@ export default {
       },
       open: { frame: ["open", { duration: 300 }] },
       charge: {
-        frame: "charge",
         attachments: {
           charge: {
             particles: "laserCharge"
@@ -33,6 +32,7 @@ export default {
         }
       },
       charged: {
+        frame: "charge",
         attachments: {
           charge: null
         }
