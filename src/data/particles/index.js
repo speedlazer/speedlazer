@@ -337,13 +337,13 @@ export default {
     },
     gravity: [0, 160],
     particle: {
-      sprite: "explosion7",
+      sprite: "bulletShell",
       angle: -50,
       angleRandom: 20,
       duration: 1200,
       velocity: 120,
-      startSize: 10,
-      endSize: 10,
+      startSize: 20,
+      endSize: 20,
       startColor: [0.5, 0.6, 0.2, 1.0],
       endColor: [0.5, 0.6, 0.2, 0.3]
     }

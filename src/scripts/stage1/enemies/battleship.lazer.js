@@ -266,16 +266,36 @@ const part3 = ship => async ({
   // 2 helicopters
 };
 
-const part4 = ship => async ({ allowDamage, waitForEvent }) => {
-  const engine = ship.engineCore;
-  engine.addCollisionComponent("SolidCollision");
-  const killed = waitForEvent(engine, "Dead", async () => {
-    engine.clearCollisionComponents();
-    //call(ship.showState, "fase3");
+const part4 = ship => async ({
+  allowDamage,
+  showState,
+  displayFrame,
+  waitForEvent
+}) => {
+  // Activate lasergun
+  const laser = ship.deckGun3;
+  await showState(laser, "open", 500);
+  laser.addCollisionComponent("SolidCollision");
+  const killed = waitForEvent(laser, "Dead", async () => {
+    laser.clearCollisionComponents();
+    showState(laser, "dead");
   });
-  await allowDamage(engine, { health: 500 });
+  await allowDamage(laser, { health: 1500 });
+  showState(laser, "shooting");
+
   await killed;
-  engine.removeComponent("SolidCollision");
+  await displayFrame(ship.engineCore, "perc100", 1000);
+  showState(ship, "engineTilt");
+
+  //const engine = ship.engineCore;
+  //engine.addCollisionComponent("SolidCollision");
+  //const killed = waitForEvent(engine, "Dead", async () => {
+  //engine.clearCollisionComponents();
+  ////call(ship.showState, "fase3");
+  //});
+  //await allowDamage(engine, { health: 500 });
+  //await killed;
+  //engine.removeComponent("SolidCollision");
 };
 
 const part5 = ship => async ({

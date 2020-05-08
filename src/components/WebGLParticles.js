@@ -286,9 +286,9 @@ Crafty.c(WebGLParticles, {
         compiledShader,
         "uTimeOffset"
       );
-      compiledShader.spriteCoords = gl.getUniformLocation(
+      compiledShader.spriteMatrix = gl.getUniformLocation(
         compiledShader,
-        "uSpriteCoords"
+        "uSpriteMatrix"
       );
 
       const program = new RenderProgramWrapper(this._drawLayer, compiledShader);

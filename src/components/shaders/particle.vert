@@ -1,4 +1,4 @@
-attribute vec2 aPosition;
+attribute vec3 aPosition;
 attribute vec3 aVelocity;
 attribute vec3 aOrientation;
 attribute vec2 aLayer;
@@ -9,7 +9,7 @@ attribute vec4 aColor2;
 
 varying lowp vec4 vColor;
 varying lowp vec2 vLayer;
-varying lowp vec2 vLife;
+varying lowp vec3 vLife;
 
 uniform  vec4 uViewport;
 uniform  vec4 uTimeOffset;
@@ -23,7 +23,7 @@ float gravity(float accelleration, float duration) {
 }
 
 void main() {
-  vec2 pos = aPosition;
+  vec2 pos = aPosition.xy;
   vec2 entityOrigin = aOrientation.xy;
   mat2 entityRotationMatrix = mat2(cos(aOrientation.z), sin(aOrientation.z), -sin(aOrientation.z), cos(aOrientation.z));
 
@@ -48,6 +48,6 @@ void main() {
 
   vColor = mix(aColor1, aColor2, durationScale);
   vLayer = aLayer;
-  vLife = vec2(duration, aLife.y);
+  vLife = vec3(duration, aLife.y, aPosition.z);
 }
 

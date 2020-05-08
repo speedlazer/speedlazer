@@ -4,6 +4,46 @@ import WebGLParticles from "src/components/WebGLParticles";
 
 const randM1to1 = () => Math.random() * 2 - 1;
 
+const spriteMap = {};
+
+const setParticleSprite = (entity, spriteName) => {
+  const map = spriteMap[spriteName];
+  if (map) {
+    entity.__image = map.image;
+    if (entity.program && entity._drawLayer) {
+      entity.program.setTexture(
+        entity._drawLayer.makeTexture(entity.__image, entity.img, false)
+      );
+    }
+    return;
+  }
+
+  const sprite = Crafty.e(`WebGL, ${spriteName}`).attr({
+    x: 5000,
+    y: 5000
+  });
+  entity.__image = sprite.__image;
+  if (entity.program && entity._drawLayer) {
+    entity.program.setTexture(
+      entity._drawLayer.makeTexture(entity.__image, entity.img, false)
+    );
+  }
+  spriteMap[spriteName] = {
+    index: Object.keys(spriteMap).length,
+    coords: sprite.__coord,
+    image: sprite.__image
+  };
+  sprite.destroy();
+};
+
+const getSpriteIndex = spriteName => spriteMap[spriteName].index;
+
+const getParticleMatrix = () =>
+  [0, 1, 2, 3].reduce((acc, i) => {
+    const m = Object.values(spriteMap).find(e => e.index === i);
+    return acc.concat(m ? m.coords : [0, 0, 0, 0]);
+  }, []);
+
 const spawnParticle = (entity, settings) => {
   const source = entity.attachedTo || entity;
   const x = source.x + Math.random() * entity.w;
@@ -24,7 +64,7 @@ const spawnParticle = (entity, settings) => {
   const start = entity.timeFrame - (settings.expired || 0.0) * life;
 
   return {
-    aPosition: [x, y],
+    aPosition: [x, y, getSpriteIndex(settings.sprite)],
     aVelocity: [
       speed,
       (angle * Math.PI) / 180,
@@ -48,7 +88,7 @@ Crafty.defaultShader(
     particleVertexShader,
     particleFragmentShader,
     [
-      { name: "aPosition", width: 2 },
+      { name: "aPosition", width: 3 },
       { name: "aVelocity", width: 3 },
       { name: "aOrientation", width: 3 },
       { name: "aLayer", width: 2 },
@@ -63,15 +103,12 @@ Crafty.defaultShader(
       if (startRender && !e.program.hasTime) {
         gl.uniform4f(e.program.shader.time, entity.timeFrame, 0, 0, 0);
         e.program.hasTime = entity.timeFrame;
+        gl.uniformMatrix4fv(
+          e.program.shader.spriteMatrix,
+          false,
+          getParticleMatrix()
+        );
       }
-
-      gl.uniform4f(
-        e.program.shader.spriteCoords,
-        entity.__coord[0],
-        entity.__coord[1],
-        entity.__coord[2],
-        entity.__coord[3]
-      );
     }
   )
 );
@@ -256,18 +293,7 @@ Crafty.c(ParticleEmitter, {
     this.startEmission({ warmed });
 
     if (this.particleSettings.sprite) {
-      const sprite = Crafty.e(`WebGL, ${this.particleSettings.sprite}`).attr({
-        x: 5000,
-        y: 5000
-      });
-      this.__image = sprite.__image;
-      this.__coord = sprite.__coord;
-      if (this.program && this._drawLayer) {
-        this.program.setTexture(
-          this._drawLayer.makeTexture(this.__image, this.img, false)
-        );
-      }
-      sprite.destroy();
+      setParticleSprite(this, this.particleSettings.sprite);
     }
 
     this._particles = Array(amount)
