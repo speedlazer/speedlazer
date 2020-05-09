@@ -112,7 +112,7 @@ const part1 = ship => async ({
   });
   await race([
     async () => {
-      await allowDamage(mineCannon, { health: 1500 });
+      await allowDamage(mineCannon, { health: 1200 });
       let high = true;
       await until(
         () => killed,
@@ -207,7 +207,7 @@ const helicopter1 = ship => async ({
     helicopter
       .addCollisionComponent("SolidCollision")
       .addCollisionComponent("PlayerEnemy");
-    await allowDamage(helicopter, { health: 600 });
+    await allowDamage(helicopter, { health: 500 });
   });
   waitForEvent(helicopter, "Remove", async () => {
     heliAudio.stop();
@@ -290,7 +290,7 @@ const helicopter2 = ship => async ({
     helicopter
       .addCollisionComponent("SolidCollision")
       .addCollisionComponent("PlayerEnemy");
-    await allowDamage(helicopter, { health: 600 });
+    await allowDamage(helicopter, { health: 500 });
   });
   waitForEvent(helicopter, "Remove", async () => {
     heliAudio.stop();
@@ -343,7 +343,7 @@ const part5 = ship => async ({
     laser.clearCollisionComponents();
     showState(laser, "dead");
   });
-  await allowDamage(laser, { health: 1500 });
+  await allowDamage(laser, { health: 1000 });
   showState(laser, "shooting");
 
   await killed;

@@ -294,7 +294,7 @@ export default {
         composition: "weapons.bullet",
         damage: [
           {
-            velocity: [-20e3, -30e3],
+            velocity: [-10e3, -30e3],
             affects: "health",
             duration: [2, 4],
             name: "Laser"

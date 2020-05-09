@@ -9,7 +9,7 @@ export default {
     },
     spawnRhythm: {
       initialDelay: [500, 150],
-      burst: [5, 7],
+      burst: [3, 7],
       shotDelay: [150, 100],
       burstDelay: [1000, 400],
       shot: [
@@ -30,7 +30,7 @@ export default {
         queue: [{ duration: 4000, audio: ["gun-shot", { volume: 0.8 }] }],
         damage: [
           {
-            velocity: [-10e3, -15e3],
+            velocity: [-8e3, -20e3],
             affects: "health",
             duration: [2, 4],
             name: "Laser"
@@ -112,7 +112,7 @@ export default {
         ],
         damage: [
           {
-            velocity: [-30e3, -45e3],
+            velocity: [-20e3, -45e3],
             affects: "health",
             duration: [2, 4],
             name: "Laser"

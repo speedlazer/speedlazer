@@ -11,6 +11,18 @@ import { easingFunctions } from "src/constants/easing";
 import { playAudio } from "src/lib/audio";
 import { flipRotation, rotX } from "src/lib/rotation";
 
+/**
+ * Fire rhythm:
+ *
+ * - Initial Delay
+ * - Shot
+ * - Shot delay / Burst delay
+ * - Shot
+ * - Shot delay / Burst delay
+ * - Shot
+ *
+ */
+
 const flipAngle = (xFlipped, angle) => (xFlipped ? flipRotation(angle) : angle);
 
 const numArray = e =>
@@ -603,10 +615,7 @@ Crafty.c(Weapon, {
       this.initialDelay -= dt;
       if (this.initialDelay <= 0) {
         this.shotIndex = 0;
-        this.shotDelay = adjustForDifficulty(
-          this.difficulty,
-          spawnRhythm.shotDelay
-        );
+        this.shotDelay = 0;
       } else {
         return;
       }
@@ -647,29 +656,32 @@ Crafty.c(Weapon, {
 
       if (qPos > this.shotQueueLength && this.shotQueue.length === 0) {
         this.shotIndex++;
-        this.shotDelay = adjustForDifficulty(
-          this.difficulty,
-          spawnRhythm.shotDelay
-        );
-        if (this.shotDelay > 0) {
-          this._makeQueue();
-        }
-      }
 
-      if (
-        this.shotIndex >=
-        adjustForDifficulty(this.difficulty, spawnRhythm.burst)
-      ) {
-        this.initialDelay = adjustForDifficulty(
-          this.difficulty,
-          spawnRhythm.burstDelay
-        );
-        if (this.initialDelay === 0) {
-          this.deactivate();
+        if (
+          this.shotIndex >=
+          adjustForDifficulty(this.difficulty, spawnRhythm.burst)
+        ) {
+          this.initialDelay =
+            adjustForDifficulty(this.difficulty, spawnRhythm.burstDelay) +
+            adjustForDifficulty(this.difficulty, spawnRhythm.shotDelay);
+          if (this.initialDelay === 0) {
+            this.deactivate();
+          } else {
+            this._makeQueue();
+          }
+          return;
+        } else {
+          this.shotDelay = adjustForDifficulty(
+            this.difficulty,
+            spawnRhythm.shotDelay
+          );
+          if (this.shotDelay > 0) {
+            this._makeQueue();
+          }
         }
-        return;
       }
     }
+
     this.shotDelay -= dt;
   }
 });
