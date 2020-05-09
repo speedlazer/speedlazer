@@ -336,14 +336,15 @@ const part5 = ship => async ({
   displayFrame,
   waitForEvent
 }) => {
+  await showState(ship, "packageOpen", 1000, EASE_IN_OUT);
   const laser = ship.deckGun3;
-  await showState(laser, "open", 500);
+  await showState(laser, "open", 500, EASE_IN_OUT);
   laser.addCollisionComponent("SolidCollision");
   const killed = waitForEvent(laser, "Dead", async () => {
     laser.clearCollisionComponents();
     showState(laser, "dead");
   });
-  await allowDamage(laser, { health: 1000 });
+  await allowDamage(laser, { health: 1500 });
   showState(laser, "shooting");
 
   await killed;
@@ -450,6 +451,8 @@ const battleship = async ({
   await activeMovement.process;
 
   await exec(part5(ship));
+
+  // TODO: Allow destruction of 2nd cabin first
 
   activeMovement = moveTo(ship, { x: -0.4 }, null, EASE_IN_OUT);
   await activeMovement.process;

@@ -38,6 +38,10 @@ export default {
           entity: "LaserCannon",
           state: "mirrored"
         },
+        package: {
+          composition: "cloth",
+          frame: "medium"
+        },
         hatch1: {
           composition: "shipHatch",
           attachments: {
@@ -129,6 +133,9 @@ export default {
             }
           }
         }
+      },
+      packageOpen: {
+        attachments: { package: { frame: "down" } }
       },
       cabin1Explode: {
         attachments: {
