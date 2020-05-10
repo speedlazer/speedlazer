@@ -7,6 +7,7 @@ const playingPool = {
   effectsGain: context.createGain(),
   musicGain: context.createGain()
 };
+
 playingPool.effectsGain.connect(context.destination);
 playingPool.musicGain.connect(context.destination);
 
@@ -21,6 +22,8 @@ const convertAudioMap = map =>
         start,
         end: start + entry.duration,
         duration: entry.duration,
+        loopStart: entry.loopStart,
+        loopEnd: entry.loopEnd,
         volume: entry.volume,
         loop: entry.loop
       }
@@ -97,6 +100,16 @@ export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
     );
 
     source.connect(trackGain);
+    if (sampleData.loop) {
+      source.loop = true;
+      if (sampleData.loopStart) {
+        source.loopStart = sampleData.loopStart;
+      }
+      if (sampleData.loopEnd) {
+        source.loopEnd = sampleData.loopEnd;
+      }
+    }
+
     source.start();
 
     const process = new Promise(resolve => (source.onended = resolve));
@@ -108,7 +121,6 @@ export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
         context.currentTime + duration / 1000.0
       );
     };
-
     playingPool.music = { source, sampleName, setVolume };
 
     return {

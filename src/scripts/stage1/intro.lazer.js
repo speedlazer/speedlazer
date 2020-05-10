@@ -83,26 +83,33 @@ const part = async ({
         },
         async () => {
           await parallel([
-            () => exec(droneWave(2, "drone.straight", 300, 0.1)),
+            () =>
+              exec(
+                droneWave(2, "drone.straight", { delay: 300, yOffset: 0.1 })
+              ),
             async () => {
               await wait(1500);
-              await exec(droneWave(2, "drone.straight", 300, -0.1));
+              await exec(
+                droneWave(2, "drone.straight", { delay: 300, yOffset: -0.1 })
+              );
             },
             async () => {
               await wait(3000);
-              await exec(droneWave(2, "drone.straight", 300, -0.3));
+              await exec(
+                droneWave(2, "drone.straight", { delay: 300, yOffset: -0.3 })
+              );
             }
           ]);
-          await exec(droneWave(5, "drone.pattern1", 500));
-          await exec(droneWave(8, "drone.pattern2", 500));
+          await exec(droneWave(5, "drone.pattern1"));
+          await exec(droneWave(8, "drone.pattern2"));
         }
       ]);
     }
   ]);
   introAnimation.destroy();
   setAltitude(200);
-  await exec(droneWave(5, "drone.pattern1", 500));
-  await exec(droneWave(8, "drone.pattern2", 500));
+  await exec(droneWave(5, "drone.pattern1"));
+  await exec(droneWave(8, "drone.pattern2"));
   await say("John", "Well that was fun. I will miss the manual mode..", {
     portrait: "portraits.pilot"
   });
@@ -121,12 +128,12 @@ const part = async ({
   await chapter1.fadeOut(500);
   chapter1.remove();
   await parallel([
-    () => exec(droneWave(5, "drone.pattern3", 500)),
-    () => exec(droneWave(5, "drone.pattern4", 500))
+    () => exec(droneWave(5, "drone.pattern3")),
+    () => exec(droneWave(5, "drone.pattern4"))
   ]);
   await parallel([
-    () => exec(droneWave(5, "drone.pattern3", 500)),
-    () => exec(droneWave(5, "drone.pattern4", 500))
+    () => exec(droneWave(5, "drone.pattern3")),
+    () => exec(droneWave(5, "drone.pattern4"))
   ]);
 };
 

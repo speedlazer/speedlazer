@@ -81,8 +81,14 @@ const shootMineCannon = (cannon, high) => async ({
   });
 };
 
-const activateGun = gun => async ({ showState, waitForEvent, allowDamage }) => {
+const activateGun = gun => async ({
+  awardPoints,
+  showState,
+  waitForEvent,
+  allowDamage
+}) => {
   const gunKilled = waitForEvent(gun, "Dead", async () => {
+    awardPoints(200, gun.x + 20, gun.y);
     showState(gun, "dead");
     gun.clearCollisionComponents();
   });
@@ -99,6 +105,7 @@ const part1 = ship => async ({
   waitForEvent,
   allowDamage,
   race,
+  awardPoints,
   until
 }) => {
   const mineCannon = ship.mineCannon;
@@ -107,6 +114,7 @@ const part1 = ship => async ({
     .addCollisionComponent("PlayerEnemy");
 
   const killed = waitForEvent(mineCannon, "Dead", async () => {
+    awardPoints(250, mineCannon.x, mineCannon.y);
     showState(mineCannon, "dead");
     mineCannon.clearCollisionComponents();
   });
@@ -132,6 +140,7 @@ const part2 = ship => async ({
   parallel,
   until,
   showState,
+  awardPoints,
   allowDamage,
   wait
 }) => {
@@ -140,17 +149,19 @@ const part2 = ship => async ({
   radar.addCollisionComponent("SolidCollision");
   showState(radar, "pulse");
   await allowDamage(radar, { health: 500 });
-
+  let points = 10;
   await parallel([
     () =>
       until(
         () =>
           waitForEvent(radar, "Dead", async () => {
+            awardPoints(100, radar.x + 20, radar.y);
             showState(radar, "dead");
             radar.clearCollisionComponents();
           }),
         async ({ exec }) => {
-          exec(droneWave(2, "drone.pattern2", 500));
+          exec(droneWave(2, "drone.pattern2", { points }));
+          points = points > 0 ? points - 5 : 0;
           await wait(2000);
         }
       ),
@@ -190,6 +201,7 @@ const helicopter1 = ship => async ({
   wait,
   waitForEvent,
   showState,
+  awardPoints,
   allowDamage,
   until,
   moveWithPattern
@@ -217,6 +229,7 @@ const helicopter1 = ship => async ({
     heliAudio.stop();
     helicopter.clearCollisionComponents();
     movement.abort();
+    awardPoints(250, helicopter.x + 20, helicopter.y);
     await showState(helicopter, "dead");
     await call(helicopter.activateGravity);
   });
@@ -280,6 +293,7 @@ const helicopter2 = ship => async ({
   showState,
   moveWithPattern,
   waitForEvent,
+  awardPoints,
   allowDamage,
   call,
   until
@@ -308,6 +322,7 @@ const helicopter2 = ship => async ({
     heliAudio.stop();
     helicopter.clearCollisionComponents();
     movement.abort();
+    awardPoints(250, helicopter.x + 20, helicopter.y);
     await showState(helicopter, "dead");
     await call(helicopter.activateGravity);
   });
@@ -341,6 +356,7 @@ const part5 = ship => async ({
   parallel,
   setScrollingSpeed,
   moveTo,
+  awardPoints,
   waitForEvent
 }) => {
   await wait(2000);
@@ -352,6 +368,7 @@ const part5 = ship => async ({
   laser.addCollisionComponent("SolidCollision");
   const killed = waitForEvent(laser, "Dead", async () => {
     laser.clearCollisionComponents();
+    awardPoints(250, laser.x + 20, laser.y);
     showState(laser, "dead");
   });
   await allowDamage(laser, { health: 1500 });
@@ -379,11 +396,13 @@ const part6 = ship => async ({
   allowDamage,
   showState,
   waitForEvent,
+  awardPoints,
   wait
 }) => {
   const cabin = ship.cabin1;
   cabin.addCollisionComponent("SolidCollision");
   const killed = waitForEvent(cabin, "Dead", async () => {
+    awardPoints(2000, cabin.x + cabin.w / 2, cabin.y);
     cabin.clearCollisionComponents();
     showState(ship, "cabin1Explode");
     await wait(2000);
@@ -398,11 +417,13 @@ const part7 = ship => async ({
   allowDamage,
   showState,
   waitForEvent,
+  awardPoints,
   wait
 }) => {
   const cabin = ship.cabin2;
   cabin.addCollisionComponent("SolidCollision");
   const killed = waitForEvent(cabin, "Dead", async () => {
+    awardPoints(2000, cabin.x + cabin.w / 2, cabin.y);
     cabin.clearCollisionComponents();
     showState(ship, "cabin2Explode");
     await wait(2000);

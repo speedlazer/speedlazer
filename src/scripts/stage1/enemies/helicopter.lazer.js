@@ -7,6 +7,7 @@ export const helicopter = pattern => async ({
   wait,
   allowDamage,
   moveWithPattern,
+  awardPoints,
   showState
 }) => {
   const heli = spawn("Helicopter", {
@@ -30,6 +31,7 @@ export const helicopter = pattern => async ({
   waitForEvent(heli, "Dead", async () => {
     movement.abort();
     heliAudio.stop();
+    awardPoints(250, heli.x + 20, heli.y);
     await showState(heli, "dead");
     await call(heli.activateGravity);
   });

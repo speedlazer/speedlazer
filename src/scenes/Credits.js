@@ -2,7 +2,8 @@ const credits = [
   ["Designed by", ["Matthijs Groen"]],
   ["Programming", ["Matthijs Groen"]],
   ["Graphics", ["Matthijs Groen"]],
-  ["Music", ["Symsonic"]]
+  ["Music", ["Symsonic"]],
+  ["Testing", ["Hiddo Groen"]]
 ];
 
 const NAME_DURATION = 1500;
