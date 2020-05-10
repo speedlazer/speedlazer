@@ -191,6 +191,7 @@ const helicopter1 = ship => async ({
   waitForEvent,
   showState,
   allowDamage,
+  until,
   moveWithPattern
 }) => {
   const helicopter = ship.heliPlace1;
@@ -199,7 +200,7 @@ const helicopter1 = ship => async ({
   showState(helicopter, "flying");
   await wait(1000);
   await showState(helicopter, "tilted", 2000);
-  const movement = moveWithPattern(helicopter, "heli.battleship1", 150, LINEAR);
+  let movement = moveWithPattern(helicopter, "heli.battleship1", 150, LINEAR);
   waitForEvent(helicopter, "detach", async () => {
     helicopter.detachFromParent();
   });
@@ -212,7 +213,7 @@ const helicopter1 = ship => async ({
   waitForEvent(helicopter, "Remove", async () => {
     heliAudio.stop();
   });
-  waitForEvent(helicopter, "Dead", async () => {
+  const killed = waitForEvent(helicopter, "Dead", async () => {
     heliAudio.stop();
     helicopter.clearCollisionComponents();
     movement.abort();
@@ -220,6 +221,14 @@ const helicopter1 = ship => async ({
     await call(helicopter.activateGravity);
   });
   await movement.process;
+  await until(
+    () => killed,
+    async () => {
+      if (helicopter.appliedEntityState === "dead") return wait(500);
+      movement = moveWithPattern(helicopter, "heli.battleship2c", 150, LINEAR);
+      await movement.process;
+    }
+  );
 };
 
 const part3 = ship => async ({
@@ -317,8 +326,9 @@ const helicopter2 = ship => async ({
   await until(
     () => killed,
     async () => {
-      await movement.process;
+      if (helicopter.appliedEntityState === "dead") return wait(500);
       movement = moveWithPattern(helicopter, "heli.battleship2c", 150, LINEAR);
+      await movement.process;
     }
   );
 };

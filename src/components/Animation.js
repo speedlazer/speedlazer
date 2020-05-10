@@ -1,11 +1,13 @@
 import Composable from "./Composable";
-import { compositions, paths } from "data";
+import { compositions, paths, particles } from "data";
 import { createEntity } from "src/components/EntityDefinition";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import WayPointMotion from "./WayPointMotion";
+import ParticleEmitter from "./ParticleEmitter";
 import { LINEAR } from "src/constants/easing";
 import { getBackgroundColor, setBackgroundColor } from "src/components/Horizon";
 import { mix, strToColor } from "src/components/generic/ColorFade";
+import merge from "lodash/merge";
 
 export const Animation = "Animation";
 
@@ -89,6 +91,37 @@ Crafty.c(Animation, {
         if (settings.state) existing.showState(settings.state);
       }
     });
+    (checkpointData.particles || []).forEach(
+      ([emitterDefinition, settings]) => {
+        const existing = this.elements[settings.key];
+        toRemove = toRemove.filter(k => k !== settings.key);
+        if (!existing) {
+          const x = (settings.relativeX || 0) * Crafty.viewport.width;
+          const y = (settings.relativeY || 0) * Crafty.viewport.height;
+          const emitter = merge(
+            {},
+            particles(emitterDefinition),
+            settings.particles
+          );
+
+          const e = Crafty.e(ParticleEmitter)
+            .particles(emitter)
+            .attr({
+              x,
+              y,
+              z: this.z + (settings.z || 0)
+            });
+          if (settings.detach && e.detachFromParent) {
+            e.detachFromParent();
+          }
+
+          this.elements[settings.key] = e;
+        } else {
+          existing.attr({ z: this.z });
+          if (settings.state) existing.showState(settings.state);
+        }
+      }
+    );
     if (checkpointData.background) {
       setBackgroundColor(checkpointData.background);
     }
