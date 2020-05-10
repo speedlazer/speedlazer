@@ -24,7 +24,15 @@ const audiosheets = [
   {
     name: "hero",
     file: bgMusic1,
-    map: [{ name: "hero", type: "music" }]
+    map: [
+      {
+        name: "hero",
+        type: "music",
+        loop: true,
+        loopEnd: 3 * 60 + 55.682,
+        loopStart: 69.862
+      }
+    ]
   }
 ];
 
