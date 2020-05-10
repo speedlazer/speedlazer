@@ -16,6 +16,12 @@ http://html5gamepad.com/
 
 The latest `master` is automatically deployed to https://speedlazer.net/beta/
 
+# Versioning:
+
+- Major: Engine version (currently 2)
+- Minor: Amount of content sections in game
+- Patch: Fixes
+
 # More info:
 
 Facebook: [@speedlazergame](https://facebook.com/speedlazergame)
