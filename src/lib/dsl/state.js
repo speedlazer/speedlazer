@@ -40,7 +40,7 @@ const stateFunctions = (dsl, state) => {
   const score = (
     Crafty("HUDScore").get(0) ||
     Crafty.e(`2D, HUDScore, UILayerDOM, Text, HUD, ${TweenPromise}`)
-      .attr({ x: 800, y: -10, w: 100, alpha: 0 })
+      .attr({ x: 800, y: -10, w: 220, alpha: 0, score: 0, displayScore: 0 })
       .textColor("#FFFF00")
       .textAlign("left")
       .textFont({
@@ -48,7 +48,21 @@ const stateFunctions = (dsl, state) => {
         weight: "bold",
         family: "Press Start 2P"
       })
-  ).text(`Score: ${state.score}`);
+  )
+    .text(function() {
+      if (this.score > this.displayScore + 200) {
+        this.displayScore += 10;
+        this.textFont({ size: "9px" }).textColor("#FFFF80");
+      } else if (this.score > this.displayScore + 100) {
+        this.displayScore += 5;
+        this.textFont({ size: "9px" }).textColor("#FFFF40");
+      } else if (this.score > this.displayScore) {
+        this.displayScore += 1;
+        this.textFont({ size: "8px" });
+      }
+      return `Score: ${this.displayScore}`;
+    })
+    .dynamicTextGeneration(true);
 
   const closeScripts = [];
 
@@ -75,7 +89,7 @@ const stateFunctions = (dsl, state) => {
     },
     awardPoints: async (amount, x, y) => {
       state.score += amount;
-      score.text(`Score: ${state.score}`);
+      score.attr({ score: state.score });
 
       const points = getPoints()
         .attr({ x, y })
