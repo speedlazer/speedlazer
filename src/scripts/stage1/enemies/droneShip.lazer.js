@@ -7,6 +7,7 @@ export const droneShip = () => async ({
   until,
   parallel,
   wait,
+  awardPoints,
   showState,
   allowDamage,
   moveTo
@@ -24,6 +25,7 @@ export const droneShip = () => async ({
     .addCollisionComponent("SolidCollision")
     .addCollisionComponent("PlayerEnemy");
   const gun = waitForEvent(ship.gun, "Dead", async () => {
+    awardPoints(200, ship.gun.x + 20, ship.gun.y);
     showState(ship.gun, "dead");
     ship.gun.clearCollisionComponents();
   });
@@ -32,6 +34,7 @@ export const droneShip = () => async ({
   activeMovement = moveTo(ship, { x: 0.5 }, null, EASE_OUT);
   ship.radar.addCollisionComponent("SolidCollision");
   const radarKilled = waitForEvent(ship.radar, "Dead", async () => {
+    awardPoints(100, ship.radar.x + 20, ship.radar.y);
     showState(ship.radar, "dead");
     ship.radar.clearCollisionComponents();
   });
@@ -47,7 +50,7 @@ export const droneShip = () => async ({
       until(
         () => radarKilled,
         async ({ exec }) => {
-          exec(droneWave(2, "drone.pattern2", 500));
+          exec(droneWave(2, "drone.pattern2", { points: 0 }));
           await wait(1500);
         }
       ),

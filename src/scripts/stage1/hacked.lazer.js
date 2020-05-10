@@ -40,31 +40,31 @@ const part = async ({
   ]);
 
   await parallel([
-    () => exec(droneWave(4, "drone.pattern6", 500)),
+    () => exec(droneWave(4, "drone.pattern6")),
     async () => {
       await wait(2000);
-      await exec(droneWave(4, "drone.pattern6", 500, 0.2));
+      await exec(droneWave(4, "drone.pattern6", { yOffset: 0.2 }));
     },
     async () => {
       await wait(4000);
-      await exec(droneWave(4, "drone.pattern6", 500, 0.4));
+      await exec(droneWave(4, "drone.pattern6", { yOffset: 0.4 }));
     }
   ]);
-  await exec(droneWave(4, "drone.pattern5", 500));
+  await exec(droneWave(4, "drone.pattern5"));
   await exec(droneShip());
-  await exec(droneWave(4, "drone.pattern1", 500));
+  await exec(droneWave(4, "drone.pattern1"));
   await exec(mineWave());
   await setScenery("City.CoastStart");
   await exec(mineWave());
   await parallel([
-    () => exec(droneWave(4, "drone.pattern6", 500)),
+    () => exec(droneWave(4, "drone.pattern6")),
     async () => {
       await wait(2000);
-      await exec(droneWave(4, "drone.pattern6", 500, 0.2));
+      await exec(droneWave(4, "drone.pattern6", { yOffset: 0.2 }));
     },
     async () => {
       await wait(4000);
-      await exec(droneWave(4, "drone.pattern6", 500, 0.4));
+      await exec(droneWave(4, "drone.pattern6", { yOffset: 0.4 }));
     }
   ]);
 };
