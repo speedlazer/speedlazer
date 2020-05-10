@@ -343,6 +343,7 @@ const part5 = ship => async ({
   moveTo,
   waitForEvent
 }) => {
+  await wait(2000);
   await showState(ship, "packageOpen", 1000, EASE_IN_OUT);
   await wait(1000);
   const laser = ship.deckGun3;
@@ -358,10 +359,12 @@ const part5 = ship => async ({
 
   await parallel([
     async () => {
+      await wait(1000);
       const playerShip = Crafty("PlayerShip").get(0);
       await showState(playerShip, "turned");
+      await wait(1000);
       await setScrollingSpeed(-50, 0);
-      const activeMovement = moveTo(ship, { x: -0.9 }, null, EASE_IN_OUT);
+      const activeMovement = moveTo(ship, { x: -0.9 }, 85, EASE_IN_OUT);
       await activeMovement.process;
     },
     async () => {
@@ -487,7 +490,7 @@ const battleship = async ({
 
   // major explosions / sinking
   await parallel([
-    () => showState(ship, "sinking", 16000, EASE_IN_OUT),
+    () => showState(ship, "sinking", 17000, EASE_IN_OUT),
     async () => {
       activeMovement = moveTo(ship, { x: -1.7, y: 0.85 }, null, EASE_IN_OUT);
       await activeMovement.process;

@@ -13,7 +13,7 @@ export default {
         cloth: { y: 0 }
       },
       medium: {
-        cloth: { y: 20 }
+        cloth: { y: 10 }
       },
       down: {
         cloth: { y: 100 }

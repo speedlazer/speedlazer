@@ -42,6 +42,15 @@ export default {
           composition: "cloth",
           frame: "medium"
         },
+        boxLocation1: {
+          composition: "intro.boxes"
+        },
+        boxLocation2: {
+          composition: "intro.boxes"
+        },
+        boxLocation3: {
+          composition: "intro.boxes"
+        },
         hatch1: {
           composition: "shipHatch",
           attachments: {

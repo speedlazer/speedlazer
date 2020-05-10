@@ -99,7 +99,7 @@ export default {
         {
           x: 80,
           y: 32,
-          z: -10,
+          z: 4,
           attachAlign: ["center", "center"]
         }
       ],
@@ -144,6 +144,7 @@ export default {
         core1: { rx: 0 }
       },
       dead1: {
+        foot: { z: 5 },
         barrel: { rotation: -90, y: -100, x: 0, overrideColor: "#606060" },
         core1: { x: -3, overrideColor: "#505050" },
         core2: { overrideColor: "#505050" },
