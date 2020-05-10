@@ -85,6 +85,9 @@ export default {
       lowered: {
         frame: "lowered"
       },
+      sinking: {
+        frame: "sinking"
+      },
       t1o: {
         attachments: { hatch1: { frame: "open" } }
       },
@@ -153,8 +156,7 @@ export default {
       cabin1Smoke: {
         attachments: {
           cabin1: { composition: "battleship.firstCabinDestroyed" },
-          cabin1burn: { particles: ["smoke", { emitter: { w: 160 } }] },
-          cabin2burn: null
+          cabin1burn: { particles: ["smoke", { emitter: { w: 160 } }] }
         }
       },
       cabin2Explode: {
@@ -215,6 +217,16 @@ export default {
         position: {
           rx: -0.7,
           ry: 0.7
+        },
+        scrollSpeed: { vx: 100, vy: 0 },
+        background: ["City.Sunrise", 2]
+      },
+      {
+        name: "Sunk",
+        scenery: "City.Coast",
+        position: {
+          rx: -0.2,
+          ry: 0.85
         },
         scrollSpeed: { vx: 100, vy: 0 },
         background: ["City.Sunrise", 2]

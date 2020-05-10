@@ -71,6 +71,9 @@ export default {
       },
       lowered: {
         bottom: { y: 0 }
+      },
+      sinking: {
+        bottom: { y: -100 }
       }
     }
   },

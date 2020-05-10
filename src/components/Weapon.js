@@ -460,6 +460,7 @@ Crafty.c(Weapon, {
   init() {
     this.xFlipped = false;
     this.spawnQueue = [];
+    this.burstsFired = 0;
   },
 
   weapon(definition) {
@@ -488,8 +489,12 @@ Crafty.c(Weapon, {
   activate() {
     if (!this.definition.pattern) return;
     this.active = true;
+    this.burstsFired = 0;
     this.activatedAt = new Date() * 1;
     const spawnRhythm = this.definition.pattern.spawnRhythm;
+    if (spawnRhythm.maxBursts === undefined) {
+      spawnRhythm.maxBursts = Infinity;
+    }
 
     this.initialDelay = adjustForDifficulty(
       this.difficulty,
@@ -661,10 +666,19 @@ Crafty.c(Weapon, {
           this.shotIndex >=
           adjustForDifficulty(this.difficulty, spawnRhythm.burst)
         ) {
+          const burstDelay = adjustForDifficulty(
+            this.difficulty,
+            spawnRhythm.burstDelay
+          );
+          this.burstsFired += 1;
           this.initialDelay =
-            adjustForDifficulty(this.difficulty, spawnRhythm.burstDelay) +
+            burstDelay +
             adjustForDifficulty(this.difficulty, spawnRhythm.shotDelay);
-          if (this.initialDelay === 0) {
+          const maxBursts = adjustForDifficulty(
+            this.difficulty,
+            spawnRhythm.maxBursts
+          );
+          if (maxBursts <= this.burstsFired) {
             this.deactivate();
           } else {
             this._makeQueue();

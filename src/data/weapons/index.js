@@ -1,6 +1,7 @@
 export default {
   "largeDrone.takeover": {
     spawnRhythm: {
+      maxBursts: 1,
       initialDelay: 10,
       burst: 2,
       shotDelay: 200,
@@ -260,6 +261,7 @@ export default {
   },
   "mine.blast": {
     spawnRhythm: {
+      maxBursts: 1,
       initialDelay: 1,
       burst: 1,
       shotDelay: 0,
@@ -321,6 +323,7 @@ export default {
   },
   "mine.explosion": {
     spawnRhythm: {
+      maxBursts: 1,
       initialDelay: 1,
       burst: 1,
       shotDelay: 0,
@@ -351,6 +354,7 @@ export default {
   "building.explosion": {
     spawnRhythm: {
       initialDelay: 1,
+      maxBursts: 1,
       burst: 14,
       shotDelay: 200,
       burstDelay: 0,
@@ -386,6 +390,7 @@ export default {
   },
   "building.explosion2": {
     spawnRhythm: {
+      maxBursts: 1,
       initialDelay: 1,
       burst: 18,
       shotDelay: 180,

@@ -91,6 +91,12 @@
               "maxItems": 2,
               "items": { "type": "integer" }
             },
+            "maxBursts": {
+              "type": ["array", "integer"],
+              "minItems": 2,
+              "maxItems": 2,
+              "items": { "type": "integer" }
+            },
             "burstDelay": {
               "type": ["array", "integer"],
               "minItems": 2,

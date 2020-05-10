@@ -333,22 +333,21 @@ const helicopter2 = ship => async ({
   );
 };
 
-const part4 = ship => async ({ exec, showState }) => {
-  await exec(helicopter2(ship));
-
-  const laser = ship.deckGun3;
-  await showState(laser, "open", 500);
-};
-
 const part5 = ship => async ({
   allowDamage,
   showState,
   displayFrame,
+  wait,
+  parallel,
+  setScrollingSpeed,
+  moveTo,
   waitForEvent
 }) => {
   await showState(ship, "packageOpen", 1000, EASE_IN_OUT);
+  await wait(1000);
   const laser = ship.deckGun3;
   await showState(laser, "open", 500, EASE_IN_OUT);
+
   laser.addCollisionComponent("SolidCollision");
   const killed = waitForEvent(laser, "Dead", async () => {
     laser.clearCollisionComponents();
@@ -357,9 +356,20 @@ const part5 = ship => async ({
   await allowDamage(laser, { health: 1500 });
   showState(laser, "shooting");
 
-  await killed;
-  await displayFrame(ship.engineCore, "perc100", 1000);
-  showState(ship, "engineTilt");
+  await parallel([
+    async () => {
+      const playerShip = Crafty("PlayerShip").get(0);
+      await showState(playerShip, "turned");
+      await setScrollingSpeed(-50, 0);
+      const activeMovement = moveTo(ship, { x: -0.9 }, null, EASE_IN_OUT);
+      await activeMovement.process;
+    },
+    async () => {
+      await killed;
+      await displayFrame(ship.engineCore, "perc100", 1000);
+      showState(ship, "engineTilt");
+    }
+  ]);
 };
 
 const part6 = ship => async ({
@@ -451,38 +461,38 @@ const battleship = async ({
   activeMovement = moveTo(ship, { x: -0.17 }, null, EASE_IN_OUT);
   await parallel([() => activeMovement.process, () => exec(part3(ship))]);
 
-  await exec(part4(ship));
-
-  const playerShip = Crafty("PlayerShip").get(0);
-  await showState(playerShip, "turned");
-  await setScrollingSpeed(-50, 0);
-
-  activeMovement = moveTo(ship, { x: -0.9 }, null, EASE_IN_OUT);
-  await activeMovement.process;
+  await exec(helicopter2(ship));
 
   await exec(part5(ship));
 
-  // TODO: Allow destruction of 2nd cabin first
+  await parallel([
+    async () => {
+      activeMovement = moveTo(ship, { x: -0.7 }, null, EASE_IN_OUT);
+      await activeMovement.process;
+    },
+    () => exec(part7(ship))
+  ]);
 
-  activeMovement = moveTo(ship, { x: -0.4 }, null, EASE_IN_OUT);
-  await activeMovement.process;
+  await parallel([
+    async () => {
+      activeMovement = moveTo(ship, { x: -0.2 }, null, EASE_IN_OUT);
+      await activeMovement.process;
+    },
+    () => exec(part6(ship))
+  ]);
 
-  await wait(4000);
-
-  activeMovement = moveTo(ship, { x: 0.4 }, null, EASE_IN_OUT);
-  await activeMovement.process;
+  const playerShip = Crafty("PlayerShip").get(0);
   await showState(playerShip, "turned");
   await setScrollingSpeed(100, 0);
 
-  await exec(part6(ship));
-
-  activeMovement = moveTo(ship, { x: -0.2 }, null, EASE_IN_OUT);
-  await activeMovement.process;
-
-  await exec(part7(ship));
-
-  activeMovement = moveTo(ship, { x: -1.5 }, null, EASE_IN_OUT);
-  await activeMovement.process;
+  // major explosions / sinking
+  await parallel([
+    () => showState(ship, "sinking", 16000, EASE_IN_OUT),
+    async () => {
+      activeMovement = moveTo(ship, { x: -1.7, y: 0.85 }, null, EASE_IN_OUT);
+      await activeMovement.process;
+    }
+  ]);
 
   ship.destroy();
 };

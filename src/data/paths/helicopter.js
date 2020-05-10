@@ -70,6 +70,7 @@ export default {
       ]
     },
     { x: 0.6, y: 0.4 },
+    { x: 0.65, y: 0.4 },
     { x: 0.7, y: 0.3 }
   ],
   "heli.battleship2c": [
