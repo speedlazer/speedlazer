@@ -44,13 +44,15 @@ export const droneShip = () => async ({
   activeMovement.process.then(() => ship.destroy());
 
   showState(ship, "radarPulse");
+  let points = 10;
 
   await parallel([
     () =>
       until(
         () => radarKilled,
         async ({ exec }) => {
-          exec(droneWave(2, "drone.pattern2", { points: 0 }));
+          exec(droneWave(2, "drone.pattern2", { points }));
+          points = points > 0 ? points - 5 : 0;
           await wait(1500);
         }
       ),
