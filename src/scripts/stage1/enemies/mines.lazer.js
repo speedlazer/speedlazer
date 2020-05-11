@@ -37,7 +37,7 @@ const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({
         activeMovement && activeMovement.abort();
         synchronize();
         if (mine.appliedEntityState === "explode") return;
-        awardPoints(50, mine.x, mine.y);
+        awardPoints(100, mine.x, mine.y);
         showState(mine, "dead");
         addScreenTrauma(0.2);
 
