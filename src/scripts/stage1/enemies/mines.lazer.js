@@ -88,10 +88,9 @@ const makeSynchronization = amount => {
 };
 
 export const mineWave = () => async ({ exec }) => {
-  const amount = 7;
+  const amount = 6;
 
   const coords = [
-    { x: 0.1, y: 0.2 },
     { x: 0.3, y: 0.8 },
     { x: 0.5, y: 0.2 },
     { x: 0.5, y: 0.4 },
