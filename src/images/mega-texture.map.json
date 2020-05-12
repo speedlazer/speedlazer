@@ -105,6 +105,8 @@
     "heart": [13, 49, 1, 1],
     "star": [14, 49, 1, 1],
     "powerUpBox": [10, 49, 1, 1],
+    "powerUpBox2": [11, 49, 1, 1],
+    "powerUpBox3": [12, 49, 1, 1],
     "sphere1": [7, 51, 1, 1],
     "sphere2": [8, 51, 1, 1],
     "lightBullet": [9, 51, 1, 1],
