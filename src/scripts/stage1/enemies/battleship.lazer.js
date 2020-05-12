@@ -441,7 +441,6 @@ const battleship = async ({
   showState,
   exec,
   moveTo,
-  setBackgroundCheckpointLimit,
   setScrollingSpeed
 }) => {
   let activeMovement;
@@ -479,7 +478,6 @@ const battleship = async ({
 
   activeMovement = moveTo(ship, { x: 0.5 }, null, EASE_IN_OUT);
   await parallel([() => activeMovement.process, () => exec(part2(ship))]);
-  setBackgroundCheckpointLimit(3);
   await wait(1000);
 
   activeMovement = moveTo(ship, { x: -0.17 }, null, EASE_IN_OUT);
@@ -515,6 +513,35 @@ const battleship = async ({
     async () => {
       activeMovement = moveTo(ship, { x: -1.7, y: 0.85 }, null, EASE_IN_OUT);
       await activeMovement.process;
+    },
+    async () => {
+      await wait(500);
+      await say(
+        "General",
+        "I'm at a safe location now. We need to end this threat.\nHow are you holding up?",
+        { portrait: "portraits.general" }
+      );
+      await say(
+        "John",
+        "I'm fine. That ship had some advanced weaponry on board.\n" +
+          "Did you know that?",
+        {
+          portrait: "portraits.pilot"
+        }
+      );
+      await say(
+        "General",
+        "We can not acces the computer systems anymore. But this would\n" +
+          "mean they also have control over our R&D division.\nThis is really bad.",
+        { portrait: "portraits.general" }
+      );
+      await say(
+        "John",
+        "I will try to reach the R&D center to investigate." +
+          {
+            portrait: "portraits.pilot"
+          }
+      );
     }
   ]);
 

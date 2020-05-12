@@ -94,7 +94,7 @@ export const say = (speaker, text, { portrait = null } = {}) =>
     });
 
     const wordCount = lines.join(" ").split(" ").length;
-    const repeats = 1 + Math.ceil(wordCount / 4);
+    const repeats = lines.length + Math.ceil(wordCount / 4);
     let i = 0;
 
     Crafty.e("Dialog, Delay").delay(

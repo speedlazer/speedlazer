@@ -2,6 +2,7 @@ import { h, Component } from "preact";
 import { GamePreview } from "./GamePreview";
 import { Setting } from "editor/components/Setting";
 import { Menu } from "editor/components/Menu";
+import { Text } from "editor/components/Text";
 import { Divider } from "editor/components/Divider";
 import { Title } from "editor/components/Title";
 import { BarChart } from "editor/components/BarChart";
@@ -43,6 +44,7 @@ class Game extends Component {
 
   render({ stage }, { invincible, stats }) {
     storeState(this.state);
+    const activeStage = gameStructure.find(({ name }) => name === stage);
     return (
       <section>
         <Title>Game{stage && ` - ${stage}`}</Title>
@@ -51,20 +53,20 @@ class Game extends Component {
             hoverHide={stage}
             items={gameStructure.map(({ name }) => [name, `/game/${name}`])}
           />
-          <div>
-            <Setting checked={invincible} onCheck={this.updateInvincible}>
-              Invincible
-            </Setting>
-
-            {stage && (
+          {stage && (
+            <div>
+              <Setting checked={invincible} onCheck={this.updateInvincible}>
+                Invincible
+              </Setting>
+              <Text>Tags: {Object.keys(activeStage.tags).join(", ")}</Text>
               <GamePreview
                 stage={stage}
                 invincible={invincible}
                 onStats={this.setStats}
               />
-            )}
-            <BarChart data={stats} />
-          </div>
+              <BarChart data={stats} />
+            </div>
+          )}
         </Divider>
       </section>
     );

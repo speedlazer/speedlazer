@@ -38,23 +38,22 @@ const part = async ({
   const introAnimation = playAnimation("City.Intro");
   await fade.start(1000);
 
+  await say(
+    "General",
+    "Let us escort you to the factory to install\n" +
+      "the AI controlled defence systems. You are the last ship.",
+    { portrait: "portraits.general" }
+  );
+
   await parallel([
     () => introAnimation.waitTillCheckpoint(3),
-    async () => {
-      await wait(1500);
-      await say(
-        "General",
-        "Let us escort you to the factory to install\n" +
-          "the AI controlled defence systems. You are the last ship.",
-        { portrait: "portraits.general" }
-      );
-    },
     async () => {
       await wait(500);
       heliAudio.setVolume(2.0, 1500);
     }
   ]);
   heliAudio.setVolume(0.6, 3000);
+
   exec(playerShip({ existing: true }));
   showHUD();
   const ready = bigText("Get ready", { color: "#FF0000" });
@@ -72,13 +71,13 @@ const part = async ({
       await ready.zoomOut(500);
       ready.remove();
       helicopter = exec(backgroundHeli({ existing: true }));
+      await say(
+        "General",
+        "We send some drones for some last manual target practice",
+        { portrait: "portraits.general" }
+      );
       await parallel([
         async () => {
-          await say(
-            "General",
-            "We send some drones for some last manual target practice",
-            { portrait: "portraits.general" }
-          );
           await say("John", "Let's go!", { portrait: "portraits.pilot" });
         },
         async () => {

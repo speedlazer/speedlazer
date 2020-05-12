@@ -6,7 +6,7 @@ export default {
           ["IntroShip", { key: "ship", relativeX: -0.3, relativeY: 0.8 }]
         ],
         timeline: {
-          defaultDuration: 1500,
+          defaultDuration: 3500,
           transitions: [
             {
               key: "ship",
@@ -18,7 +18,17 @@ export default {
                   { x: -0.2, y: 0.8 }
                 ]
               }
-            },
+            }
+          ]
+        }
+      },
+      {
+        entities: [
+          ["IntroShip", { key: "ship", relativeX: -0.2, relativeY: 0.8 }]
+        ],
+        timeline: {
+          defaultDuration: 500,
+          transitions: [
             {
               key: "ship",
               start: 0.8,
