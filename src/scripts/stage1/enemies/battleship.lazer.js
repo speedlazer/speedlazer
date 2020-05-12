@@ -535,13 +535,9 @@ const battleship = async ({
           "mean they also have control over our R&D division.\nThis is really bad.",
         { portrait: "portraits.general" }
       );
-      await say(
-        "John",
-        "I will try to reach the R&D center to investigate." +
-          {
-            portrait: "portraits.pilot"
-          }
-      );
+      await say("John", "I will try to reach the R&D center to investigate.", {
+        portrait: "portraits.pilot"
+      });
     }
   ]);
 
