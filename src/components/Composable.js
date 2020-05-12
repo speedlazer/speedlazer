@@ -111,7 +111,8 @@ const generateDefaultFrame = (entity, definition) => {
           scale: 1,
           topDesaturation: 0,
           bottomDesaturation: 0,
-          overrideColorStrength: 0,
+          overrideColorStrength:
+            settings.overrideColor || settings.accentColor ? 1 : 0,
           sprite,
           ...settings,
           x: 0,
@@ -679,6 +680,12 @@ Crafty.c(Composable, {
       z: this.z + (options.z || 0)
     });
     if (options.key) elem.attr({ key: options.key });
+    if (options.crop) {
+      // input: Top, Right, Bottom, Left (clockwise)
+      // output: left, top, width, height
+      const [top, right, bottom, left] = options.crop;
+      elem.crop(left, top, elem.w - right - left, elem.h - bottom - top);
+    }
     if (options.scale) elem.attr({ scale: options.scale });
     if (options.scaleX) elem.attr({ scale: options.scaleX });
     if (options.scaleY) elem.attr({ scale: options.scaleY });
@@ -697,12 +704,6 @@ Crafty.c(Composable, {
     if (options.lightness) {
       elem.addComponent(ColorEffects);
       elem.attr({ lightness: options.lightness });
-    }
-    if (options.crop) {
-      // input: Top, Right, Bottom, Left (clockwise)
-      // output: left, top, width, height
-      const [top, right, bottom, left] = options.crop;
-      elem.crop(left, top, elem.w - right - left, elem.h - bottom - top);
     }
     elem.attr({
       w: options.w || elem.w,
