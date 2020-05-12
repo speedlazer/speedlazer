@@ -67,6 +67,7 @@ const part = async ({
       await exec(droneWave(4, "drone.pattern6", { yOffset: 0.4 }));
     }
   ]);
+  await exec(droneShip());
 };
 
 export default part;

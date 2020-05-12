@@ -40,23 +40,14 @@ const processor = processEffects({
 const DamageSupport = "DamageSupport";
 
 Crafty.c(DamageSupport, {
-  //required: StackableCoordinates,
   events: {
     EnterFrame: "_handleEffects"
   },
 
   init() {
-    //this.createStackablePropertyFor("xMomentumShift", "x");
-    //this.createStackablePropertyFor("yMomentumShift", "y");
     this.attr({
       health: 0,
       vulnerable: false
-      //xMomentum: 0,
-      //yMomentum: 0,
-      //xMomentumShift: 0,
-      //yMomentumShift: 0,
-      //xForce: 0,
-      //yForce: 0
     });
     this.allowDamage = this.allowDamage.bind(this);
     this.hasHealth = this.hasHealth.bind(this);
@@ -96,9 +87,6 @@ Crafty.c(DamageSupport, {
   },
 
   _handleEffects({ dt }) {
-    /**
-     * TODO: Split behavior of 'force' from the rest
-     */
     if (!this.effects || this.effects.length === 0) {
       applyHitFlash(this, false);
       return;
@@ -109,37 +97,18 @@ Crafty.c(DamageSupport, {
       return;
     }
 
-    //if (this.xMomentum > 0 || changes) {
-    //this.xMomentum = applyForce(
-    //this.xMomentum,
-    //Math.abs((changes && changes.xForce) || 0),
-    //(this.weight || 0) * 200
-    //);
-    //}
-    //if (this.yMomentum > 0 || changes) {
-    //this.yMomentum = applyForce(
-    //this.yMomentum,
-    //Math.abs((changes && changes.yForce) || 0),
-    //(this.weight || 0) * 200
-    //);
-    //}
+    if (changes.health && changes.health !== this.health) {
+      this.trigger("HealthChange", changes.health);
+    }
+
     applyHitFlash(this, changes.health && changes.health < this.health);
 
-    //if (changes !== false) {
     Object.assign(this, changes);
-    //}
-
-    //this.xMomentumShift += this.xMomentum * this.xForce;
-    //this.yMomentumShift += this.yMomentum * this.yForce;
-
-    //if (changes) {
     if (this.health <= 0) {
       this.stopDamage();
       this.trigger("Dead");
+      this.trigger("HealthChange", 0);
     }
-    //} else {
-    //applyHitFlash(this, false);
-    //}
   }
 });
 

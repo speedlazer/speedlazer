@@ -7,9 +7,11 @@ export const playerShip = ({ existing = false } = {}) => async ({
   exec,
   waitForEvent,
   allowDamage,
+  setHealthbar,
   showState,
   loseLife
 }) => {
+  const maxHealth = 50;
   const player = Crafty("Player").get(0);
   const ship =
     (existing && Crafty("PlayerShip").get(0)) ||
@@ -21,12 +23,24 @@ export const playerShip = ({ existing = false } = {}) => async ({
       defaultVelocity: 400
     });
   if (!player.invincible) {
-    await allowDamage(ship, { health: 50 });
+    await allowDamage(ship, {
+      health: ship.health || maxHealth
+    });
   }
+  if (ship.health < maxHealth * 0.5) {
+    ship.displayFrame("damaged");
+  }
+  setHealthbar(ship.health / maxHealth);
   showState(ship, "flying");
 
   // TODO: Refactor adding these components to the entity definition
   ship.addComponent(ShipControls, ShipCollision);
+  ship.bind("HealthChange", newHealth => {
+    setHealthbar(newHealth / 50);
+    if (newHealth < maxHealth * 0.5) {
+      ship.displayFrame("damaged");
+    }
+  });
 
   if (player.has(ControlScheme)) {
     player.assignControls(ship);

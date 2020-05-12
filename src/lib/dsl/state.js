@@ -1,4 +1,5 @@
 import TweenPromise from "src/components/generic/TweenPromise";
+import Health from "src/components/Health";
 
 let pointsPool = [];
 Crafty.bind("SceneDestroy", () => (pointsPool = []));
@@ -36,6 +37,17 @@ const stateFunctions = (dsl, state) => {
         family: "Press Start 2P"
       })
   ).text(`Lives: ${state.lives}`);
+
+  const health =
+    Crafty("HUDHealth").get(0) ||
+    Crafty.e(
+      `2D, HUDHealth, UILayerWebGL, HUD, ${Health}, ${TweenPromise}`
+    ).attr({ x: 150, y: -10, w: 120, h: 5, alpha: 0, maxWidth: 120 });
+
+  Crafty("HUDHealthBar").get(0) ||
+    Crafty.e(`2D, HUDHealthBar, UILayerWebGL, Color, HUD, ${TweenPromise}`)
+      .attr({ x: 149, y: -11, w: 122, h: 7, z: -1, alpha: 0, baseAlpha: 0.6 })
+      .color("#000000");
 
   const score = (
     Crafty("HUDScore").get(0) ||
@@ -78,6 +90,9 @@ const stateFunctions = (dsl, state) => {
     onScriptClose: callback => {
       closeScripts.push(callback);
     },
+    setHealthbar: healthPerc => {
+      health.attr({ health: healthPerc });
+    },
     loseLife: () => {
       state.lives -= 1;
       if (state.lives < 0) {
@@ -103,7 +118,15 @@ const stateFunctions = (dsl, state) => {
       const results = [];
       Crafty("HUD").each(function() {
         if (this.tweenPromise) {
-          results.push(this.tweenPromise({ alpha: 1, y: 10 }, 300));
+          results.push(
+            this.tweenPromise(
+              {
+                alpha: this.baseAlpha === undefined ? 1 : this.baseAlpha,
+                y: this.y + 20
+              },
+              500
+            )
+          );
         }
       });
       return Promise.all(results);
@@ -114,7 +137,7 @@ const stateFunctions = (dsl, state) => {
       const results = [];
       Crafty("HUD").each(function() {
         if (this.tweenPromise) {
-          results.push(this.tweenPromise({ alpha: 0, y: -10 }, 300));
+          results.push(this.tweenPromise({ alpha: 0, y: this.y - 20 }, 500));
         }
       });
       return Promise.all(results);

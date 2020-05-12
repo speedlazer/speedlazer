@@ -30,7 +30,7 @@ export default {
         queue: [{ duration: 4000, audio: ["gun-shot", { volume: 0.8 }] }],
         damage: [
           {
-            velocity: [-8e3, -20e3],
+            velocity: [-3e3, -15e3],
             affects: "health",
             duration: [2, 4],
             name: "Laser"
