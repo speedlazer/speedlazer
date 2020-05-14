@@ -136,7 +136,9 @@ Crafty.c(Bullet, {
 
     if (this.bulletSettings.attached) {
       this.beamVelocity = 0;
-      this.sw += hitData[0].nx * hitData[0].overlap;
+      // FIXME: This breaks beams when collision object only has MBR (no SAT)
+      const correction = hitData[0].nx * hitData[0].ny * hitData[0].overlap;
+      this.sw -= correction;
     }
 
     if (firstObj.processDamage && this.bulletSettings.damage) {

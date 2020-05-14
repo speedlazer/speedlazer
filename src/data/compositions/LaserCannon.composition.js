@@ -13,7 +13,7 @@ export default {
           x: 54,
           y: 0,
           key: "barrel",
-          ro: [23, 18],
+          ro: [23, 15],
           hitbox: [-49, 10, 40, 0, 40, 28, -49, 28],
           crop: [0, 0, 0, 22]
         }

@@ -247,7 +247,7 @@ Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
   const entity = createEntity(entityName);
   setHabitat(habitat);
 
-  const dummyPlayer = Crafty.e("2D, PlayerShip").attr({
+  const dummyPlayer = Crafty.e("2D, PlayerShip, LaserSolid, Collision").attr({
     x: 0,
     y: 0,
     w: 1,
