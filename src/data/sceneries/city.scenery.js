@@ -157,7 +157,7 @@ export default {
       },
       {
         x: 0,
-        y: -138,
+        y: -148,
         composition: "city.cityStart",
         distance: 0.5
       }
@@ -205,13 +205,13 @@ export default {
       },
       {
         x: 0,
-        y: -138,
+        y: -148,
         composition: "city.city",
         distance: 0.5
       },
       {
         x: 0,
-        y: -120,
+        y: -180,
         composition: "city.layer2",
         distance: 0.375
       }
@@ -253,13 +253,13 @@ export default {
       },
       {
         x: 0,
-        y: -138,
+        y: -148,
         composition: "city.city",
         distance: 0.5
       },
       {
         x: 0,
-        y: -120,
+        y: -180,
         composition: "city.layer2",
         distance: 0.375
       }
@@ -300,7 +300,7 @@ export default {
       },
       {
         x: 0,
-        y: -10,
+        y: -20,
         composition: "city.bridge.foot",
         distance: 0.5
       },
@@ -385,7 +385,7 @@ export default {
       },
       {
         x: 0,
-        y: -335,
+        y: -345,
         z: -44,
         components: ["SunBlock"],
         composition: [
@@ -401,7 +401,7 @@ export default {
       },
       {
         x: 0,
-        y: -230,
+        y: -240,
         z: -46,
         composition: [
           "city.bridge.deck",
@@ -448,7 +448,7 @@ export default {
       },
       {
         x: 0,
-        y: -150,
+        y: -160,
         z: -48,
         composition: [
           "city.bridge.deck",
@@ -464,7 +464,7 @@ export default {
       },
       {
         x: 0,
-        y: -80,
+        y: -90,
         z: -50,
         composition: [
           "city.bridge.deck",
@@ -480,7 +480,7 @@ export default {
       },
       {
         x: 0,
-        y: -30,
+        y: -40,
         z: -52,
         composition: [
           "city.bridge.deck",

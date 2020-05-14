@@ -5,7 +5,7 @@ attribute vec4 aColor;
 
 varying lowp vec4 vColor;
 varying lowp vec2 vLayer;
-uniform  vec4 uViewport;
+uniform vec4 uViewport;
 
 mat4 viewportScale = mat4(2.0 / uViewport.z, 0, 0, 0,    0, -2.0 / uViewport.w, 0,0,    0, 0,1,0,    -1,+1,0,1);
 vec4 viewportTranslation = vec4(uViewport.xy, 0, 0);

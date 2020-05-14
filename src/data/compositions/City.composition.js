@@ -39,7 +39,13 @@ export default {
       width: 384,
       height: 256
     },
-    sprites: [["cityLayer2", { z: -505, horizon: [0.6, 0.6] }]]
+    sprites: [
+      ["cityLayer2", { z: -505, horizon: [0.6, 0.6] }],
+      [
+        "cityLayer2",
+        { z: -505, y: 256, h: 80, crop: [254, 0, 0, 0], horizon: [0.6, 0.6] }
+      ]
+    ]
   },
   "city.bridge.foot": {
     attributes: {

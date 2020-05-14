@@ -646,6 +646,10 @@ Crafty.c(Weapon, {
           this.aimingEnabled = false;
           upcoming.stopAiming = undefined;
         }
+        if (upcoming.audio) {
+          playAudio(upcoming.audio);
+          upcoming.audio = undefined;
+        }
         if (upcoming.stopAiming === false) {
           this.aimingEnabled = true;
           upcoming.stopAiming = undefined;

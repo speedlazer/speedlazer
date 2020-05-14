@@ -117,6 +117,8 @@
               "key": { "type": "string" },
               "w": { "type": "integer" },
               "h": { "type": "integer" },
+              "x": { "type": "integer" },
+              "y": { "type": "integer" },
               "z": { "type": "integer" },
               "topColor": {
                 "type": "array",

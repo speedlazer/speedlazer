@@ -15,6 +15,7 @@
                 "properties": {
                   "stopAiming": { "type": "boolean" },
                   "state": { "type": "string" },
+                  "audio": { "type": "string" },
                   "spawn": { "type": "boolean" },
                   "duration": {
                     "type": ["array", "integer"],
