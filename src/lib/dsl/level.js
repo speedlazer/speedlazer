@@ -3,6 +3,7 @@ import { getOne } from "src/lib/utils";
 import { fadeIn, fadeOut } from "src/components/generic/ColorFade";
 import {
   setScenery,
+  getNotificationInScreen,
   getScrollVelocity,
   setAltitude,
   getAltitude
@@ -114,6 +115,8 @@ const levelFunctions = state => ({
   setScenery: async sceneryName => {
     setScenery(sceneryName);
   },
+  waitTillInScreen: (sceneryName, offset) =>
+    getNotificationInScreen(sceneryName, offset),
   setBackground: async (backgroundName, checkpoint, limit) => {
     setBackground(animations(backgroundName));
     if (limit !== undefined) {

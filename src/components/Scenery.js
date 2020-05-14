@@ -27,6 +27,24 @@ export const getAltitude = () => {
   return scenery.altitude;
 };
 
+let notificationName = null;
+let notificationBuffer = 0;
+let notificationCallback = null;
+
+const notifyScenery = () => {
+  notificationCallback();
+  notificationName = null;
+  notificationBuffer = 0;
+  notificationCallback = null;
+};
+
+export const getNotificationInScreen = (name, buffer = 0) =>
+  new Promise(resolve => {
+    notificationName = name;
+    notificationBuffer = buffer;
+    notificationCallback = resolve;
+  });
+
 const PIXEL_BUFFER = 300;
 
 Crafty.c("SceneryBlock", {
@@ -59,6 +77,24 @@ Crafty.c("SceneryBlock", {
     });
   },
   sceneryBlockMoved() {
+    if (this.sceneryName === notificationName) {
+      const vDx = this.vx / Crafty.timer.FPS();
+
+      if (
+        vDx <= 0 &&
+        this.x >= -notificationBuffer &&
+        this.x < -notificationBuffer - vDx
+      ) {
+        notifyScenery();
+      } else if (
+        vDx > 0 &&
+        this.x > notificationBuffer - vDx &&
+        this.x <= notificationBuffer
+      ) {
+        notifyScenery();
+      }
+    }
+
     const sceneryVectors = {
       v1: this.x,
       v2: this.x + this.w,
