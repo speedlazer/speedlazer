@@ -39,6 +39,7 @@ export default {
       width: 384,
       height: 256
     },
+    hitbox: [240, 120, 240, 0, 295, 0, 295, 120],
     sprites: [
       ["cityLayer2", { z: -505, horizon: [0.6, 0.6] }],
       [

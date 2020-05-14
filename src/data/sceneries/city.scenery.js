@@ -214,6 +214,14 @@ export default {
         y: -180,
         composition: "city.layer2",
         distance: 0.375
+      },
+      {
+        x: 240,
+        y: -180,
+        w: 60,
+        h: 105,
+        components: ["SunBlock"],
+        distance: 0.375
       }
     ]
   },
@@ -261,6 +269,14 @@ export default {
         x: 0,
         y: -180,
         composition: "city.layer2",
+        distance: 0.375
+      },
+      {
+        x: 240,
+        y: -180,
+        w: 60,
+        h: 105,
+        components: ["SunBlock"],
         distance: 0.375
       }
     ]

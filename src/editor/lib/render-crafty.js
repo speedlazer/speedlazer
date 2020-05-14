@@ -36,6 +36,13 @@ Crafty.paths({
 
 window.Crafty = Crafty;
 
+Crafty.c("TestColor", {
+  required: "Color, WebGL",
+  init() {
+    this.color("#FF0000");
+  }
+});
+
 const SCREEN_WIDTH = 1024;
 const SCREEN_HEIGHT = 576;
 
