@@ -38,12 +38,12 @@ export const droneShip = () => async ({
     showState(ship.radar, "dead");
     ship.radar.clearCollisionComponents();
   });
+  showState(ship, "radarPulse");
   await allowDamage(ship.radar, { health: 300 });
   await activeMovement.process;
   activeMovement = moveTo(ship, { x: -0.8 }, null, EASE_IN);
   activeMovement.process.then(() => ship.destroy());
 
-  showState(ship, "radarPulse");
   let points = 10;
 
   await parallel([

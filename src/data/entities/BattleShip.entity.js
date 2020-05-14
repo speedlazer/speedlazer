@@ -116,6 +116,7 @@ export default {
         attachments: { hatch3: { frame: "risen" } }
       },
       engineDoorOpen: {
+        audio: "hatch-open",
         attachments: {
           cabin1: { composition: "battleship.firstCabin" },
           cabin1burn: null,

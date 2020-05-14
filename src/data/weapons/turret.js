@@ -80,10 +80,10 @@ export default {
       shotDelay: 1,
       burstDelay: 1000,
       shot: [
-        { state: "charge", duration: 1200 },
+        { state: "charge", audio: "laser-charge", duration: 1200 },
         { stopAiming: true, state: "charged", duration: 500 },
         { duration: 100 },
-        { spawn: true, duration: 100 },
+        { spawn: true, duration: 100, audio: "laser-fire" },
         { state: "discharge", duration: 500 },
         { duration: 500 },
         { stopAiming: false, duration: 0 }

@@ -36,7 +36,7 @@ const part = async ({
       await wait(2000);
       await setAltitude(0);
     },
-    () => exec(helicopter("heli.pattern1"))
+    () => exec(helicopter("heli.pattern1", "heli.repeat1"))
   ]);
 
   await parallel([

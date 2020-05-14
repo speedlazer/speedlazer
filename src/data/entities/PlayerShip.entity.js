@@ -27,7 +27,7 @@ export default {
           reverseTrail2: null,
           mainWeapon: null,
           explosion: {
-            composition: "explosion",
+            composition: "weapons.largeExplosion",
             animation: "default"
           }
         }

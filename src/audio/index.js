@@ -8,6 +8,7 @@ const audiosheets = [
     map: [
       { name: "explosion", type: "sfx", duration: 629 },
       { name: "gun-shot", type: "sfx", duration: 295 },
+      { name: "hatch-open", type: "sfx", duration: 1126, volume: 0.4 },
       {
         name: "helicopter",
         type: "sfx",
@@ -15,6 +16,8 @@ const audiosheets = [
         loop: true,
         volume: 0.4
       },
+      { name: "laser-charge", type: "sfx", duration: 1674, volume: 0.3 },
+      { name: "laser-fire", type: "sfx", duration: 1725, volume: 1.2 },
       { name: "laser-hit", type: "sfx", duration: 267 },
       { name: "laser-shot", type: "sfx", duration: 453, volume: 0.2 },
       { name: "laugh", type: "sfx", duration: 1695 },

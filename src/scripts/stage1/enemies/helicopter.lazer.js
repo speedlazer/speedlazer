@@ -1,10 +1,11 @@
 import { playAudio } from "src/lib/audio";
 
-export const helicopter = pattern => async ({
+export const helicopter = (pattern, repeatPattern) => async ({
   spawn,
   call,
   waitForEvent,
   wait,
+  until,
   allowDamage,
   moveWithPattern,
   awardPoints,
@@ -26,9 +27,9 @@ export const helicopter = pattern => async ({
   await wait(2000);
   showState(heli, "shooting");
 
-  const movement = moveWithPattern(heli, pattern);
+  let movement = moveWithPattern(heli, pattern);
 
-  waitForEvent(heli, "Dead", async () => {
+  const killed = waitForEvent(heli, "Dead", async () => {
     movement.abort();
     heliAudio.stop();
     awardPoints(250, heli.x + 20, heli.y);
@@ -40,9 +41,12 @@ export const helicopter = pattern => async ({
   });
 
   await movement.process;
-  if (movement.wasCompleted()) {
-    heliAudio.setVolume(0, 2000);
-    await wait(2000);
-    heli.destroy();
-  }
+  await until(
+    () => killed,
+    async () => {
+      if (heli.appliedEntityState === "dead") return wait(500);
+      movement = moveWithPattern(heli, repeatPattern, 150);
+      await movement.process;
+    }
+  );
 };

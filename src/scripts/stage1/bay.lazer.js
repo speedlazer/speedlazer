@@ -46,8 +46,21 @@ const part = async ({
   await exec(droneWave(5, "drone.pattern1"));
   await exec(droneWave(8, "drone.pattern2"));
   await exec(mineWave());
-  await exec(helicopter("heli.pattern1"));
   await setScenery("City.Bridge");
+  await exec(helicopter("heli.pattern1"));
+  await parallel([
+    () => exec(droneWave(5, "drone.pattern3")),
+    () => exec(droneWave(5, "drone.pattern5"))
+  ]);
+  await exec(mineWave());
+  await parallel([
+    () => exec(helicopter("heli.pattern1", "heli.repeat2")),
+    async () => {
+      await wait(5000);
+      await exec(helicopter("heli.pattern1", "heli.repeat1"));
+    }
+  ]);
+  await wait(2000);
   await parallel([
     () => exec(droneWave(5, "drone.pattern3")),
     () => exec(droneWave(5, "drone.pattern5"))

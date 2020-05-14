@@ -21,7 +21,7 @@ export default {
       [
         "explosion",
         {
-          x: 22,
+          x: 26,
           y: 18,
           z: 2,
           attachAlign: ["center", "center"],
