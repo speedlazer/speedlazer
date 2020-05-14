@@ -607,7 +607,7 @@ const appliedGameOptions = {};
 
 Crafty.defineScene(
   "GamePreview",
-  async function({ stage, invincible }) {
+  async function({ stage, invincible, autoContinue }) {
     const thisStage = Math.random();
     activeStage = thisStage;
     Crafty.createLayer("UILayerDOM", "DOM", {
@@ -631,7 +631,6 @@ Crafty.defineScene(
     Crafty.viewport.y = 0;
     this.state = { lives: 0, score: 0 };
     const runner = createScriptExecutionSpace(this.state);
-    const item = gameStructure.find(({ name }) => name === stage);
 
     Crafty.one("SceneDestroy", () => {
       this.state.gameEnded = true;
@@ -651,7 +650,17 @@ Crafty.defineScene(
       appliedGameOptions &&
         appliedGameOptions.start &&
         appliedGameOptions.start();
-      await runner(item.script);
+
+      let started = false;
+      for (const item of gameStructure) {
+        if (!started && stage !== item.name) {
+          continue;
+        }
+
+        started = true;
+        await runner(item.script);
+        if (!autoContinue) break;
+      }
       gameOver = this.state.gameEnded;
 
       const fade = fadeOut();
