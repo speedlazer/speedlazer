@@ -43,12 +43,13 @@ export class GamePreview extends Component {
     };
   };
 
-  render({ stage, invincible, autoContinue }, { craftyMounted }) {
+  render({ stage, invincible, autoContinue, extraLifes }, { craftyMounted }) {
     if (craftyMounted) {
       const { start, stop } = this.measureStats();
       showGame(stage, {
         invincible,
         autoContinue,
+        extraLifes,
         onStart: start,
         onStop: stop
       });

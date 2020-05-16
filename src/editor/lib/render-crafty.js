@@ -614,7 +614,7 @@ const appliedGameOptions = {};
 
 Crafty.defineScene(
   "GamePreview",
-  async function({ stage, invincible, autoContinue }) {
+  async function({ stage, invincible, autoContinue, extraLifes }) {
     const thisStage = Math.random();
     activeStage = thisStage;
     Crafty.createLayer("UILayerDOM", "DOM", {
@@ -636,7 +636,7 @@ Crafty.defineScene(
 
     Crafty.viewport.x = 0;
     Crafty.viewport.y = 0;
-    this.state = { lives: 0, score: 0 };
+    this.state = { lives: extraLifes, score: 0 };
     const runner = createScriptExecutionSpace(this.state);
 
     Crafty.one("SceneDestroy", () => {

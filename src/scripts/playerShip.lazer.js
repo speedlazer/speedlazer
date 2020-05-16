@@ -2,7 +2,10 @@ import ShipControls from "src/components/player/ShipControls";
 import ShipCollision from "src/components/player/ShipCollision";
 import ControlScheme from "src/components/player/ControlScheme";
 
-export const playerShip = ({ existing = false } = {}) => async ({
+export const playerShip = ({
+  existing = false,
+  turned = false
+} = {}) => async ({
   spawn,
   exec,
   waitForEvent,
@@ -17,7 +20,7 @@ export const playerShip = ({ existing = false } = {}) => async ({
     (existing && Crafty("PlayerShip").get(0)) ||
     spawn("PlayerShip", {
       location: {
-        rx: 0.2,
+        rx: turned ? 0.8 : 0.2,
         ry: 0.5
       },
       defaultVelocity: 400
@@ -31,6 +34,9 @@ export const playerShip = ({ existing = false } = {}) => async ({
     ship.displayFrame("damaged");
   }
   setHealthbar(ship.health / maxHealth);
+  if (turned) {
+    await showState(ship, "turned");
+  }
   showState(ship, "flying");
 
   // TODO: Refactor adding these components to the entity definition
@@ -49,8 +55,9 @@ export const playerShip = ({ existing = false } = {}) => async ({
   waitForEvent(ship, "Dead", async () => {
     ship.attr({ disableControls: true, vx: 0, vy: 0 });
     await showState(ship, "dead");
+    const isTurned = !!ship.xFlipped;
     ship.destroy();
     await loseLife();
-    exec(playerShip());
+    exec(playerShip({ turned: isTurned }));
   });
 };

@@ -11,7 +11,8 @@ import gameStructure from "src/scripts";
 const DEFAULT_STATE = {
   stats: [],
   invincible: false,
-  autoContinue: false
+  autoContinue: false,
+  tenLifes: false
 };
 
 const STORAGE_KEY = "editor-game-settings";
@@ -39,6 +40,10 @@ class Game extends Component {
     this.setState(s => ({ ...s, invincible: checked }));
   };
 
+  updateTenLifes = checked => {
+    this.setState(s => ({ ...s, tenLifes: checked }));
+  };
+
   updateAutoContinue = checked => {
     this.setState(s => ({ ...s, autoContinue: checked }));
   };
@@ -47,7 +52,7 @@ class Game extends Component {
     this.setState(s => ({ ...s, stats }));
   };
 
-  render({ stage }, { invincible, stats, autoContinue }) {
+  render({ stage }, { invincible, stats, autoContinue, tenLifes }) {
     storeState(this.state);
     const activeStage = gameStructure.find(({ name }) => name === stage);
     return (
@@ -66,11 +71,15 @@ class Game extends Component {
               <Setting checked={autoContinue} onCheck={this.updateAutoContinue}>
                 Continue
               </Setting>
+              <Setting checked={tenLifes} onCheck={this.updateTenLifes}>
+                10 extra lifes
+              </Setting>
               <Text>Tags: {Object.keys(activeStage.tags).join(", ")}</Text>
               <GamePreview
                 stage={stage}
                 invincible={invincible}
                 autoContinue={autoContinue}
+                extraLifes={tenLifes ? 10 : 0}
                 onStats={this.setStats}
               />
               <BarChart data={stats} />

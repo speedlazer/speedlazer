@@ -282,7 +282,7 @@ export default {
             velocity: -1000,
             accelleration: 50,
             upperBounds: 0,
-            speed: 2000,
+            speed: 1200,
             affects: ["health"],
             duration: 100,
             name: "Explosion"
@@ -341,7 +341,7 @@ export default {
             velocity: -1000,
             accelleration: 50,
             upperBounds: 0,
-            speed: 2000,
+            speed: 1200,
             affects: ["health"],
             duration: 100,
             name: "Explosion"
@@ -378,7 +378,7 @@ export default {
             velocity: -1000,
             accelleration: 50,
             upperBounds: 0,
-            speed: 2000,
+            speed: 1200,
             affects: ["health"],
             duration: 100,
             name: "Explosion"

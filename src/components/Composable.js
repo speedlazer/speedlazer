@@ -661,6 +661,7 @@ Crafty.c(Composable, {
     const subElem = Crafty.e(
       [renderLayer, "2D", Delta2D, Scalable, spriteName].join(", ")
     );
+    subElem._spriteName = spriteName;
     const opts = { ...spriteAttributes, ...options };
     this.applySpriteOptions(subElem, opts);
     subElem.attr({ originalSize: { w: subElem.w, h: subElem.h } });
