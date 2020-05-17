@@ -59,7 +59,7 @@ Crafty.c(Animation, {
         const y = (settings.relativeY || 0) * Crafty.viewport.height;
 
         const sub = Crafty.e(["2D", "WebGL", Composable].join(","))
-          .attr({ x, y, w: 40, h: 40, z: this.z })
+          .attr({ x, y, w: 40, h: 40, z: this.z || 0 })
           .compose(composition);
         //this.attach(sub);
         sub.displayFrame(settings.frame || "default");
@@ -78,7 +78,7 @@ Crafty.c(Animation, {
           createEntity(entity, settings).attr({
             x,
             y,
-            z: this.z + (settings.z || 0)
+            z: (this.z || 0) + (settings.z || 0)
           });
         if (settings.detach && e.detachFromParent) {
           e.detachFromParent();
@@ -87,7 +87,7 @@ Crafty.c(Animation, {
         this.elements[settings.key] = e;
         if (settings.state) e.showState(settings.state);
       } else {
-        existing.attr({ z: this.z });
+        this.z && existing.attr({ z: this.z });
         if (settings.state) existing.showState(settings.state);
       }
     });
@@ -109,7 +109,7 @@ Crafty.c(Animation, {
             .attr({
               x,
               y,
-              z: this.z + (settings.z || 0)
+              z: (this.z || 0) + (settings.z || 0)
             });
           if (settings.detach && e.detachFromParent) {
             e.detachFromParent();
@@ -117,7 +117,7 @@ Crafty.c(Animation, {
 
           this.elements[settings.key] = e;
         } else {
-          existing.attr({ z: this.z });
+          this.z && existing.attr({ z: this.z });
           if (settings.state) existing.showState(settings.state);
         }
       }
