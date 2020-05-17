@@ -6,7 +6,8 @@ export default {
         "DamageSupport",
         "GravitySupport",
         "SolidCollision",
-        "PlayerEnemy"
+        "PlayerEnemy",
+        "PlayerHit"
       ],
       attachments: {
         trail: {

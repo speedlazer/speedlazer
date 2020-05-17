@@ -35,6 +35,28 @@
                   ]
                 }
               },
+              "particles": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "items": [
+                    { "type": "string" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "key": { "type": "string" },
+                        "relativeX": { "type": "number" },
+                        "relativeY": { "type": "number" }
+                      },
+                      "required": ["key"],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              },
               "composables": {
                 "type": "array",
                 "minItems": 1,

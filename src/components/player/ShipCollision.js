@@ -79,9 +79,27 @@ Crafty.c(ShipCollision, {
       };
       this.processDamage(damage);
     });
+    this.onHit("PlayerHit", hits => {
+      hits.map(hitData => {
+        const e = hitData.obj;
+        const damage = {
+          velocity: -5e3,
+          affects: "health",
+          name: "Impact"
+        };
+        e.processDamage && e.processDamage(damage);
+      });
+    });
   },
 
-  _squashShip() {}
+  _squashShip() {
+    const damage = {
+      velocity: -25e3,
+      affects: "health",
+      name: "Impact"
+    };
+    this.processDamage(damage);
+  }
 });
 
 export default ShipCollision;

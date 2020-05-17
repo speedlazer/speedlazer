@@ -1,5 +1,6 @@
 import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
+import { rocketStrike } from "./enemies/rockets.lazer";
 import { playAudio } from "src/lib/audio";
 
 const part = async ({
@@ -8,6 +9,7 @@ const part = async ({
   loadSpriteSheets,
   loadAudio,
   setBackground,
+  parallel,
   wait,
   exec,
   waitTillInScreen,
@@ -28,14 +30,27 @@ const part = async ({
   text.remove();
   exec(playerShip({ existing: true }));
 
-  await setScenery("City.Bridge");
+  const warning = bigText("Warning!", { color: "#FF0000" });
+  await warning.blink(500, 4);
+  warning.remove();
 
-  await waitTillInScreen("City.Bridge", -625);
-  await setScrollingSpeed(0, 0);
+  await setScenery("City.Bridge");
+  await parallel([
+    async () => {
+      await waitTillInScreen("City.Bridge", -625);
+      await setScrollingSpeed(0, 0);
+    },
+    async () => {
+      await exec(rocketStrike());
+      await exec(rocketStrike());
+      await exec(rocketStrike());
+    }
+  ]);
+
   await wait(10e3);
 
   const bridgeCrash = playAnimation("City.Bridge");
-  await bridgeCrash.waitTillCheckpoint(1);
+  await bridgeCrash.waitTillCheckpoint(2);
   await setScrollingSpeed(200, 0);
 
   await wait(20e3);

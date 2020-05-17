@@ -2,6 +2,20 @@ export default {
   "City.Bridge": {
     checkpoints: [
       {
+        particles: [["dust.bridge", { key: "dust" }]],
+        timeline: {
+          defaultDuration: 1000,
+          transitions: [
+            {
+              key: "dust",
+              start: 0.9,
+              end: 1.0,
+              remove: true
+            }
+          ]
+        }
+      },
+      {
         entities: [
           ["BridgeCeiling", { key: "ceiling" }],
           ["BridgeFrontDeck", { key: "front" }],
@@ -64,6 +78,7 @@ export default {
         }
       },
       {
+        particles: [["dust.bridge", { key: "dust" }]],
         entities: [
           ["BridgeCeiling", { key: "ceiling" }],
           ["BridgeCeilingBackground", { key: "back" }],
@@ -74,6 +89,12 @@ export default {
         timeline: {
           defaultDuration: 6000,
           transitions: [
+            {
+              key: "dust",
+              start: 0.7,
+              end: 1.0,
+              remove: true
+            },
             {
               key: "ceiling",
               start: 0.2,
