@@ -75,6 +75,13 @@
                         "start": { "type": "number" },
                         "end": { "type": "number" },
                         "remove": { "type": "boolean" },
+                        "components": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "minItems": 1
+                        },
                         "targetState": { "type": "string" },
                         "targetFrame": { "type": "string" },
                         "targetBackgroundColor": {

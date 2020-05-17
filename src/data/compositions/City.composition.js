@@ -58,22 +58,42 @@ export default {
   "city.bridge.deck": {
     attributes: {
       width: 1024,
-      height: 192
+      height: 192,
+      ro: [934, 90]
     },
+    hitbox: [0, 0, 1024, 0, 1024, 55, 0, 55],
     spriteAttributes: {
       accentColor: "#2ba04c"
     },
     sprites: [
-      ["bridgeDeck", { z: 0, x: 4 }],
+      ["bridgeDeck", { z: 0, x: 4, key: "deck" }],
       ["bridgeDeck", { z: 1, x: 512, flipX: true }]
-    ]
+    ],
+    frames: {
+      rotateSmall: {
+        attributes: { rotation: -2 }
+      },
+      rotateDown: {
+        attributes: { rotation: -10 }
+      }
+    }
   },
   "city.bridge.pillar": {
     attributes: {
       width: 192,
-      height: 544
+      height: 544,
+      ro: [96, 544]
     },
-    sprites: [["bridgePillar", { z: 0 }]]
+    sprites: [["bridgePillar", { z: 0, key: "pillar" }]],
+    frames: {
+      rotateSmall: {
+        attributes: { rotation: -3 }
+      },
+      rotateDown: {
+        attributes: { rotation: 80 },
+        pillar: { y: 200 }
+      }
+    }
   },
   explosion: {
     attributes: { width: 96, height: 96 },

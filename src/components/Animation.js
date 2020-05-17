@@ -185,6 +185,13 @@ Crafty.c(Animation, {
           elem.animate(tween, (t.end - t.start) * this.animationDuration);
         }
       }
+      if (t.components && t.key) {
+        const elem = this.elements[t.key];
+        t.handled = true;
+        if (elem) {
+          t.components.forEach(c => elem.addComponent(c));
+        }
+      }
       if (t.targetBackgroundColor) {
         if (t.sourceColor && t.ease) {
           t.ease.tick(dt);

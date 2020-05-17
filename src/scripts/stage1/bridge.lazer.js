@@ -11,6 +11,7 @@ const part = async ({
   wait,
   exec,
   waitTillInScreen,
+  playAnimation,
   showHUD
 }) => {
   const text = bigText("Loading...");
@@ -31,6 +32,12 @@ const part = async ({
 
   await waitTillInScreen("City.Bridge", -625);
   await setScrollingSpeed(0, 0);
+  await wait(10e3);
+
+  const bridgeCrash = playAnimation("City.Bridge");
+  await bridgeCrash.waitTillCheckpoint(1);
+  await setScrollingSpeed(200, 0);
+
   await wait(20e3);
 };
 

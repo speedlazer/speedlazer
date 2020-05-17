@@ -73,7 +73,7 @@ Crafty.c(ShipCollision, {
     });
     this.onHit("PlayerEnemy", () => {
       const damage = {
-        velocity: -4e3,
+        velocity: -13e3,
         affects: "health",
         name: "Impact"
       };
