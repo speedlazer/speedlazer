@@ -434,6 +434,21 @@ const part7 = ship => async ({
   cabin.removeComponent("SolidCollision");
 };
 
+const handleBox = box => async ({
+  showState,
+  allowDamage,
+  waitForEvent,
+  call,
+  awardPoints
+}) => {
+  await allowDamage(box, { health: 30 });
+  waitForEvent(box, "Dead", async () => {
+    awardPoints(25, box.x, box.y);
+    showState(box, "falling");
+    await call(box.activateGravity, "GravityLiquid");
+  });
+};
+
 const battleship = async ({
   parallel,
   spawn,
@@ -472,6 +487,9 @@ const battleship = async ({
     },
     defaultVelocity: 85
   });
+  exec(handleBox(ship.boxLocation1));
+  exec(handleBox(ship.boxLocation2));
+
   activeMovement = moveTo(ship, { x: 0.8 }, null, EASE_IN_OUT);
   await parallel([() => activeMovement.process, () => exec(part1(ship))]);
   await wait(1000);

@@ -43,10 +43,10 @@ export default {
           frame: "medium"
         },
         boxLocation1: {
-          composition: "intro.boxes"
+          entity: "ShipBoxes"
         },
         boxLocation2: {
-          composition: "intro.boxes"
+          entity: "ShipBoxes"
         },
         boxLocation3: {
           composition: "intro.boxes"

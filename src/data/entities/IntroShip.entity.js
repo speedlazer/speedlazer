@@ -27,10 +27,10 @@ export default {
           }
         },
         boxLocation1: {
-          composition: "intro.boxes"
+          entity: "ShipBoxes"
         },
         boxLocation2: {
-          composition: "intro.boxes"
+          entity: "ShipBoxes"
         },
         heliStart: {
           entity: "IntroHeli"
@@ -159,5 +159,16 @@ export default {
         background: ["City.Sunrise", 0]
       }
     ]
+  },
+  ShipBoxes: {
+    structure: {
+      composition: "intro.boxes",
+      components: ["DamageSupport", "GravitySupport", "PlayerHit"]
+    },
+    states: {
+      falling: {
+        frame: "falling"
+      }
+    }
   }
 };

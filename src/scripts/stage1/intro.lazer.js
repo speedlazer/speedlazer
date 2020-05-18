@@ -5,6 +5,21 @@ import { bigText } from "src/components/BigText";
 import { playAudio } from "src/lib/audio";
 import { say } from "src/lib/Dialog";
 
+const handleBox = box => async ({
+  showState,
+  allowDamage,
+  waitForEvent,
+  call,
+  awardPoints
+}) => {
+  await allowDamage(box, { health: 30 });
+  waitForEvent(box, "Dead", async () => {
+    awardPoints(25, box.x, box.y);
+    showState(box, "falling");
+    await call(box.activateGravity, "GravityLiquid");
+  });
+};
+
 const part = async ({
   setScrollingSpeed,
   setScenery,
@@ -36,6 +51,10 @@ const part = async ({
   text.remove();
 
   const introAnimation = playAnimation("City.Intro");
+  const introShip = Crafty("IntroShip").get(0);
+  exec(handleBox(introShip.boxLocation1));
+  exec(handleBox(introShip.boxLocation2));
+
   await fade.start(1000);
 
   await say(

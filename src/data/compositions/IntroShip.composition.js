@@ -51,7 +51,13 @@ export default {
       width: 32,
       height: 32
     },
-    sprites: [["boxes", { x: 0, y: 0 }]]
+    hitbox: [0, 7, 32, 7, 32, 32, 0, 32],
+    sprites: [["boxes", { x: 0, y: 0, key: "main" }]],
+    frames: {
+      falling: {
+        main: { sprite: "boxesFalling" }
+      }
+    }
   },
   "intro.parachute": {
     attributes: {

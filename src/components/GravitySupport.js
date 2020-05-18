@@ -8,12 +8,12 @@ Crafty.c("GravitySupport", {
     this._onGravityCollisonHit = this._onGravityCollisonHit.bind(this);
   },
 
-  activateGravity() {
+  activateGravity(surfaces = ["GravitySolid", "GravityLiquid"]) {
     this.addComponent("Motion", "Collision");
     this.ay = 400;
 
     this.bind("HitOn", this._onGravityCollisonHit);
-    this.checkHits("GravitySolid", "GravityLiquid");
+    this.checkHits(...surfaces);
   },
 
   _onGravityCollisonHit(collisions) {
