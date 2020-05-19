@@ -1,4 +1,5 @@
 import bgMusic1 from "./symsonic-hero.mp3";
+import bgMusic2 from "./symsonic-interactive.ogg";
 import effects from "./effects.ogg";
 
 const audiosheets = [
@@ -34,6 +35,70 @@ const audiosheets = [
         loop: true,
         loopEnd: 3 * 60 + 55.682,
         loopStart: 69.862
+      }
+    ]
+  },
+  {
+    name: "interactive",
+    file: bgMusic2,
+    map: [
+      {
+        name: "layer.base",
+        type: "layer",
+        loop: true,
+        duration: 32000
+      },
+      {
+        name: "layer.bossfight",
+        type: "layer",
+        loop: true,
+        duration: 32000
+      },
+      {
+        name: "layer.excitement",
+        type: "layer",
+        loop: true,
+        duration: 32000
+      },
+      {
+        name: "layer.normal",
+        type: "layer",
+        loop: true,
+        duration: 32000
+      },
+      {
+        name: "layer.someStress",
+        type: "layer",
+        loop: true,
+        duration: 32000
+      },
+      {
+        name: "pattern.default",
+        type: "pattern",
+        tracks: ["layer.base", "layer.normal"],
+        loop: true,
+        duration: 32000
+      },
+      {
+        name: "pattern.excitement",
+        type: "pattern",
+        tracks: ["layer.base", "layer.excitement"],
+        loop: true,
+        duration: 32000
+      },
+      {
+        name: "pattern.someStress",
+        type: "pattern",
+        tracks: ["layer.base", "layer.someStress"],
+        loop: true,
+        duration: 32000
+      },
+      {
+        name: "pattern.bossfight",
+        type: "pattern",
+        tracks: ["layer.base", "layer.bossfight"],
+        loop: true,
+        duration: 32000
       }
     ]
   }

@@ -45,7 +45,8 @@ const numb = value =>
 class Audiosheets extends Component {
   state = {
     activeAudio: null,
-    playing: false
+    playing: false,
+    currentSample: null
   };
 
   loadAudio = async map => {
@@ -54,14 +55,25 @@ class Audiosheets extends Component {
   };
 
   playAudio = async () => {
-    if (this.state.playing) {
+    if (
+      this.state.playing &&
+      this.state.currentSample === this.props.activeSample
+    ) {
       this.audio && this.audio.stop();
     } else {
       this.audio = await playAudio(this.props.activeSample, { volume: 1 });
       this.audio.process.then(() => {
-        this.setState(s => ({ ...s, playing: false }));
+        this.setState(s =>
+          s.currentSample === this.props.activeSample
+            ? { ...s, playing: false }
+            : s
+        );
       });
-      this.setState(s => ({ ...s, playing: true }));
+      this.setState(s => ({
+        ...s,
+        playing: true,
+        currentSample: this.props.activeSample
+      }));
     }
   };
 
@@ -82,7 +94,7 @@ class Audiosheets extends Component {
     this.loadAudio(activeMap);
   }
 
-  render({ map, activeSample }, { activeAudio, playing }) {
+  render({ map, activeSample }, { activeAudio, playing, currentSample }) {
     const activeMap = audiosheets.find(m => m.name === map) || audiosheets[0];
 
     const highlight =
@@ -91,7 +103,10 @@ class Audiosheets extends Component {
 
     return (
       <section>
-        <Title>Audio sheets{activeSample && ` - ${map}.${activeSample}`}</Title>
+        <Title>
+          Audio sheets
+          {activeSample && ` - ${map}.${activeSample} / ${currentSample}`}
+        </Title>
         <Divider>
           <Menu
             items={audiosheets.reduce(
@@ -111,7 +126,7 @@ class Audiosheets extends Component {
                 disabled={activeAudio ? false : "disabled"}
                 onClick={this.playAudio}
               >
-                {playing ? "Stop" : "Play"}
+                {playing && activeSample === currentSample ? "Stop" : "Play"}
               </button>
             )}
             {highlight && (
