@@ -17,8 +17,8 @@ const part = async ({
   text.fadeIn(2000);
 
   await loadSpriteSheets(["mega-texture"]);
-  await loadAudio(["effects", "hero"]);
-  playAudio("hero");
+  await loadAudio(["effects", "interactive"]);
+  playAudio("pattern.excitement");
 
   await setScrollingSpeed(250, 0, { instant: true });
   await setScenery("City.Coast");
@@ -28,6 +28,7 @@ const part = async ({
   exec(playerShip({ existing: true }));
 
   await exec(droneWave(5, "drone.pattern2"));
+  playAudio("pattern.bossfight");
 
   await exec(battleship);
 };

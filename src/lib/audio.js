@@ -74,6 +74,9 @@ export const fadeMusicVolume = (volume = 0, duration = 1000) => {
 export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
   const map = Object.values(audioData).find(e => e.map[sampleName]);
   const sampleData = map.map[sampleName];
+  if (!sampleData) {
+    throw new Error(`Audio ${sampleName} not found`);
+  }
   if (sampleData.type === "pattern") {
     const current = currentMusic();
     if (current && current.name === sampleName) return;
@@ -127,17 +130,15 @@ export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
     };
 
     const stop = (time = context.currentTime) => {
-      console.log("Stopping over ", time - context.currentTime);
       tracks.forEach(source => {
         source.stop(time);
-        //source.disconnect();
       });
       playingPool.music = null;
     };
 
     const process = Promise.all(
       tracks.map(source => new Promise(resolve => (source.onended = resolve)))
-    ).then(() => console.log("Track", sampleName, "ended"));
+    );
     playingPool.music = {
       type: sampleData.type,
       tracks,
