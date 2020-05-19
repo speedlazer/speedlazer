@@ -392,11 +392,39 @@ const part5 = ship => async ({
   ]);
 };
 
+const extraLife = (x, y) => async ({
+  allowDamage,
+  showState,
+  waitForEvent,
+  spawn,
+  gainLife,
+  moveWithPattern
+}) => {
+  const extraLife = spawn("ExtraLife", {
+    location: {
+      x,
+      y
+    },
+    defaultVelocity: 50
+  });
+  await allowDamage(extraLife, { health: 10 });
+  waitForEvent(extraLife, "Dead", async () => {
+    gainLife();
+    await showState(extraLife, "pickedUp");
+    extraLife.destroy();
+  });
+  const motion = moveWithPattern(extraLife, "powerup.circles");
+  await motion.process;
+  await showState(extraLife, "disappear", 1000);
+  extraLife.destroy();
+};
+
 const part6 = ship => async ({
   allowDamage,
   showState,
   waitForEvent,
   awardPoints,
+  exec,
   wait
 }) => {
   const cabin = ship.cabin1;
@@ -411,6 +439,7 @@ const part6 = ship => async ({
   await allowDamage(cabin, { health: 500 });
   await killed;
   cabin.removeComponent("SolidCollision");
+  exec(extraLife(cabin.x + cabin.w / 2, cabin.y - cabin.h));
 };
 
 const part7 = ship => async ({

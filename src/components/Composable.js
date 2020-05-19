@@ -219,7 +219,6 @@ const displayFrameFn = (entity, targetFrame, sourceFrame = undefined) => {
           scaleX: 1,
           scaleY: 1,
           horizon: [0, 0],
-          overrideColorStrength: 0.0,
           ...(originalSettings && originalSettings[1]),
           x: 0,
           y: 0

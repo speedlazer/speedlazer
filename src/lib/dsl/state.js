@@ -102,6 +102,10 @@ const stateFunctions = (dsl, state) => {
       }
       lives.text(`Lives: ${state.lives}`);
     },
+    gainLife: () => {
+      state.lives += 1;
+      lives.text(`Lives: ${state.lives}`);
+    },
     awardPoints: async (amount, x, y) => {
       state.score += amount;
       score.attr({ score: state.score });

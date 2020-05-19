@@ -1,9 +1,9 @@
 export default {
-  "powerups.health": {
+  "powerups.life": {
     attributes: { width: 32, height: 32 },
     sprites: [
       ["powerUpBox", { key: "main", accentColor: "#900000" }],
-      ["heart", { z: 1, scale: 0.7, accentColor: "#ff9999" }],
+      ["heart", { z: 1, scale: 0.7, accentColor: "#ff9999", key: "symbol" }],
       [
         "bigGlare",
         {
@@ -18,6 +18,10 @@ export default {
         }
       ]
     ],
+    hitbox: [3, 3, 29, 3, 29, 29, 3, 29],
+    attachHooks: [
+      ["explosion", { x: 16, y: 16, z: -2, attachAlign: ["center", "center"] }]
+    ],
     frames: {
       startGlow: {
         glow: {
@@ -30,6 +34,19 @@ export default {
           alpha: 0.0,
           scale: 0.4
         }
+      },
+      pickedUp: {
+        glow: {
+          alpha: 0.0,
+          scale: 0.4
+        },
+        main: { alpha: 0.0 },
+        symbol: { alpha: 0.0, scale: 1.2 }
+      },
+      disappear: {
+        glow: { alpha: 0.0 },
+        main: { alpha: 0.0, scale: 0.2 },
+        symbol: { alpha: 0.0, scale: 0.2 }
       }
     },
     animations: {
