@@ -396,6 +396,7 @@ const extraLife = (x, y) => async ({
   allowDamage,
   showState,
   waitForEvent,
+  wait,
   spawn,
   gainLife,
   moveWithPattern
@@ -411,6 +412,7 @@ const extraLife = (x, y) => async ({
   waitForEvent(extraLife, "Dead", async () => {
     gainLife();
     await showState(extraLife, "pickedUp");
+    await wait(2000);
     extraLife.destroy();
   });
   const motion = moveWithPattern(extraLife, "powerup.circles");
