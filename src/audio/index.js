@@ -97,6 +97,22 @@ const audiosheets = [
         duration: 32000
       },
       {
+        name: "pattern.ease",
+        type: "pattern",
+        tracks: ["layer.normal"],
+        loop: true,
+        blockDuration: 8000,
+        duration: 32000
+      },
+      {
+        name: "pattern.anticipation",
+        type: "pattern",
+        tracks: ["layer.excitement"],
+        loop: true,
+        blockDuration: 8000,
+        duration: 32000
+      },
+      {
         name: "pattern.bossfight",
         type: "pattern",
         tracks: ["layer.base", "layer.bossfight"],

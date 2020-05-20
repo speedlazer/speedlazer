@@ -378,6 +378,7 @@ const part5 = ship => async ({
     async () => {
       await wait(1000);
       const playerShip = Crafty("PlayerShip").get(0);
+      playAudio("pattern.bossfight");
       await showState(playerShip, "turned");
       await wait(1000);
       await setScrollingSpeed(-50, 0);
@@ -490,6 +491,7 @@ const battleship = async ({
   setScrollingSpeed
 }) => {
   let activeMovement;
+  playAudio("pattern.anticipation");
   const text = bigText("Warning!", { color: "#FF0000" });
   await parallel([
     () => text.blink(500, 4),
@@ -523,6 +525,7 @@ const battleship = async ({
 
   activeMovement = moveTo(ship, { x: 0.8 }, null, EASE_IN_OUT);
   await parallel([() => activeMovement.process, () => exec(part1(ship))]);
+  playAudio("pattern.bossfight");
   await wait(1000);
 
   activeMovement = moveTo(ship, { x: 0.5 }, null, EASE_IN_OUT);
@@ -531,6 +534,7 @@ const battleship = async ({
 
   activeMovement = moveTo(ship, { x: -0.17 }, null, EASE_IN_OUT);
   await parallel([() => activeMovement.process, () => exec(part3(ship))]);
+  playAudio("pattern.anticipation");
 
   await exec(helicopter2(ship));
 
@@ -564,7 +568,7 @@ const battleship = async ({
       await activeMovement.process;
     },
     async () => {
-      playAudio("pattern.default");
+      playAudio("pattern.ease");
       await wait(500);
       await say(
         "General",
@@ -590,6 +594,7 @@ const battleship = async ({
       });
     }
   ]);
+  playAudio("pattern.default");
 
   ship.destroy();
 };

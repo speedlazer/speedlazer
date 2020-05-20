@@ -28,7 +28,6 @@ const part = async ({
   exec(playerShip({ existing: true }));
 
   await exec(droneWave(5, "drone.pattern2"));
-  playAudio("pattern.bossfight");
 
   await exec(battleship);
 };
