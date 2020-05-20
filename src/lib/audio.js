@@ -22,6 +22,7 @@ const convertAudioMap = map =>
         start,
         end: start + entry.duration,
         duration: entry.duration,
+        blockDuration: entry.blockDuration || entry.duration,
         loopStart: entry.loopStart,
         loopEnd: entry.loopEnd,
         volume: entry.volume,
@@ -87,8 +88,10 @@ export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
       if (current.type === "pattern") {
         start =
           current.start +
-          Math.ceil((context.currentTime - current.start) / current.duration) *
-            current.duration;
+          Math.ceil(
+            (context.currentTime - current.start) / current.blockDuration
+          ) *
+            current.blockDuration;
         current.stop(start);
       } else {
         current.stop();
@@ -147,7 +150,8 @@ export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
       stop,
       process,
       start,
-      duration: sampleData.duration / 1000
+      duration: sampleData.duration / 1000,
+      blockDuration: sampleData.blockDuration / 1000
     };
 
     return playingPool.music;

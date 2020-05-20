@@ -77,6 +77,7 @@ const audiosheets = [
         type: "pattern",
         tracks: ["layer.base", "layer.normal"],
         loop: true,
+        blockDuration: 8000,
         duration: 32000
       },
       {
@@ -84,6 +85,7 @@ const audiosheets = [
         type: "pattern",
         tracks: ["layer.base", "layer.excitement"],
         loop: true,
+        blockDuration: 8000,
         duration: 32000
       },
       {
@@ -91,6 +93,7 @@ const audiosheets = [
         type: "pattern",
         tracks: ["layer.base", "layer.someStress"],
         loop: true,
+        blockDuration: 8000,
         duration: 32000
       },
       {
@@ -98,6 +101,7 @@ const audiosheets = [
         type: "pattern",
         tracks: ["layer.base", "layer.bossfight"],
         loop: true,
+        blockDuration: 8000,
         duration: 32000
       }
     ]
