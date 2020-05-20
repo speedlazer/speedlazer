@@ -270,14 +270,14 @@ const part3 = ship => async ({
   await exec(mineAttack(ship));
   await parallel([
     async () => {
-      await showState(ship, "t2o", 2000);
-      await showState(ship, "t2r", 2000);
+      await showState(ship, "t2o", 1000);
+      await showState(ship, "t2r", 1000);
       await exec(activateGun(ship.hatch2.payload));
       await displayFrame(ship.engineCore, "perc50", 1000);
     },
     async () => {
-      await showState(ship, "t1o", 2000);
-      await showState(ship, "t1r", 2000);
+      await showState(ship, "t1o", 1000);
+      await showState(ship, "t1r", 1000);
       await exec(activateGun(ship.hatch1.payload));
       await displayFrame(ship.engineCore, "perc50", 1000);
     }
@@ -327,9 +327,9 @@ const helicopter2 = ship => async ({
     await call(helicopter.activateGravity);
   });
   const shipMovement = waitForEvent(helicopter, "moveShip", async () => {
-    const p = moveTo(ship, { x: -1.0 }, null, EASE_IN_OUT);
+    const p = moveTo(ship, { x: -1.0 }, 120, EASE_IN_OUT);
     await movement.process;
-    await wait(3000);
+    await wait(2000);
     movement = moveWithPattern(helicopter, "heli.battleship2b", 150, LINEAR);
 
     await p.process;
