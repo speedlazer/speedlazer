@@ -57,20 +57,20 @@ const part = async ({
 
   await fade.start(1000);
 
-  await say(
-    "General",
-    "Let us escort you to the factory to install\n" +
-      "the AI controlled defence systems. You are the last ship.",
-    { portrait: "portraits.general" }
-  );
-
   await parallel([
-    () => introAnimation.waitTillCheckpoint(3),
+    () =>
+      say(
+        "General",
+        "Let us escort you to the factory to install\n" +
+          "the AI controlled defence systems. You are the last ship.",
+        { portrait: "portraits.general" }
+      ),
     async () => {
-      await wait(500);
+      await introAnimation.waitTillCheckpoint(1);
       heliAudio.setVolume(2.0, 1500);
     }
   ]);
+  await introAnimation.waitTillCheckpoint(3);
   heliAudio.setVolume(0.6, 3000);
 
   exec(playerShip({ existing: true }));
