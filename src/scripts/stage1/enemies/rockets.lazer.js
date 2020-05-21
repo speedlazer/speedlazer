@@ -1,7 +1,14 @@
 import { EASE_IN } from "src/constants/easing";
 import shuffle from "lodash/shuffle";
 
-const rocketFlight = (index, coord) => async ({ spawn, wait, moveTo }) => {
+const rocketFlight = (index, coord) => async ({
+  spawn,
+  wait,
+  moveTo,
+  allowDamage,
+  showState,
+  waitForEvent
+}) => {
   let activeMovement = null;
   await wait(index * 100);
 
@@ -9,14 +16,19 @@ const rocketFlight = (index, coord) => async ({ spawn, wait, moveTo }) => {
     location: { rx: 1.1, ry: coord.y },
     defaultVelocity: 500
   });
-
-  // TODO: Add playerHit, and allow Damage, with low health,
-  // Immume to lasers, but not to 'Impact' damage
+  waitForEvent(rocket, "Dead", async () => {
+    activeMovement && activeMovement.abort();
+    await showState(rocket, "explode");
+    await wait(500);
+    rocket.destroy();
+  });
+  await allowDamage(rocket, { health: 3 });
 
   activeMovement = moveTo(rocket, { x: -0.1 }, null, EASE_IN);
   await activeMovement.process;
-
-  rocket.destroy();
+  if (activeMovement.wasCompleted()) {
+    rocket.destroy();
+  }
 };
 
 export const rocketStrike = () => async ({ exec }) => {

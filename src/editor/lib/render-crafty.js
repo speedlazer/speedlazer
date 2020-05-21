@@ -511,7 +511,7 @@ Crafty.defineScene(
   "BulletPatternPreview",
   ({ pattern, difficulty, collisionType, swapped }) => {
     Crafty.trigger("EnterScene");
-    const red = Crafty.e(`2D, WebGL, Color, Red, ${WayPointMotion}`)
+    const red = Crafty.e(`2D, WebGL, Color, Red, ${WayPointMotion}, Collision`)
       .attr({
         x: 800,
         y: 240,
@@ -521,7 +521,9 @@ Crafty.defineScene(
       })
       .color("#FF0000");
 
-    const blue = Crafty.e(`2D, WebGL, Color, Blue, ${WayPointMotion}`)
+    const blue = Crafty.e(
+      `2D, WebGL, Color, Blue, ${WayPointMotion}, Collision`
+    )
       .attr({
         x: 200,
         y: 240,
@@ -531,13 +533,9 @@ Crafty.defineScene(
       })
       .color("#0000FF");
 
-    swapped
-      ? red.addComponent(
-          ["Collision", collisionType].filter(Boolean).join(", ")
-        )
-      : blue.addComponent(
-          ["Collision", collisionType].filter(Boolean).join(", ")
-        );
+    if (collisionType) {
+      (swapped ? red : blue).addComponent(collisionType);
+    }
 
     swapped
       ? blue

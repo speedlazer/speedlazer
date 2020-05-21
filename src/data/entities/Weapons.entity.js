@@ -2,6 +2,7 @@ export default {
   HeliRocket: {
     structure: {
       composition: "weapons.rocket",
+      components: ["PlayerHit"],
       frame: "small",
       attachments: {
         trail: {
@@ -15,6 +16,20 @@ export default {
         attachments: {
           trail: null,
           tip: null
+        }
+      },
+      explode: {
+        frame: "hidden",
+        attachments: {
+          trail: null,
+          tip: {
+            weapon: {
+              pattern: "mine.explosion",
+              target: "PlayerShip",
+              angle: 0,
+              active: true
+            }
+          }
         }
       },
       waterHit: {

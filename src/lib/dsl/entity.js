@@ -30,15 +30,11 @@ const move = (entity, flyPattern, velocity, easing, state) => {
 
 const entityFunctions = (_, state) => ({
   spawn: (entityName, settings) => createEntity(entityName, settings),
-  displayFrame: async (entity, frameName, duration, easing = LINEAR) => {
-    await entity.displayFrame(frameName, duration, easing);
-  },
-  showState: async (entity, state, duration, easing = LINEAR) => {
-    await entity.showState(state, duration, easing);
-  },
-  showAnimation: async (entity, animation) => {
-    await entity.playAnimation(animation);
-  },
+  displayFrame: (entity, frameName, duration, easing = LINEAR) =>
+    entity.displayFrame(frameName, duration, easing),
+  showState: (entity, state, duration, easing = LINEAR) =>
+    entity.showState(state, duration, easing),
+  showAnimation: (entity, animation) => entity.playAnimation(animation),
   allowDamage: (entity, settings) => {
     entity.addCollisionComponent("DamageSupport", ["processDamage"]);
     entity.allowDamage(settings);

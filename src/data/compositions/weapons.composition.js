@@ -144,12 +144,18 @@ export default {
       scale: 1
     },
     hitbox: [2, 3, 45, 3, 45, 12, 2, 12],
-    sprites: [["standardRocket", { z: 1 }]],
+    sprites: [["standardRocket", { z: 1, key: "main" }]],
     attachHooks: [
       ["trail", { x: 47, y: 8, z: -1, attachAlign: ["center", "left"] }],
       ["tip", { x: 0, y: 8, z: 1, attachAlign: ["center", "left"] }]
     ],
     frames: {
+      hidden: {
+        main: {
+          hidden: true,
+          alpha: 0
+        }
+      },
       small: {
         attributes: {
           scale: 0.8

@@ -163,7 +163,7 @@ export default {
   ShipBoxes: {
     structure: {
       composition: "intro.boxes",
-      components: ["DamageSupport", "GravitySupport", "PlayerHit"]
+      components: ["GravitySupport", "PlayerHit"]
     },
     states: {
       falling: {
