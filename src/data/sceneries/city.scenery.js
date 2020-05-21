@@ -1,9 +1,113 @@
 export default {
-  "City.Coast": {
+  "City.CoastWithCloud": {
     width: 1023,
     height: 576,
     right: "City.Coast",
     left: "City.Coast",
+    backgrounds: [["City.Sunrise", 2]],
+    altitudes: [0, 100],
+    elements: [
+      {
+        x: 0,
+        y: -85,
+        composition: "ocean.front"
+      },
+      {
+        x: 0,
+        y: -45,
+        components: ["ShipSolid", "BulletSolid", "GravityLiquid"],
+        w: 1024,
+        h: 45,
+        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 }
+      },
+      {
+        x: 0,
+        y: -165,
+        composition: "city.cloud",
+        distance: 0.1,
+        frame: "default"
+      },
+      {
+        x: 0,
+        y: 5,
+        composition: "ocean.middle",
+        distance: 0.5
+      },
+      {
+        x: 0,
+        y: -30,
+        composition: "ocean.horizon",
+        distance: 0.25
+      },
+      {
+        x: 0,
+        y: -46,
+        composition: "city.horizon",
+        distance: 0.25
+      }
+    ]
+  },
+  "City.CoastWithCloud2": {
+    width: 1023,
+    height: 576,
+    right: "City.Coast",
+    left: "City.Coast",
+    backgrounds: [["City.Sunrise", 2]],
+    altitudes: [0, 100],
+    elements: [
+      {
+        x: 0,
+        y: -85,
+        composition: "ocean.front"
+      },
+      {
+        x: 0,
+        y: -45,
+        components: ["ShipSolid", "BulletSolid", "GravityLiquid"],
+        w: 1024,
+        h: 45,
+        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 }
+      },
+      {
+        x: 0,
+        y: -265,
+        composition: "city.cloud",
+        distance: 0.2,
+        frame: "close"
+      },
+      {
+        x: 0,
+        y: 5,
+        composition: "ocean.middle",
+        distance: 0.5
+      },
+      {
+        x: 0,
+        y: -30,
+        composition: "ocean.horizon",
+        distance: 0.25
+      },
+      {
+        x: 0,
+        y: -46,
+        composition: "city.horizon",
+        distance: 0.25
+      }
+    ]
+  },
+  "City.Coast": {
+    width: 1023,
+    height: 576,
+    right: {
+      "City.CoastWithCloud": 0.1,
+      "City.CoastWithCloud2": 0.1,
+      "City.Coast": 0.8
+    },
+    left: {
+      "City.CoastWithCloud": 0.1,
+      "City.CoastWithCloud2": 0.1,
+      "City.Coast": 0.8
+    },
     backgrounds: [["City.Sunrise", 2]],
     altitudes: [0, 100],
     elements: [
@@ -81,11 +185,103 @@ export default {
       }
     ]
   },
-  "City.Ocean": {
+  "City.OceanWithCloud": {
     width: 1023,
     height: 576,
     right: "City.Ocean",
     left: "City.Ocean",
+    backgrounds: [["City.Sunrise", 0]],
+    altitudes: [0, 250],
+    elements: [
+      {
+        x: 0,
+        y: -85,
+        composition: "ocean.front"
+      },
+      {
+        x: 0,
+        y: -45,
+        components: ["ShipSolid", "BulletSolid", "GravityLiquid"],
+        w: 1024,
+        h: 45,
+        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 }
+      },
+      {
+        x: 0,
+        y: -165,
+        composition: "city.cloud",
+        distance: 0.1,
+        frame: "default"
+      },
+      {
+        x: 0,
+        y: 5,
+        composition: "ocean.middle",
+        distance: 0.5
+      },
+      {
+        x: 0,
+        y: -30,
+        composition: "ocean.horizon",
+        distance: 0.25
+      }
+    ]
+  },
+  "City.OceanWithCloud2": {
+    width: 1023,
+    height: 576,
+    right: "City.Ocean",
+    left: "City.Ocean",
+    backgrounds: [["City.Sunrise", 0]],
+    altitudes: [0, 250],
+    elements: [
+      {
+        x: 0,
+        y: -85,
+        composition: "ocean.front"
+      },
+      {
+        x: 0,
+        y: -45,
+        components: ["ShipSolid", "BulletSolid", "GravityLiquid"],
+        w: 1024,
+        h: 45,
+        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 }
+      },
+      {
+        x: 0,
+        y: -265,
+        composition: "city.cloud",
+        distance: 0.2,
+        frame: "close"
+      },
+      {
+        x: 0,
+        y: 5,
+        composition: "ocean.middle",
+        distance: 0.5
+      },
+      {
+        x: 0,
+        y: -30,
+        composition: "ocean.horizon",
+        distance: 0.25
+      }
+    ]
+  },
+  "City.Ocean": {
+    width: 1023,
+    height: 576,
+    right: {
+      "City.OceanWithCloud": 0.1,
+      "City.OceanWithCloud2": 0.1,
+      "City.Ocean": 0.8
+    },
+    left: {
+      "City.OceanWithCloud": 0.1,
+      "City.OceanWithCloud2": 0.1,
+      "City.Ocean": 0.8
+    },
     backgrounds: [["City.Sunrise", 0]],
     altitudes: [0, 250],
     elements: [

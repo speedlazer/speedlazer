@@ -105,19 +105,22 @@ Crafty.c(Animation, {
           );
 
           const e = Crafty.e(ParticleEmitter)
-            .particles(emitter)
             .attr({
               x,
               y,
               z: (this.z || 0) + (settings.z || 0)
-            });
+            })
+            .particles(emitter);
           if (settings.detach && e.detachFromParent) {
             e.detachFromParent();
           }
 
           this.elements[settings.key] = e;
         } else {
-          this.z && existing.attr({ z: this.z });
+          this.z &&
+            existing.attr({
+              z: (this.z || 0) + (settings.z || 0)
+            });
           if (settings.state) existing.showState(settings.state);
         }
       }
