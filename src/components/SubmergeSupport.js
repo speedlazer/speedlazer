@@ -11,6 +11,31 @@ Crafty.c("SubmergeSupport", {
     this.clearShadow = this.clearShadow.bind(this);
   },
 
+  events: {
+    Freeze() {
+      if (this.liquidEmitter) {
+        this.liquidEmitter.stopEmission();
+        this.liquidEmitter.autoDestruct = true;
+        this.liquidEmitter = null;
+      }
+      if (this.shadow) {
+        this.shadow.destroy();
+        this.shadow = null;
+      }
+    },
+    Remove() {
+      if (this.liquidEmitter) {
+        this.liquidEmitter.stopEmission();
+        this.liquidEmitter.autoDestruct = true;
+        this.liquidEmitter = null;
+      }
+      if (this.shadow) {
+        this.shadow.destroy();
+        this.shadow = null;
+      }
+    }
+  },
+
   _onGravityCollisonHit(collisions) {
     if (this.surface) return;
     let surfaceEntity = null;
