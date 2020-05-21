@@ -22,6 +22,11 @@ Crafty.c(Steering, {
     },
     _steering: { value: 0, writable: true, enumerable: false }
   },
+  events: {
+    Freeze() {
+      this.currentTarget = null;
+    }
+  },
 
   _updateSteering({ dt }) {
     if (!this.currentTarget && this.target) {
