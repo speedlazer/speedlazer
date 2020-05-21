@@ -2,6 +2,21 @@ import { sceneries, compositions } from "data";
 import { getOne } from "src/lib/utils";
 import merge from "lodash/merge";
 
+const choose = items => {
+  let choice = Math.random();
+  for (let k in items) {
+    const weight = items[k];
+    if (choice > weight) {
+      choice -= weight;
+    } else {
+      return k;
+    }
+  }
+};
+
+const pick = sceneryList =>
+  typeof sceneryList === "string" ? sceneryList : choose(sceneryList);
+
 export const setScenery = sceneryName => {
   const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
   scenery.setNextScenery(sceneryName);
@@ -45,7 +60,7 @@ export const getNotificationInScreen = (name, buffer = 0) =>
     notificationCallback = resolve;
   });
 
-const PIXEL_BUFFER = 300;
+const PIXEL_BUFFER = 800;
 
 Crafty.c("SceneryBlock", {
   init() {
@@ -161,6 +176,9 @@ const createBlock = (scenery, x, y) => {
       entity = Crafty.e("2D, Composable")
         .compose(def)
         .attr({ z: element.z });
+      if (element.frame) {
+        entity.displayFrame(element.frame);
+      }
     }
     if (element.components) {
       if (!entity) {
@@ -177,6 +195,7 @@ const createBlock = (scenery, x, y) => {
     if (element.attributes) {
       entity.attr(element.attributes);
     }
+
     const centerX =
       blockCenter.x * distance + cameraCenter.x * (1.0 - distance);
     const centerY =
@@ -242,6 +261,7 @@ Crafty.c("Scenery", {
   ) {
     this.altitude = startYPos || this.altitude;
     const scenery = sceneries(sceneryName);
+    if (!scenery) throw new Error(`Scenery ${sceneryName} not found`);
     let block = this.blocks.find(
       b => b.__frozen && b.sceneryName === sceneryName
     );
@@ -271,7 +291,7 @@ Crafty.c("Scenery", {
       direction === SCENERY_DIRECTIONS.ALL
     ) {
       const nextPos = startXPos + block.w;
-      const nextBlock = this.currentScenery || scenery.right;
+      const nextBlock = this.currentScenery || pick(scenery.right);
       if (calcReach(block.farthestDistance, scenery.width) > nextPos) {
         this.currentScenery = null;
         this.startScenery(nextBlock, {
@@ -285,7 +305,7 @@ Crafty.c("Scenery", {
       direction === SCENERY_DIRECTIONS.LEFT ||
       direction === SCENERY_DIRECTIONS.ALL
     ) {
-      const nextBlock = this.currentScenery || scenery.left;
+      const nextBlock = this.currentScenery || pick(scenery.left);
       const leftScenery = sceneries(nextBlock);
       const nextPos = startXPos - leftScenery.width;
       if (-calcReach(block.farthestDistance, scenery.width) < nextPos) {
@@ -368,7 +388,7 @@ Crafty.c("Scenery", {
       // scrolling to the left, check right side if content needs to be added
       const lastBlock = fullSceneryVector.right;
       const nextBlock =
-        this.currentScenery || sceneries(lastBlock.sceneryName).right;
+        this.currentScenery || pick(sceneries(lastBlock.sceneryName).right);
 
       this.currentScenery = null;
       this.startScenery(nextBlock, {
@@ -382,7 +402,7 @@ Crafty.c("Scenery", {
       // scrolling to the left, check right side if content needs to be added
       const firstBlock = fullSceneryVector.left;
       const nextBlock =
-        this.currentScenery || sceneries(firstBlock.sceneryName).left;
+        this.currentScenery || pick(sceneries(firstBlock.sceneryName).left);
 
       this.currentScenery = null;
       const leftScenery = sceneries(nextBlock);

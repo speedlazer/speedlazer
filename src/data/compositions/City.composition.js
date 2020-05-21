@@ -6,6 +6,23 @@ export default {
     },
     sprites: [["coast", { z: -598, horizon: [0.9, 0.8] }]]
   },
+  "city.cloud": {
+    attributes: {
+      width: 256,
+      height: 960
+    },
+    sprites: [
+      [
+        "cloud",
+        { z: -398, horizon: [0.95, 0.9], alpha: 0.9, scale: 0.5, key: "main" }
+      ]
+    ],
+    frames: {
+      close: {
+        main: { scale: 0.8, horizon: [0.85, 0.85] }
+      }
+    }
+  },
   "city.horizonStart": {
     attributes: {
       width: 256,
