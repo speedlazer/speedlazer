@@ -85,7 +85,7 @@ export default {
         ],
         backgroundColor: "#fd7321",
         timeline: {
-          defaultDuration: 120000,
+          defaultDuration: 150000,
           transitions: [
             { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn6" },
             { key: "sky", start: 0.5, end: 1.0, targetFrame: "dawn7" },

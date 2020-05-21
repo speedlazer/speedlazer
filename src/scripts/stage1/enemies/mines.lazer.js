@@ -56,14 +56,14 @@ const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({
         if (activeMovement.wasCompleted()) {
           await wait(200 + Math.random() * 2000);
           await showState(mine, "open", 500);
+          if (mine.appliedEntityState === "dead") return;
           showState(mine, "blinking");
           await wait(1000);
-          if (mine.appliedEntityState !== "dead") {
-            showState(mine, "explode");
-            addScreenTrauma(0.2);
-            await wait(500);
-            mine.destroy();
-          }
+          if (mine.appliedEntityState === "dead") return;
+          showState(mine, "explode");
+          addScreenTrauma(0.2);
+          await wait(500);
+          mine.destroy();
         }
       }
     }

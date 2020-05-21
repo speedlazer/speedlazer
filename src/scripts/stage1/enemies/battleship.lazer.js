@@ -487,6 +487,7 @@ const battleship = async ({
   showState,
   exec,
   moveTo,
+  setBackgroundCheckpointLimit,
   setScrollingSpeed
 }) => {
   let activeMovement;
@@ -525,6 +526,7 @@ const battleship = async ({
   await parallel([() => activeMovement.process, () => exec(part1(ship))]);
   await wait(1000);
 
+  setBackgroundCheckpointLimit(3);
   activeMovement = moveTo(ship, { x: 0.5 }, null, EASE_IN_OUT);
   await parallel([() => activeMovement.process, () => exec(part2(ship))]);
   await wait(1000);

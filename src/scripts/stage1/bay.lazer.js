@@ -25,7 +25,7 @@ const part = async ({
 
   await setScrollingSpeed(100, 0, { instant: true });
   await setScenery("City.Coast");
-  setBackground("City.Sunrise", 2, 3);
+  setBackground("City.Sunrise", 3, 3);
   showHUD();
   text.remove();
   exec(playerShip({ existing: true }));
