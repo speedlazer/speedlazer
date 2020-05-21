@@ -17,7 +17,7 @@ const gameStructure = [
   {
     name: "stage1.bay",
     script: s1p4,
-    tags: { campaign: true, wip: true }
+    tags: { campaign: true }
   },
   {
     name: "stage1.bridge",
