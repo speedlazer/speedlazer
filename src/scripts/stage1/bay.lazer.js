@@ -20,8 +20,8 @@ const part = async ({
   text.fadeIn(2000);
 
   await loadSpriteSheets(["mega-texture"]);
-  await loadAudio(["effects", "hero"]);
-  playAudio("hero");
+  await loadAudio(["effects", "interactive"]);
+  playAudio("pattern.default");
 
   await setScrollingSpeed(100, 0, { instant: true });
   await setScenery("City.Coast");
@@ -47,6 +47,7 @@ const part = async ({
   await exec(droneWave(8, "drone.pattern2"));
   await exec(mineWave());
   await setScenery("City.Bridge");
+  playAudio("pattern.someStress");
   await exec(helicopter("heli.pattern1", "heli.repeat1"));
   await parallel([
     () => exec(droneWave(5, "drone.pattern3")),

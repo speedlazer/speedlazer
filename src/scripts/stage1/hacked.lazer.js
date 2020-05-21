@@ -21,8 +21,8 @@ const part = async ({
   const text = bigText("Loading...");
   text.fadeIn(2000);
   await loadSpriteSheets(["mega-texture"]);
-  await loadAudio(["effects", "hero"]);
-  playAudio("hero");
+  await loadAudio(["effects", "interactive"]);
+  playAudio("pattern.excitement");
   await setScrollingSpeed(250, 0, { instant: true });
   setAltitude(200, { instant: true });
   setBackground("City.Sunrise", 1, 2);
@@ -39,6 +39,7 @@ const part = async ({
     () => exec(helicopter("heli.pattern1", "heli.repeat1"))
   ]);
 
+  playAudio("pattern.default");
   await parallel([
     () => exec(droneWave(4, "drone.pattern6")),
     async () => {
@@ -67,6 +68,7 @@ const part = async ({
       await exec(droneWave(4, "drone.pattern6", { yOffset: 0.4 }));
     }
   ]);
+  playAudio("pattern.excitement");
   await exec(droneShip());
 };
 

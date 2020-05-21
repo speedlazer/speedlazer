@@ -39,8 +39,8 @@ const part = async ({
   const text = bigText("Loading...");
   text.fadeIn(2000);
   await loadSpriteSheets(["mega-texture"]);
-  await loadAudio(["effects", "hero"]);
-  playAudio("hero");
+  await loadAudio(["effects", "interactive"]);
+  playAudio("pattern.default");
   const heliAudio = playAudio("helicopter", { volume: 0 });
   onScriptClose(() => {
     heliAudio.stop();
@@ -128,6 +128,7 @@ const part = async ({
   setAltitude(200);
   await exec(droneWave(5, "drone.pattern1"));
   await exec(droneWave(8, "drone.pattern2"));
+  playAudio("pattern.excitement");
   await say("John", "Well that was fun. I will miss the manual mode..", {
     portrait: "portraits.pilot"
   });

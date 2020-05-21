@@ -22,9 +22,11 @@ const convertAudioMap = map =>
         start,
         end: start + entry.duration,
         duration: entry.duration,
+        blockDuration: entry.blockDuration || entry.duration,
         loopStart: entry.loopStart,
         loopEnd: entry.loopEnd,
         volume: entry.volume,
+        tracks: entry.tracks,
         loop: entry.loop
       }
     };
@@ -58,18 +60,11 @@ export const loadAudio = async audioMap => {
 };
 
 export const stopMusic = () => {
-  if (playingPool.music !== null) {
-    playingPool.music.source.stop();
-    playingPool.music.source.disconnect();
-    playingPool.music = null;
-  }
+  const current = currentMusic();
+  if (current) current.stop();
 };
 
-const currentMusic = () => {
-  if (playingPool.music !== null) {
-    return playingPool.music.sampleName;
-  }
-};
+const currentMusic = () => playingPool.music;
 
 export const fadeMusicVolume = (volume = 0, duration = 1000) => {
   if (playingPool.music !== null) {
@@ -80,10 +75,92 @@ export const fadeMusicVolume = (volume = 0, duration = 1000) => {
 export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
   const map = Object.values(audioData).find(e => e.map[sampleName]);
   const sampleData = map.map[sampleName];
-  if (sampleData.type === "music") {
-    if (currentMusic() === sampleName) return;
+  if (!sampleData) {
+    throw new Error(`Audio ${sampleName} not found`);
+  }
+  if (sampleData.type === "pattern") {
+    const current = currentMusic();
+    if (current && current.name === sampleName) return;
     // Cross fade if track is already playing??
-    stopMusic();
+    let start = context.currentTime;
+
+    if (current) {
+      if (current.type === "pattern") {
+        start =
+          current.start +
+          Math.ceil(
+            (context.currentTime - current.start) / current.blockDuration
+          ) *
+            current.blockDuration;
+        current.stop(start);
+      } else {
+        current.stop();
+      }
+    }
+
+    const baseVolume =
+      sampleData.volume === undefined ? 1.0 : sampleData.volume;
+    const sampleVolume = volume * baseVolume;
+
+    const trackGain = context.createGain();
+    trackGain.connect(playingPool.musicGain);
+    trackGain.gain.setValueAtTime(
+      sampleVolume === 0 ? 0.01 : sampleVolume,
+      start
+    );
+
+    const tracks = sampleData.tracks.map(layer => {
+      const track = map.map[layer];
+
+      const source = context.createBufferSource();
+      source.buffer = map.audioData;
+      source.connect(trackGain);
+      if (track.loop) {
+        source.loop = true;
+        source.loopStart = track.start / 1000.0;
+        source.loopEnd = track.end / 1000.0;
+      }
+      source.start(start, track.start / 1000.0);
+      return source;
+    });
+
+    const setVolume = async (value, duration = 0) => {
+      const newVolume = value * baseVolume;
+      trackGain.gain.exponentialRampToValueAtTime(
+        newVolume === 0 ? 0.01 : newVolume,
+        context.currentTime + duration / 1000.0
+      );
+    };
+
+    const stop = (time = context.currentTime) => {
+      tracks.forEach(source => {
+        source.stop(time);
+      });
+      playingPool.music = null;
+    };
+
+    const process = Promise.all(
+      tracks.map(source => new Promise(resolve => (source.onended = resolve)))
+    );
+    playingPool.music = {
+      type: sampleData.type,
+      tracks,
+      sampleName,
+      setVolume,
+      stop,
+      process,
+      start,
+      duration: sampleData.duration / 1000,
+      blockDuration: sampleData.blockDuration / 1000
+    };
+
+    return playingPool.music;
+  }
+  if (sampleData.type === "music") {
+    const current = currentMusic();
+    if (current && current.name === sampleName) return;
+    // Cross fade if track is already playing??
+    current && current.stop();
 
     const baseVolume =
       sampleData.volume === undefined ? 1.0 : sampleData.volume;
@@ -112,8 +189,6 @@ export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
 
     source.start();
 
-    const process = new Promise(resolve => (source.onended = resolve));
-
     const setVolume = async (value, duration = 0) => {
       const newVolume = value * baseVolume;
       trackGain.gain.exponentialRampToValueAtTime(
@@ -121,13 +196,24 @@ export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
         context.currentTime + duration / 1000.0
       );
     };
-    playingPool.music = { source, sampleName, setVolume };
 
-    return {
-      stop: () => source.stop(),
+    const stop = () => {
+      source.stop();
+      source.disconnect();
+      playingPool.music = null;
+    };
+    const process = new Promise(resolve => (source.onended = resolve));
+
+    playingPool.music = {
+      type: sampleData.type,
+      source,
+      sampleName,
       setVolume,
+      stop,
       process
     };
+
+    return playingPool.music;
   } else {
     const source = context.createBufferSource();
     source.buffer = map.audioData;
