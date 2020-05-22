@@ -15,6 +15,21 @@ export default {
       }
     },
     states: {
+      eyeMove: {
+        animation: "eye",
+        attachments: {
+          trail: {
+            particles: ["drone.trail", { particle: { startSize: 20 } }]
+          }
+        }
+      },
+      laugh: {
+        animation: "laugh",
+        audio: "laugh"
+      },
+      reload: {
+        animation: "rocketReload"
+      },
       damaged: {
         frame: "damaged",
         attachments: {

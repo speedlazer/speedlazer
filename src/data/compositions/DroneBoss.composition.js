@@ -3,11 +3,33 @@ export default {
     attributes: {
       width: 90,
       height: 70,
-      scale: 1
+      scale: 1,
+      ro: [25, 35]
     },
     hitbox: [0, 20, 50, 0, 60, 40, 0, 50],
     sprites: [
       ["standardLargeDrone", { x: 0, y: 0, key: "main", horizon: [0, 0] }],
+      [
+        "standardRocket",
+        {
+          x: 22,
+          y: 33,
+          z: 1,
+          key: "rocket",
+          horizon: [0, 0]
+        }
+      ],
+      [
+        "standardLargeDrone",
+        {
+          x: 36,
+          y: 10,
+          z: 3,
+          key: "wing",
+          horizon: [0, 0],
+          crop: [10, 10, 47, 36]
+        }
+      ],
       ["sphere2", { z: 1, x: 1, y: 27, crop: [0, 0, 17, 21], key: "eye" }]
     ],
     attachHooks: [
@@ -54,12 +76,16 @@ export default {
     ],
     frames: {
       background: {
-        attributes: {
-          scale: 0.7
-        },
-        main: {
-          horizon: [0.7, 0.7]
-        }
+        attributes: { scale: 0.7 },
+        main: { horizon: [0.7, 0.7] },
+        wing: { horizon: [0.7, 0.7] },
+        rocket: { horizon: [0.7, 0.7] }
+      },
+      rocketShow: {
+        rocket: { y: -10, scale: 0.6 }
+      },
+      rocketLoaded: {
+        rocket: { y: 0, scale: 1.0 }
       },
       eyeMove: {
         eye: {
@@ -103,6 +129,16 @@ export default {
       turned: {
         flipX: true
       },
+      laugh1: {
+        attributes: {
+          rotation: 15
+        }
+      },
+      laugh2: {
+        attributes: {
+          rotation: 0
+        }
+      },
       hidden: {
         main: {
           hidden: true,
@@ -143,6 +179,67 @@ export default {
             end: 1,
             startFrame: "eyeReset",
             endFrame: "eyeAppear"
+          }
+        ]
+      },
+      laugh: {
+        easing: "linear",
+        duration: 1800,
+        after: {
+          animation: "eye"
+        },
+        startEase: { duration: 10, easing: "linear" },
+        timeline: [
+          {
+            start: 0.0,
+            end: 0.05,
+            startFrame: "eyeAppear",
+            endFrame: "laugh2"
+          },
+          {
+            start: 0.05,
+            end: 0.25,
+            startFrame: "laugh2",
+            endFrame: "laugh1"
+          },
+          {
+            start: 0.25,
+            end: 0.5,
+            startFrame: "laugh1",
+            endFrame: "laugh2"
+          },
+          {
+            start: 0.5,
+            end: 0.75,
+            startFrame: "laugh2",
+            endFrame: "laugh1"
+          },
+          {
+            start: 0.75,
+            end: 1,
+            startFrame: "laugh1",
+            endFrame: "laugh2"
+          }
+        ]
+      },
+      rocketReload: {
+        easing: "linear",
+        duration: 3000,
+        after: {
+          animation: "eye"
+        },
+        timeline: [
+          {
+            start: 0.0,
+            end: 0.1,
+            startFrame: "rocketLoaded",
+            endFrame: "rocketShow"
+          },
+          {
+            start: 0.1,
+            end: 1.0,
+            startFrame: "rocketShow",
+            endFrame: "rocketLoaded"
           }
         ]
       }
