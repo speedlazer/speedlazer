@@ -49,8 +49,11 @@ const part = async ({
 
   await wait(10e3);
 
-  const bridgeCrash = playAnimation("City.Bridge");
-  await bridgeCrash.waitTillCheckpoint(2);
+  const bridgeCrash = playAnimation("City.Bridge", { max: 2 });
+  await wait(10e3);
+
+  bridgeCrash.updateCheckpointLimit(Infinity);
+  await bridgeCrash.waitTillCheckpoint(3);
   await setScrollingSpeed(200, 0);
 
   await wait(20e3);

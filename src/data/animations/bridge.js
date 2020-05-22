@@ -30,6 +30,7 @@ export default {
               key: "back",
               start: 0.3,
               end: 1.0,
+              targetFrame: "damaged",
               path: {
                 data: [
                   { x: -0.1, y: 0.3 },
@@ -65,8 +66,70 @@ export default {
               key: "ceiling",
               start: 0.0,
               end: 1.0,
-              components: ["PlayerEnemy"],
               targetFrame: "rotateSmall",
+              path: {
+                data: [
+                  { x: -0.1, y: 0.3 },
+                  { x: -0.1, y: 0.28 }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        entities: [
+          ["BridgeCeiling", { key: "ceiling" }],
+          ["BridgeFrontDeck", { key: "front" }],
+          ["BridgeCeilingBackground", { key: "back" }],
+          ["PillarRight", { key: "pillarRight" }],
+          ["PillarLeft", { key: "pillarLeft" }]
+        ],
+        timeline: {
+          defaultDuration: 500,
+          transitions: [
+            {
+              key: "back",
+              start: 0.3,
+              end: 1.0,
+              targetFrame: "damaged",
+              path: {
+                data: [
+                  { x: -0.1, y: 0.3 },
+                  { x: -0.1, y: 0.29 }
+                ]
+              }
+            },
+            {
+              key: "pillarRight",
+              start: 0.2,
+              end: 1.0,
+              targetFrame: "rotateMedium"
+            },
+            {
+              key: "pillarLeft",
+              start: 0.2,
+              end: 1.0,
+              targetFrame: "rotateMedium"
+            },
+            {
+              key: "front",
+              start: 0.7,
+              end: 1.0,
+              targetFrame: "rotateMedium",
+              path: {
+                data: [
+                  { x: -0.1, y: 0.29 },
+                  { x: -0.1, y: 0.3 }
+                ]
+              }
+            },
+            {
+              key: "ceiling",
+              start: 0.0,
+              end: 1.0,
+              components: ["PlayerEnemy"],
+              targetFrame: "rotateMedium",
               path: {
                 data: [
                   { x: -0.1, y: 0.3 },
