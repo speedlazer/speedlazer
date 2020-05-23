@@ -107,7 +107,7 @@ Crafty.c(Gamepad, {
  */
 Crafty.c("GamepadMultiway", {
   _AXIS_THRESHOLD: 0.75,
-  _AXIS_ANALOG_THRESHOLD: 0.1,
+  _AXIS_ANALOG_THRESHOLD: 0.12,
 
   // Key is index of gamepad.buttons[] array for specific key,
   // value is direction in degrees.

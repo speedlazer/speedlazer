@@ -119,7 +119,7 @@ Crafty.c(GamepadControls, {
 
   assignControls(ship) {
     ship.addComponent("GamepadMultiway").gamepadMultiway({
-      speed: { y: 500, x: 700 },
+      speed: { y: 550, x: 750 },
       gamepadIndex: this.controlMap.gamepadIndex,
       analog: true
     });

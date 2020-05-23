@@ -67,6 +67,24 @@ Crafty.defineScene(
         family: "Press Start 2P"
       });
 
+    const gamepadConnect = Crafty.e("2D, DOM, Text")
+      .attr({ x: 0, y: h * 0.95, w })
+      .text("No gamepad detected")
+      .textColor("#303030")
+      .textAlign("center")
+      .textFont({
+        size: "10px",
+        weight: "bold",
+        family: "Press Start 2P"
+      });
+
+    window.addEventListener("gamepadconnected", () => {
+      gamepadConnect.text("Gamepad detected!");
+    });
+    const pads = window.navigator.getGamepads();
+    const hasGamePad = Array.from(pads).some(pad => pad && pad.connected);
+    hasGamePad && gamepadConnect.text("Gamepad detected!");
+
     Crafty(Player).each(function() {
       this.reset();
       this.one("Activated", () => Crafty.enterScene("Game", {}));
