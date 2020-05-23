@@ -39,6 +39,26 @@ export default {
         }
       ],
       [
+        "laserWeapon",
+        {
+          x: 48,
+          y: 36,
+          z: 4,
+          attachAlign: ["center", "right"],
+          attachTo: "main"
+        }
+      ],
+      [
+        "laserCharge",
+        {
+          x: 48,
+          y: 36,
+          z: 4,
+          attachAlign: ["center", "right"],
+          attachTo: "main"
+        }
+      ],
+      [
         "trail",
         {
           x: 0,

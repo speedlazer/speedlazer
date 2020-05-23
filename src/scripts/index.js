@@ -4,6 +4,7 @@ import s1p3 from "./stage1/battleship.lazer";
 import s1p4 from "./stage1/bay.lazer";
 import s1p5 from "./stage1/bridge.lazer";
 import t1 from "./test/scenery.lazer";
+import t2 from "./test/lasertest.lazer";
 import end from "./end.lazer";
 
 const gameStructure = [
@@ -25,7 +26,8 @@ const gameStructure = [
     tags: { campaign: true, wip: true }
   },
   { name: "end", script: end, tags: { campaign: true } },
-  { name: "test.scenery", script: t1, tags: { test: true } }
+  { name: "test.scenery", script: t1, tags: { test: true } },
+  { name: "test.laser", script: t2, tags: { test: true } }
 ];
 
 export default gameStructure;

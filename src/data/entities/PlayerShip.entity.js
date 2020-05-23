@@ -7,7 +7,14 @@ export default {
       attachments: {
         mainWeapon: {
           weapon: {
-            pattern: "ship.bullets",
+            pattern: "player.bullets",
+            target: "PlayerEnemy",
+            angle: 180
+          }
+        },
+        laserWeapon: {
+          weapon: {
+            pattern: "player.laser",
             target: "PlayerEnemy",
             angle: 180
           }
@@ -53,11 +60,42 @@ export default {
           }
         }
       },
+      laserShooting: {
+        attachments: {
+          laserWeapon: {
+            weapon: {
+              active: true
+            }
+          }
+        }
+      },
+      noLaserShooting: {
+        attachments: {
+          laserCharge: null,
+          laserWeapon: {
+            weapon: {
+              active: false
+            }
+          }
+        }
+      },
+      laserCharge: {
+        attachments: {
+          laserCharge: {
+            particles: "player.laserCharge"
+          }
+        }
+      },
+      stopLaserCharge: {
+        attachments: {
+          laserCharge: null
+        }
+      },
       starting: {
         attachments: {
           trail: {
             particles: [
-              "ship.trail",
+              "player.trail",
               {
                 particle: { velocity: 50, startSize: 10 },
                 emitter: { amount: 100 }
@@ -71,7 +109,7 @@ export default {
       flying: {
         attachments: {
           trail: {
-            particles: "ship.trail"
+            particles: "player.trail"
           },
           reverseTrail: null,
           reverseTrail2: null
@@ -81,10 +119,10 @@ export default {
         attachments: {
           trail: null,
           reverseTrail: {
-            particles: "ship.reverse"
+            particles: "player.reverse"
           },
           reverseTrail2: {
-            particles: "ship.reverse"
+            particles: "player.reverse"
           }
         }
       },

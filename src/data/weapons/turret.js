@@ -122,6 +122,12 @@ export default {
           LaserSolid: {
             cooldown: 10,
             spawns: [["sparks", { angle: 180 }]],
+            block: true,
+            remove: false
+          },
+          PlayerShip: {
+            cooldown: 10,
+            spawns: [["sparks", { angle: 180 }]],
             remove: false
           }
         }

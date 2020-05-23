@@ -28,19 +28,34 @@ const part = async ({
   setBackground("City.Sunrise", 3, 3);
   showHUD();
   text.remove();
-  exec(playerShip({ existing: true }));
+  exec(playerShip({ existing: true, hasLaser: true }));
 
   await setScrollingSpeed(250, 0);
   await parallel([
-    () => exec(droneWave(4, "drone.straight", { delay: 300, yOffset: 0.1 })),
-    async () => {
-      await wait(3000);
-      await exec(droneWave(4, "drone.straight", { delay: 300, yOffset: -0.1 }));
-    },
+    () =>
+      exec(
+        droneWave(4, "drone.straight", { delay: 600, yOffset: 0.1, speed: 200 })
+      ),
     async () => {
       await wait(6000);
+      await exec(
+        droneWave(4, "drone.straight", {
+          delay: 600,
+          yOffset: -0.1,
+          speed: 200
+        })
+      );
+    },
+    async () => {
+      await wait(12000);
       await setScenery("City.BayStart");
-      await exec(droneWave(4, "drone.straight", { delay: 300, yOffset: -0.3 }));
+      await exec(
+        droneWave(4, "drone.straight", {
+          delay: 300,
+          yOffset: -0.3,
+          speed: 200
+        })
+      );
     }
   ]);
   await exec(droneWave(5, "drone.pattern1"));

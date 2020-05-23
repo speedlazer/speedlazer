@@ -41,7 +41,7 @@ export default {
       endColorRandom: [0.1, 0.1, 0, 0.2]
     }
   },
-  "ship.trail": {
+  "player.trail": {
     emitter: {
       w: 2,
       h: 2,
@@ -64,7 +64,7 @@ export default {
       endColorRandom: [0, 0, 0, 0]
     }
   },
-  "ship.trail2": {
+  "player.trail2": {
     emitter: {
       w: 2,
       h: 2,
@@ -87,7 +87,7 @@ export default {
       endColorRandom: [0, 0, 0, 0]
     }
   },
-  "ship.reverse": {
+  "player.reverse": {
     emitter: {
       w: 2,
       h: 2,
@@ -294,10 +294,10 @@ export default {
       sprite: "explosion7",
       angle: 0,
       angleRandom: 360,
-      duration: 1200,
+      duration: 800,
       durationRandom: 0,
-      velocity: 50,
-      velocityRandom: 5,
+      velocity: 100,
+      velocityRandom: 15,
       startSize: 6,
       startSizeRandom: 1,
       endSize: 1,
@@ -305,6 +305,32 @@ export default {
       startColor: [1.0, 0.2, 0.0, 0.8],
       startColorRandom: [0, 0, 0, 0],
       endColor: [1.0, 1.0, 0.0, 0.2],
+      endColorRandom: [0, 0, 0, 0]
+    }
+  },
+  "player.laserCharge": {
+    emitter: {
+      w: 2,
+      h: 2,
+      amount: 70,
+      reverse: true
+    },
+    gravity: [0, 10],
+    particle: {
+      sprite: "explosion7",
+      angle: 0,
+      angleRandom: 60,
+      duration: 800,
+      durationRandom: 0,
+      velocity: 100,
+      velocityRandom: 15,
+      startSize: 6,
+      startSizeRandom: 1,
+      endSize: 1,
+      endSizeRandom: 0,
+      startColor: [1.0, 0.2, 0.0, 0.8],
+      startColorRandom: [0, 0, 0, 0],
+      endColor: [1.0, 1.0, 0.3, 0.2],
       endColorRandom: [0, 0, 0, 0]
     }
   },

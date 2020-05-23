@@ -4,6 +4,7 @@ import ControlScheme from "src/components/player/ControlScheme";
 
 export const playerShip = ({
   existing = false,
+  hasLaser = false,
   turned = false
 } = {}) => async ({
   spawn,
@@ -30,6 +31,7 @@ export const playerShip = ({
       health: ship.health || maxHealth
     });
   }
+  if (hasLaser) ship.hasLaser = true;
   if (ship.health < maxHealth * 0.5) {
     ship.displayFrame("damaged");
   }
@@ -56,8 +58,9 @@ export const playerShip = ({
     ship.attr({ disableControls: true, vx: 0, vy: 0 });
     await showState(ship, "dead");
     const isTurned = !!ship.xFlipped;
+    const hasLaser = ship.hasLaser;
     ship.destroy();
     await loseLife();
-    exec(playerShip({ turned: isTurned }));
+    exec(playerShip({ turned: isTurned, hasLaser }));
   });
 };

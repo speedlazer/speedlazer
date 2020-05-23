@@ -11,8 +11,8 @@ export const setupControls = () => {
 
   Crafty.e([AnalogKeyboardControls, PlayerAssignable].join(", ")).controls({
     fire: Crafty.keys.SPACE,
-    switchWeapon: Crafty.keys.Z,
     heavy: Crafty.keys.C,
+    switchWeapon: Crafty.keys.Z,
     shield: Crafty.keys.X,
     up: Crafty.keys.UP_ARROW,
     down: Crafty.keys.DOWN_ARROW,
@@ -24,8 +24,8 @@ export const setupControls = () => {
   Crafty.e([GamepadControls, PlayerAssignable].join(", ")).controls({
     gamepadIndex: 0,
     fire: 0,
+    heavy: 1,
     switchWeapon: 2,
-    super: 4,
     pause: 9,
     up: 12,
     down: 13,
