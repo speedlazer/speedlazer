@@ -130,7 +130,7 @@ const setEntityStructure = (root, entity, state, duration) => {
           entity.barrel = null;
         }
         entity
-          .attr({ difficulty: 0 })
+          .attr({ difficulty: 0, mainEntity: root })
           .addComponent(Weapon)
           .weapon({ ...state.weapon, pattern });
       }

@@ -79,7 +79,7 @@ const calcHitPosition = (objA, hit) => {
   if (hit.type === "SAT") {
     const [rx, ry] = rotX(objA, objA.w);
     x = objA.x + rx - hit.overlap * hit.nx;
-    y = objA.y + ry - hit.overlap * hit.ny;
+    y = objA.y + ry + objA.h / 2 - hit.overlap * hit.ny;
   } else {
     const objB = hit.obj;
     const xLeftOverlap =
@@ -630,7 +630,7 @@ Crafty.c(Weapon, {
 
     if (this.shotDelay <= 0) {
       const qPos = 0 - this.shotDelay;
-      const entity = this.barrel && this.barrel.root;
+      const entity = this.mainEntity;
 
       const upcoming = this.shotQueue[0];
       if (upcoming) {
