@@ -78,7 +78,8 @@ const calcHitPosition = (objA, hit) => {
 
   if (hit.type === "SAT") {
     const [rx, ry] = rotX(objA, objA.w);
-    x = objA.x + rx - hit.overlap * hit.nx;
+    const addX = objA.bulletSettings.attached ? rx : -hit.overlap;
+    x = objA.x + addX - hit.overlap * hit.nx;
     y = objA.y + ry + objA.h / 2 - hit.overlap * hit.ny;
   } else {
     const objB = hit.obj;
