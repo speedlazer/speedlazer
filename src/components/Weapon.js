@@ -125,22 +125,29 @@ Crafty.c(Bullet, {
     this.cooldowns = {};
   },
 
-  _bulletHit(collisionType, hitData) {
-    if (this.cooldowns[collisionType]) {
-      return;
-    }
-    this.cooldowns[collisionType] = hitData.cooldown || 30;
-
+  _bulletHitOn(collisionType, hitData) {
     const collisionConfig = this.bulletSettings.collisions[collisionType];
     const firstObj = hitData[0].obj;
     const position = calcHitPosition(this, hitData[0]);
 
     if (this.bulletSettings.attached) {
-      this.beamVelocity = 0;
-      // FIXME: This breaks beams when collision object only has MBR (no SAT)
-      const correction = hitData[0].nx * hitData[0].ny * hitData[0].overlap;
-      this.sw -= correction;
+      const rads = Crafty.math.degToRad(this.angle);
+      const nCos = Math.cos(rads);
+      const nSin = Math.sin(rads);
+
+      const results = Crafty.raycast(
+        this,
+        { x: nCos, y: nSin },
+        -1,
+        collisionType
+      );
+      if (results[0]) {
+        this.beamBlocked = true;
+        this.sw = results[0].distance + 3; // Keep coliding
+      }
     }
+
+    this.cooldowns[collisionType] = hitData.cooldown || 30;
 
     if (firstObj.processDamage && this.bulletSettings.damage) {
       firstObj.processDamage(this.bulletSettings.damage);
@@ -164,6 +171,27 @@ Crafty.c(Bullet, {
       this.unbind("EnterFrame", this._updateBullet);
       this.bulletTime = 0;
       this.freeze();
+    }
+  },
+
+  _bulletHitOff(collisionType) {
+    if (this.bulletSettings.attached) {
+      const rads = Crafty.math.degToRad(this.angle);
+      const nCos = Math.cos(rads);
+      const nSin = Math.sin(rads);
+      const results = Crafty.raycast(
+        this,
+        { x: nCos, y: nSin },
+        -1,
+        collisionType
+      );
+      if (results[0]) {
+        this.beamBlocked = true;
+        this.sw = results[0].distance + 3; // Keep coliding
+      } else {
+        this.beamBlocked = false;
+        this.sw = this.beamLength;
+      }
     }
   },
 
@@ -358,9 +386,11 @@ const getItemFromPool = itemDefinition => {
     }
 
     collisionChecks.forEach(collisionType => {
-      spawn.onHit(collisionType, hitDatas => {
-        spawn._bulletHit(collisionType, hitDatas);
-      });
+      spawn.onHit(
+        collisionType,
+        hitDatas => spawn._bulletHitOn(collisionType, hitDatas),
+        () => spawn._bulletHitOff(collisionType)
+      );
     });
   }
 

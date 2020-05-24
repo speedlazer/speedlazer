@@ -112,7 +112,7 @@ export default {
         ],
         damage: [
           {
-            velocity: [-20e3, -45e3],
+            velocity: [-2e3, -4e3],
             affects: "health",
             duration: [2, 4],
             name: "Laser"
@@ -122,7 +122,6 @@ export default {
           LaserSolid: {
             cooldown: 10,
             spawns: [["sparks", { angle: 180 }]],
-            block: true,
             remove: false
           },
           PlayerShip: {
@@ -139,10 +138,11 @@ export default {
         queue: [{ duration: 305 }]
       },
       sparks: {
+        attached: true,
         spawnPosition: "outside",
         velocity: 0,
         particles: "laserHit",
-        queue: [{ duration: 1500 }]
+        queue: [{ duration: 50 }]
       }
     }
   },

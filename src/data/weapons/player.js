@@ -87,12 +87,12 @@ export default {
             duration: 340
           },
           { velocity: 0 },
-          { duration: 1500 },
+          { duration: 300 },
           { duration: 300, frame: "disappear" }
         ],
         damage: [
           {
-            velocity: [-10e3, -15e3],
+            velocity: [-500, -1000],
             affects: "health",
             duration: [80, 160],
             name: "Laser"
@@ -113,10 +113,11 @@ export default {
         queue: [{ duration: 305 }]
       },
       sparks: {
+        attached: true,
         spawnPosition: "outside",
         velocity: 0,
         particles: "laserHit",
-        queue: [{ duration: 1500 }]
+        queue: [{ duration: 150 }]
       }
     }
   }

@@ -21,6 +21,7 @@ Crafty.c(Beam, {
   events: {
     Freeze() {
       this._beamVelocity = 0;
+      this.beamBlocked = false;
     }
   },
 
@@ -29,12 +30,16 @@ Crafty.c(Beam, {
       this.unbind("EnterFrame", this._updateBeam);
       return;
     }
+    this.beamLength = this.sw;
     this.uniqueBind("EnterFrame", this._updateBeam);
   },
 
   _updateBeam({ dt }) {
     const add = this._beamVelocity * (dt / 1000);
-    this.sw += add;
+    if (!this.beamBlocked) {
+      this.sw += add;
+    }
+    this.beamLength += add;
   }
 });
 

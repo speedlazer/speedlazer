@@ -3,11 +3,12 @@ import { isPaused } from "src/lib/core/pauseToggle";
 import { addEffect, normalize, processEffects } from "src/lib/effects";
 
 const applyHitFlash = (entity, onOff) => {
-  if (onOff && entity._isFlashing > 0) return;
   if (!onOff && entity._isFlashing < 1) return;
-  entity._isFlashing = onOff ? 2 : 0;
+  if (onOff && entity._isFlashing < 1) {
+    entity._isFlashing = onOff ? 3 : 0;
+  }
   entity._isFlashing--;
-  const bool = entity._isFlashing > 0;
+  const bool = entity._isFlashing > 1;
 
   entity.forEachPart
     ? entity.forEachPart(part =>
@@ -49,6 +50,7 @@ Crafty.c(DamageSupport, {
       health: 0,
       vulnerable: false
     });
+    this._isFlashing = 0;
     this.allowDamage = this.allowDamage.bind(this);
     this.hasHealth = this.hasHealth.bind(this);
   },
