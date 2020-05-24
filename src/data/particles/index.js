@@ -320,7 +320,7 @@ export default {
       sprite: "explosion7",
       angle: 0,
       angleRandom: 60,
-      duration: 800,
+      duration: 500,
       durationRandom: 0,
       velocity: 100,
       velocityRandom: 15,
@@ -329,7 +329,7 @@ export default {
       endSize: 1,
       endSizeRandom: 0,
       startColor: [1.0, 0.2, 0.0, 0.8],
-      startColorRandom: [0, 0, 0, 0],
+      startColorRandom: [0.9, 0, 0, 0],
       endColor: [1.0, 1.0, 0.3, 0.2],
       endColorRandom: [0, 0, 0, 0]
     }
@@ -394,6 +394,26 @@ export default {
       endSize: 20,
       startColor: [0.5, 0.6, 0.2, 1.0],
       endColor: [0.5, 0.6, 0.2, 0.3]
+    }
+  },
+  forceField: {
+    emitter: {
+      w: 200,
+      h: 150,
+      amount: 170
+    },
+    particle: {
+      sprite: "explosion7",
+      angle: 0,
+      angleRandom: 360,
+      duration: 600,
+      velocity: 30,
+      startSize: 5,
+      endSize: 2,
+      startColor: [0.7, 0.7, 1.0, 0.8],
+      startColorRandom: [0, 0, 0, 0],
+      endColor: [0.2, 0.2, 0.9, 0],
+      endColorRandom: [0, 0, 0, 0]
     }
   }
 };

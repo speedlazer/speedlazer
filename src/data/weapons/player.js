@@ -70,8 +70,8 @@ export default {
       shotDelay: 3000,
       burstDelay: 1,
       shot: [
-        { state: "laserCharge", audio: "laser-charge", duration: 1200 },
-        { state: "stopLaserCharge", duration: 600 },
+        { state: "laserCharge", audio: "laser-charge", duration: 1500 },
+        { state: "stopLaserCharge", duration: 300 },
         { spawn: true, duration: 100, audio: "laser-fire" }
       ],
       spawns: [["laser", { angle: 180 }]]
