@@ -34,26 +34,26 @@ const part = async ({
   await parallel([
     () =>
       exec(
-        droneWave(4, "drone.straight", { delay: 600, yOffset: 0.1, speed: 300 })
+        droneWave(4, "drone.straight", { delay: 400, yOffset: 0.1, speed: 350 })
       ),
     async () => {
-      await wait(6000);
+      await wait(3000);
       await exec(
         droneWave(4, "drone.straight", {
-          delay: 600,
+          delay: 400,
           yOffset: -0.1,
-          speed: 300
+          speed: 350
         })
       );
     },
     async () => {
-      await wait(12000);
+      await wait(6000);
       await setScenery("City.BayStart");
       await exec(
         droneWave(4, "drone.straight", {
-          delay: 600,
+          delay: 400,
           yOffset: -0.3,
-          speed: 300
+          speed: 350
         })
       );
     }

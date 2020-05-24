@@ -21,12 +21,14 @@ Crafty.c(ShipControls, {
 
   controlPrimary(onOff) {
     if (this.disableControls) return;
+    onOff && this.controlSecondary(false);
     onOff ? this.showState("shooting") : this.showState("noShooting");
   },
 
   controlSecondary(onOff) {
     if (this.disableControls) return;
     if (!this.hasLaser) return;
+    onOff && this.controlPrimary(false);
     onOff ? this.showState("laserShooting") : this.showState("noLaserShooting");
   },
   controlSwitch() {},
