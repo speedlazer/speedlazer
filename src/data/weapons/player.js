@@ -20,7 +20,7 @@ export default {
             velocity: [-20e3, -30e3],
             affects: "health",
             duration: [2, 4],
-            name: "Laser"
+            name: "Bullet"
           }
         ],
         queue: [{ cleanOutOfScreen: true }, { duration: 4000 }],

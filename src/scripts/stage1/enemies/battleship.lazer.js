@@ -268,22 +268,20 @@ const part3 = ship => async ({
   ]);
   // Mines from below
   await exec(mineAttack(ship));
+  await displayFrame(ship.engineCore, "perc50", 1000);
   await parallel([
     async () => {
       await showState(ship, "t2o", 1000);
       await showState(ship, "t2r", 1000);
       await exec(activateGun(ship.hatch2.payload));
-      await displayFrame(ship.engineCore, "perc50", 1000);
     },
     async () => {
       await showState(ship, "t1o", 1000);
       await showState(ship, "t1r", 1000);
       await exec(activateGun(ship.hatch1.payload));
-      await displayFrame(ship.engineCore, "perc50", 1000);
     }
   ]);
   await exec(mineAttack(ship));
-  await displayFrame(ship.engineCore, "perc75", 1000);
   showAnimation(ship.engineCore, "shake");
 };
 
@@ -357,9 +355,11 @@ const part5 = ship => async ({
   setScrollingSpeed,
   moveTo,
   awardPoints,
+  exec,
   waitForEvent
 }) => {
   await wait(2000);
+  await displayFrame(ship.engineCore, "perc75", 1000);
   await showState(ship, "packageOpen", 1000, EASE_IN_OUT);
   await wait(1000);
   const laser = ship.deckGun3;
@@ -386,8 +386,9 @@ const part5 = ship => async ({
     },
     async () => {
       await killed;
-      await displayFrame(ship.engineCore, "perc100", 1000);
-      showState(ship, "engineTilt");
+      exec(laserWeapon(laser.x + laser.w / 2, laser.y - laser.h));
+      //await displayFrame(ship.engineCore, "perc100", 1000);
+      //showState(ship, "engineTilt");
     }
   ]);
 };
@@ -421,6 +422,41 @@ const extraLife = (x, y) => async ({
   extraLife.destroy();
 };
 
+const laserWeapon = (x, y) => async ({
+  allowDamage,
+  awardText,
+  showState,
+  waitForEvent,
+  wait,
+  spawn,
+  until
+}) => {
+  const powerup = spawn("Upgrade", {
+    location: {
+      x,
+      y
+    },
+    defaultVelocity: 50
+  });
+  await allowDamage(powerup, { health: 10 });
+  const pickedUp = waitForEvent(powerup, "Dead", async () => {
+    const ship = Crafty("PlayerShip").get(0);
+    ship.hasLaser = true;
+    awardText("Laser weapon", powerup.x, powerup.y);
+    await showState(powerup, "pickedUp");
+    await wait(2000);
+    powerup.destroy();
+  });
+  await until(
+    () => pickedUp,
+    async ({ moveWithPattern }) => {
+      const motion = moveWithPattern(powerup, "powerup.circles");
+      await motion.process;
+    }
+  );
+  powerup.destroy();
+};
+
 const part6 = ship => async ({
   allowDamage,
   showState,
@@ -438,7 +474,7 @@ const part6 = ship => async ({
     await wait(2000);
     showState(ship, "cabin1Smoke");
   });
-  await allowDamage(cabin, { health: 500 });
+  await allowDamage(cabin, { health: 500, bulletResistance: 1.0 });
   await killed;
   cabin.removeComponent("SolidCollision");
   exec(extraLife(cabin.x + cabin.w / 2, cabin.y - cabin.h));
@@ -460,7 +496,7 @@ const part7 = ship => async ({
     await wait(2000);
     showState(ship, "cabin2Smoke");
   });
-  await allowDamage(cabin, { health: 500 });
+  await allowDamage(cabin, { health: 500, bulletResistance: 1.0 });
   await killed;
   cabin.removeComponent("SolidCollision");
 };

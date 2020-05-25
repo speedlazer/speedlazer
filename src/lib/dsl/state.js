@@ -4,14 +4,14 @@ import Health from "src/components/Health";
 let pointsPool = [];
 Crafty.bind("SceneDestroy", () => (pointsPool = []));
 
-const getPoints = () => {
+const getAwardText = () => {
   const available = pointsPool.find(e => e.__frozen);
   if (available) {
     available.unfreeze();
     return available.attr({ alpha: 1 });
   }
   const spawn = Crafty.e(`2D, Text, DOM, ${TweenPromise}`)
-    .attr({ z: 400, alpha: 1 })
+    .attr({ z: 400, alpha: 1, w: 300 })
     .textColor("#EEEEEE")
     .textAlign("left")
     .textFont({
@@ -86,6 +86,14 @@ const stateFunctions = (dsl, state) => {
     closeScripts.forEach(c => c());
   };
 
+  const awardText = async (text, x, y) => {
+    const award = getAwardText()
+      .attr({ x, y })
+      .text(text);
+    await award.tweenPromise({ y: y - 40, alpha: 0 }, 1000);
+    award.freeze();
+  };
+
   return {
     onScriptClose: callback => {
       closeScripts.push(callback);
@@ -109,13 +117,9 @@ const stateFunctions = (dsl, state) => {
     awardPoints: async (amount, x, y) => {
       state.score += amount;
       score.attr({ score: state.score });
-
-      const points = getPoints()
-        .attr({ x, y })
-        .text(`+${amount}`);
-      await points.tweenPromise({ y: y - 40, alpha: 0 }, 1000);
-      points.freeze();
+      await awardText(`+${amount}`, x, y);
     },
+    awardText,
     showHUD: () => {
       if (state.hudShown === true) return;
       state.hudShown = true;

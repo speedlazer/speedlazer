@@ -22,7 +22,11 @@ const applyHitFlash = (entity, onOff) => {
 };
 
 const processor = processEffects({
-  health: amount => ({ health: Math.ceil(amount) }),
+  health: (amount, effect, target) => {
+    const resistanceEffect =
+      1.0 - ((effect.name === "Bullet" && target.bulletResistance) || 0.0);
+    return { health: Math.ceil(amount) * resistanceEffect };
+  },
   position: (amount, effect, target) => {
     if (target.weight === undefined) return {};
     const [normX, normY] = normalize(
@@ -55,10 +59,10 @@ Crafty.c(DamageSupport, {
     this.hasHealth = this.hasHealth.bind(this);
   },
 
-  allowDamage({ health }) {
+  allowDamage(attr) {
     this.attr({
       vulnerable: true,
-      health
+      ...attr
     });
   },
 
