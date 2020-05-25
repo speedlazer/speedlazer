@@ -25,6 +25,7 @@ export default {
       ["aircraftCarrierBottomSpace", { x: 832, y: 64 }],
       ["aircraftCarrierBottomFlat", { x: 960, y: 64 }],
       ["aircraftCarrierBottomFlat", { x: 1088, y: 64 }],
+      ["aircraftCarrierWires", { x: 1092, y: 20, z: 1 }],
 
       ["aircraftCarrierHole", { x: 220, y: 120, z: 1 }],
       ["aircraftCarrierHole", { x: 310, y: 120, z: 1 }],

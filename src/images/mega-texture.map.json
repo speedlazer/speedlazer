@@ -104,6 +104,7 @@
     "aimBoost": [14, 48, 1, 1],
     "heart": [13, 49, 1, 1],
     "star": [14, 49, 1, 1],
+    "upgrade": [15, 49, 1, 1],
     "powerUpBox": [10, 49, 1, 1],
     "powerUpBox2": [11, 49, 1, 1],
     "powerUpBox3": [12, 49, 1, 1],
