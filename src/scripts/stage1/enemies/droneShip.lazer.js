@@ -1,6 +1,21 @@
 import { EASE_OUT, EASE_IN } from "src/constants/easing";
 import { droneWave } from "./drones.lazer";
 
+const handleBox = box => async ({
+  showState,
+  allowDamage,
+  waitForEvent,
+  call,
+  awardPoints
+}) => {
+  await allowDamage(box, { health: 30 });
+  waitForEvent(box, "Dead", async () => {
+    awardPoints(25, box.x, box.y);
+    showState(box, "falling");
+    await call(box.activateGravity, "GravityLiquid");
+  });
+};
+
 export const droneShip = () => async ({
   spawn,
   waitForEvent,
@@ -10,6 +25,7 @@ export const droneShip = () => async ({
   awardPoints,
   showState,
   allowDamage,
+  exec,
   moveTo
 }) => {
   let activeMovement = null;
@@ -20,6 +36,7 @@ export const droneShip = () => async ({
     },
     defaultVelocity: 120
   });
+  exec(handleBox(ship.boxLocation1));
   showState(ship, "activateGun");
   ship.gun
     .addCollisionComponent("SolidCollision")
@@ -33,7 +50,9 @@ export const droneShip = () => async ({
 
   activeMovement = moveTo(ship, { x: 0.5 }, null, EASE_OUT);
   ship.radar.addCollisionComponent("SolidCollision");
+  let radarDestroyed = false;
   const radarKilled = waitForEvent(ship.radar, "Dead", async () => {
+    radarDestroyed = true;
     awardPoints(100, ship.radar.x + 20, ship.radar.y);
     showState(ship.radar, "dead");
     ship.radar.clearCollisionComponents();
@@ -51,6 +70,10 @@ export const droneShip = () => async ({
       until(
         () => radarKilled,
         async ({ exec }) => {
+          if (radarDestroyed) {
+            await wait(1500);
+            return;
+          }
           exec(droneWave(2, "drone.pattern2", { points }));
           points = points > 0 ? points - 5 : 0;
           await wait(1500);

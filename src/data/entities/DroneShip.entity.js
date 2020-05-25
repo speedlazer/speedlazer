@@ -17,7 +17,7 @@ export default {
           entity: "BulletCannon"
         },
         boxLocation1: {
-          composition: "intro.boxes"
+          entity: "ShipBoxes"
         },
         radar: { entity: "Radar", state: "stopPulse" }
       }
