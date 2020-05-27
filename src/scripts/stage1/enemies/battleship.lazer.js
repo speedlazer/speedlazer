@@ -469,12 +469,12 @@ const part6 = ship => async ({
   cabin.addCollisionComponent("SolidCollision");
   const killed = waitForEvent(cabin, "Dead", async () => {
     awardPoints(2000, cabin.x + cabin.w / 2, cabin.y);
-    cabin.clearCollisionComponents();
     showState(ship, "cabin1Explode");
     await wait(2000);
+    cabin.clearCollisionComponents();
     showState(ship, "cabin1Smoke");
   });
-  await allowDamage(cabin, { health: 500, bulletResistance: 1.0 });
+  await allowDamage(cabin, { health: 500, bulletResistance: 0.99 });
   await killed;
   cabin.removeComponent("SolidCollision");
   exec(extraLife(cabin.x + cabin.w / 2, cabin.y - cabin.h));
@@ -491,12 +491,12 @@ const part7 = ship => async ({
   cabin.addCollisionComponent("SolidCollision");
   const killed = waitForEvent(cabin, "Dead", async () => {
     awardPoints(2000, cabin.x + cabin.w / 2, cabin.y);
-    cabin.clearCollisionComponents();
     showState(ship, "cabin2Explode");
     await wait(2000);
+    cabin.clearCollisionComponents();
     showState(ship, "cabin2Smoke");
   });
-  await allowDamage(cabin, { health: 500, bulletResistance: 1.0 });
+  await allowDamage(cabin, { health: 500, bulletResistance: 0.99 });
   await killed;
   cabin.removeComponent("SolidCollision");
 };

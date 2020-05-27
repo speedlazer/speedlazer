@@ -9,7 +9,7 @@ import { EntityDefinition } from "src/components/EntityDefinition";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import { easingFunctions } from "src/constants/easing";
 import { playAudio } from "src/lib/audio";
-import { flipRotation, rotX } from "src/lib/rotation";
+import { flipRotation, rotX, normVector } from "src/lib/rotation";
 
 /**
  * Fire rhythm:
@@ -118,6 +118,9 @@ Crafty.c(Bullet, {
   events: {
     Freeze() {
       this.cooldowns = {};
+      if (this._parent) {
+        this._parent.detach(this);
+      }
     }
   },
 
@@ -130,26 +133,13 @@ Crafty.c(Bullet, {
     const firstObj = hitData[0].obj;
     const position = calcHitPosition(this, hitData[0]);
 
-    if (this.bulletSettings.attached) {
-      const rads = Crafty.math.degToRad(this.angle);
-      const nCos = Math.cos(rads);
-      const nSin = Math.sin(rads);
-
-      const results = Crafty.raycast(
-        this,
-        { x: nCos, y: nSin },
-        -1,
-        collisionType
-      );
-      if (results[0]) {
-        this.beamBlocked = true;
-        this.sw = results[0].distance + 3; // Keep coliding
-      }
-    }
-
     this.cooldowns[collisionType] = hitData.cooldown || 30;
 
-    if (firstObj.processDamage && this.bulletSettings.damage) {
+    if (
+      firstObj.processDamage &&
+      this.bulletSettings.damage &&
+      Crafty.rectManager.overlap(firstObj, Crafty.viewport.rect())
+    ) {
       firstObj.processDamage(this.bulletSettings.damage);
     }
     if (collisionConfig.state) {
@@ -168,30 +158,9 @@ Crafty.c(Bullet, {
     });
 
     if (collisionConfig.remove !== false) {
-      this.unbind("EnterFrame", this._updateBullet);
+      this.unbind("UpdateFrame", this._updateBullet);
       this.bulletTime = 0;
       this.freeze();
-    }
-  },
-
-  _bulletHitOff(collisionType) {
-    if (this.bulletSettings.attached) {
-      const rads = Crafty.math.degToRad(this.angle);
-      const nCos = Math.cos(rads);
-      const nSin = Math.sin(rads);
-      const results = Crafty.raycast(
-        this,
-        { x: nCos, y: nSin },
-        -1,
-        collisionType
-      );
-      if (results[0]) {
-        this.beamBlocked = true;
-        this.sw = results[0].distance + 3; // Keep coliding
-      } else {
-        this.beamBlocked = false;
-        this.sw = this.beamLength;
-      }
     }
   },
 
@@ -230,7 +199,7 @@ Crafty.c(Bullet, {
       0
     );
 
-    this.uniqueBind("EnterFrame", this._updateBullet);
+    this.uniqueBind("UpdateFrame", this._updateBullet);
   },
 
   _updateBullet({ dt }) {
@@ -241,9 +210,23 @@ Crafty.c(Bullet, {
         if (v !== undefined && v > 0) {
           this.cooldowns[c] = v - dt;
         }
+
+        if (this.bulletSettings.attached) {
+          const ent = this._parent.mainEntity;
+          const marge = ent.vx * -0.001 * dt;
+          const nVec = normVector(this.angle);
+
+          const results = Crafty.raycast(this, nVec, -1, c);
+          if (results[0]) {
+            this.beamBlocked = true;
+            this.sw = results[0].distance + marge + 6; // Keep coliding
+          } else {
+            this.beamBlocked = false;
+            this.sw = 2000;
+          }
+        }
       });
     }
-
     const upcoming = this.bulletSettings.queue[0];
     if (upcoming) {
       upcoming.delay = (upcoming.delay || 0) - dt;
@@ -327,7 +310,7 @@ Crafty.c(Bullet, {
     }
 
     if (this.bulletTime > this.maxBulletTime) {
-      this.unbind("EnterFrame", this._updateBullet);
+      this.unbind("UpdateFrame", this._updateBullet);
       if (this._parent) {
         this._parent.detach(this);
       }
@@ -386,10 +369,8 @@ const getItemFromPool = itemDefinition => {
     }
 
     collisionChecks.forEach(collisionType => {
-      spawn.onHit(
-        collisionType,
-        hitDatas => spawn._bulletHitOn(collisionType, hitDatas),
-        () => spawn._bulletHitOff(collisionType)
+      spawn.onHit(collisionType, hitDatas =>
+        spawn._bulletHitOn(collisionType, hitDatas)
       );
     });
   }

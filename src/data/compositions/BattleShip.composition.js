@@ -25,7 +25,7 @@ export default {
       ["aircraftCarrierBottomSpace", { x: 832, y: 64 }],
       ["aircraftCarrierBottomFlat", { x: 960, y: 64 }],
       ["aircraftCarrierBottomFlat", { x: 1088, y: 64 }],
-      ["aircraftCarrierWires", { x: 1092, y: 20, z: 1 }],
+      ["aircraftCarrierWires", { x: 1052, y: 20, z: 1 }],
 
       ["aircraftCarrierHole", { x: 220, y: 120, z: 1 }],
       ["aircraftCarrierHole", { x: 310, y: 120, z: 1 }],
@@ -44,11 +44,11 @@ export default {
       ],
       ["deckGun1", { x: 356, y: 90, z: 20, attachAlign: ["bottom", "center"] }],
       ["deckGun2", { x: 866, y: 90, z: 20, attachAlign: ["bottom", "center"] }],
-      ["deckGun3", { x: 1200, y: 50, z: 3, attachAlign: ["bottom", "center"] }],
-      ["package", { x: 1170, y: 68, z: 2, attachAlign: ["bottom", "center"] }],
+      ["deckGun3", { x: 1120, y: 70, z: 4, attachAlign: ["bottom", "center"] }],
+      ["package", { x: 1100, y: 86, z: 3, attachAlign: ["bottom", "center"] }],
       [
         "boxLocation1",
-        { x: 1120, y: 73, z: 6, attachAlign: ["bottom", "center"] }
+        { x: 1020, y: 73, z: 6, attachAlign: ["bottom", "center"] }
       ],
       [
         "boxLocation2",
@@ -61,8 +61,8 @@ export default {
       ["cabin1", { x: 294, y: 24, z: 6, attachAlign: ["bottom", "left"] }],
       ["heliPlace1", { x: 540, y: 24, z: 2, attachAlign: ["bottom", "left"] }],
       ["heliPlace2", { x: 700, y: 24, z: 1, attachAlign: ["bottom", "left"] }],
-      ["cabin2", { x: 832, y: 24, z: 6, attachAlign: ["bottom", "left"] }],
-      ["engineCore", { x: 960, y: -62, z: 8, attachAlign: ["top", "left"] }],
+      ["cabin2", { x: 832, y: 24, z: 4, attachAlign: ["bottom", "left"] }],
+      ["engineCore", { x: 960, y: -62, z: 6, attachAlign: ["top", "left"] }],
       ["hatch1", { x: 420, y: 32, z: 2, attachAlign: ["top", "left"] }],
       ["hatch2", { x: 612, y: 32, z: 2, attachAlign: ["top", "left"] }],
       ["hatch3", { x: 804, y: 32, z: 2, attachAlign: ["top", "left"] }],
@@ -143,7 +143,7 @@ export default {
       ["aircraftCarrierClosed", { x: 128, y: 50, z: 1 }],
       [
         "aircraftCarrierDoor",
-        { x: 134, y: 56, w: 84, z: 4, key: "door", hideAbove: 56 }
+        { x: 134, y: 56, w: 84, z: 3, key: "door", hideAbove: 56 }
       ],
       ["aircraftCarrier5", { x: 76, y: 40, z: 1 }]
     ],

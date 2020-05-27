@@ -7,6 +7,7 @@ const part = async ({
   loadSpriteSheets,
   loadAudio,
   showHUD,
+  showState,
   wait,
   exec
 }) => {
@@ -19,6 +20,11 @@ const part = async ({
   showHUD();
   text.remove();
   exec(playerShip({ existing: true, hasLaser: true }));
+  const player = Crafty("PlayerShip").get(0);
+  await showState(player, "turned");
+  await wait(2 * 60e3);
+  await showState(player, "turned");
+
   await wait(5 * 60e3);
 };
 

@@ -8,9 +8,9 @@ export default {
       ["aircraftCarrierOpenHatch", { y: -4, x: 0 }],
       [
         "aircraftCarrierHatchLid",
-        { y: -2, x: 0, key: "lid", crop: [2, 0, 0, 0], z: 3 }
+        { y: -2, x: 0, key: "lid", crop: [2, 0, 0, 0], z: 1 }
       ],
-      ["aircraftCarrierWires", { x: 68, y: -20, z: -2 }],
+      ["aircraftCarrierWires", { x: 68, y: -20, z: -1 }],
       [
         "aircraftCarrierHatchLid",
         {

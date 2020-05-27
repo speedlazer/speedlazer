@@ -26,7 +26,6 @@ const part = async ({
   showHUD();
   text.remove();
   exec(playerShip({ existing: true }));
-
   await exec(droneWave(5, "drone.pattern2"));
 
   await exec(battleship);
