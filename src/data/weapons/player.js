@@ -80,6 +80,7 @@ export default {
       laser: {
         spawnPosition: [0, 0.5],
         attached: true,
+        beam: true,
         velocity: 2800,
         composition: "weapons.laser",
         queue: [

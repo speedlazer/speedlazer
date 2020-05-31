@@ -33,6 +33,7 @@ export default {
           h: 20,
           w: 5,
           z: -2,
+          stretch: [0, 0, 0, 0],
           crop: [0, 15, 0, 0],
           key: "beam1"
         }
@@ -88,6 +89,9 @@ export default {
       },
       rotate2: {
         attributes: { rotation: -50 }
+      },
+      flipped: {
+        flipX: true
       }
     }
   },

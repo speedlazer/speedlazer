@@ -197,6 +197,7 @@
                       "properties": {
                         "state": { "type": "string" },
                         "remove": { "type": "boolean" },
+                        "beam": { "type": "boolean" },
                         "cooldown": { "type": "integer" },
                         "spawns": {
                           "type": "array",

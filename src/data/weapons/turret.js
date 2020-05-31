@@ -99,6 +99,7 @@ export default {
     spawnables: {
       laser: {
         spawnPosition: [0, 0.5],
+        beam: true,
         attached: true,
         velocity: 2500,
         composition: "weapons.laser",

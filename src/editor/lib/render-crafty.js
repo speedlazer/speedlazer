@@ -257,8 +257,8 @@ Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
   const dummyPlayer = Crafty.e("2D, PlayerShip, Collision").attr({
     x: 0,
     y: 0,
-    w: 1,
-    h: 1
+    w: 8,
+    h: 8
   });
   Crafty.s("Mouse").bind("MouseMove", function(e) {
     const rect = Crafty.stage.elem.getBoundingClientRect();

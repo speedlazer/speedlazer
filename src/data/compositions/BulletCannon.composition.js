@@ -24,7 +24,7 @@ export default {
         {
           x: 0,
           y: 18,
-          z: 1,
+          z: 2,
           attachAlign: ["center", "left"],
           attachTo: "barrel"
         }

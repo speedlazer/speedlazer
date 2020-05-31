@@ -128,19 +128,15 @@ Crafty.c(Bullet, {
     this.cooldowns = {};
   },
 
-  _bulletHitOn(collisionType, hitData) {
+  _targetHit(obj, position, collisionType) {
     const collisionConfig = this.bulletSettings.collisions[collisionType];
-    const firstObj = hitData[0].obj;
-    const position = calcHitPosition(this, hitData[0]);
-
-    this.cooldowns[collisionType] = hitData.cooldown || 30;
-
+    this.cooldowns[collisionType] = 30;
     if (
-      firstObj.processDamage &&
+      obj.processDamage &&
       this.bulletSettings.damage &&
-      Crafty.rectManager.overlap(firstObj, Crafty.viewport.rect())
+      Crafty.rectManager.overlap(obj, Crafty.viewport.rect())
     ) {
-      firstObj.processDamage(this.bulletSettings.damage);
+      obj.processDamage(this.bulletSettings.damage);
     }
     if (collisionConfig.state) {
       this.showState(collisionConfig.state);
@@ -151,7 +147,7 @@ Crafty.c(Bullet, {
         this.weaponDefinition,
         name,
         settings,
-        firstObj,
+        obj,
         position,
         this.target
       );
@@ -162,6 +158,13 @@ Crafty.c(Bullet, {
       this.bulletTime = 0;
       this.freeze();
     }
+  },
+
+  _bulletHitOn(collisionType, hitData) {
+    const firstObj = hitData[0].obj;
+    const position = calcHitPosition(this, hitData[0]);
+
+    this._targetHit(firstObj, position, collisionType);
   },
 
   bullet(weaponDefinition, settings, target) {
@@ -210,22 +213,37 @@ Crafty.c(Bullet, {
         if (v !== undefined && v > 0) {
           this.cooldowns[c] = v - dt;
         }
-
-        if (this.bulletSettings.attached) {
-          const ent = this._parent.mainEntity;
-          const marge = ent.vx * -0.001 * dt;
-          const nVec = normVector(this.angle);
-
-          const results = Crafty.raycast(this, nVec, -1, c);
-          if (results[0]) {
-            this.beamBlocked = true;
-            this.sw = results[0].distance + marge + 6; // Keep coliding
-          } else {
-            this.beamBlocked = false;
-            this.sw = 2000;
-          }
-        }
       });
+
+      if (this.bulletSettings.beam) {
+        let beamDistance = Infinity;
+        let beamCollide = null;
+        let collisionType = null;
+        //const ent = this._parent.mainEntity;
+        //const marge = ent.vx * -0.001 * dt;
+        const nVec = normVector(this.angle);
+
+        Object.keys(this.bulletSettings.collisions).forEach(c => {
+          const results = Crafty.raycast(this, nVec, -1, c);
+          if (results[0] && results[0].distance < beamDistance) {
+            beamDistance = results[0].distance;
+            beamCollide = results[0];
+            collisionType = c;
+          }
+        });
+        if (beamCollide) {
+          this.beamBlocked = true;
+          this.sw = beamCollide.distance + 6;
+          this._targetHit(
+            beamCollide.obj,
+            { x: beamCollide.x, y: beamCollide.y },
+            collisionType
+          );
+        } else {
+          this.beamBlocked = false;
+          this.sw = this.beamLength;
+        }
+      }
     }
     const upcoming = this.bulletSettings.queue[0];
     if (upcoming) {
@@ -362,17 +380,20 @@ const getItemFromPool = itemDefinition => {
   if (itemDefinition.entity) {
     spawn.addComponent(EntityDefinition).applyDefinition(itemDefinition.entity);
   }
-  const collisionChecks = Object.keys(itemDefinition.collisions || {});
-  if (collisionChecks.length > 0) {
-    if (!spawn.has("Collision")) {
-      spawn.addComponent("Collision");
-    }
+  const projectile = itemDefinition.beam ? false : true;
+  if (projectile) {
+    const collisionChecks = Object.keys(itemDefinition.collisions || {});
+    if (collisionChecks.length > 0) {
+      if (!spawn.has("Collision")) {
+        spawn.addComponent("Collision");
+      }
 
-    collisionChecks.forEach(collisionType => {
-      spawn.onHit(collisionType, hitDatas =>
-        spawn._bulletHitOn(collisionType, hitDatas)
-      );
-    });
+      collisionChecks.forEach(collisionType => {
+        spawn.onHit(collisionType, hitDatas =>
+          spawn._bulletHitOn(collisionType, hitDatas)
+        );
+      });
+    }
   }
 
   pool = pool.concat(spawn);

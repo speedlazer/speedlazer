@@ -55,6 +55,7 @@ Crafty.c(Component, {
 
     this._mirrorCollision();
     this._mirrorRotationPoints();
+    this._mirrorStretchPoints();
 
     this.rotation = -rot;
     return this;
@@ -81,6 +82,7 @@ Crafty.c(Component, {
     }
     this._mirrorCollision();
     this._mirrorRotationPoints();
+    this._mirrorStretchPoints();
     this.rotation = -rot;
     return this;
   },
@@ -97,6 +99,26 @@ Crafty.c(Component, {
         this.map.points[i] = this.x + (this.w - dx);
       }
     }
+  },
+
+  _mirrorStretchPoints() {
+    const updateChildren = entity => {
+      Array.from(entity._children).forEach(child => {
+        if (
+          child.stretch !== undefined &&
+          child.stretch[1] === child.stretch[3]
+        ) {
+          child.stretch[1] = 1 - child.stretch[1];
+          child.stretch[3] = 1 - child.stretch[3];
+          if (child._children) updateChildren(child);
+        }
+      });
+    };
+    if (this.stretch !== undefined && this.stretch[1] === this.stretch[3]) {
+      this.stretch[1] = 1 - this.stretch[1];
+      this.stretch[3] = 1 - this.stretch[3];
+    }
+    updateChildren(this);
   },
 
   _mirrorRotationPoints() {
