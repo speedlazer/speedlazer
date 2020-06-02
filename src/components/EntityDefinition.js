@@ -79,6 +79,7 @@ const setEntityStructure = (root, entity, state, duration) => {
         );
         if (!entity.emitter) {
           const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
+          entity.attr({ w: emitter.emitter.w, h: emitter.emitter.h });
           entity.emitter = e;
           entity.emitting = particleEmitter[0];
         } else {
@@ -104,6 +105,8 @@ const setEntityStructure = (root, entity, state, duration) => {
         entity.trigger("Change", { angle: entity.angle });
       }
     }
+    if (state.particles.active === true) entity.emitter.startEmission();
+    if (state.particles.active === false) entity.emitter.stopEmission();
   }
 
   if (state.components) {

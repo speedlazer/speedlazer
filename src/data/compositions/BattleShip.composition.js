@@ -47,6 +47,10 @@ export default {
       ["deckGun3", { x: 1120, y: 70, z: 4, attachAlign: ["bottom", "center"] }],
       ["package", { x: 1100, y: 86, z: 3, attachAlign: ["bottom", "center"] }],
       [
+        "laserField",
+        { x: 1120, y: 86, z: 8, attachAlign: ["bottom", "center"] }
+      ],
+      [
         "boxLocation1",
         { x: 1020, y: 73, z: 6, attachAlign: ["bottom", "center"] }
       ],

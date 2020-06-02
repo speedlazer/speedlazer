@@ -152,7 +152,10 @@ export default {
         }
       },
       packageOpen: {
-        attachments: { package: { frame: "down" } }
+        attachments: {
+          package: { frame: "down" },
+          laserField: { entity: "LaserCannonForceField" }
+        }
       },
       cabin1Explode: {
         attachments: {
