@@ -82,7 +82,7 @@ export default {
       laserCharge: {
         attachments: {
           laserCharge: {
-            particles: "player.laserCharge"
+            particles: { emitter: "player.laserCharge" }
           }
         }
       },
@@ -94,13 +94,15 @@ export default {
       starting: {
         attachments: {
           trail: {
-            particles: [
-              "player.trail",
-              {
-                particle: { velocity: 50, startSize: 10 },
-                emitter: { amount: 100 }
-              }
-            ]
+            particles: {
+              emitter: [
+                "player.trail",
+                {
+                  particle: { velocity: 50, startSize: 10 },
+                  emitter: { amount: 100 }
+                }
+              ]
+            }
           },
           reverseTrail: null,
           reverseTrail2: null
@@ -109,7 +111,7 @@ export default {
       flying: {
         attachments: {
           trail: {
-            particles: "player.trail"
+            particles: { emitter: "player.trail" }
           },
           reverseTrail: null,
           reverseTrail2: null
@@ -119,10 +121,10 @@ export default {
         attachments: {
           trail: null,
           reverseTrail: {
-            particles: "player.reverse"
+            particles: { emitter: "player.reverse" }
           },
           reverseTrail2: {
-            particles: "player.reverse"
+            particles: { emitter: "player.reverse" }
           }
         }
       },

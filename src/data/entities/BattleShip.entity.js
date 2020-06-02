@@ -9,7 +9,9 @@ export default {
       ],
       attachments: {
         bottom: {
-          particles: ["waterSplashes", { emitter: { warmed: true } }]
+          particles: {
+            emitter: ["waterSplashes", { emitter: { warmed: true } }]
+          }
         },
         cabin1: {
           composition: "battleship.firstCabin",
@@ -141,7 +143,9 @@ export default {
             animation: "heavyShake",
             attachments: {
               smoke: {
-                particles: ["smoke", { emitter: { w: 60, amount: 50 } }]
+                particles: {
+                  emitter: ["smoke", { emitter: { w: 60, amount: 50 } }]
+                }
               }
             }
           }
@@ -160,13 +164,17 @@ export default {
               active: true
             }
           },
-          cabin1burn: { particles: ["smoke", { emitter: { w: 160 } }] }
+          cabin1burn: {
+            particles: { emitter: ["smoke", { emitter: { w: 160 } }] }
+          }
         }
       },
       cabin1Smoke: {
         attachments: {
           cabin1: { composition: "battleship.firstCabinDestroyed" },
-          cabin1burn: { particles: ["smoke", { emitter: { w: 160 } }] }
+          cabin1burn: {
+            particles: { emitter: ["smoke", { emitter: { w: 160 } }] }
+          }
         }
       },
       cabin2Explode: {
@@ -179,13 +187,17 @@ export default {
               active: true
             }
           },
-          cabin2burn: { particles: ["smoke", { emitter: { w: 220 } }] }
+          cabin2burn: {
+            particles: { emitter: ["smoke", { emitter: { w: 220 } }] }
+          }
         }
       },
       cabin2Smoke: {
         attachments: {
           cabin2: { composition: "battleship.secondCabinDestroyed" },
-          cabin2burn: { particles: ["smoke", { emitter: { w: 220 } }] },
+          cabin2burn: {
+            particles: { emitter: ["smoke", { emitter: { w: 220 } }] }
+          },
           engineCore: null
         }
       }

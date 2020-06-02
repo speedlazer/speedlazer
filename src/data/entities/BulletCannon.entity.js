@@ -22,10 +22,12 @@ export default {
         removeComponents: ["SolidCollision", "PlayerEnemy"],
         attachments: {
           smoke: {
-            particles: [
-              "smoke",
-              { emitter: { w: 10, h: 2, amount: 100, duration: 3000 } }
-            ]
+            particles: {
+              emitter: [
+                "smoke",
+                { emitter: { w: 10, h: 2, amount: 100, duration: 3000 } }
+              ]
+            }
           },
           gun: null,
           explosion: {
@@ -37,10 +39,12 @@ export default {
       shells: {
         attachments: {
           explosion: {
-            particles: [
-              "shells",
-              { emitter: { w: 10, h: 10, amount: 170, duration: 200 } }
-            ]
+            particles: {
+              emitter: [
+                "shells",
+                { emitter: { w: 10, h: 10, amount: 170, duration: 200 } }
+              ]
+            }
           }
         }
       },

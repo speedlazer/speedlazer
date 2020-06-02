@@ -11,7 +11,7 @@ export default {
       ],
       attachments: {
         trail: {
-          particles: "drone.trail"
+          particles: { emitter: "drone.trail" }
         }
       }
     },
@@ -36,7 +36,7 @@ export default {
             animation: "default"
           },
           smoke: {
-            particles: "drone.smoke"
+            particles: { emitter: "drone.smoke" }
           }
         }
       }

@@ -5,10 +5,12 @@ export default {
       components: ["ShipSolid", ["HideBelow", { hideBelow: 540, z: -12 }]],
       attachments: {
         bottom: {
-          particles: [
-            "waterSplashes",
-            { emitter: { w: 550, amount: 300, warmed: true } }
-          ]
+          particles: {
+            emitter: [
+              "waterSplashes",
+              { emitter: { w: 550, amount: 300, warmed: true } }
+            ]
+          }
         },
         hatch1: {
           composition: "shipHatch"

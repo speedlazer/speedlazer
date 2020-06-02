@@ -6,7 +6,7 @@ export default {
       frame: "small",
       attachments: {
         trail: {
-          particles: "missile.trail"
+          particles: { emitter: "missile.trail" }
         },
         tip: null
       }
@@ -36,7 +36,9 @@ export default {
         attachments: {
           trail: null,
           tip: {
-            particles: ["fountain", { emitter: { w: 60, duration: 1000 } }]
+            particles: {
+              emitter: ["fountain", { emitter: { w: 60, duration: 1000 } }]
+            }
           }
         }
       }

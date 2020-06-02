@@ -14,10 +14,12 @@ export default {
         removeComponents: ["SolidCollision", "PlayerEnemy"],
         attachments: {
           smoke: {
-            particles: [
-              "smoke",
-              { emitter: { w: 10, h: 2, amount: 100, duration: 3000 } }
-            ]
+            particles: {
+              emitter: [
+                "smoke",
+                { emitter: { w: 10, h: 2, amount: 100, duration: 3000 } }
+              ]
+            }
           },
           gun: null,
           explosion: {

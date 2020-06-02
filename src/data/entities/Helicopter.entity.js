@@ -29,10 +29,12 @@ export default {
         frame: "damaged",
         attachments: {
           smoke: {
-            particles: [
-              "smoke",
-              { emitter: { w: 50, h: 10, amount: 100, duration: 2000 } }
-            ]
+            particles: {
+              emitter: [
+                "smoke",
+                { emitter: { w: 50, h: 10, amount: 100, duration: 2000 } }
+              ]
+            }
           }
         }
       },
@@ -56,7 +58,9 @@ export default {
             animation: "default"
           },
           smoke: {
-            particles: ["smoke", { emitter: { w: 50, h: 10, amount: 100 } }]
+            particles: {
+              emitter: ["smoke", { emitter: { w: 50, h: 10, amount: 100 } }]
+            }
           },
           gun: null
         }

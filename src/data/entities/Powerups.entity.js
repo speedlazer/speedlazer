@@ -10,7 +10,7 @@ export default {
         frame: "pickedUp",
         animation: null,
         audio: "powerup",
-        attachments: { explosion: { particles: "powerup.pickup" } }
+        attachments: { explosion: { particles: { emitter: "powerup.pickup" } } }
       },
       disappear: {
         animation: null,
@@ -31,15 +31,17 @@ export default {
         audio: "powerup",
         attachments: {
           explosion: {
-            particles: [
-              "powerup.pickup",
-              {
-                particle: {
-                  startColor: [0.1, 0.7, 0.1, 0.6],
-                  endColor: [0.3, 0.7, 0.3, 0]
+            particles: {
+              emitter: [
+                "powerup.pickup",
+                {
+                  particle: {
+                    startColor: [0.1, 0.7, 0.1, 0.6],
+                    endColor: [0.3, 0.7, 0.3, 0]
+                  }
                 }
-              }
-            ]
+              ]
+            }
           }
         }
       },

@@ -10,7 +10,9 @@ export default {
       ],
       attachments: {
         trail: {
-          particles: ["drone.trail", { particle: { startSize: 15 } }]
+          particles: {
+            emitter: ["drone.trail", { particle: { startSize: 15 } }]
+          }
         }
       }
     },
@@ -19,7 +21,9 @@ export default {
         animation: "eye",
         attachments: {
           trail: {
-            particles: ["drone.trail", { particle: { startSize: 20 } }]
+            particles: {
+              emitter: ["drone.trail", { particle: { startSize: 20 } }]
+            }
           }
         }
       },
@@ -50,7 +54,7 @@ export default {
             animation: "default"
           },
           smoke: {
-            particles: "drone.smoke"
+            particles: { emitter: "drone.smoke" }
           }
         }
       }
@@ -71,7 +75,9 @@ export default {
       components: [],
       attachments: {
         trail: {
-          particles: ["drone.trail", { particle: { startSize: 15 } }]
+          particles: {
+            emitter: ["drone.trail", { particle: { startSize: 15 } }]
+          }
         },
         gun: {
           weapon: {

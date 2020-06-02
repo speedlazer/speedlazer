@@ -38,7 +38,7 @@ export default {
             }
           },
           smoke: {
-            particles: "drone.smoke"
+            particles: { emitter: "drone.smoke" }
           }
         }
       },
@@ -56,7 +56,7 @@ export default {
             }
           },
           smoke: {
-            particles: "drone.smoke"
+            particles: { emitter: "drone.smoke" }
           }
         }
       }

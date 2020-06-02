@@ -9,10 +9,12 @@ export default {
       ],
       attachments: {
         bottom: {
-          particles: [
-            "waterSplashes",
-            { emitter: { w: 850, amount: 300, warmed: true } }
-          ]
+          particles: {
+            emitter: [
+              "waterSplashes",
+              { emitter: { w: 850, amount: 300, warmed: true } }
+            ]
+          }
         },
         hatch1: {
           composition: "shipHatch"
@@ -125,7 +127,7 @@ export default {
         animation: "flyingBackground",
         attachments: {
           sparks: {
-            particles: "electric"
+            particles: { emitter: "electric" }
           }
         }
       }

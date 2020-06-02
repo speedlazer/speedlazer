@@ -69,37 +69,40 @@ const setEntityStructure = (root, entity, state, duration) => {
     tasks.push(entity.showState(state.state, duration));
   }
   if (state.particles) {
-    if (Array.isArray(state.particles)) {
-      const emitter = merge(
-        {},
-        particles(state.particles[0]),
-        state.particles[1]
-      );
-      if (!entity.emitter) {
-        const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
-        entity.emitter = e;
-        entity.emitting = state.particles;
+    if (state.particles.emitter) {
+      const particleEmitter = state.particles.emitter;
+      if (Array.isArray(particleEmitter)) {
+        const emitter = merge(
+          {},
+          particles(particleEmitter[0]),
+          particleEmitter[1]
+        );
+        if (!entity.emitter) {
+          const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
+          entity.emitter = e;
+          entity.emitting = particleEmitter[0];
+        } else {
+          entity.emitter.particles(emitter, entity);
+        }
       } else {
-        entity.emitter.particles(emitter, entity);
+        const emitter = particles(particleEmitter);
+        if (!entity.emitter) {
+          const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
+          entity.attr({ w: emitter.emitter.w, h: emitter.emitter.h });
+          entity.emitter = e;
+          entity.emitting = particleEmitter;
+        } else {
+          entity.emitter.particles(emitter, entity);
+        }
       }
-    } else {
-      const emitter = particles(state.particles);
-      if (!entity.emitter) {
-        const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
-        entity.attr({ w: emitter.emitter.w, h: emitter.emitter.h });
-        entity.emitter = e;
-        entity.emitting = state.particles;
-      } else {
-        entity.emitter.particles(emitter, entity);
+      if (!!root.xFlipped !== !!entity.emitter.xFlipped) {
+        const angle = entity.angle || 0;
+        const delta = angle - entity.emitter.particleSettings.currentAngle;
+        entity.emitter.xFlipped = !entity.emitter.xFlipped;
+        entity.angle =
+          flipRotation(entity.emitter.particleSettings.currentAngle) + delta;
+        entity.trigger("Change", { angle: entity.angle });
       }
-    }
-    if (!!root.xFlipped !== !!entity.emitter.xFlipped) {
-      const angle = entity.angle || 0;
-      const delta = angle - entity.emitter.particleSettings.currentAngle;
-      entity.emitter.xFlipped = !entity.emitter.xFlipped;
-      entity.angle =
-        flipRotation(entity.emitter.particleSettings.currentAngle) + delta;
-      entity.trigger("Change", { angle: entity.angle });
     }
   }
 

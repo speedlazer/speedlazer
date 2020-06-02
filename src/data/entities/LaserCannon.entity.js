@@ -27,7 +27,7 @@ export default {
       charge: {
         attachments: {
           charge: {
-            particles: "laserCharge"
+            particles: { emitter: "laserCharge" }
           }
         }
       },
@@ -42,10 +42,12 @@ export default {
         attachments: {
           charge: null,
           discharge: {
-            particles: [
-              "smoke",
-              { emitter: { w: 10, h: 2, amount: 200, duration: 300 } }
-            ]
+            particles: {
+              emitter: [
+                "smoke",
+                { emitter: { w: 10, h: 2, amount: 200, duration: 300 } }
+              ]
+            }
           }
         }
       },
@@ -55,10 +57,12 @@ export default {
         removeComponents: ["SolidCollision", "PlayerEnemy"],
         attachments: {
           smoke: {
-            particles: [
-              "smoke",
-              { emitter: { w: 10, h: 2, amount: 100, duration: 3000 } }
-            ]
+            particles: {
+              emitter: [
+                "smoke",
+                { emitter: { w: 10, h: 2, amount: 100, duration: 3000 } }
+              ]
+            }
           },
           charge: null,
           gun: null,
@@ -89,5 +93,13 @@ export default {
         scrollSpeed: { vx: 0, vy: 0 }
       }
     ]
+  },
+  LaserCannonForceField: {
+    structure: {
+      particles: { emitter: "forceField" }
+    },
+    states: {
+      stopped: {}
+    }
   }
 };
