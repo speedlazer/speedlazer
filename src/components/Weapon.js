@@ -442,7 +442,7 @@ const spawnItem = (
     const rotation = flipAngle(spawner.xFlipped, rotValue);
 
     spawn.attr({
-      xFlipped: spawner.xFlipped,
+      itemName,
       difficulty: spawner.difficulty,
       x: position.x - spawn.w / 2,
       y: position.y - spawn.h / 2,
@@ -484,7 +484,6 @@ const spawnItem = (
         });
       });
     }
-
     spawn.bullet(definition, settings, target);
   });
 };
