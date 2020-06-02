@@ -127,6 +127,7 @@
                 },
                 "composition": { "type": "string" },
                 "entity": { "type": "string" },
+                "beam": { "type": "boolean" },
                 "attached": { "type": "boolean" },
                 "spawnPosition": {
                   "oneOf": [
@@ -197,7 +198,6 @@
                       "properties": {
                         "state": { "type": "string" },
                         "remove": { "type": "boolean" },
-                        "beam": { "type": "boolean" },
                         "cooldown": { "type": "integer" },
                         "spawns": {
                           "type": "array",
