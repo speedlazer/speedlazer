@@ -100,6 +100,10 @@ Crafty.c(AnalogKeyboardControls, {
 
     ship.controlName = mapItem => {
       const key = this.controlMap[mapItem];
+      switch (key) {
+        case 32:
+          return "spacebar";
+      }
       return `${String.fromCharCode(key)} key`;
     };
 
