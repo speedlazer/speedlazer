@@ -246,13 +246,7 @@ const helicopter1 = ship => async ({
   );
 };
 
-const part3 = ship => async ({
-  showState,
-  wait,
-  exec,
-  parallel,
-  showAnimation
-}) => {
+const part3 = ship => async ({ showState, wait, exec, parallel }) => {
   await wait(1000);
   await parallel([
     async () => {
@@ -345,7 +339,6 @@ const helicopter2 = ship => async ({
 const part5 = ship => async ({
   allowDamage,
   showState,
-  showAnimation,
   wait,
   parallel,
   setScrollingSpeed,
