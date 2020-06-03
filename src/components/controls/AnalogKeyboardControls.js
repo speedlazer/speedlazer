@@ -98,6 +98,11 @@ Crafty.c(AnalogKeyboardControls, {
         }
       });
 
+    ship.controlName = mapItem => {
+      const key = this.controlMap[mapItem];
+      return `${String.fromCharCode(key)} key`;
+    };
+
     ship.disableControls = false;
     ship.prevSets = {
       ax: ship.ax,

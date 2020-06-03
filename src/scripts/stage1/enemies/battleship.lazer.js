@@ -464,6 +464,12 @@ const laserWeapon = (x, y) => async ({
     await showState(powerup, "pickedUp");
     await wait(2000);
     powerup.destroy();
+    say(
+      null,
+      `You gained a new weapon! The LASER.\nUse the ${ship.controlName(
+        "heavy"
+      )} to shoot.`
+    );
   });
   await until(
     () => pickedUp,
