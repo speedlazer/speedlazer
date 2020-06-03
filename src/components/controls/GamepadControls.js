@@ -138,48 +138,52 @@ Crafty.c(GamepadControls, {
           "ps(r)"
         ].some(name => gamepad.id.toLowerCase().indexOf(name) !== -1);
         if (psController) {
-          switch (button) {
-            case 0:
-              return "✖ button";
-            case 1:
-              return "◯ button";
-            case 2:
-              return "□ button";
-            case 3:
-              return "△ button";
-            case 4:
-              return "Left shoulder button (L1)";
-            case 5:
-              return "Right shoulder button (R1)";
-            case 6:
-              return "Left trigger button (L2)";
-            case 7:
-              return "Right trigger button (R2)";
-            case 8:
-              return "Share button";
-            case 9:
-              return "Option button";
-            case 10:
-              return "Left stick (L3)";
-            case 11:
-              return "Right stick (R3)";
-            case 12:
-              return "D-pad up button";
-            case 13:
-              return "D-pad down button";
-            case 14:
-              return "D-pad left button";
-            case 15:
-              return "D-pad right button";
-            case 16:
-              return "Playstation button";
-            case 17:
-              return "touchpad";
-          }
+          const buttons = [
+            "✖ button",
+            "◯ button",
+            "□ button",
+            "△ button",
+            "Left shoulder button (L1)",
+            "Right shoulder button (R1)",
+            "Left trigger (L2)",
+            "Right trigger (R2)",
+            "Share button",
+            "Option button",
+            "Left stick (L3)",
+            "Right stick (R3)",
+            "D-pad up button",
+            "D-pad down button",
+            "D-pad left button",
+            "D-pad right button",
+            "Playstation button",
+            "touchpad"
+          ];
+          return buttons[button];
         }
-        //const xboxController = ["xbox", "x-box"].some(
-        //name => gamepad.id.toLowerCase().indexOf(name) !== -1
-        //);
+        const xboxController = ["xbox", "x-box"].some(
+          name => gamepad.id.toLowerCase().indexOf(name) !== -1
+        );
+        if (xboxController) {
+          const buttons = [
+            "a button",
+            "b button",
+            "x button",
+            "y button",
+            "Left bumper (LB)",
+            "Right bumper (RB)",
+            "Left trigger (LT)",
+            "Right trigger (RT)",
+            "Select button",
+            "Start button",
+            "Left stick (L)",
+            "Right stick (R)",
+            "D-pad up button",
+            "D-pad down button",
+            "D-pad left button",
+            "D-pad right button"
+          ];
+          return buttons[button];
+        }
       }
       let num = "1st";
       switch (button) {
