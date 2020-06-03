@@ -251,17 +251,14 @@ const part3 = ship => async ({
   wait,
   exec,
   parallel,
-  showAnimation,
-  displayFrame
+  showAnimation
 }) => {
   await wait(1000);
   await parallel([
     async () => {
       await wait(1000);
       await exec(activateGun(ship.deckGun2));
-      await showState(ship, "engineDoorOpen");
       await wait(1000);
-      await displayFrame(ship.engineCore, "perc25", 1000);
       await showState(ship, "t3o", 2000);
       await showState(ship, "t3r", 2000);
       await exec(activateGun(ship.hatch3.payload));
@@ -270,7 +267,6 @@ const part3 = ship => async ({
   ]);
   // Mines from below
   await exec(mineAttack(ship));
-  await displayFrame(ship.engineCore, "perc50", 1000);
   await parallel([
     async () => {
       await showState(ship, "t2o", 1000);
@@ -284,7 +280,6 @@ const part3 = ship => async ({
     }
   ]);
   await exec(mineAttack(ship));
-  showAnimation(ship.engineCore, "shake");
 };
 
 const helicopter2 = ship => async ({
@@ -328,15 +323,14 @@ const helicopter2 = ship => async ({
   });
   const shipMovement = waitForEvent(helicopter, "moveShip", async () => {
     const p = moveTo(ship, { x: -1.0 }, 120, EASE_IN_OUT);
-    await movement.process;
-    await wait(2000);
-    movement = moveWithPattern(helicopter, "heli.battleship2b", 150, LINEAR);
-
     await p.process;
   });
 
   await movement.process;
+  movement = moveWithPattern(helicopter, "heli.battleship2b", 150, LINEAR);
+
   await shipMovement;
+  await movement.process;
 
   await until(
     () => killed,
@@ -351,7 +345,7 @@ const helicopter2 = ship => async ({
 const part5 = ship => async ({
   allowDamage,
   showState,
-  displayFrame,
+  showAnimation,
   wait,
   parallel,
   setScrollingSpeed,
@@ -361,7 +355,6 @@ const part5 = ship => async ({
   waitForEvent
 }) => {
   await wait(2000);
-  await displayFrame(ship.engineCore, "perc75", 1000);
   await showState(ship, "packageOpen", 1000, EASE_IN_OUT);
   await wait(1000);
   const laser = ship.deckGun3;
@@ -381,6 +374,7 @@ const part5 = ship => async ({
       engineCore.removeComponent("SolidCollision");
       showState(ship.laserField, "stopped");
       ship.laserField.removeComponent("SolidCollision");
+      showState(ship, "engineDestroyed");
     });
     await allowDamage(ship.engineCore, { health: 1000 });
   });
@@ -403,6 +397,7 @@ const part5 = ship => async ({
       const playerShip = Crafty("PlayerShip").get(0);
       await showState(playerShip, "turned");
       await wait(1000);
+      await showState(ship, "engineDoorOpen");
       await setScrollingSpeed(-50, 0);
       const activeMovement = moveTo(ship, { x: -0.9 }, 85, EASE_IN_OUT);
       await activeMovement.process;

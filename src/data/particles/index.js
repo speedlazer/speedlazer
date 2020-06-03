@@ -405,14 +405,14 @@ export default {
     particle: {
       sprite: "explosion7",
       angle: 0,
-      angleRandom: 360,
-      duration: 600,
-      velocity: 30,
-      startSize: 5,
-      endSize: 2,
+      angleRandom: 180,
+      duration: 800,
+      velocity: 2,
+      startSize: 2,
+      endSize: 4,
       startColor: [0.7, 0.7, 1.0, 0.8],
       startColorRandom: [0, 0, 0, 0],
-      endColor: [0.2, 0.2, 0.9, 0],
+      endColor: [0.2, 0.2, 0.4, 0],
       endColorRandom: [0, 0, 0, 0]
     }
   }

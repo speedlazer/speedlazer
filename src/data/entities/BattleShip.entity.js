@@ -155,6 +155,8 @@ export default {
         audio: "explosion",
         attachments: {
           engineCore: {
+            frame: "destroyed",
+            animation: null,
             attachments: {
               explosion: {
                 composition: "weapons.largeExplosion",

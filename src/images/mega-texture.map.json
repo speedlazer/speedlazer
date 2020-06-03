@@ -45,6 +45,7 @@
     "aircraftCarrier5": [14, 42, 1, 1],
     "aircraftCarrier7": [14, 41, 1, 1],
     "aircraftCarrierEngine": [15, 41, 3, 3],
+    "aircraftCarrierEngineDestroyed": [15, 38, 3, 3],
     "aircraftCarrierEngineMeter": [14, 43, 1, 1],
 
     "aircraftCarrierOpenHatch": [31, 38, 4, 1],

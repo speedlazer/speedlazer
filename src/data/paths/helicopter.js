@@ -65,8 +65,15 @@ export default {
       ]
     },
     { x: 0.38, y: 0.5 },
-    { x: 0.2, y: 0.4, events: [[0.1, { setState: ["turning", 1000] }]] },
-    { x: 0.3, y: 0.3, events: [[0.6, { event: "moveShip" }]] },
+    {
+      x: 0.2,
+      y: 0.4,
+      events: [
+        [0.1, { setState: ["turning", 1000] }],
+        [0.7, { event: "moveShip" }]
+      ]
+    },
+    { x: 0.3, y: 0.3 },
     { x: 0.6, y: 0.2 }
   ],
   "heli.battleship2b": [

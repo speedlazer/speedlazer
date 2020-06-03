@@ -97,7 +97,7 @@ export default {
   LaserCannonForceField: {
     structure: {
       particles: {
-        emitter: ["forceField", { emitter: { w: 140, h: 80, amount: 100 } }]
+        emitter: ["forceField", { emitter: { w: 140, h: 75, amount: 200 } }]
       },
       components: ["SolidCollision"]
     },

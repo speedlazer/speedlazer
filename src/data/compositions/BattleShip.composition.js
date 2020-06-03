@@ -196,7 +196,11 @@ export default {
       shake1: { cabin: { x: 2, y: -1 }, meter: { rotation: 90 } },
       shake2: { cabin: { x: -2, y: 1 }, meter: { rotation: 85 } },
       shake3: { cabin: { x: 1 } },
-      shake4: { cabin: { x: -1 } }
+      shake4: { cabin: { x: -1 } },
+      destroyed: {
+        meter: { alpha: 0 },
+        cabin: { sprite: "aircraftCarrierEngineDestroyed" }
+      }
     },
     animations: {
       shake: {
