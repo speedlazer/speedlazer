@@ -151,6 +151,19 @@ export default {
           }
         }
       },
+      engineDestroyed: {
+        audio: "explosion",
+        attachments: {
+          engineCore: {
+            attachments: {
+              explosion: {
+                composition: "weapons.largeExplosion",
+                animation: "default"
+              }
+            }
+          }
+        }
+      },
       packageOpen: {
         attachments: {
           package: { frame: "down" },

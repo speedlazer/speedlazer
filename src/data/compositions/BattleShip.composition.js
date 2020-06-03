@@ -183,7 +183,10 @@ export default {
         { x: 32, y: 26, ro: [16, 22], key: "meter", attachTo: "cabin" }
       ]
     ],
-    attachHooks: [["smoke", { x: 36, y: 52, z: -1 }]],
+    attachHooks: [
+      ["smoke", { x: 36, y: 52, z: -1 }],
+      ["explosion", { x: 36, y: 52, z: 2, attachAlign: ["center", "center"] }]
+    ],
     frames: {
       perc0: { meter: { rotation: -90 } },
       perc25: { meter: { rotation: -45 } },

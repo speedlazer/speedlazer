@@ -231,7 +231,7 @@ const helicopter1 = ship => async ({
     movement.abort();
     awardPoints(250, helicopter.x + 20, helicopter.y);
     await showState(helicopter, "dead");
-    helicopter.z = ship.package.z + 4;
+    helicopter.z = ship.package.z + 1;
 
     await call(helicopter.activateGravity);
   });
@@ -367,13 +367,34 @@ const part5 = ship => async ({
   const laser = ship.deckGun3;
   await showState(laser, "open", 500, EASE_IN_OUT);
 
+  const engineCore = ship.engineCore;
+  engineCore.addComponent("SolidCollision");
+  waitForEvent(engineCore, "Dead", async () => {
+    engineCore.clearCollisionComponents();
+    showState(ship, "engineTilt");
+
+    waitForEvent(engineCore, "Dead", async () => {
+      engineCore.clearCollisionComponents();
+      // Add explosions and screenshakes
+
+      awardPoints(500, engineCore.x + 20, engineCore.y);
+      engineCore.removeComponent("SolidCollision");
+      showState(ship.laserField, "stopped");
+      ship.laserField.removeComponent("SolidCollision");
+    });
+    await allowDamage(ship.engineCore, { health: 1000 });
+  });
+
+  await allowDamage(ship.engineCore, { health: 500 });
+  await allowDamage(laser, { health: 500 });
+
   laser.addCollisionComponent("SolidCollision");
   const killed = waitForEvent(laser, "Dead", async () => {
     laser.clearCollisionComponents();
     awardPoints(250, laser.x + 20, laser.y);
     showState(laser, "dead");
   });
-  await allowDamage(laser, { health: 1500 });
+  await allowDamage(laser, { health: 500 });
   showState(laser, "shooting");
 
   await parallel([
