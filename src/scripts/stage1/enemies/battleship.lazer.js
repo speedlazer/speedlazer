@@ -231,7 +231,7 @@ const helicopter1 = ship => async ({
     movement.abort();
     awardPoints(250, helicopter.x + 20, helicopter.y);
     await showState(helicopter, "dead");
-    helicopter.z = ship.z + 5;
+    helicopter.z = ship.z + 6;
 
     await call(helicopter.activateGravity);
   });
@@ -457,7 +457,7 @@ const laserWeapon = (x, y) => async ({
     powerup.destroy();
     say(
       null,
-      `You gained a new weapon! The LASER.\nUse the ${ship.controlName(
+      `You gained a new weapon! The LASER. Use the ${ship.controlName(
         "heavy"
       )} to shoot.`
     );
@@ -577,9 +577,9 @@ const battleship = async ({
   await parallel([() => activeMovement.process, () => exec(part1(ship))]);
   await wait(1000);
 
-  setBackgroundCheckpointLimit(3);
   activeMovement = moveTo(ship, { x: 0.5 }, null, EASE_IN_OUT);
   await parallel([() => activeMovement.process, () => exec(part2(ship))]);
+  setBackgroundCheckpointLimit(3);
   await wait(1000);
 
   activeMovement = moveTo(ship, { x: -0.17 }, null, EASE_IN_OUT);
@@ -610,40 +610,15 @@ const battleship = async ({
   await setScrollingSpeed(100, 0);
 
   // major explosions / sinking
-  await parallel([
+  parallel([
     () => showState(ship, "sinking", 17000, EASE_IN_OUT),
     async () => {
       activeMovement = moveTo(ship, { x: -1.7, y: 0.85 }, null, EASE_IN_OUT);
       await activeMovement.process;
-    },
-    async () => {
-      await wait(500);
-      await say(
-        "General",
-        "I'm at a safe location now. We need to end this threat.\nHow are you holding up?",
-        { portrait: "portraits.general" }
-      );
-      await say(
-        "John",
-        "I'm fine. That ship had some advanced weaponry on board.\n" +
-          "Did you know that?",
-        {
-          portrait: "portraits.pilot"
-        }
-      );
-      await say(
-        "General",
-        "We can not acces the computer systems anymore. But this would\n" +
-          "mean they also have control over our R&D division.\nThis is really bad.",
-        { portrait: "portraits.general" }
-      );
-      await say("John", "I will try to reach the R&D center to investigate.", {
-        portrait: "portraits.pilot"
-      });
+      ship.destroy();
     }
   ]);
-
-  ship.destroy();
+  await wait(4000);
 };
 
 export default battleship;

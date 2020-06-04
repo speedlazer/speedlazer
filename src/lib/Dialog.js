@@ -13,10 +13,10 @@ export const say = (speaker, text, { portrait = null } = {}) =>
     const x = 60;
     const w = Crafty.viewport.width * 0.8;
     const bottom = Crafty.viewport.height - 20;
-    const h = Math.max(4, lines.length + 1 + (speaker ? 1 : 0));
+    const h = Math.max(4, lines.length + 1 + (speaker ? 2 : 0));
 
     const back = Crafty.e("UILayerWebGL, 2D, Color, Tween, Dialog")
-      .attr({ w, h: h * 20, alpha: 0 })
+      .attr({ w, h: h * 15, alpha: 0 })
       .color("#000000")
       .attr({
         x: x - 10,
@@ -47,7 +47,7 @@ export const say = (speaker, text, { portrait = null } = {}) =>
 
     back.tween(
       {
-        y: bottom - h * 20,
+        y: bottom - h * 15,
         alpha: 0.8
       },
       200

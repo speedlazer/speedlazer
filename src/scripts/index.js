@@ -1,6 +1,7 @@
 import s1p1 from "./stage1/intro.lazer";
 import s1p2 from "./stage1/hacked.lazer";
 import s1p3 from "./stage1/battleship.lazer";
+import s1p3b from "./stage1/battleship-end.lazer";
 import s1p4 from "./stage1/bay.lazer";
 import s1p5 from "./stage1/bridge.lazer";
 import t1 from "./test/scenery.lazer";
@@ -13,6 +14,11 @@ const gameStructure = [
   {
     name: "stage1.battleship",
     script: s1p3,
+    tags: { campaign: true }
+  },
+  {
+    name: "stage1.battleshipEnd",
+    script: s1p3b,
     tags: { campaign: true }
   },
   {

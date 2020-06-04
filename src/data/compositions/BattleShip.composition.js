@@ -52,11 +52,11 @@ export default {
       ],
       [
         "boxLocation1",
-        { x: 1020, y: 73, z: 6, attachAlign: ["bottom", "center"] }
+        { x: 1020, y: 73, z: 8, attachAlign: ["bottom", "center"] }
       ],
       [
         "boxLocation2",
-        { x: 1230, y: 80, z: 6, attachAlign: ["bottom", "center"] }
+        { x: 1230, y: 80, z: 8, attachAlign: ["bottom", "center"] }
       ],
       [
         "boxLocation3",

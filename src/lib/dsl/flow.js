@@ -47,14 +47,12 @@ const flowFunctions = (dsl, state) => {
       entity.one(event, async () => {
         entity.unbind("Remove", removeHandler);
         entity.unbind("GameOver", removeHandler);
-        if (dsl.currentScript()) {
-          try {
-            await callback();
-          } catch (e) {
-            // script needs to abort
-            reject(e);
-            return;
-          }
+        try {
+          await callback();
+        } catch (e) {
+          // script needs to abort
+          reject(e);
+          return;
         }
         resolve();
       });

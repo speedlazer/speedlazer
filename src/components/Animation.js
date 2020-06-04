@@ -39,6 +39,7 @@ Crafty.c(Animation, {
   setActiveCheckpoint(checkpoint, { autoStart = true, duration = null } = {}) {
     this.unbind("EnterFrame", this.updateAnimation);
     const checkpointData = this.currentAnimation.checkpoints[checkpoint];
+    this.playingAnimation = false;
     if (!checkpointData) return;
     this.targetCheckpoint = checkpoint;
 
@@ -141,7 +142,6 @@ Crafty.c(Animation, {
       checkpointData.timeline &&
       checkpoint < this.maxAllowedCheckpoint
     ) {
-      this.playingAnimation = true;
       this.animationDuration =
         duration || checkpointData.timeline.defaultDuration;
       if (this.animationDuration) {
@@ -151,6 +151,7 @@ Crafty.c(Animation, {
           handled: false
         }));
 
+        this.playingAnimation = true;
         this.uniqueBind("EnterFrame", this.updateAnimation);
       }
     }
@@ -266,9 +267,9 @@ export default Animation;
 
 export const playAnimation = (
   animation,
-  { max = Infinity, start = 0 } = {}
+  { max = Infinity, start = 0, z = 0 } = {}
 ) => {
-  const player = Crafty.e(Animation);
+  const player = Crafty.e(Animation).attr({ z });
   player.setAnimation(animation, { maxCheckpoint: max, start });
   let checkpointReached = null;
   let checkpointSubscriptions = [];

@@ -179,6 +179,11 @@ export default {
           transitions: []
         }
       }
-    ]
+    ],
+    habitat: {
+      isBackground: true,
+      scenery: "City.Bay",
+      scrollSpeed: { vx: -100, vy: 0 }
+    }
   }
 };

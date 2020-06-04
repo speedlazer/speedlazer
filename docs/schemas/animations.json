@@ -159,6 +159,7 @@
               "required": ["vx", "vy"],
               "additionalProperties": false
             },
+            "isBackground": { "type": "boolean" },
             "background": {
               "type": "array",
               "minItems": 2,

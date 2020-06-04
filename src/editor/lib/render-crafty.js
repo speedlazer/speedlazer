@@ -498,9 +498,11 @@ export const showAnimation = async (
   Crafty.enterScene("AnimationPreview", {
     animation
   });
+  const isBackground = animation.habitat && animation.habitat.isBackground;
   currentAnimationState = playAnimation(animation, {
     max: animationLimit,
-    start: activeCheckpoint
+    start: activeCheckpoint,
+    z: isBackground ? -1000 : 0
   });
 
   onCheckpointChange &&
