@@ -415,5 +415,27 @@ export default {
       endColor: [0.2, 0.2, 0.4, 0],
       endColorRandom: [0, 0, 0, 0]
     }
+  },
+  forceFieldDisperse: {
+    emitter: {
+      w: 200,
+      h: 150,
+      amount: 170,
+      duration: 1000
+    },
+    gravity: [0, -50],
+    particle: {
+      sprite: "explosion7",
+      angle: 0,
+      angleRandom: 180,
+      duration: 800,
+      velocity: 8,
+      startSize: 2,
+      endSize: 2,
+      startColor: [0.7, 0.7, 1.0, 0.8],
+      startColorRandom: [0, 0, 0, 0],
+      endColor: [0.8, 0.9, 0.3, 1.0],
+      endColorRandom: [0, 0, 0, 0]
+    }
   }
 };

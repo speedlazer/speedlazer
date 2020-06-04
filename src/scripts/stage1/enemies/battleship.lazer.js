@@ -231,7 +231,7 @@ const helicopter1 = ship => async ({
     movement.abort();
     awardPoints(250, helicopter.x + 20, helicopter.y);
     await showState(helicopter, "dead");
-    helicopter.z = ship.package.z + 1;
+    helicopter.z = ship.z + 5;
 
     await call(helicopter.activateGravity);
   });
@@ -398,8 +398,6 @@ const part5 = ship => async ({
     async () => {
       await killed;
       exec(laserWeapon(laser.x + laser.w / 2, laser.y - laser.h));
-      //await displayFrame(ship.engineCore, "perc100", 1000);
-      //showState(ship, "engineTilt");
     }
   ]);
 };

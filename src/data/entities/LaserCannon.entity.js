@@ -102,7 +102,14 @@ export default {
       components: ["SolidCollision"]
     },
     states: {
-      stopped: { particles: { active: false } },
+      stopped: {
+        particles: {
+          emitter: [
+            "forceFieldDisperse",
+            { emitter: { w: 140, h: 75, amount: 200, warmed: true } }
+          ]
+        }
+      },
       started: { particles: { active: true } }
     }
   }
