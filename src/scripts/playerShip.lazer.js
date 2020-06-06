@@ -43,10 +43,17 @@ export const playerShip = ({
 
   // TODO: Refactor adding these components to the entity definition
   ship.addComponent(ShipControls, ShipCollision);
-  ship.bind("HealthChange", newHealth => {
+  ship.uniqueBind("HealthChange", newHealth => {
     setHealthbar(newHealth / 50);
     if (newHealth < maxHealth * 0.5) {
       ship.displayFrame("damaged");
+    }
+  });
+  ship.uniqueBind("turn", () => {
+    if (ship.health < maxHealth * 0.5) {
+      showState(ship, "turningDamaged");
+    } else {
+      showState(ship, "turning");
     }
   });
 

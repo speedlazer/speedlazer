@@ -90,9 +90,29 @@ export default {
       ]
     ],
     frames: {
+      normal: {
+        main: {
+          sprite: "playerShip"
+        }
+      },
+      turn: {
+        main: {
+          sprite: "playerShipTurning"
+        }
+      },
+      front: {
+        main: {
+          sprite: "playerShipFront"
+        }
+      },
       damaged: {
         main: {
           sprite: "playerShipDamaged"
+        }
+      },
+      turnDamaged: {
+        main: {
+          sprite: "playerShipDamagedTurning"
         }
       },
       hidden: {
@@ -103,6 +123,80 @@ export default {
       },
       turned: {
         flipX: true
+      }
+    },
+    animations: {
+      turnAround: {
+        easing: "linear",
+        duration: 500,
+        timeline: [
+          {
+            start: 0.0,
+            end: 0.33,
+            startFrame: "normal",
+            endFrame: "turn"
+          },
+          {
+            start: 0.33,
+            end: 0.6,
+            startFrame: "front",
+            endFrame: "front"
+          },
+          {
+            start: 0.6,
+            end: 0.66,
+            startFrame: "front",
+            endFrame: "turned"
+          },
+          {
+            start: 0.66,
+            end: 0.95,
+            startFrame: "turn",
+            endFrame: "turn"
+          },
+          {
+            start: 0.95,
+            end: 1,
+            startFrame: "turn",
+            endFrame: "normal"
+          }
+        ]
+      },
+      turnAroundDamaged: {
+        easing: "linear",
+        duration: 500,
+        timeline: [
+          {
+            start: 0.0,
+            end: 0.33,
+            startFrame: "damaged",
+            endFrame: "turnDamaged"
+          },
+          {
+            start: 0.33,
+            end: 0.6,
+            startFrame: "front",
+            endFrame: "front"
+          },
+          {
+            start: 0.6,
+            end: 0.66,
+            startFrame: "front",
+            endFrame: "turned"
+          },
+          {
+            start: 0.66,
+            end: 0.95,
+            startFrame: "turnDamaged",
+            endFrame: "turnDamaged"
+          },
+          {
+            start: 0.95,
+            end: 1,
+            startFrame: "turnDamaged",
+            endFrame: "damaged"
+          }
+        ]
       }
     }
   }

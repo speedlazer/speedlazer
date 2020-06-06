@@ -76,7 +76,10 @@
     "stars": [44, 17, 21, 9],
 
     "playerShip": [0, 48, 3, 2],
+    "playerShipTurning": [0, 46, 3, 2],
     "playerShipDamaged": [0, 50, 3, 2],
+    "playerShipDamagedTurning": [3, 46, 3, 2],
+    "playerShipFront": [6, 49, 3, 2],
     "muzzleFlash": [10, 48, 1, 1],
     "shipEngineFire": [4, 53, 3, 1],
     "freddie": [3, 49, 3, 2],
@@ -147,9 +150,9 @@
     "explosion19": [33, 57, 3, 3],
     "explosion20": [36, 57, 3, 3],
 
-    "laserGunCore": [7, 48, 2, 1],
-    "laserGunHandle": [8, 48, 2, 1],
-    "laserGunBarrel": [7, 49, 3, 1],
+    "laserGunCore": [10, 50, 2, 1],
+    "laserGunHandle": [11, 50, 2, 1],
+    "laserGunBarrel": [13, 50, 3, 1],
     "bulletShell": [13, 12, 1, 1],
     "clothBottom": [12, 47, 5, 1],
     "cloth": [12, 44, 5, 3]

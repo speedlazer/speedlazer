@@ -130,6 +130,12 @@ export default {
       },
       turned: {
         frame: "turned"
+      },
+      turning: {
+        animation: "turnAround"
+      },
+      turningDamaged: {
+        animation: "turnAroundDamaged"
       }
     },
     habitats: [

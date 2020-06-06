@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.1.1] - 2020-06-06
+### Added
+- Proper turning around animation
+
 ## [2.1.0] - 2020-06-05
 ### Added
 - Full content section 1

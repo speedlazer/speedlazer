@@ -388,7 +388,8 @@ const part5 = ship => async ({
     async () => {
       await wait(1000);
       const playerShip = Crafty("PlayerShip").get(0);
-      await showState(playerShip, "turned");
+      playerShip.trigger("turn");
+
       await wait(1000);
       await showState(ship, "engineDoorOpen");
       await setScrollingSpeed(-50, 0);
@@ -606,7 +607,7 @@ const battleship = async ({
   ]);
 
   const playerShip = Crafty("PlayerShip").get(0);
-  await showState(playerShip, "turned");
+  playerShip.trigger("turn");
   await setScrollingSpeed(100, 0);
 
   // major explosions / sinking
