@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Ship being squashed between solid object and edge of screen
+
+### Added
+- Ship is invincible for 2s when just being spawned
 
 ## [2.1.1] - 2020-06-06
 ### Added
