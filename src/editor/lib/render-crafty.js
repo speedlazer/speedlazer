@@ -15,6 +15,7 @@ import "src/components/Overlap";
 import "src/components/DebugComposable";
 import "src/components/SpriteShader";
 import "src/components/Rotating";
+import "src/components/ViewportLocked";
 import { playAnimation } from "src/components/Animation";
 import {
   setBackground,

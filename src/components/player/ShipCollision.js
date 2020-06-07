@@ -68,8 +68,14 @@ Crafty.c(ShipCollision, {
           }
         }
       });
+      const x = this.x;
+      const y = this.y;
 
       this.shift(xCorrection, yCorrection);
+      if ((x === this.x && xCorrection) || (y === this.y && yCorrection)) {
+        // some force (ViewportLocked) pushed ship back.
+        this._squashShip();
+      }
     });
     this.onHit("PlayerEnemy", () => {
       const damage = {
