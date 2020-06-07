@@ -13,12 +13,14 @@ export const playerShip = ({
   allowDamage,
   setHealthbar,
   showState,
+  wait,
   loseLife
 }) => {
   const maxHealth = 50;
   const player = Crafty("Player").get(0);
+  const existingShip = existing && Crafty("PlayerShip").get(0);
   const ship =
-    (existing && Crafty("PlayerShip").get(0)) ||
+    existingShip ||
     spawn("PlayerShip", {
       location: {
         rx: turned ? 0.8 : 0.2,
@@ -27,9 +29,16 @@ export const playerShip = ({
       defaultVelocity: 400
     });
   if (!player.invincible) {
-    await allowDamage(ship, {
-      health: ship.health || maxHealth
-    });
+    if (ship === existingShip) {
+      await allowDamage(ship, {
+        health: ship.health || maxHealth
+      });
+    } else {
+      ship.health = ship.health || maxHealth;
+      wait(2000).then(async () => {
+        await allowDamage(ship, {});
+      });
+    }
   }
   if (hasLaser) ship.hasLaser = true;
   if (ship.health < maxHealth * 0.5) {
