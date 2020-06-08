@@ -5,7 +5,7 @@ Crafty.c(Animator, {
     Freeze() {
       this.animations = [];
       this.animating = false;
-      this.unbind("UpdateFrame", this._animateTick);
+      this.unbind("GameLoop", this._animateTick);
     }
   },
 
@@ -31,7 +31,7 @@ Crafty.c(Animator, {
       this.animations.push(animation);
       if (!this.animating) {
         this.animating = true;
-        this.uniqueBind("UpdateFrame", this._animateTick);
+        this.uniqueBind("GameLoop", this._animateTick);
       }
     });
   },
@@ -52,7 +52,7 @@ Crafty.c(Animator, {
 
     if (this.animations.length === 0) {
       this.animating = false;
-      this.unbind("UpdateFrame", this._animateTick);
+      this.unbind("GameLoop", this._animateTick);
     }
   }
 });

@@ -3,9 +3,9 @@ import "!style-loader!css-loader!postcss-loader!sass-loader!./styles/style.css";
 import "./components";
 import "./scenes";
 import { setupControls } from "./setup-game";
-import { isPaused } from "./lib/core/pauseToggle";
+import "src/lib/GameLoop";
 import Player from "src/components/player/Player";
-import { setGameSpeed, getGameSpeed } from "./lib/core/gameSpeed";
+import { setGameSpeed } from "./lib/core/gameSpeed";
 import { setEffectVolume, setMusicVolume } from "src/lib/audio";
 
 setEffectVolume(0.4);
@@ -26,17 +26,6 @@ Crafty.e([Player, "Color"].join(", "))
   .color("#FF0000");
 
 setupControls();
-
-let gameTime = 0;
-Crafty.bind("UpdateFrame", fd => {
-  if (!isPaused()) {
-    gameTime += fd.dt;
-  }
-  fd.dt = fd.dt * getGameSpeed();
-  fd.inGameTime = gameTime;
-
-  Crafty.trigger("GameLoop", fd);
-});
 
 Crafty.enterScene("Intro");
 

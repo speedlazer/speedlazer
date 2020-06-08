@@ -1,7 +1,5 @@
 import spritesheets from "src/images";
 import audiosheets from "src/audio";
-import { isPaused } from "src/lib/core/pauseToggle";
-import { getGameSpeed } from "src/lib/core/gameSpeed";
 import { animations } from "data";
 import { setupControls } from "src/setup-game";
 import { bigText } from "src/components/BigText";
@@ -18,6 +16,7 @@ import "src/components/DebugComposable";
 import "src/components/SpriteShader";
 import "src/components/Rotating";
 import "src/components/ViewportLocked";
+import "src/lib/GameLoop";
 import { playAnimation } from "src/components/Animation";
 import {
   setBackground,
@@ -80,17 +79,6 @@ export const mount = domElem => {
       })
       .dynamicTextGeneration(true)
       .textColor("white");
-  });
-
-  let gameTime = 0;
-  Crafty.bind("UpdateFrame", fd => {
-    if (!isPaused()) {
-      gameTime += fd.dt;
-    }
-    fd.dt = fd.dt * getGameSpeed();
-    fd.inGameTime = gameTime;
-
-    Crafty.trigger("GameLoop", fd);
   });
 };
 

@@ -339,7 +339,8 @@ Crafty.c("Scenery", {
     this.altitude = newAltitude;
   },
 
-  verifySceneryContent() {
+  verifySceneryContent({ dt }) {
+    if (dt === 0) return;
     const { vx, vy } = this.movingDirection;
     if (vx === 0 && vy === 0) return;
     this.checkCountDown--;

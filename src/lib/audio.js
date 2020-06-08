@@ -37,6 +37,18 @@ const assignAudioBuffer = (audioMap, decodedData) => {
   };
 };
 
+let audioPaused = false;
+
+export const pauseAudio = () => {
+  audioPaused = true;
+  context.suspend();
+};
+
+export const resumeAudio = () => {
+  audioPaused = false;
+  context.resume();
+};
+
 export const setEffectVolume = volume =>
   playingPool.effectsGain.gain.setValueAtTime(volume, context.currentTime);
 
@@ -173,6 +185,7 @@ export const playAudio = (sampleName, { volume = 1.0 } = {}) => {
 document.addEventListener(
   "visibilitychange",
   () => {
+    if (audioPaused) return;
     if (document["hidden"]) {
       context.suspend();
     } else {

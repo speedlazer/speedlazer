@@ -7,10 +7,10 @@ Crafty.c(Steering, {
         if (this._steering !== value) {
           this._steering = value;
           if (value === 0) {
-            this.unbind("EnterFrame", this._updateSteering);
+            this.unbind("GameLoop", this._updateSteering);
           } else {
             this._updateSteering({ dt: 1 });
-            this.uniqueBind("EnterFrame", this._updateSteering);
+            this.uniqueBind("GameLoop", this._updateSteering);
           }
         }
       },
