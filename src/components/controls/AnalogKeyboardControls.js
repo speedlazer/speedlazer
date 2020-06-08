@@ -39,18 +39,23 @@ Crafty.c(AnalogKeyboardControls, {
     }
     if (e.key === this.controlMap.fire) {
       this.trigger("Fire", e);
+      this._player && this._player.trigger("Fire", e);
     }
     if (e.key === this.controlMap.up) {
       this.trigger("Up", e);
+      this._player && this._player.trigger("Up", e);
     }
     if (e.key === this.controlMap.down) {
       this.trigger("Down", e);
+      this._player && this._player.trigger("Down", e);
     }
     if (e.key === this.controlMap.left) {
       this.trigger("Left", e);
+      this._player && this._player.trigger("Left", e);
     }
     if (e.key === this.controlMap.right) {
       this.trigger("Right", e);
+      this._player && this._player.trigger("Right", e);
     }
   },
 

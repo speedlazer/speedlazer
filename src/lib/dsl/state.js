@@ -74,7 +74,7 @@ const stateFunctions = (dsl, state) => {
       }
       return `Score: ${this.displayScore}`;
     })
-    .dynamicTextGeneration(true);
+    .dynamicTextGeneration(true, "GameLoop");
 
   const closeScripts = [];
 

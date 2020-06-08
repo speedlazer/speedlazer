@@ -1,10 +1,19 @@
 import { createScriptExecutionSpace } from "src/lib/dsl";
 import gameStructure from "src/scripts";
+import PauseMenu from "src/components/ui/PauseMenu";
 import { stopMusic, fadeMusicVolume } from "src/lib/audio";
 import { fadeOut } from "src/components/generic/ColorFade";
 
 import Player from "src/components/player/Player";
 const DEFAULT_TAGS = ["campaign"];
+
+const items = [
+  { name: "Controls" },
+  { name: "Sound" },
+  { name: "Music" },
+  { name: "Resume" },
+  { name: "Quit" }
+];
 
 Crafty.defineScene(
   "Game",
@@ -20,6 +29,33 @@ Crafty.defineScene(
       yResponse: 0,
       xResponse: 0,
       z: 35
+    });
+
+    let pauseMenu = null;
+
+    Crafty.bind("GamePause", paused => {
+      if (paused) {
+        let menuItem = 0;
+
+        if (pauseMenu === null) {
+          pauseMenu = Crafty.e(PauseMenu).menuOptions(items);
+        } else {
+          pauseMenu.unfreeze();
+        }
+        pauseMenu.selectOption(menuItem);
+
+        const player = Crafty("Player").get(0);
+        player.bind("Down", () => {
+          menuItem = (menuItem + 1) % items.length;
+          pauseMenu.selectOption(menuItem);
+        });
+        player.bind("Up", () => {
+          menuItem = (menuItem - 1 + items.length) % items.length;
+          pauseMenu.selectOption(menuItem);
+        });
+      } else {
+        pauseMenu.freeze();
+      }
     });
 
     Crafty.viewport.x = 0;

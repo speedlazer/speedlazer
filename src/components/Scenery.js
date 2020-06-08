@@ -65,20 +65,20 @@ const PIXEL_BUFFER = 800;
 
 Crafty.c("SceneryBlock", {
   required: `2D, Motion, ${PausableMotion}`,
+  events: {
+    Freeze() {
+      this._children.forEach(child => child.freeze());
+    },
+    Unfreeze() {
+      this._children.forEach(child => child.unfreeze());
+    }
+  },
 
   init() {
     this.bind("Move", this.sceneryBlockMoved);
-    this.bind("Freeze", this.sceneryBlockFreeze);
-    this.bind("Unfreeze", this.sceneryBlockUnfreeze);
   },
   remove() {
     this.unbind("Move", this.sceneryBlockMoved);
-  },
-  sceneryBlockFreeze() {
-    this._children.forEach(child => child.freeze());
-  },
-  sceneryBlockUnfreeze() {
-    this._children.forEach(child => child.unfreeze());
   },
   moveScenery(dx, dy, { vx, vy }) {
     this.shift(dx, dy);
