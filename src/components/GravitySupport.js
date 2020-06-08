@@ -1,4 +1,5 @@
 import ParticleEmitter from "src/components/ParticleEmitter";
+import PausableMotion from "src/components/PausableMotion";
 import { particles } from "data";
 import merge from "lodash/merge";
 
@@ -9,7 +10,7 @@ Crafty.c("GravitySupport", {
   },
 
   activateGravity(surfaces = ["GravitySolid", "GravityLiquid"]) {
-    this.addComponent("Motion", "Collision");
+    this.addComponent("Motion", "Collision", PausableMotion);
     this.ay = 400;
 
     this.bind("HitOn", this._onGravityCollisonHit);
@@ -66,7 +67,7 @@ Crafty.c("GravitySupport", {
           .particles(emitter);
       }
 
-      this.uniqueBind("EnterFrame", this._sinkAway);
+      this.uniqueBind("GameLoop", this._sinkAway);
     }
   },
 
@@ -86,7 +87,7 @@ Crafty.c("GravitySupport", {
       this.liquidEmitter.stopEmission();
       this.liquidEmitter.autoDestruct = true;
       this.destroy();
-      this.unbind("EnterFrame", this._sinkAway);
+      this.unbind("GameLoop", this._sinkAway);
     }
   }
 });

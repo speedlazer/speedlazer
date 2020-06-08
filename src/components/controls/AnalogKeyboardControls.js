@@ -6,6 +6,7 @@ const AnalogKeyboardControls = "AnalogKeyboardControls";
 
 Crafty.c(AnalogKeyboardControls, {
   init() {
+    this._player = null;
     this.requires(Listener);
     this.bind("RemoveComponent", componentName => {
       if (componentName === ControlScheme) {
@@ -19,19 +20,23 @@ Crafty.c(AnalogKeyboardControls, {
   },
 
   setupControls(player) {
-    player
-      .addComponent(AnalogKeyboardControls)
-      .controls(this.controlMap)
-      .addComponent(ControlScheme);
+    this._player = player;
+    player.addComponent(ControlScheme);
+    player.assignControls = ship => {
+      this.assignControls(ship);
+    };
   },
 
   controls(controlMap) {
     this.controlMap = controlMap;
-    this.bind("KeyDown", this._keyHandling);
+    this.uniqueBind("KeyDown", this._keyHandling);
     return this;
   },
 
   _keyHandling(e) {
+    if (e.key === this.controlMap.pause) {
+      togglePause();
+    }
     if (e.key === this.controlMap.fire) {
       this.trigger("Fire", e);
     }
@@ -50,6 +55,7 @@ Crafty.c(AnalogKeyboardControls, {
   },
 
   assignControls(ship) {
+    if (ship.hasPlayerControls) return;
     const { controlMap } = this;
 
     const MAX_X_SPEED = 700;
@@ -66,10 +72,17 @@ Crafty.c(AnalogKeyboardControls, {
       right: false
     };
 
+    ship.hasPlayerControls = true;
     ship
       .addComponent("Keyboard, Motion")
       .bind("GamePause", function(paused) {
         if (paused) {
+          pressed = {
+            up: false,
+            down: false,
+            left: false,
+            right: false
+          };
           this.disabledBeforePause = this.disableControls;
           this.disableControl();
         } else {
@@ -184,15 +197,6 @@ Crafty.c(AnalogKeyboardControls, {
     };
 
     this.listenTo(ship, "KeyDown", function(e) {
-      if (e.key === controlMap.pause) {
-        togglePause();
-        pressed = {
-          up: false,
-          down: false,
-          left: false,
-          right: false
-        };
-      }
       if (ship.disableControls) {
         return;
       }

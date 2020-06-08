@@ -118,6 +118,8 @@ Crafty.c(GamepadControls, {
   },
 
   assignControls(ship) {
+    if (ship.hasPlayerControls) return;
+    ship.hasPlayerControls = true;
     ship.addComponent("GamepadMultiway").gamepadMultiway({
       speed: { y: 550, x: 750 },
       gamepadIndex: this.controlMap.gamepadIndex,

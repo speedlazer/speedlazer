@@ -27,7 +27,7 @@ Crafty.c(Listener, {
       callback: realCallback
     });
 
-    object.bind(event, realCallback);
+    object.uniqueBind(event, realCallback);
   }
 });
 
