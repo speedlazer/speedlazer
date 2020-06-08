@@ -96,6 +96,7 @@ Crafty.c("SceneryBlock", {
 
   sceneryBlockMoved() {
     if (this.sceneryName === notificationName) {
+      // FIXME: This is wrong approach
       const vDx = this.vx / Crafty.timer.FPS();
 
       if (
@@ -145,24 +146,26 @@ const createBlock = (scenery, x, y) => {
     w: scenery.width,
     h: scenery.height
   });
-  const cameraCenter = {
-    x: Crafty.viewport.width / 2,
-    y: Crafty.viewport.height / 2
+
+  let elementResets = [];
+  block.resetPositioning = function() {
+    const cameraCenter = {
+      x: Crafty.viewport.width / 2,
+      y: Crafty.viewport.height / 2
+    };
+    const halfW = this.w / 2;
+    const halfH = this.h / 2;
+    const blockCenter = {
+      x: this.x + halfW,
+      y: this.y + halfH
+    };
+
+    elementResets.forEach(f => f(cameraCenter, blockCenter, halfW, halfH));
   };
-  const halfW = block.w / 2;
-  const halfH = block.h / 2;
-  const blockCenter = {
-    x: x + halfW,
-    y: y + halfH
-  };
+
   let farthestDistance = 1;
 
   scenery.elements.forEach(element => {
-    const distance = element.distance === undefined ? 1 : element.distance;
-    const elementX = (element.x < 0 ? scenery.width * distance : 0) + element.x;
-    const elementY = scenery.height * (distance * distance) + element.y;
-    if (distance < farthestDistance) farthestDistance = distance;
-
     let entity;
     if (element.composition) {
       let def;
@@ -199,22 +202,33 @@ const createBlock = (scenery, x, y) => {
       entity.attr(element.attributes);
     }
 
-    const centerX =
-      blockCenter.x * distance + cameraCenter.x * (1.0 - distance);
-    const centerY =
-      blockCenter.y * (distance * distance) +
-      cameraCenter.y * (1.0 - distance * distance);
-    const left = centerX - halfW * distance;
-    const top = centerY - halfH * (distance * distance);
+    const distance = element.distance === undefined ? 1 : element.distance;
+    if (distance < farthestDistance) farthestDistance = distance;
 
-    entity.attr({
-      x: left + elementX,
-      y: top + elementY,
-      distance
+    elementResets.push((cameraCenter, blockCenter, halfW, halfH) => {
+      const elementX =
+        (element.x < 0 ? scenery.width * distance : 0) + element.x;
+      const elementY = scenery.height * (distance * distance) + element.y;
+      const centerX =
+        blockCenter.x * distance + cameraCenter.x * (1.0 - distance);
+      const centerY =
+        blockCenter.y * (distance * distance) +
+        cameraCenter.y * (1.0 - distance * distance);
+      const left = centerX - halfW * distance;
+      const top = centerY - halfH * (distance * distance);
+
+      entity.attr({
+        x: left + elementX,
+        y: top + elementY,
+        distance
+      });
     });
+
     block.attach(entity);
   });
+
   block.attr({ farthestDistance });
+  block.resetPositioning();
   return block;
 };
 
@@ -274,6 +288,7 @@ Crafty.c("Scenery", {
       const dx = startXPos - block.x;
       const dy = this.altitude - block.y;
       block.moveScenery(dx, dy, this.movingDirection);
+      block.resetPositioning();
     } else {
       let staleBlock = this.blocks.find(b => b.__frozen);
 
