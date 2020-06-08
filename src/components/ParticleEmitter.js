@@ -122,6 +122,7 @@ Crafty.c(ParticleEmitter, {
   img: null,
 
   init: function() {
+    this._particlesPaused = false;
     // Necessary for some rendering layers
     this.bind("Draw", this._drawParticles);
     if (this._drawLayer) {
@@ -152,13 +153,21 @@ Crafty.c(ParticleEmitter, {
 
   events: {
     LayerAttached: "_setupParticles",
-    EnterFrame: "_renderParticles"
+    GameLoop: "_renderParticles"
   },
 
   remove() {
     this.initialDraw = true;
     this.unbind("Draw", this._drawParticles);
     this.trigger("Invalidate");
+  },
+
+  pauseParticles() {
+    this._particlesPaused = true;
+  },
+
+  resumeParticles() {
+    this._particlesPaused = false;
   },
 
   _setupParticles(layer) {
@@ -333,10 +342,11 @@ Crafty.c(ParticleEmitter, {
         this.particleSettings.amount;
   },
 
-  _renderParticles({ dt, gameTime }) {
+  _renderParticles({ dt, inGameTime }) {
     if (!this.particleSettings) return;
-    startRender = startRender || gameTime;
-    this.timeFrame = gameTime - startRender;
+    if (this._particlesPaused) return;
+    startRender = startRender || inGameTime;
+    this.timeFrame = inGameTime - startRender;
 
     if (this.startTime !== -1) {
       this.startTime += dt;

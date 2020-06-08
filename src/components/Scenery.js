@@ -1,5 +1,6 @@
 import { sceneries, compositions } from "data";
 import { getOne } from "src/lib/utils";
+import PausableMotion from "src/components/PausableMotion";
 import merge from "lodash/merge";
 
 const choose = items => {
@@ -63,8 +64,9 @@ export const getNotificationInScreen = (name, buffer = 0) =>
 const PIXEL_BUFFER = 800;
 
 Crafty.c("SceneryBlock", {
+  required: `2D, Motion, ${PausableMotion}`,
+
   init() {
-    this.requires("2D, Motion");
     this.bind("Move", this.sceneryBlockMoved);
     this.bind("Freeze", this.sceneryBlockFreeze);
     this.bind("Unfreeze", this.sceneryBlockUnfreeze);
@@ -91,6 +93,7 @@ Crafty.c("SceneryBlock", {
       );
     });
   },
+
   sceneryBlockMoved() {
     if (this.sceneryName === notificationName) {
       const vDx = this.vx / Crafty.timer.FPS();
@@ -233,10 +236,10 @@ Crafty.c("Scenery", {
     this.altitude = 0;
     this.blocks = [];
     this.delay = null;
-    this.bind("UpdateFrame", this.verifySceneryContent);
+    this.bind("GameLoop", this.verifySceneryContent);
   },
   remove() {
-    this.unbind("UpdateFrame", this.verifySceneryContent);
+    this.unbind("GameLoop", this.verifySceneryContent);
     this.blocks.forEach(b => b.destroy());
   },
 

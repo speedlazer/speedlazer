@@ -460,7 +460,7 @@ Crafty.c(Composable, {
       animationData.timer && animationData.timer === "global"
         ? globalStartTime()
         : new Date() * 1;
-    this.bind("EnterFrame", this.updateAnimationFrame);
+    this.bind("GameLoop", this.updateAnimationFrame);
     await new Promise(resolve => this.animationListeners.push(resolve));
   },
 
@@ -469,17 +469,17 @@ Crafty.c(Composable, {
   },
 
   stopAnimation() {
-    this.unbind("EnterFrame", this.updateAnimationFrame);
+    this.unbind("GameLoop", this.updateAnimationFrame);
     this.activeAnimation = null;
     this.animationListeners.forEach(listener => listener());
     this.animationListeners = [];
   },
 
-  updateAnimationFrame({ gameTime }) {
+  updateAnimationFrame({ inGameTime }) {
     // When pausing the game is introduced, this will
     // need some special care
-    if (gameTime < this.animationStart) this.animationStart = gameTime;
-    const timeElapsed = gameTime - this.animationStart;
+    if (inGameTime < this.animationStart) this.animationStart = inGameTime;
+    const timeElapsed = inGameTime - this.animationStart;
     const timeInIteration = this.activeAnimation.data.repeat
       ? timeElapsed % this.activeAnimation.data.duration
       : timeElapsed;

@@ -1,5 +1,6 @@
 import { compositions, particles } from "data";
 import ParticleEmitter from "src/components/ParticleEmitter";
+import PausableMotion from "src/components/PausableMotion";
 import Composable from "src/components/Composable";
 import AngleMotion from "src/components/AngleMotion";
 import Beam from "src/components/Beam";
@@ -50,7 +51,7 @@ Crafty.c(ScreenBound, {
   required: "2D",
 
   init() {
-    this.bind("UpdateFrame", this._checkBounds);
+    this.bind("GameLoop", this._checkBounds);
   },
 
   _checkBounds() {
@@ -114,7 +115,7 @@ const calcHitPosition = (objA, hit) => {
 const Bullet = "Bullet";
 
 Crafty.c(Bullet, {
-  required: `2D, Motion, WebGL, ${AngleMotion}, ${Beam}, ${Flipable}`,
+  required: `2D, Motion, WebGL, ${AngleMotion}, ${Beam}, ${Flipable}, ${PausableMotion}`,
   events: {
     Freeze() {
       this.cooldowns = {};
@@ -154,7 +155,7 @@ Crafty.c(Bullet, {
     });
 
     if (collisionConfig.remove !== false) {
-      this.unbind("UpdateFrame", this._updateBullet);
+      this.unbind("GameLoop", this._updateBullet);
       this.bulletTime = 0;
       this.freeze();
     }
@@ -202,7 +203,7 @@ Crafty.c(Bullet, {
       0
     );
 
-    this.uniqueBind("UpdateFrame", this._updateBullet);
+    this.uniqueBind("GameLoop", this._updateBullet);
   },
 
   _updateBullet({ dt }) {
@@ -328,7 +329,7 @@ Crafty.c(Bullet, {
     }
 
     if (this.bulletTime > this.maxBulletTime) {
-      this.unbind("UpdateFrame", this._updateBullet);
+      this.unbind("GameLoop", this._updateBullet);
       if (this._parent) {
         this._parent.detach(this);
       }
@@ -536,7 +537,7 @@ Crafty.c(Weapon, {
     );
     this._makeQueue();
 
-    this.uniqueBind("EnterFrame", this._updateSpawnFrame);
+    this.uniqueBind("GameLoop", this._updateSpawnFrame);
     return this;
   },
 
@@ -556,7 +557,7 @@ Crafty.c(Weapon, {
 
   deactivate() {
     this.active = false;
-    this.unbind("EnterFrame", this._updateSpawnFrame);
+    this.unbind("GameLoop", this._updateSpawnFrame);
     return this;
   },
 

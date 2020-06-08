@@ -1,4 +1,6 @@
 import { setGameSpeed } from "./gameSpeed";
+import ParticleEmitter from "../../components/ParticleEmitter";
+import PausableMotion from "../../components/PausableMotion";
 
 let paused = false;
 
@@ -16,16 +18,11 @@ export const togglePause = () => {
     Crafty("Tween").each(function() {
       return this.pauseTweens();
     });
-    Crafty("Particles").each(function() {
+    Crafty(ParticleEmitter).each(function() {
       return this.pauseParticles();
     });
-    Crafty("SpriteAnimation").each(function() {
-      return this.pauseAnimation();
-    });
-    Crafty("PlayerControlledShip").each(function() {
-      if (this.disableControls) return;
-      this.disabledThroughPause = true;
-      this.disableControl();
+    Crafty(PausableMotion).each(function() {
+      return this.pauseMotion();
     });
   } else {
     setGameSpeed(1.0);
@@ -35,16 +32,11 @@ export const togglePause = () => {
     Crafty("Tween").each(function() {
       return this.resumeTweens();
     });
-    Crafty("Particles").each(function() {
+    Crafty(ParticleEmitter).each(function() {
       return this.resumeParticles();
     });
-    Crafty("SpriteAnimation").each(function() {
-      return this.resumeAnimation();
-    });
-    Crafty("PlayerControlledShip").each(function() {
-      if (!this.disabledThroughPause) return;
-      this.disabledThroughPause = null;
-      this.enableControl();
+    Crafty(PausableMotion).each(function() {
+      return this.resumeMotion();
     });
   }
 

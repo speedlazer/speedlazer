@@ -63,7 +63,7 @@ Crafty.c(WayPointMotion, {
 
     if (!this.inMotion) {
       this.inMotion = true;
-      this.bind("EnterFrame", this.updateAcceleration);
+      this.bind("GameLoop", this.updateAcceleration);
     }
 
     return this;
@@ -71,7 +71,7 @@ Crafty.c(WayPointMotion, {
 
   stopFlyPattern() {
     if (this.inMotion) {
-      this.unbind("EnterFrame", this.updateAcceleration);
+      this.unbind("GameLoop", this.updateAcceleration);
       this.inMotion = false;
       this.trigger("PatternAborted");
     }
@@ -97,7 +97,7 @@ Crafty.c(WayPointMotion, {
       });
     }
     if (value >= this.targetPatternValue || !p) {
-      this.unbind("EnterFrame", this.updateAcceleration);
+      this.unbind("GameLoop", this.updateAcceleration);
       // apply final path coordinates after route is finished
       this.applyStackableProperty("xPath", "x");
       this.applyStackableProperty("yPath", "y");

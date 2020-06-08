@@ -37,7 +37,7 @@ Crafty.c(Animation, {
   },
 
   setActiveCheckpoint(checkpoint, { autoStart = true, duration = null } = {}) {
-    this.unbind("EnterFrame", this.updateAnimation);
+    this.unbind("GameLoop", this.updateAnimation);
     const checkpointData = this.currentAnimation.checkpoints[checkpoint];
     this.playingAnimation = false;
     if (!checkpointData) return;
@@ -152,7 +152,7 @@ Crafty.c(Animation, {
         }));
 
         this.playingAnimation = true;
-        this.uniqueBind("EnterFrame", this.updateAnimation);
+        this.uniqueBind("GameLoop", this.updateAnimation);
       }
     }
   },
@@ -242,7 +242,7 @@ Crafty.c(Animation, {
     });
 
     if (value >= 1.0) {
-      this.unbind("EnterFrame", this.updateAnimation);
+      this.unbind("GameLoop", this.updateAnimation);
       this.playingAnimation = false;
       if (
         this.maxAllowedCheckpoint > this.targetCheckpoint &&
