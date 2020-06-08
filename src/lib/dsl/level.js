@@ -55,12 +55,12 @@ const levelFunctions = state => ({
         Crafty.viewport.y = y;
 
         if (screenshake === 0) {
-          Crafty.unbind("EnterFrame", state.trauma.handler);
+          Crafty.unbind("GameLoop", state.trauma.handler);
           state.trauma.handler = null;
         }
       };
 
-      Crafty.bind("EnterFrame", state.trauma.handler);
+      Crafty.bind("GameLoop", state.trauma.handler);
     }
   },
   setScrollingSpeed: async (x, y, { speed = 50, instant = false } = {}) => {
@@ -79,7 +79,7 @@ const levelFunctions = state => ({
             ease.tick(dt);
             const v = ease.value();
             if (v >= 1.0) {
-              Crafty.unbind("EnterFrame", f);
+              Crafty.unbind("GameLoop", f);
               resolve();
             }
             const vy = startY * (1 - v) + y * v;
@@ -87,7 +87,7 @@ const levelFunctions = state => ({
             scenery.setScrollVelocity({ vx: -vx, vy });
           };
 
-          Crafty.bind("EnterFrame", f);
+          Crafty.bind("GameLoop", f);
         });
   },
   setAltitude: async (y, { speed = 50, instant = false } = {}) =>
@@ -103,14 +103,14 @@ const levelFunctions = state => ({
             ease.tick(dt);
             const v = ease.value();
             if (v >= 1.0) {
-              Crafty.unbind("EnterFrame", f);
+              Crafty.unbind("GameLoop", f);
               resolve();
             }
             const alt = startAlt * (1 - v) + y * v;
             setAltitude(alt);
           };
 
-          Crafty.bind("EnterFrame", f);
+          Crafty.bind("GameLoop", f);
         }),
   setScenery: async sceneryName => {
     setScenery(sceneryName);
