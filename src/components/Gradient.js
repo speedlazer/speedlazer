@@ -14,7 +14,20 @@ Crafty.extend({
             { name: "aLayer", width: 2 },
             { name: "aColor", width: 4 }
           ],
-          function() {}
+          function(e, entity) {
+            e.program.writeVector(
+              "aColor",
+              entity._topColor._red / 255,
+              entity._topColor._green / 255,
+              entity._topColor._blue / 255,
+              entity._topColor._strength,
+
+              entity._bottomColor._red / 255,
+              entity._bottomColor._green / 255,
+              entity._bottomColor._blue / 255,
+              entity._bottomColor._strength
+            );
+          }
         );
       }
       return this._defaultGradientShader;
@@ -26,6 +39,10 @@ Crafty.extend({
 const Gradient = "Gradient";
 
 Crafty.c(Gradient, {
+  events: {
+    LayerAttached: "_setupGradient"
+  },
+
   init() {
     // Declaring the vars here instead as class attributes
     // make them unique for each instance
@@ -44,8 +61,8 @@ Crafty.c(Gradient, {
     this.ready = true;
 
     this.bind("Draw", this._drawGradient);
-    if (this.has("WebGL")) {
-      this._establishShader("Gradient", Crafty.defaultGradientShader());
+    if (this._drawLayer) {
+      this._setupGradient(this._drawLayer);
     }
     this.trigger("Invalidate");
   },
@@ -58,20 +75,15 @@ Crafty.c(Gradient, {
     this.trigger("Invalidate");
   },
 
+  _setupGradient(layer) {
+    if (layer.type === "WebGL") {
+      this._establishShader("Gradient", Crafty.defaultGradientShader());
+    }
+  },
+
   _drawGradient(e) {
     if (e.type === "webgl") {
-      e.program.writeVector(
-        "aColor",
-        this._topColor._red / 255,
-        this._topColor._green / 255,
-        this._topColor._blue / 255,
-        this._topColor._strength,
-
-        this._bottomColor._red / 255,
-        this._bottomColor._green / 255,
-        this._bottomColor._blue / 255,
-        this._bottomColor._strength
-      );
+      e.program.draw(e, this);
     }
   },
 
