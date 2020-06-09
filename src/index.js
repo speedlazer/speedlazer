@@ -20,6 +20,19 @@ const stage = document.getElementById("cr-stage");
 Crafty.init(1024, 576, stage); // PAL+
 Crafty.background("#000000");
 Crafty.timer.FPS(60);
+Crafty.createLayer("UILayerDOM", "DOM", {
+  scaleResponse: 0,
+  yResponse: 0,
+  xResponse: 0,
+  z: 40
+});
+Crafty.createLayer("UILayerWebGL", "WebGL", {
+  scaleResponse: 0,
+  yResponse: 0,
+  xResponse: 0,
+  z: 35
+});
+
 Crafty.e([Player, "Color"].join(", "))
   .attr({ name: "Player 1", z: 0, playerNumber: 1 })
   .setName("Player 1")

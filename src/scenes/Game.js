@@ -3,56 +3,83 @@ import gameStructure from "src/scripts";
 import PauseMenu from "src/components/ui/PauseMenu";
 import { stopMusic, fadeMusicVolume } from "src/lib/audio";
 import { fadeOut } from "src/components/generic/ColorFade";
+import { togglePause } from "src/lib/core/pauseToggle";
 
 import Player from "src/components/player/Player";
 const DEFAULT_TAGS = ["campaign"];
 
+/*
+const soundLabels = { 0: "Off", 10: "Max" };
+const soundLevel = level => soundLabels[level] || level;
+
+let soundVolumeLevel = 5;
+const soundOption = {
+  getName: () => `Sound - ${soundLevel(soundVolumeLevel)}`,
+  left: () => {
+    soundVolumeLevel = Math.max(0, soundVolumeLevel - 1);
+  },
+  right: () => {
+    soundVolumeLevel = Math.min(10, soundVolumeLevel + 1);
+  },
+  select: () => {
+    console.log("Select");
+  },
+  deselect: () => {
+    console.log("Deselect");
+  }
+};
+
+let musicVolumeLevel = 5;
+const musicOption = {
+  getName: () => `Music - ${soundLevel(musicVolumeLevel)}`,
+  left: () => {
+    musicVolumeLevel = Math.max(0, musicVolumeLevel - 1);
+  },
+  right: () => {
+    musicVolumeLevel = Math.min(10, musicVolumeLevel + 1);
+  },
+  select: () => {
+    console.log("Select");
+  },
+  deselect: () => {
+    console.log("Deselect");
+  }
+};
+*/
+
 const items = [
-  { name: "Controls" },
-  { name: "Sound" },
-  { name: "Music" },
-  { name: "Resume" },
-  { name: "Quit" }
+  //{ name: "Controls" },
+  //soundOption,
+  //musicOption,
+  {
+    name: "Resume",
+    activate: () => {
+      setTimeout(() => togglePause());
+    }
+  }
+  //{
+  //name: "Quit",
+  //spaceAbove: true,
+  //dangerous: true,
+  //activate: () => {
+  ////Crafty.enterScene("Intro");
+  //}
+  //}
 ];
 
 Crafty.defineScene(
   "Game",
   async function({ start = null, tags = DEFAULT_TAGS } = {}) {
-    Crafty.createLayer("UILayerDOM", "DOM", {
-      scaleResponse: 0,
-      yResponse: 0,
-      xResponse: 0,
-      z: 40
-    });
-    Crafty.createLayer("UILayerWebGL", "WebGL", {
-      scaleResponse: 0,
-      yResponse: 0,
-      xResponse: 0,
-      z: 35
-    });
-
     let pauseMenu = null;
-
     Crafty.bind("GamePause", paused => {
       if (paused) {
-        let menuItem = 0;
-
+        const player = Crafty("Player").get(0);
         if (pauseMenu === null) {
-          pauseMenu = Crafty.e(PauseMenu).menuOptions(items);
+          pauseMenu = Crafty.e(PauseMenu).menuOptions(items, player);
         } else {
           pauseMenu.unfreeze();
+          pauseMenu.attachController(player);
         }
-        pauseMenu.selectOption(menuItem);
-
-        const player = Crafty("Player").get(0);
-        player.bind("Down", () => {
-          menuItem = (menuItem + 1) % items.length;
-          pauseMenu.selectOption(menuItem);
-        });
-        player.bind("Up", () => {
-          menuItem = (menuItem - 1 + items.length) % items.length;
-          pauseMenu.selectOption(menuItem);
-        });
       } else {
         pauseMenu.freeze();
       }
