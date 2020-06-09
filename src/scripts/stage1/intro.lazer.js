@@ -35,7 +35,6 @@ const part = async ({
   fadeIn,
   wait
 }) => {
-  const fade = fadeIn();
   const text = bigText("Loading...");
   text.fadeIn(2000);
   await loadSpriteSheets(["mega-texture"]);
@@ -48,6 +47,7 @@ const part = async ({
   await setScrollingSpeed(100, 0, { instant: true });
   await setScenery("City.Ocean");
   setBackground("City.Sunrise", 0, 2);
+  const fade = fadeIn();
   text.remove();
 
   const introAnimation = playAnimation("City.Intro");
