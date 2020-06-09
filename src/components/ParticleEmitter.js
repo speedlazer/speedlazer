@@ -121,6 +121,11 @@ Crafty.c(ParticleEmitter, {
   __image: "",
   img: null,
 
+  events: {
+    LayerAttached: "_setupParticles",
+    GameLoop: "_renderParticles"
+  },
+
   init: function() {
     this._particlesPaused = false;
     // Necessary for some rendering layers
@@ -149,11 +154,6 @@ Crafty.c(ParticleEmitter, {
           this.particleSettings.angle + changes.angle;
       }
     });
-  },
-
-  events: {
-    LayerAttached: "_setupParticles",
-    GameLoop: "_renderParticles"
   },
 
   remove() {
