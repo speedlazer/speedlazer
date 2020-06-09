@@ -21,10 +21,11 @@ Crafty.c(GamepadControls, {
   },
 
   setupControls(player) {
-    player
-      .addComponent(GamepadControls)
-      .controls(this.controlMap)
-      .addComponent(ControlScheme);
+    this._player = player;
+    player.addComponent(ControlScheme);
+    player.assignControls = ship => {
+      this.assignControls(ship);
+    };
   },
 
   controls(controlMap) {
@@ -79,9 +80,11 @@ Crafty.c(GamepadControls, {
     }
     this._stopEmit(axis);
     this.trigger(value);
+    this._player && this._player.trigger(value);
     this.emits[axis] = {
       interval: setInterval(() => {
         this.trigger(value);
+        this._player && this._player.trigger(value);
       }, 200),
       value
     };
@@ -100,31 +103,51 @@ Crafty.c(GamepadControls, {
       return;
     }
     this.lastPressed = new Date();
+    if (e.button === this.controlMap.pause && e.pressed) {
+      togglePause();
+    }
     if (e.button === this.controlMap.fire && e.pressed) {
       this.trigger("Fire", e);
+      this._player && this._player.trigger("Fire", e);
     }
     if (e.button === this.controlMap.up && e.pressed) {
       this.trigger("Up", e);
+      this._player && this._player.trigger("Up", e);
     }
     if (e.button === this.controlMap.down && e.pressed) {
       this.trigger("Down", e);
+      this._player && this._player.trigger("Down", e);
     }
     if (e.button === this.controlMap.left && e.pressed) {
       this.trigger("Left", e);
+      this._player && this._player.trigger("Left", e);
     }
     if (e.button === this.controlMap.right && e.pressed) {
       this.trigger("Right", e);
+      this._player && this._player.trigger("Right", e);
     }
   },
 
   assignControls(ship) {
     if (ship.hasPlayerControls) return;
     ship.hasPlayerControls = true;
-    ship.addComponent("GamepadMultiway").gamepadMultiway({
-      speed: { y: 550, x: 750 },
-      gamepadIndex: this.controlMap.gamepadIndex,
-      analog: true
-    });
+    ship
+      .addComponent("GamepadMultiway")
+      .gamepadMultiway({
+        speed: { y: 550, x: 750 },
+        gamepadIndex: this.controlMap.gamepadIndex,
+        analog: true
+      })
+      .bind("GamePause", function(paused) {
+        if (paused) {
+          this.disabledBeforePause = this.disableControls;
+          this.disableControl();
+        } else {
+          if (!this.disabledBeforePause) {
+            this.enableControl();
+          }
+        }
+      });
 
     ship.controlName = mapItem => {
       const gamepad = this._getGamepad();
@@ -218,15 +241,6 @@ Crafty.c(GamepadControls, {
       }
       if (e.button === this.controlMap.shield) {
         ship.controlBlock(e.pressed);
-      }
-
-      // TODO: This event is not coming through
-      // when the game is paused,
-      // so unpausing is not possible!
-      if (e.button === this.controlMap.pause) {
-        if (e.pressed) {
-          togglePause();
-        }
       }
     });
   }

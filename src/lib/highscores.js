@@ -19,18 +19,18 @@ export const highscores = () => {
 
   const loadedList = loadList();
 
-  const defInit = "SPL";
+  const initials = "SPL";
   const list = [
-    { initials: defInit, score: 30000 },
-    { initials: defInit, score: 20000 },
-    { initials: defInit, score: 10000 },
-    { initials: defInit, score: 5000 },
-    { initials: defInit, score: 2500 },
-    { initials: defInit, score: 1500 },
-    { initials: defInit, score: 1000 },
-    { initials: defInit, score: 5000 },
-    { initials: defInit, score: 2000 },
-    { initials: defInit, score: 1500 }
+    { initials, score: 30000 },
+    { initials, score: 20000 },
+    { initials, score: 10000 },
+    { initials, score: 5000 },
+    { initials, score: 2500 },
+    { initials, score: 1500 },
+    { initials, score: 1000 },
+    { initials, score: 5000 },
+    { initials, score: 2000 },
+    { initials, score: 1500 }
   ].concat(loadedList);
   return sortBy(list, "score").reverse();
 };

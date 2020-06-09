@@ -79,7 +79,7 @@ Crafty.c(AnalogKeyboardControls, {
 
     ship.hasPlayerControls = true;
     ship
-      .addComponent("Keyboard, Motion")
+      .addComponent("Motion")
       .bind("GamePause", function(paused) {
         if (paused) {
           pressed = {
