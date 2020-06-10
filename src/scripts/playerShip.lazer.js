@@ -33,6 +33,9 @@ export const playerShip = ({
       await allowDamage(ship, {
         health: ship.health || maxHealth
       });
+      ship.unbind("HealthChange");
+      ship.unbind("Turn");
+      ship.unbind("Dead");
     } else {
       ship.health = ship.health || maxHealth;
       wait(2000).then(async () => {
@@ -54,7 +57,12 @@ export const playerShip = ({
   ship.addComponent(ShipControls, ShipCollision);
 
   ship.uniqueBind("HealthChange", newHealth => {
-    setHealthbar(newHealth / 50);
+    try {
+      setHealthbar(newHealth / 50);
+    } catch (e) {
+      // player could be game over
+    }
+
     if (newHealth < maxHealth * 0.5) {
       ship.displayFrame("damaged");
     }
