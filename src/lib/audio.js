@@ -54,6 +54,9 @@ export const createAudioPlayer = () => {
     }
   };
 
+  let effectsVolume = 1.0;
+  let musicVolume = 1.0;
+
   const api = {
     pauseAudio: () => {
       audioPaused = true;
@@ -65,11 +68,18 @@ export const createAudioPlayer = () => {
       context.resume();
     },
 
-    setEffectVolume: volume =>
-      playingPool.effectsGain.gain.setValueAtTime(volume, context.currentTime),
+    setEffectVolume: volume => {
+      playingPool.effectsGain.gain.setValueAtTime(volume, context.currentTime);
+      effectsVolume = volume;
+    },
 
-    setMusicVolume: volume =>
-      playingPool.musicGain.gain.setValueAtTime(volume, context.currentTime),
+    setMusicVolume: volume => {
+      playingPool.musicGain.gain.setValueAtTime(volume, context.currentTime);
+      musicVolume = volume;
+    },
+
+    getEffectsVolume: () => effectsVolume,
+    getMusicVolume: () => musicVolume,
 
     loadAudio: async audioMap => {
       const name = audioMap.name;

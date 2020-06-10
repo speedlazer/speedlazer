@@ -7,9 +7,10 @@ import "src/lib/GameLoop";
 import Player from "src/components/player/Player";
 import { setGameSpeed } from "./lib/core/gameSpeed";
 import audio from "src/lib/audio";
+import setting from "src/lib/settings";
 
-audio.setEffectVolume(0.4);
-audio.setMusicVolume(0.4);
+audio.setEffectVolume(setting("effectsVolume", 0.4));
+audio.setMusicVolume(setting("musicVolume", 0.4));
 setGameSpeed(1.0);
 
 Crafty.paths({

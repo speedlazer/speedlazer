@@ -1,48 +1,63 @@
 import { centeredText } from "./text-helpers";
 import { togglePause } from "src/lib/core/pauseToggle";
+import audio from "src/lib/audio";
 import Menu from "./Menu";
+import { updateSetting } from "src/lib/settings";
 
 const PauseMenu = "PauseMenu";
 
 const soundLabels = { 0: "Off", 10: "Max" };
 const soundLevel = level => soundLabels[level] || level;
-//await loadAudio(["effects", "hero"]);
 
-let soundVolumeLevel = 5;
 const soundOption = {
-  getName: () => `Sound [${soundLevel(soundVolumeLevel)}]`,
+  getName: () => {
+    const soundVolumeLevel = Math.round(audio.getEffectsVolume() * 10);
+    return `Sound [${soundLevel(soundVolumeLevel)}]`;
+  },
   left: () => {
+    let soundVolumeLevel = Math.round(audio.getEffectsVolume() * 10);
     soundVolumeLevel = Math.max(0, soundVolumeLevel - 1);
+    audio.setEffectVolume(soundVolumeLevel / 10.0);
+    updateSetting("effectsVolume", soundVolumeLevel / 10.0);
   },
   right: () => {
+    let soundVolumeLevel = Math.round(audio.getEffectsVolume() * 10);
     soundVolumeLevel = Math.min(10, soundVolumeLevel + 1);
+    audio.setEffectVolume(soundVolumeLevel / 10.0);
+    updateSetting("effectsVolume", soundVolumeLevel / 10.0);
   },
   select: () => {
-    console.log("Select");
+    //console.log("Select");
   },
   deselect: () => {
-    console.log("Deselect");
+    //console.log("Deselect");
   }
 };
 
-/*
-let musicVolumeLevel = 5;
 const musicOption = {
-  getName: () => `Music - ${soundLevel(musicVolumeLevel)}`,
+  getName: () => {
+    const musicVolumeLevel = Math.round(audio.getMusicVolume() * 10);
+    return `Music [${soundLevel(musicVolumeLevel)}]`;
+  },
   left: () => {
+    let musicVolumeLevel = Math.round(audio.getMusicVolume() * 10);
     musicVolumeLevel = Math.max(0, musicVolumeLevel - 1);
+    audio.setMusicVolume(musicVolumeLevel / 10.0);
+    updateSetting("musicVolume", musicVolumeLevel / 10.0);
   },
   right: () => {
+    let musicVolumeLevel = Math.round(audio.getMusicVolume() * 10);
     musicVolumeLevel = Math.min(10, musicVolumeLevel + 1);
+    audio.setMusicVolume(musicVolumeLevel / 10.0);
+    updateSetting("musicVolume", musicVolumeLevel / 10.0);
   },
   select: () => {
-    console.log("Select");
+    //console.log("Select");
   },
   deselect: () => {
-    console.log("Deselect");
+    //console.log("Deselect");
   }
 };
-*/
 
 const items = [
   //{ name: "Controls" },
@@ -53,7 +68,7 @@ const items = [
     }
   },
   soundOption,
-  //musicOption,
+  musicOption,
   {
     name: "Restart",
     spaceAbove: true,
