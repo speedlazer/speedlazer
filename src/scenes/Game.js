@@ -4,84 +4,9 @@ import PauseMenu from "src/components/ui/PauseMenu";
 import Animation from "src/components/Animation";
 import audio from "src/lib/audio";
 import { fadeOut } from "src/components/generic/ColorFade";
-import { togglePause } from "src/lib/core/pauseToggle";
 
 import Player from "src/components/player/Player";
 const DEFAULT_TAGS = ["campaign"];
-
-/*
-const soundLabels = { 0: "Off", 10: "Max" };
-const soundLevel = level => soundLabels[level] || level;
-
-let soundVolumeLevel = 5;
-const soundOption = {
-  getName: () => `Sound - ${soundLevel(soundVolumeLevel)}`,
-  left: () => {
-    soundVolumeLevel = Math.max(0, soundVolumeLevel - 1);
-  },
-  right: () => {
-    soundVolumeLevel = Math.min(10, soundVolumeLevel + 1);
-  },
-  select: () => {
-    console.log("Select");
-  },
-  deselect: () => {
-    console.log("Deselect");
-  }
-};
-
-let musicVolumeLevel = 5;
-const musicOption = {
-  getName: () => `Music - ${soundLevel(musicVolumeLevel)}`,
-  left: () => {
-    musicVolumeLevel = Math.max(0, musicVolumeLevel - 1);
-  },
-  right: () => {
-    musicVolumeLevel = Math.min(10, musicVolumeLevel + 1);
-  },
-  select: () => {
-    console.log("Select");
-  },
-  deselect: () => {
-    console.log("Deselect");
-  }
-};
-*/
-
-const items = [
-  //{ name: "Controls" },
-  {
-    name: "Resume",
-    activate: () => {
-      setTimeout(() => togglePause());
-    }
-  },
-  //soundOption,
-  //musicOption,
-  {
-    name: "Restart",
-    spaceAbove: true,
-    dangerous: true,
-    activate: () => {
-      setTimeout(() => {
-        togglePause();
-        Crafty.trigger("EndGame", { mode: "restart" });
-        Crafty.enterScene("Game");
-      });
-    }
-  },
-  {
-    name: "Quit",
-    dangerous: true,
-    activate: () => {
-      setTimeout(() => {
-        togglePause();
-        Crafty.trigger("EndGame", { mode: "quit" });
-        Crafty.enterScene("Intro");
-      });
-    }
-  }
-];
 
 Crafty.defineScene(
   "Game",
@@ -91,10 +16,10 @@ Crafty.defineScene(
       if (paused) {
         const player = Crafty("Player").get(0);
         if (pauseMenu === null) {
-          pauseMenu = Crafty.e(PauseMenu).menuOptions(items, player);
+          pauseMenu = Crafty.e(PauseMenu).showMenu(player);
         } else {
           pauseMenu.unfreeze();
-          pauseMenu.attachController(player);
+          pauseMenu.showMenu(player);
         }
       } else {
         pauseMenu.freeze();
