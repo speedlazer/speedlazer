@@ -7,8 +7,7 @@ rm -r dist
 
 # Clean up for release
 git checkout gh-pages
-git rm -r audio images index.html scripts styles dist
-#git rm -r assets index.html game.*.js game.*.js.map
+git rm -r assets index.html game.*.js game.*.js.map
 git commit -m 'prepare for release'
 
 # Buid project
