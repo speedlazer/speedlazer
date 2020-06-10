@@ -13,6 +13,10 @@ Crafty.c(Animator, {
     this.animations = [];
   },
 
+  remove() {
+    this.unbind("GameLoop", this._animateTick);
+  },
+
   animate(transitionFn, duration, easing = "linear") {
     if (!transitionFn) {
       return Promise.resolve();

@@ -16,6 +16,10 @@ Crafty.c(Animation, {
     this.elements = {};
   },
 
+  remove() {
+    this.unbind("GameLoop", this._animateTick);
+  },
+
   setAnimation(animation, { maxCheckpoint = 0, start = 0, ...options } = {}) {
     if (this.currentAnimation === animation) return;
     this.currentAnimation = animation;

@@ -1,6 +1,7 @@
 import { createScriptExecutionSpace } from "src/lib/dsl";
 import gameStructure from "src/scripts";
 import PauseMenu from "src/components/ui/PauseMenu";
+import Animation from "src/components/Animation";
 import { stopMusic, fadeMusicVolume } from "src/lib/audio";
 import { fadeOut } from "src/components/generic/ColorFade";
 import { togglePause } from "src/lib/core/pauseToggle";
@@ -49,22 +50,37 @@ const musicOption = {
 
 const items = [
   //{ name: "Controls" },
-  //soundOption,
-  //musicOption,
   {
     name: "Resume",
     activate: () => {
       setTimeout(() => togglePause());
     }
+  },
+  //soundOption,
+  //musicOption,
+  {
+    name: "Restart",
+    spaceAbove: true,
+    dangerous: true,
+    activate: () => {
+      setTimeout(() => {
+        togglePause();
+        Crafty.trigger("EndGame", { mode: "restart" });
+        Crafty.enterScene("Game");
+      });
+    }
+  },
+  {
+    name: "Quit",
+    dangerous: true,
+    activate: () => {
+      setTimeout(() => {
+        togglePause();
+        Crafty.trigger("EndGame", { mode: "quit" });
+        Crafty.enterScene("Intro");
+      });
+    }
   }
-  //{
-  //name: "Quit",
-  //spaceAbove: true,
-  //dangerous: true,
-  //activate: () => {
-  ////Crafty.enterScene("Intro");
-  //}
-  //}
 ];
 
 Crafty.defineScene(
@@ -83,6 +99,11 @@ Crafty.defineScene(
       } else {
         pauseMenu.freeze();
       }
+    });
+
+    let endMode = null;
+    Crafty.one("EndGame", event => {
+      endMode = event.mode;
     });
 
     Crafty.viewport.x = 0;
@@ -115,6 +136,7 @@ Crafty.defineScene(
         score: this.state.score
       });
     } catch (e) {
+      if (endMode !== null) return;
       if (e.message !== "Game Over") {
         console.error(e);
       }
@@ -133,6 +155,9 @@ Crafty.defineScene(
     // destructor
     Crafty(Player).each(function() {
       this.removeComponent("ShipSpawnable");
+    });
+    Crafty(Animation).each(function() {
+      this.destroy();
     });
     Crafty.unbind("GameOver");
     Crafty.unbind("ScriptFinished");

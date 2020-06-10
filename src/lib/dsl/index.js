@@ -34,6 +34,11 @@ export const createScriptExecutionSpace = initialState => {
       Object.assign(dsl, wrap(functionSet(dsl, initialState), initialState))
     );
     if (initialState.gameEnded === true) return;
+    Crafty.one("EndGame", () => {
+      activeScript = null;
+      initialState.gameEnded = true;
+      Crafty.trigger("GameOver");
+    });
 
     try {
       return await script(dsl);
