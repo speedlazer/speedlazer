@@ -1,4 +1,4 @@
-import { playAudio } from "src/lib/audio";
+import audio from "src/lib/audio";
 
 export const helicopter = (pattern, repeatPattern) => async ({
   spawn,
@@ -22,7 +22,7 @@ export const helicopter = (pattern, repeatPattern) => async ({
     .addCollisionComponent("SolidCollision")
     .addCollisionComponent("PlayerEnemy");
   await allowDamage(heli, { health: 900 });
-  const heliAudio = playAudio("helicopter", { volume: 0.01 });
+  const heliAudio = audio.playAudio("helicopter", { volume: 0.01 });
   heliAudio.setVolume(2.0, 2000);
   await wait(2000);
   showState(heli, "shooting");

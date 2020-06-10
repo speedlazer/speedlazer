@@ -1,6 +1,6 @@
 import spritesheets from "src/images";
 import audiosheets from "src/audio";
-import { loadAudio } from "src/lib/audio";
+import audio from "src/lib/audio";
 
 const dataFunctions = () => ({
   loadSpriteSheets: async sheetNames =>
@@ -20,7 +20,7 @@ const dataFunctions = () => ({
       audioMaps
         .map(mapName => audiosheets.find(e => e.name === mapName))
         .filter(Boolean)
-        .map(map => loadAudio(map))
+        .map(map => audio.loadAudio(map))
     )
 });
 

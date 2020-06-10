@@ -9,7 +9,7 @@ import Flipable from "src/components/utils/flipable";
 import { EntityDefinition } from "src/components/EntityDefinition";
 import { tweenFn } from "src/components/generic/TweenPromise";
 import { easingFunctions } from "src/constants/easing";
-import { playAudio } from "src/lib/audio";
+import audio from "src/lib/audio";
 import { flipRotation, rotX, normVector } from "src/lib/rotation";
 
 /**
@@ -300,7 +300,7 @@ Crafty.c(Bullet, {
       if (upcoming.duration > 0) {
         if (upcoming.audio) {
           const [sample, settings] = [].concat(upcoming.audio);
-          playAudio(sample, settings);
+          audio.playAudio(sample, settings);
           upcoming.audio = null;
         }
         if (upcoming.frame !== undefined) {
@@ -682,7 +682,7 @@ Crafty.c(Weapon, {
           upcoming.stopAiming = undefined;
         }
         if (upcoming.audio) {
-          playAudio(upcoming.audio);
+          audio.playAudio(upcoming.audio);
           upcoming.audio = undefined;
         }
         if (upcoming.stopAiming === false) {

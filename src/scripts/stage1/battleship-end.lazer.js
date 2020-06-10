@@ -1,7 +1,7 @@
 import { droneWave } from "./enemies/drones.lazer";
 import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
-import { playAudio } from "src/lib/audio";
+import audio from "src/lib/audio";
 import { say } from "src/lib/Dialog";
 
 const part = async ({
@@ -20,7 +20,7 @@ const part = async ({
 
   await loadSpriteSheets(["mega-texture"]);
   await loadAudio(["effects", "hero"]);
-  playAudio("hero");
+  audio.playAudio("hero");
 
   await setScrollingSpeed(100, 0, { instant: true });
   await setScenery("City.Coast");

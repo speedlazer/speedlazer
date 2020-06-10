@@ -2,7 +2,7 @@ import { helicopter } from "./enemies/helicopter.lazer";
 import { droneShip } from "./enemies/droneShip.lazer";
 import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
-import { playAudio } from "src/lib/audio";
+import audio from "src/lib/audio";
 import { droneWave } from "./enemies/drones.lazer";
 import { mineWave } from "./enemies/mines.lazer";
 
@@ -22,7 +22,7 @@ const part = async ({
   text.fadeIn(2000);
   await loadSpriteSheets(["mega-texture"]);
   await loadAudio(["effects", "hero"]);
-  playAudio("hero");
+  audio.playAudio("hero");
   await setScrollingSpeed(250, 0, { instant: true });
   setAltitude(200, { instant: true });
   setBackground("City.Sunrise", 1, 2);

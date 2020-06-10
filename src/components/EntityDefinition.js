@@ -4,7 +4,7 @@ import Weapon from "src/components/Weapon";
 import ParticleEmitter from "src/components/ParticleEmitter";
 import { compositions, entities, particles, weapons } from "data";
 import merge from "lodash/merge";
-import { playAudio } from "src/lib/audio";
+import audio from "src/lib/audio";
 
 const convertLocation = location => {
   if (!location) return {};
@@ -60,7 +60,7 @@ const setEntityStructure = (root, entity, state, duration) => {
     );
   }
   if (state.audio) {
-    playAudio(state.audio);
+    audio.playAudio(state.audio);
   }
   if (state.entity) {
     entity.addComponent(EntityDefinition).applyDefinition(state.entity);

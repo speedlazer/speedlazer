@@ -1,7 +1,7 @@
 import { setGameSpeed } from "./gameSpeed";
 import ParticleEmitter from "src/components/ParticleEmitter";
 import PausableMotion from "src/components/PausableMotion";
-import { pauseAudio, resumeAudio } from "src/lib/audio";
+import audio from "src/lib/audio";
 
 let paused = false;
 
@@ -12,7 +12,7 @@ export const togglePause = () => {
 
   if (paused) {
     setGameSpeed(0.0);
-    pauseAudio();
+    audio.pauseAudio();
 
     Crafty("Delay").each(function() {
       return this.pauseDelays();
@@ -27,7 +27,7 @@ export const togglePause = () => {
       return this.pauseMotion();
     });
   } else {
-    resumeAudio();
+    audio.resumeAudio();
     setGameSpeed(1.0);
     Crafty("Delay").each(function() {
       return this.resumeDelays();

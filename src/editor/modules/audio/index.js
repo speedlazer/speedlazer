@@ -5,15 +5,10 @@ import { Text } from "editor/components/Text";
 import { Menu } from "editor/components/Menu";
 import { Divider } from "editor/components/Divider";
 import audiosheets from "src/audio";
-import {
-  loadAudio,
-  playAudio,
-  setEffectVolume,
-  setMusicVolume
-} from "src/lib/audio";
+import audio from "src/lib/audio";
 
-setEffectVolume(0.4);
-setMusicVolume(0.5);
+audio.setEffectVolume(0.4);
+audio.setMusicVolume(0.5);
 
 const pad = (num, length) => ("0".repeat(length) + num).slice(-length);
 
@@ -49,7 +44,7 @@ class Audiosheets extends Component {
   };
 
   loadAudio = async map => {
-    const activeAudio = await loadAudio(map);
+    const activeAudio = await audio.loadAudio(map);
     this.setState(s => ({ ...s, activeAudio }));
   };
 
@@ -57,7 +52,9 @@ class Audiosheets extends Component {
     if (this.state.playing) {
       this.audio && this.audio.stop();
     } else {
-      this.audio = await playAudio(this.props.activeSample, { volume: 1 });
+      this.audio = await audio.playAudio(this.props.activeSample, {
+        volume: 1
+      });
       this.audio.process.then(() => {
         this.setState(s => ({ ...s, playing: false }));
       });

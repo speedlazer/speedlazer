@@ -2,7 +2,7 @@ import { createScriptExecutionSpace } from "src/lib/dsl";
 import gameStructure from "src/scripts";
 import PauseMenu from "src/components/ui/PauseMenu";
 import Animation from "src/components/Animation";
-import { stopMusic, fadeMusicVolume } from "src/lib/audio";
+import audio from "src/lib/audio";
 import { fadeOut } from "src/components/generic/ColorFade";
 import { togglePause } from "src/lib/core/pauseToggle";
 
@@ -129,7 +129,7 @@ Crafty.defineScene(
         await runner(item.script);
       }
       const fade = fadeOut();
-      fadeMusicVolume(0, 2000);
+      audio.fadeMusicVolume(0, 2000);
       await fade.start(2000);
       Crafty.enterScene("GameOver", {
         gameCompleted: !this.state.gameEnded,
@@ -141,7 +141,7 @@ Crafty.defineScene(
         console.error(e);
       }
       const fade = fadeOut();
-      fadeMusicVolume(0, 2000);
+      audio.fadeMusicVolume(0, 2000);
       await fade.start(2000);
       Crafty.enterScene("GameOver", {
         score: this.state.score,
@@ -151,7 +151,7 @@ Crafty.defineScene(
   },
   function() {
     this.state.gameEnded = true;
-    stopMusic();
+    audio.stopMusic();
     // destructor
     Crafty(Player).each(function() {
       this.removeComponent("ShipSpawnable");

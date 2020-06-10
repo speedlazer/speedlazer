@@ -2,7 +2,7 @@ import { droneWave } from "./enemies/drones.lazer";
 import { backgroundHeli, heliAttack } from "./animations/backgroundHeli.lazer";
 import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
-import { playAudio } from "src/lib/audio";
+import audio from "src/lib/audio";
 import { say } from "src/lib/Dialog";
 
 const handleBox = box => async ({
@@ -39,8 +39,8 @@ const part = async ({
   text.fadeIn(2000);
   await loadSpriteSheets(["mega-texture"]);
   await loadAudio(["effects", "hero"]);
-  playAudio("hero");
-  const heliAudio = playAudio("helicopter", { volume: 0 });
+  audio.playAudio("hero");
+  const heliAudio = audio.playAudio("helicopter", { volume: 0 });
   onScriptClose(() => {
     heliAudio.stop();
   });

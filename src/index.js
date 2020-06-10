@@ -6,10 +6,10 @@ import { setupControls } from "./setup-game";
 import "src/lib/GameLoop";
 import Player from "src/components/player/Player";
 import { setGameSpeed } from "./lib/core/gameSpeed";
-import { setEffectVolume, setMusicVolume } from "src/lib/audio";
+import audio from "src/lib/audio";
 
-setEffectVolume(0.4);
-setMusicVolume(0.4);
+audio.setEffectVolume(0.4);
+audio.setMusicVolume(0.4);
 setGameSpeed(1.0);
 
 Crafty.paths({

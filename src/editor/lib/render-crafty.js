@@ -25,10 +25,9 @@ import {
 import { createEntity } from "src/components/EntityDefinition";
 import { setScenery, setScrollVelocity } from "src/components/Scenery";
 import { getBezierPath } from "src/lib/BezierPath";
-import { loadAudio } from "src/lib/audio";
+import audio from "src/lib/audio";
 import gameStructure from "src/scripts";
 import { createScriptExecutionSpace } from "src/lib/dsl";
-import { stopMusic } from "src/lib/audio";
 import Player from "src/components/player/Player";
 
 Crafty.paths({
@@ -315,7 +314,7 @@ const loadSpriteSheets = async () =>
   });
 
 const loadAllAudio = () => {
-  const loadingPromises = audiosheets.map(map => loadAudio(map));
+  const loadingPromises = audiosheets.map(map => audio.loadAudio(map));
   return Promise.all(loadingPromises);
 };
 
@@ -699,7 +698,7 @@ Crafty.defineScene(
   },
   function() {
     this.state.gameEnded = true;
-    stopMusic();
+    audio.stopMusic();
     Crafty(Player).each(function() {
       this.removeComponent("ShipSpawnable");
     });

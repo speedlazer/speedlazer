@@ -2,7 +2,7 @@ import { bigText } from "src/components/BigText";
 import { droneWave } from "./drones.lazer";
 import { say } from "src/lib/Dialog";
 import { battleshipMines } from "./mines.lazer.js";
-import { playAudio } from "src/lib/audio";
+import audio from "src/lib/audio";
 import { EASE_IN_OUT, EASE_OUT, LINEAR } from "src/constants/easing";
 
 const shootMineCannon = (cannon, high) => async ({
@@ -207,7 +207,7 @@ const helicopter1 = ship => async ({
   moveWithPattern
 }) => {
   const helicopter = ship.heliPlace1;
-  const heliAudio = playAudio("helicopter", { volume: 0.01 });
+  const heliAudio = audio.playAudio("helicopter", { volume: 0.01 });
   heliAudio.setVolume(0.9, 1000);
   showState(helicopter, "flying");
   await wait(1000);
@@ -288,7 +288,7 @@ const helicopter2 = ship => async ({
   until
 }) => {
   const helicopter = ship.heliPlace2;
-  const heliAudio = playAudio("helicopter", { volume: 0.01 });
+  const heliAudio = audio.playAudio("helicopter", { volume: 0.01 });
   heliAudio.setVolume(0.9, 1000);
   showState(helicopter, "flying");
   await wait(1000);
