@@ -79,6 +79,17 @@ module.exports = {
         ]
       },
       {
+        test: /\.(woff2)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              outputPath: "assets/"
+            }
+          }
+        ]
+      },
+      {
         test: /\.(ogg|mp3)$/,
         use: [
           {
