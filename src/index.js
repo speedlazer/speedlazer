@@ -68,6 +68,12 @@ const scaleGame = () => {
 };
 
 window.addEventListener("resize", scaleGame);
+window.addEventListener("load", () => {
+  const stage = document.getElementById("cr-stage");
+  stage.addEventListener("click", () => {
+    stage.focus();
+  });
+});
 
 // Handle the fullscreen button
 const button = document.querySelector("button");
