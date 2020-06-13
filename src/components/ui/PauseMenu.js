@@ -9,6 +9,8 @@ const PauseMenu = "PauseMenu";
 const soundLabels = { 0: "Off", 10: "Max" };
 const soundLevel = level => soundLabels[level] || level;
 
+const gameVersion = /* eslint-env node */ process.env.VERSION;
+
 const soundOption = {
   getName: () => {
     const soundVolumeLevel = Math.round(audio.getEffectsVolume() * 10);
@@ -126,14 +128,18 @@ Crafty.c(PauseMenu, {
       z: 200
     }).color("#222222");
 
+    let menuHeight = 70;
     centeredText("Game paused", this, 20);
 
     this.menu = Crafty.e(Menu)
       .attr({ x: this.x, w: this.w, y: this.y + 70, z: this.z + 1 })
       .menu(options, controller);
     this.attach(this.menu);
+    menuHeight += this.menu.h + 10;
 
-    const menuHeight = this.menu.h + 70;
+    centeredText(`version: ${gameVersion}`, this, menuHeight, "#eeeeee", "8px");
+    menuHeight += 20;
+
     this.attr({
       y: (Crafty.viewport.height - menuHeight) / 2,
       h: menuHeight

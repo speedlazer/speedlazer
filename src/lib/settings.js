@@ -27,9 +27,8 @@ export const updateSetting = (key, value) => {
 
 export const setting = (item, defaultValue) => {
   const settings = getSettings();
-  const value = settings[item] || defaultValue;
-
-  return value;
+  const value = settings[item];
+  return value === undefined ? defaultValue : value;
 };
 
 export default setting;

@@ -3,8 +3,13 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const webpack = require("webpack");
 const babel = require("./babel");
+
 const cleanOptions = {
   root: path.resolve(__dirname, "..")
+};
+
+const buildVersion = function() {
+  return require("../package.json").version;
 };
 
 module.exports = {
@@ -30,12 +35,15 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(["dist"], cleanOptions),
     new HtmlWebpackPlugin({
-      template: "src/index.html",
+      template: "src/index.ejs",
+      templateParameters: {
+        version: buildVersion(),
+        useFooter: process.env.TARGET_ENV === "site"
+      },
       excludeChunks: ["editor"]
     }),
     new webpack.ProvidePlugin({
       Crafty: ["src/crafty", "default"]
-      //Game: ["src/game", "default"]
     })
   ],
   module: {

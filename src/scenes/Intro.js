@@ -69,7 +69,7 @@ Crafty.defineScene(
 
     const gamepadConnect = Crafty.e("2D, DOM, Text")
       .attr({ x: 0, y: h * 0.95, w })
-      .text("No gamepad detected")
+      .text("")
       .textColor("#303030")
       .textAlign("center")
       .textFont({
@@ -79,7 +79,7 @@ Crafty.defineScene(
       });
 
     window.addEventListener("gamepadconnected", () => {
-      gamepadConnect.text("Gamepad detected!");
+      gamepadConnect.text(`Gamepad detected!`);
     });
     const pads = window.navigator.getGamepads();
     const hasGamePad = Array.from(pads).some(pad => pad && pad.connected);
