@@ -2,7 +2,7 @@
 set -e
 
 # Dry run
-yarn build
+TARGET_ENV=site yarn build
 rm -r dist
 
 # Clean up for release
@@ -12,8 +12,7 @@ git commit -m 'prepare for release'
 
 # Buid project
 git checkout -
-TARGET_ENV=site
-yarn build
+TARGET_ENV=site yarn build
 git checkout -
 
 # Move files to root

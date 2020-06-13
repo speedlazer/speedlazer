@@ -3,8 +3,7 @@ set -e
 
 # Dry run
 COMMIT_MSG=$(TZ=UTC git log -n 1 --format=format:"beta built from commit %h (%cd)" --date=local)
-TARGET_ENV=site
-yarn build
+TARGET_ENV=site yarn build
 mv dist dist_pub
 
 # Clean up for release
