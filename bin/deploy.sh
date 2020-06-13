@@ -12,6 +12,7 @@ git commit -m 'prepare for release'
 
 # Buid project
 git checkout -
+TARGET_ENV=site
 yarn build
 git checkout -
 
