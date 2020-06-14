@@ -39,7 +39,7 @@ const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({
         if (mine.appliedEntityState === "explode") return;
         awardPoints(100, mine.x, mine.y);
         showState(mine, "dead");
-        addScreenTrauma(0.2);
+        addScreenTrauma(0.3);
 
         await wait(500);
         mine.destroy();
@@ -61,7 +61,7 @@ const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({
           await wait(1000);
           if (mine.appliedEntityState === "dead") return;
           showState(mine, "explode");
-          addScreenTrauma(0.2);
+          addScreenTrauma(0.3);
           await wait(500);
           mine.destroy();
         }
@@ -136,9 +136,9 @@ const battleShipMineStrike = (index, start, coord) => async ({
         activeMovement && activeMovement.abort();
         if (mine.appliedEntityState === "explode") return;
         showState(mine, "dead");
-        addScreenTrauma(0.2);
+        addScreenTrauma(0.3);
 
-        await wait(500);
+        await wait(1000);
         mine.destroy();
         activeMovement && activeMovement.abort();
       }),
@@ -150,8 +150,8 @@ const battleShipMineStrike = (index, start, coord) => async ({
         await showState(mine, "open", 500);
         if (mine.appliedEntityState !== "dead") {
           showState(mine, "dead");
-          addScreenTrauma(0.2);
-          await wait(500);
+          addScreenTrauma(0.3);
+          await wait(1000);
           mine.destroy();
         }
       }

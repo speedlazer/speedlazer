@@ -38,7 +38,20 @@ export default {
             }
           },
           smoke: {
-            particles: { emitter: "drone.smoke" }
+            particles: {
+              emitter: [
+                "drone.smoke",
+                {
+                  emitter: {
+                    w: 80,
+                    h: 80,
+                    amount: 500,
+                    duration: 600
+                  },
+                  particle: { startSize: 30, endSize: 20 }
+                }
+              ]
+            }
           }
         }
       },
@@ -56,7 +69,20 @@ export default {
             }
           },
           smoke: {
-            particles: { emitter: "drone.smoke" }
+            particles: {
+              emitter: [
+                "drone.smoke",
+                {
+                  emitter: {
+                    w: 80,
+                    h: 80,
+                    amount: 500,
+                    duration: 600
+                  },
+                  particle: { startSize: 30, endSize: 20 }
+                }
+              ]
+            }
           }
         }
       }
