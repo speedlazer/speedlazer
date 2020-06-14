@@ -43,9 +43,9 @@ export default {
                 "drone.smoke",
                 {
                   emitter: {
-                    w: 80,
-                    h: 80,
-                    amount: 500,
+                    w: 60,
+                    h: 60,
+                    amount: 450,
                     duration: 600
                   },
                   particle: { startSize: 30, endSize: 20 }
@@ -74,9 +74,9 @@ export default {
                 "drone.smoke",
                 {
                   emitter: {
-                    w: 80,
-                    h: 80,
-                    amount: 500,
+                    w: 60,
+                    h: 60,
+                    amount: 450,
                     duration: 600
                   },
                   particle: { startSize: 30, endSize: 20 }
