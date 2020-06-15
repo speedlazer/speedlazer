@@ -13,6 +13,8 @@ export const playerShip = ({
   allowDamage,
   setHealthbar,
   showState,
+  setGameSpeed,
+  addScreenTrauma,
   wait,
   loseLife
 }) => {
@@ -64,7 +66,9 @@ export const playerShip = ({
     }
 
     if (newHealth < maxHealth * 0.5) {
-      ship.displayFrame("damaged");
+      if (ship.appliedEntityState !== "dead") {
+        ship.displayFrame("damaged");
+      }
     }
   });
 
@@ -82,11 +86,20 @@ export const playerShip = ({
 
   waitForEvent(ship, "Dead", async () => {
     ship.attr({ disableControls: true, vx: 0, vy: 0 });
-    await showState(ship, "dead");
+    addScreenTrauma(0.8);
+    setGameSpeed(0.1);
+    const state = showState(ship, "dead");
+    await wait(150);
+    setGameSpeed(0.5);
+    await wait(600);
+    addScreenTrauma(0.5);
+    await state;
     const isTurned = !!ship.xFlipped;
     const hasLaser = ship.hasLaser;
     ship.destroy();
     await loseLife();
+    setGameSpeed(1.0);
+    await wait(1000);
     exec(playerShip({ turned: isTurned, hasLaser }));
   });
 };

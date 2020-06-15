@@ -9,6 +9,7 @@ import {
   getAltitude
 } from "src/components/Scenery";
 import { animations } from "data";
+import { setGameSpeed } from "src/lib/core/gameSpeed";
 import {
   setBackground,
   setBackgroundCheckpoint,
@@ -128,6 +129,7 @@ const levelFunctions = state => ({
       }
     }
   },
+  setGameSpeed: setGameSpeed,
   fadeIn: fadeIn,
   fadeOut: fadeOut,
   setBackgroundCheckpointLimit: async limit => {

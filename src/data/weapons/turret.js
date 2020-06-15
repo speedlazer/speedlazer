@@ -105,10 +105,10 @@ export default {
         composition: "weapons.laser",
         queue: [
           {
-            duration: 300
+            duration: 350
           },
           { velocity: 0 },
-          { duration: 200 },
+          { duration: 150 },
           { duration: 300, frame: "disappear" }
         ],
         damage: [

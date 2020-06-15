@@ -86,14 +86,15 @@ Crafty.c(ShipCollision, {
       this.processDamage(damage);
     });
     this.onHit("PlayerHit", hits => {
+      if (this.health <= 0) return;
       hits.map(hitData => {
-        const e = hitData.obj;
+        const source = hitData.obj;
         const damage = {
           velocity: -5e3,
           affects: "health",
           name: "Impact"
         };
-        e.processDamage && e.processDamage(damage);
+        source.processDamage && source.processDamage(damage);
       });
     });
   },
