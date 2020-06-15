@@ -67,13 +67,13 @@ export default {
   },
   "background.horizon": {
     attributes: {
-      width: 1024,
+      width: 1230,
       height: 50
     },
     gradients: [
       {
         z: 2,
-        w: 1024,
+        w: 1230,
         h: 50,
         key: "sky",
         topColor: ["#dddd00", 0],
@@ -92,13 +92,13 @@ export default {
   },
   "background.sky": {
     attributes: {
-      width: 1024,
+      width: 1230,
       height: 576
     },
     gradients: [
       {
         z: 2,
-        w: 1024,
+        w: 1230,
         h: 400,
         key: "sky",
         topColor: ["#000000", 0],

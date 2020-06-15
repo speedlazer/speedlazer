@@ -4,7 +4,7 @@ export default {
       {
         composables: [
           ["background.night", { key: "night" }],
-          ["background.sky", { key: "sky", frame: "default" }]
+          ["background.sky", { key: "sky", frame: "default", relativeX: -0.1 }]
         ],
         backgroundColor: "#000010",
         timeline: {
@@ -21,10 +21,15 @@ export default {
       {
         composables: [
           ["background.night", { key: "night", frame: "middle" }],
-          ["background.sky", { key: "sky", frame: "dawn2" }],
+          ["background.sky", { key: "sky", frame: "dawn2", relativeX: -0.1 }],
           [
             "background.horizon",
-            { key: "stripe", frame: "default", relativeY: 0.49 }
+            {
+              key: "stripe",
+              frame: "default",
+              relativeY: 0.49,
+              relativeX: -0.1
+            }
           ]
         ],
         entities: [
@@ -71,10 +76,15 @@ export default {
       {
         composables: [
           ["background.night", { key: "night", frame: "end" }],
-          ["background.sky", { key: "sky", frame: "dawn5" }],
+          ["background.sky", { key: "sky", frame: "dawn5", relativeX: -0.1 }],
           [
             "background.horizon",
-            { key: "stripe", frame: "default", relativeY: 0.46 }
+            {
+              key: "stripe",
+              frame: "default",
+              relativeY: 0.46,
+              relativeX: -0.1
+            }
           ]
         ],
         entities: [
@@ -139,7 +149,9 @@ export default {
         }
       },
       {
-        composables: [["background.sky", { key: "sky", frame: "dawn7" }]],
+        composables: [
+          ["background.sky", { key: "sky", frame: "dawn7", relativeX: -0.1 }]
+        ],
         entities: [
           ["Sun", { key: "sun", state: "full", relativeX: 0.8, relativeY: 0.3 }]
         ],
@@ -166,7 +178,9 @@ export default {
         }
       },
       {
-        composables: [["background.sky", { key: "sky", frame: "dawn9" }]],
+        composables: [
+          ["background.sky", { key: "sky", frame: "dawn9", relativeX: -0.1 }]
+        ],
         entities: [
           [
             "Sun",

@@ -25,7 +25,7 @@ const shootMineCannon = (cannon, high) => async ({
       x: spawnPoint.x,
       y: spawnPoint.y
     },
-    defaultVelocity: 400
+    defaultVelocity: 350
   }).attr({ z: spawnPoint.z });
   waitForEvent(mine, "Loose", async () => {
     mine.attr({ z: mine.z + 30 });
