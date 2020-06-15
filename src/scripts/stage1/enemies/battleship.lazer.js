@@ -25,7 +25,7 @@ const shootMineCannon = (cannon, high) => async ({
       x: spawnPoint.x,
       y: spawnPoint.y
     },
-    defaultVelocity: 300
+    defaultVelocity: 350
   }).attr({ z: spawnPoint.z });
   waitForEvent(mine, "Loose", async () => {
     mine.attr({ z: mine.z + 30 });
@@ -56,9 +56,9 @@ const shootMineCannon = (cannon, high) => async ({
           searchMovement && searchMovement.abort();
           if (mine.appliedEntityState === "explode") return;
           showState(mine, "dead");
-          addScreenTrauma(0.2);
+          addScreenTrauma(0.3);
 
-          await wait(500);
+          await wait(1000);
           mine.destroy();
           searchMovement && searchMovement.abort();
         }),
@@ -71,8 +71,8 @@ const shootMineCannon = (cannon, high) => async ({
           await wait(1000);
           if (mine.appliedEntityState !== "dead") {
             showState(mine, "explode");
-            addScreenTrauma(0.2);
-            await wait(500);
+            addScreenTrauma(0.3);
+            await wait(1000);
             mine.destroy();
           }
         }
@@ -478,6 +478,7 @@ const part6 = ship => async ({
   showState,
   waitForEvent,
   awardPoints,
+  addScreenTrauma,
   exec,
   wait
 }) => {
@@ -486,7 +487,9 @@ const part6 = ship => async ({
   const killed = waitForEvent(cabin, "Dead", async () => {
     awardPoints(2000, cabin.x + cabin.w / 2, cabin.y);
     showState(ship, "cabin1Explode");
+    addScreenTrauma(0.5);
     await wait(2000);
+    addScreenTrauma(0.5);
     cabin.clearCollisionComponents();
     showState(ship, "cabin1Smoke");
   });
@@ -499,6 +502,7 @@ const part6 = ship => async ({
 const part7 = ship => async ({
   allowDamage,
   showState,
+  addScreenTrauma,
   waitForEvent,
   awardPoints,
   wait
@@ -508,7 +512,9 @@ const part7 = ship => async ({
   const killed = waitForEvent(cabin, "Dead", async () => {
     awardPoints(2000, cabin.x + cabin.w / 2, cabin.y);
     showState(ship, "cabin2Explode");
+    addScreenTrauma(0.5);
     await wait(2000);
+    addScreenTrauma(0.5);
     cabin.clearCollisionComponents();
     showState(ship, "cabin2Smoke");
   });
