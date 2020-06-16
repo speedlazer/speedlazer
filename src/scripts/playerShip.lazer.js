@@ -87,10 +87,10 @@ export const playerShip = ({
   waitForEvent(ship, "Dead", async () => {
     ship.attr({ disableControls: true, vx: 0, vy: 0 });
     addScreenTrauma(0.8);
-    setGameSpeed(0.1);
+    setGameSpeed(0.4);
     const state = showState(ship, "dead");
     await wait(150);
-    setGameSpeed(0.5);
+    setGameSpeed(0.7);
     await wait(600);
     addScreenTrauma(0.5);
     await state;
