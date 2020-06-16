@@ -4,6 +4,7 @@ import PauseMenu from "src/components/ui/PauseMenu";
 import Animation from "src/components/Animation";
 import audio from "src/lib/audio";
 import { fadeOut } from "src/components/generic/ColorFade";
+import { setGameSpeed } from "src/lib/core/gameSpeed";
 
 import Player from "src/components/player/Player";
 const DEFAULT_TAGS = ["campaign"];
@@ -12,6 +13,7 @@ Crafty.defineScene(
   "Game",
   async function({ start = null, tags = DEFAULT_TAGS } = {}) {
     let pauseMenu = null;
+    setGameSpeed(1.0);
     Crafty.bind("GamePause", paused => {
       if (paused) {
         const player = Crafty("Player").get(0);
