@@ -141,7 +141,7 @@ export default {
           transitions: [
             {
               start: 0.0,
-              end: 0.5,
+              end: 0.35,
               key: "heli",
               path: { name: "intro.HeliLiftOff", start: 0.2, end: 1.0 }
             },

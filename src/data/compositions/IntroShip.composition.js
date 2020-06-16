@@ -5,12 +5,12 @@ export default {
       height: 108
     },
     sprites: [
-      ["aircraftCarrierBottomFlat", { x: -64, y: 10, z: 5 }],
-      ["aircraftCarrierBottomSpace", { x: 64, y: 10, z: 5 }],
-      ["aircraftCarrierBottomFlat", { x: 192, y: 10, z: 5 }],
-      ["aircraftCarrierBottomFlat", { x: 320, y: 10, z: 5 }],
-      ["aircraftCarrierBottomFlat", { x: 448, y: 10, z: 5 }],
-      ["aircraftCarrierBottomFlat", { x: 576, y: 10, z: 5 }],
+      ["aircraftCarrierBottomFlat", { x: -64, y: 10 }],
+      ["aircraftCarrierBottomSpace", { x: 64, y: 10 }],
+      ["aircraftCarrierBottomFlat", { x: 192, y: 10 }],
+      ["aircraftCarrierBottomFlat", { x: 320, y: 10 }],
+      ["aircraftCarrierBottomFlat", { x: 448, y: 10 }],
+      ["aircraftCarrierBottomFlat", { x: 576, y: 10 }],
       ["aircraftCarrierEnd", { x: 704, y: -54 }],
 
       ["aircraftCarrierTopFlat", { x: -64, y: -54 }],
