@@ -51,7 +51,7 @@ export const ColorFade = "ColorFade";
 const getFader = () =>
   Crafty("ScreenFader").get(0) ||
   Crafty.e(`WebGL, 2D, ScreenFader, ${ColorFade}`).attr({
-    z: 200,
+    z: 5000,
     x: 0,
     y: 0,
     w: Crafty.viewport.width,
