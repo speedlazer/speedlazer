@@ -14,6 +14,7 @@ module.exports = merge(common, {
     })
   ],
   devtool: "source-map",
+  stats: "errors-only",
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin()]
