@@ -68,12 +68,14 @@ const part = async ({
     async () => {
       await introAnimation.waitTillCheckpoint(1);
       heliAudio.setVolume(2.0, 1500);
+    },
+    async () => {
+      await introAnimation.waitTillCheckpoint(3);
+      heliAudio.setVolume(0.6, 3000);
+      exec(playerShip({ existing: true }));
     }
   ]);
-  await introAnimation.waitTillCheckpoint(3);
-  heliAudio.setVolume(0.6, 3000);
 
-  exec(playerShip({ existing: true }));
   showHUD();
   const ready = bigText("Get ready", { color: "#FF0000" });
   const blink = ready.blink(200, 4);
@@ -90,13 +92,13 @@ const part = async ({
       await ready.zoomOut(500);
       ready.remove();
       helicopter = exec(backgroundHeli({ existing: true }));
-      await say(
-        "General",
-        "We send some drones for some last manual target practice",
-        { portrait: "portraits.general" }
-      );
       await parallel([
         async () => {
+          await say(
+            "General",
+            "We send some drones for some last manual target practice",
+            { portrait: "portraits.general" }
+          );
           await say("John", "Let's go!", { portrait: "portraits.pilot" });
         },
         async () => {

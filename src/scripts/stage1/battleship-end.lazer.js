@@ -80,6 +80,26 @@ const part = async ({
           speed: 330
         })
       );
+    },
+    async () => {
+      await wait(10000);
+      await exec(
+        droneWave(4, "drone.straight", {
+          delay: 400,
+          yOffset: -0.1,
+          speed: 330
+        })
+      );
+    },
+    async () => {
+      await wait(12000);
+      await exec(
+        droneWave(4, "drone.straight", {
+          delay: 400,
+          yOffset: 0.1,
+          speed: 330
+        })
+      );
     }
   ]);
 };

@@ -6,7 +6,7 @@ export default {
           ["IntroShip", { key: "ship", relativeX: -0.3, relativeY: 0.8 }]
         ],
         timeline: {
-          defaultDuration: 3500,
+          defaultDuration: 3000,
           transitions: [
             {
               key: "ship",
@@ -18,7 +18,9 @@ export default {
                   { x: -0.2, y: 0.8 }
                 ]
               }
-            }
+            },
+            { start: 0.4, end: 0.6, key: "ship", targetState: "t2o" },
+            { start: 0.6, end: 1.0, key: "ship", targetState: "t2r" }
           ]
         }
       },
@@ -52,13 +54,11 @@ export default {
           ]
         ],
         timeline: {
-          defaultDuration: 2000,
+          defaultDuration: 500,
           transitions: [
-            { start: 0.0, end: 0.3, key: "ship", targetState: "t2o" },
-            { start: 0.3, end: 0.5, key: "ship", targetState: "t2r" },
-            { start: 0.7, end: 1.0, key: "heli", targetState: "flying" },
-            { start: 0.5, end: 0.7, key: "ship", targetState: "shipStart" },
-            { start: 0.9, end: 1.0, key: "ship", targetState: "shipLiftOff" }
+            { start: 0.2, end: 1.0, key: "heli", targetState: "flying" },
+            { start: 0.0, end: 0.8, key: "ship", targetState: "shipStart" },
+            { start: 0.8, end: 1.0, key: "ship", targetState: "shipLiftOff" }
           ]
         }
       },
@@ -84,7 +84,7 @@ export default {
           ]
         ],
         timeline: {
-          defaultDuration: 2000,
+          defaultDuration: 1500,
           transitions: [
             {
               start: 0.0,
