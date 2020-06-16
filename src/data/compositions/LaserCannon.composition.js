@@ -8,6 +8,28 @@ export default {
     sprites: [
       ["turretFoot", { x: 64, y: 24, key: "foot" }],
       [
+        "laserGunCore",
+        {
+          x: 35,
+          y: 0,
+          z: 0,
+          crop: [0, 13, 0, 0],
+          key: "core1",
+          attachTo: "barrel"
+        }
+      ],
+      [
+        "laserGunCore",
+        {
+          x: 6,
+          y: 0,
+          z: 0,
+          crop: [0, 13, 0, 0],
+          key: "core2",
+          attachTo: "core1"
+        }
+      ],
+      [
         "laserGunHandle",
         {
           x: 54,
@@ -38,28 +60,6 @@ export default {
           attachTo: "barrel",
           ro: [30, 8],
           crop: [14, 0, 0, 0]
-        }
-      ],
-      [
-        "laserGunCore",
-        {
-          x: 6,
-          y: 0,
-          z: -2,
-          crop: [0, 13, 0, 0],
-          key: "core1",
-          attachTo: "barrel"
-        }
-      ],
-      [
-        "laserGunCore",
-        {
-          x: 35,
-          y: 0,
-          z: -3,
-          crop: [0, 13, 0, 0],
-          key: "core2",
-          attachTo: "core1"
         }
       ]
     ],
