@@ -5,7 +5,7 @@ import "./scenes";
 import { setupControls } from "./setup-game";
 import "src/lib/GameLoop";
 import Player from "src/components/player/Player";
-import { setGameSpeed } from "./lib/core/gameSpeed";
+import { setGameSpeed } from "src/lib/core/gameSpeed";
 import audio from "src/lib/audio";
 import setting from "src/lib/settings";
 
