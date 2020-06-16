@@ -137,11 +137,11 @@ export default {
           ]
         ],
         timeline: {
-          defaultDuration: 12000,
+          defaultDuration: 8000,
           transitions: [
             {
               start: 0.0,
-              end: 0.3,
+              end: 0.5,
               key: "heli",
               path: { name: "intro.HeliLiftOff", start: 0.2, end: 1.0 }
             },
