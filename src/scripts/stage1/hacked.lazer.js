@@ -23,7 +23,7 @@ const part = async ({
   await loadSpriteSheets(["mega-texture"]);
   await loadAudio(["effects", "hero"]);
   audio.playAudio("hero");
-  await setScrollingSpeed(250, 0, { instant: true });
+  await setScrollingSpeed(350, 0, { instant: true });
   setAltitude(200, { instant: true });
   setBackground("City.Sunrise", 1, 2);
   await setScenery("City.Ocean");

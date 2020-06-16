@@ -20,7 +20,7 @@ const part = async ({
   await loadAudio(["effects", "hero"]);
   audio.playAudio("hero");
 
-  await setScrollingSpeed(250, 0, { instant: true });
+  await setScrollingSpeed(350, 0, { instant: true });
   await setScenery("City.Coast");
   setBackground("City.Sunrise", 2, 2);
   showHUD();

@@ -22,14 +22,14 @@ const part = async ({
   await loadAudio(["effects", "hero"]);
   audio.playAudio("hero");
 
-  await setScrollingSpeed(100, 0, { instant: true });
+  await setScrollingSpeed(150, 0, { instant: true });
   await setScenery("City.Coast");
   setBackground("City.Sunrise", 3, 3);
   showHUD();
   text.remove();
   exec(playerShip({ existing: true, hasLaser: true }));
 
-  await setScrollingSpeed(250, 0);
+  await setScrollingSpeed(350, 0);
   await wait(500);
   await setScenery("City.BayStart");
   await say(

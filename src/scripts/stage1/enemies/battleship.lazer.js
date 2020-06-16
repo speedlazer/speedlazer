@@ -386,13 +386,12 @@ const part5 = ship => async ({
 
   await parallel([
     async () => {
-      await wait(1000);
       const playerShip = Crafty("PlayerShip").get(0);
       playerShip.trigger("turn");
 
       await wait(1000);
       await showState(ship, "engineDoorOpen");
-      await setScrollingSpeed(-50, 0);
+      await setScrollingSpeed(-100, 0);
       const activeMovement = moveTo(ship, { x: -0.9 }, 85, EASE_IN_OUT);
       await activeMovement.process;
     },
@@ -552,7 +551,7 @@ const battleship = async ({
   const text = bigText("Warning!", { color: "#FF0000" });
   await parallel([
     () => text.blink(500, 4),
-    () => setScrollingSpeed(100, 0),
+    () => setScrollingSpeed(150, 0),
     () =>
       say("John", "Battleship approaching!", { portrait: "portraits.pilot" })
   ]);
@@ -614,7 +613,7 @@ const battleship = async ({
 
   const playerShip = Crafty("PlayerShip").get(0);
   playerShip.trigger("turn");
-  await setScrollingSpeed(100, 0);
+  await setScrollingSpeed(150, 0);
 
   // major explosions / sinking
   parallel([

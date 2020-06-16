@@ -44,7 +44,7 @@ const part = async ({
   onScriptClose(() => {
     heliAudio.stop();
   });
-  await setScrollingSpeed(100, 0, { instant: true });
+  await setScrollingSpeed(150, 0, { instant: true });
   await setScenery("City.Ocean");
   setBackground("City.Sunrise", 0, 2);
   const fade = fadeIn();
@@ -82,7 +82,7 @@ const part = async ({
 
   let helicopter;
 
-  await setScrollingSpeed(250, 0);
+  await setScrollingSpeed(350, 0);
   await parallel([
     async () => {
       await introAnimation.waitTillEnd();

@@ -34,7 +34,7 @@ export const droneShip = () => async ({
       rx: 1.1,
       ry: 0.7
     },
-    defaultVelocity: 120
+    defaultVelocity: 150
   });
   exec(handleBox(ship.boxLocation1));
   showState(ship, "activateGun");
