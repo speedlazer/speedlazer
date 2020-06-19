@@ -138,14 +138,19 @@ const part = async ({
   await say("General", "What is that!", { portrait: "portraits.general" });
   await say("General", "Evacuate! now!", { portrait: "portraits.general" });
   await wait(1000);
-  await say("General", "The helicopter is out of control!", {
-    portrait: "portraits.general"
-  });
-  await wait(2000);
   const chapter1 = bigText("Hacked", { color: "#FFFFFF", sup: "Chapter 1:" });
-  await chapter1.fadeIn(500);
-  await wait(2000);
-  await chapter1.fadeOut(500);
+  await parallel([
+    () =>
+      say("General", "The helicopter is out of control!", {
+        portrait: "portraits.general"
+      }),
+    async () => {
+      await wait(2000);
+      await chapter1.fadeIn(500);
+      await wait(2000);
+      await chapter1.fadeOut(500);
+    }
+  ]);
   chapter1.remove();
   await parallel([
     () => exec(droneWave(5, "drone.pattern3")),

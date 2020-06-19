@@ -15,6 +15,7 @@ export const playerShip = ({
   showState,
   setGameSpeed,
   addScreenTrauma,
+  playerHit,
   wait,
   loseLife
 }) => {
@@ -59,6 +60,9 @@ export const playerShip = ({
   ship.addComponent(ShipControls, ShipCollision);
 
   ship.uniqueBind("HealthChange", newHealth => {
+    if (newHealth < ship.health) {
+      playerHit(newHealth - ship.health);
+    }
     try {
       setHealthbar(newHealth / 50);
     } catch (e) {

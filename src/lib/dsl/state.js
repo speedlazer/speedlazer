@@ -1,5 +1,6 @@
 import TweenPromise from "src/components/generic/TweenPromise";
 import Health from "src/components/Health";
+import { scorePoints, playerHit, reset, getMultiplier } from "./bonus";
 
 let pointsPool = [];
 Crafty.bind("SceneDestroy", () => (pointsPool = []));
@@ -76,13 +77,33 @@ const stateFunctions = (dsl, state) => {
     })
     .dynamicTextGeneration(true, "GameLoop");
 
+  const multiplier = (
+    Crafty("HUDMultiplier").get(0) ||
+    Crafty.e(`2D, HUDMultiplier, UILayerDOM, Text, HUD, ${TweenPromise}`)
+      .attr({ x: 800, y: 10, w: 220, alpha: 0 })
+      .textColor("#FFFF00")
+      .textAlign("left")
+      .textFont({
+        size: "8px",
+        weight: "bold",
+        family: "Press Start 2P"
+      })
+  ).text(`Bonus: ${getMultiplier()}x`);
+  Crafty.bind("MultiplierChange", () =>
+    multiplier.text(`Bonus: ${getMultiplier()}x`)
+  );
+
   const closeScripts = [];
 
-  const onSceneDestroy = () => dsl.closeScript();
+  const onSceneDestroy = () => {
+    dsl.closeScript();
+    reset();
+  };
   Crafty.one("SceneDestroy", onSceneDestroy);
 
   dsl.closeScript = () => {
     Crafty.unbind("SceneDestroy", onSceneDestroy);
+    Crafty.unbind("MultiplierChange");
     closeScripts.forEach(c => c());
   };
 
@@ -114,12 +135,16 @@ const stateFunctions = (dsl, state) => {
       state.lives += 1;
       lives.text(`Lives: ${state.lives}`);
     },
-    awardPoints: async (amount, x, y) => {
+    awardPoints: async (amount, x, y, countToBonus = true) => {
       state.score += amount;
       score.attr({ score: state.score });
+      if (countToBonus) {
+        scorePoints(amount, x, y, dsl);
+      }
       await awardText(`+${amount}`, x, y);
     },
     awardText,
+    playerHit: playerHit,
     showHUD: () => {
       if (state.hudShown === true) return;
       state.hudShown = true;
