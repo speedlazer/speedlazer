@@ -1,5 +1,6 @@
+const enemyThreshold = 10;
+const baseScore = 25;
 let scoreThreshold = 100;
-let enemyThreshold = 10;
 let pointsScored = 0;
 let enemies = 0;
 let multiplier = 1;
@@ -10,7 +11,7 @@ export const scorePoints = (amount, x, y, dsl) => {
   pointsScored += amount;
   enemies += 1;
   if (pointsScored >= scoreThreshold && enemies >= enemyThreshold) {
-    dsl.exec(bonusSpawn(x, y, multiplier * 10));
+    dsl.exec(bonusSpawn(x, y, multiplier * baseScore));
 
     pointsScored = 0;
     enemies = 0;
@@ -38,12 +39,12 @@ const bonusSpawn = (x, y, points) => async ({
   awardPoints,
   moveWithPattern
 }) => {
-  const extraLife = spawn("ExtraLife", {
+  const extraLife = spawn("Bonus", {
     location: {
       x,
       y
     },
-    defaultVelocity: 50
+    defaultVelocity: 40
   });
   await allowDamage(extraLife, { health: 10 });
   waitForEvent(extraLife, "Dead", async () => {
@@ -54,7 +55,7 @@ const bonusSpawn = (x, y, points) => async ({
     await wait(2000);
     extraLife.destroy();
   });
-  const motion = moveWithPattern(extraLife, "powerup.circles");
+  const motion = moveWithPattern(extraLife, "powerup.short");
   await motion.process;
   await showState(extraLife, "disappear", 1000);
   extraLife.destroy();

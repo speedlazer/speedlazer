@@ -18,6 +18,39 @@ export default {
       }
     }
   },
+  Bonus: {
+    structure: {
+      composition: "powerups.bonus",
+      animation: "default",
+      components: ["DamageSupport", "PlayerHit"]
+    },
+    states: {
+      pickedUp: {
+        frame: "pickedUp",
+        animation: null,
+        audio: "powerup",
+        attachments: {
+          explosion: {
+            particles: {
+              emitter: [
+                "powerup.pickup",
+                {
+                  particle: {
+                    startColor: [0.65, 0.48, 0.0, 0.6],
+                    endColor: [0.65, 0.48, 0.0, 0]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      disappear: {
+        animation: null,
+        frame: "disappear"
+      }
+    }
+  },
   Upgrade: {
     structure: {
       composition: "powerups.upgrade",
