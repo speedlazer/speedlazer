@@ -1,6 +1,7 @@
 import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
 import { rocketStrike } from "./enemies/rockets.lazer";
+import { largeDrone } from "./enemies/largeDrone.lazer";
 import audio from "src/lib/audio";
 
 const part = async ({
@@ -10,10 +11,8 @@ const part = async ({
   loadAudio,
   setBackground,
   parallel,
-  wait,
   exec,
   waitTillInScreen,
-  playAnimation,
   showHUD
 }) => {
   const text = bigText("Loading...");
@@ -28,7 +27,7 @@ const part = async ({
   setBackground("City.Sunrise", 3, 3);
   showHUD();
   text.remove();
-  exec(playerShip({ existing: true }));
+  exec(playerShip({ existing: true, hasLaser: true }));
 
   const warning = bigText("Warning!", { color: "#FF0000" });
   await warning.blink(500, 4);
@@ -46,17 +45,7 @@ const part = async ({
       await exec(rocketStrike());
     }
   ]);
-
-  await wait(10e3);
-
-  const bridgeCrash = playAnimation("City.Bridge", { max: 2 });
-  await wait(10e3);
-
-  bridgeCrash.updateCheckpointLimit(Infinity);
-  await bridgeCrash.waitTillCheckpoint(3);
-  await setScrollingSpeed(200, 0);
-
-  await wait(20e3);
+  await exec(largeDrone());
 };
 
 export default part;

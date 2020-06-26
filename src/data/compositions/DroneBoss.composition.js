@@ -4,9 +4,9 @@ export default {
       width: 90,
       height: 70,
       scale: 1,
-      ro: [25, 35]
+      ro: [45, 35]
     },
-    hitbox: [0, 20, 50, 0, 60, 40, 0, 50],
+    hitbox: [0, 20, 80, 0, 50, 60, 20, 67, 0, 50],
     sprites: [
       ["standardLargeDrone", { x: 0, y: 0, key: "main", horizon: [0, 0] }],
       [

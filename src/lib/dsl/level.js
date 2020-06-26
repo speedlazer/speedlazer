@@ -66,7 +66,7 @@ const levelFunctions = state => ({
   },
   setScrollingSpeed: async (x, y, { speed = 50, instant = false } = {}) => {
     const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
-    instant
+    return instant
       ? scenery.setScrollVelocity({ vx: -x, vy: y })
       : new Promise(resolve => {
           const vPSec = speed / 1000;
