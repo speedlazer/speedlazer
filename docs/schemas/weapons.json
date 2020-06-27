@@ -158,6 +158,7 @@
                         "maxItems": 2,
                         "items": { "type": "integer" }
                       },
+                      "collide": { "type": "string" },
                       "cleanOutOfScreen": { "type": "boolean" },
                       "aimOnTarget": { "type": "boolean" },
                       "sight": { "type": "integer", "minimum": 0 },

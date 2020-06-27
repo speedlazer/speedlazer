@@ -62,9 +62,9 @@ export default {
   "largeDrone.homingRocket": {
     spawnRhythm: {
       initialDelay: 1000,
-      burst: 5,
+      burst: 3,
       shotDelay: 250,
-      burstDelay: 8000,
+      burstDelay: 1000,
       shot: [
         { spawn: true, duration: 100 },
         { state: "fireRocket", duration: 200 },
@@ -96,7 +96,8 @@ export default {
           { velocity: 0, angle: 0, autoRotate: true },
           { duration: 500 },
           { velocity: [450, 500], steering: 180, sight: 360 },
-          { duration: 4000 }
+          { duration: 4000 },
+          { collide: "PlayerShip" }
         ],
         collisions: {
           PlayerShip: {
@@ -122,11 +123,13 @@ export default {
           }
         ],
         queue: [
+          { cleanOutOfScreen: true },
           { duration: 550 },
           { velocity: 0, angle: 0 },
           { duration: 170 },
           { velocity: [450, 500] },
-          { duration: 6000 }
+          { duration: 6000 },
+          { collide: "PlayerShip" }
         ],
         collisions: {
           PlayerShip: {

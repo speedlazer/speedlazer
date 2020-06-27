@@ -133,6 +133,7 @@ Crafty.c(Bullet, {
     const collisionConfig = this.bulletSettings.collisions[collisionType];
     this.cooldowns[collisionType] = 30;
     if (
+      obj &&
       obj.processDamage &&
       this.bulletSettings.damage &&
       Crafty.rectManager.overlap(obj, Crafty.viewport.rect())
@@ -148,7 +149,7 @@ Crafty.c(Bullet, {
         this.weaponDefinition,
         name,
         settings,
-        obj,
+        this,
         position,
         this.target
       );
@@ -265,6 +266,17 @@ Crafty.c(Bullet, {
         if (upcoming.cleanOutOfScreen !== undefined) {
           this.addComponent(ScreenBound);
         }
+        if (upcoming.collide !== undefined) {
+          this._targetHit(
+            undefined,
+            {
+              x: this.ox,
+              y: this.oy
+            },
+            upcoming.collide
+          );
+          upcoming.collide = undefined;
+        }
         if (upcoming.steering !== undefined) {
           this.addComponent(Steering).attr({
             steering: upcoming.steering,
@@ -326,7 +338,10 @@ Crafty.c(Bullet, {
       }
     }
 
-    if (this.bulletTime > this.maxBulletTime) {
+    if (
+      this.bulletTime > this.maxBulletTime &&
+      this.bulletSettings.queue.length === 0
+    ) {
       this.unbind("GameLoop", this._updateBullet);
       if (this._parent) {
         this._parent.detach(this);
