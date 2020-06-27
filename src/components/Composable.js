@@ -335,6 +335,18 @@ const displaySpriteAnimationFn = (entity, animationDefinition) => {
   };
 };
 
+const Hook = "ComposableHook";
+Crafty.c(Hook, {
+  events: {
+    Freeze() {
+      this._children.forEach(child => child.freeze && child.freeze());
+    },
+    Unfreeze() {
+      this._children.forEach(child => child.unfreeze && child.unfreeze());
+    }
+  }
+});
+
 const Composable = "Composable";
 
 Crafty.c(Composable, {
@@ -783,7 +795,7 @@ Crafty.c(Composable, {
 
   buildAttachHooks(attachHooks) {
     attachHooks.forEach(([label, options]) => {
-      const hook = this.currentAttachHooks[label] || Crafty.e("2D");
+      const hook = this.currentAttachHooks[label] || Crafty.e(`2D, ${Hook}`);
       hook.attr({
         x: this.x + (options.x || 0),
         y: this.y + (options.y || 0),
