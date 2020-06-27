@@ -13,6 +13,12 @@ export default {
           particles: {
             emitter: ["drone.trail", { particle: { startSize: 15 } }]
           }
+        },
+        rockets: {
+          weapon: {
+            pattern: "largeDrone.homingRocket",
+            target: "PlayerShip"
+          }
         }
       }
     },
@@ -32,6 +38,21 @@ export default {
         audio: "laugh"
       },
       reload: {
+        animation: "rocketReload"
+      },
+      shootRockets: {
+        attachments: {
+          rockets: {
+            weapon: {
+              active: true
+            }
+          }
+        }
+      },
+      fireRocket: {
+        animation: "rocketShot"
+      },
+      reloadRocket: {
         animation: "rocketReload"
       },
       damaged: {
@@ -65,6 +86,12 @@ export default {
         scenery: "City.Ocean",
         scrollSpeed: { vx: -100, vy: 0 },
         background: ["City.Sunrise", 1]
+      },
+      {
+        name: "Bridge",
+        scenery: "City.Bridge",
+        scrollSpeed: { vx: 0, vy: 0 },
+        background: ["City.Sunrise", 3]
       }
     ]
   },

@@ -29,6 +29,7 @@ export const largeDrone = () => async ({
       ),
     () => showState(drone, "laugh")
   ]);
+  showState(drone, "shootRockets");
 
   await wait(10e3);
   const bridgeCrash = playAnimation("City.Bridge", { max: 2 });

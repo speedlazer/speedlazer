@@ -72,6 +72,16 @@ export default {
           attachAlign: ["center", "left"],
           attachTo: "main"
         }
+      ],
+      [
+        "rockets",
+        {
+          x: 45,
+          y: 38,
+          z: 2,
+          attachAlign: ["center", "center"],
+          attachTo: "main"
+        }
       ]
     ],
     frames: {
@@ -82,10 +92,16 @@ export default {
         rocket: { horizon: [0.7, 0.7] }
       },
       rocketShow: {
-        rocket: { y: -10, scale: 0.6 }
+        rocket: { y: -10, scale: 0.6, alpha: 1 }
+      },
+      rocketReset: {
+        rocket: { y: -10, scale: 0.6, alpha: 0 }
       },
       rocketLoaded: {
-        rocket: { y: 0, scale: 1.0 }
+        rocket: { y: 0, scale: 1.0, alpha: 1 }
+      },
+      rocketShot: {
+        rocket: { y: 0, scale: 1.0, alpha: 0 }
       },
       eyeMove: {
         eye: {
@@ -222,21 +238,39 @@ export default {
           }
         ]
       },
+      rocketShot: {
+        easing: "linear",
+        duration: 400,
+        timeline: [
+          {
+            start: 0.0,
+            end: 0.2,
+            startFrame: "rocketLoaded",
+            endFrame: "rocketShot"
+          },
+          {
+            start: 0.2,
+            end: 0.5,
+            startFrame: "rocketShot",
+            endFrame: "rocketReset"
+          },
+          {
+            start: 0.5,
+            end: 1.0,
+            startFrame: "rocketReset",
+            endFrame: "rocketShow"
+          }
+        ]
+      },
       rocketReload: {
         easing: "linear",
-        duration: 3000,
+        duration: 1500,
         after: {
           animation: "eye"
         },
         timeline: [
           {
             start: 0.0,
-            end: 0.1,
-            startFrame: "rocketLoaded",
-            endFrame: "rocketShow"
-          },
-          {
-            start: 0.1,
             end: 1.0,
             startFrame: "rocketShow",
             endFrame: "rocketLoaded"
