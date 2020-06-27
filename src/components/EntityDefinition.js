@@ -141,7 +141,11 @@ const setEntityStructure = (root, entity, state, duration) => {
           .weapon({ ...state.weapon, pattern });
       }
     }
-    state.weapon.active ? entity.activate() : entity.deactivate();
+    tasks.push(
+      state.weapon.active
+        ? entity.activate(state.weapon.maxBursts)
+        : entity.deactivate()
+    );
   }
 
   if (state.attachments && typeof entity.attachEntity === "function") {

@@ -220,8 +220,6 @@ Crafty.c(Bullet, {
         let beamDistance = Infinity;
         let beamCollide = null;
         let collisionType = null;
-        //const ent = this._parent.mainEntity;
-        //const marge = ent.vx * -0.001 * dt;
         const nVec = normVector(this.angle);
 
         Object.keys(this.bulletSettings.collisions).forEach(c => {
@@ -521,15 +519,13 @@ Crafty.c(Weapon, {
     }
   },
 
-  activate() {
+  async activate(bursts = undefined) {
     if (!this.definition.pattern) return;
     this.active = true;
     this.burstsFired = 0;
     this.activatedAt = new Date() * 1;
     const spawnRhythm = this.definition.pattern.spawnRhythm;
-    if (spawnRhythm.maxBursts === undefined) {
-      spawnRhythm.maxBursts = Infinity;
-    }
+    this.maxBursts = bursts || spawnRhythm.maxBursts || Infinity;
 
     this.initialDelay = adjustForDifficulty(
       this.difficulty,
@@ -538,7 +534,10 @@ Crafty.c(Weapon, {
     this._makeQueue();
 
     this.uniqueBind("GameLoop", this._updateSpawnFrame);
-    return this;
+
+    return new Promise(resolve => {
+      this.one("WeaponFireComplete", () => resolve(this));
+    });
   },
 
   _makeQueue() {
@@ -555,9 +554,10 @@ Crafty.c(Weapon, {
     );
   },
 
-  deactivate() {
+  async deactivate() {
     this.active = false;
     this.unbind("GameLoop", this._updateSpawnFrame);
+    this.trigger("WeaponFireComplete");
     return this;
   },
 
@@ -715,7 +715,7 @@ Crafty.c(Weapon, {
             adjustForDifficulty(this.difficulty, spawnRhythm.shotDelay);
           const maxBursts = adjustForDifficulty(
             this.difficulty,
-            spawnRhythm.maxBursts
+            this.maxBursts
           );
           if (maxBursts <= this.burstsFired) {
             this.deactivate();

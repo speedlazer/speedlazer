@@ -44,7 +44,8 @@ export default {
         attachments: {
           rockets: {
             weapon: {
-              active: true
+              active: true,
+              maxBursts: 1
             }
           }
         }
