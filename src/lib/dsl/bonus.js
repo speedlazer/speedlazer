@@ -39,24 +39,24 @@ const bonusSpawn = (x, y, points) => async ({
   awardPoints,
   moveWithPattern
 }) => {
-  const extraLife = spawn("Bonus", {
+  const bonus = spawn("Bonus", {
     location: {
       x,
       y
     },
     defaultVelocity: 40
   });
-  await allowDamage(extraLife, { health: 10 });
-  waitForEvent(extraLife, "Dead", async () => {
+  await allowDamage(bonus, { health: 10 });
+  waitForEvent(bonus, "Dead", async () => {
     awardPoints(points, x, y, false);
     multiplier += 1;
     Crafty.trigger("MultiplierChange", multiplier);
-    await showState(extraLife, "pickedUp");
+    await showState(bonus, "pickedUp");
     await wait(2000);
-    extraLife.destroy();
+    bonus.destroy();
   });
-  const motion = moveWithPattern(extraLife, "powerup.short");
+  const motion = moveWithPattern(bonus, "powerup.short");
   await motion.process;
-  await showState(extraLife, "disappear", 1000);
-  extraLife.destroy();
+  await showState(bonus, "disappear", 1000);
+  bonus.destroy();
 };

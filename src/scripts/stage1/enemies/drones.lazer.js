@@ -8,7 +8,7 @@ const droneFlight = (pattern, yOffset = 0, points = 0, speed = null) => async ({
   awardPoints,
   moveWithPattern
 }) => {
-  const flyPattern = paths(pattern);
+  const flyPattern = paths(pattern).path;
   const drone = spawn("WarDrone", {
     location: {
       rx: flyPattern[0].x,

@@ -41,7 +41,7 @@ const entityFunctions = (_, state) => ({
   },
   moveWithPattern: (entity, pattern, velocity = null, easing = LINEAR) => {
     const flyPattern = paths(pattern);
-    return move(entity, flyPattern, velocity, easing, state);
+    return move(entity, flyPattern.path, velocity, easing, state);
   },
   moveTo: (entity, coord, velocity = null, easing = LINEAR) => {
     const vpw = Crafty.viewport.width;

@@ -32,7 +32,7 @@ export class FlyPatternPreview extends Component {
         this.state.craftyMounted &&
         !prevState.craftyMounted)
     ) {
-      showFlyPattern(this.props.pattern, {
+      showFlyPattern(this.props.pattern.path, {
         showPoints: this.props.showPoints,
         showPath: this.props.showPath
       });

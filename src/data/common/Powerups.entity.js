@@ -7,7 +7,7 @@ export default {
     },
     states: {
       pickedUp: {
-        frame: "pickedUp",
+        frame: ["pickedUp", { duration: 300 }],
         animation: null,
         audio: "powerup",
         attachments: { explosion: { particles: { emitter: "powerup.pickup" } } }
@@ -26,7 +26,7 @@ export default {
     },
     states: {
       pickedUp: {
-        frame: "pickedUp",
+        frame: ["pickedUp", { duration: 300 }],
         animation: null,
         audio: "powerup",
         attachments: {
@@ -59,7 +59,7 @@ export default {
     },
     states: {
       pickedUp: {
-        frame: "pickedUp",
+        frame: ["pickedUp", { duration: 300 }],
         animation: null,
         audio: "powerup",
         attachments: {
