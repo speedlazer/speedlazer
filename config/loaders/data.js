@@ -1,6 +1,8 @@
 /* eslint-env node */
 require("@babel/register");
 const validate = require("jsonschema").validate;
+const { resolve } = require("path");
+const { readdir } = require("fs").promises;
 const fs = require("fs");
 
 const assignUnit = (amount, unitLevel = 0) =>
@@ -17,18 +19,29 @@ const toHuman = amount => {
   }`;
 };
 
+async function getFiles(dir) {
+  const dirents = await readdir(dir, { withFileTypes: true });
+  const files = await Promise.all(
+    dirents.map(dirent => {
+      const res = resolve(dir, dirent.name);
+      return dirent.isDirectory() ? getFiles(res) : res;
+    })
+  );
+  return files.flat();
+}
+
 // Based on:
 // https://v8.dev/blog/cost-of-javascript-2019#json
 
-module.exports = function(input) {
+module.exports = async function(input) {
   this.cacheable(true);
 
   const folders = JSON.parse(input);
   const path = this.resourcePath.split("/").slice(0, -1);
 
   const schemas = {};
-  const validateJSON = (filePath, fileContent, folder) => {
-    const schema = schemas[folder];
+  const validateJSON = (filePath, fileContent, type) => {
+    const schema = schemas[type];
     if (!schema) return;
     const relativePath = path.slice(0, -2).join("/");
     const result = validate(fileContent, schema);
@@ -39,7 +52,10 @@ module.exports = function(input) {
     );
   };
 
-  const allData = folders.reduce((acc, { name: folder, schema }) => {
+  this.addContextDependency(path.join("/"));
+  const entries = await getFiles(path.join("/"));
+
+  const allData = folders.reduce((acc, { name: entypoint, type, schema }) => {
     if (schema) {
       const schemaPath = path
         .slice(0, -2)
@@ -48,37 +64,30 @@ module.exports = function(input) {
       this.addDependency(schemaPath);
 
       const schemaContents = JSON.parse(fs.readFileSync(schemaPath, "utf8"));
-      schemas[folder] = schemaContents;
+      schemas[type] = schemaContents;
     }
 
-    const dirPath = path.concat(folder);
-    this.addContextDependency(dirPath.join("/"));
-    const entries = fs.readdirSync(dirPath.join("/"));
-
     const struct = entries.reduce((acc, entry) => {
-      if (entry.endsWith(".js")) {
-        const filePath = dirPath.concat(entry);
-
-        delete require.cache[require.resolve(filePath.join("/"))];
-        const file = require(filePath.join("/"));
+      if (entry.endsWith(`${type}.js`)) {
+        delete require.cache[require.resolve(entry)];
+        const file = require(entry);
         const fileContent = file.default;
-        validateJSON(filePath.join("/"), fileContent, folder);
+        validateJSON(entry, fileContent, type);
         return { ...acc, ...fileContent };
       }
-      if (entry.endsWith(".json")) {
-        const filePath = dirPath.concat(entry);
+      if (entry.endsWith(`${type}.json`)) {
         // watch this file now as well
-        this.addDependency(filePath.join("/"));
+        this.addDependency(entry);
 
-        const file = fs.readFileSync(filePath.join("/"), "utf8");
+        const file = fs.readFileSync(entry, "utf8");
         const fileContent = JSON.parse(file);
-        validateJSON(filePath.join("/"), fileContent, folder);
+        validateJSON(entry, fileContent, type);
         return { ...acc, ...fileContent };
       }
 
       return acc;
     }, {});
-    return { ...acc, [folder]: struct };
+    return { ...acc, [entypoint]: struct };
   }, {});
   const stringData = JSON.stringify(allData);
 
