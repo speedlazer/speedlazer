@@ -5,6 +5,7 @@ export const largeDrone = () => async ({
   playAnimation,
   setScrollingSpeed,
   showState,
+  until,
   spawn,
   parallel,
   wait
@@ -29,7 +30,16 @@ export const largeDrone = () => async ({
       ),
     () => showState(drone, "laugh")
   ]);
-  await showState(drone, "shootRockets");
+
+  await until(
+    () => showState(drone, "shootRockets"),
+    () => {
+      movement = moveWithPattern(drone, "largeDrone.eight");
+      return movement.process;
+    }
+  );
+
+  console.log("mine attack!");
 
   await wait(10e3);
   const bridgeCrash = playAnimation("City.Bridge", { max: 2 });

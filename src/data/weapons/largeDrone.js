@@ -96,7 +96,7 @@ export default {
           { velocity: 0, angle: 0, autoRotate: true },
           { duration: 500 },
           { velocity: [450, 500], steering: 180, sight: 360 },
-          { duration: 4000 },
+          { duration: 3000 },
           { collide: "PlayerShip" }
         ],
         collisions: {
@@ -128,7 +128,7 @@ export default {
           { velocity: 0, angle: 0 },
           { duration: 170 },
           { velocity: [450, 500] },
-          { duration: 6000 },
+          { duration: 4000 },
           { collide: "PlayerShip" }
         ],
         collisions: {
