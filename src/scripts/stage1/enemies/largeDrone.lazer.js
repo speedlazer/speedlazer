@@ -39,6 +39,14 @@ export const largeDrone = () => async ({
     }
   );
 
+  await until(
+    () => showState(drone, "rocketStrike"),
+    () => {
+      movement = moveWithPattern(drone, "largeDrone.eight2");
+      return movement.process;
+    }
+  );
+
   console.log("mine attack!");
 
   await wait(10e3);

@@ -77,8 +77,18 @@ export default {
         "rockets",
         {
           x: 45,
-          y: 38,
+          y: 40,
           z: 2,
+          attachAlign: ["center", "center"],
+          attachTo: "main"
+        }
+      ],
+      [
+        "rockets2",
+        {
+          x: 45,
+          y: 40,
+          z: 1,
           attachAlign: ["center", "center"],
           attachTo: "main"
         }
@@ -240,7 +250,7 @@ export default {
       },
       rocketShot: {
         easing: "linear",
-        duration: 400,
+        duration: 200,
         timeline: [
           {
             start: 0.0,
@@ -264,7 +274,7 @@ export default {
       },
       rocketReload: {
         easing: "linear",
-        duration: 1500,
+        duration: 300,
         after: {
           animation: "eye"
         },

@@ -59,11 +59,63 @@ export default {
       }
     }
   },
+  "largeDrone.rockets": {
+    spawnRhythm: {
+      initialDelay: 500,
+      burst: 16,
+      shotDelay: 10,
+      burstDelay: 1000,
+      shot: [
+        { spawn: true, duration: 100 },
+        { state: "fireRocket", duration: 200 },
+        { duration: 20 },
+        { state: "reloadRocket", duration: 300 }
+      ],
+      spawns: [["rocket", { angle: 0, autoRotate: false }]]
+    },
+    spawnables: {
+      rocket: {
+        spawnPosition: [0, 0.5],
+        velocity: 250,
+        entity: "HeliRocket",
+        damage: [
+          {
+            velocity: [-10e3, -30e3],
+            affects: "health",
+            duration: [4, 8],
+            name: "Blast"
+          }
+        ],
+        queue: [
+          { cleanOutOfScreen: true },
+          { velocity: [450, 500] },
+          { duration: 4000 },
+          { collide: "PlayerShip" }
+        ],
+        collisions: {
+          PlayerShip: {
+            state: "hide",
+            spawns: [["hit", {}]]
+          },
+          GravityLiquid: {
+            state: "waterHit",
+            spawns: [["hit", {}]]
+          }
+        }
+      },
+      hit: {
+        spawnPosition: "outside",
+        velocity: 0,
+        composition: "weapons.explosion",
+        queue: [{ duration: 100, audio: "explosion" }, { duration: 2000 }]
+      }
+    }
+  },
   "largeDrone.homingRocket": {
     spawnRhythm: {
       initialDelay: 1000,
       burst: 3,
-      shotDelay: 250,
+      shotDelay: 500,
       burstDelay: 1000,
       shot: [
         { spawn: true, duration: 100 },

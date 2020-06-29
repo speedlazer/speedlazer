@@ -19,6 +19,12 @@ export default {
             pattern: "largeDrone.homingRocket",
             target: "PlayerShip"
           }
+        },
+        rockets2: {
+          weapon: {
+            pattern: "largeDrone.rockets",
+            target: "PlayerShip"
+          }
         }
       }
     },
@@ -43,6 +49,16 @@ export default {
       shootRockets: {
         attachments: {
           rockets: {
+            weapon: {
+              active: true,
+              maxBursts: 1
+            }
+          }
+        }
+      },
+      rocketStrike: {
+        attachments: {
+          rockets2: {
             weapon: {
               active: true,
               maxBursts: 1
