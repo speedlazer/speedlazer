@@ -134,54 +134,6 @@ export default {
       endColorRandom: [0, 0, 0, 0]
     }
   },
-  "drone.trail": {
-    emitter: {
-      w: 2,
-      h: 2,
-      amount: 50,
-      fidelity: "high"
-    },
-    gravity: [0, 0],
-    particle: {
-      sprite: "explosion7",
-      angle: 0,
-      angleRandom: 0,
-      duration: 250,
-      durationRandom: 0,
-      velocity: 0,
-      velocityRandom: 10,
-      startSize: 10,
-      endSize: 1,
-      startColor: [0.5, 0.5, 0.9, 0.6],
-      startColorRandom: [0, 0, 0, 0],
-      endColor: [0.2, 0.2, 0.9, 0],
-      endColorRandom: [0, 0, 0, 0]
-    }
-  },
-  "drone.smoke": {
-    emitter: {
-      w: 2,
-      h: 2,
-      amount: 400,
-      duration: 300
-    },
-    gravity: [-100, 0],
-    particle: {
-      sprite: "explosion7",
-      angle: 0,
-      angleRandom: 360,
-      duration: 1800,
-      durationRandom: 0,
-      velocity: 10,
-      velocityRandom: 5,
-      startSize: 15,
-      endSize: 5,
-      startColor: [0.05, 0.05, 0.05, 0.6],
-      startColorRandom: [0, 0, 0, 0],
-      endColor: [0.05, 0.05, 0.05, 0],
-      endColorRandom: [0, 0, 0, 0]
-    }
-  },
   explosion: {
     emitter: {
       w: 2,
@@ -282,32 +234,6 @@ export default {
       endColorRandom: [0, 0, 0, 0]
     }
   },
-  laserCharge: {
-    emitter: {
-      w: 2,
-      h: 2,
-      amount: 70,
-      reverse: true
-    },
-    gravity: [0, 10],
-    particle: {
-      sprite: "explosion7",
-      angle: 0,
-      angleRandom: 360,
-      duration: 800,
-      durationRandom: 0,
-      velocity: 100,
-      velocityRandom: 15,
-      startSize: 6,
-      startSizeRandom: 1,
-      endSize: 1,
-      endSizeRandom: 0,
-      startColor: [1.0, 0.2, 0.0, 0.8],
-      startColorRandom: [0, 0, 0, 0],
-      endColor: [1.0, 1.0, 0.0, 0.2],
-      endColorRandom: [0, 0, 0, 0]
-    }
-  },
   "player.laserCharge": {
     emitter: {
       w: 2,
@@ -374,26 +300,6 @@ export default {
       startColorRandom: [0, 0.1, 0, 0.2],
       endColor: [0.1, 0.1, 0.1, 0],
       endColorRandom: [0, 0, 0, 0.2]
-    }
-  },
-  shells: {
-    emitter: {
-      w: 10,
-      h: 10,
-      amount: 170,
-      duration: 200
-    },
-    gravity: [0, 160],
-    particle: {
-      sprite: "bulletShell",
-      angle: -50,
-      angleRandom: 20,
-      duration: 1200,
-      velocity: 120,
-      startSize: 20,
-      endSize: 20,
-      startColor: [0.5, 0.6, 0.2, 1.0],
-      endColor: [0.5, 0.6, 0.2, 0.3]
     }
   },
   forceField: {
