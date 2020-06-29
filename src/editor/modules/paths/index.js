@@ -49,7 +49,7 @@ class FlyPatterns extends Component {
     );
     return (
       <section>
-        <Title>Paths - {pattern}</Title>
+        <Title>Paths{pattern && ` - ${pattern}`}</Title>
         <Divider>
           <Menu hoverHide={activePattern} items={items} />
           <div>

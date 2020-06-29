@@ -26,7 +26,7 @@ class Particles extends Component {
 
     return (
       <section>
-        <Title>Particles</Title>
+        <Title>Particles{activeParticles && ` - ${p}`}</Title>
         <Divider>
           <Menu
             items={Object.keys(particlesData).map(key => [
