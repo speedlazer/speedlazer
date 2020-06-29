@@ -1,5 +1,5 @@
 export default {
-  droneBoss: {
+  largeDrone: {
     attributes: {
       width: 90,
       height: 70,

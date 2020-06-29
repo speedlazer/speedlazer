@@ -1,7 +1,7 @@
 export default {
   LargeDrone: {
     structure: {
-      composition: "droneBoss",
+      composition: "largeDrone",
       components: [
         "DamageSupport",
         "GravitySupport",
@@ -98,7 +98,7 @@ export default {
   },
   LargeBackgroundDrone: {
     structure: {
-      composition: "droneBoss",
+      composition: "largeDrone",
       frame: "background",
       components: [],
       attachments: {
