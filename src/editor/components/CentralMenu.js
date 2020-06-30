@@ -51,10 +51,10 @@ const produceSmartItems = () => {
 
 export class CentralMenu extends Component {
   render({ root, hoverHide }) {
-    const [categoryMode, setCategoryMode] = useLocalStorage(
+    const [folderMode, setFolderMode] = useLocalStorage(
       this,
       "category-mode",
-      true
+      false
     );
 
     return (
@@ -62,16 +62,14 @@ export class CentralMenu extends Component {
         <label style={{ color: "white", whiteSpace: "nowrap" }}>
           <input
             type="checkbox"
-            checked={categoryMode}
-            onInput={e => setCategoryMode(e.target.checked)}
+            checked={folderMode}
+            onInput={e => setFolderMode(e.target.checked)}
           />
-          Category mode
+          Folder mode
         </label>
         <Menu
           hoverHide={hoverHide}
-          items={
-            categoryMode ? produceCategoryItems(root) : produceSmartItems()
-          }
+          items={folderMode ? produceSmartItems() : produceCategoryItems(root)}
         />
       </div>
     );
