@@ -37,23 +37,23 @@ Crafty.c(AnalogKeyboardControls, {
     if (e.key === this.controlMap.pause) {
       togglePause();
     }
-    if (e.key === this.controlMap.fire) {
+    if (this.controlMap.fire.some(key => key === e.key)) {
       this.trigger("Fire", e);
       this._player && this._player.trigger("Fire", e);
     }
-    if (e.key === this.controlMap.up) {
+    if (this.controlMap.up.some(key => key === e.key)) {
       this.trigger("Up", e);
       this._player && this._player.trigger("Up", e);
     }
-    if (e.key === this.controlMap.down) {
+    if (this.controlMap.down.some(key => key === e.key)) {
       this.trigger("Down", e);
       this._player && this._player.trigger("Down", e);
     }
-    if (e.key === this.controlMap.left) {
+    if (this.controlMap.left.some(key => key === e.key)) {
       this.trigger("Left", e);
       this._player && this._player.trigger("Left", e);
     }
-    if (e.key === this.controlMap.right) {
+    if (this.controlMap.right.some(key => key === e.key)) {
       this.trigger("Right", e);
       this._player && this._player.trigger("Right", e);
     }
@@ -117,12 +117,17 @@ Crafty.c(AnalogKeyboardControls, {
       });
 
     ship.controlName = mapItem => {
-      const key = this.controlMap[mapItem];
-      switch (key) {
-        case 32:
-          return "spacebar";
-      }
-      return `${String.fromCharCode(key)} key`;
+      const keys = this.controlMap[mapItem];
+      const names = keys.map(key => {
+        switch (key) {
+          case 32:
+            return "spacebar";
+        }
+
+        return `${String.fromCharCode(key)} key`;
+      });
+
+      return names.join(" or ");
     };
 
     ship.disableControls = false;
@@ -205,29 +210,29 @@ Crafty.c(AnalogKeyboardControls, {
       if (ship.disableControls) {
         return;
       }
-      if (e.key === controlMap.fire) {
+      if (controlMap.fire.some(key => key === e.key)) {
         ship.controlPrimary(true);
       }
-      if (e.key === controlMap.switchWeapon) {
+      if (controlMap.switchWeapon.some(key => key === e.key)) {
         ship.controlSwitch(true);
       }
-      if (e.key === controlMap.heavy) {
+      if (controlMap.heavy.some(key => key === e.key)) {
         ship.controlSecondary(true);
       }
-      if (e.key === controlMap.shield) {
+      if (controlMap.shield.some(key => key === e.key)) {
         ship.controlBlock(true);
       }
 
-      if (e.key === controlMap.up) {
+      if (controlMap.up.some(key => key === e.key)) {
         pressed.up = true;
       }
-      if (e.key === controlMap.down) {
+      if (controlMap.down.some(key => key === e.key)) {
         pressed.down = true;
       }
-      if (e.key === controlMap.left) {
+      if (controlMap.left.some(key => key === e.key)) {
         pressed.left = true;
       }
-      if (e.key === controlMap.right) {
+      if (controlMap.right.some(key => key === e.key)) {
         pressed.right = true;
       }
 
@@ -238,29 +243,29 @@ Crafty.c(AnalogKeyboardControls, {
       if (ship.disableControls) {
         return;
       }
-      if (e.key === controlMap.fire) {
+      if (controlMap.fire.some(key => key === e.key)) {
         ship.controlPrimary(false);
       }
-      if (e.key === controlMap.switchWeapon) {
+      if (controlMap.switchWeapon.some(key => key === e.key)) {
         ship.controlSwitch(false);
       }
-      if (e.key === controlMap.heavy) {
+      if (controlMap.heavy.some(key => key === e.key)) {
         ship.controlSecondary(false);
       }
-      if (e.key === controlMap.shield) {
+      if (controlMap.shield.some(key => key === e.key)) {
         ship.controlBlock(false);
       }
 
-      if (e.key === controlMap.up) {
+      if (controlMap.up.some(key => key === e.key)) {
         pressed.up = false;
       }
-      if (e.key === controlMap.down) {
+      if (controlMap.down.some(key => key === e.key)) {
         pressed.down = false;
       }
-      if (e.key === controlMap.left) {
+      if (controlMap.left.some(key => key === e.key)) {
         pressed.left = false;
       }
-      if (e.key === controlMap.right) {
+      if (controlMap.right.some(key => key === e.key)) {
         pressed.right = false;
       }
 

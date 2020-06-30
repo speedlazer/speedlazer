@@ -10,15 +10,15 @@ export const setupControls = () => {
     .color("#FF0000");
 
   Crafty.e([AnalogKeyboardControls, PlayerAssignable].join(", ")).controls({
-    fire: Crafty.keys.SPACE,
-    heavy: Crafty.keys.C,
-    switchWeapon: Crafty.keys.Z,
-    shield: Crafty.keys.X,
-    up: Crafty.keys.UP_ARROW,
-    down: Crafty.keys.DOWN_ARROW,
-    left: Crafty.keys.LEFT_ARROW,
-    right: Crafty.keys.RIGHT_ARROW,
-    pause: Crafty.keys.P
+    fire: [Crafty.keys.SPACE],
+    heavy: [Crafty.keys.C, Crafty.keys.SHIFT],
+    switchWeapon: [Crafty.keys.Z],
+    shield: [Crafty.keys.X],
+    up: [Crafty.keys.UP_ARROW, Crafty.keys.W],
+    down: [Crafty.keys.DOWN_ARROW, Crafty.keys.S],
+    left: [Crafty.keys.LEFT_ARROW, Crafty.keys.A],
+    right: [Crafty.keys.RIGHT_ARROW, Crafty.keys.D],
+    pause: [Crafty.keys.P]
   });
 
   Crafty.e([GamepadControls, PlayerAssignable].join(", ")).controls({
