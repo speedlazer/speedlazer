@@ -6,7 +6,7 @@ import { Source } from "editor/components/Source";
 import { Divider } from "editor/components/Divider";
 import { Title } from "editor/components/Title";
 import { Setting } from "editor/components/Setting";
-import { compositions, compositionsData } from "data";
+import { compositions } from "data";
 
 const DEFAULT_STATE = {
   showSize: false,
