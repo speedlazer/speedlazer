@@ -1,5 +1,4 @@
 import styles from "./Menu.scss";
-import { Link } from "preact-router/match";
 import { getCurrentUrl } from "preact-router";
 import { h, Component } from "preact";
 
