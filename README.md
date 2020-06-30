@@ -1,20 +1,23 @@
+[![Play in browser](https://img.shields.io/badge/play-browser-yellowgreen)](https://speedlazer.net)
+[![Play on itch.io](https://img.shields.io/badge/play-itch.io-yellowgreen)](https://thaisi.itch.io/speedlazer)
 [![Build Status](https://travis-ci.org/speedlazer/speedlazer.svg?branch=master)](https://travis-ci.org/speedlazer/speedlazer)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/speedlazer/speedlazer)
 
 # SpeedLazer SHMUP
 
 Development repo of a side scrolling shooter (SHMUP) made with Crafty.js and making use of the
 HTML5 Gamepad API.
 
-# Play
+# Controls
 
-[Click here to play!](https://speedlazer.net) This is the 'engine 1'
-version of the game. The current master branch contains the 'engine 2'
-version, but that version is not yet playable.
+You can use the arrow-keys and space to control the spaceship, or use a gamepad.
 
 To test if your gamepad is succesfully connected/working, use:
 http://html5gamepad.com/
 
-The latest `master` is automatically deployed to https://speedlazer.net/beta/
+The latest `master` is automatically deployed to https://speedlazer.net/beta/  
+The 2016 version is still playable at https://speedlazer.net/v1/
+
 
 # Versioning:
 
