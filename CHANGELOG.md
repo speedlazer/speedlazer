@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Bonus points with multiplier system
+- Alternative keyboard controls using WSAD
 
 ## [2.1.4] - 2020-06-16
 ### Added

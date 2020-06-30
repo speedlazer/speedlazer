@@ -10,7 +10,7 @@ HTML5 Gamepad API.
 
 # Controls
 
-You can use the arrow-keys and space to control the spaceship, or use a gamepad.
+You can use the arrow-keys/WSAD and space to control the spaceship, or use a gamepad.
 
 To test if your gamepad is succesfully connected/working, use:
 http://html5gamepad.com/
