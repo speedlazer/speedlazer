@@ -34,7 +34,7 @@ Crafty.c(AnalogKeyboardControls, {
   },
 
   _keyHandling(e) {
-    if (e.key === this.controlMap.pause) {
+    if (this.controlMap.pause.some(key => key === e.key)) {
       togglePause();
     }
     if (this.controlMap.fire.some(key => key === e.key)) {
