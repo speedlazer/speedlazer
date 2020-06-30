@@ -29,7 +29,14 @@
 .item {
     color: #cfc;
 }
-.item > a {
+.category {
+    background: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.5);
+    padding: 0.2rem;
+    font-size: 0.5rem;
+    margin-left: 0.5rem;
+}
+.menuLink {
     color: #ddd;
     text-decoration: none;
     padding-left: 1em;

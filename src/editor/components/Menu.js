@@ -16,7 +16,7 @@ const folderPath = (name, path) => {
   return `${parts.slice(0, -1).join("/")}/${name.split(".")[0]}`;
 };
 
-const makeFolders = (acc, [name, path]) => {
+const makeFolders = (acc, [name, path, options]) => {
   if (name.includes(".")) {
     const [folder, ...itemName] = name.split(".");
     const existingFolder = acc.find(isFolder(folder));
@@ -25,27 +25,42 @@ const makeFolders = (acc, [name, path]) => {
         name: folder,
         path: `/editor${folderPath(name, path)}`,
         type: "folder",
-        items: [[itemName.join("."), path]]
+        items: [[itemName.join("."), path, options]]
       });
     }
     return acc.map(e =>
       isFolder(folder)(e)
-        ? { ...e, items: e.items.concat([[itemName.join("."), path]]) }
+        ? { ...e, items: e.items.concat([[itemName.join("."), path, options]]) }
         : e
     );
   }
-  return acc.concat({ name, path, type: "item" });
+  return acc.concat({ name, path, options, type: "item" });
 };
 
-const Item = ({ name, path }) => (
+const Item = ({ name, path, options }) => (
   <li class={styles.item}>
     {typeof path === "string" ? (
-      <Link activeClassName={styles.active} href={path}>
-        {name}
-      </Link>
+      <span>
+        <a
+          native={options && options.native}
+          className={[
+            styles.menuLink,
+            getCurrentUrl().endsWith(path) && styles.active
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          href={path}
+        >
+          {name}
+        </a>
+        {options.category && (
+          <span className={styles.category}>{options.category}</span>
+        )}
+      </span>
     ) : typeof path === "function" ? (
       <a
-        activeClassName={styles.active}
+        native={options && options.native}
+        className={styles.menuLink}
         href="#"
         onClick={e => {
           e.preventDefault();
@@ -106,6 +121,7 @@ const createStructure = items =>
           <Item
             key={i}
             name={item.name}
+            options={item.options || {}}
             path={
               typeof item.path === "string"
                 ? `/editor${item.path}`
