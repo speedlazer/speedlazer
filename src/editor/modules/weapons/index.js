@@ -1,11 +1,12 @@
 import { h, Component } from "preact";
 import { Title } from "editor/components/Title";
 import { Menu } from "editor/components/Menu";
+import { CentralMenu } from "editor/components/CentralMenu";
 import { Source } from "editor/components/Source";
 import { Divider } from "editor/components/Divider";
 import { Text } from "editor/components/Text";
 import BulletPatternPreview from "./BulletPatternPreview";
-import { weapons, weaponsData } from "data";
+import { weapons } from "data";
 
 const weaponCollisionTypes = activeWeapon =>
   !activeWeapon
@@ -58,13 +59,7 @@ class Weapons extends Component {
       <section>
         <Title>Weapons{weapon && ` - ${weapon}`}</Title>
         <Divider>
-          <Menu
-            hoverHide={activeWeapon}
-            items={Object.keys(weaponsData).map(key => [
-              key,
-              `/weapons/${key}`
-            ])}
-          />
+          <CentralMenu hoverHide={activeWeapon} root="weapons" />
           {activeWeapon && (
             <div>
               <div>

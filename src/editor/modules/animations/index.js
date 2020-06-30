@@ -2,8 +2,9 @@ import Composable from "src/components/Composable";
 import { EntityDefinition } from "src/components/EntityDefinition";
 
 import { AnimationPreview } from "./AnimationPreview";
-import { animations, animationsData } from "data";
+import { animations } from "data";
 import { Menu } from "editor/components/Menu";
+import { CentralMenu } from "editor/components/CentralMenu";
 import { Source } from "editor/components/Source";
 import Log from "editor/components/Log";
 import { Divider } from "editor/components/Divider";
@@ -86,12 +87,7 @@ class Animations extends Component {
       <section>
         <Title>Animations</Title>
         <Divider>
-          <Menu
-            items={Object.keys(animationsData).map(key => [
-              key,
-              `/animations/${key}`
-            ])}
-          />
+          <CentralMenu root="animations" />
           {activeAnimation && (
             <div>
               <div>

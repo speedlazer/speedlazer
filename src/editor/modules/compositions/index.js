@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
 import { CompositionPreview } from "./CompositionPreview";
 import { Menu } from "editor/components/Menu";
+import { CentralMenu } from "editor/components/CentralMenu";
 import { Source } from "editor/components/Source";
 import { Divider } from "editor/components/Divider";
 import { Title } from "editor/components/Title";
@@ -73,13 +74,7 @@ class Compositions extends Component {
       <section>
         <Title>Compositions{compositionName && ` - ${compositionName}`}</Title>
         <Divider>
-          <Menu
-            hoverHide={activeComposition}
-            items={Object.keys(compositionsData).map(key => [
-              key,
-              `/compositions/${key}`
-            ])}
-          />
+          <CentralMenu hoverHide={activeComposition} root="compositions" />
           <div>
             <div>
               <Setting

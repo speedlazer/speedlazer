@@ -1,11 +1,12 @@
 import { h, Component } from "preact";
 import { SceneryPreview } from "./SceneryPreview";
 import { Menu } from "editor/components/Menu";
+import { CentralMenu } from "editor/components/CentralMenu";
 import { Source } from "editor/components/Source";
 import { Divider } from "editor/components/Divider";
 import { Title } from "editor/components/Title";
 import { Text } from "editor/components/Text";
-import { sceneriesData, sceneries, animations } from "data";
+import { sceneries, animations } from "data";
 
 class Sceneries extends Component {
   state = {
@@ -41,12 +42,7 @@ class Sceneries extends Component {
       <section>
         <Title>Scenery{scenery && ` - ${scenery}`}</Title>
         <Divider>
-          <Menu
-            items={Object.keys(sceneriesData).map(key => [
-              key,
-              `/sceneries/${key}`
-            ])}
-          />
+          <CentralMenu root="sceneries" />
           {activeScenery && (
             <div>
               <button onClick={this.toRight}>&laquo;</button>

@@ -1,10 +1,11 @@
 import { h } from "preact";
 import { EntityPreview } from "./EntityPreview";
 import { Menu } from "editor/components/Menu";
+import { CentralMenu } from "editor/components/CentralMenu";
 import { Source } from "editor/components/Source";
 import { Divider } from "editor/components/Divider";
 import { Title } from "editor/components/Title";
-import { entities, entitiesData } from "data";
+import { entities } from "data";
 
 const Entities = ({
   entity,
@@ -20,13 +21,7 @@ const Entities = ({
     <section>
       <Title>Entities{entity && ` - ${entity}`}</Title>
       <Divider>
-        <Menu
-          hoverHide={activeEntity}
-          items={Object.keys(entitiesData).map(name => [
-            name,
-            `/entities/${name}`
-          ])}
-        />
+        <CentralMenu hoverHide={activeEntity} root="entities" />
         <div>
           {activeEntity && activeEntity.states && (
             <Menu

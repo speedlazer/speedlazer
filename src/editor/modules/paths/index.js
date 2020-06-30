@@ -1,11 +1,11 @@
 import { h, Component } from "preact";
 import { Title } from "editor/components/Title";
-import { Menu } from "editor/components/Menu";
+import { CentralMenu } from "editor/components/CentralMenu";
 import { Source } from "editor/components/Source";
 import { Divider } from "editor/components/Divider";
 import { Setting } from "editor/components/Setting";
 import FlyPatternPreview from "./FlyPatternPreview";
-import { paths, pathsData } from "data";
+import { paths } from "data";
 
 const DEFAULT_STATE = {
   showPoints: true,
@@ -44,14 +44,11 @@ class FlyPatterns extends Component {
   render({ pattern }, { showPoints, showPath }) {
     const activePattern = paths(pattern);
     storeState(this.state);
-    const items = [].concat(
-      Object.keys(pathsData).map(key => [key, `/paths/${key}`])
-    );
     return (
       <section>
         <Title>Paths{pattern && ` - ${pattern}`}</Title>
         <Divider>
-          <Menu hoverHide={activePattern} items={items} />
+          <CentralMenu hoverHide={activePattern} root="paths" />
           <div>
             <div>
               <Setting checked={showPoints} onCheck={this.updateShowPoints}>

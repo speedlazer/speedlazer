@@ -30,6 +30,18 @@ async function getFiles(dir) {
   return files.flat();
 }
 
+const getRelativePath = (entry, dataRoot) => {
+  const relativePath = entry
+    .slice(dataRoot.length + 1)
+    .split("/")
+    .slice(0, -1)
+    .join(".");
+  return relativePath;
+};
+const injectFolderPath = (folder, contents) => {
+  Object.values(contents).forEach(item => (item.diskFolder = folder));
+};
+
 // Based on:
 // https://v8.dev/blog/cost-of-javascript-2019#json
 
@@ -51,9 +63,11 @@ module.exports = async function(input) {
       )
     );
   };
+  const dataRoot = resolve(path.join("/"));
 
   this.addContextDependency(path.join("/"));
   const entries = await getFiles(path.join("/"));
+  const injectPaths = process.env.NODE_ENV === "development";
 
   const allData = folders.reduce((acc, { name: entypoint, type, schema }) => {
     if (schema) {
@@ -73,15 +87,20 @@ module.exports = async function(input) {
         const file = require(entry);
         const fileContent = file.default;
         validateJSON(entry, fileContent, type);
+        if (injectPaths) {
+          const relativePath = getRelativePath(entry, dataRoot);
+          injectFolderPath(relativePath, fileContent);
+        }
         return { ...acc, ...fileContent };
       }
       if (entry.endsWith(`${type}.json`)) {
-        // watch this file now as well
-        this.addDependency(entry);
-
         const file = fs.readFileSync(entry, "utf8");
         const fileContent = JSON.parse(file);
         validateJSON(entry, fileContent, type);
+        if (injectPaths) {
+          const relativePath = getRelativePath(entry, dataRoot);
+          injectFolderPath(relativePath, fileContent);
+        }
         return { ...acc, ...fileContent };
       }
 
@@ -93,7 +112,7 @@ module.exports = async function(input) {
 
   console.log(`Bundling ${toHuman(stringData.length)} of game data`);
   const content = `
-const data = JSON.parse("${stringData.replace(/"/g, '\\"')}");
+export const data = JSON.parse("${stringData.replace(/"/g, '\\"')}");
 `;
   const exports = folders.map(
     ({ name: folder }) =>

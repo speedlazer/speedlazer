@@ -1,10 +1,10 @@
 import { h, Component } from "preact";
 import { Title } from "editor/components/Title";
-import { Menu } from "editor/components/Menu";
+import { CentralMenu } from "editor/components/CentralMenu";
 import { Source } from "editor/components/Source";
 import { Divider } from "editor/components/Divider";
 import ParticleEmitterPreview from "./ParticleEmitterPreview";
-import { particlesData, particles } from "data";
+import { particles } from "data";
 
 class Particles extends Component {
   state = {
@@ -28,12 +28,7 @@ class Particles extends Component {
       <section>
         <Title>Particles{activeParticles && ` - ${p}`}</Title>
         <Divider>
-          <Menu
-            items={Object.keys(particlesData).map(key => [
-              key,
-              `/particles/${key}`
-            ])}
-          />
+          <CentralMenu hoverHide={p} root="particles" />
           {activeParticles && (
             <div>
               <div>

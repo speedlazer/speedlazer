@@ -10,7 +10,8 @@ module.exports = merge(common, {
   mode: "production",
   plugins: [
     new webpack.DefinePlugin({
-      "process.env.VERSION": JSON.stringify(`${buildVersion()}`)
+      "process.env.VERSION": JSON.stringify(`${buildVersion()}`),
+      "process.env.APP_ENV": JSON.stringify("development")
     })
   ],
   devtool: "source-map",
