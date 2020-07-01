@@ -229,6 +229,37 @@ export default {
           }
         ],
         distance: 0.5
+      },
+      {
+        x: 20,
+        y: 3,
+        z: -54,
+        composition: [
+          "city.bridge.smallPillar",
+          {
+            attributes: { scale: 0.3 },
+            spriteAttributes: {
+              horizon: [0.4, 0.4]
+            }
+          }
+        ],
+        distance: 0.5
+      },
+      {
+        x: 430,
+        y: 3,
+        z: -54,
+        composition: [
+          "city.bridge.smallPillar",
+          {
+            attributes: { scale: 0.3 },
+            spriteAttributes: {
+              horizon: [0.4, 0.4],
+              flipX: true
+            }
+          }
+        ],
+        distance: 0.5
       }
     ]
   }

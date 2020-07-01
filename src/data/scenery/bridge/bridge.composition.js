@@ -66,5 +66,12 @@ export default {
         pillar: { sprite: "bridgePillarBroken", y: 200 }
       }
     }
+  },
+  "city.bridge.smallPillar": {
+    attributes: {
+      width: 192,
+      height: 189
+    },
+    sprites: [["bridgePillar", { z: 0, crop: [300, 0, 55, 0] }]]
   }
 };
