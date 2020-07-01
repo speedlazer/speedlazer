@@ -1,5 +1,5 @@
 export default {
-  "City.Intro": {
+  "city.Intro": {
     checkpoints: [
       {
         entities: [

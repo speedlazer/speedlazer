@@ -1,5 +1,5 @@
 export default {
-  "City.Bridge": {
+  "city.Bridge": {
     checkpoints: [
       {
         particles: [["dust.bridge", { key: "dust" }]],
@@ -210,9 +210,9 @@ export default {
       }
     ],
     habitat: {
-      scenery: "City.Bridge",
+      scenery: "city.Bridge",
       scrollSpeed: { vx: 0, vy: 0 },
-      background: ["City.Sunrise", 3]
+      background: ["city.Sunrise", 3]
     }
   }
 };

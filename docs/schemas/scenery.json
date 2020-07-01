@@ -1,18 +1,18 @@
 {
   "type": "object",
   "patternProperties": {
-    "^[A-Z][a-zA-Z0-9.]+$": {
+    "^[a-z]+[.][a-zA-Z0-9.]+$": {
       "type": "object",
       "properties": {
         "width": { "type": "integer" },
         "height": { "type": "integer" },
         "left": {
           "oneOf": [
-            { "type": "string", "pattern": "^[A-Z][a-zA-Z0-9.]+$" },
+            { "type": "string", "pattern": "^[a-z]+[.][a-zA-Z0-9.]+$" },
             {
               "type": "object",
               "patternProperties": {
-                "^[A-Z][a-zA-Z0-9.]+$": {
+                "^[a-z]+[.][a-zA-Z0-9.]+$": {
                   "type": "number"
                 }
               }
@@ -21,11 +21,13 @@
         },
         "right": {
           "oneOf": [
-            { "type": "string", "pattern": "^[A-Z][a-zA-Z0-9.]+$" },
+            { "type": "string", "pattern": "^[a-z]+[.][a-zA-Z0-9.]+$" },
             {
               "type": "object",
               "patternProperties": {
-                "^[A-Z][a-zA-Z0-9.]+$": { "type": "number" }
+                "^[a-z]+[.][a-zA-Z0-9.]+$": {
+                  "type": "number"
+                }
               }
             }
           ]

@@ -23,14 +23,14 @@ const part = async ({
   audio.playAudio("hero");
 
   await setScrollingSpeed(150, 0, { instant: true });
-  await setScenery("City.Coast");
-  setBackground("City.Sunrise", 3, 3);
+  await setScenery("city.Coast");
+  setBackground("city.Sunrise", 3, 3);
   showHUD();
   text.remove();
   exec(playerShip({ existing: true, hasLaser: true }));
 
   await setScrollingSpeed(350, 0);
-  await setScenery("City.BayStart");
+  await setScenery("city.BayStart");
   await say(
     "General",
     "I'm at a safe location now. We need to end this threat.\nHow are you holding up?",

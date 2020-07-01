@@ -1,9 +1,9 @@
 export default {
-  "Test.Walls": {
+  "test.Walls": {
     width: 1023,
     height: 576,
-    right: "Test.Walls",
-    left: "Test.Walls",
+    right: "test.Walls",
+    left: "test.Walls",
     elements: [
       {
         components: [

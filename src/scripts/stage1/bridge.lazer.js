@@ -23,8 +23,8 @@ const part = async ({
   audio.playAudio("hero");
 
   await setScrollingSpeed(250, 0, { instant: true });
-  await setScenery("City.BayFull");
-  setBackground("City.Sunrise", 3, 3);
+  await setScenery("city.BayFull");
+  setBackground("city.Sunrise", 3, 3);
   showHUD();
   text.remove();
   exec(playerShip({ existing: true, hasLaser: true }));
@@ -33,10 +33,10 @@ const part = async ({
   await warning.blink(500, 4);
   warning.remove();
 
-  await setScenery("City.Bridge");
+  await setScenery("city.Bridge");
   await parallel([
     async () => {
-      await waitTillInScreen("City.Bridge", -625);
+      await waitTillInScreen("city.Bridge", -625);
       await setScrollingSpeed(0, 0);
     },
     async () => {

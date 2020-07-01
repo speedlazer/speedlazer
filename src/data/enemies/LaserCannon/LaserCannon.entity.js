@@ -84,8 +84,8 @@ export default {
     },
     habitats: [
       {
-        name: "Test walls",
-        scenery: "Test.Walls",
+        name: "test walls",
+        scenery: "test.Walls",
         position: {
           rx: 0.4,
           ry: 0.6

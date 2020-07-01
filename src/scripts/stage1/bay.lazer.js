@@ -24,8 +24,8 @@ const part = async ({
   audio.playAudio("hero");
 
   await setScrollingSpeed(250, 0, { instant: true });
-  await setScenery("City.Bay");
-  setBackground("City.Sunrise", 3, 3);
+  await setScenery("city.Bay");
+  setBackground("city.Sunrise", 3, 3);
   showHUD();
   text.remove();
   exec(playerShip({ existing: true, hasLaser: true }));
@@ -33,7 +33,7 @@ const part = async ({
   await exec(droneWave(5, "drone.pattern1"));
   await exec(droneWave(8, "drone.pattern2"));
   await exec(mineWave());
-  await setScenery("City.Bridge");
+  await setScenery("city.Bridge");
   await exec(helicopter("heli.pattern1", "heli.repeat1"));
   await parallel([
     () => exec(droneWave(5, "drone.pattern3")),

@@ -1,5 +1,5 @@
 export default {
-  "City.Sunrise": {
+  "city.Sunrise": {
     checkpoints: [
       {
         composables: [
@@ -196,7 +196,7 @@ export default {
     ],
     habitat: {
       isBackground: true,
-      scenery: "City.Bay",
+      scenery: "city.Bay",
       scrollSpeed: { vx: -100, vy: 0 }
     }
   }

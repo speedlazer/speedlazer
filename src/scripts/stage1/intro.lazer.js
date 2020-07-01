@@ -45,12 +45,12 @@ const part = async ({
     heliAudio.stop();
   });
   await setScrollingSpeed(150, 0, { instant: true });
-  await setScenery("City.Ocean");
-  setBackground("City.Sunrise", 0, 2);
+  await setScenery("city.Ocean");
+  setBackground("city.Sunrise", 0, 2);
   const fade = fadeIn();
   text.remove();
 
-  const introAnimation = playAnimation("City.Intro");
+  const introAnimation = playAnimation("city.Intro");
   const introShip = Crafty("IntroShip").get(0);
   exec(handleBox(introShip.boxLocation1));
   exec(handleBox(introShip.boxLocation2));

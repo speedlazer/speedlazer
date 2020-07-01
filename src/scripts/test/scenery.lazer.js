@@ -21,8 +21,8 @@ const part = async ({
   await loadSpriteSheets(["mega-texture"]);
   await loadAudio(["effects"]);
   await setScrollingSpeed(100, 0, { instant: true });
-  await setScenery("City.Ocean");
-  setBackground("City.Sunrise", 0, 5);
+  await setScenery("city.Ocean");
+  setBackground("city.Sunrise", 0, 5);
   text.remove();
   await fade.start(2000);
   await wait(5e3);
@@ -55,13 +55,13 @@ const part = async ({
   await setScrollingSpeed(100, 0);
   await exec(mineWave());
   await exec(droneWave(5, "drone.pattern3", 500));
-  await setScenery("City.CoastStart");
+  await setScenery("city.CoastStart");
   await exec(mineWave());
   await setScrollingSpeed(250, 0);
   await wait(20e3);
-  await setScenery("City.BayStart");
+  await setScenery("city.BayStart");
   await wait(40e3);
-  await setScenery("City.Bridge");
+  await setScenery("city.Bridge");
   await wait(40e3);
 };
 

@@ -132,7 +132,7 @@ export const largeDrone = () => async ({
   console.log("mine attack!");
 
   await wait(10e3);
-  const bridgeCrash = playAnimation("City.Bridge", { max: 2 });
+  const bridgeCrash = playAnimation("city.Bridge", { max: 2 });
   await wait(10e3);
 
   bridgeCrash.updateCheckpointLimit(Infinity);
