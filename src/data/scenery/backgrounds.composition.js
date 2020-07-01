@@ -116,7 +116,8 @@ export default {
         sky: { topColor: ["#191f3d", 0.8], bottomColor: ["#8b8289", 1.0] }
       },
       dawn4: {
-        sky: { topColor: ["#27273d", 1.0], bottomColor: ["#cb8946", 1.0] }
+        //sky: { topColor: ["#27273d", 1.0], bottomColor: ["#cb8946", 1.0] }
+        sky: { topColor: ["#27273d", 1.0], bottomColor: ["#a73e02", 1.0] }
       },
       dawn5: {
         sky: { topColor: ["#3e2d30", 1.0], bottomColor: ["#fd7321", 1.0] }
