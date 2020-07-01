@@ -1,3 +1,3 @@
-const startTime = new Date() * 1;
+const startTime = +new Date();
 
 export const globalStartTime = () => startTime;

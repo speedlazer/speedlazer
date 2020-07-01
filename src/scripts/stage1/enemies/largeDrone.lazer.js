@@ -124,8 +124,8 @@ export const largeDrone = () => async ({
     () => showState(drone, "laugh")
   ]);
 
-  //await exec(rocketAttack1(drone));
-  //await exec(rocketAttack2(drone));
+  await exec(rocketAttack1(drone));
+  await exec(rocketAttack2(drone));
 
   await exec(mineToTarget(drone, { x: 0.3, y: 0.5 }));
 

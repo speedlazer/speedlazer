@@ -471,7 +471,7 @@ Crafty.c(Composable, {
     this.animationStart =
       animationData.timer && animationData.timer === "global"
         ? globalStartTime()
-        : new Date() * 1;
+        : +new Date();
     this.bind("GameLoop", this.updateAnimationFrame);
     await new Promise(resolve => this.animationListeners.push(resolve));
   },
