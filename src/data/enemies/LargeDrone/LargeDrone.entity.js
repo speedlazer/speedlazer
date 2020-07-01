@@ -11,7 +11,7 @@ export default {
       attachments: {
         trail: {
           particles: {
-            emitter: ["drone.trail", { particle: { startSize: 15 } }]
+            emitter: "largeDrone.trail"
           }
         },
         rockets: {
@@ -30,14 +30,7 @@ export default {
     },
     states: {
       eyeMove: {
-        animation: "eye",
-        attachments: {
-          trail: {
-            particles: {
-              emitter: ["drone.trail", { particle: { startSize: 20 } }]
-            }
-          }
-        }
+        animation: "eye"
       },
       laugh: {
         animation: "laugh",
@@ -120,7 +113,13 @@ export default {
       attachments: {
         trail: {
           particles: {
-            emitter: ["drone.trail", { particle: { startSize: 15 } }]
+            emitter: [
+              "largeDrone.trail",
+              {
+                gravity: [200, 50],
+                particle: { velocity: 15, startSize: 15, endSize: 8 }
+              }
+            ]
           }
         },
         gun: {

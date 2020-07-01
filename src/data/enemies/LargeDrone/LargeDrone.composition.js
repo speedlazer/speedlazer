@@ -36,11 +36,10 @@ export default {
       [
         "trail",
         {
-          x: 40,
-          y: 18,
+          x: 55,
+          y: 20,
           z: -2,
-          attachAlign: ["center", "right"],
-          attachTo: "main"
+          attachAlign: ["center", "center"]
         }
       ],
       [
@@ -49,8 +48,7 @@ export default {
           x: 22,
           y: 18,
           z: 2,
-          attachAlign: ["center", "center"],
-          attachTo: "main"
+          attachAlign: ["center", "center"]
         }
       ],
       [
@@ -59,8 +57,7 @@ export default {
           x: 22,
           y: 18,
           z: -5,
-          attachAlign: ["center", "center"],
-          attachTo: "main"
+          attachAlign: ["center", "center"]
         }
       ],
       [
@@ -69,8 +66,7 @@ export default {
           x: 2,
           y: 38,
           z: 2,
-          attachAlign: ["center", "left"],
-          attachTo: "main"
+          attachAlign: ["center", "left"]
         }
       ],
       [
@@ -79,8 +75,7 @@ export default {
           x: 45,
           y: 40,
           z: 2,
-          attachAlign: ["center", "center"],
-          attachTo: "main"
+          attachAlign: ["center", "center"]
         }
       ],
       [
@@ -89,8 +84,7 @@ export default {
           x: 45,
           y: 40,
           z: 1,
-          attachAlign: ["center", "center"],
-          attachTo: "main"
+          attachAlign: ["center", "center"]
         }
       ]
     ],

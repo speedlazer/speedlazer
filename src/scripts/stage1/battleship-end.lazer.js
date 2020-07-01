@@ -30,7 +30,6 @@ const part = async ({
   exec(playerShip({ existing: true, hasLaser: true }));
 
   await setScrollingSpeed(350, 0);
-  await wait(500);
   await setScenery("City.BayStart");
   await say(
     "General",

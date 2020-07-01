@@ -82,7 +82,7 @@ const part = async ({
 
   let helicopter;
 
-  await setScrollingSpeed(350, 0);
+  setScrollingSpeed(350, 0);
   await parallel([
     async () => {
       await introAnimation.waitTillEnd();
