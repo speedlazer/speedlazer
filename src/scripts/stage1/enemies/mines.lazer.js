@@ -47,25 +47,23 @@ const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({
       }),
     async () => {
       await activeMovement.process;
-      if (activeMovement.wasCompleted()) {
-        await synchronize();
-        await wait(moveDelay);
-        if (mine.appliedEntityState === "dead") return;
-        activeMovement = moveTo(mine, { y: coord.y }, null, EASE_IN_OUT);
-        await activeMovement.process;
-        if (activeMovement.wasCompleted()) {
-          await wait(200 + Math.random() * 2000);
-          await showState(mine, "open", 500);
-          if (mine.appliedEntityState === "dead") return;
-          showState(mine, "blinking");
-          await wait(1000);
-          if (mine.appliedEntityState === "dead") return;
-          showState(mine, "explode");
-          addScreenTrauma(0.3);
-          await wait(500);
-          mine.destroy();
-        }
-      }
+      if (!activeMovement.wasCompleted()) return;
+      await synchronize();
+      await wait(moveDelay);
+      if (mine.appliedEntityState === "dead") return;
+      activeMovement = moveTo(mine, { y: coord.y }, null, EASE_IN_OUT);
+      await activeMovement.process;
+      if (!activeMovement.wasCompleted()) return;
+      await wait(200 + Math.random() * 2000);
+      await showState(mine, "open", 500);
+      if (mine.appliedEntityState === "dead") return;
+      showState(mine, "blinking");
+      await wait(1000);
+      if (mine.appliedEntityState === "dead") return;
+      showState(mine, "explode");
+      addScreenTrauma(0.3);
+      await wait(500);
+      mine.destroy();
     }
   ]);
 };

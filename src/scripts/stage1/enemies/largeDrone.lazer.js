@@ -1,12 +1,105 @@
 import { say } from "src/lib/Dialog";
 
+const rocketAttack1 = drone => async ({
+  showState,
+  until,
+  moveWithPattern
+}) => {
+  let movement = null;
+  await until(
+    () => showState(drone, "shootRockets"),
+    () => {
+      movement = moveWithPattern(drone, "largeDrone.eight");
+      return movement.process;
+    }
+  );
+};
+
+const rocketAttack2 = drone => async ({
+  showState,
+  until,
+  moveWithPattern
+}) => {
+  let movement = null;
+  await until(
+    () => showState(drone, "rocketStrike"),
+    () => {
+      movement = moveWithPattern(drone, "largeDrone.eight2");
+      return movement.process;
+    }
+  );
+};
+
+const mineToTarget = (drone, target) => async ({
+  spawn,
+  showState,
+  moveTo,
+  wait,
+  waitForEvent,
+  race,
+  addScreenTrauma
+}) => {
+  const startX = drone.x + drone.w * 0.3;
+  const startY = drone.y + drone.h * 0.5;
+
+  const mine = spawn("Mine", {
+    location: {
+      x: startX,
+      y: startY
+    },
+    defaultVelocity: 200
+  });
+  await showState(mine, "rotate");
+  let movement = null;
+
+  const motion = async () => {
+    movement = moveTo(mine, { y: 1.1 });
+    await movement.process;
+    if (!movement.wasCompleted()) return;
+
+    movement = moveTo(mine, { x: target.x });
+    await movement.process;
+    if (!movement.wasCompleted()) return;
+
+    movement = moveTo(mine, { y: target.y });
+    await movement.process;
+    if (!movement.wasCompleted()) return;
+
+    await wait(200 + Math.random() * 2000);
+    await showState(mine, "open", 500);
+    if (mine.appliedEntityState === "dead") return;
+    showState(mine, "blinking");
+    await wait(1000);
+    if (mine.appliedEntityState === "dead") return;
+    showState(mine, "explode");
+    addScreenTrauma(0.3);
+    await wait(500);
+    mine.destroy();
+  };
+
+  await race([
+    () =>
+      waitForEvent(mine, "Dead", async () => {
+        movement && movement.abort();
+        if (mine.appliedEntityState === "explode") return;
+        showState(mine, "dead");
+        addScreenTrauma(0.3);
+
+        await wait(500);
+        mine.destroy();
+        movement && movement.abort();
+      }),
+    motion
+  ]);
+};
+
 export const largeDrone = () => async ({
   moveWithPattern,
   playAnimation,
   setScrollingSpeed,
   showState,
-  until,
   spawn,
+  exec,
   parallel,
   wait
 }) => {
@@ -31,21 +124,10 @@ export const largeDrone = () => async ({
     () => showState(drone, "laugh")
   ]);
 
-  await until(
-    () => showState(drone, "shootRockets"),
-    () => {
-      movement = moveWithPattern(drone, "largeDrone.eight");
-      return movement.process;
-    }
-  );
+  //await exec(rocketAttack1(drone));
+  //await exec(rocketAttack2(drone));
 
-  await until(
-    () => showState(drone, "rocketStrike"),
-    () => {
-      movement = moveWithPattern(drone, "largeDrone.eight2");
-      return movement.process;
-    }
-  );
+  await exec(mineToTarget(drone, { x: 0.3, y: 0.5 }));
 
   console.log("mine attack!");
 
