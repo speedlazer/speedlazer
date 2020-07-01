@@ -75,10 +75,10 @@ export default {
   "city.bridge.deck": {
     attributes: {
       width: 1024,
-      height: 192,
+      height: 128,
       ro: [934, 90]
     },
-    hitbox: [0, 0, 1024, 0, 1024, 55, 0, 55],
+    hitbox: [0, 0, 1024, 0, 1024, 40, 0, 40],
     spriteAttributes: {
       accentColor: "#2ba04c"
     },

@@ -518,7 +518,7 @@ export default {
       },
       {
         x: 0,
-        y: -760,
+        y: -710,
         z: 300,
         components: ["SunBlock", "BridgeFrontDeck"],
         composition: [
@@ -536,7 +536,7 @@ export default {
       {
         x: 0,
         y: -590,
-        z: 300,
+        z: 299,
         components: ["PillarLeft"],
         composition: [
           "city.bridge.pillar",
@@ -552,7 +552,7 @@ export default {
       {
         x: 920,
         y: -590,
-        z: 300,
+        z: 299,
         components: ["PillarRight"],
         composition: [
           "city.bridge.pillar",
@@ -568,7 +568,7 @@ export default {
       },
       {
         x: 0,
-        y: -610,
+        y: -580,
         z: -40,
         components: ["SunBlock", "BridgeCeiling", "ShipSolid"],
         composition: [
@@ -583,7 +583,7 @@ export default {
       },
       {
         x: 0,
-        y: -470,
+        y: -460,
         z: -42,
         components: ["SunBlock", "BridgeCeilingBackground"],
         composition: [
