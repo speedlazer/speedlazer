@@ -1,4 +1,5 @@
 import { EASE_OUT, EASE_IN_OUT } from "src/constants/easing";
+import synchroniser from "src/lib/synchroniser";
 import shuffle from "lodash/shuffle";
 
 const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({
@@ -68,23 +69,6 @@ const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({
   ]);
 };
 
-const makeSynchronization = amount => {
-  const sync = Array(amount)
-    .fill()
-    .map(() => {
-      let res = null;
-      const p = new Promise(r => {
-        res = r;
-      });
-      return { p, res };
-    });
-  const settled = Promise.allSettled(sync.map(({ p }) => p));
-  return sync.map(({ res }) => () => {
-    res();
-    return settled;
-  });
-};
-
 export const mineWave = () => async ({ exec }) => {
   const amount = 6;
 
@@ -97,9 +81,16 @@ export const mineWave = () => async ({ exec }) => {
     { x: 0.9, y: 0.8 }
   ];
 
-  const items = makeSynchronization(amount).map(async (res, index) => {
-    await exec(mineFlight(index, { x: 1.2, y: 1.1 }, coords[index], res));
-  });
+  const synchSpace = synchroniser();
+
+  const items = Array(amount)
+    .fill(null)
+    .map(async (_, index) => {
+      const mineSync = synchSpace.addSynchronisation();
+      await exec(
+        mineFlight(index, { x: 1.2, y: 1.1 }, coords[index], mineSync)
+      );
+    });
   await Promise.all(items);
 };
 
