@@ -120,8 +120,10 @@ Crafty.c(AnalogKeyboardControls, {
       const keys = this.controlMap[mapItem];
       const names = keys.map(key => {
         switch (key) {
-          case 32:
+          case Crafty.keys.SPACE:
             return "spacebar";
+          case Crafty.keys.SHIFT:
+            return "shift key";
         }
 
         return `${String.fromCharCode(key)} key`;
