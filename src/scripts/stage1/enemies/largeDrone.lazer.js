@@ -1,4 +1,5 @@
 import { say } from "src/lib/Dialog";
+import synchroniser from "src/lib/synchroniser";
 
 const rocketAttack1 = drone => async ({
   showState,
@@ -30,7 +31,7 @@ const rocketAttack2 = drone => async ({
   );
 };
 
-const mineToTarget = (drone, target) => async ({
+const mineToTarget = (drone, target, synchronize) => async ({
   spawn,
   showState,
   moveTo,
@@ -64,8 +65,9 @@ const mineToTarget = (drone, target) => async ({
     movement = moveTo(mine, { y: target.y });
     await movement.process;
     if (!movement.wasCompleted()) return;
+    await synchronize();
 
-    await wait(200 + Math.random() * 2000);
+    await wait(100 + Math.random() * 1000);
     await showState(mine, "open", 500);
     if (mine.appliedEntityState === "dead") return;
     showState(mine, "blinking");
@@ -91,6 +93,33 @@ const mineToTarget = (drone, target) => async ({
       }),
     motion
   ]);
+};
+
+const mineAttack1 = drone => async ({
+  exec,
+  wait,
+  moveWithPattern,
+  parallel
+}) => {
+  const targets = [
+    { x: 0.2, y: 0.3 },
+    { x: 0.6, y: 0.3 },
+    { x: 0.4, y: 0.5 },
+    { x: 0.2, y: 0.8 },
+    { x: 0.6, y: 0.8 }
+  ];
+  const syncSpace = synchroniser();
+
+  const movement = moveWithPattern(drone, "largeDrone.eight");
+
+  const mines = targets.map((target, index) => async () => {
+    const synchronise = syncSpace.addSynchronisation();
+    await wait(200 * (index + 1));
+    exec(mineToTarget(drone, target, synchronise));
+  });
+  parallel(mines);
+
+  await movement.process;
 };
 
 export const largeDrone = () => async ({
@@ -127,7 +156,7 @@ export const largeDrone = () => async ({
   await exec(rocketAttack1(drone));
   await exec(rocketAttack2(drone));
 
-  await exec(mineToTarget(drone, { x: 0.3, y: 0.5 }));
+  await exec(mineAttack1(drone));
 
   console.log("mine attack!");
 
