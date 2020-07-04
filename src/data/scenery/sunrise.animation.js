@@ -196,7 +196,7 @@ export default {
     ],
     habitat: {
       isBackground: true,
-      scenery: "city.Bay",
+      scenery: "city.Ocean",
       scrollSpeed: { vx: -100, vy: 0 }
     }
   }

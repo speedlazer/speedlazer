@@ -1,20 +1,9 @@
-import spritesheets from "src/images";
 import audiosheets from "src/audio";
 import audio from "src/lib/audio";
+import { loadSpriteSheets } from "src/lib/sprites";
 
 const dataFunctions = () => ({
-  loadSpriteSheets: async sheetNames =>
-    new Promise(resolve => {
-      const loader = {
-        sprites: {}
-      };
-      spritesheets
-        .filter(sheet => sheetNames.includes(sheet.name))
-        .forEach(sheet => {
-          loader.sprites[sheet.image] = sheet.map;
-        });
-      Crafty.load(loader, resolve);
-    }),
+  loadSpriteSheets,
   loadAudio: async audioMaps =>
     Promise.all(
       audioMaps

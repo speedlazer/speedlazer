@@ -1,21 +1,27 @@
 import { highscores } from "src/lib/highscores";
+import { loadSpriteSheets } from "src/lib/sprites";
+import { animations } from "data";
+import { playAnimation } from "src/components/Animation";
 import Player from "src/components/player/Player";
 
 Crafty.defineScene(
   "Intro",
-  () => {
+  async () => {
     // constructor
     Crafty.background("#000000");
     Crafty.viewport.x = 0;
     Crafty.viewport.y = 0;
 
+    await loadSpriteSheets(["mega-texture"]);
+
     const w = Crafty.viewport.width;
     const h = Crafty.viewport.height;
 
     const offset = 0.15;
+    playAnimation(animations("title.Intro"), {});
 
     Crafty.e("2D, DOM, Text, Tween, Delay")
-      .attr({ x: w * (0.5 - offset), y: h * 0.4, w: 400 })
+      .attr({ x: w * (0.5 - offset), y: h * 0.1, w: 400 })
       .text("Speedlazer")
       .textColor("#0000ff")
       .textFont({
@@ -35,7 +41,7 @@ Crafty.defineScene(
       );
 
     Crafty.e("2D, DOM, Text, Tween, Delay")
-      .attr({ x: w * 0.5 - 150, y: h * 0.6, w: 300 })
+      .attr({ x: w * 0.5 - 150, y: h * 0.7, w: 300 })
       .text("Press fire to start!")
       .textColor("#FF0000")
       .textFont({
