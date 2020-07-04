@@ -18,7 +18,7 @@ export default {
         }
       ]
     ],
-    hitbox: [3, 3, 29, 3, 29, 29, 3, 29],
+    hitbox: [0, 0, 32, 0, 32, 32, 0, 32],
     attachHooks: [
       ["explosion", { x: 16, y: 16, z: -2, attachAlign: ["center", "center"] }]
     ],
@@ -96,7 +96,7 @@ export default {
         }
       ]
     ],
-    hitbox: [3, 3, 29, 3, 29, 29, 3, 29],
+    hitbox: [0, 0, 32, 0, 32, 32, 0, 32],
     attachHooks: [
       ["explosion", { x: 16, y: 16, z: -2, attachAlign: ["center", "center"] }]
     ],
@@ -174,7 +174,7 @@ export default {
         }
       ]
     ],
-    hitbox: [3, 3, 29, 3, 29, 29, 3, 29],
+    hitbox: [0, 0, 32, 0, 32, 32, 0, 32],
     attachHooks: [
       ["explosion", { x: 16, y: 16, z: -2, attachAlign: ["center", "center"] }]
     ],
