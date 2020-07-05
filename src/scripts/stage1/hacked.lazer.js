@@ -5,6 +5,7 @@ import { bigText } from "src/components/BigText";
 import audio from "src/lib/audio";
 import { droneWave } from "./enemies/drones.lazer";
 import { mineWave } from "./enemies/mines.lazer";
+import { checkpoint } from "../common.lazer";
 
 const part = async ({
   setScrollingSpeed,
@@ -68,6 +69,7 @@ const part = async ({
     }
   ]);
   await exec(droneShip());
+  await exec(checkpoint);
 };
 
 export default part;

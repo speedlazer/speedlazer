@@ -3,6 +3,7 @@ import { mineWave } from "./enemies/mines.lazer";
 import { playerShip } from "../playerShip.lazer";
 import { helicopter } from "./enemies/helicopter.lazer";
 import { bigText } from "src/components/BigText";
+import { checkpoint } from "../common.lazer";
 import audio from "src/lib/audio";
 
 const part = async ({
@@ -52,6 +53,7 @@ const part = async ({
     () => exec(droneWave(5, "drone.pattern3")),
     () => exec(droneWave(5, "drone.pattern5"))
   ]);
+  await exec(checkpoint);
 };
 
 export default part;

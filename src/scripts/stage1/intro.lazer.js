@@ -4,6 +4,7 @@ import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
 import audio from "src/lib/audio";
 import { say } from "src/lib/Dialog";
+import { checkpoint } from "../common.lazer";
 
 const handleBox = box => async ({
   showState,
@@ -135,8 +136,9 @@ const part = async ({
   });
   await helicopter;
   exec(heliAttack({ existing: true }, heliAudio));
-  await say("General", "What is that!", { portrait: "portraits.general" });
-  await say("General", "Evacuate! now!", { portrait: "portraits.general" });
+  await say("General", "What is that! Evacuate!\nNow!", {
+    portrait: "portraits.general"
+  });
   await wait(1000);
   const chapter1 = bigText("Hacked", { color: "#FFFFFF", sup: "Chapter 1:" });
   await parallel([
@@ -156,10 +158,7 @@ const part = async ({
     () => exec(droneWave(5, "drone.pattern3")),
     () => exec(droneWave(5, "drone.pattern4"))
   ]);
-  await parallel([
-    () => exec(droneWave(5, "drone.pattern3")),
-    () => exec(droneWave(5, "drone.pattern4"))
-  ]);
+  await exec(checkpoint);
 };
 
 export default part;

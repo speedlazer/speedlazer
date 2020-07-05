@@ -3,6 +3,7 @@ import { playerShip } from "../playerShip.lazer";
 import { bigText } from "src/components/BigText";
 import audio from "src/lib/audio";
 import { say } from "src/lib/Dialog";
+import { checkpoint } from "../common.lazer";
 
 const part = async ({
   setScrollingSpeed,
@@ -101,6 +102,7 @@ const part = async ({
       );
     }
   ]);
+  await exec(checkpoint);
 };
 
 export default part;
