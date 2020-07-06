@@ -1,5 +1,6 @@
 export const createAudioPlayer = () => {
   const audioData = {};
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
 
   const context = new AudioContext();
 
