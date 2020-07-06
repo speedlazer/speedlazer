@@ -382,6 +382,7 @@ const part5 = ship => async ({
       awardPoints(500, engineCore.x + 20, engineCore.y);
       engineCore.removeComponent("SolidCollision");
       showState(ship.laserField, "stopped");
+      allowDamage(laser, { health: 500 });
       ship.laserField.removeComponent("SolidCollision");
       showState(ship, "engineDestroyed");
     });
@@ -389,7 +390,6 @@ const part5 = ship => async ({
   });
 
   await allowDamage(ship.engineCore, { health: 500 });
-  await allowDamage(laser, { health: 500 });
 
   laser.addCollisionComponent("SolidCollision");
   const killed = waitForEvent(laser, "Dead", async () => {
