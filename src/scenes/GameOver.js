@@ -153,7 +153,7 @@ Crafty.defineScene(
               weight: "bold",
               family: "Press Start 2P"
             })
-            .text("Game over. Continue game?");
+            .text("Continue at last checkpoint?");
           const e = Crafty.e("2D, DOM, Text")
             .attr({ x: 0, y: h * 0.8 + 30, w })
             .textColor("#FF0000")
@@ -189,7 +189,7 @@ Crafty.defineScene(
           this.delay(() => Crafty.enterScene("Scores"), 5000);
         }
       },
-      2000,
+      1000,
       0
     );
   },
