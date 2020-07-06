@@ -6,7 +6,12 @@ export default {
       scale: 1.0,
       ro: [144, 110]
     },
-    sprites: [["titleShip", { key: "main", horizon: [0.0, 0.0], z: 200 }]],
+    sprites: [
+      [
+        "titleShip",
+        { key: "main", accentColor: "#ff0000", horizon: [0.0, 0.0], z: 200 }
+      ]
+    ],
     frames: {
       far: {
         attributes: {
