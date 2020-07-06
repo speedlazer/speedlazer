@@ -25,6 +25,15 @@ export default {
       damaged: {
         frame: "damaged"
       },
+      fire: {
+        attachments: {
+          fire: {
+            particles: {
+              emitter: "helicopter.fire"
+            }
+          }
+        }
+      },
       crashed: {
         frame: "damaged",
         attachments: {

@@ -62,6 +62,15 @@ export default {
           z: -1,
           attachAlign: ["center", "center"]
         }
+      ],
+      [
+        "fire",
+        {
+          x: 80,
+          y: 32,
+          z: 2,
+          attachAlign: ["center", "center"]
+        }
       ]
     ],
     frames: {

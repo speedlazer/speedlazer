@@ -21,13 +21,21 @@ export const helicopter = (pattern, repeatPattern) => async ({
   heli
     .addCollisionComponent("SolidCollision")
     .addCollisionComponent("PlayerEnemy");
-  await allowDamage(heli, { health: 900 });
+  const maxHealth = 900;
+  await allowDamage(heli, { health: maxHealth });
   const heliAudio = audio.playAudio("helicopter", { volume: 0.01 });
   heliAudio.setVolume(2.0, 2000);
   await wait(2000);
   showState(heli, "shooting");
 
   let movement = moveWithPattern(heli, pattern);
+  heli.uniqueBind("HealthChange", newHealth => {
+    if (newHealth < maxHealth * 0.5) {
+      if (heli.appliedEntityState !== "dead") {
+        showState(heli, "fire");
+      }
+    }
+  });
 
   const killed = waitForEvent(heli, "Dead", async () => {
     movement.abort();

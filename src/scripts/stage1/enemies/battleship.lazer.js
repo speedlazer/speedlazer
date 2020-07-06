@@ -216,14 +216,22 @@ const helicopter1 = ship => async ({
   waitForEvent(helicopter, "detach", async () => {
     helicopter.detachFromParent();
   });
+  const maxHealth = 500;
   waitForEvent(helicopter, "active", async () => {
     helicopter
       .addCollisionComponent("SolidCollision")
       .addCollisionComponent("PlayerEnemy");
-    await allowDamage(helicopter, { health: 500 });
+    await allowDamage(helicopter, { health: maxHealth });
   });
   waitForEvent(helicopter, "Remove", async () => {
     heliAudio.stop();
+  });
+  helicopter.uniqueBind("HealthChange", newHealth => {
+    if (newHealth < maxHealth * 0.5) {
+      if (helicopter.appliedEntityState !== "dead") {
+        showState(helicopter, "fire");
+      }
+    }
   });
   const killed = waitForEvent(helicopter, "Dead", async () => {
     heliAudio.stop();
@@ -298,14 +306,22 @@ const helicopter2 = ship => async ({
   waitForEvent(helicopter, "detach", async () => {
     helicopter.detachFromParent();
   });
+  const maxHealth = 500;
   waitForEvent(helicopter, "active", async () => {
     helicopter
       .addCollisionComponent("SolidCollision")
       .addCollisionComponent("PlayerEnemy");
-    await allowDamage(helicopter, { health: 500 });
+    await allowDamage(helicopter, { health: maxHealth });
   });
   waitForEvent(helicopter, "Remove", async () => {
     heliAudio.stop();
+  });
+  helicopter.uniqueBind("HealthChange", newHealth => {
+    if (newHealth < maxHealth * 0.5) {
+      if (helicopter.appliedEntityState !== "dead") {
+        showState(helicopter, "fire");
+      }
+    }
   });
   const killed = waitForEvent(helicopter, "Dead", async () => {
     heliAudio.stop();
