@@ -184,6 +184,9 @@ export default {
           },
           cabin1burn: {
             particles: { emitter: ["smoke", { emitter: { w: 160 } }] }
+          },
+          cabin1burn2: {
+            particles: { emitter: ["largeFire", { emitter: { w: 160 } }] }
           }
         }
       },
@@ -192,6 +195,9 @@ export default {
           cabin1: { composition: "battleship.firstCabinDestroyed" },
           cabin1burn: {
             particles: { emitter: ["smoke", { emitter: { w: 160 } }] }
+          },
+          cabin1burn2: {
+            particles: { emitter: ["largeFire", { emitter: { w: 160 } }] }
           }
         }
       },
@@ -207,6 +213,9 @@ export default {
           },
           cabin2burn: {
             particles: { emitter: ["smoke", { emitter: { w: 220 } }] }
+          },
+          cabin2burn2: {
+            particles: { emitter: ["largeFire", { emitter: { w: 220 } }] }
           }
         }
       },
@@ -215,6 +224,9 @@ export default {
           cabin2: { composition: "battleship.secondCabinDestroyed" },
           cabin2burn: {
             particles: { emitter: ["smoke", { emitter: { w: 220 } }] }
+          },
+          cabin2burn2: {
+            particles: { emitter: ["largeFire", { emitter: { w: 220 } }] }
           },
           engineCore: null
         }

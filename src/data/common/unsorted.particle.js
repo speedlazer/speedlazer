@@ -260,6 +260,30 @@ export default {
       endColorRandom: [0, 0, 0, 0]
     }
   },
+  largeFire: {
+    emitter: {
+      w: 200,
+      h: 2,
+      amount: 70,
+      fidelity: "high"
+    },
+    gravity: [0, -300],
+    particle: {
+      sprite: "explosion7",
+      angle: 0,
+      angleRandom: 200,
+      duration: 750,
+      durationRandom: 300,
+      velocity: 20,
+      velocityRandom: 20,
+      startSize: 30,
+      endSize: 3,
+      startColor: [0.8, 0.7, 0.1, 0.6],
+      startColorRandom: [0, 0, 0, 0],
+      endColor: [0.8, 0.7, 0.1, 0],
+      endColorRandom: [0, 0, 0, 0]
+    }
+  },
   fountain: {
     emitter: {
       w: 10,
@@ -319,6 +343,53 @@ export default {
       startColor: [0.7, 0.7, 1.0, 0.8],
       startColorRandom: [0, 0, 0, 0],
       endColor: [0.8, 0.9, 0.3, 1.0],
+      endColorRandom: [0, 0, 0, 0]
+    }
+  },
+  smallFire: {
+    emitter: {
+      w: 2,
+      h: 2,
+      amount: 50,
+      fidelity: "high"
+    },
+    gravity: [0, -600],
+    particle: {
+      sprite: "explosion7",
+      angle: 0,
+      angleRandom: 200,
+      duration: 250,
+      durationRandom: 0,
+      velocity: 20,
+      velocityRandom: 10,
+      startSize: 10,
+      endSize: 3,
+      startColor: [0.8, 0.7, 0.1, 0.6],
+      startColorRandom: [0, 0, 0, 0],
+      endColor: [0.8, 0.7, 0.1, 0],
+      endColorRandom: [0, 0, 0, 0]
+    }
+  },
+  smokePlume: {
+    emitter: {
+      w: 2,
+      h: 2,
+      amount: 50,
+      fidelity: "high"
+    },
+    gravity: [0, -80],
+    particle: {
+      sprite: "explosion7",
+      angle: 0,
+      angleRandom: 10,
+      duration: 1500,
+      durationRandom: 100,
+      velocity: 10,
+      startSize: 10,
+      endSize: 30,
+      startColor: [0.1, 0.1, 0.1, 0.5],
+      startColorRandom: [0, 0, 0, 0.1],
+      endColor: [0.1, 0.1, 0.1, 0],
       endColorRandom: [0, 0, 0, 0]
     }
   }

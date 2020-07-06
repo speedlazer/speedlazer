@@ -29,6 +29,16 @@ export default {
               ]
             }
           },
+          smoke2: {
+            particles: {
+              emitter: "smokePlume"
+            }
+          },
+          fire: {
+            particles: {
+              emitter: "smallFire"
+            }
+          },
           gun: null,
           explosion: {
             composition: "explosion",

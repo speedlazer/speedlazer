@@ -72,7 +72,9 @@ export default {
       ["hatch3", { x: 804, y: 32, z: 0.5, attachAlign: ["top", "left"] }],
       ["bottom", { x: 10, y: 135, z: 21, attachAlign: ["top", "left"] }],
       ["cabin1burn", { x: 314, y: -16, z: 2, attachAlign: ["top", "left"] }],
+      ["cabin1burn2", { x: 314, y: 0, z: 2, attachAlign: ["top", "left"] }],
       ["cabin2burn", { x: 850, y: -16, z: 2, attachAlign: ["top", "left"] }],
+      ["cabin2burn2", { x: 850, y: 0, z: 2, attachAlign: ["top", "left"] }],
       [
         "cabin1explode",
         { x: 360, y: -56, z: 10, attachAlign: ["bottom", "center"] }

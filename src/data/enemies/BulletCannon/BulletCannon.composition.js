@@ -47,6 +47,24 @@ export default {
           attachAlign: ["center", "center"],
           attachTo: "main"
         }
+      ],
+      [
+        "fire",
+        {
+          x: 80,
+          y: 32,
+          z: 1,
+          attachAlign: ["center", "center"]
+        }
+      ],
+      [
+        "smoke2",
+        {
+          x: 80,
+          y: 29,
+          z: 0,
+          attachAlign: ["center", "center"]
+        }
       ]
     ],
     frames: {
@@ -63,7 +81,7 @@ export default {
         barrel: { rotation: -180, y: -5, x: -40, z: -2 }
       },
       dead3: {
-        barrel: { rotation: -180, y: -15, x: -40, z: -2 }
+        barrel: { rotation: -180, y: -15, x: -40, z: -3 }
       },
       mirrored: {
         flipX: true

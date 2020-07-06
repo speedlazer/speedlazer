@@ -68,7 +68,16 @@ export default {
         {
           x: 80,
           y: 32,
-          z: 2,
+          z: 1,
+          attachAlign: ["center", "center"]
+        }
+      ],
+      [
+        "smoke2",
+        {
+          x: 80,
+          y: 29,
+          z: 0,
           attachAlign: ["center", "center"]
         }
       ]

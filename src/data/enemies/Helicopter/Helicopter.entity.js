@@ -29,7 +29,12 @@ export default {
         attachments: {
           fire: {
             particles: {
-              emitter: "helicopter.fire"
+              emitter: "smallFire"
+            }
+          },
+          smoke2: {
+            particles: {
+              emitter: "smokePlume"
             }
           }
         }
@@ -118,9 +123,9 @@ export default {
     habitats: [
       {
         name: "Ocean",
-        scenery: "City.Ocean",
+        scenery: "city.Ocean",
         scrollSpeed: { vx: -100, vy: 0 },
-        background: ["City.Sunrise", 1]
+        background: ["city.Sunrise", 1]
       }
     ]
   }

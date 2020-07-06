@@ -239,7 +239,7 @@ const helicopter1 = ship => async ({
     movement.abort();
     awardPoints(250, helicopter.x + 20, helicopter.y);
     await showState(helicopter, "dead");
-    helicopter.z = ship.z + 6;
+    helicopter.z = ship.z + 5;
 
     await call(helicopter.activateGravity);
   });
