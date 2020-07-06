@@ -8,8 +8,8 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "height": { "type": "integer", "minimum": 0 },
-            "width": { "type": "integer", "minimum": 0 },
+            "height": { "type": "number", "minimum": 0 },
+            "width": { "type": "number", "minimum": 0 },
             "scale": { "type": "number", "minimum": 0 },
             "rotation": { "type": "integer" },
             "ro": {
@@ -169,8 +169,8 @@
               {
                 "type": "object",
                 "properties": {
-                  "x": { "type": "integer" },
-                  "y": { "type": "integer" },
+                  "x": { "type": "number" },
+                  "y": { "type": "number" },
                   "z": { "type": "number" },
                   "attachTo": { "type": "string" },
                   "attachAlign": {
