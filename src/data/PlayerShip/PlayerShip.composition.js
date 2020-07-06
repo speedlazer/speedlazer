@@ -1,8 +1,10 @@
+const scale = 0.8;
+
 export default {
   "player.ship": {
     attributes: {
-      width: 80,
-      height: 38
+      width: 80 * scale,
+      height: 38 * scale
     },
     sprites: [
       [
@@ -11,81 +13,83 @@ export default {
           flipX: true,
           key: "main",
           accentColor: "#ff0000",
-          w: 80,
-          h: 50
+          w: 80 * scale,
+          h: 50 * scale
         }
       ]
     ],
-    hitbox: [10, 14, 64, 18, 75, 38, 20, 38],
+    hitbox: [
+      10 * scale,
+      14 * scale,
+      64 * scale,
+      18 * scale,
+      75 * scale,
+      38 * scale,
+      20 * scale,
+      38 * scale
+    ],
     attachHooks: [
       [
         "explosion",
         {
-          x: 26,
-          y: 18,
+          x: 26 * scale,
+          y: 18 * scale,
           z: 2,
-          attachAlign: ["center", "center"],
-          attachTo: "main"
+          attachAlign: ["center", "center"]
         }
       ],
       [
         "mainWeapon",
         {
-          x: 48,
-          y: 36,
-          z: 4,
-          attachAlign: ["center", "right"],
-          attachTo: "main"
+          x: 48 * scale,
+          y: 36 * scale,
+          z: 1,
+          attachAlign: ["center", "right"]
         }
       ],
       [
         "laserWeapon",
         {
-          x: 48,
-          y: 36,
+          x: 48 * scale,
+          y: 36 * scale,
           z: 4,
-          attachAlign: ["center", "right"],
-          attachTo: "main"
+          attachAlign: ["center", "right"]
         }
       ],
       [
         "laserCharge",
         {
-          x: 48,
-          y: 36,
+          x: 48 * scale,
+          y: 36 * scale,
           z: 4,
-          attachAlign: ["center", "right"],
-          attachTo: "main"
+          attachAlign: ["center", "right"]
         }
       ],
       [
         "trail",
         {
-          x: 0,
-          y: 22,
+          x: 0 * scale,
+          y: 22 * scale,
           z: 4,
-          attachAlign: ["center", "left"],
-          attachTo: "main"
+          attachAlign: ["center", "left"]
         }
       ],
       [
         "reverseTrail",
         {
-          x: 38,
-          y: 42,
+          x: 38 * scale,
+          y: 42 * scale,
           z: 1,
-          attachAlign: ["center", "right"],
-          attachTo: "main"
+          attachAlign: ["center", "right"]
         }
       ],
       [
         "reverseTrail2",
         {
-          x: 38,
-          y: 32,
+          x: 38 * scale,
+          y: 32 * scale,
           z: -3,
-          attachAlign: ["center", "right"],
-          attachTo: "main"
+          attachAlign: ["center", "right"]
         }
       ]
     ],

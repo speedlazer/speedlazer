@@ -100,7 +100,7 @@
                   "hitbox": {
                     "type": "array",
                     "minItems": 6,
-                    "items": { "type": "integer" }
+                    "items": { "type": "number" }
                   }
                 }
               }
@@ -157,7 +157,7 @@
         "hitbox": {
           "type": "array",
           "minItems": 6,
-          "items": { "type": "integer" }
+          "items": { "type": "number" }
         },
         "attachHooks": {
           "type": "array",
