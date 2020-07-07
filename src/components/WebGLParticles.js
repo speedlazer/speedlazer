@@ -1,5 +1,35 @@
 const WebGLParticles = "WebGLParticles";
 
+let particleShader = null;
+
+const compileParticleShader = (shader, drawLayer) => {
+  const gl = drawLayer.context;
+  if (particleShader && particleShader.gl === gl) {
+    return [particleShader.fragmentShader, particleShader.vertexShader];
+  }
+
+  const fragmentShader = drawLayer._compileShader(
+    shader.fragmentCode,
+    gl.FRAGMENT_SHADER
+  );
+  const vertexShader = drawLayer._compileShader(
+    shader.vertexCode,
+    gl.VERTEX_SHADER
+  );
+
+  particleShader = { gl, fragmentShader, vertexShader };
+  return [fragmentShader, vertexShader];
+};
+
+const removeProgram = program => {
+  const gl = program.context;
+  gl.deleteBuffer(program._indexBuffer);
+  gl.deleteBuffer(program._attributeBuffer);
+  gl.detachShader(program.shader, program.shader.vertexShader);
+  gl.detachShader(program.shader, program.shader.fragmentShader);
+  gl.deleteProgram(program.shader);
+};
+
 class ParticleBuffer {
   constructor(context, stride, attributes) {
     this.context = context;
@@ -210,6 +240,10 @@ Crafty.c(WebGLParticles, {
   },
 
   remove: function() {
+    // remove shader program
+    removeProgram(this.program);
+    delete this.program;
+
     this._detachFromLayer();
   },
 
@@ -278,9 +312,31 @@ Crafty.c(WebGLParticles, {
     return this;
   },
 
+  _makeProgram: function(shader) {
+    var gl = this._drawLayer.context;
+
+    const [fragmentShader, vertexShader] = compileParticleShader(
+      shader,
+      this._drawLayer
+    );
+
+    var shaderProgram = gl.createProgram();
+    gl.attachShader(shaderProgram, vertexShader);
+    gl.attachShader(shaderProgram, fragmentShader);
+    gl.linkProgram(shaderProgram);
+
+    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+      throw "Could not initialise shaders";
+    }
+
+    shaderProgram.viewport = gl.getUniformLocation(shaderProgram, "uViewport");
+    shaderProgram.vertexShader = vertexShader;
+    shaderProgram.fragmentShader = fragmentShader;
+    return shaderProgram;
+  },
+
   _establishShader: function(compName, shader) {
-    //if (this._drawLayer.programs[compName] === undefined) {
-    const compiledShader = this._drawLayer._makeProgram(shader);
+    const compiledShader = this._makeProgram(shader);
     var gl = this._drawContext;
     compiledShader.time = gl.getUniformLocation(compiledShader, "uTimeOffset");
     compiledShader.coordOffset = gl.getUniformLocation(
@@ -298,11 +354,6 @@ Crafty.c(WebGLParticles, {
     program.draw = shader.drawCallback;
     program.setViewportUniforms(this._drawLayer._viewportRect());
     this.program = program;
-    this._drawLayer.programs[program.name] = program;
-    //} else {
-    //this.program = this._drawLayer.programs[compName];
-    //}
-
     // Needs to know where in the big array we are!
     this.program.registerEntity(this);
     // Shader program means ready
