@@ -36,13 +36,7 @@ const setParticleSprite = (entity, spriteName) => {
   sprite.destroy();
 };
 
-const getSpriteIndex = spriteName => spriteMap[spriteName].index;
-
-const getParticleMatrix = () =>
-  [0, 1, 2, 3].reduce((acc, i) => {
-    const m = Object.values(spriteMap).find(e => e.index === i);
-    return acc.concat(m ? m.coords : [0, 0, 0, 0]);
-  }, []);
+const getSpriteCoords = spriteName => spriteMap[spriteName].coords;
 
 const spawnParticle = (entity, settings) => {
   const source = entity.attachTo || entity;
@@ -66,7 +60,7 @@ const spawnParticle = (entity, settings) => {
   const start = entity.timeFrame - (settings.expired || 0.0) * life;
 
   return {
-    aPosition: [x, y, getSpriteIndex(settings.sprite)],
+    aPosition: [x, y],
     aVelocity: [
       speed,
       (angle * Math.PI) / 180,
@@ -90,7 +84,7 @@ Crafty.defaultShader(
     particleVertexShader,
     particleFragmentShader,
     [
-      { name: "aPosition", width: 3 },
+      { name: "aPosition", width: 2 },
       { name: "aVelocity", width: 3 },
       { name: "aOrientation", width: 3 },
       { name: "aLayer", width: 2 },
@@ -113,10 +107,9 @@ Crafty.defaultShader(
       if (startRender && !e.program.hasTime) {
         gl.uniform4f(e.program.shader.time, entity.timeFrame, 0, 0, 0);
         e.program.hasTime = entity.timeFrame;
-        gl.uniformMatrix4fv(
-          e.program.shader.spriteMatrix,
-          false,
-          getParticleMatrix()
+        gl.uniform4f(
+          e.program.shader.spriteCoords,
+          ...getSpriteCoords(entity.particleSettings.sprite)
         );
         if (!entity.particleSettings.motionLocked) {
           gl.uniform2f(e.program.shader.coordOffset, 0, 0);

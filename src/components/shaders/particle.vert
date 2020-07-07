@@ -1,4 +1,4 @@
-attribute vec3 aPosition;
+attribute vec2 aPosition;
 attribute vec3 aVelocity;
 attribute vec3 aOrientation;
 attribute vec2 aLayer;
@@ -9,7 +9,7 @@ attribute vec4 aColor2;
 
 varying lowp vec4 vColor;
 varying lowp vec2 vLayer;
-varying lowp vec3 vLife;
+varying lowp vec2 vLife;
 
 uniform  vec4 uViewport;
 uniform  vec4 uTimeOffset;
@@ -49,6 +49,6 @@ void main() {
 
   vColor = mix(aColor1, aColor2, durationScale);
   vLayer = aLayer;
-  vLife = vec3(duration, aLife.y, aPosition.z);
+  vLife = vec2(duration, aLife.y);
 }
 
