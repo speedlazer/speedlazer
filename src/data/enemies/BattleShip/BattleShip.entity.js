@@ -235,53 +235,53 @@ export default {
     habitats: [
       {
         name: "Start",
-        scenery: "City.Coast",
+        scenery: "city.Coast",
         position: {
           rx: 0.8,
           ry: 0.7
         },
         scrollSpeed: { vx: -100, vy: 0 },
-        background: ["City.Sunrise", 2]
+        background: ["city.Sunrise", 2]
       },
       {
         name: "Fase 1",
-        scenery: "City.Coast",
+        scenery: "city.Coast",
         position: {
           rx: 0.5,
           ry: 0.7
         },
         scrollSpeed: { vx: -100, vy: 0 },
-        background: ["City.Sunrise", 2]
+        background: ["city.Sunrise", 2]
       },
       {
         name: "Fase 2",
-        scenery: "City.Coast",
+        scenery: "city.Coast",
         position: {
           rx: -0.17,
           ry: 0.65
         },
         scrollSpeed: { vx: -100, vy: 0 },
-        background: ["City.Sunrise", 2]
+        background: ["city.Sunrise", 2]
       },
       {
         name: "Fase 3",
-        scenery: "City.Coast",
+        scenery: "city.Coast",
         position: {
           rx: -0.7,
           ry: 0.7
         },
         scrollSpeed: { vx: 100, vy: 0 },
-        background: ["City.Sunrise", 2]
+        background: ["city.Sunrise", 2]
       },
       {
         name: "Sunk",
-        scenery: "City.Coast",
+        scenery: "city.Coast",
         position: {
           rx: -0.2,
           ry: 0.85
         },
         scrollSpeed: { vx: 100, vy: 0 },
-        background: ["City.Sunrise", 2]
+        background: ["city.Sunrise", 2]
       }
     ]
   }
