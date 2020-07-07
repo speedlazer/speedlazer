@@ -11,7 +11,7 @@ module.exports = merge(common, {
   plugins: [
     new webpack.DefinePlugin({
       "process.env.VERSION": JSON.stringify(`${buildVersion()}`),
-      "process.env.APP_ENV": JSON.stringify("development")
+      "process.env.APP_ENV": JSON.stringify("production")
     })
   ],
   devtool: "source-map",
