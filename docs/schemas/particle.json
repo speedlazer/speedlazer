@@ -12,7 +12,8 @@
             "amount": { "type": "integer" },
             "duration": { "type": "integer" },
             "reverse": { "type": "boolean" },
-            "fidelity": { "type": "string", "enum": ["high", "low"] }
+            "fidelity": { "type": "string", "enum": ["high", "low"] },
+            "motionLocked": { "type": "boolean" }
           },
           "additionalProperties": false
         },

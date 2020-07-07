@@ -36,18 +36,14 @@ const setParticleSprite = (entity, spriteName) => {
   sprite.destroy();
 };
 
-const getSpriteIndex = spriteName => spriteMap[spriteName].index;
-
-const getParticleMatrix = () =>
-  [0, 1, 2, 3].reduce((acc, i) => {
-    const m = Object.values(spriteMap).find(e => e.index === i);
-    return acc.concat(m ? m.coords : [0, 0, 0, 0]);
-  }, []);
+const getSpriteCoords = spriteName => spriteMap[spriteName].coords;
 
 const spawnParticle = (entity, settings) => {
-  const source = entity.attachedTo || entity;
-  const x = source.x + Math.random() * entity.w;
-  const y = source.y + Math.random() * entity.h;
+  const source = entity.attachTo || entity;
+  const locked = entity.particleSettings.motionLocked;
+
+  const x = (locked ? 0 : source.x) + Math.random() * entity.w;
+  const y = (locked ? 0 : source.y) + Math.random() * entity.h;
   const speed = settings.velocity + randM1to1() * settings.velocityRandom;
   const angle = settings.currentAngle + randM1to1() * settings.angleRandom;
   const life = settings.duration + randM1to1() * settings.durationRandom;
@@ -64,7 +60,7 @@ const spawnParticle = (entity, settings) => {
   const start = entity.timeFrame - (settings.expired || 0.0) * life;
 
   return {
-    aPosition: [x, y, getSpriteIndex(settings.sprite)],
+    aPosition: [x, y],
     aVelocity: [
       speed,
       (angle * Math.PI) / 180,
@@ -88,7 +84,7 @@ Crafty.defaultShader(
     particleVertexShader,
     particleFragmentShader,
     [
-      { name: "aPosition", width: 3 },
+      { name: "aPosition", width: 2 },
       { name: "aVelocity", width: 3 },
       { name: "aOrientation", width: 3 },
       { name: "aLayer", width: 2 },
@@ -100,14 +96,24 @@ Crafty.defaultShader(
     function(e, entity) {
       const gl = e.program.context;
 
+      if (entity.particleSettings.motionLocked) {
+        gl.uniform2f(
+          e.program.shader.coordOffset,
+          entity._deltaX,
+          entity._deltaY
+        );
+      }
+
       if (startRender && !e.program.hasTime) {
         gl.uniform4f(e.program.shader.time, entity.timeFrame, 0, 0, 0);
         e.program.hasTime = entity.timeFrame;
-        gl.uniformMatrix4fv(
-          e.program.shader.spriteMatrix,
-          false,
-          getParticleMatrix()
+        gl.uniform4f(
+          e.program.shader.spriteCoords,
+          ...getSpriteCoords(entity.particleSettings.sprite)
         );
+        if (!entity.particleSettings.motionLocked) {
+          gl.uniform2f(e.program.shader.coordOffset, 0, 0);
+        }
       }
     }
   )
@@ -123,11 +129,19 @@ Crafty.c(ParticleEmitter, {
 
   events: {
     LayerAttached: "_setupParticles",
-    GameLoop: "_renderParticles"
+    GameLoop: "_renderParticles",
+    Move: function({ _x: prevX, _y: prevY }) {
+      if (this.particleSettings && this.particleSettings.motionLocked) {
+        this._deltaX += this._x - prevX;
+        this._deltaY += this._y - prevY;
+      }
+    }
   },
 
   init: function() {
     this._particlesPaused = false;
+    this._deltaX = this.x;
+    this._deltaY = this.y;
     // Necessary for some rendering layers
     this.bind("Draw", this._drawParticles);
     if (this._drawLayer) {
@@ -213,6 +227,10 @@ Crafty.c(ParticleEmitter, {
     });
     this.particleSettings.currentAngle =
       this.particleSettings.angle + (entity.angle || 0);
+
+    this.x = entity.x;
+    this.y = entity.y;
+
     entity.bind("Move", () => {
       this.x = entity.x;
       this.y = entity.y;
@@ -246,7 +264,8 @@ Crafty.c(ParticleEmitter, {
         duration: emitterDuration = Infinity,
         warmed = false,
         reverse: emitterReverse = false,
-        fidelity = "low"
+        fidelity = "low",
+        motionLocked = true
       },
       gravity = [0, 0],
       particle: {
@@ -269,6 +288,11 @@ Crafty.c(ParticleEmitter, {
     } = {},
     attachTo = null
   ) {
+    if (motionLocked) {
+      this._deltaX = this._x;
+      this._deltaY = this._y;
+    }
+
     this.particleSettings = {
       amount,
       gravity,
@@ -290,7 +314,8 @@ Crafty.c(ParticleEmitter, {
       endColorRandom,
       emitterDuration,
       emitterReverse,
-      emitterFidelity: fidelity
+      emitterFidelity: fidelity,
+      motionLocked
     };
     if (attachTo) {
       this.attachToEntity(attachTo);

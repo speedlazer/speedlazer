@@ -13,11 +13,11 @@ export default {
       angleRandom: 0,
       duration: 150,
       durationRandom: 0,
-      velocity: 50,
+      velocity: 100,
       velocityRandom: 10,
       startSize: 30,
       endSize: 15,
-      startColor: [0.7, 0.7, 0.9, 0.6],
+      startColor: [0.7, 0.7, 0.9, 0.5],
       startColorRandom: [0, 0, 0, 0],
       endColor: [0.35, 0.35, 0.45, 0],
       endColorRandom: [0, 0, 0, 0]

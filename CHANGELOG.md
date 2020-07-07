@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.1.6] - 2020-07-07
+### Changed
+- Improved particle rendering
+- Made player ship smaller
+- Incresed hitbox size of bonus blocks
+- Increased damage ship does on collision
+- Reduced damage received on collision
+- Updated see texture a bit
+- Started on a title screen animation
+
 ## [2.1.5] - 2020-06-30
 ### Added
 - Bonus points with multiplier system
