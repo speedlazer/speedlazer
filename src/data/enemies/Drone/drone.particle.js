@@ -4,7 +4,8 @@ export default {
       w: 2,
       h: 2,
       amount: 50,
-      fidelity: "high"
+      fidelity: "high",
+      motionLocked: false
     },
     gravity: [0, 0],
     particle: {

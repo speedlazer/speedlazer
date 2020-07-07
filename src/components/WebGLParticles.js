@@ -279,28 +279,29 @@ Crafty.c(WebGLParticles, {
   },
 
   _establishShader: function(compName, shader) {
-    if (this._drawLayer.programs[compName] === undefined) {
-      const compiledShader = this._drawLayer._makeProgram(shader);
-      var gl = this._drawContext;
-      compiledShader.time = gl.getUniformLocation(
-        compiledShader,
-        "uTimeOffset"
-      );
-      compiledShader.spriteMatrix = gl.getUniformLocation(
-        compiledShader,
-        "uSpriteMatrix"
-      );
+    //if (this._drawLayer.programs[compName] === undefined) {
+    const compiledShader = this._drawLayer._makeProgram(shader);
+    var gl = this._drawContext;
+    compiledShader.time = gl.getUniformLocation(compiledShader, "uTimeOffset");
+    compiledShader.coordOffset = gl.getUniformLocation(
+      compiledShader,
+      "uCoordOffset"
+    );
+    compiledShader.spriteMatrix = gl.getUniformLocation(
+      compiledShader,
+      "uSpriteMatrix"
+    );
 
-      const program = new RenderProgramWrapper(this._drawLayer, compiledShader);
-      program.name = compName;
-      program.initAttributes(shader.attributeList);
-      program.draw = shader.drawCallback;
-      program.setViewportUniforms(this._drawLayer._viewportRect());
-      this.program = program;
-      this._drawLayer.programs[program.name] = program;
-    } else {
-      this.program = this._drawLayer.programs[compName];
-    }
+    const program = new RenderProgramWrapper(this._drawLayer, compiledShader);
+    program.name = compName;
+    program.initAttributes(shader.attributeList);
+    program.draw = shader.drawCallback;
+    program.setViewportUniforms(this._drawLayer._viewportRect());
+    this.program = program;
+    this._drawLayer.programs[program.name] = program;
+    //} else {
+    //this.program = this._drawLayer.programs[compName];
+    //}
 
     // Needs to know where in the big array we are!
     this.program.registerEntity(this);
