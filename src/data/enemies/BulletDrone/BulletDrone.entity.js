@@ -4,24 +4,25 @@ export default {
       composition: "bulletDrone",
       components: [
         "DamageSupport",
-        "GravitySupport",
         "SolidCollision",
         "PlayerEnemy",
         "PlayerHit"
       ],
       attachments: {
+        gun: {
+          weapon: {
+            pattern: "bulletDrone.gun",
+            target: "PlayerShip",
+            angle: -5,
+            barrel: "barrel"
+          }
+        },
         trail: {
-          particles: { emitter: "drone.trail" }
+          particles: { emitter: "bulletDrone.trail" }
         }
       }
     },
     states: {
-      damaged: {
-        frame: "damaged",
-        attachments: {
-          trail: null
-        }
-      },
       turned: {
         frame: "turned"
       },
@@ -37,6 +38,15 @@ export default {
           },
           smoke: {
             particles: { emitter: "drone.smoke" }
+          }
+        }
+      },
+      shooting: {
+        attachments: {
+          gun: {
+            weapon: {
+              active: true
+            }
           }
         }
       }
