@@ -40,6 +40,7 @@ const getRelativePath = (entry, dataRoot) => {
 };
 
 const injectFolderPath = (folder, contents) => {
+  if (!contents) return;
   Object.values(contents).forEach(item => (item.diskFolder = folder));
 };
 
