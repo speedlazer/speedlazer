@@ -53,10 +53,10 @@ export default {
     },
     habitats: [
       {
-        name: "Ocean",
-        scenery: "City.Ocean",
+        name: "Bay",
+        scenery: "city.Bay",
         scrollSpeed: { vx: -100, vy: 0 },
-        background: ["City.Sunrise", 2]
+        background: ["city.Sunrise", 3]
       }
     ]
   }
