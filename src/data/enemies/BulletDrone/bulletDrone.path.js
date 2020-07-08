@@ -1,7 +1,13 @@
 export default {
   "bulletDrone.straight": {
+    habitat: {
+      scenery: "city.Bay",
+      scrollSpeed: { vx: -150, vy: 0 },
+      background: ["city.Sunrise", 3],
+      entity: "BulletDrone"
+    },
     path: [
-      { x: 1.1, y: 0.5 },
+      { x: 1.1, y: 0.5, events: [[0.1, { setState: ["shooting", 500] }]] },
       { x: -0.1, y: 0.5 }
     ]
   },
