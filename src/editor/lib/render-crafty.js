@@ -56,6 +56,7 @@ export const mount = domElem => {
   if (!domElem) return;
   Crafty.init(SCREEN_WIDTH, SCREEN_HEIGHT, domElem);
   Crafty.background("#000000");
+  Crafty.timer.steptype("variable");
   Crafty.timer.FPS(60);
 
   let waitTime = 0;

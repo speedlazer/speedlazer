@@ -266,7 +266,7 @@ Crafty.c(ParticleEmitter, {
         reverse: emitterReverse = false,
         fidelity = "low",
         motionLocked = true
-      },
+      } = {},
       gravity = [0, 0],
       particle: {
         velocity = 80,
@@ -284,7 +284,7 @@ Crafty.c(ParticleEmitter, {
         startColorRandom = [0, 0, 0, 0],
         endColor = [0, 0, 0, 1],
         endColorRandom = [0, 0, 0, 0]
-      }
+      } = {}
     } = {},
     attachTo = null
   ) {
