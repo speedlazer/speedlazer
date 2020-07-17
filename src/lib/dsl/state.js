@@ -48,7 +48,25 @@ const stateFunctions = (dsl, state) => {
   Crafty("HUDHealthBar").get(0) ||
     Crafty.e(`2D, HUDHealthBar, UILayerWebGL, Color, HUD, ${TweenPromise}`)
       .attr({ x: 149, y: -11, w: 122, h: 7, z: -1, alpha: 0, baseAlpha: 0.6 })
-      .color("#000000");
+      .color("#202020");
+
+  const energy =
+    Crafty("HUDEnergy").get(0) ||
+    Crafty.e(`2D, HUDEnergy, UILayerWebGL, HUD, Color, ${TweenPromise}`)
+      .attr({
+        x: 150,
+        y: 0,
+        w: 0,
+        h: 5,
+        alpha: 0,
+        maxWidth: 120
+      })
+      .color("#4040dd");
+
+  Crafty("HUDEnergyBar").get(0) ||
+    Crafty.e(`2D, HUDEnergyBar, UILayerWebGL, Color, HUD, ${TweenPromise}`)
+      .attr({ x: 149, y: -1, w: 122, h: 7, z: -1, alpha: 0, baseAlpha: 0.6 })
+      .color("#202020");
 
   const score = (
     Crafty("HUDScore").get(0) ||
@@ -121,6 +139,9 @@ const stateFunctions = (dsl, state) => {
     },
     setHealthbar: healthPerc => {
       health.attr({ health: healthPerc });
+    },
+    setEnergybar: energyPerc => {
+      energy.attr({ w: energyPerc * energy.maxWidth });
     },
     loseLife: () => {
       state.lives -= 1;

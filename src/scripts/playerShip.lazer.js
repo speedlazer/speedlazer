@@ -12,6 +12,7 @@ export const playerShip = ({
   waitForEvent,
   allowDamage,
   setHealthbar,
+  setEnergybar,
   showState,
   setGameSpeed,
   addScreenTrauma,
@@ -20,6 +21,9 @@ export const playerShip = ({
   loseLife
 }) => {
   const maxHealth = 50;
+
+  let maxEnergy = 50;
+
   const player = Crafty("Player").get(0);
   const existingShip = existing && Crafty("PlayerShip").get(0);
   const ship =
@@ -31,12 +35,15 @@ export const playerShip = ({
       },
       defaultVelocity: 400
     });
+
   if (!player.invincible) {
     if (ship === existingShip) {
       await allowDamage(ship, {
-        health: ship.health || maxHealth
+        health: ship.health || maxHealth,
+        energy: 0
       });
       ship.unbind("HealthChange");
+      ship.unbind("DealtDamage");
       ship.unbind("Turn");
       ship.unbind("Dead");
     } else {
@@ -51,6 +58,7 @@ export const playerShip = ({
     ship.displayFrame("damaged");
   }
   setHealthbar(ship.health / maxHealth);
+  setEnergybar(ship.energy / maxEnergy);
   if (turned) {
     await showState(ship, "turned");
   }
@@ -59,12 +67,18 @@ export const playerShip = ({
   // TODO: Refactor adding these components to the entity definition
   ship.addComponent(ShipControls, ShipCollision);
 
+  ship.uniqueBind("DealtDamage", ({ damage, target }) => {
+    if (damage[0].name === "Bullet") {
+      ship.energy = Math.min(maxEnergy, ship.energy + 5);
+      setEnergybar(ship.energy / maxEnergy);
+    }
+  });
   ship.uniqueBind("HealthChange", newHealth => {
     if (newHealth < ship.health) {
       playerHit(newHealth - ship.health);
     }
     try {
-      setHealthbar(newHealth / 50);
+      setHealthbar(newHealth / maxHealth);
     } catch (e) {
       // player could be game over
     }
