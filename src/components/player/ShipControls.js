@@ -20,22 +20,23 @@ Crafty.c(ShipControls, {
     });
   },
 
-  controlPrimary(onOff) {
+  buttonPressed(name, onOff) {
     if (this.disableControls) return;
     if (this.appliedEntityState === "dead") return;
-    onOff && this.controlSecondary(false);
-    onOff ? this.showState("shooting") : this.showState("noShooting");
-  },
 
-  controlSecondary(onOff) {
-    if (this.disableControls) return;
-    if (!this.hasLaser) return;
-    if (this.appliedEntityState === "dead") return;
-    onOff && this.controlPrimary(false);
-    onOff ? this.showState("laserShooting") : this.showState("noLaserShooting");
-  },
-  controlSwitch() {},
-  controlBlock() {}
+    if (name === "fire") {
+      onOff && this.buttonPressed("heavy", false);
+      onOff ? this.showState("shooting") : this.showState("noShooting");
+    }
+
+    if (name === "heavy") {
+      if (!this.hasLaser) return;
+      onOff && this.buttonPressed("fire", false);
+      onOff
+        ? this.showState("laserShooting")
+        : this.showState("noLaserShooting");
+    }
+  }
 });
 
 export default ShipControls;

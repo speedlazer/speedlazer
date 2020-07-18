@@ -25,7 +25,7 @@ Crafty.defineScene(
           pauseMenu.showMenu(player);
         }
       } else {
-        pauseMenu.freeze();
+        pauseMenu && pauseMenu.freeze();
       }
     });
 

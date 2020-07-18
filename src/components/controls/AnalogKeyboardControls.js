@@ -212,18 +212,12 @@ Crafty.c(AnalogKeyboardControls, {
       if (ship.disableControls) {
         return;
       }
-      if (controlMap.fire.some(key => key === e.key)) {
-        ship.controlPrimary(true);
-      }
-      if (controlMap.switchWeapon.some(key => key === e.key)) {
-        ship.controlSwitch(true);
-      }
-      if (controlMap.heavy.some(key => key === e.key)) {
-        ship.controlSecondary(true);
-      }
-      if (controlMap.shield.some(key => key === e.key)) {
-        ship.controlBlock(true);
-      }
+
+      Object.entries(controlMap).forEach(([action, buttons]) => {
+        if (buttons.some(key => key === e.key)) {
+          ship.buttonPressed(action, true);
+        }
+      });
 
       if (controlMap.up.some(key => key === e.key)) {
         pressed.up = true;
@@ -245,18 +239,12 @@ Crafty.c(AnalogKeyboardControls, {
       if (ship.disableControls) {
         return;
       }
-      if (controlMap.fire.some(key => key === e.key)) {
-        ship.controlPrimary(false);
-      }
-      if (controlMap.switchWeapon.some(key => key === e.key)) {
-        ship.controlSwitch(false);
-      }
-      if (controlMap.heavy.some(key => key === e.key)) {
-        ship.controlSecondary(false);
-      }
-      if (controlMap.shield.some(key => key === e.key)) {
-        ship.controlBlock(false);
-      }
+
+      Object.entries(controlMap).forEach(([action, buttons]) => {
+        if (buttons.some(key => key === e.key)) {
+          ship.buttonPressed(action, false);
+        }
+      });
 
       if (controlMap.up.some(key => key === e.key)) {
         pressed.up = false;
