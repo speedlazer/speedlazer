@@ -30,7 +30,7 @@ Crafty.c(Component, {
     return this.buffs[name].activeLeft > 0;
   },
 
-  activateBuff(name) {
+  canActivateBuff(name) {
     const buff = this.buffs[name];
     if (!buff) return false;
     if (buff.cooldown > 0) return false;
@@ -40,6 +40,13 @@ Crafty.c(Component, {
       ([key, amount]) => this[key] >= amount
     );
     if (!canPay) return false;
+    return true;
+  },
+
+  activateBuff(name) {
+    const buff = this.buffs[name];
+    if (!this.canActivateBuff(name)) return false;
+    const cost = buff.settings.cost;
 
     // Pay costs
     Object.entries(cost).every(([key, amount]) => (this[key] -= amount));
@@ -63,6 +70,9 @@ Crafty.c(Component, {
       } else if (data.cooldown > 0) {
         buffsHandled++;
         data.cooldown = Math.max(data.cooldown - dt, 0);
+        if (data.cooldown === 0) {
+          this.trigger("CooldownEnded", name);
+        }
       }
     });
     if (buffsHandled === 0) {
