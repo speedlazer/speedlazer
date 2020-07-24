@@ -39,15 +39,12 @@ export const playerShip = ({
   if (!player.invincible) {
     if (ship === existingShip) {
       await allowDamage(ship, {
-        health: ship.health || maxHealth,
-        energy: 0
+        health: ship.health || maxHealth
       });
-      ship.unbind("HealthChange");
-      ship.unbind("DealtDamage");
-      ship.unbind("Turn");
-      ship.unbind("Dead");
+      ship.energy = ship.energy || 0;
     } else {
       ship.health = ship.health || maxHealth;
+      ship.energy = 0;
       wait(2000).then(async () => {
         await allowDamage(ship, {});
       });
@@ -87,6 +84,7 @@ export const playerShip = ({
     }
     if (name === "power1") {
       ship.activateBuff("overdrive");
+      setEnergybar(ship.energy / maxEnergy);
     }
   });
 
@@ -112,7 +110,7 @@ export const playerShip = ({
   });
 
   ship.uniqueBind("DealtDamage", ({ damage }) => {
-    if (damage[0].name === "Bullet") {
+    if (damage[0].name === "Bullet" && !ship.buffActive("overdrive")) {
       ship.energy = Math.min(maxEnergy, ship.energy + 5);
       setEnergybar(ship.energy / maxEnergy);
     }

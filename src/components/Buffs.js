@@ -13,13 +13,28 @@ Crafty.c(Component, {
    * }
    */
   defineBuff(name, settings) {
-    this.buffs[name] = { settings, activeLeft: 0, cooldown: 0 };
+    const existingBuff = this.buffs[name];
+    this.buffs[name] = {
+      activeLeft: 0,
+      cooldown: 0,
+      ...existingBuff,
+      settings
+    };
+  },
+
+  buffStatus(name) {
+    return this.buffs[name];
+  },
+
+  buffActive(name) {
+    return this.buffs[name].activeLeft > 0;
   },
 
   activateBuff(name) {
     const buff = this.buffs[name];
     if (!buff) return false;
     if (buff.cooldown > 0) return false;
+    if (buff.activeLeft > 0) return false;
     const cost = buff.settings.cost;
     const canPay = Object.entries(cost).every(
       ([key, amount]) => this[key] >= amount
