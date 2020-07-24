@@ -23,19 +23,7 @@ Crafty.c(ShipControls, {
   buttonPressed(name, onOff) {
     if (this.disableControls) return;
     if (this.appliedEntityState === "dead") return;
-
-    if (name === "fire") {
-      onOff && this.buttonPressed("heavy", false);
-      onOff ? this.showState("shooting") : this.showState("noShooting");
-    }
-
-    if (name === "heavy") {
-      if (!this.hasLaser) return;
-      onOff && this.buttonPressed("fire", false);
-      onOff
-        ? this.showState("laserShooting")
-        : this.showState("noLaserShooting");
-    }
+    this.trigger(onOff ? "ButtonPressed" : "ButtonReleased", name);
   }
 });
 

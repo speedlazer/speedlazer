@@ -1,5 +1,6 @@
 import ShipControls from "src/components/player/ShipControls";
 import ShipCollision from "src/components/player/ShipCollision";
+import Buffs from "src/components/Buffs";
 import ControlScheme from "src/components/player/ControlScheme";
 
 export const playerShip = ({
@@ -21,8 +22,7 @@ export const playerShip = ({
   loseLife
 }) => {
   const maxHealth = 50;
-
-  let maxEnergy = 50;
+  const maxEnergy = 100;
 
   const player = Crafty("Player").get(0);
   const existingShip = existing && Crafty("PlayerShip").get(0);
@@ -57,17 +57,61 @@ export const playerShip = ({
   if (ship.health < maxHealth * 0.5) {
     ship.displayFrame("damaged");
   }
+
   setHealthbar(ship.health / maxHealth);
   setEnergybar(ship.energy / maxEnergy);
+
   if (turned) {
     await showState(ship, "turned");
   }
   showState(ship, "flying");
 
   // TODO: Refactor adding these components to the entity definition
-  ship.addComponent(ShipControls, ShipCollision);
+  ship.addComponent(ShipControls, ShipCollision, Buffs);
 
-  ship.uniqueBind("DealtDamage", ({ damage, target }) => {
+  ship.defineBuff("overdrive", {
+    cost: { energy: 50 },
+    duration: 5, // seconds
+    cooldown: 20 // seconds
+  });
+
+  ship.uniqueBind("ButtonPressed", name => {
+    if (name === "fire") {
+      ship.showState("noLaserShooting");
+      ship.showState("shooting");
+    }
+    if (name === "heavy") {
+      if (!ship.hasLaser) return;
+      ship.showState("noShooting");
+      ship.showState("laserShooting");
+    }
+    if (name === "power1") {
+      ship.activateBuff("overdrive");
+    }
+  });
+
+  ship.uniqueBind("ButtonReleased", name => {
+    if (name === "fire") {
+      ship.showState("noShooting");
+    }
+    if (name === "heavy") {
+      ship.showState("noLaserShooting");
+    }
+  });
+  ship.uniqueBind("BuffActivated", name => {
+    if (name === "overdrive") {
+      ship.mainWeapon.difficulty = 1.0;
+      ship.laserWeapon.difficulty = 1.0;
+    }
+  });
+  ship.uniqueBind("BuffEnded", name => {
+    if (name === "overdrive") {
+      ship.mainWeapon.difficulty = 0.0;
+      ship.laserWeapon.difficulty = 0.0;
+    }
+  });
+
+  ship.uniqueBind("DealtDamage", ({ damage }) => {
     if (damage[0].name === "Bullet") {
       ship.energy = Math.min(maxEnergy, ship.energy + 5);
       setEnergybar(ship.energy / maxEnergy);
