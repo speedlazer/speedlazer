@@ -14,6 +14,7 @@ export const playerShip = ({
   allowDamage,
   setHealthbar,
   setEnergybar,
+  showBuff,
   showState,
   setGameSpeed,
   addScreenTrauma,
@@ -66,11 +67,17 @@ export const playerShip = ({
   // TODO: Refactor adding these components to the entity definition
   ship.addComponent(ShipControls, ShipCollision, Buffs);
 
+  if (player.has(ControlScheme)) {
+    player.assignControls(ship);
+  }
+
   ship.defineBuff("overdrive", {
-    cost: { energy: 50 },
-    duration: 5, // seconds
-    cooldown: 20 // seconds
+    cost: { energy: 35 },
+    duration: 3, // seconds
+    cooldown: 5 // seconds
   });
+
+  showBuff(0, ship, "overdrive", ship.controlName("power1"));
 
   ship.uniqueBind("ButtonPressed", name => {
     if (name === "fire") {
@@ -84,6 +91,7 @@ export const playerShip = ({
     }
     if (name === "power1") {
       ship.activateBuff("overdrive");
+      ship.trigger("EnergyUpdate");
       setEnergybar(ship.energy / maxEnergy);
     }
   });
@@ -111,7 +119,8 @@ export const playerShip = ({
 
   ship.uniqueBind("DealtDamage", ({ damage }) => {
     if (damage[0].name === "Bullet" && !ship.buffActive("overdrive")) {
-      ship.energy = Math.min(maxEnergy, ship.energy + 5);
+      ship.energy = Math.min(maxEnergy, ship.energy + 1);
+      ship.trigger("EnergyUpdate");
       setEnergybar(ship.energy / maxEnergy);
     }
   });
@@ -139,10 +148,6 @@ export const playerShip = ({
       showState(ship, "turning");
     }
   });
-
-  if (player.has(ControlScheme)) {
-    player.assignControls(ship);
-  }
 
   waitForEvent(ship, "Dead", async () => {
     ship.attr({ disableControls: true, vx: 0, vy: 0 });
