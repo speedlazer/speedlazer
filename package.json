@@ -75,7 +75,7 @@
     "Crafty-Distro": "craftyjs/Crafty-Distro#nightlies",
     "bezier-js": "^2.2.5",
     "crypto-js": "^3.1.9-1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "noisejs": "^2.1.0",
     "preact": "^8.5.2",
     "preact-router": "^2.6.1"
@@ -100,7 +100,7 @@
     "tabWidth": 2
   },
   "resolutions": {
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "set-value": "3.0.1",
     "mixin-deep": "2.0.1",
     "fstream": "1.0.12",
