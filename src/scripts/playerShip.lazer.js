@@ -106,8 +106,8 @@ export const playerShip = ({
   });
   ship.uniqueBind("BuffActivated", name => {
     if (name === "overdrive") {
-      ship.mainWeapon.difficulty = 1.0;
-      ship.laserWeapon.difficulty = 1.0;
+      ship.mainWeapon.difficulty = 0.5;
+      ship.laserWeapon.difficulty = 0.5;
     }
   });
   ship.uniqueBind("BuffEnded", name => {
