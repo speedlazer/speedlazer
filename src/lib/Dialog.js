@@ -11,8 +11,8 @@ export const say = (speaker, text, { portrait = null } = {}) =>
       this.destroy();
     });
 
-    const x = Crafty.viewport.width * 0.25;
-    const w = Crafty.viewport.width * 0.5;
+    const x = Crafty.viewport.width * 0.15;
+    const w = Crafty.viewport.width * 0.7;
     const bottom = Crafty.viewport.height - 20;
 
     const back = Crafty.e("UILayerWebGL, 2D, Color, Tween, Dialog")

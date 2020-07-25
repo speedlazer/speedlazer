@@ -77,7 +77,7 @@ export const playerShip = ({
     cooldown: 5 // seconds
   });
 
-  showBuff(0, ship, "overdrive", ship.controlName("power1"));
+  showBuff(0, ship, "overdrive", ship.controlName("power1", true));
 
   ship.uniqueBind("ButtonPressed", name => {
     if (name === "fire") {

@@ -150,55 +150,60 @@ const stateFunctions = (dsl, state) => {
       energy.attr({ w: energyPerc * energy.maxWidth });
     },
     showBuff: (slot, entity, buffName, key) => {
+      const item = Crafty(`BuffSlot${slot}`);
+      if (item.length > 0) {
+        item.destroy();
+      }
+
       const icon = Crafty.e(
         `2D, HUD, HUDBottom, WebGL, Color, BuffSlot${slot}, ${TweenPromise}`
-      )
-        .attr({
-          w: 20,
-          h: 20,
-          x: 20,
-          y: Crafty.viewport.height - 40,
-          z: 900,
-          alpha: state.hudShown === true ? 1 : 0
-        })
-        .color("#333");
+      ).attr({
+        w: 20,
+        h: 20,
+        x: 20 + slot * 30,
+        y: Crafty.viewport.height - 28,
+        z: 900,
+        alpha: state.hudShown === true ? 1 : 0
+      });
 
-      entity.uniqueBind("EnergyUpdate", () => {
+      const updateColor = () => {
         if (entity.canActivateBuff(buffName)) {
           icon.color("#5F5");
-        } else {
-          const status = entity.buffStatus(buffName);
-          if (status.activeLeft === 0 && status.cooldown === 0) {
-            icon.color("#333");
-          }
+          return;
         }
+        const status = entity.buffStatus(buffName);
+        if (status.activeLeft === 0 && status.cooldown === 0) {
+          icon.color("#333");
+          return;
+        }
+        if (status.activeLeft > 0) {
+          icon.color("#AA0");
+          return;
+        }
+        if (status.cooldown > 0) {
+          icon.color("#A10");
+          return;
+        }
+      };
+
+      updateColor();
+
+      entity.uniqueBind("EnergyUpdate", () => {
+        updateColor();
       });
       entity.uniqueBind("BuffActivated", name => {
         if (name === buffName) {
-          icon.color("#AA0");
+          updateColor();
         }
       });
       entity.uniqueBind("BuffEnded", name => {
         if (name === buffName) {
-          const status = entity.buffStatus(buffName);
-          if (status.cooldown > 0) {
-            icon.color("#A10");
-            return;
-          }
-          if (entity.canActivateBuff(buffName)) {
-            icon.color("#5F5");
-          } else {
-            icon.color("#333");
-          }
+          updateColor();
         }
       });
       entity.uniqueBind("CooldownEnded", name => {
         if (name === buffName) {
-          if (entity.canActivateBuff(buffName)) {
-            icon.color("#5F5");
-          } else {
-            icon.color("#333");
-          }
+          updateColor();
         }
       });
 
@@ -206,7 +211,7 @@ const stateFunctions = (dsl, state) => {
         .attr({
           w: 60,
           h: 20,
-          x: 1,
+          x: 1 + 30 * slot,
           y: Crafty.viewport.height - 11,
           alpha: state.hudShown === true ? 1 : 0
         })
@@ -222,8 +227,8 @@ const stateFunctions = (dsl, state) => {
         .attr({
           w: 60,
           h: 20,
-          x: 0,
-          y: Crafty.viewport.height - 12,
+          x: 30 * slot,
+          y: Crafty.viewport.height - 10,
           alpha: state.hudShown === true ? 1 : 0
         })
         .textColor("#eee")

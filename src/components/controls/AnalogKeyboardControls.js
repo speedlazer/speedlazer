@@ -116,20 +116,23 @@ Crafty.c(AnalogKeyboardControls, {
         }
       });
 
-    ship.controlName = mapItem => {
+    ship.controlName = (mapItem, firstOnly = false) => {
       const keys = this.controlMap[mapItem];
       const names = keys.map(key => {
         switch (key) {
           case Crafty.keys.SPACE:
             return "spacebar";
           case Crafty.keys.SHIFT:
-            return "shift key";
+            return "shift";
+        }
+        if (key >= Crafty.keys["0"] && key <= Crafty.keys["9"]) {
+          return `${String.fromCharCode(key)}`;
         }
 
-        return `${String.fromCharCode(key)} key`;
+        return `${String.fromCharCode(key)}`;
       });
 
-      return names.join(" or ");
+      return firstOnly ? names[0] : names.join(" or ");
     };
 
     ship.disableControls = false;
