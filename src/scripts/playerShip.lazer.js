@@ -27,6 +27,7 @@ export const playerShip = ({
 
   const player = Crafty("Player").get(0);
   const existingShip = existing && Crafty("PlayerShip").get(0);
+  if (existingShip && existingShip.has(ShipControls)) return;
   const ship =
     existingShip ||
     spawn("PlayerShip", {
@@ -72,9 +73,9 @@ export const playerShip = ({
   }
 
   ship.defineBuff("overdrive", {
-    cost: { energy: 35 },
+    cost: { energy: 25 },
     duration: 3, // seconds
-    cooldown: 5 // seconds
+    cooldown: 3 // seconds
   });
 
   showBuff(0, ship, "overdrive", ship.controlName("power1", true));
@@ -95,7 +96,6 @@ export const playerShip = ({
       setEnergybar(ship.energy / maxEnergy);
     }
   });
-
   ship.uniqueBind("ButtonReleased", name => {
     if (name === "fire") {
       ship.showState("noShooting");
@@ -116,7 +116,6 @@ export const playerShip = ({
       ship.laserWeapon.difficulty = 0.0;
     }
   });
-
   ship.uniqueBind("DealtDamage", ({ damage }) => {
     if (damage[0].name === "Bullet" && !ship.buffActive("overdrive")) {
       ship.energy = Math.min(maxEnergy, ship.energy + 1);
@@ -140,7 +139,6 @@ export const playerShip = ({
       }
     }
   });
-
   ship.uniqueBind("turn", () => {
     if (ship.health < maxHealth * 0.5) {
       showState(ship, "turningDamaged");
