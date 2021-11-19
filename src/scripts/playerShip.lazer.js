@@ -14,7 +14,6 @@ export const playerShip = ({
   allowDamage,
   setHealthbar,
   setEnergybar,
-  showBuff,
   showState,
   setGameSpeed,
   addScreenTrauma,
@@ -78,7 +77,7 @@ export const playerShip = ({
     cooldown: 3 // seconds
   });
 
-  showBuff(0, ship, "overdrive", ship.controlName("power1", true));
+  // showBuff(0, ship, "overdrive", ship.controlName("power1", true));
 
   ship.uniqueBind("ButtonPressed", name => {
     if (name === "fire") {
@@ -104,18 +103,18 @@ export const playerShip = ({
       ship.showState("noLaserShooting");
     }
   });
-  ship.uniqueBind("BuffActivated", name => {
-    if (name === "overdrive") {
-      ship.mainWeapon.difficulty = 0.5;
-      ship.laserWeapon.difficulty = 0.5;
-    }
-  });
-  ship.uniqueBind("BuffEnded", name => {
-    if (name === "overdrive") {
-      ship.mainWeapon.difficulty = 0.0;
-      ship.laserWeapon.difficulty = 0.0;
-    }
-  });
+  // ship.uniqueBind("BuffActivated", name => {
+  //   if (name === "overdrive") {
+  //     ship.mainWeapon.difficulty = 0.5;
+  //     ship.laserWeapon.difficulty = 0.5;
+  //   }
+  // });
+  // ship.uniqueBind("BuffEnded", name => {
+  //   if (name === "overdrive") {
+  //     ship.mainWeapon.difficulty = 0.0;
+  //     ship.laserWeapon.difficulty = 0.0;
+  //   }
+  // });
   ship.uniqueBind("DealtDamage", ({ damage }) => {
     if (damage[0].name === "Bullet" && !ship.buffActive("overdrive")) {
       ship.energy = Math.min(maxEnergy, ship.energy + 1);

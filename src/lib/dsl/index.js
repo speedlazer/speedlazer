@@ -42,6 +42,10 @@ export const createScriptExecutionSpace = initialState => {
 
     try {
       return await script(dsl);
+    } catch (e) {
+      if (e.message !== "Game Over") {
+        console.error(e.message);
+      }
     } finally {
       dsl.closeScript();
     }

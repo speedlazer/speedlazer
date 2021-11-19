@@ -1,6 +1,6 @@
 {
-  "scenery": false,
-  "particles": false,
-  "music": false,
+  "scenery": true,
+  "particles": true,
+  "music": true,
   "wordDelay": 0.25
 }
