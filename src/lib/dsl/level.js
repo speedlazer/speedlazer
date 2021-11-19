@@ -19,12 +19,13 @@ import {
 import { lookup } from "src/lib/random";
 import { playAnimation } from "src/components/Animation";
 import { EASE_IN_OUT } from "src/constants/easing";
+import settings from "../../settings.json";
 
 const noise = new Noise(lookup());
 const MAX_X_OFFSET = 30;
 const MAX_Y_OFFSET = 15;
 
-const SCENERY_ACTIVE = true;
+const SCENERY_ACTIVE = settings.scenery;
 
 const levelFunctions = state => ({
   trauma: { value: 0, time: 0, handler: null },

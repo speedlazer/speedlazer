@@ -1,5 +1,6 @@
 import { compositions } from "data";
 import Composable from "src/components/Composable";
+import settings from "../settings.json";
 
 const CHAR_WIDTH = 10;
 const CHAR_HEIGHT = 16;
@@ -124,7 +125,7 @@ export const say = (speaker, text, { portrait = null } = {}) =>
     });
 
     const wordCount = lines.join(" ").split(" ").length;
-    const repeats = lines.length + Math.ceil(wordCount / 4);
+    const repeats = lines.length + Math.ceil(wordCount * settings.wordDelay);
     let i = 0;
 
     Crafty.e("Dialog, Delay").delay(

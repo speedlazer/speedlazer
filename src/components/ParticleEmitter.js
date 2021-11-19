@@ -1,11 +1,12 @@
 import particleVertexShader from "./shaders/particle.vert";
 import particleFragmentShader from "./shaders/particle.frag";
 import WebGLParticles from "src/components/WebGLParticles";
+import settings from "../settings.json";
 
 const randM1to1 = () => Math.random() * 2 - 1;
 
 const spriteMap = {};
-const PARTICLES_ENABLED = true;
+const PARTICLES_ENABLED = settings.particles;
 
 const setParticleSprite = (entity, spriteName) => {
   const map = spriteMap[spriteName];
