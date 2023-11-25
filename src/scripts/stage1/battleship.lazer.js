@@ -1,8 +1,8 @@
 import battleship from "./enemies/battleship.lazer";
 import { droneWave } from "./enemies/drones.lazer";
 import { playerShip } from "../playerShip.lazer";
-import { bigText } from "src/components/BigText";
-import audio from "src/lib/audio";
+import { bigText } from "../../components/BigText";
+import audio from "../../lib/audio";
 import { checkpoint } from "../common.lazer";
 
 const part = async ({

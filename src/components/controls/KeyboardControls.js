@@ -1,6 +1,7 @@
-import { togglePause } from "src/lib/core/pauseToggle";
-import Listener from "src/components/generic/Listener";
-import ControlScheme from "src/components/player/ControlScheme";
+import { togglePause } from "../../lib/core/pauseToggle";
+import Listener from "../generic/Listener";
+import ControlScheme from "../player/ControlScheme";
+import Crafty from "../../crafty";
 
 const KeyboardControls = "KeyboardControls";
 

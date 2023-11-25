@@ -1,6 +1,7 @@
 import { setGameSpeed } from "./gameSpeed";
-import ParticleEmitter from "src/components/ParticleEmitter";
-import audio from "src/lib/audio";
+import ParticleEmitter from "../../components/ParticleEmitter";
+import audio from "../../lib/audio";
+import Crafty from "../../crafty";
 
 let paused = false;
 

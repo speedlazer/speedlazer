@@ -1,7 +1,8 @@
 import clone from "lodash/clone";
 import sortBy from "lodash/sortBy";
 import CryptoJS from "crypto-js";
-import { highscores } from "src/lib/highscores";
+import { highscores } from "../lib/highscores";
+import Crafty from "../crafty";
 
 Crafty.defineScene(
   "GameOver",

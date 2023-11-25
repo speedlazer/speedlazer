@@ -1,13 +1,14 @@
 import Composable from "./Composable";
-import { compositions, paths, particles } from "data";
-import { createEntity } from "src/components/EntityDefinition";
-import { tweenFn } from "src/components/generic/TweenPromise";
+import { compositions, paths, particles } from "../data";
+import { createEntity } from "../components/EntityDefinition";
+import { tweenFn } from "../components/generic/TweenPromise";
 import WayPointMotion from "./WayPointMotion";
 import ParticleEmitter from "./ParticleEmitter";
-import { LINEAR } from "src/constants/easing";
-import { getBackgroundColor, setBackgroundColor } from "src/components/Horizon";
-import { mix, strToColor } from "src/components/generic/ColorFade";
+import { LINEAR } from "../constants/easing";
+import { getBackgroundColor, setBackgroundColor } from "../components/Horizon";
+import { mix, strToColor } from "../components/generic/ColorFade";
 import merge from "lodash/merge";
+import Crafty from "../crafty";
 
 export const Animation = "Animation";
 

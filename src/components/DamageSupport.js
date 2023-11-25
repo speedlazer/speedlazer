@@ -1,6 +1,7 @@
 //import StackableCoordinates from "./StackableCoordinates";
-import { isPaused } from "src/lib/core/pauseToggle";
-import { addEffect, normalize, processEffects } from "src/lib/effects";
+import Crafty from "../crafty";
+import { isPaused } from "../lib/core/pauseToggle";
+import { addEffect, normalize, processEffects } from "../lib/effects";
 
 const applyHitFlash = (entity, onOff) => {
   if (!onOff && entity._isFlashing < 1) return;

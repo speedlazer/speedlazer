@@ -1,3 +1,5 @@
+import Crafty from "../../crafty";
+
 let gameSpeed = 1.0;
 
 export const getGameSpeed = () => gameSpeed;

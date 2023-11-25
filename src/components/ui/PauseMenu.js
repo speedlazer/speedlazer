@@ -1,8 +1,9 @@
 import { centeredText } from "./text-helpers";
-import { togglePause } from "src/lib/core/pauseToggle";
-import audio from "src/lib/audio";
+import { togglePause } from "../../lib/core/pauseToggle";
+import audio from "../../lib/audio";
 import Menu from "./Menu";
-import { updateSetting } from "src/lib/settings";
+import { updateSetting } from "../../lib/settings";
+import Crafty from "../../crafty";
 
 const PauseMenu = "PauseMenu";
 
@@ -124,7 +125,7 @@ Crafty.c(PauseMenu, {
     this.attr({
       x: (Crafty.viewport.width - menuWidth) / 2,
       w: menuWidth,
-      alpha: 0.6,
+      alpha: 0.8,
       z: 200
     }).color("#222222");
 

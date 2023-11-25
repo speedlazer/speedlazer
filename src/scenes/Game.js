@@ -1,12 +1,13 @@
-import { createScriptExecutionSpace } from "src/lib/dsl";
-import gameStructure from "src/scripts";
-import PauseMenu from "src/components/ui/PauseMenu";
-import Animation from "src/components/Animation";
-import audio from "src/lib/audio";
-import { fadeOut } from "src/components/generic/ColorFade";
-import { setGameSpeed } from "src/lib/core/gameSpeed";
+import { createScriptExecutionSpace } from "../lib/dsl";
+import gameStructure from "../scripts";
+import PauseMenu from "../components/ui/PauseMenu";
+import Animation from "../components/Animation";
+import audio from "../lib/audio";
+import { fadeOut } from "../components/generic/ColorFade";
+import { setGameSpeed } from "../lib/core/gameSpeed";
 
-import Player from "src/components/player/Player";
+import Player from "../components/player/Player";
+import Crafty from "../crafty";
 const DEFAULT_TAGS = ["campaign"];
 
 Crafty.defineScene(
@@ -14,6 +15,7 @@ Crafty.defineScene(
   async function({ start = null, tags = DEFAULT_TAGS } = {}) {
     let pauseMenu = null;
     setGameSpeed(1.0);
+
     Crafty.bind("GamePause", paused => {
       if (paused) {
         const player = Crafty("Player").get(0);
@@ -24,7 +26,7 @@ Crafty.defineScene(
           pauseMenu.showMenu(player);
         }
       } else {
-        pauseMenu.freeze();
+        pauseMenu && pauseMenu.freeze();
       }
     });
 

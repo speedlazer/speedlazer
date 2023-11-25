@@ -1,28 +1,32 @@
 import { Noise } from "noisejs";
-import { getOne } from "src/lib/utils";
-import { fadeIn, fadeOut } from "src/components/generic/ColorFade";
+import { getOne } from "../utils";
+import { fadeIn, fadeOut } from "../../components/generic/ColorFade";
 import {
   setScenery,
   getNotificationInScreen,
   getScrollVelocity,
   setAltitude,
   getAltitude
-} from "src/components/Scenery";
-import { animations } from "data";
-import { setGameSpeed } from "src/lib/core/gameSpeed";
+} from "../../components/Scenery";
+import { animations } from "../../data";
+import { setGameSpeed } from "../core/gameSpeed";
 import {
   setBackground,
   setBackgroundCheckpoint,
   getBackgroundCheckpoint,
   setBackgroundCheckpointLimit
-} from "src/components/Background";
-import { lookup } from "src/lib/random";
-import { playAnimation } from "src/components/Animation";
-import { EASE_IN_OUT } from "src/constants/easing";
+} from "../../components/Background";
+import { lookup } from "../random";
+import { playAnimation } from "../../components/Animation";
+import { EASE_IN_OUT } from "../../constants/easing";
+import settings from "../../settings.json";
+import Crafty from "../../crafty";
 
 const noise = new Noise(lookup());
 const MAX_X_OFFSET = 30;
 const MAX_Y_OFFSET = 15;
+
+const SCENERY_ACTIVE = settings.scenery;
 
 const levelFunctions = state => ({
   trauma: { value: 0, time: 0, handler: null },
@@ -65,6 +69,7 @@ const levelFunctions = state => ({
     }
   },
   setScrollingSpeed: async (x, y, { speed = 50, instant = false } = {}) => {
+    if (!SCENERY_ACTIVE) return;
     const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
     return instant
       ? scenery.setScrollVelocity({ vx: -x, vy: y })
@@ -81,7 +86,7 @@ const levelFunctions = state => ({
             const v = ease.value();
             if (v >= 1.0) {
               Crafty.unbind("GameLoop", f);
-              resolve();
+              resolve(undefined);
             }
             const vy = startY * (1 - v) + y * v;
             const vx = -startX * (1 - v) + x * v;
@@ -91,8 +96,9 @@ const levelFunctions = state => ({
           Crafty.bind("GameLoop", f);
         });
   },
-  setAltitude: async (y, { speed = 50, instant = false } = {}) =>
-    instant
+  setAltitude: async (y, { speed = 50, instant = false } = {}) => {
+    if (!SCENERY_ACTIVE) return;
+    return instant
       ? setAltitude(y)
       : new Promise(resolve => {
           const altPSec = speed / 1000;
@@ -105,20 +111,23 @@ const levelFunctions = state => ({
             const v = ease.value();
             if (v >= 1.0) {
               Crafty.unbind("GameLoop", f);
-              resolve();
+              resolve(undefined);
             }
             const alt = startAlt * (1 - v) + y * v;
             setAltitude(alt);
           };
 
           Crafty.bind("GameLoop", f);
-        }),
+        });
+  },
   setScenery: async sceneryName => {
-    setScenery(sceneryName);
+    if (!SCENERY_ACTIVE) return;
+    return setScenery(sceneryName);
   },
   waitTillInScreen: (sceneryName, offset) =>
     getNotificationInScreen(sceneryName, offset),
   setBackground: async (backgroundName, checkpoint, limit) => {
+    if (!SCENERY_ACTIVE) return;
     setBackground(animations(backgroundName));
     if (limit !== undefined) {
       setBackgroundCheckpointLimit(limit);

@@ -1,3 +1,4 @@
+import Crafty from "../../crafty";
 import { centeredText } from "./text-helpers";
 
 const Menu = "Menu";

@@ -1,4 +1,5 @@
-import { getBezierPath } from "src/lib/BezierPath";
+import Crafty from "../crafty";
+import { getBezierPath } from "../lib/BezierPath";
 import StackableCoordinates from "./StackableCoordinates";
 
 const WayPointMotion = "WayPointMotion";

@@ -1,5 +1,6 @@
 import spriteVertexShader from "./shaders/sprite.vert";
 import spriteFragmentShader from "./shaders/sprite.frag";
+import Crafty from "../crafty";
 
 const collectHideBelow = entity => {
   if (entity._parent) {

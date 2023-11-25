@@ -1,9 +1,10 @@
-import { bigText } from "src/components/BigText";
+import { bigText } from "../../../components/BigText";
 import { droneWave } from "./drones.lazer";
-import { say } from "src/lib/Dialog";
+import { say } from "../../../lib/Dialog";
 import { battleshipMines } from "./mines.lazer.js";
-import audio from "src/lib/audio";
-import { EASE_IN_OUT, EASE_OUT, LINEAR } from "src/constants/easing";
+import audio from "../../../lib/audio";
+import { EASE_IN_OUT, EASE_OUT, LINEAR } from "../../../constants/easing";
+import Crafty from "../../../crafty.js";
 
 const shootMineCannon = (cannon, high) => async ({
   spawn,

@@ -1,4 +1,5 @@
-import DamageSupport from "src/components/DamageSupport";
+import Crafty from "../../crafty";
+import DamageSupport from "../DamageSupport";
 const ShipCollision = "ShipCollision";
 
 Crafty.c(ShipCollision, {

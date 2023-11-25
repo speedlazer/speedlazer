@@ -1,4 +1,5 @@
-import { rotX } from "src/lib/rotation";
+import Crafty from "../../crafty";
+import { rotX } from "../../lib/rotation";
 
 export const Stretchable = "Stretchable";
 export const Stretcher = "Stretcher";

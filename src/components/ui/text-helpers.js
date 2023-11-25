@@ -1,3 +1,5 @@
+import Crafty from "../../crafty";
+
 export const centeredText = (
   text,
   parent,

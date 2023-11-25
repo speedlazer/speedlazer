@@ -1,6 +1,7 @@
-import { togglePause } from "src/lib/core/pauseToggle";
-import Listener from "src/components/generic/Listener";
-import ControlScheme from "src/components/player/ControlScheme";
+import Crafty from "../../crafty";
+import { togglePause } from "../../lib/core/pauseToggle";
+import Listener from "../generic/Listener";
+import ControlScheme from "../player/ControlScheme";
 
 const AnalogKeyboardControls = "AnalogKeyboardControls";
 
@@ -65,8 +66,8 @@ Crafty.c(AnalogKeyboardControls, {
 
     const MAX_X_SPEED = 700;
     const MAX_Y_SPEED = 500;
-    const ACCELLERATE_Y = MAX_Y_SPEED * 6;
-    const ACCELLERATE_X = MAX_X_SPEED * 6;
+    const ACCELERATE_Y = MAX_Y_SPEED * 6;
+    const ACCELERATE_X = MAX_X_SPEED * 6;
 
     let yDir = 0;
     let xDir = 0;
@@ -116,20 +117,20 @@ Crafty.c(AnalogKeyboardControls, {
         }
       });
 
-    ship.controlName = mapItem => {
+    ship.controlName = (mapItem, short = false) => {
       const keys = this.controlMap[mapItem];
       const names = keys.map(key => {
         switch (key) {
           case Crafty.keys.SPACE:
             return "spacebar";
           case Crafty.keys.SHIFT:
-            return "shift key";
+            return "shift";
         }
 
-        return `${String.fromCharCode(key)} key`;
+        return `${String.fromCharCode(key)}${short ? "" : " key"}`;
       });
 
-      return names.join(" or ");
+      return short ? names[0] : names.join(" or ");
     };
 
     ship.disableControls = false;
@@ -179,14 +180,14 @@ Crafty.c(AnalogKeyboardControls, {
       }
       yDir = Math.min(1, Math.max(-1, yDir));
 
-      ship.ay += ACCELLERATE_Y * yDir;
+      ship.ay += ACCELERATE_Y * yDir;
       if (ship.vy > 0 && ship.ay === 0) {
         // decellerate
-        ship.ay -= ACCELLERATE_Y * 2;
+        ship.ay -= ACCELERATE_Y * 2;
       }
       if (ship.vy < 0 && ship.ay === 0) {
         // decellerate
-        ship.ay += ACCELLERATE_Y * 2;
+        ship.ay += ACCELERATE_Y * 2;
       }
 
       xDir = 0;
@@ -197,14 +198,14 @@ Crafty.c(AnalogKeyboardControls, {
         xDir += 1;
       }
       xDir = Math.min(1, Math.max(-1, xDir));
-      ship.ax += ACCELLERATE_X * xDir;
+      ship.ax += ACCELERATE_X * xDir;
       if (ship.vx > 0 && ship.ax === 0) {
         // decellerate
-        ship.ax -= ACCELLERATE_X * 2;
+        ship.ax -= ACCELERATE_X * 2;
       }
       if (ship.vx < 0 && ship.ax === 0) {
         // decellerate
-        ship.ax += ACCELLERATE_X * 2;
+        ship.ax += ACCELERATE_X * 2;
       }
     };
 
@@ -212,18 +213,12 @@ Crafty.c(AnalogKeyboardControls, {
       if (ship.disableControls) {
         return;
       }
-      if (controlMap.fire.some(key => key === e.key)) {
-        ship.controlPrimary(true);
-      }
-      if (controlMap.switchWeapon.some(key => key === e.key)) {
-        ship.controlSwitch(true);
-      }
-      if (controlMap.heavy.some(key => key === e.key)) {
-        ship.controlSecondary(true);
-      }
-      if (controlMap.shield.some(key => key === e.key)) {
-        ship.controlBlock(true);
-      }
+
+      Object.entries(controlMap).forEach(([action, buttons]) => {
+        if (buttons.some(key => key === e.key)) {
+          ship.buttonPressed(action, true);
+        }
+      });
 
       if (controlMap.up.some(key => key === e.key)) {
         pressed.up = true;
@@ -245,18 +240,12 @@ Crafty.c(AnalogKeyboardControls, {
       if (ship.disableControls) {
         return;
       }
-      if (controlMap.fire.some(key => key === e.key)) {
-        ship.controlPrimary(false);
-      }
-      if (controlMap.switchWeapon.some(key => key === e.key)) {
-        ship.controlSwitch(false);
-      }
-      if (controlMap.heavy.some(key => key === e.key)) {
-        ship.controlSecondary(false);
-      }
-      if (controlMap.shield.some(key => key === e.key)) {
-        ship.controlBlock(false);
-      }
+
+      Object.entries(controlMap).forEach(([action, buttons]) => {
+        if (buttons.some(key => key === e.key)) {
+          ship.buttonPressed(action, false);
+        }
+      });
 
       if (controlMap.up.some(key => key === e.key)) {
         pressed.up = false;

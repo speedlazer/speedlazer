@@ -1,8 +1,9 @@
-import { highscores } from "src/lib/highscores";
-import { loadSpriteSheets } from "src/lib/sprites";
-import { animations } from "data";
-import { playAnimation } from "src/components/Animation";
-import Player from "src/components/player/Player";
+import { highscores } from "../lib/highscores";
+import { loadSpriteSheets } from "../lib/sprites";
+import { animations } from "../data";
+import { playAnimation } from "../components/Animation";
+import Player from "../components/player/Player";
+import Crafty from "../crafty";
 
 Crafty.defineScene(
   "Intro",

@@ -1,4 +1,5 @@
-import { rotX, rotY } from "src/lib/rotation";
+import Crafty from "../../crafty";
+import { rotX, rotY } from "../../lib/rotation";
 
 const Delta2D = "Delta2D";
 

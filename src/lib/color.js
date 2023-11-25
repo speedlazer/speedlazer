@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 const colorCache = {};
 
 export const convertColor = str => {

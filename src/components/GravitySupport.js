@@ -1,23 +1,24 @@
-import ParticleEmitter from "src/components/ParticleEmitter";
-import PausableMotion from "src/components/PausableMotion";
-import { particles } from "data";
+import ParticleEmitter from "./ParticleEmitter";
+import PausableMotion from "./PausableMotion";
+import { particles } from "../data";
 import merge from "lodash/merge";
+import Crafty from "../crafty";
 
 Crafty.c("GravitySupport", {
   init() {
     this.activateGravity = this.activateGravity.bind(this);
-    this._onGravityCollisonHit = this._onGravityCollisonHit.bind(this);
+    this._onGravityCollisionHit = this._onGravityCollisionHit.bind(this);
   },
 
   activateGravity(surfaces = ["GravitySolid", "GravityLiquid"]) {
     this.addComponent("Motion", "Collision", PausableMotion);
     this.ay = 400;
 
-    this.bind("HitOn", this._onGravityCollisonHit);
+    this.bind("HitOn", this._onGravityCollisionHit);
     this.checkHits(...surfaces);
   },
 
-  _onGravityCollisonHit(collisions) {
+  _onGravityCollisionHit(collisions) {
     let groundType = "none";
     let surfaceEntity = null;
     collisions.forEach(e => {

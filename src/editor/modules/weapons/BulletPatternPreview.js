@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
-import { unmount, mount, showBulletPattern } from "editor/lib/render-crafty";
-import Preview from "editor/components/Preview";
+import { unmount, mount, showBulletPattern } from "../../lib/render-crafty";
+import Preview from "../../components/Preview";
+import Crafty from "../../../crafty";
 
 const propChanged = (prevProps, props, checkChanged) =>
   checkChanged.some(prop => props[prop] !== prevProps[prop]);

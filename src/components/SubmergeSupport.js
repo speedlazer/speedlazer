@@ -1,12 +1,13 @@
-import ParticleEmitter from "src/components/ParticleEmitter";
-import { particles } from "data";
+import ParticleEmitter from "./ParticleEmitter";
+import { particles } from "../data";
 import merge from "lodash/merge";
+import Crafty from "../crafty";
 
 Crafty.c("SubmergeSupport", {
   init() {
     this._onGravityCollisonHit = this._onGravityCollisonHit.bind(this);
     this.addComponent("Motion", "Collision");
-    this.bind("HitOn", this._onGravityCollisonHit);
+    this.bind("HitOn", this._onGravityCollisionHit);
     this.checkHits("GravityLiquid");
     this.clearShadow = this.clearShadow.bind(this);
   },
@@ -36,7 +37,7 @@ Crafty.c("SubmergeSupport", {
     }
   },
 
-  _onGravityCollisonHit(collisions) {
+  _onGravityCollisionHit(collisions) {
     if (this.surface) return;
     let surfaceEntity = null;
     collisions.forEach(e => {

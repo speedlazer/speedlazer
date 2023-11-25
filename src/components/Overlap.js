@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 const component = "Overlap";
 
 export default component;
@@ -20,7 +22,7 @@ Crafty.c(component, {
           const yMin = Math.max(this.y, e.y);
           const yMax = Math.min(this.y + this.h, e.y + e.h);
           const h = yMax - yMin;
-          covered.push(w * h);
+          covered.push(w * h * 1.7);
         });
       }
 

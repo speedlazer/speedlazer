@@ -1,5 +1,6 @@
-import { EASE_IN_OUT } from "src/constants/easing";
-import { EASE_IN } from "src/constants/easing";
+import { EASE_IN_OUT } from "../../../constants/easing";
+import { EASE_IN } from "../../../constants/easing";
+import Crafty from "../../../crafty";
 
 export const backgroundHeli = ({ existing = false } = {}) => async ({
   spawn,

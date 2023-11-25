@@ -1,7 +1,0 @@
---sort=yes
---verbose=no
---recurse
---exclude=node_modules
---exclude=.tmp
--o tags
-

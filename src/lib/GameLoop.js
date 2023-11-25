@@ -1,5 +1,6 @@
 import { isPaused } from "./core/pauseToggle";
 import { getGameSpeed } from "./core/gameSpeed";
+import Crafty from "../crafty";
 
 let gameTime = 0;
 const gameLoop = fd => {

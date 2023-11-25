@@ -1,3 +1,5 @@
+import Crafty from "../../crafty";
+
 const flowFunctions = (dsl, state) => {
   const call = (fn, ...args) => fn(...args);
 
@@ -15,13 +17,13 @@ const flowFunctions = (dsl, state) => {
     return new Promise((resolve, reject) =>
       Crafty.e("Delay").delay(
         () => {
-          if (!dsl.currentScript()) resolve();
+          if (!dsl.currentScript()) resolve(undefined);
           if (state.gameEnded === true) reject(new Error("Game Over"));
         },
         40,
         parts,
         function() {
-          resolve();
+          resolve(undefined);
           this.destroy();
         }
       )

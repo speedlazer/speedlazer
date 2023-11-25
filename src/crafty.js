@@ -1,4 +1,4 @@
-import "Crafty-Distro/crafty";
+import "../lib/crafty";
 const Crafty = window.Crafty;
 delete window["Crafty"];
 

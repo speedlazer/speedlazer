@@ -1,3 +1,4 @@
+import Crafty from "../crafty";
 import Animation from "./Animation";
 
 export const Background = "Background";

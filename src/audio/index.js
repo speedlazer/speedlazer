@@ -1,5 +1,5 @@
-import bgMusic1 from "./symsonic-hero.mp3";
-import effects from "./effects.ogg";
+import bgMusic1 from "url:./symsonic-hero.mp3";
+import effects from "url:./effects.ogg";
 
 const audiosheets = [
   {

@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 const LightGlare = "LightGlare";
 
 Crafty.c(LightGlare, {

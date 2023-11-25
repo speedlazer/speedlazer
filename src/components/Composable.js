@@ -1,17 +1,18 @@
-import Horizon from "src/components/Horizon";
-import Scalable from "src/components/utils/Scalable";
-import "src/components/utils/HideBelow";
-import Animator from "src/components/generic/Animator";
-import { tweenFn } from "src/components/generic/TweenPromise";
-import { colorFadeFn } from "src/components/generic/ColorFade";
-import Delta2D from "src/components/generic/Delta2D";
-import Gradient from "src/components/Gradient";
-import ColorEffects from "src/components/ColorEffects";
-import Flipable from "src/components/utils/flipable";
-import { Stretchable, Stretcher } from "src/components/utils/Stretchable";
-import { globalStartTime } from "src/lib/time";
-import { easingFunctions } from "src/constants/easing";
-import { convertColor } from "src/lib/color";
+import Horizon from "./Horizon";
+import Scalable from "./utils/Scalable";
+import "./utils/HideBelow";
+import Animator from "./generic/Animator";
+import { tweenFn } from "./generic/TweenPromise";
+import { colorFadeFn } from "./generic/ColorFade";
+import Delta2D from "./generic/Delta2D";
+import Gradient from "./Gradient";
+import ColorEffects from "./ColorEffects";
+import Flipable from "./utils/flipable";
+import { Stretchable, Stretcher } from "./utils/Stretchable";
+import { globalStartTime } from "../lib/time";
+import { easingFunctions } from "../constants/easing";
+import { convertColor } from "../lib/color";
+import Crafty from "../crafty";
 
 const definitionStructure = {
   sprites: [],

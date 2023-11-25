@@ -1,4 +1,5 @@
 import defaults from "lodash/defaults";
+import Crafty from "../../crafty";
 
 const Acceleration = "Acceleration";
 

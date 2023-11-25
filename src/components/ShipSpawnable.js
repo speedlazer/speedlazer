@@ -1,8 +1,9 @@
-import Listener from "src/components/generic/Listener";
-import ControlScheme from "src/components/player/ControlScheme";
-import ShipControls from "src/components/player/ShipControls";
-import ShipCollision from "src/components/player/ShipCollision";
-import { createEntity } from "src/components/EntityDefinition";
+import Listener from "./generic/Listener";
+import ControlScheme from "./player/ControlScheme";
+import ShipControls from "./player/ShipControls";
+import ShipCollision from "./player/ShipCollision";
+import { createEntity } from "./EntityDefinition";
+import Crafty from "../crafty";
 
 Crafty.c("ShipSpawnable", {
   required: Listener,

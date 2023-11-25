@@ -1,10 +1,11 @@
-import { flipRotation } from "src/lib/rotation";
-import Composable from "src/components/Composable";
-import Weapon from "src/components/Weapon";
-import ParticleEmitter from "src/components/ParticleEmitter";
-import { compositions, entities, particles, weapons } from "data";
+import { flipRotation } from "../lib/rotation";
+import Composable from "./Composable";
+import Weapon from "./Weapon";
+import ParticleEmitter from "./ParticleEmitter";
+import { compositions, entities, particles, weapons } from "../data";
 import merge from "lodash/merge";
-import audio from "src/lib/audio";
+import audio from "../lib/audio";
+import Crafty from "../crafty";
 
 const convertLocation = location => {
   if (!location) return {};
@@ -78,6 +79,7 @@ const setEntityStructure = (root, entity, state, duration) => {
           particleEmitter[1]
         );
         if (!entity.emitter) {
+          console.log(emitter);
           const e = Crafty.e(ParticleEmitter).particles(emitter, entity);
           entity.attr({ w: emitter.emitter.w, h: emitter.emitter.h });
           entity.emitter = e;

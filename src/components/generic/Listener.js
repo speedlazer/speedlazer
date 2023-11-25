@@ -1,3 +1,5 @@
+import Crafty from "../../crafty";
+
 const Listener = "Listener";
 
 Crafty.c(Listener, {

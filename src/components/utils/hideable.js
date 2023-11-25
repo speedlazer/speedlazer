@@ -1,4 +1,5 @@
-import ColorEffects from "src/components/ColorEffects";
+import Crafty from "../../crafty";
+import ColorEffects from "../ColorEffects";
 
 Crafty.c("Hideable", {
   _hidden: false,

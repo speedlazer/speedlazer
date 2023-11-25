@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 const StackableCoordinates = "StackableCoordinates";
 
 Crafty.c(StackableCoordinates, {

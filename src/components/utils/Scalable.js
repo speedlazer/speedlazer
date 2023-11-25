@@ -1,3 +1,5 @@
+import Crafty from "../../crafty";
+
 const Scalable = "Scalable";
 
 Crafty.c(Scalable, {

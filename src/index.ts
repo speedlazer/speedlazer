@@ -1,13 +1,12 @@
-import "!style-loader!css-loader!postcss-loader!sass-loader!./styles/normalize.css";
-import "!style-loader!css-loader!postcss-loader!sass-loader!./styles/style.css";
 import "./components";
 import "./scenes";
 import { setupControls } from "./setup-game";
-import "src/lib/GameLoop";
-import Player from "src/components/player/Player";
-import { setGameSpeed } from "src/lib/core/gameSpeed";
-import audio from "src/lib/audio";
-import setting from "src/lib/settings";
+import "./lib/GameLoop";
+import Player from "./components/player/Player";
+import { setGameSpeed } from "./lib/core/gameSpeed";
+import audio from "./lib/audio";
+import setting from "./lib/settings";
+import Crafty from "./crafty";
 
 audio.setEffectVolume(setting("effectsVolume", 0.4));
 audio.setMusicVolume(setting("musicVolume", 0.4));
@@ -21,6 +20,8 @@ const stage = document.getElementById("cr-stage");
 Crafty.init(1024, 576, stage); // PAL+
 Crafty.background("#000000");
 Crafty.timer.FPS(60);
+Crafty.timer.steptype("variable");
+
 Crafty.createLayer("UILayerDOM", "DOM", {
   scaleResponse: 0,
   yResponse: 0,

@@ -39,22 +39,20 @@
     <meta property="og:site_name" content="SpeedLazer" />
 
     <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="styles/normalize.css" />
+    <link rel="stylesheet" href="styles/style.css" />
   </head>
   <body>
     <div id="theater">
       <div id="cr-stage"></div>
     </div>
-    <% if (useFooter) { %>
     <footer>
-      <span id="version"><%= version %></span>
+      <span id="version"></span>
       <span class="copyright">
       </span>
-      <a class="github-button" href="https://github.com/speedlazer/speedlazer" data-icon="octicon-star" aria-label="Star speedlazer/speedlazer on GitHub">Star</a>
-      <a href="https://twitter.com/speedlazergame" class="twitter-follow-button" data-show-count="false">Follow @speedlazergame</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
       <button type="button">Fullscreen</button>
-      <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
     </footer>
-    <% } %>
+    <script type="module" src="index.ts"></script>
   </body>
 </html>
 

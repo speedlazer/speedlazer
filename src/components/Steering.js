@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 const Steering = "Steering";
 
 Crafty.c(Steering, {

@@ -1,4 +1,5 @@
-import { bigText } from "src/components/BigText";
+import { bigText } from "../../components/BigText";
+import Crafty from "../../crafty";
 import { playerShip } from "../playerShip.lazer";
 
 const part = async ({

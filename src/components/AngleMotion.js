@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 const AngleMotion = "AngleMotion";
 
 Crafty.c(AngleMotion, {

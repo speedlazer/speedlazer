@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 export const bigText = (text, { color = "#FFFFFF", sup = null } = {}) => {
   const createTextEntity = (text, color, size, y) =>
     Crafty.e(" 2D, Text, Tween, UILayerDOM, Delay")

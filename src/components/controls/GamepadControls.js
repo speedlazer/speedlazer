@@ -1,9 +1,90 @@
-import { togglePause } from "src/lib/core/pauseToggle";
-import Listener from "src/components/generic/Listener";
+import { togglePause } from "../../lib/core/pauseToggle";
+import Listener from "../generic/Listener";
 import Gamepad from "./Gamepad";
-import ControlScheme from "src/components/player/ControlScheme";
+import ControlScheme from "../player/ControlScheme";
+import Crafty from "../../crafty";
 
 const GamepadControls = "GamepadControls";
+
+const PS_LONG_BUTTON_NAMES = [
+  "✖ button",
+  "◯ button",
+  "□ button",
+  "△ button",
+  "Left shoulder button (L1)",
+  "Right shoulder button (R1)",
+  "Left trigger (L2)",
+  "Right trigger (R2)",
+  "Share button",
+  "Option button",
+  "Left stick (L3)",
+  "Right stick (R3)",
+  "D-pad up button",
+  "D-pad down button",
+  "D-pad left button",
+  "D-pad right button",
+  "Playstation button",
+  "touchpad"
+];
+
+const PS_SHORT_BUTTON_NAMES = [
+  "✖",
+  "◯",
+  "□",
+  "△",
+  "L1",
+  "R1",
+  "L2",
+  "R2",
+  "Share button",
+  "Option button",
+  "L3",
+  "R3",
+  "D-pad up",
+  "D-pad down",
+  "D-pad left",
+  "D-pad right",
+  "Playstation",
+  "touchpad"
+];
+
+const XBOX_LONG_BUTTON_NAMES = [
+  "a button",
+  "b button",
+  "x button",
+  "y button",
+  "Left bumper (LB)",
+  "Right bumper (RB)",
+  "Left trigger (LT)",
+  "Right trigger (RT)",
+  "Select button",
+  "Start button",
+  "Left stick (L)",
+  "Right stick (R)",
+  "D-pad up button",
+  "D-pad down button",
+  "D-pad left button",
+  "D-pad right button"
+];
+
+const XBOX_SHORT_BUTTON_NAMES = [
+  "a",
+  "b",
+  "x",
+  "y",
+  "LB",
+  "RB",
+  "LT",
+  "RT",
+  "Select button",
+  "Start button",
+  "L",
+  "R",
+  "D-pad up",
+  "D-pad down",
+  "D-pad left",
+  "D-pad right"
+];
 
 Crafty.c(GamepadControls, {
   init() {
@@ -148,66 +229,39 @@ Crafty.c(GamepadControls, {
           }
         }
       });
+    const gamepad = this._getGamepad();
+    const psController = [
+      "sony",
+      "dualshock",
+      "playstation",
+      "sixaxis",
+      "ps3",
+      "ps3",
+      "ps(r)"
+    ].some(name => gamepad.id.toLowerCase().indexOf(name) !== -1);
+    const xboxController = ["xbox", "x-box"].some(
+      name => gamepad.id.toLowerCase().indexOf(name) !== -1
+    );
 
-    ship.controlName = mapItem => {
+    console.log(
+      psController
+        ? "Playstation controller"
+        : xboxController
+        ? "XBox controller"
+        : `Generic controller ${gamepad.id}`
+    );
+
+    ship.controlName = (mapItem, short = false) => {
       const gamepad = this._getGamepad();
       const button = this.controlMap[mapItem];
       if (gamepad.id) {
-        const psController = [
-          "sony",
-          "dualshock",
-          "playstation",
-          "sixaxis",
-          "ps3",
-          "ps3",
-          "ps(r)"
-        ].some(name => gamepad.id.toLowerCase().indexOf(name) !== -1);
         if (psController) {
-          const buttons = [
-            "✖ button",
-            "◯ button",
-            "□ button",
-            "△ button",
-            "Left shoulder button (L1)",
-            "Right shoulder button (R1)",
-            "Left trigger (L2)",
-            "Right trigger (R2)",
-            "Share button",
-            "Option button",
-            "Left stick (L3)",
-            "Right stick (R3)",
-            "D-pad up button",
-            "D-pad down button",
-            "D-pad left button",
-            "D-pad right button",
-            "Playstation button",
-            "touchpad"
-          ];
-          return buttons[button];
+          return (short ? PS_SHORT_BUTTON_NAMES : PS_LONG_BUTTON_NAMES)[button];
         }
-        const xboxController = ["xbox", "x-box"].some(
-          name => gamepad.id.toLowerCase().indexOf(name) !== -1
-        );
         if (xboxController) {
-          const buttons = [
-            "a button",
-            "b button",
-            "x button",
-            "y button",
-            "Left bumper (LB)",
-            "Right bumper (RB)",
-            "Left trigger (LT)",
-            "Right trigger (RT)",
-            "Select button",
-            "Start button",
-            "Left stick (L)",
-            "Right stick (R)",
-            "D-pad up button",
-            "D-pad down button",
-            "D-pad left button",
-            "D-pad right button"
+          return (short ? XBOX_SHORT_BUTTON_NAMES : XBOX_LONG_BUTTON_NAMES)[
+            button
           ];
-          return buttons[button];
         }
       }
       let num = "1st";
@@ -226,22 +280,15 @@ Crafty.c(GamepadControls, {
           break;
       }
 
-      return `${num} button`;
+      return `${num}${short ? "" : " button"}`;
     };
 
     this.listenTo(ship, "GamepadKeyChange", e => {
-      if (e.button === this.controlMap.fire) {
-        ship.controlPrimary(e.pressed);
-      }
-      if (e.button === this.controlMap.switchWeapon) {
-        ship.controlSwitch(e.pressed);
-      }
-      if (e.button === this.controlMap.heavy) {
-        ship.controlSecondary(e.pressed);
-      }
-      if (e.button === this.controlMap.shield) {
-        ship.controlBlock(e.pressed);
-      }
+      Object.entries(this.controlMap).forEach(([action, button]) => {
+        if (button === e.button) {
+          ship.buttonPressed(action, e.pressed);
+        }
+      });
     });
   }
 });

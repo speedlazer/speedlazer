@@ -1,3 +1,5 @@
+import settings from "../settings.json";
+
 export const createAudioPlayer = () => {
   const audioData = {};
   const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -108,6 +110,7 @@ export const createAudioPlayer = () => {
       const map = Object.values(audioData).find(e => e.map[sampleName]);
       const sampleData = map.map[sampleName];
       if (sampleData.type === "music") {
+        if (settings.music === false) return;
         if (currentMusic() === sampleName) return;
         // Cross fade if track is already playing??
         stopMusic();

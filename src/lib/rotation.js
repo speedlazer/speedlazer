@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 export const flipRotation = x => (x < 0 ? -180 : 180) - x;
 export const rad = deg => (deg / 180) * Math.PI;
 

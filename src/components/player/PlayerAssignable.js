@@ -1,5 +1,6 @@
-import ControlScheme from "src/components/player/ControlScheme";
-import Player from "src/components/player/Player";
+import Crafty from "../../crafty";
+import ControlScheme from "./ControlScheme";
+import Player from "./Player";
 
 const PlayerAssignable = "PlayerAssignable";
 
@@ -10,7 +11,7 @@ Crafty.c(PlayerAssignable, {
   },
 
   _assignControls() {
-    const player = this._preferredplayer() || this._firstUnassignedPlayer();
+    const player = this._preferredPlayer() || this._firstUnassignedPlayer();
 
     if (player == null) {
       // Try again next time
@@ -29,7 +30,7 @@ Crafty.c(PlayerAssignable, {
     this.one("Fire", this._assignControls);
   },
 
-  _preferredplayer() {
+  _preferredPlayer() {
     if (this.preferredPlayer !== null) {
       const player = Crafty(this.preferredPlayer);
       if (!player.has(ControlScheme)) {
