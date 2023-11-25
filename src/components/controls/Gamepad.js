@@ -1,3 +1,5 @@
+import Crafty from "../../crafty";
+
 /* Gives entities gamepad events.
  *
  * NOTE: The HTML5 Gamepad API is yet experimental and subject to change.

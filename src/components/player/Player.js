@@ -1,4 +1,5 @@
-import ControlScheme from "src/components/player/ControlScheme";
+import Crafty from "../../crafty";
+import ControlScheme from "./ControlScheme";
 
 const Player = "Player";
 

@@ -1,4 +1,4 @@
-import { EASE_IN } from "src/constants/easing";
+import { EASE_IN } from "../../../constants/easing";
 import shuffle from "lodash/shuffle";
 
 const rocketFlight = (index, coord) => async ({

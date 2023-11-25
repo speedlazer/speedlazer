@@ -1,5 +1,5 @@
-import { say } from "src/lib/Dialog";
-import synchroniser from "src/lib/synchroniser";
+import { say } from "../../../lib/Dialog";
+import synchroniser from "../../../lib/synchroniser";
 
 const rocketAttack1 = drone => async ({
   showState,

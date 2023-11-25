@@ -1,4 +1,4 @@
-import { bigText } from "src/components/BigText";
+import { bigText } from "../components/BigText";
 
 const part = async () => {
   const text = bigText("Congratulations!", { sup: "The end for now..." });

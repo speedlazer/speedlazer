@@ -1,4 +1,3 @@
 node_modules
-speedlazer.zip
 dist
-src/deprecated/
+.parcel-cache

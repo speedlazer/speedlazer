@@ -1,4 +1,5 @@
 import isObject from "lodash/isObject";
+import Crafty from "../crafty";
 
 const Component = "ColorEffects";
 

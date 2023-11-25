@@ -1,8 +1,9 @@
 import { centeredText } from "./text-helpers";
-import { togglePause } from "src/lib/core/pauseToggle";
-import audio from "src/lib/audio";
+import { togglePause } from "../../lib/core/pauseToggle";
+import audio from "../../lib/audio";
 import Menu from "./Menu";
-import { updateSetting } from "src/lib/settings";
+import { updateSetting } from "../../lib/settings";
+import Crafty from "../../crafty";
 
 const PauseMenu = "PauseMenu";
 

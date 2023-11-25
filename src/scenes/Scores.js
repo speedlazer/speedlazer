@@ -1,4 +1,5 @@
-import { highscores } from "src/lib/highscores";
+import Crafty from "../crafty";
+import { highscores } from "../lib/highscores";
 
 const getNum = num => {
   switch (num) {

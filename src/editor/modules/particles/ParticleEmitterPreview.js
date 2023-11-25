@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
-import { unmount, mount, showParticleEmitter } from "editor/lib/render-crafty";
-import Preview from "editor/components/Preview";
+import { unmount, mount, showParticleEmitter } from "../../lib/render-crafty";
+import Preview from "../../components/Preview";
 
 const propChanged = (prevProps, props, checkChanged) =>
   checkChanged.some(prop => props[prop] !== prevProps[prop]);

@@ -1,25 +1,26 @@
 import { Noise } from "noisejs";
-import { getOne } from "src/lib/utils";
-import { fadeIn, fadeOut } from "src/components/generic/ColorFade";
+import { getOne } from "../utils";
+import { fadeIn, fadeOut } from "../../components/generic/ColorFade";
 import {
   setScenery,
   getNotificationInScreen,
   getScrollVelocity,
   setAltitude,
   getAltitude
-} from "src/components/Scenery";
-import { animations } from "data";
-import { setGameSpeed } from "src/lib/core/gameSpeed";
+} from "../../components/Scenery";
+import { animations } from "../../data";
+import { setGameSpeed } from "../core/gameSpeed";
 import {
   setBackground,
   setBackgroundCheckpoint,
   getBackgroundCheckpoint,
   setBackgroundCheckpointLimit
-} from "src/components/Background";
-import { lookup } from "src/lib/random";
-import { playAnimation } from "src/components/Animation";
-import { EASE_IN_OUT } from "src/constants/easing";
+} from "../../components/Background";
+import { lookup } from "../random";
+import { playAnimation } from "../../components/Animation";
+import { EASE_IN_OUT } from "../../constants/easing";
 import settings from "../../settings.json";
+import Crafty from "../../crafty";
 
 const noise = new Noise(lookup());
 const MAX_X_OFFSET = 30;
@@ -85,7 +86,7 @@ const levelFunctions = state => ({
             const v = ease.value();
             if (v >= 1.0) {
               Crafty.unbind("GameLoop", f);
-              resolve();
+              resolve(undefined);
             }
             const vy = startY * (1 - v) + y * v;
             const vx = -startX * (1 - v) + x * v;
@@ -110,7 +111,7 @@ const levelFunctions = state => ({
             const v = ease.value();
             if (v >= 1.0) {
               Crafty.unbind("GameLoop", f);
-              resolve();
+              resolve(undefined);
             }
             const alt = startAlt * (1 - v) + y * v;
             setAltitude(alt);

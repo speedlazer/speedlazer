@@ -1,7 +1,8 @@
-import AnalogKeyboardControls from "src/components/controls/AnalogKeyboardControls";
-import GamepadControls from "src/components/controls/GamepadControls";
-import PlayerAssignable from "src/components/player/PlayerAssignable";
-import Player from "src/components/player/Player";
+import AnalogKeyboardControls from "./components/controls/AnalogKeyboardControls";
+import GamepadControls from "./components/controls/GamepadControls";
+import PlayerAssignable from "./components/player/PlayerAssignable";
+import Player from "./components/player/Player";
+import Crafty from "./crafty";
 
 export const setupControls = () => {
   const player = Crafty.e([Player, "Color"].join(", "))

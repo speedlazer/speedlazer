@@ -1,7 +1,8 @@
-import ShipControls from "src/components/player/ShipControls";
-import ShipCollision from "src/components/player/ShipCollision";
-import Buffs from "src/components/Buffs";
-import ControlScheme from "src/components/player/ControlScheme";
+import ShipControls from "../components/player/ShipControls";
+import ShipCollision from "../components/player/ShipCollision";
+import Buffs from "../components/Buffs";
+import ControlScheme from "../components/player/ControlScheme";
+import Crafty from "../crafty";
 
 export const playerShip = ({
   existing = false,

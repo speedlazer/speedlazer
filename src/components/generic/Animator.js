@@ -1,3 +1,5 @@
+import Crafty from "../../crafty";
+
 const Animator = "Animator";
 
 Crafty.c(Animator, {

@@ -1,4 +1,4 @@
-import { EASE_OUT, EASE_IN } from "src/constants/easing";
+import { EASE_OUT, EASE_IN } from "../../../constants/easing";
 import { droneWave } from "./drones.lazer";
 
 const handleBox = box => async ({

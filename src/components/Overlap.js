@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 const component = "Overlap";
 
 export default component;

@@ -1,3 +1,5 @@
+import Crafty from "../../crafty";
+
 const enemyThreshold = 10;
 const baseScore = 25;
 let scoreThreshold = 100;

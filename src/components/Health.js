@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 const Component = "Health";
 
 Crafty.c(Component, {

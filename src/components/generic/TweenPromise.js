@@ -1,3 +1,4 @@
+import Crafty from "../../crafty";
 import Animator from "./Animator";
 
 export const tweenFn = (entity, next, current = undefined) => {

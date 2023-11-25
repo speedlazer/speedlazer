@@ -1,5 +1,6 @@
-import TweenPromise from "src/components/generic/TweenPromise";
-import Health from "src/components/Health";
+import TweenPromise from "../../components/generic/TweenPromise";
+import Health from "../../components/Health";
+import Crafty from "../../crafty";
 import { scorePoints, playerHit, reset, getMultiplier } from "./bonus";
 
 let pointsPool = [];

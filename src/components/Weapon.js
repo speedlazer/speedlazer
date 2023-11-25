@@ -1,16 +1,17 @@
-import { compositions, particles } from "data";
-import ParticleEmitter from "src/components/ParticleEmitter";
-import PausableMotion from "src/components/PausableMotion";
-import Composable from "src/components/Composable";
-import AngleMotion from "src/components/AngleMotion";
-import Beam from "src/components/Beam";
-import Steering from "src/components/Steering";
-import Flipable from "src/components/utils/flipable";
-import { EntityDefinition } from "src/components/EntityDefinition";
-import { tweenFn } from "src/components/generic/TweenPromise";
-import { easingFunctions } from "src/constants/easing";
-import audio from "src/lib/audio";
-import { flipRotation, rotX, normVector } from "src/lib/rotation";
+import { compositions, particles } from "../data";
+import ParticleEmitter from "./ParticleEmitter";
+import PausableMotion from "./PausableMotion";
+import Composable from "./Composable";
+import AngleMotion from "./AngleMotion";
+import Beam from "./Beam";
+import Steering from "./Steering";
+import Flipable from "./utils/flipable";
+import { EntityDefinition } from "./EntityDefinition";
+import { tweenFn } from "./generic/TweenPromise";
+import { easingFunctions } from "../constants/easing";
+import audio from "../lib/audio";
+import { flipRotation, rotX, normVector } from "../lib/rotation";
+import Crafty from "../crafty";
 
 /**
  * Fire rhythm:

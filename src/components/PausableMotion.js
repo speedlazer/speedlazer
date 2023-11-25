@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 const PausableMotion = "PausableMotion";
 
 Crafty.c(PausableMotion, {

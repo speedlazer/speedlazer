@@ -1,6 +1,7 @@
 import { h, Component } from "preact";
-import { unmount, mount, showGame } from "editor/lib/render-crafty";
-import Preview from "editor/components/Preview";
+import { unmount, mount, showGame } from "../../lib/render-crafty";
+import Preview from "../../components/Preview";
+import Crafty from "../../../crafty";
 
 export class GamePreview extends Component {
   constructor() {

@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 const ViewportLocked = "ViewportLocked";
 
 Crafty.c(ViewportLocked, {

@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 const WebGLParticles = "WebGLParticles";
 
 let particleShader = null;

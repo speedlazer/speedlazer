@@ -1,3 +1,4 @@
+import Crafty from "../crafty";
 import ColorEffects from "./ColorEffects";
 import isObject from "lodash/isObject";
 

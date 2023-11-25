@@ -1,7 +1,8 @@
-import { LINEAR } from "src/constants/easing";
-import { createEntity } from "src/components/EntityDefinition";
-import { paths } from "data";
-import "src/components/WayPointMotion";
+import { LINEAR } from "../../constants/easing";
+import { createEntity } from "../../components/EntityDefinition";
+import { paths } from "../../data";
+import "../../components/WayPointMotion";
+import Crafty from "../../crafty";
 
 const move = (entity, flyPattern, velocity, easing, state) => {
   entity.addComponent("WayPointMotion");
@@ -18,7 +19,7 @@ const move = (entity, flyPattern, velocity, easing, state) => {
         entity.unbind("PatternAborted", complete);
         Crafty.unbind("GameOver", complete);
         if (state.gameEnded === true) reject(new Error("Game Over"));
-        resolve();
+        resolve(undefined);
       };
       entity.one("PatternCompleted", complete);
       entity.one("PatternAborted", complete);

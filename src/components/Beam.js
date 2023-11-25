@@ -1,4 +1,5 @@
-import { Stretchable } from "src/components/utils/Stretchable";
+import Crafty from "../crafty";
+import { Stretchable } from "./utils/Stretchable";
 
 const Beam = "Beam";
 

@@ -1,7 +1,8 @@
 import particleVertexShader from "./shaders/particle.vert";
 import particleFragmentShader from "./shaders/particle.frag";
-import WebGLParticles from "src/components/WebGLParticles";
+import WebGLParticles from "./WebGLParticles";
 import settings from "../settings.json";
+import Crafty from "../crafty";
 
 const randM1to1 = () => Math.random() * 2 - 1;
 
@@ -10,6 +11,7 @@ const PARTICLES_ENABLED = settings.particles;
 
 const setParticleSprite = (entity, spriteName) => {
   const map = spriteMap[spriteName];
+  console.log(spriteName);
   if (map) {
     entity.__image = map.image;
     if (entity.program && entity._drawLayer) {

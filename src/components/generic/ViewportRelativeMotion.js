@@ -1,3 +1,5 @@
+import Crafty from "../../crafty";
+
 const correction = 0.225;
 
 const calculateY = (delta, speed) =>

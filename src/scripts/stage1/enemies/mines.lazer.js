@@ -1,5 +1,5 @@
-import { EASE_OUT, EASE_IN_OUT } from "src/constants/easing";
-import synchroniser from "src/lib/synchroniser";
+import { EASE_OUT, EASE_IN_OUT } from "../../../constants/easing";
+import synchroniser from "../../../lib/synchroniser";
 import shuffle from "lodash/shuffle";
 
 const mineFlight = (index, start, coord, synchronize, moveDelay = 0) => async ({

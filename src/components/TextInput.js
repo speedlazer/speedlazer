@@ -1,3 +1,5 @@
+import Crafty from "../crafty";
+
 Crafty.c("TextInput", {
   init() {
     this.requires("2D, DOM, Text");

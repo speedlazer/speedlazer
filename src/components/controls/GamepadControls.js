@@ -1,7 +1,8 @@
-import { togglePause } from "src/lib/core/pauseToggle";
-import Listener from "src/components/generic/Listener";
+import { togglePause } from "../../lib/core/pauseToggle";
+import Listener from "../generic/Listener";
 import Gamepad from "./Gamepad";
-import ControlScheme from "src/components/player/ControlScheme";
+import ControlScheme from "../player/ControlScheme";
+import Crafty from "../../crafty";
 
 const GamepadControls = "GamepadControls";
 

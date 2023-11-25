@@ -1,6 +1,7 @@
 const DEFAULT_AIM_SPEED = 100;
-import { EASE_IN_OUT } from "src/constants/easing";
-import TweenPromise from "src/components/generic/TweenPromise";
+import { EASE_IN_OUT } from "../constants/easing";
+import Crafty from "../crafty";
+import TweenPromise from "./generic/TweenPromise";
 
 Crafty.c("Aimable", {
   init() {

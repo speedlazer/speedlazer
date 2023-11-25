@@ -1,4 +1,5 @@
-import { flipRotation } from "src/lib/rotation";
+import Crafty from "../../crafty";
+import { flipRotation } from "../../lib/rotation";
 
 const Component = "Flipable";
 

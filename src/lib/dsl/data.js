@@ -1,6 +1,6 @@
-import audiosheets from "src/audio";
-import audio from "src/lib/audio";
-import { loadSpriteSheets } from "src/lib/sprites";
+import audiosheets from "../../audio";
+import audio from "../audio";
+import { loadSpriteSheets } from "../sprites";
 
 const dataFunctions = () => ({
   loadSpriteSheets,

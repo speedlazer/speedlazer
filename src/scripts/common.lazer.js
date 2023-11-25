@@ -1,4 +1,4 @@
-import { bigText } from "src/components/BigText";
+import { bigText } from "../components/BigText";
 
 export const checkpoint = async ({ wait }) => {
   const checkpoint = bigText("Checkpoint", { color: "#FFFFFF" });

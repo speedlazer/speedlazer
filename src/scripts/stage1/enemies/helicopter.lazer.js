@@ -1,4 +1,4 @@
-import audio from "src/lib/audio";
+import audio from "../../../lib/audio";
 
 export const helicopter = (pattern, repeatPattern) => async ({
   spawn,

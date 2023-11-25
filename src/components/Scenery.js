@@ -1,6 +1,7 @@
-import { sceneries, compositions } from "data";
-import { getOne } from "src/lib/utils";
-import PausableMotion from "src/components/PausableMotion";
+import Crafty from "../crafty";
+import { sceneries, compositions } from "../data";
+import { getOne } from "../lib/utils";
+import PausableMotion from "./PausableMotion";
 import merge from "lodash/merge";
 
 const choose = items => {

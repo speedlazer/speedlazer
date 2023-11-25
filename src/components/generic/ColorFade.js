@@ -1,5 +1,6 @@
 import Animator from "./Animator";
 import Gradient from "../Gradient";
+import Crafty from "../../crafty";
 
 export const mix = (v, from, to) => ({
   _red: Math.round(from._red * (1 - v) + to._red * v),

@@ -1,6 +1,7 @@
-import { compositions } from "data";
-import Composable from "src/components/Composable";
+import { compositions } from "../data";
+import Composable from "../components/Composable";
 import settings from "../settings.json";
+import Crafty from "../crafty";
 
 const CHAR_WIDTH = 10;
 const CHAR_HEIGHT = 16;

@@ -1,8 +1,8 @@
 import { helicopter } from "./enemies/helicopter.lazer";
 import { droneShip } from "./enemies/droneShip.lazer";
 import { playerShip } from "../playerShip.lazer";
-import { bigText } from "src/components/BigText";
-import audio from "src/lib/audio";
+import { bigText } from "../../components/BigText";
+import audio from "../../lib/audio";
 import { droneWave } from "./enemies/drones.lazer";
 import { mineWave } from "./enemies/mines.lazer";
 import { checkpoint } from "../common.lazer";

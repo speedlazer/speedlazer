@@ -1,3 +1,5 @@
+import Crafty from "../../crafty";
+
 Crafty.c("HideBelow", {
   properties: {
     hideBelow: {

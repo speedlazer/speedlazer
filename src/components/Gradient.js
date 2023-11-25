@@ -1,5 +1,6 @@
 import gradientVertexShader from "./shaders/gradient.vert";
 import gradientFragmentShaders from "./shaders/gradient.frag";
+import Crafty from "../crafty";
 
 Crafty.extend({
   defaultGradientShader(shader) {

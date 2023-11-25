@@ -1,10 +1,11 @@
 import { h, Component } from "preact";
-import { Title } from "editor/components/Title";
-import { CentralMenu } from "editor/components/CentralMenu";
-import { Source } from "editor/components/Source";
-import { Divider } from "editor/components/Divider";
+import { Title } from "../../components/Title";
+import { CentralMenu } from "../../components/CentralMenu";
+import { Source } from "../../components/Source";
+import { Divider } from "../../components/Divider";
 import ParticleEmitterPreview from "./ParticleEmitterPreview";
-import { particles } from "data";
+import { particles } from "../../../data";
+import Crafty from "../../../crafty";
 
 class Particles extends Component {
   state = {

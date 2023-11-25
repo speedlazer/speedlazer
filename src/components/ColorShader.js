@@ -1,5 +1,6 @@
 import colorVertexShader from "./shaders/color.vert";
 import colorFragmentShader from "./shaders/color.frag";
+import Crafty from "../crafty";
 
 Crafty.defaultShader(
   "Color",

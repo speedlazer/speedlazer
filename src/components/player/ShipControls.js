@@ -1,3 +1,5 @@
+import Crafty from "../../crafty";
+
 const ShipControls = "ShipControls";
 
 Crafty.c(ShipControls, {

@@ -1,6 +1,7 @@
-import { togglePause } from "src/lib/core/pauseToggle";
-import Listener from "src/components/generic/Listener";
-import ControlScheme from "src/components/player/ControlScheme";
+import Crafty from "../../crafty";
+import { togglePause } from "../../lib/core/pauseToggle";
+import Listener from "../generic/Listener";
+import ControlScheme from "../player/ControlScheme";
 
 const AnalogKeyboardControls = "AnalogKeyboardControls";
 
@@ -65,8 +66,8 @@ Crafty.c(AnalogKeyboardControls, {
 
     const MAX_X_SPEED = 700;
     const MAX_Y_SPEED = 500;
-    const ACCELLERATE_Y = MAX_Y_SPEED * 6;
-    const ACCELLERATE_X = MAX_X_SPEED * 6;
+    const ACCELERATE_Y = MAX_Y_SPEED * 6;
+    const ACCELERATE_X = MAX_X_SPEED * 6;
 
     let yDir = 0;
     let xDir = 0;
@@ -179,14 +180,14 @@ Crafty.c(AnalogKeyboardControls, {
       }
       yDir = Math.min(1, Math.max(-1, yDir));
 
-      ship.ay += ACCELLERATE_Y * yDir;
+      ship.ay += ACCELERATE_Y * yDir;
       if (ship.vy > 0 && ship.ay === 0) {
         // decellerate
-        ship.ay -= ACCELLERATE_Y * 2;
+        ship.ay -= ACCELERATE_Y * 2;
       }
       if (ship.vy < 0 && ship.ay === 0) {
         // decellerate
-        ship.ay += ACCELLERATE_Y * 2;
+        ship.ay += ACCELERATE_Y * 2;
       }
 
       xDir = 0;
@@ -197,14 +198,14 @@ Crafty.c(AnalogKeyboardControls, {
         xDir += 1;
       }
       xDir = Math.min(1, Math.max(-1, xDir));
-      ship.ax += ACCELLERATE_X * xDir;
+      ship.ax += ACCELERATE_X * xDir;
       if (ship.vx > 0 && ship.ax === 0) {
         // decellerate
-        ship.ax -= ACCELLERATE_X * 2;
+        ship.ax -= ACCELERATE_X * 2;
       }
       if (ship.vx < 0 && ship.ax === 0) {
         // decellerate
-        ship.ax += ACCELLERATE_X * 2;
+        ship.ax += ACCELERATE_X * 2;
       }
     };
 

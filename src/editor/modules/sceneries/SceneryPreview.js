@@ -7,6 +7,7 @@ import {
   setAltitude,
   getAltitude
 } from "src/components/Scenery";
+import Crafty from "../../../crafty";
 
 export class SceneryPreview extends Component {
   constructor() {
@@ -63,7 +64,7 @@ export class SceneryPreview extends Component {
           const v = ease.value();
           if (v >= 1.0) {
             Crafty.unbind("EnterFrame", f);
-            resolve();
+            resolve(undefined);
           }
           const alt = startAlt * (1 - v) + this.props.altitude * v;
           setAltitude(alt);

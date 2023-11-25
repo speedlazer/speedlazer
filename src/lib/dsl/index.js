@@ -3,6 +3,7 @@ import flowFunctions from "./flow";
 import levelFunctions from "./level";
 import entityFunctions from "./entity";
 import stateFunctions from "./state";
+import Crafty from "../../crafty";
 
 const wrap = (o, s) =>
   Object.entries(o).reduce((a, [key, value]) => {
@@ -45,6 +46,7 @@ export const createScriptExecutionSpace = initialState => {
     } catch (e) {
       if (e.message !== "Game Over") {
         console.error(e.message);
+        throw e;
       }
     } finally {
       dsl.closeScript();

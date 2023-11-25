@@ -2,9 +2,9 @@ import { droneWave } from "./enemies/drones.lazer";
 import { mineWave } from "./enemies/mines.lazer";
 import { playerShip } from "../playerShip.lazer";
 import { helicopter } from "./enemies/helicopter.lazer";
-import { bigText } from "src/components/BigText";
+import { bigText } from "../../components/BigText";
 import { checkpoint } from "../common.lazer";
-import audio from "src/lib/audio";
+import audio from "../../lib/audio";
 
 const part = async ({
   setScrollingSpeed,

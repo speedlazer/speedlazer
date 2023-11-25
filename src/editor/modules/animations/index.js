@@ -1,16 +1,17 @@
-import Composable from "src/components/Composable";
-import { EntityDefinition } from "src/components/EntityDefinition";
+import Composable from "../../../components/Composable";
+import { EntityDefinition } from "../../../components/EntityDefinition";
 
 import { AnimationPreview } from "./AnimationPreview";
-import { animations } from "data";
-import { Menu } from "editor/components/Menu";
-import { CentralMenu } from "editor/components/CentralMenu";
-import { Source } from "editor/components/Source";
-import Log from "editor/components/Log";
-import { Divider } from "editor/components/Divider";
-import { Title } from "editor/components/Title";
-import { Text } from "editor/components/Text";
+import { animations } from "../../../data";
+import { Menu } from "../../components/Menu";
+import { CentralMenu } from "../../components/CentralMenu";
+import { Source } from "../../components/Source";
+import Log from "../../components/Log";
+import { Divider } from "../../components/Divider";
+import { Title } from "../../components/Title";
+import { Text } from "../../components/Text";
 import { h, Component } from "preact";
+import Crafty from "../../../crafty";
 
 const round3 = num => Math.round(num * 1000) / 1000;
 

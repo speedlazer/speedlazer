@@ -1,8 +1,8 @@
 import { playerShip } from "../playerShip.lazer";
-import { bigText } from "src/components/BigText";
+import { bigText } from "../../components/BigText";
 import { rocketStrike } from "./enemies/rockets.lazer";
 import { largeDrone } from "./enemies/largeDrone.lazer";
-import audio from "src/lib/audio";
+import audio from "../../lib/audio";
 
 const part = async ({
   setScrollingSpeed,

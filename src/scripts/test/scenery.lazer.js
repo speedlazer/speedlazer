@@ -1,7 +1,7 @@
 import { droneWave } from "../stage1/enemies/drones.lazer";
 import { mineWave } from "../stage1/enemies/mines.lazer";
-import { bigText } from "src/components/BigText";
-import { say } from "src/lib/Dialog";
+import { bigText } from "../../components/BigText";
+import { say } from "../../lib/Dialog";
 
 const part = async ({
   setScrollingSpeed,

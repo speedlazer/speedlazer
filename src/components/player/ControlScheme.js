@@ -1,3 +1,5 @@
+import Crafty from "../../crafty";
+
 const ControlScheme = "ControlScheme";
 
 Crafty.c(ControlScheme, {
