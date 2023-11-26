@@ -1,4 +1,4 @@
-import styles from "./Menu.scss";
+import * as styles from "./Menu.module.scss";
 import { getCurrentUrl } from "preact-router";
 import { h, Component } from "preact";
 
@@ -42,7 +42,7 @@ const Item = ({ name, path, options }) => (
       <span>
         <a
           native={options && options.native}
-          className={[
+          class={[
             styles.menuLink,
             getCurrentUrl().endsWith(path) && styles.active
           ]
@@ -53,13 +53,13 @@ const Item = ({ name, path, options }) => (
           {name}
         </a>
         {options.category && (
-          <span className={styles.category}>{options.category}</span>
+          <span class={styles.category}>{options.category}</span>
         )}
       </span>
     ) : typeof path === "function" ? (
       <a
         native={options && options.native}
-        className={styles.menuLink}
+        class={styles.menuLink}
         href="#"
         onClick={e => {
           e.preventDefault();

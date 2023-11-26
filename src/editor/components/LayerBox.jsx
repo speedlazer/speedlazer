@@ -1,5 +1,5 @@
-import styles from "./LayerBox.scss";
 import { h } from "preact";
+import * as styles from "./LayerBox.module.scss";
 
 export const LayerBox = ({ width, height, children, onClick }) => (
   <div

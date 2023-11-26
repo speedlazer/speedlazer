@@ -1,7 +1,5 @@
-import "@babel/polyfill";
-import "./styles/editor.css";
 import { h, render } from "preact";
-import { App } from "src/editor/layout/components/App";
+import { App } from "./editor/layout/components/App";
 
 /* eslint-env node */
 if (process.env.APP_ENV === "development") {
@@ -11,3 +9,4 @@ if (process.env.APP_ENV === "development") {
 }
 
 render(<App />, document.body);
+

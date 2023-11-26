@@ -1,11 +1,11 @@
 import { h, Component } from "preact";
-import { Title } from "editor/components/Title";
-import { Table } from "editor/components/Table";
-import { Text } from "editor/components/Text";
-import { Menu } from "editor/components/Menu";
-import { Divider } from "editor/components/Divider";
-import audiosheets from "src/audio";
-import audio from "src/lib/audio";
+import { Title } from "../../components/Title";
+import { Table } from "../../components/Table";
+import { Text } from "../../components/Text";
+import { Menu } from "../../components/Menu";
+import { Divider } from "../../components/Divider";
+import audiosheets from "../../../audio";
+import audio from "../../../lib/audio";
 
 audio.setEffectVolume(0.4);
 audio.setMusicVolume(0.5);

@@ -4,10 +4,7 @@
   "description": "SpeedLazer is a HTML5 Side scrolling shoot-em-up made with Crafty.js",
   "license": "MIT",
   "homepage": "http://speedlazer.net",
-  "source": [
-    "src/index.html",
-    "src/editor.html"
-  ],
+  "source": "src/index.html",
   "repository": {
     "type": "git",
     "url": "https://github.com/speedlazer/speedlazer"
@@ -23,12 +20,14 @@
   "scripts": {
     "build": "parcel build",
     "start": "parcel",
+    "start-editor": "parcel --port 1235 src/editor.html",
     "lint": "eslint src/",
     "test": "mocha --recursive --require @babel/register"
   },
   "devDependencies": {
     "@parcel/resolver-glob": "^2.10.3",
     "@parcel/transformer-glsl": "2.10.3",
+    "@parcel/transformer-sass": "2.10.3",
     "chai": "^4.1.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^2.9.0",
@@ -37,15 +36,15 @@
     "jsonschema": "^1.2.6",
     "mocha": "^6.2.0",
     "parcel": "^2.10.3",
+    "preact": "^10.19.2",
+    "preact-router": "^4.1.2",
     "prettier": "^3.1.0"
   },
   "dependencies": {
     "bezier-js": "^2.2.5",
     "crypto-js": "^3.1.9-1",
     "lodash": "^4.17.21",
-    "noisejs": "^2.1.0",
-    "preact": "^8.5.2",
-    "preact-router": "^2.6.1"
+    "noisejs": "^2.1.0"
   },
   "prettier": {
     "overrides": [
@@ -64,6 +63,9 @@
       }
     ],
     "tabWidth": 2
+  },
+  "alias": {
+    "preact/jsx-dev-runtime": "preact/jsx-runtime"
   },
   "packageManager": "yarn@4.0.2"
 }

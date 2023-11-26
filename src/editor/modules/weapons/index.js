@@ -1,12 +1,12 @@
 import { h, Component } from "preact";
-import { Title } from "editor/components/Title";
-import { Menu } from "editor/components/Menu";
-import { CentralMenu } from "editor/components/CentralMenu";
-import { Source } from "editor/components/Source";
-import { Divider } from "editor/components/Divider";
-import { Text } from "editor/components/Text";
+import { Title } from "../../components/Title";
+import { Menu } from "../../components/Menu";
+import { CentralMenu } from "../../components/CentralMenu";
+import { Source } from "../../components/Source";
+import { Divider } from "../../components/Divider";
+import { Text } from "../../components/Text";
 import BulletPatternPreview from "./BulletPatternPreview";
-import { weapons } from "data";
+import { weapons } from "../../../data";
 
 const weaponCollisionTypes = activeWeapon =>
   !activeWeapon

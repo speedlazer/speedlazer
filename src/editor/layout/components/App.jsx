@@ -1,16 +1,16 @@
 import { h } from "preact";
 import { Menu } from "../../components/Menu";
 import Router from "preact-router";
-import Spritesheets from "src/editor/modules/spritesheets";
-import Audiosheets from "src/editor/modules/audio";
-import Compositions from "src/editor/modules/compositions";
-import Entities from "src/editor/modules/entities";
-import Sceneries from "src/editor/modules/sceneries";
-import Animations from "src/editor/modules/animations";
-import Paths from "src/editor/modules/paths";
-import Weapons from "src/editor/modules/weapons";
-import Particles from "src/editor/modules/particles";
-import Game from "src/editor/modules/game";
+import Spritesheets from "../../modules/spritesheets";
+import Audiosheets from "../../modules/audio";
+import Compositions from "../../modules/compositions";
+import Entities from "../../modules/entities";
+import Sceneries from "../../modules/sceneries";
+import Animations from "../../modules/animations";
+import Paths from "../../modules/paths";
+import Weapons from "../../modules/weapons";
+import Particles from "../../modules/particles";
+import Game from "../../modules/game";
 
 export const App = () => (
   <div>

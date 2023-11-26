@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
-import { unmount, mount, showComposition } from "editor/lib/render-crafty";
-import Preview from "editor/components/Preview";
+import { unmount, mount, showComposition } from "../../lib/render-crafty";
+import Preview from "../../components/Preview";
 
 export class CompositionPreview extends Component {
   constructor() {

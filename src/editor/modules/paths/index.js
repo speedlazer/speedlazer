@@ -1,11 +1,11 @@
 import { h, Component } from "preact";
-import { Title } from "editor/components/Title";
-import { CentralMenu } from "editor/components/CentralMenu";
-import { Source } from "editor/components/Source";
-import { Divider } from "editor/components/Divider";
-import { Setting } from "editor/components/Setting";
+import { Title } from "../../components/Title";
+import { CentralMenu } from "../../components/CentralMenu";
+import { Source } from "../../components/Source";
+import { Divider } from "../../components/Divider";
+import { Setting } from "../../components/Setting";
 import FlyPatternPreview from "./FlyPatternPreview";
-import { paths } from "data";
+import { paths } from "../../../data";
 
 const DEFAULT_STATE = {
   showPoints: true,

@@ -1,11 +1,11 @@
 import { h } from "preact";
 import { EntityPreview } from "./EntityPreview";
-import { Menu } from "editor/components/Menu";
-import { CentralMenu } from "editor/components/CentralMenu";
-import { Source } from "editor/components/Source";
-import { Divider } from "editor/components/Divider";
-import { Title } from "editor/components/Title";
-import { entities } from "data";
+import { Menu } from "../../components/Menu";
+import { CentralMenu } from "../../components/CentralMenu";
+import { Source } from "../../components/Source";
+import { Divider } from "../../components/Divider";
+import { Title } from "../../components/Title";
+import { entities } from "../../../data";
 
 const Entities = ({
   entity,

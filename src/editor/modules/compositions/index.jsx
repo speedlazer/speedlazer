@@ -1,12 +1,16 @@
+/** 
+ * @jsxRuntime classic 
+ * @jsx h 
+ */
 import { h, Component } from "preact";
 import { CompositionPreview } from "./CompositionPreview";
-import { Menu } from "editor/components/Menu";
-import { CentralMenu } from "editor/components/CentralMenu";
-import { Source } from "editor/components/Source";
-import { Divider } from "editor/components/Divider";
-import { Title } from "editor/components/Title";
-import { Setting } from "editor/components/Setting";
-import { compositions } from "data";
+import { Menu } from "../../components/Menu";
+import { CentralMenu } from "../../components/CentralMenu";
+import { Source } from "../../components/Source";
+import { Divider } from "../../components/Divider";
+import { Title } from "../../components/Title";
+import { Setting } from "../../components/Setting";
+import { compositions } from "../../../data";
 
 const DEFAULT_STATE = {
   showSize: false,

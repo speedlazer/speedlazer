@@ -42,7 +42,14 @@ yarn start
 ```
 
 The content scripts are in `src/scripts`. All other data is in
-`src/data`. An editor/viewer is available locally, at `http://localhost:9000/editor.html`.
+`src/data`. 
+
+An editor/viewer is available locally:
+
+```
+yarn start-editor
+open http://localhost:1235/editor.html
+```
 
 # License
 

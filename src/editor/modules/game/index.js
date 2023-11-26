@@ -1,12 +1,12 @@
 import { h, Component } from "preact";
 import { GamePreview } from "./GamePreview";
-import { Setting } from "editor/components/Setting";
-import { Menu } from "editor/components/Menu";
-import { Text } from "editor/components/Text";
-import { Divider } from "editor/components/Divider";
-import { Title } from "editor/components/Title";
-import { BarChart } from "editor/components/BarChart";
-import gameStructure from "src/scripts";
+import { Setting } from "../../components/Setting";
+import { Menu } from "../../components/Menu";
+import { Text } from "../../components/Text";
+import { Divider } from "../../components/Divider";
+import { Title } from "../../components/Title";
+import { BarChart } from "../../components/BarChart";
+import gameStructure from "../../../scripts";
 
 const DEFAULT_STATE = {
   stats: [],

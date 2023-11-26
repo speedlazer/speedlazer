@@ -1,5 +1,5 @@
 import { h } from "preact";
-import style from "./Text.scss";
+import * as style from "./Text.module.css";
 
 export const Text = ({ label, children }) => (
   <span class={style.text}>

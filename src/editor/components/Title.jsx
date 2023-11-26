@@ -1,5 +1,5 @@
-import { h } from "preact";
-import style from "./Title.scss";
+import { h } from "preact"
+import * as style from "./Title.module.scss";
 
 export const Title = ({ children }) => <h1 class={style.title}>{children}</h1>;
 

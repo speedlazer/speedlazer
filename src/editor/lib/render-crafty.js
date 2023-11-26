@@ -1,37 +1,38 @@
-import spritesheets from "src/images";
-import audiosheets from "src/audio";
-import { animations } from "data";
-import { setupControls } from "src/setup-game";
-import { bigText } from "src/components/BigText";
-import { fadeOut } from "src/components/generic/ColorFade";
-import Composable from "src/components/Composable";
-import Weapon from "src/components/Weapon";
-import WayPointMotion from "src/components/WayPointMotion";
-import ParticleEmitter from "src/components/ParticleEmitter";
-import "src/components/LightGlare";
-import "src/components/GravitySupport";
-import "src/components/SubmergeSupport";
-import "src/components/Overlap";
-import "src/components/DebugComposable";
-import "src/components/SpriteShader";
-import "src/components/Rotating";
-import "src/components/ViewportLocked";
-import "src/lib/GameLoop";
-import { playAnimation } from "src/components/Animation";
+import spritesheets from "../../images";
+import audiosheets from "../../audio";
+import { animations } from "../../data";
+import { setupControls } from "../../setup-game";
+import { bigText } from "../../components/BigText";
+import { fadeOut } from "../../components/generic/ColorFade";
+import Composable from "../../components/Composable";
+import Weapon from "../../components/Weapon";
+import WayPointMotion from "../../components/WayPointMotion";
+import ParticleEmitter from "../../components/ParticleEmitter";
+import "../../components/LightGlare";
+import "../../components/GravitySupport";
+import "../../components/SubmergeSupport";
+import "../../components/Overlap";
+import "../../components/DebugComposable";
+import "../../components/SpriteShader";
+import "../../components/Rotating";
+import "../../components/ViewportLocked";
+import "../../lib/GameLoop";
+import { playAnimation } from "../../components/Animation";
 import {
   setBackground,
   setBackgroundCheckpoint
-} from "src/components/Background";
+} from "../../components/Background";
 import {
   createEntity,
   EntityDefinition
-} from "src/components/EntityDefinition";
-import { setScenery, setScrollVelocity } from "src/components/Scenery";
-import { getBezierPath } from "src/lib/BezierPath";
-import audio from "src/lib/audio";
-import gameStructure from "src/scripts";
-import { createScriptExecutionSpace } from "src/lib/dsl";
-import Player from "src/components/player/Player";
+} from "../../components/EntityDefinition";
+import { setScenery, setScrollVelocity } from "../../components/Scenery";
+import { getBezierPath } from "../../lib/BezierPath";
+import audio from "../../lib/audio";
+import gameStructure from "../../scripts";
+import { createScriptExecutionSpace } from "../../lib/dsl";
+import Player from "../../components/player/Player";
+import Crafty from "../../crafty";
 
 Crafty.paths({
   audio: "",
@@ -311,7 +312,7 @@ const loadSpriteSheets = async () =>
       sprites: {}
     };
     spritesheets.forEach(sheet => {
-      loader.sprites[sheet.image] = sheet.map;
+      loader.sprites[sheet.image.split("?")[0]] = sheet.map;
     });
 
     Crafty.load(loader, resolve);

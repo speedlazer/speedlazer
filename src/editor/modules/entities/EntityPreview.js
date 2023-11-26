@@ -1,6 +1,6 @@
 import { h, Component } from "preact";
-import { unmount, mount, showEntity } from "editor/lib/render-crafty";
-import Preview from "editor/components/Preview";
+import { unmount, mount, showEntity } from "../../lib/render-crafty";
+import Preview from "../../components/Preview";
 
 export class EntityPreview extends Component {
   constructor() {

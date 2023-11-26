@@ -1,12 +1,12 @@
 import { h, Component } from "preact";
-import { unmount, mount, showScenery } from "editor/lib/render-crafty";
-import Preview from "editor/components/Preview";
-import { EASE_IN_OUT } from "src/constants/easing";
+import { unmount, mount, showScenery } from "../../lib/render-crafty";
+import Preview from "../../components/Preview";
+import { EASE_IN_OUT } from "../../../constants/easing";
 import {
   setScrollVelocity,
   setAltitude,
   getAltitude
-} from "src/components/Scenery";
+} from "../../../components/Scenery";
 import Crafty from "../../../crafty";
 
 export class SceneryPreview extends Component {

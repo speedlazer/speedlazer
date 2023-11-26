@@ -1,7 +1,7 @@
 import { h, Component } from "preact";
 import { Menu } from "./Menu";
 import { getCurrentUrl } from "preact-router";
-import { data } from "data";
+import  data from "../../data";
 
 const useLocalStorage = (component, itemName, initialValue) => {
   let value = initialValue;
@@ -21,7 +21,7 @@ const useLocalStorage = (component, itemName, initialValue) => {
   return [value, setter];
 };
 
-const produceCategoryItems = root =>
+const produceCategoryItems = root => 
   Object.keys(data[root]).map(key => [key, `/${root}/${key}`]);
 
 const produceSmartItems = () => {
