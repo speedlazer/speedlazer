@@ -12,6 +12,5 @@ const spritesheets = [
     map: trailerSceneryMap
   }
 ];
-console.log(spritesheets)
 
 export default spritesheets;

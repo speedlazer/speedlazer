@@ -173,9 +173,9 @@ export default {
       }
     ],
     habitat: {
-      scenery: "City.Ocean",
+      scenery: "city.Ocean",
       scrollSpeed: { vx: -100, vy: 0 },
-      background: ["City.Sunrise", 0]
+      background: ["city.Sunrise", 0]
     }
   }
 };

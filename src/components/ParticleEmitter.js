@@ -11,7 +11,6 @@ const PARTICLES_ENABLED = settings.particles;
 
 const setParticleSprite = (entity, spriteName) => {
   const map = spriteMap[spriteName];
-  console.log(spriteName);
   if (map) {
     entity.__image = map.image;
     if (entity.program && entity._drawLayer) {
