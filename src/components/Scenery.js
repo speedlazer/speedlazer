@@ -4,7 +4,7 @@ import { getOne } from "../lib/utils";
 import PausableMotion from "./PausableMotion";
 import merge from "lodash/merge";
 
-const choose = items => {
+const choose = (items) => {
   let choice = Math.random();
   for (let k in items) {
     const weight = items[k];
@@ -16,10 +16,10 @@ const choose = items => {
   }
 };
 
-const pick = sceneryList =>
+const pick = (sceneryList) =>
   typeof sceneryList === "string" ? sceneryList : choose(sceneryList);
 
-export const setScenery = sceneryName => {
+export const setScenery = (sceneryName) => {
   const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
   scenery.setNextScenery(sceneryName);
 };
@@ -34,7 +34,7 @@ export const getScrollVelocity = () => {
   return scenery.movingDirection;
 };
 
-export const setAltitude = newAltitude => {
+export const setAltitude = (newAltitude) => {
   const scenery = getOne("Scenery") || Crafty.e("Scenery, 2D");
   scenery.setAltitude(newAltitude);
 };
@@ -56,7 +56,7 @@ const notifyScenery = () => {
 };
 
 export const getNotificationInScreen = (name, buffer = 0) =>
-  new Promise(resolve => {
+  new Promise((resolve) => {
     notificationName = name;
     notificationBuffer = buffer;
     notificationCallback = resolve;
@@ -68,11 +68,11 @@ Crafty.c("SceneryBlock", {
   required: `2D, Motion, ${PausableMotion}`,
   events: {
     Freeze() {
-      this._children.forEach(child => child.freeze());
+      this._children.forEach((child) => child.freeze());
     },
     Unfreeze() {
-      this._children.forEach(child => child.unfreeze());
-    }
+      this._children.forEach((child) => child.unfreeze());
+    },
   },
 
   init() {
@@ -86,11 +86,11 @@ Crafty.c("SceneryBlock", {
     const vDx = dx - vx / Crafty.timer.FPS();
     const vDy = dy - vy / Crafty.timer.FPS();
 
-    this._children.forEach(child => {
+    this._children.forEach((child) => {
       if (child.distance === 1) return;
       child.shift(
         -vDx * (1 - child.distance),
-        -vDy * (1 - child.distance * child.distance)
+        -vDy * (1 - child.distance * child.distance),
       );
     });
   },
@@ -119,16 +119,16 @@ Crafty.c("SceneryBlock", {
       v1: this.x,
       v2: this.x + this.w,
       v3: Infinity,
-      v4: -Infinity
+      v4: -Infinity,
     };
     const dx = this.dx;
     const dy = this.dy;
 
-    this._children.forEach(child => {
+    this._children.forEach((child) => {
       if (child.distance === 1) return;
       child.shift(
         -dx * (1 - child.distance),
-        -dy * (1 - child.distance * child.distance)
+        -dy * (1 - child.distance * child.distance),
       );
       if (child.distance === this.farthestDistance) {
         if (child.x < sceneryVectors.v3) sceneryVectors.v3 = child.x;
@@ -137,7 +137,7 @@ Crafty.c("SceneryBlock", {
       }
     });
     this.sceneryVectors = sceneryVectors;
-  }
+  },
 });
 
 const createBlock = (scenery, x, y) => {
@@ -145,28 +145,28 @@ const createBlock = (scenery, x, y) => {
     x,
     y,
     w: scenery.width,
-    h: scenery.height
+    h: scenery.height,
   });
 
   let elementResets = [];
-  block.resetPositioning = function() {
+  block.resetPositioning = function () {
     const cameraCenter = {
       x: Crafty.viewport.width / 2,
-      y: Crafty.viewport.height / 2
+      y: Crafty.viewport.height / 2,
     };
     const halfW = this.w / 2;
     const halfH = this.h / 2;
     const blockCenter = {
       x: this.x + halfW,
-      y: this.y + halfH
+      y: this.y + halfH,
     };
 
-    elementResets.forEach(f => f(cameraCenter, blockCenter, halfW, halfH));
+    elementResets.forEach((f) => f(cameraCenter, blockCenter, halfW, halfH));
   };
 
   let farthestDistance = 1;
 
-  scenery.elements.forEach(element => {
+  scenery.elements.forEach((element) => {
     let entity;
     if (element.composition) {
       let def;
@@ -176,13 +176,11 @@ const createBlock = (scenery, x, y) => {
         def = merge(
           {},
           compositions(element.composition[0]),
-          element.composition[1]
+          element.composition[1],
         );
       }
 
-      entity = Crafty.e("2D, Composable")
-        .compose(def)
-        .attr({ z: element.z });
+      entity = Crafty.e("2D, Composable").compose(def).attr({ z: element.z });
       if (element.frame) {
         entity.displayFrame(element.frame);
       }
@@ -193,10 +191,10 @@ const createBlock = (scenery, x, y) => {
         entity = Crafty.e(components.join(", ")).attr({
           z: element.z || 0,
           w: element.w,
-          h: element.h
+          h: element.h,
         });
       } else {
-        element.components.forEach(comp => entity.addComponent(comp));
+        element.components.forEach((comp) => entity.addComponent(comp));
       }
     }
     if (element.attributes) {
@@ -221,7 +219,7 @@ const createBlock = (scenery, x, y) => {
       entity.attr({
         x: left + elementX,
         y: top + elementY,
-        distance
+        distance,
       });
     });
 
@@ -241,7 +239,7 @@ const calcReach = (distance, width) => {
 const SCENERY_DIRECTIONS = {
   RIGHT: 1,
   LEFT: 2,
-  ALL: 3
+  ALL: 3,
 };
 
 Crafty.c("Scenery", {
@@ -255,7 +253,7 @@ Crafty.c("Scenery", {
   },
   remove() {
     this.unbind("GameLoop", this.verifySceneryContent);
-    this.blocks.forEach(b => b.destroy());
+    this.blocks.forEach((b) => b.destroy());
   },
 
   setNextScenery(sceneryName) {
@@ -274,14 +272,14 @@ Crafty.c("Scenery", {
     {
       startXPos = 0,
       startYPos = null,
-      direction = SCENERY_DIRECTIONS.RIGHT
-    } = {}
+      direction = SCENERY_DIRECTIONS.RIGHT,
+    } = {},
   ) {
     this.altitude = startYPos || this.altitude;
     const scenery = sceneries(sceneryName);
     if (!scenery) throw new Error(`Scenery ${sceneryName} not found`);
     let block = this.blocks.find(
-      b => b.__frozen && b.sceneryName === sceneryName
+      (b) => b.__frozen && b.sceneryName === sceneryName,
     );
 
     if (block) {
@@ -291,7 +289,7 @@ Crafty.c("Scenery", {
       block.moveScenery(dx, dy, this.movingDirection);
       block.resetPositioning();
     } else {
-      let staleBlock = this.blocks.find(b => b.__frozen);
+      let staleBlock = this.blocks.find((b) => b.__frozen);
 
       block = createBlock(scenery, startXPos, this.altitude);
       block.sceneryName = sceneryName;
@@ -316,7 +314,7 @@ Crafty.c("Scenery", {
         this.startScenery(nextBlock, {
           startXPos: nextPos,
           startYPos: this.altitude,
-          direction: SCENERY_DIRECTIONS.RIGHT
+          direction: SCENERY_DIRECTIONS.RIGHT,
         });
       }
     }
@@ -332,7 +330,7 @@ Crafty.c("Scenery", {
         this.startScenery(nextBlock, {
           startXPos: nextPos,
           startYPos: this.altitude,
-          direction: SCENERY_DIRECTIONS.LEFT
+          direction: SCENERY_DIRECTIONS.LEFT,
         });
       }
     }
@@ -340,7 +338,7 @@ Crafty.c("Scenery", {
 
   setScrollVelocity({ vx, vy }) {
     this.movingDirection = { vx, vy };
-    this.blocks.forEach(block => block.attr({ vx, vy }));
+    this.blocks.forEach((block) => block.attr({ vx, vy }));
     if (this.checkCountDown > 5) {
       this.checkCountDown = this.blocks.length === 0 ? Infinity : 5;
     }
@@ -348,9 +346,9 @@ Crafty.c("Scenery", {
 
   setAltitude(newAltitude) {
     this.blocks.forEach(
-      block =>
+      (block) =>
         !block.__frozen &&
-        block.moveScenery(0, newAltitude - this.altitude, this.movingDirection)
+        block.moveScenery(0, newAltitude - this.altitude, this.movingDirection),
     );
     this.altitude = newAltitude;
   },
@@ -365,7 +363,7 @@ Crafty.c("Scenery", {
     const fps = Crafty.timer.FPS();
     this.checkCountDown = Math.min(
       (PIXEL_BUFFER / Math.abs(vx)) * fps,
-      (PIXEL_BUFFER / Math.abs(vy)) * fps
+      (PIXEL_BUFFER / Math.abs(vy)) * fps,
     );
 
     const fullSceneryVector = this.blocks.reduce(
@@ -378,7 +376,7 @@ Crafty.c("Scenery", {
           v3: acc.v3 < sceneryVectors.v3 ? acc.v3 : sceneryVectors.v3,
           v4: acc.v4 > sceneryVectors.v4 ? acc.v4 : sceneryVectors.v4,
           left: acc.v1 < sceneryVectors.v1 ? acc.left : block,
-          right: acc.v2 > sceneryVectors.v2 ? acc.right : block
+          right: acc.v2 > sceneryVectors.v2 ? acc.right : block,
         };
       },
       {
@@ -387,8 +385,8 @@ Crafty.c("Scenery", {
         v3: Infinity,
         v4: -Infinity,
         left: null,
-        right: null
-      }
+        right: null,
+      },
     );
 
     const vpw = Crafty.viewport.width / Crafty.viewport._scale;
@@ -414,7 +412,7 @@ Crafty.c("Scenery", {
       this.startScenery(nextBlock, {
         startXPos: fullSceneryVector.v2 + vx / fps,
         startYPos: this.altitude,
-        direction: SCENERY_DIRECTIONS.RIGHT
+        direction: SCENERY_DIRECTIONS.RIGHT,
       });
       return;
     }
@@ -430,9 +428,9 @@ Crafty.c("Scenery", {
       this.startScenery(nextBlock, {
         startXPos: nextPos + vx / fps,
         startYPos: this.altitude,
-        direction: SCENERY_DIRECTIONS.LEFT
+        direction: SCENERY_DIRECTIONS.LEFT,
       });
       return;
     }
-  }
+  },
 });
