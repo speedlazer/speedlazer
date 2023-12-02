@@ -1,10 +1,10 @@
-import * as animationData from "./**/*.animation.js";
-import * as compositionData from "./**/*.composition.js";
-import * as entityData from "./**/*.entity.js";
-import * as particleData from "./**/*.particle.js";
-import * as pathData from "./**/*.path.js";
-import * as sceneryData from "./**/*.scenery.js";
-import * as weaponData from "./**/*.weapon.js";
+import * as animationData from "./**/*.animation.*";
+import * as compositionData from "./**/*.composition.*";
+import * as entityData from "./**/*.entity.*";
+import * as particleData from "./**/*.particle.*";
+import * as pathData from "./**/*.path.*";
+import * as sceneryData from "./**/*.scenery.*";
+import * as weaponData from "./**/*.weapon.*";
 
 type AssetData = { [key: string]: AssetData };
 
@@ -12,7 +12,10 @@ const dataFlattener = (obj: AssetData) => {
   const entries = {};
 
   const getDefault = (object: AssetData) => {
+    if (typeof object !== "object" || Array.isArray(object)) return;
+
     Object.entries(object).forEach(([key, value]) => {
+      console.log(key);
       if (key === "default") {
         Object.entries(value).forEach(([k, v]) => {
           entries[k] = v;
@@ -53,5 +56,5 @@ export default {
   particles: flatParticleData,
   paths: flatPathData,
   sceneries: flatSceneryData,
-  weapons: flatWeaponData
+  weapons: flatWeaponData,
 };

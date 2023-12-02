@@ -1,4 +1,6 @@
-export default {
+import type { SceneryCollection } from "../../types";
+
+const sceneries: SceneryCollection = {
   "city.Bridge": {
     width: 1023,
     height: 576,
@@ -10,7 +12,7 @@ export default {
         x: 0,
         y: -85,
         z: -20,
-        composition: "ocean.front"
+        composition: "ocean.front",
       },
       {
         x: 0,
@@ -18,25 +20,25 @@ export default {
         components: ["ShipSolid", "BulletSolid", "GravityLiquid"],
         w: 1024,
         h: 45,
-        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 }
+        attributes: { liquidParticles: "waterSplashes", liquidDensity: 8 },
       },
       {
         x: 0,
         y: 5,
         composition: "ocean.middle",
-        distance: 0.5
+        distance: 0.5,
       },
       {
         x: 0,
         y: -45,
         composition: "city.cityDistance",
-        distance: 0.25
+        distance: 0.25,
       },
       {
         x: 0,
         y: -20,
         composition: "city.bridge.foot",
-        distance: 0.5
+        distance: 0.5,
       },
       {
         x: 0,
@@ -49,11 +51,11 @@ export default {
             attributes: { scale: 1.1 },
             spriteAttributes: {
               accentColor: "#b15a5a",
-              lightness: 0.6
-            }
-          }
+              lightness: 0.6,
+            },
+          },
         ],
-        distance: 1.1
+        distance: 1.1,
       },
       {
         x: 0,
@@ -65,11 +67,11 @@ export default {
           {
             attributes: { scale: 1.1 },
             spriteAttributes: {
-              lightness: 0.6
-            }
-          }
+              lightness: 0.6,
+            },
+          },
         ],
-        distance: 1.1
+        distance: 1.1,
       },
       {
         x: 920,
@@ -82,11 +84,11 @@ export default {
             attributes: { scale: 1.1 },
             spriteAttributes: {
               lightness: 0.6,
-              flipX: true
-            }
-          }
+              flipX: true,
+            },
+          },
         ],
-        distance: 1.1
+        distance: 1.1,
       },
       {
         x: 0,
@@ -97,11 +99,11 @@ export default {
           "city.bridge.deck",
           {
             spriteAttributes: {
-              accentColor: "#2ba04c"
-            }
-          }
+              accentColor: "#2ba04c",
+            },
+          },
         ],
-        distance: 1.0
+        distance: 1.0,
       },
       {
         x: 0,
@@ -113,11 +115,11 @@ export default {
           {
             attributes: { scale: 0.9 },
             spriteAttributes: {
-              accentColor: "#b15a5a"
-            }
-          }
+              accentColor: "#b15a5a",
+            },
+          },
         ],
-        distance: 0.9
+        distance: 0.9,
       },
       {
         x: 0,
@@ -129,11 +131,11 @@ export default {
           {
             attributes: { scale: 0.8 },
             spriteAttributes: {
-              accentColor: "#2ba04c"
-            }
-          }
+              accentColor: "#2ba04c",
+            },
+          },
         ],
-        distance: 0.8
+        distance: 0.8,
       },
       {
         x: 0,
@@ -145,11 +147,11 @@ export default {
             attributes: { scale: 0.7 },
             spriteAttributes: {
               accentColor: "#b15a5a",
-              horizon: [0.2, 0.2]
-            }
-          }
+              horizon: [0.2, 0.2],
+            },
+          },
         ],
-        distance: 0.7
+        distance: 0.7,
       },
       {
         x: 20,
@@ -160,11 +162,11 @@ export default {
           {
             attributes: { scale: 0.5 },
             spriteAttributes: {
-              horizon: [0.2, 0.2]
-            }
-          }
+              horizon: [0.2, 0.2],
+            },
+          },
         ],
-        distance: 0.7
+        distance: 0.7,
       },
       {
         x: 600,
@@ -176,11 +178,11 @@ export default {
             attributes: { scale: 0.5 },
             spriteAttributes: {
               horizon: [0.2, 0.2],
-              flipX: true
-            }
-          }
+              flipX: true,
+            },
+          },
         ],
-        distance: 0.7
+        distance: 0.7,
       },
       {
         x: 0,
@@ -192,11 +194,11 @@ export default {
             attributes: { scale: 0.62 },
             spriteAttributes: {
               accentColor: "#2ba04c",
-              horizon: [0.3, 0.3]
-            }
-          }
+              horizon: [0.3, 0.3],
+            },
+          },
         ],
-        distance: 0.62
+        distance: 0.62,
       },
       {
         x: 0,
@@ -208,11 +210,11 @@ export default {
             attributes: { scale: 0.55 },
             spriteAttributes: {
               accentColor: "#b15a5a",
-              horizon: [0.3, 0.3]
-            }
-          }
+              horizon: [0.3, 0.3],
+            },
+          },
         ],
-        distance: 0.55
+        distance: 0.55,
       },
       {
         x: 0,
@@ -224,11 +226,11 @@ export default {
             attributes: { scale: 0.5 },
             spriteAttributes: {
               accentColor: "#2ba04c",
-              horizon: [0.4, 0.4]
-            }
-          }
+              horizon: [0.4, 0.4],
+            },
+          },
         ],
-        distance: 0.5
+        distance: 0.5,
       },
       {
         x: 20,
@@ -239,11 +241,11 @@ export default {
           {
             attributes: { scale: 0.3 },
             spriteAttributes: {
-              horizon: [0.4, 0.4]
-            }
-          }
+              horizon: [0.4, 0.4],
+            },
+          },
         ],
-        distance: 0.5
+        distance: 0.5,
       },
       {
         x: 430,
@@ -255,12 +257,14 @@ export default {
             attributes: { scale: 0.3 },
             spriteAttributes: {
               horizon: [0.4, 0.4],
-              flipX: true
-            }
-          }
+              flipX: true,
+            },
+          },
         ],
-        distance: 0.5
-      }
-    ]
-  }
+        distance: 0.5,
+      },
+    ],
+  },
 };
+
+export default sceneries;
