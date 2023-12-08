@@ -4,6 +4,7 @@ import { animations } from "../data";
 import { playAnimation } from "../components/Animation";
 import Player from "../components/player/Player";
 import Crafty from "../crafty";
+import settings from "../settings.json";
 
 Crafty.defineScene(
   "Intro",
@@ -28,17 +29,17 @@ Crafty.defineScene(
       .textFont({
         size: "40px",
         weight: "bold",
-        family: "Press Start 2P"
+        family: "Press Start 2P",
       })
       .delay(
-        function() {
+        function () {
           this.tween({ x: w * (0.5 + offset) - 400 }, 2000);
-          this.one("TweenEnd", function() {
+          this.one("TweenEnd", function () {
             this.tween({ x: w * (0.5 - offset) }, 2000);
           });
         },
         4000,
-        -1
+        -1,
       );
 
     Crafty.e("2D, DOM, Text, Tween, Delay")
@@ -48,17 +49,17 @@ Crafty.defineScene(
       .textFont({
         size: "15px",
         weight: "bold",
-        family: "Press Start 2P"
+        family: "Press Start 2P",
       })
       .delay(
-        function() {
+        function () {
           this.tween({ alpha: 0.5 }, 1000);
-          this.one("TweenEnd", function() {
+          this.one("TweenEnd", function () {
             this.tween({ alpha: 1 }, 1000);
           });
         },
         2000,
-        -1
+        -1,
       );
 
     const entry = highscores()[0];
@@ -71,7 +72,7 @@ Crafty.defineScene(
       .textFont({
         size: "10px",
         weight: "bold",
-        family: "Press Start 2P"
+        family: "Press Start 2P",
       });
 
     const gamepadConnect = Crafty.e("2D, DOM, Text")
@@ -82,19 +83,21 @@ Crafty.defineScene(
       .textFont({
         size: "10px",
         weight: "bold",
-        family: "Press Start 2P"
+        family: "Press Start 2P",
       });
 
     window.addEventListener("gamepadconnected", () => {
       gamepadConnect.text(`Gamepad detected!`);
     });
     const pads = window.navigator.getGamepads();
-    const hasGamePad = Array.from(pads).some(pad => pad && pad.connected);
+    const hasGamePad = Array.from(pads).some((pad) => pad && pad.connected);
     hasGamePad && gamepadConnect.text("Gamepad detected!");
 
-    Crafty(Player).each(function() {
+    Crafty(Player).each(function () {
       this.reset();
-      this.one("Activated", () => Crafty.enterScene("Game", {}));
+      this.one("Activated", () =>
+        Crafty.enterScene("Game", { tags: settings.tags }),
+      );
     });
 
     Crafty.e("Delay").delay(() => Crafty.enterScene("Scores"), 20000);
@@ -102,11 +105,11 @@ Crafty.defineScene(
 
   () => {
     // destructor
-    Crafty("Delay").each(function() {
+    Crafty("Delay").each(function () {
       this.destroy();
     });
-    Crafty(Player).each(function() {
+    Crafty(Player).each(function () {
       this.unbind("Activated");
     });
-  }
+  },
 );

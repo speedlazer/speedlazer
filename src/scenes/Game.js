@@ -12,11 +12,11 @@ const DEFAULT_TAGS = ["campaign"];
 
 Crafty.defineScene(
   "Game",
-  async function({ start = null, tags = DEFAULT_TAGS } = {}) {
+  async function ({ start = null, tags = DEFAULT_TAGS } = {}) {
     let pauseMenu = null;
     setGameSpeed(1.0);
 
-    Crafty.bind("GamePause", paused => {
+    Crafty.bind("GamePause", (paused) => {
       if (paused) {
         const player = Crafty("Player").get(0);
         if (pauseMenu === null) {
@@ -31,7 +31,7 @@ Crafty.defineScene(
     });
 
     let endMode = null;
-    Crafty.one("EndGame", event => {
+    Crafty.one("EndGame", (event) => {
       endMode = event.mode;
     });
 
@@ -46,7 +46,7 @@ Crafty.defineScene(
         if (!started && start !== null && start !== item.name) {
           continue;
         }
-        if (!tags.every(tag => item.tags[tag] === true)) {
+        if (!tags.every((tag) => item.tags[tag] === true)) {
           continue;
         }
         /* eslint-env node */
@@ -62,7 +62,7 @@ Crafty.defineScene(
       await fade.start(2000);
       Crafty.enterScene("GameOver", {
         gameCompleted: !this.state.gameEnded,
-        score: this.state.score
+        score: this.state.score,
       });
     } catch (e) {
       if (endMode !== null) return;
@@ -74,22 +74,22 @@ Crafty.defineScene(
       await fade.start(2000);
       Crafty.enterScene("GameOver", {
         score: this.state.score,
-        checkpoint
+        checkpoint,
       });
     }
   },
-  function() {
+  function () {
     this.state.gameEnded = true;
     audio.stopMusic();
     // destructor
-    Crafty(Player).each(function() {
+    Crafty(Player).each(function () {
       this.removeComponent("ShipSpawnable");
     });
-    Crafty(Animation).each(function() {
+    Crafty(Animation).each(function () {
       this.destroy();
     });
     Crafty.unbind("GameOver");
     Crafty.unbind("ScriptFinished");
     Crafty.unbind("GamePause");
-  }
+  },
 );

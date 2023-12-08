@@ -1,7 +1,8 @@
 import Crafty from "../crafty";
 import { highscores } from "../lib/highscores";
+import settings from "../settings.json";
 
-const getNum = num => {
+const getNum = (num) => {
   switch (num) {
     case 0:
       return "ACE";
@@ -14,7 +15,7 @@ const getNum = num => {
   }
 };
 
-const getSize = num => {
+const getSize = (num) => {
   switch (num) {
     case 0:
       return "20px";
@@ -28,7 +29,7 @@ const getSize = num => {
 
 Crafty.defineScene(
   "Scores",
-  function() {
+  function () {
     // import from globals
     // constructor
     Crafty.background("#000000");
@@ -46,13 +47,13 @@ Crafty.defineScene(
       .textFont({
         size: "40px",
         weight: "bold",
-        family: "Press Start 2P"
+        family: "Press Start 2P",
       });
 
     const scores = highscores();
     let i = 0;
     Crafty.e("Delay").delay(
-      function() {
+      function () {
         const entry = scores[i];
         if (entry) {
           const nr = getNum(i);
@@ -66,30 +67,32 @@ Crafty.defineScene(
             .textFont({
               size,
               weight: "bold",
-              family: "Press Start 2P"
+              family: "Press Start 2P",
             });
 
           i += 1;
         }
       },
       500,
-      9
+      9,
     );
 
-    Crafty("Player").each(function() {
+    Crafty("Player").each(function () {
       this.reset();
-      this.one("Activated", () => Crafty.enterScene("Game"));
+      this.one("Activated", () =>
+        Crafty.enterScene("Game", { tags: settings.tags }),
+      );
     });
 
     Crafty.e("Delay").delay(() => Crafty.enterScene("Credits"), 20000);
   },
-  function() {
+  function () {
     // destructor
-    Crafty("Delay").each(function() {
+    Crafty("Delay").each(function () {
       this.destroy();
     });
-    return Crafty("Player").each(function() {
+    return Crafty("Player").each(function () {
       this.unbind("Activated");
     });
-  }
+  },
 );

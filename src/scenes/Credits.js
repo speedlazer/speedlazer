@@ -1,18 +1,19 @@
 import Crafty from "../crafty";
+import settings from "../settings.json";
 
 const credits = [
   ["Designed by", ["Matthijs Groen"]],
   ["Programming", ["Matthijs Groen"]],
   ["Graphics", ["Matthijs Groen"]],
   ["Music", ["Symsonic"]],
-  ["Testing", ["Hiddo Groen"]]
+  ["Testing", ["Hiddo Groen"]],
 ];
 
 const NAME_DURATION = 1500;
 
 Crafty.defineScene(
   "Credits",
-  function() {
+  function () {
     // import from globals
     // constructor
     Crafty.background("#000000");
@@ -29,7 +30,7 @@ Crafty.defineScene(
       .textFont({
         size: "30px",
         weight: "bold",
-        family: "Press Start 2P"
+        family: "Press Start 2P",
       });
     Crafty.e("2D, DOM, Text, CreditNames")
       .attr({ x: 0, y: h * 0.5, w })
@@ -38,7 +39,7 @@ Crafty.defineScene(
       .textFont({
         size: "20px",
         weight: "bold",
-        family: "Press Start 2P"
+        family: "Press Start 2P",
       });
 
     const title = credits[i][0];
@@ -56,26 +57,28 @@ Crafty.defineScene(
         Crafty("CreditNames").text(names.join("\n"));
       },
       NAME_DURATION,
-      credits.length - 2
+      credits.length - 2,
     );
 
-    Crafty("Player").each(function() {
+    Crafty("Player").each(function () {
       this.reset();
-      this.one("Activated", () => Crafty.enterScene("Game"));
+      this.one("Activated", () =>
+        Crafty.enterScene("Game", { tags: settings.tags }),
+      );
     });
 
     Crafty.e("Delay").delay(
       () => Crafty.enterScene("Intro"),
-      credits.length * NAME_DURATION
+      credits.length * NAME_DURATION,
     );
   },
-  function() {
+  function () {
     // destructor
-    Crafty("Delay").each(function() {
+    Crafty("Delay").each(function () {
       this.destroy();
     });
-    return Crafty("Player").each(function() {
+    return Crafty("Player").each(function () {
       this.unbind("Activated");
     });
-  }
+  },
 );

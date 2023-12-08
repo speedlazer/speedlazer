@@ -17,6 +17,34 @@
     "cityDistanceBaseBottom": [32, 9, 8, 4],
     "cityDistanceBaseTop": [40, 6, 8, 7],
 
+    "grassFront": [50, 13, 32, 3],
+    "grassMiddle": [50, 7, 16, 6],
+    "pond": [55, 0, 16, 6],
+    "pondStart": [72, 0, 16, 6],
+    "hedge": [67, 8, 12, 5],
+
+    "roof": [67, 17, 14, 14],
+    "chimney": [58, 33, 1, 4],
+    "present": [57, 34, 1, 1],
+    "villageSkyline": [49, 39, 16, 8],
+    "villageSkylineFull": [49, 39, 16, 19],
+    "villageDistantSkyline": [49, 33, 8, 4],
+    "hillSkyline": [49, 38, 6, 1],
+
+    "playerTop": [0, 63, 5, 4],
+    "playerBottom1": [0, 67, 5, 2],
+    "playerBottom2": [5, 67, 5, 2],
+
+    "portraitJinte1": [16, 59, 4, 4],
+    "portraitJinte2": [20, 59, 4, 4],
+    "portraitJonas": [16, 64, 4, 7],
+
+    "fish": [10, 59, 2, 2],
+    "bird": [12, 59, 2, 2],
+    "seagull": [10, 61, 2, 2],
+    "carrot": [8, 61, 1, 1],
+    "moon": [12, 61, 2, 2],
+
     "bigBuildingTop": [16, 13, 13, 6],
     "bigBuildingBrokenTop": [30, 13, 13, 6],
 
@@ -125,7 +153,6 @@
     "general2": [20, 48, 4, 4],
     "pilot1": [16, 52, 4, 4],
     "pilot2": [20, 52, 4, 4],
-    "shield": [10, 59, 4, 4],
 
     "explosion1": [24, 48, 3, 3],
     "explosion2": [27, 48, 3, 3],

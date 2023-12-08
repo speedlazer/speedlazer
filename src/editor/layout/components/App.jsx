@@ -27,7 +27,7 @@ export const App = () => (
         ["Particles", "/particles"],
         ["Sceneries", "/sceneries"],
         ["Animations", "/animations"],
-        ["Game", "/game"]
+        ["Game", "/game"],
       ]}
     />
     <Router>

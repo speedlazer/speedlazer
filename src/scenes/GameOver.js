@@ -3,6 +3,7 @@ import sortBy from "lodash/sortBy";
 import CryptoJS from "crypto-js";
 import { highscores } from "../lib/highscores";
 import Crafty from "../crafty";
+import settings from "../settings.json";
 
 Crafty.defineScene(
   "GameOver",
@@ -24,13 +25,13 @@ Crafty.defineScene(
       .textFont({
         size: "50px",
         weight: "bold",
-        family: "Press Start 2P"
+        family: "Press Start 2P",
       });
 
     const collect = [];
     let hs = clone(highscores());
 
-    const task = data => async () => {
+    const task = (data) => async () => {
       let s;
       let highScorePos = null;
       for (let i = 0; i < hs.length; i++) {
@@ -65,7 +66,7 @@ Crafty.defineScene(
         .textFont({
           size: "20px",
           weight: "bold",
-          family: "Press Start 2P"
+          family: "Press Start 2P",
         });
 
       if (highScorePos >= 10) return;
@@ -77,7 +78,7 @@ Crafty.defineScene(
         .textFont({
           size: "20px",
           weight: "bold",
-          family: "Press Start 2P"
+          family: "Press Start 2P",
         });
       const k = Crafty.e("TextInput")
         .attr({ x: w * 0.6, y: h * 0.45 + (data.index + 1) * 45, w })
@@ -86,12 +87,12 @@ Crafty.defineScene(
         .textFont({
           size: "20px",
           weight: "bold",
-          family: "Press Start 2P"
+          family: "Press Start 2P",
         });
 
       const name = await k.textInput(data.player, 3);
 
-      const loadList = function() {
+      const loadList = function () {
         const dat = localStorage.getItem("SPDLZR");
         if (!dat) {
           return [];
@@ -110,12 +111,10 @@ Crafty.defineScene(
       l.push({
         initials: name,
         score: data.points,
-        time: new Date().getTime()
+        time: new Date().getTime(),
       });
       const d = JSON.stringify(l);
-      const ky = CryptoJS.AES.encrypt(d, "secret")
-        .toString()
-        .slice(8, 28);
+      const ky = CryptoJS.AES.encrypt(d, "secret").toString().slice(8, 28);
       const ed = CryptoJS.AES.encrypt(d, ky).toString();
       localStorage.setItem("SPDLZR", ky + ed);
 
@@ -123,7 +122,7 @@ Crafty.defineScene(
       k.destroy();
     };
 
-    Crafty("Player ControlScheme").each(function(index) {
+    Crafty("Player ControlScheme").each(function (index) {
       hs.push({ initials: null, player: this, score });
       collect.push(
         task({
@@ -131,8 +130,8 @@ Crafty.defineScene(
           name: this.name,
           points: score,
           player: this,
-          color: this.color()
-        })
+          color: this.color(),
+        }),
       );
     });
 
@@ -141,7 +140,7 @@ Crafty.defineScene(
 
     // After a timeout, be able to replay
     Crafty.e("Delay").delay(
-      function() {
+      function () {
         if (!gameCompleted) {
           let time = 10;
 
@@ -152,7 +151,7 @@ Crafty.defineScene(
             .textFont({
               size: "15px",
               weight: "bold",
-              family: "Press Start 2P"
+              family: "Press Start 2P",
             })
             .text("Continue at last checkpoint?");
           const e = Crafty.e("2D, DOM, Text")
@@ -162,28 +161,29 @@ Crafty.defineScene(
             .textFont({
               size: "15px",
               weight: "bold",
-              family: "Press Start 2P"
+              family: "Press Start 2P",
             });
           const prefix = "Press fire to continue";
 
           e.text(`${prefix} ${`00${time}`.slice(-2)}`);
           this.delay(
-            function() {
+            function () {
               time -= 1;
               e.text(`${prefix} ${`00${time}`.slice(-2)}`);
             },
             1000,
             time,
-            () => Crafty.enterScene("Scores")
+            () => Crafty.enterScene("Scores"),
           );
 
-          Crafty("Player").each(function() {
+          Crafty("Player").each(function () {
             this.reset();
             // add checkpoint mechanic
             this.one("Activated", () =>
               Crafty.enterScene("Game", {
-                start: checkpoint
-              })
+                start: checkpoint,
+                tags: settings.tags,
+              }),
             );
           });
         } else {
@@ -191,16 +191,16 @@ Crafty.defineScene(
         }
       },
       1000,
-      0
+      0,
     );
   },
   () => {
     // destructor
-    Crafty("Delay").each(function() {
+    Crafty("Delay").each(function () {
       this.destroy();
     });
-    Crafty("Player").each(function() {
+    Crafty("Player").each(function () {
       this.unbind("Activated");
     });
-  }
+  },
 );

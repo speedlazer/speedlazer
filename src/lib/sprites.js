@@ -1,16 +1,15 @@
 import Crafty from "../crafty";
 import spritesheets from "../images";
 
-export const loadSpriteSheets = async sheetNames =>
-  new Promise(resolve => {
+export const loadSpriteSheets = async (sheetNames) =>
+  new Promise((resolve) => {
     const loader = {
-      sprites: {}
+      sprites: {},
     };
     spritesheets
-      .filter(sheet => sheetNames.includes(sheet.name))
-      .forEach(sheet => {
+      .filter((sheet) => sheetNames.includes(sheet.name))
+      .forEach((sheet) => {
         loader.sprites[sheet.image.split("?").at(0)] = sheet.map;
       });
-    console.log(loader);
     Crafty.load(loader, resolve);
   });

@@ -2,5 +2,6 @@
   "scenery": true,
   "particles": true,
   "music": true,
-  "wordDelay": 0.25
+  "wordDelay": 0.25,
+  "tags": ["sint"]
 }

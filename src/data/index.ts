@@ -15,7 +15,6 @@ const dataFlattener = (obj: AssetData) => {
     if (typeof object !== "object" || Array.isArray(object)) return;
 
     Object.entries(object).forEach(([key, value]) => {
-      console.log(key);
       if (key === "default") {
         Object.entries(value).forEach(([k, v]) => {
           entries[k] = v;

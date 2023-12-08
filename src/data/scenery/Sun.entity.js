@@ -4,17 +4,31 @@ export default {
       composition: "background.sun",
       components: [
         ["LightGlare", { glareAlphaLink: "glare" }],
-        ["Overlap", { checkCollission: "SunBlock", applyAlphaTo: "glare" }]
-      ]
+        ["Overlap", { checkCollission: "SunBlock", applyAlphaTo: "glare" }],
+      ],
     },
     states: {
       full: {
-        frame: "full"
+        frame: "full",
       },
       large: {
-        frame: "large"
-      }
+        frame: "large",
+      },
     },
-    habitats: []
-  }
+    habitats: [],
+  },
+  Moon: {
+    structure: {
+      composition: "background.moon",
+    },
+    states: {
+      full: {
+        frame: "full",
+      },
+      large: {
+        frame: "large",
+      },
+    },
+    habitats: [],
+  },
 };
