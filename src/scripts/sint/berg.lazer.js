@@ -38,15 +38,6 @@ export const berg = async ({
 
   await setScenery("town.RoofTops");
 
-  const chapter2 = bigText("Berg cadeautjes", {
-    color: "#FFFFFF",
-    sup: "Hoofdstuk 2:",
-  });
-  await chapter2.fadeIn(500);
-  await wait(4_000);
-  await chapter2.fadeOut(500);
-  chapter2.remove();
-
   await parallel([
     async () => {
       await say("Jonas", "We moeten via Berg naar Maastricht vliegen", {
@@ -88,5 +79,13 @@ export const berg = async ({
     }),
   );
 
+  const chapter2 = bigText("Stedentrip", {
+    color: "#FFFFFF",
+    sup: "Hoofdstuk 3:",
+  });
+  await chapter2.fadeIn(500);
+  await wait(4_000);
+  await chapter2.fadeOut(500);
+  chapter2.remove();
   await exec(checkpoint);
 };

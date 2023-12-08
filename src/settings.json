@@ -3,5 +3,6 @@
   "particles": true,
   "music": true,
   "wordDelay": 0.25,
-  "tags": ["sint"]
+  "tags": ["sint"],
+  "lives": 8
 }

@@ -4,9 +4,9 @@ import settings from "../settings.json";
 const credits = [
   ["Designed by", ["Matthijs Groen"]],
   ["Programming", ["Matthijs Groen"]],
-  ["Graphics", ["Matthijs Groen"]],
-  ["Music", ["Symsonic"]],
-  ["Testing", ["Hiddo Groen"]],
+  ["Graphics", ["Matthijs Groen", "Midjourney"]],
+  ["Music", ["Some Midis"]],
+  ["Testing", ["Matthijs Groen"]],
 ];
 
 const NAME_DURATION = 1500;
@@ -25,7 +25,7 @@ Crafty.defineScene(
     let i = 0;
     Crafty.e("2D, DOM, Text, CreditTask")
       .attr({ x: 0, y: h * 0.4, w })
-      .textColor("#FFFF00")
+      .textColor("#FF0000")
       .textAlign("center")
       .textFont({
         size: "30px",

@@ -5,7 +5,7 @@ import Crafty from "../crafty";
 
 Crafty.c("SubmergeSupport", {
   init() {
-    this._onGravityCollisonHit = this._onGravityCollisonHit.bind(this);
+    this._onGravityCollisionHit = this._onGravityCollisionHit.bind(this);
     this.addComponent("Motion", "Collision");
     this.bind("HitOn", this._onGravityCollisionHit);
     this.checkHits("GravityLiquid");
@@ -34,13 +34,13 @@ Crafty.c("SubmergeSupport", {
         this.shadow.destroy();
         this.shadow = null;
       }
-    }
+    },
   },
 
   _onGravityCollisionHit(collisions) {
     if (this.surface) return;
     let surfaceEntity = null;
-    collisions.forEach(e => {
+    collisions.forEach((e) => {
       const surface = e.obj;
       if (surface.has("GravityLiquid")) {
         surfaceEntity = surface;
@@ -49,15 +49,15 @@ Crafty.c("SubmergeSupport", {
 
     this.attr({
       hideBelow: surfaceEntity.y + 30,
-      surface: surfaceEntity
+      surface: surfaceEntity,
     });
     if (surfaceEntity.liquidParticles) {
       const settings = [].concat(surfaceEntity.liquidParticles, {
         emitter: {
           w: this.w,
           h: 10,
-          amount: Math.min(Math.max(this.w * 1.5, 100), 500)
-        }
+          amount: Math.min(Math.max(this.w * 1.5, 100), 500),
+        },
       });
 
       const emitter = merge({}, particles(settings[0]), settings[1]);
@@ -79,7 +79,7 @@ Crafty.c("SubmergeSupport", {
   _sinkAway() {
     const sunk = this.y > this.hideBelow;
     const risen = this.y + this.h < this.hideBelow - 30;
-    Object.values(this.currentAttachHooks).forEach(hook => {
+    Object.values(this.currentAttachHooks).forEach((hook) => {
       if (
         hook.currentAttachment &&
         hook.currentAttachment.emitter &&
@@ -102,7 +102,7 @@ Crafty.c("SubmergeSupport", {
         this.shadow = Crafty.e(`2D, WebGL, ${this.submergeSprite}`).attr({
           w: this.w,
           x: this.x,
-          y: this.hideBelow - 20
+          y: this.hideBelow - 20,
         });
         this.uniqueBind("Remove", this.clearShadow);
       }
@@ -116,8 +116,8 @@ Crafty.c("SubmergeSupport", {
         emitter: {
           w: this.w,
           h: 10,
-          amount: Math.min(Math.max(this.w * 1.5, 100), 500)
-        }
+          amount: Math.min(Math.max(this.w * 1.5, 100), 500),
+        },
       });
 
       const emitter = merge({}, particles(settings[0]), settings[1]);
@@ -125,5 +125,5 @@ Crafty.c("SubmergeSupport", {
         .attr({ x: this.x, y: this.surface.y + 20 })
         .particles(emitter);
     }
-  }
+  },
 });

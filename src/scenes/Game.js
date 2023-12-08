@@ -8,6 +8,8 @@ import { setGameSpeed } from "../lib/core/gameSpeed";
 
 import Player from "../components/player/Player";
 import Crafty from "../crafty";
+import settings from "../settings.json";
+
 const DEFAULT_TAGS = ["campaign"];
 
 Crafty.defineScene(
@@ -37,7 +39,7 @@ Crafty.defineScene(
 
     Crafty.viewport.x = 0;
     Crafty.viewport.y = 0;
-    this.state = { lives: 2, score: 0 };
+    this.state = { lives: settings.lives, score: 0 };
     const runner = createScriptExecutionSpace(this.state);
     let checkpoint = null;
     try {

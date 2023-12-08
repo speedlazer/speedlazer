@@ -48,7 +48,7 @@ export const houseWave =
     pattern,
     {
       points = 10,
-      delay = 3_000,
+      delay = 3_500,
       yOffsets = [0],
       speed = null,
       shootModulo = 1,

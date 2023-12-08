@@ -24,8 +24,8 @@ Crafty.defineScene(
 
     Crafty.e("2D, DOM, Text, Tween, Delay")
       .attr({ x: w * (0.5 - offset), y: h * 0.1, w: 400 })
-      .text("Speedlazer")
-      .textColor("#0000ff")
+      .text("Sintlazer")
+      .textColor("#ff0000")
       .textFont({
         size: "40px",
         weight: "bold",
@@ -45,7 +45,7 @@ Crafty.defineScene(
     Crafty.e("2D, DOM, Text, Tween, Delay")
       .attr({ x: w * 0.5 - 150, y: h * 0.7, w: 300 })
       .text("Press fire to start!")
-      .textColor("#FF0000")
+      .textColor("#FFFFFF")
       .textFont({
         size: "15px",
         weight: "bold",

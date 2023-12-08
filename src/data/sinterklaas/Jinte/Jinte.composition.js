@@ -131,6 +131,26 @@ const compositions = {
     hitbox: [2, 14, 28, 14, 28, 20, 2, 20],
     sprites: [["carrot", { z: -2 }]],
   },
+  "title.jinte": {
+    attributes: {
+      width: 416,
+      height: 480,
+      ro: [208, 240],
+    },
+    sprites: [["title", { z: 0, key: "jinte" }]],
+    frames: {
+      close: {
+        jinte: {
+          scale: 1.0,
+        },
+      },
+      far: {
+        jinte: {
+          scale: 0.3,
+        },
+      },
+    },
+  },
 };
 
 export default compositions;

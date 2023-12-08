@@ -42,7 +42,7 @@ Crafty.defineScene(
     Crafty.e("2D, DOM, Text")
       .attr({ x: 0, y: h * 0.1, w })
       .text("Highscores")
-      .textColor("#FFFF00")
+      .textColor("#FF0000")
       .textAlign("center")
       .textFont({
         size: "40px",

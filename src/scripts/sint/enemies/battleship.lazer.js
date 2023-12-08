@@ -1,0 +1,676 @@
+import { bigText } from "../../../components/BigText";
+import { say } from "../../../lib/Dialog";
+import audio from "../../../lib/audio";
+import { EASE_IN_OUT, EASE_OUT, LINEAR } from "../../../constants/easing";
+import Crafty from "../../../crafty.js";
+import { droneWave } from "../../stage1/enemies/drones.lazer.js";
+import { battleshipMines } from "../../stage1/enemies/mines.lazer.js";
+
+const shootMineCannon =
+  (cannon, high) =>
+  async ({
+    spawn,
+    moveWithPattern,
+    moveTo,
+    addScreenTrauma,
+    wait,
+    waitForEvent,
+    showState,
+    allowDamage,
+    race,
+  }) => {
+    await showState(cannon, high ? "aimHigh" : "aimLow");
+    const spawnPoint = cannon.currentAttachHooks.gun;
+    if (!cannon.hasHealth()) return;
+
+    const mine = spawn("Mine", {
+      location: {
+        x: spawnPoint.x,
+        y: spawnPoint.y,
+      },
+      defaultVelocity: 350,
+    }).attr({ z: spawnPoint.z });
+    waitForEvent(mine, "Loose", async () => {
+      mine.attr({ z: mine.z + 30 });
+    });
+
+    const movement = moveWithPattern(
+      mine,
+      high ? "mineCannon.highShot" : "mineCannon.lowShot",
+      null,
+      EASE_OUT,
+    );
+    await showState(cannon, "shoot");
+
+    movement.process.then(async () => {
+      await allowDamage(mine, { health: 40 });
+
+      const ship = Crafty("Jinte").get(0);
+      let searchMovement;
+      searchMovement = moveTo(mine, { y: 1 });
+      await searchMovement.process;
+      searchMovement = moveTo(mine, { x: ship.x / Crafty.viewport.width });
+      await searchMovement.process;
+
+      searchMovement = moveTo(mine, { y: ship.y / Crafty.viewport.height });
+      await race([
+        () =>
+          waitForEvent(mine, "Dead", async () => {
+            searchMovement && searchMovement.abort();
+            if (mine.appliedEntityState === "explode") return;
+            showState(mine, "dead");
+            addScreenTrauma(0.3);
+
+            await wait(1000);
+            mine.destroy();
+            searchMovement && searchMovement.abort();
+          }),
+        async () => {
+          await searchMovement.process;
+          if (searchMovement.wasCompleted()) {
+            if (mine.appliedEntityState === "dead") return;
+            await showState(mine, "open", 500);
+            showState(mine, "blinking");
+            await wait(1000);
+            if (mine.appliedEntityState !== "dead") {
+              showState(mine, "explode");
+              addScreenTrauma(0.3);
+              await wait(1000);
+              mine.destroy();
+            }
+          }
+        },
+      ]);
+    });
+  };
+
+// const activateGun =
+//   (gun) =>
+//   async ({ awardPoints, showState, waitForEvent, allowDamage }) => {
+//     const gunKilled = waitForEvent(gun, "Dead", async () => {
+//       awardPoints(200, gun.x + 20, gun.y);
+//       showState(gun, "dead");
+//       gun.clearCollisionComponents();
+//     });
+//     gun
+//       .addCollisionComponent("SolidCollision")
+//       .addCollisionComponent("PlayerEnemy");
+//     allowDamage(gun, { health: 750 });
+//     showState(gun, "shooting");
+//     await gunKilled;
+//   };
+
+const part1 =
+  (ship) =>
+  async ({
+    showState,
+    waitForEvent,
+    allowDamage,
+    race,
+    awardPoints,
+    until,
+  }) => {
+    const mineCannon = ship.mineCannon;
+    mineCannon
+      .addCollisionComponent("SolidCollision")
+      .addCollisionComponent("PlayerEnemy");
+
+    const killed = waitForEvent(mineCannon, "Dead", async () => {
+      awardPoints(250, mineCannon.x, mineCannon.y);
+      showState(mineCannon, "dead");
+      mineCannon.clearCollisionComponents();
+    });
+    await race([
+      async () => {
+        await allowDamage(mineCannon, { health: 600 });
+        let high = true;
+        await until(
+          () => killed,
+          async ({ exec }) => {
+            await exec(shootMineCannon(mineCannon, high));
+            high = !high;
+          },
+        );
+      },
+      () => killed,
+    ]);
+  };
+
+const part2 =
+  (ship) =>
+  async ({
+    exec,
+    waitForEvent,
+    parallel,
+    until,
+    showState,
+    awardPoints,
+    allowDamage,
+    wait,
+  }) => {
+    const radar = ship.cabin1.radar;
+
+    radar.addCollisionComponent("SolidCollision");
+    showState(radar, "pulse");
+    await allowDamage(radar, { health: 500 });
+    let points = 10;
+    // await parallel([
+    //   () =>
+    //     until(
+    //       () =>
+    await waitForEvent(radar, "Dead", async () => {
+      awardPoints(100, radar.x + 20, radar.y);
+      showState(radar, "dead");
+      radar.clearCollisionComponents();
+    });
+    //   async ({ exec }) => {
+    //     // exec(droneWave(2, "drone.pattern2", { points }));
+    //     // points = points > 0 ? points - 5 : 0;
+    //     await wait(2000);
+    //   },
+    // ),
+    // () => exec(activateGun(ship.deckGun1)),
+    // ]);
+  };
+
+const mineAttack =
+  (ship) =>
+  async ({ wait, showState, moveTo, exec, parallel }) => {
+    await parallel([
+      () => {
+        const upwards = moveTo(ship, { y: 0.65 }, 20, EASE_IN_OUT);
+        return upwards.process;
+      },
+      () => showState(ship, "risen", 2000),
+      async () => {
+        await wait(1000);
+        await exec(battleshipMines());
+      },
+    ]);
+    await parallel([
+      () => {
+        const downwards = moveTo(ship, { y: 0.7 }, 20, EASE_IN_OUT);
+        return downwards.process;
+      },
+      () => showState(ship, "lowered", 2000),
+    ]);
+  };
+
+// const helicopter1 =
+//   (ship) =>
+//   async ({
+//     call,
+//     wait,
+//     waitForEvent,
+//     showState,
+//     awardPoints,
+//     allowDamage,
+//     until,
+//     moveWithPattern,
+//   }) => {
+//     const helicopter = ship.heliPlace1;
+//     const heliAudio = audio.playAudio("helicopter", { volume: 0.01 });
+//     heliAudio.setVolume(0.9, 1000);
+//     showState(helicopter, "flying");
+//     await wait(1000);
+//     await showState(helicopter, "tilted", 2000);
+//     let movement = moveWithPattern(helicopter, "heli.battleship1", 150, LINEAR);
+//     waitForEvent(helicopter, "detach", async () => {
+//       helicopter.detachFromParent();
+//     });
+//     const maxHealth = 500;
+//     waitForEvent(helicopter, "active", async () => {
+//       helicopter
+//         .addCollisionComponent("SolidCollision")
+//         .addCollisionComponent("PlayerEnemy");
+//       await allowDamage(helicopter, { health: maxHealth });
+//     });
+//     waitForEvent(helicopter, "Remove", async () => {
+//       heliAudio.stop();
+//     });
+//     helicopter.uniqueBind("HealthChange", (newHealth) => {
+//       if (newHealth < maxHealth * 0.5) {
+//         if (helicopter.appliedEntityState !== "dead") {
+//           showState(helicopter, "fire");
+//         }
+//       }
+//     });
+//     const killed = waitForEvent(helicopter, "Dead", async () => {
+//       heliAudio.stop();
+//       helicopter.clearCollisionComponents();
+//       movement.abort();
+//       awardPoints(250, helicopter.x + 20, helicopter.y);
+//       await showState(helicopter, "dead");
+//       helicopter.z = ship.z + 5;
+
+//       await call(helicopter.activateGravity);
+//     });
+//     await movement.process;
+//     await until(
+//       () => killed,
+//       async () => {
+//         if (helicopter.appliedEntityState === "dead") return wait(500);
+//         movement = moveWithPattern(
+//           helicopter,
+//           "heli.battleship2c",
+//           150,
+//           LINEAR,
+//         );
+//         await movement.process;
+//       },
+//     );
+//   };
+
+const part3 =
+  (ship) =>
+  async ({ showState, wait, exec, parallel }) => {
+    await wait(1000);
+    // await parallel([
+    // async () => {
+    //   await wait(1000);
+    //   await exec(activateGun(ship.deckGun2));
+    //   await wait(1000);
+    //   await showState(ship, "t3o", 2000);
+    //   await showState(ship, "t3r", 2000);
+    //   await exec(activateGun(ship.hatch3.payload));
+    // },
+    // () => exec(helicopter1(ship)),
+    // ]);
+    // Mines from below
+    await exec(mineAttack(ship));
+    // await parallel([
+    //   async () => {
+    //     await showState(ship, "t2o", 1000);
+    //     await showState(ship, "t2r", 1000);
+    //     await exec(activateGun(ship.hatch2.payload));
+    //   },
+    //   async () => {
+    //     await showState(ship, "t1o", 1000);
+    //     await showState(ship, "t1r", 1000);
+    // await exec(activateGun(ship.hatch1.payload));
+    //   },
+    // ]);
+    // await exec(mineAttack(ship));
+  };
+
+// const helicopter2 =
+//   (ship) =>
+//   async ({
+//     wait,
+//     moveTo,
+//     showState,
+//     moveWithPattern,
+//     waitForEvent,
+//     awardPoints,
+//     allowDamage,
+//     call,
+//     until,
+//   }) => {
+//     const helicopter = ship.heliPlace2;
+//     const heliAudio = audio.playAudio("helicopter", { volume: 0.01 });
+//     heliAudio.setVolume(0.9, 1000);
+//     showState(helicopter, "flying");
+//     await wait(1000);
+//     await showState(helicopter, "tilted", 2000);
+
+//     let movement = moveWithPattern(
+//       helicopter,
+//       "heli.battleship2a",
+//       150,
+//       LINEAR,
+//     );
+//     waitForEvent(helicopter, "detach", async () => {
+//       helicopter.detachFromParent();
+//     });
+//     const maxHealth = 500;
+//     waitForEvent(helicopter, "active", async () => {
+//       helicopter
+//         .addCollisionComponent("SolidCollision")
+//         .addCollisionComponent("PlayerEnemy");
+//       await allowDamage(helicopter, { health: maxHealth });
+//     });
+//     waitForEvent(helicopter, "Remove", async () => {
+//       heliAudio.stop();
+//     });
+//     helicopter.uniqueBind("HealthChange", (newHealth) => {
+//       if (newHealth < maxHealth * 0.5) {
+//         if (helicopter.appliedEntityState !== "dead") {
+//           showState(helicopter, "fire");
+//         }
+//       }
+//     });
+//     const killed = waitForEvent(helicopter, "Dead", async () => {
+//       heliAudio.stop();
+//       helicopter.clearCollisionComponents();
+//       movement.abort();
+//       awardPoints(250, helicopter.x + 20, helicopter.y);
+//       await showState(helicopter, "dead");
+//       await call(helicopter.activateGravity);
+//     });
+//     const shipMovement = waitForEvent(helicopter, "moveShip", async () => {
+//       const p = moveTo(ship, { x: -1.0 }, 120, EASE_IN_OUT);
+//       await p.process;
+//     });
+
+//     await movement.process;
+//     movement = moveWithPattern(helicopter, "heli.battleship2b", 150, LINEAR);
+
+//     await shipMovement;
+//     await movement.process;
+
+//     await until(
+//       () => killed,
+//       async () => {
+//         if (helicopter.appliedEntityState === "dead") return wait(500);
+//         movement = moveWithPattern(
+//           helicopter,
+//           "heli.battleship2c",
+//           150,
+//           LINEAR,
+//         );
+//         await movement.process;
+//       },
+//     );
+//   };
+
+const part5 =
+  (ship) =>
+  async ({
+    allowDamage,
+    showState,
+    wait,
+    parallel,
+    setScrollingSpeed,
+    moveTo,
+    awardPoints,
+    exec,
+    waitForEvent,
+  }) => {
+    await wait(2000);
+    await showState(ship, "packageOpen", 1000, EASE_IN_OUT);
+    await wait(1000);
+    const laser = ship.deckGun3;
+    await showState(laser, "open", 500, EASE_IN_OUT);
+
+    const engineCore = ship.engineCore;
+    engineCore.addComponent("SolidCollision");
+    waitForEvent(engineCore, "Dead", async () => {
+      engineCore.clearCollisionComponents();
+      showState(ship, "engineTilt");
+
+      waitForEvent(engineCore, "Dead", async () => {
+        engineCore.clearCollisionComponents();
+        // Add explosions and screenshakes
+
+        awardPoints(500, engineCore.x + 20, engineCore.y);
+        engineCore.removeComponent("SolidCollision");
+        showState(ship.laserField, "stopped");
+        allowDamage(laser, { health: 500 });
+        ship.laserField.removeComponent("SolidCollision");
+        showState(ship, "engineDestroyed");
+      });
+      await allowDamage(ship.engineCore, { health: 1000 });
+    });
+
+    await allowDamage(ship.engineCore, { health: 500 });
+
+    laser.addCollisionComponent("SolidCollision");
+    const killed = waitForEvent(laser, "Dead", async () => {
+      laser.clearCollisionComponents();
+      awardPoints(250, laser.x + 20, laser.y);
+      showState(laser, "dead");
+    });
+    await allowDamage(laser, { health: 500 });
+    showState(laser, "shooting");
+
+    await parallel([
+      async () => {
+        const playerShip = Crafty("Jinte").get(0);
+        playerShip.trigger("turn");
+
+        await wait(1000);
+        await showState(ship, "engineDoorOpen");
+        setScrollingSpeed(-100, 0);
+        const activeMovement = moveTo(ship, { x: -0.9 }, 85, EASE_IN_OUT);
+        await activeMovement.process;
+      },
+      async () => {
+        await killed;
+        exec(laserWeapon(laser.x + laser.w / 2, laser.y - laser.h));
+      },
+    ]);
+  };
+
+const extraLife =
+  (x, y) =>
+  async ({
+    allowDamage,
+    showState,
+    waitForEvent,
+    wait,
+    spawn,
+    gainLife,
+    moveWithPattern,
+  }) => {
+    const extraLife = spawn("ExtraLife", {
+      location: {
+        x,
+        y,
+      },
+      defaultVelocity: 50,
+    });
+    await allowDamage(extraLife, { health: 10 });
+    waitForEvent(extraLife, "Dead", async () => {
+      gainLife();
+      await showState(extraLife, "pickedUp");
+      await wait(2000);
+      extraLife.destroy();
+    });
+    const motion = moveWithPattern(extraLife, "powerup.circles");
+    await motion.process;
+    await showState(extraLife, "disappear", 1000);
+    extraLife.destroy();
+  };
+
+const laserWeapon =
+  (x, y) =>
+  async ({
+    allowDamage,
+    awardText,
+    showState,
+    waitForEvent,
+    wait,
+    spawn,
+    until,
+  }) => {
+    const powerup = spawn("Upgrade", {
+      location: {
+        x,
+        y,
+      },
+      defaultVelocity: 50,
+    });
+    await allowDamage(powerup, { health: 10 });
+    const pickedUp = waitForEvent(powerup, "Dead", async () => {
+      const ship = Crafty("Jinte").get(0);
+      ship.hasLaser = true;
+      awardText("Laser weapon", powerup.x, powerup.y);
+      await showState(powerup, "pickedUp");
+      await wait(2000);
+      powerup.destroy();
+      say(
+        null,
+        `You gained a new weapon! The LASER. Use the ${ship.controlName(
+          "heavy",
+        )} to shoot.`,
+      );
+    });
+    await until(
+      () => pickedUp,
+      async ({ moveWithPattern }) => {
+        const motion = moveWithPattern(powerup, "powerup.circles");
+        await motion.process;
+      },
+    );
+    powerup.destroy();
+  };
+
+const part6 =
+  (ship) =>
+  async ({
+    allowDamage,
+    showState,
+    waitForEvent,
+    awardPoints,
+    addScreenTrauma,
+    exec,
+    wait,
+  }) => {
+    const cabin = ship.cabin1;
+    cabin.addCollisionComponent("SolidCollision");
+    const killed = waitForEvent(cabin, "Dead", async () => {
+      awardPoints(2000, cabin.x + cabin.w / 2, cabin.y);
+      showState(ship, "cabin1Explode");
+      addScreenTrauma(0.5);
+      await wait(2000);
+      addScreenTrauma(0.5);
+      cabin.clearCollisionComponents();
+      showState(ship, "cabin1Smoke");
+    });
+    await allowDamage(cabin, { health: 500 });
+    await killed;
+    cabin.removeComponent("SolidCollision");
+    exec(extraLife(cabin.x + cabin.w / 2, cabin.y - cabin.h));
+  };
+
+const part7 =
+  (ship) =>
+  async ({
+    allowDamage,
+    showState,
+    addScreenTrauma,
+    waitForEvent,
+    awardPoints,
+    wait,
+  }) => {
+    const cabin = ship.cabin2;
+    cabin.addCollisionComponent("SolidCollision");
+    const killed = waitForEvent(cabin, "Dead", async () => {
+      awardPoints(2000, cabin.x + cabin.w / 2, cabin.y);
+      showState(ship, "cabin2Explode");
+      addScreenTrauma(0.5);
+      await wait(2000);
+      addScreenTrauma(0.5);
+      cabin.clearCollisionComponents();
+      showState(ship, "cabin2Smoke");
+    });
+    await allowDamage(cabin, { health: 500 });
+    await killed;
+    cabin.removeComponent("SolidCollision");
+  };
+
+const handleBox =
+  (box) =>
+  async ({ showState, allowDamage, waitForEvent, call, awardPoints }) => {
+    await allowDamage(box, { health: 30 });
+    waitForEvent(box, "Dead", async () => {
+      awardPoints(25, box.x, box.y);
+      showState(box, "falling");
+      await call(box.activateGravity, "GravityLiquid");
+    });
+  };
+
+const battleship = async ({
+  parallel,
+  spawn,
+  wait,
+  showState,
+  exec,
+  moveTo,
+  setBackgroundCheckpointLimit,
+  setScrollingSpeed,
+}) => {
+  let activeMovement;
+  const text = bigText("Pas op!", { color: "#FF0000" });
+  await parallel([
+    () => text.blink(500, 4),
+    () => setScrollingSpeed(150, 0),
+    () =>
+      say("Jonas", "Daar is de stoomboot!", { portrait: "portraits.jonas" }),
+  ]);
+
+  text.remove();
+
+  // Fases:
+  // - Mine cannon
+  // - Cabin 2 - low stress, Single cannon, invincible
+  // - Helicopters
+  // - Cabin 2 - medium stress, 2 cannons, invincible
+  // - Radar waves, 2 canons at same time, kill cannons
+  // - Cabin 2 - destroy
+  // - Sink ship
+  //
+
+  // spawn ship off screen
+  const ship = spawn("BattleShip", {
+    location: {
+      rx: 1.1,
+      ry: 0.7,
+    },
+    defaultVelocity: 85,
+  });
+  exec(handleBox(ship.boxLocation1));
+  exec(handleBox(ship.boxLocation2));
+
+  activeMovement = moveTo(ship, { x: 0.8 }, null, EASE_IN_OUT);
+  await parallel([() => activeMovement.process, () => exec(part1(ship))]);
+  await wait(1000);
+
+  activeMovement = moveTo(ship, { x: 0.5 }, null, EASE_IN_OUT);
+  await activeMovement.process;
+  await exec(part2(ship));
+  await exec(part6(ship));
+  // setBackgroundCheckpointLimit(3);
+  await wait(1000);
+
+  activeMovement = moveTo(ship, { x: -0.17 }, null, EASE_IN_OUT);
+  await activeMovement.process;
+  await exec(part3(ship));
+
+  // await exec(helicopter2(ship));
+
+  // await exec(part5(ship));
+
+  await parallel([
+    async () => {
+      activeMovement = moveTo(ship, { x: -0.4 }, null, EASE_IN_OUT);
+      await activeMovement.process;
+    },
+    () => exec(part7(ship)),
+  ]);
+
+  // await parallel([
+  //   async () => {
+  //     activeMovement = moveTo(ship, { x: -0.2 }, null, EASE_IN_OUT);
+  //     await activeMovement.process;
+  //   },
+  //   () => exec(part6(ship)),
+  // ]);
+
+  // const playerShip = Crafty("Jinte").get(0);
+  // playerShip.trigger("turn");
+  // setScrollingSpeed(150, 0);
+
+  // major explosions / sinking
+  parallel([
+    () => showState(ship, "sinking", 17000, EASE_IN_OUT),
+    async () => {
+      activeMovement = moveTo(ship, { x: -1.7, y: 0.85 }, null, EASE_IN_OUT);
+      await activeMovement.process;
+      ship.destroy();
+    },
+  ]);
+  await wait(4000);
+};
+
+export default battleship;

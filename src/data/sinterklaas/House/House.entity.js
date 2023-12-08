@@ -53,7 +53,7 @@ export default {
             gunLoc: {
               weapon: {
                 pattern: "chimney.presents",
-                target: "PlayerShip",
+                target: "Jinte",
               },
             },
           },

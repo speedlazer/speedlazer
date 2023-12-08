@@ -20,11 +20,11 @@ import "../../lib/GameLoop";
 import { playAnimation } from "../../components/Animation";
 import {
   setBackground,
-  setBackgroundCheckpoint
+  setBackgroundCheckpoint,
 } from "../../components/Background";
 import {
   createEntity,
-  EntityDefinition
+  EntityDefinition,
 } from "../../components/EntityDefinition";
 import { setScenery, setScrollVelocity } from "../../components/Scenery";
 import { getBezierPath } from "../../lib/BezierPath";
@@ -36,7 +36,7 @@ import Crafty from "../../crafty";
 
 Crafty.paths({
   audio: "",
-  images: ""
+  images: "",
 });
 
 window.Crafty = Crafty;
@@ -45,15 +45,15 @@ Crafty.c("TestColor", {
   required: "Color, WebGL",
   init() {
     this.color("#FF0000");
-  }
+  },
 });
 
 const SCREEN_WIDTH = 1024;
 const SCREEN_HEIGHT = 576;
 
-const round3 = x => Math.round(x * 1000) / 1000;
+const round3 = (x) => Math.round(x * 1000) / 1000;
 
-export const mount = domElem => {
+export const mount = (domElem) => {
   if (!domElem) return;
   Crafty.init(SCREEN_WIDTH, SCREEN_HEIGHT, domElem);
   Crafty.background("#000000");
@@ -65,17 +65,17 @@ export const mount = domElem => {
   let renderTime = 0;
   let extra = "";
 
-  Crafty.bind("MeasureWaitTime", wt => (waitTime = wt));
-  Crafty.bind("MeasureFrameTime", ft => (frameTime = ft));
-  Crafty.bind("MeasureRenderTime", rt => (renderTime = rt));
-  Crafty.bind("MeasureExtra", ex => (extra = ex));
+  Crafty.bind("MeasureWaitTime", (wt) => (waitTime = wt));
+  Crafty.bind("MeasureFrameTime", (ft) => (frameTime = ft));
+  Crafty.bind("MeasureRenderTime", (rt) => (renderTime = rt));
+  Crafty.bind("MeasureExtra", (ex) => (extra = ex));
 
   Crafty.bind("EnterScene", () => {
     Crafty.e("2D, DOM, Text")
       .attr({ x: 20, y: 20, w: 700 })
       .text(() => {
         let counter = 0;
-        Crafty("Renderable, WebGL").each(function() {
+        Crafty("Renderable, WebGL").each(function () {
           if (!this.__frozen) counter++;
         });
 
@@ -94,7 +94,7 @@ Crafty.defineScene(
       start.show();
     }
   },
-  () => {}
+  () => {},
 );
 
 export const unmount = () => {
@@ -109,7 +109,7 @@ export const unmount = () => {
   Crafty.stop();
 };
 
-const makePosition = position =>
+const makePosition = (position) =>
   Object.entries(position).reduce((acc, [key, value]) => {
     if (key === "rx") {
       return { ...acc, x: Crafty.viewport.width * value };
@@ -127,7 +127,7 @@ const updateActualSize = (actualSize, entity) => {
   actualSize.maxY = Math.max(actualSize.maxY, entity.y + entity.h);
 };
 
-const createComposable = composition =>
+const createComposable = (composition) =>
   Crafty.e(["2D", "WebGL", Composable, "DebugComposable"].join(", "))
     .attr({ x: 0, y: 0, w: 40, h: 40 })
     .compose(composition, { autoStartAnimation: false });
@@ -141,30 +141,30 @@ const addColor = (entity, color) =>
         w: entity.w,
         h: entity.h,
         z: -5000,
-        rotation: entity.rotation
+        rotation: entity.rotation,
       })
-      .color(color)
+      .color(color),
   );
 
 const determineEntitySize = (sizeModel, entity) => {
   updateActualSize(sizeModel, entity);
   if (entity.has(Composable)) {
-    Object.values(entity.currentAttachHooks).forEach(hook => {
+    Object.values(entity.currentAttachHooks).forEach((hook) => {
       updateActualSize(sizeModel, hook);
       if (hook.currentAttachment) {
         determineEntitySize(sizeModel, hook.currentAttachment);
       }
     });
-    entity.forEachPart(entity => updateActualSize(sizeModel, entity));
+    entity.forEachPart((entity) => updateActualSize(sizeModel, entity));
   }
 };
 
-const scaleScreenForEntity = entity => {
+const scaleScreenForEntity = (entity) => {
   const actualSize = {
     minX: entity.x,
     maxX: entity.x + entity.w,
     minY: entity.y,
-    maxY: entity.y + entity.h
+    maxY: entity.y + entity.h,
   };
   determineEntitySize(actualSize, entity);
 
@@ -172,7 +172,7 @@ const scaleScreenForEntity = entity => {
   const height = actualSize.maxY - actualSize.minY;
   const offset = {
     x: entity.x - actualSize.minX,
-    y: entity.y - actualSize.minY
+    y: entity.y - actualSize.minY,
   };
   const scale = Math.min(SCREEN_WIDTH / width, SCREEN_HEIGHT / height, 1);
   const maxWidth = Math.max(width, SCREEN_WIDTH / scale);
@@ -183,13 +183,13 @@ const scaleScreenForEntity = entity => {
 
   entity.attr({
     x: (maxWidth - width) / 2 + offset.x,
-    y: (maxHeight - height) / 2 + offset.y
+    y: (maxHeight - height) / 2 + offset.y,
   });
 
   Crafty.viewport.scale(scale);
 };
 
-const resetScreenScaling = entity => {
+const resetScreenScaling = (entity) => {
   if (entity.preScalePos) {
     entity.attr({ x: entity.preScalePos.x, y: entity.preScalePos.y });
   }
@@ -197,7 +197,7 @@ const resetScreenScaling = entity => {
 };
 
 const applyDisplayOptions = (entity, options) => {
-  Object.values(entity.currentAttachHooks).forEach(hook => {
+  Object.values(entity.currentAttachHooks).forEach((hook) => {
     options.showAttachPoints
       ? hook.addComponent("SolidHitBox").attr({ w: 10, h: 10 })
       : hook
@@ -232,7 +232,7 @@ Crafty.defineScene("ComposablePreview", ({ composition, options }) => {
 });
 
 let activeHabitat = null;
-const setHabitat = habitat => {
+const setHabitat = (habitat) => {
   if (!habitat || !habitat.scenery || habitat.scenery !== activeHabitat) {
     Crafty("Scenery").destroy();
   }
@@ -264,9 +264,9 @@ Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
     x: 0,
     y: 0,
     w: 8,
-    h: 8
+    h: 8,
   });
-  Crafty.s("Mouse").bind("MouseMove", function(e) {
+  Crafty.s("Mouse").bind("MouseMove", function (e) {
     const rect = Crafty.stage.elem.getBoundingClientRect();
     const x = e.realX - rect.x;
     const y = e.realY - rect.y;
@@ -274,8 +274,8 @@ Crafty.defineScene("EntityPreview", ({ entityName, habitat }) => {
     Crafty.trigger(
       "MeasureExtra",
       `- ${round3(x / Crafty.viewport.width)} / ${round3(
-        y / Crafty.viewport.height
-      )}`
+        y / Crafty.viewport.height,
+      )}`,
     );
   });
 
@@ -300,18 +300,18 @@ Crafty.defineScene(
   },
   () => {
     Crafty("Scenery").destroy();
-  }
+  },
 );
 
-const inScene = sceneName => Crafty._current === sceneName;
+const inScene = (sceneName) => Crafty._current === sceneName;
 
 const loadSpriteSheets = async () =>
-  new Promise(resolve => {
+  new Promise((resolve) => {
     // load sprites
     const loader = {
-      sprites: {}
+      sprites: {},
     };
-    spritesheets.forEach(sheet => {
+    spritesheets.forEach((sheet) => {
       loader.sprites[sheet.image.split("?")[0]] = sheet.map;
     });
 
@@ -319,7 +319,7 @@ const loadSpriteSheets = async () =>
   });
 
 const loadAllAudio = () => {
-  const loadingPromises = audiosheets.map(map => audio.loadAudio(map));
+  const loadingPromises = audiosheets.map((map) => audio.loadAudio(map));
   return Promise.all(loadingPromises);
 };
 
@@ -403,12 +403,12 @@ export const showScenery = async (scenery, backgroundSettings = {}) => {
   Crafty.enterScene("SceneryPreview", { scenery, ...backgroundSettings });
 };
 
-const showBezier = pattern => {
+const showBezier = (pattern) => {
   const vpw = Crafty.viewport.width;
   const vph = Crafty.viewport.height;
   const normalizedPath = pattern.map(({ x, y }) => ({
     x: x * vpw,
-    y: y * vph
+    y: y * vph,
   }));
   const bezierPath = getBezierPath(normalizedPath);
   const stepSize = 1 / (bezierPath.length / 10);
@@ -449,9 +449,7 @@ Crafty.defineScene(
     const entity =
       habitat && habitat.entity && showHabitat
         ? createEntity(habitat.entity)
-        : Crafty.e("2D, WebGL, Color")
-            .attr({ w: 20, h: 20 })
-            .color("#0000FF");
+        : Crafty.e("2D, WebGL, Color").attr({ w: 20, h: 20 }).color("#0000FF");
     if (entity.has(EntityDefinition) && habitat.entityState) {
       entity.showState(habitat.entityState);
     }
@@ -462,14 +460,14 @@ Crafty.defineScene(
       .flyPattern(pattern, { velocity: 75, easing: "easeInOutQuad" });
 
     showHabitat && setHabitat(habitat);
-  }
+  },
 );
 
 let currentPattern = null;
 let currentlyShowingHabitat = true;
 export const showFlyPattern = async (
   pattern,
-  { showPoints, showPath, habitat, showHabitat }
+  { showPoints, showPath, habitat, showHabitat },
 ) => {
   await loadAssets();
   if (
@@ -501,7 +499,7 @@ export const showFlyPattern = async (
     showPoints,
     showPath,
     showHabitat,
-    habitat
+    habitat,
   });
 };
 
@@ -518,7 +516,7 @@ export const showAnimation = async (
   animation,
   animationLimit,
   activeCheckpoint,
-  { onCheckpointChange } = {}
+  { onCheckpointChange } = {},
 ) => {
   await loadAssets();
   if (
@@ -533,13 +531,13 @@ export const showAnimation = async (
   currentAnimation = animation;
   animationStartCheckpoint = activeCheckpoint;
   Crafty.enterScene("AnimationPreview", {
-    animation
+    animation,
   });
   const isBackground = animation.habitat && animation.habitat.isBackground;
   currentAnimationState = playAnimation(animation, {
     max: animationLimit,
     start: activeCheckpoint,
-    z: isBackground ? -1000 : 0
+    z: isBackground ? -1000 : 0,
   });
 
   onCheckpointChange &&
@@ -556,19 +554,19 @@ Crafty.defineScene(
         y: 240,
         w: 40,
         h: 40,
-        difficulty
+        difficulty,
       })
       .color("#FF0000");
 
     const blue = Crafty.e(
-      `2D, WebGL, Color, Blue, ${WayPointMotion}, Collision`
+      `2D, WebGL, Color, Blue, ${WayPointMotion}, Collision`,
     )
       .attr({
         x: 200,
         y: 240,
         w: 40,
         h: 40,
-        difficulty
+        difficulty,
       })
       .color("#0000FF");
 
@@ -585,12 +583,12 @@ Crafty.defineScene(
           .weapon({ pattern, target: "Blue", x: 0, y: 20, angle: 0 });
 
     Crafty(Weapon).activate();
-  }
+  },
 );
 
 export const showBulletPattern = async (
   pattern,
-  { difficulty, collisionType, swapped, firing }
+  { difficulty, collisionType, swapped, firing },
 ) => {
   if (inScene("BulletPatternPreview") && Crafty(Weapon).active !== firing) {
     firing ? Crafty(Weapon).activate() : Crafty(Weapon).deactivate();
@@ -602,7 +600,7 @@ export const showBulletPattern = async (
     difficulty,
     collisionType,
     swapped,
-    firing
+    firing,
   });
 };
 
@@ -621,7 +619,7 @@ Crafty.defineScene("ParticleEmitterPreview", ({ emitter }) => {
   const emitterSource = Crafty.e(`2D, Emitter, ${WayPointMotion}`).attr({
     x: (Crafty.viewport.width - emitter.emitter.w) / 2,
     y: (Crafty.viewport.height - emitter.emitter.h) / 2,
-    z: 20
+    z: 20,
   });
 
   Crafty.e(`2D, ${ParticleEmitter}`).particles(emitter, emitterSource);
@@ -642,7 +640,7 @@ export const showParticleEmitter = async (emitter, { active, warmed }) => {
 
   Crafty.enterScene("ParticleEmitterPreview", {
     emitter,
-    active
+    active,
   });
 };
 
@@ -651,20 +649,20 @@ const appliedGameOptions = {};
 
 Crafty.defineScene(
   "GamePreview",
-  async function({ stage, invincible, autoContinue, extraLifes }) {
+  async function ({ stage, invincible, autoContinue, extraLifes }) {
     const thisStage = Math.random();
     activeStage = thisStage;
     Crafty.createLayer("UILayerDOM", "DOM", {
       scaleResponse: 0,
       yResponse: 0,
       xResponse: 0,
-      z: 40
+      z: 40,
     });
     Crafty.createLayer("UILayerWebGL", "WebGL", {
       scaleResponse: 0,
       yResponse: 0,
       xResponse: 0,
-      z: 35
+      z: 35,
     });
     const start = bigText("Use controller to start", { sup: stage });
     start.show();
@@ -679,10 +677,10 @@ Crafty.defineScene(
     Crafty.one("SceneDestroy", () => {
       this.state.gameEnded = true;
     });
-    const p = new Promise(resolve =>
-      Crafty(Player).each(function() {
+    const p = new Promise((resolve) =>
+      Crafty(Player).each(function () {
         this.one("Activated", resolve);
-      })
+      }),
     );
     await p;
     start.remove();
@@ -709,7 +707,7 @@ Crafty.defineScene(
 
       const fade = fadeOut();
       const start = bigText(gameOver ? "Game Over" : "Congratulations!", {
-        color: gameOver ? "#FF0000" : "#FFFFFF"
+        color: gameOver ? "#FF0000" : "#FFFFFF",
       });
       await start.fadeIn(4000);
       await fade.start(4000);
@@ -729,16 +727,16 @@ Crafty.defineScene(
     if (activeStage !== thisStage) return;
     Crafty.enterScene("Stop", {
       text: gameOver ? "Game Over" : "Congratulations!",
-      color: gameOver ? "#FF0000" : "#FFFFFF"
+      color: gameOver ? "#FF0000" : "#FFFFFF",
     });
   },
-  function() {
+  function () {
     this.state.gameEnded = true;
     audio.stopMusic();
-    Crafty(Player).each(function() {
+    Crafty(Player).each(function () {
       this.removeComponent("ShipSpawnable");
     });
-  }
+  },
 );
 
 let activeGamePart = null;
@@ -759,7 +757,7 @@ export const showGame = (stage, options) => {
     activeGamePart = stage;
     Crafty.enterScene("GamePreview", {
       stage,
-      ...options
+      ...options,
     });
   }
 };

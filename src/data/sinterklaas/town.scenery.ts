@@ -57,7 +57,7 @@ const sceneries: SceneryCollection = {
       {
         x: -1700,
         y: -1300,
-        z: 20,
+        z: 150,
         composition: "city.skyScraper",
         distance: 1.1,
       },

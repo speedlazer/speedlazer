@@ -33,6 +33,7 @@ export const garden = async ({
   showHUD();
   text.remove();
   exec(jinte({ existing: true }));
+  await exec(birdWave(5, "bird.pattern1"));
 
   await setScenery("garden.PondStart");
 
@@ -42,7 +43,9 @@ export const garden = async ({
       await exec(birdWave(8, "bird.pattern2"));
     },
     async () => {
+      console.log("waiting...");
       await waitTillInScreen("garden.PondStart", -625);
+      console.log("wait complete");
     },
   ]);
   await wait(3000);
@@ -61,5 +64,13 @@ export const garden = async ({
 
   await exec(birdWave(5, "bird.pattern1"));
   await exec(birdWave(8, "bird.pattern2"));
+  const chapter2 = bigText("Berg cadeautjes", {
+    color: "#FFFFFF",
+    sup: "Hoofdstuk 2:",
+  });
+  await chapter2.fadeIn(500);
+  await wait(4_000);
+  await chapter2.fadeOut(500);
+  chapter2.remove();
   await exec(checkpoint);
 };

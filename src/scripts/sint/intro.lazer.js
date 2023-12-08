@@ -47,14 +47,6 @@ const intro = async ({
   const fade = fadeIn();
   text.remove();
 
-  //   const introAnimation = playAnimation("city.Intro");
-  //   const introShip = Crafty("IntroShip").get(0);
-  //   exec(handleBox(introShip.boxLocation1));
-  //   exec(handleBox(introShip.boxLocation2));
-
-  exec(jinte({ existing: true }));
-  //   const player = Crafty("PlayerShip").get(0);
-
   await fade.start(1000);
   await say("Jinte", "Kijk Jonas, een lekker tas vol wortels voor je", {
     portrait: "portraits.jinte",
@@ -84,6 +76,7 @@ const intro = async ({
   await say("Jonas", "Daarvoor had me toch munitie gebracht?", {
     portrait: "portraits.jonas",
   });
+  exec(jinte({ existing: true }));
 
   showHUD();
   await setScrollingSpeed(250, 0);

@@ -15,7 +15,7 @@ Crafty.defineScene(
 
     const w = Crafty.viewport.width;
     const h = Crafty.viewport.height;
-    const text = gameCompleted ? "Congratulations" : "Game Over";
+    const text = gameCompleted ? "Gefeliciteerd!" : "Game Over";
 
     Crafty.e("2D, DOM, Text")
       .attr({ x: 0, y: h * 0.2, w })

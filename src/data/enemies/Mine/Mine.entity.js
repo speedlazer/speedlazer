@@ -7,22 +7,22 @@ export default {
         "SolidCollision",
         ["SubmergeSupport", { submergeSprite: "shadow" }],
         "PlayerEnemy",
-        ["Rotating", { vr: 0 }]
+        ["Rotating", { vr: 0 }],
       ],
       attachments: {
-        explosion: {}
-      }
+        explosion: {},
+      },
     },
     states: {
       rotate: {
-        components: [["Rotating", { vr: 40 }]]
+        components: [["Rotating", { vr: 40 }]],
       },
       open: {
-        animation: "opening"
+        animation: "opening",
       },
       blinking: {
         components: [["Rotating", { vr: 120 }]],
-        animation: "blinking"
+        animation: "blinking",
       },
       dead: {
         components: [["Rotating", { vr: 0 }]],
@@ -32,10 +32,10 @@ export default {
           explosion: {
             weapon: {
               pattern: "mine.explosion",
-              target: "PlayerShip",
+              target: "Jinte",
               angle: 0,
-              active: true
-            }
+              active: true,
+            },
           },
           smoke: {
             particles: {
@@ -46,14 +46,14 @@ export default {
                     w: 60,
                     h: 60,
                     amount: 450,
-                    duration: 600
+                    duration: 600,
                   },
-                  particle: { startSize: 30, endSize: 20 }
-                }
-              ]
-            }
-          }
-        }
+                  particle: { startSize: 30, endSize: 20 },
+                },
+              ],
+            },
+          },
+        },
       },
       explode: {
         components: [["Rotating", { vr: 0 }]],
@@ -63,10 +63,10 @@ export default {
           explosion: {
             weapon: {
               pattern: "mine.blast",
-              target: "PlayerShip",
+              target: "Jinte",
               angle: 0,
-              active: true
-            }
+              active: true,
+            },
           },
           smoke: {
             particles: {
@@ -77,29 +77,29 @@ export default {
                     w: 60,
                     h: 60,
                     amount: 450,
-                    duration: 600
+                    duration: 600,
                   },
-                  particle: { startSize: 30, endSize: 20 }
-                }
-              ]
-            }
-          }
-        }
-      }
+                  particle: { startSize: 30, endSize: 20 },
+                },
+              ],
+            },
+          },
+        },
+      },
     },
     habitats: [
       {
         name: "Ocean",
         scenery: "city.Ocean",
         scrollSpeed: { vx: -100, vy: 0 },
-        background: ["city.Sunrise", 2]
+        background: ["city.Sunrise", 2],
       },
       {
         name: "Bay",
         scenery: "city.Bay",
         scrollSpeed: { vx: -100, vy: 0 },
-        background: ["city.Sunrise", 3]
-      }
-    ]
-  }
+        background: ["city.Sunrise", 3],
+      },
+    ],
+  },
 };
