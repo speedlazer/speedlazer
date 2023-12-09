@@ -84,21 +84,21 @@ const shootMineCannon =
     });
   };
 
-// const activateGun =
-//   (gun) =>
-//   async ({ awardPoints, showState, waitForEvent, allowDamage }) => {
-//     const gunKilled = waitForEvent(gun, "Dead", async () => {
-//       awardPoints(200, gun.x + 20, gun.y);
-//       showState(gun, "dead");
-//       gun.clearCollisionComponents();
-//     });
-//     gun
-//       .addCollisionComponent("SolidCollision")
-//       .addCollisionComponent("PlayerEnemy");
-//     allowDamage(gun, { health: 750 });
-//     showState(gun, "shooting");
-//     await gunKilled;
-//   };
+const activateGun =
+  (gun) =>
+  async ({ awardPoints, showState, waitForEvent, allowDamage }) => {
+    const gunKilled = waitForEvent(gun, "Dead", async () => {
+      awardPoints(200, gun.x + 20, gun.y);
+      showState(gun, "dead");
+      gun.clearCollisionComponents();
+    });
+    gun
+      .addCollisionComponent("SolidCollision")
+      .addCollisionComponent("PlayerEnemy");
+    allowDamage(gun, { health: 750 });
+    showState(gun, "shooting");
+    await gunKilled;
+  };
 
 const part1 =
   (ship) =>
@@ -122,7 +122,21 @@ const part1 =
     });
     await race([
       async () => {
-        await allowDamage(mineCannon, { health: 600 });
+        await say(
+          "Sinterklaas",
+          "Al die jaren bezorde die pakjes mij hoofdpijn!",
+          {
+            portrait: "portraits.sint",
+          },
+        );
+        await say(
+          "Sinterklaas",
+          "Nu gaan ze jullie hoofdpijn bezorgen, hahaha!",
+          {
+            portrait: "portraits.sint",
+          },
+        );
+        await allowDamage(mineCannon, { health: 800 });
         let high = true;
         await until(
           () => killed,
@@ -276,21 +290,24 @@ const part3 =
     // },
     // () => exec(helicopter1(ship)),
     // ]);
+    await say("Sinterklaas", "Tijd om mijn pakjesruim te legen!", {
+      portrait: "portraits.sint",
+    });
     // Mines from below
     await exec(mineAttack(ship));
-    // await parallel([
-    //   async () => {
-    //     await showState(ship, "t2o", 1000);
-    //     await showState(ship, "t2r", 1000);
-    //     await exec(activateGun(ship.hatch2.payload));
-    //   },
-    //   async () => {
-    //     await showState(ship, "t1o", 1000);
-    //     await showState(ship, "t1r", 1000);
-    // await exec(activateGun(ship.hatch1.payload));
-    //   },
-    // ]);
-    // await exec(mineAttack(ship));
+    await parallel([
+      async () => {
+        // await showState(ship, "t3o", 1000);
+        await showState(ship, "t3r", 1000);
+        await exec(activateGun(ship.hatch3.payload));
+      },
+      async () => {
+        // await showState(ship, "t1o", 1000);
+        await showState(ship, "t1r", 1000);
+        await exec(activateGun(ship.hatch1.payload));
+      },
+    ]);
+    await exec(mineAttack(ship));
   };
 
 // const helicopter2 =
@@ -662,6 +679,9 @@ const battleship = async ({
   // setScrollingSpeed(150, 0);
 
   // major explosions / sinking
+  await say("Sinterklaas", "Neee!!!", {
+    portrait: "portraits.sint",
+  });
   parallel([
     () => showState(ship, "sinking", 17000, EASE_IN_OUT),
     async () => {

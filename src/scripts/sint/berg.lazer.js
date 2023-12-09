@@ -7,6 +7,37 @@ import { houseWave } from "./enemies/house.lazer";
 import { jinte } from "./jinte.lazer";
 import { birdWave } from "./enemies/birds.lazer";
 
+const extraLife =
+  (rx, ry) =>
+  async ({
+    allowDamage,
+    showState,
+    waitForEvent,
+    wait,
+    spawn,
+    gainLife,
+    moveWithPattern,
+  }) => {
+    const extraLife = spawn("ExtraLife", {
+      location: {
+        rx,
+        ry,
+      },
+      defaultVelocity: 50,
+    });
+    await allowDamage(extraLife, { health: 10 });
+    waitForEvent(extraLife, "Dead", async () => {
+      gainLife();
+      await showState(extraLife, "pickedUp");
+      await wait(2000);
+      extraLife.destroy();
+    });
+    const motion = moveWithPattern(extraLife, "powerup.circles");
+    await motion.process;
+    await showState(extraLife, "disappear", 1000);
+    extraLife.destroy();
+  };
+
 export const berg = async ({
   setScrollingSpeed,
   setScenery,
@@ -28,7 +59,7 @@ export const berg = async ({
   await loadSpriteSheets(["mega-texture"]);
   await loadAudio(["effects", "sint"]);
   audio.playAudio("sint");
-  setBackground("city.Sunset", 1, 2);
+  setBackground("city.Sunset", 0, 2);
   await setScrollingSpeed(250, 0, { instant: true });
   setAltitude(700, { instant: true });
   await setScenery("garden.Pond");
@@ -78,6 +109,8 @@ export const berg = async ({
       shootModulo: 3,
     }),
   );
+
+  exec(extraLife(0.7, 0.4));
 
   const chapter2 = bigText("Stedentrip", {
     color: "#FFFFFF",

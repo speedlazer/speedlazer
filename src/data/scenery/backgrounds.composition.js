@@ -147,7 +147,7 @@ export default {
     attributes: {
       width: 96,
       height: 96,
-      scale: 0.6,
+      scale: 0.8,
     },
     sprites: [
       ["sun", { x: 0, y: 0, z: 4, crop: [1, 1, 1, 1] }],
@@ -168,11 +168,11 @@ export default {
         glare: { maxAlpha: 0 },
       },
       full: {
-        attributes: { scale: 1.0 },
+        // attributes: { scale: 1.0 },
         glare: { maxAlpha: 1 },
       },
       large: {
-        attributes: { scale: 1.2 },
+        // attributes: { scale: 1.2 },
         glare: { maxAlpha: 0 },
       },
     },

@@ -122,13 +122,49 @@ const compositions = {
       },
     },
   },
+  "portraits.sint": {
+    attributes: {
+      width: 160,
+      height: 192,
+    },
+    sprites: [["portraitSint", { key: "face" }]],
+    frames: {
+      idle: {
+        face: {},
+      },
+      talk: {
+        face: {},
+      },
+    },
+    animations: {
+      talking: {
+        repeat: true,
+        easing: "linear",
+        duration: 500,
+        timeline: [
+          {
+            start: 0.0,
+            end: 0.5,
+            startFrame: "idle",
+            endFrame: "talk",
+          },
+          {
+            start: 0.5,
+            end: 1.0,
+            startFrame: "talk",
+            endFrame: "idle",
+          },
+        ],
+      },
+    },
+  },
   "weapons.carrot": {
     attributes: {
       width: 32,
       height: 32,
       ro: [4, 14],
     },
-    hitbox: [2, 14, 28, 14, 28, 20, 2, 20],
+    hitbox: [2, 12, 28, 12, 28, 22, 2, 22],
     sprites: [["carrot", { z: -2 }]],
   },
   "title.jinte": {

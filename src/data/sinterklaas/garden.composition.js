@@ -159,4 +159,62 @@ export default {
       ["bigBuildingLayer", { y: 512 }],
     ],
   },
+  "town.chimneyMini": {
+    attributes: {
+      width: 32,
+      height: 94,
+    },
+    hitbox: [3, 17, 30, 17, 30, 94, 3, 94],
+    sprites: [
+      ["chimney", { key: "chimney", z: 0, crop: [1, 1, 32, 1] }],
+      ["present", { key: "present", z: 2, y: 70, x: 5, scale: 0.9 }],
+    ],
+    attachHooks: [
+      ["smokeLoc", { x: 14, y: 16, z: -5, attachAlign: ["bottom", "center"] }],
+      [
+        "explosionLoc",
+        { x: 14, y: 86, z: 2, attachAlign: ["bottom", "center"] },
+      ],
+      ["gunLoc", { x: 4, y: -16, z: -5, attachAlign: ["bottom", "center"] }],
+    ],
+    frames: {
+      dead: {
+        chimney: { alpha: 0 },
+      },
+      shootStart: {
+        chimney: { scaleX: 1.2, scaleY: 0.8 },
+      },
+      shootEnd: {
+        chimney: { scaleX: 0.9, scaleY: 1.1 },
+      },
+    },
+    animations: {
+      shoot: {
+        duration: 400,
+        repeat: true,
+        startEase: { duration: 1, easing: "easeOutQuad" },
+        easing: "easeInQuad",
+        timeline: [
+          {
+            start: 0,
+            end: 0.2,
+            startFrame: "default",
+            endFrame: "shootStart",
+          },
+          {
+            start: 0.2,
+            end: 0.4,
+            startFrame: "shootStart",
+            endFrame: "shootEnd",
+          },
+          {
+            start: 0.6,
+            end: 0.7,
+            startFrame: "shootEnd",
+            endFrame: "default",
+          },
+        ],
+      },
+    },
+  },
 };

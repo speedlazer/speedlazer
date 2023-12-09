@@ -42,6 +42,43 @@ export default {
       },
     ],
   },
+  PresentGun: {
+    structure: {
+      composition: "town.chimneyMini",
+      attachments: {
+        gunLoc: {
+          weapon: {
+            pattern: "chimney.presents",
+            target: "Jinte",
+          },
+        },
+      },
+    },
+    states: {
+      shooting: {
+        animation: "shoot",
+        attachments: {
+          gunLoc: {
+            weapon: {
+              active: true,
+            },
+          },
+        },
+      },
+      dead: {
+        animation: null,
+        frame: "dead",
+        audio: "explosion",
+        attachments: {
+          explosionLoc: {
+            composition: "explosion",
+            animation: "default",
+          },
+          gunLoc: null,
+        },
+      },
+    },
+  },
   HouseHostile: {
     structure: {
       composition: "town.roof",

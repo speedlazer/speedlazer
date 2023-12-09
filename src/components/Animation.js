@@ -36,7 +36,7 @@ Crafty.c(Animation, {
       this.setActiveCheckpoint(
         this.targetCheckpoint === prevLimit
           ? this.targetCheckpoint
-          : this.targetCheckpoint + 1
+          : this.targetCheckpoint + 1,
       );
     }
   },
@@ -53,7 +53,7 @@ Crafty.c(Animation, {
       const composition = compositions(composable);
 
       const existing = this.elements[settings.key];
-      toRemove = toRemove.filter(k => k !== settings.key);
+      toRemove = toRemove.filter((k) => k !== settings.key);
       if (existing && existing.appliedDefinition === composition) {
         const startFrame = settings.frame || "default";
         if (existing.targetFrame !== startFrame) {
@@ -74,7 +74,7 @@ Crafty.c(Animation, {
     });
     (checkpointData.entities || []).forEach(([entity, settings]) => {
       const existing = this.elements[settings.key];
-      toRemove = toRemove.filter(k => k !== settings.key);
+      toRemove = toRemove.filter((k) => k !== settings.key);
       if (!existing) {
         const x = (settings.relativeX || 0) * Crafty.viewport.width;
         const y = (settings.relativeY || 0) * Crafty.viewport.height;
@@ -84,7 +84,7 @@ Crafty.c(Animation, {
           createEntity(entity, settings).attr({
             x,
             y,
-            z: (this.z || 0) + (settings.z || 0)
+            z: (this.z || 0) + (settings.z || 0),
           });
         if (settings.detach && e.detachFromParent) {
           e.detachFromParent();
@@ -94,27 +94,31 @@ Crafty.c(Animation, {
         if (settings.state) e.showState(settings.state);
       } else {
         this.z && existing.attr({ z: this.z });
+
+        // const x = (settings.relativeX || 0) * Crafty.viewport.width;
+        // const y = (settings.relativeY || 0) * Crafty.viewport.height;
+
         if (settings.state) existing.showState(settings.state);
       }
     });
     (checkpointData.particles || []).forEach(
       ([emitterDefinition, settings]) => {
         const existing = this.elements[settings.key];
-        toRemove = toRemove.filter(k => k !== settings.key);
+        toRemove = toRemove.filter((k) => k !== settings.key);
         if (!existing) {
           const x = (settings.relativeX || 0) * Crafty.viewport.width;
           const y = (settings.relativeY || 0) * Crafty.viewport.height;
           const emitter = merge(
             {},
             particles(emitterDefinition),
-            settings.particles
+            settings.particles,
           );
 
           const e = Crafty.e(ParticleEmitter)
             .attr({
               x,
               y,
-              z: (this.z || 0) + (settings.z || 0)
+              z: (this.z || 0) + (settings.z || 0),
             })
             .particles(emitter);
           if (settings.detach && e.detachFromParent) {
@@ -125,16 +129,16 @@ Crafty.c(Animation, {
         } else {
           this.z &&
             existing.attr({
-              z: (this.z || 0) + (settings.z || 0)
+              z: (this.z || 0) + (settings.z || 0),
             });
           if (settings.state) existing.showState(settings.state);
         }
-      }
+      },
     );
     if (checkpointData.background) {
       setBackgroundColor(checkpointData.background);
     }
-    toRemove.forEach(k => {
+    toRemove.forEach((k) => {
       delete this.elements[k];
     });
     if (checkpointData.backgroundColor) {
@@ -151,9 +155,9 @@ Crafty.c(Animation, {
         duration || checkpointData.timeline.defaultDuration;
       if (this.animationDuration) {
         this.animationTimer = new Crafty.easing(this.animationDuration, LINEAR);
-        this.timeLineEvents = checkpointData.timeline.transitions.map(t => ({
+        this.timeLineEvents = checkpointData.timeline.transitions.map((t) => ({
           ...t,
-          handled: false
+          handled: false,
         }));
 
         this.playingAnimation = true;
@@ -165,7 +169,7 @@ Crafty.c(Animation, {
   updateAnimation({ dt }) {
     this.animationTimer.tick(dt);
     const value = this.animationTimer.value();
-    this.timeLineEvents.forEach(t => {
+    this.timeLineEvents.forEach((t) => {
       if (t.handled || t.start > value) return;
       // handle event
       if (t.targetFrame && t.key) {
@@ -174,7 +178,7 @@ Crafty.c(Animation, {
         elem &&
           elem.displayFrame(
             t.targetFrame,
-            (t.end - t.start) * this.animationDuration
+            (t.end - t.start) * this.animationDuration,
           );
       }
       if (t.targetState && t.key) {
@@ -183,7 +187,7 @@ Crafty.c(Animation, {
         elem &&
           elem.showState(
             t.targetState,
-            (t.end - t.start) * this.animationDuration
+            (t.end - t.start) * this.animationDuration,
           );
       }
       if (t.attributes && t.key) {
@@ -198,7 +202,7 @@ Crafty.c(Animation, {
         const elem = this.elements[t.key];
         t.handled = true;
         if (elem) {
-          t.components.forEach(c => elem.addComponent(c));
+          t.components.forEach((c) => elem.addComponent(c));
         }
       }
       if (t.targetBackgroundColor) {
@@ -214,7 +218,7 @@ Crafty.c(Animation, {
           t.targetColor = strToColor([t.targetBackgroundColor, 1.0]);
           t.ease = new Crafty.easing(
             (t.end - t.start) * this.animationDuration,
-            LINEAR
+            LINEAR,
           );
           t.ease.tick(dt);
           const color = mix(t.ease.value(), t.sourceColor, t.targetColor);
@@ -234,7 +238,7 @@ Crafty.c(Animation, {
           duration: pathDuration,
           start: t.path.start || 0.0,
           end: t.path.end || 1.0,
-          easing: t.path.easing || "linear"
+          easing: t.path.easing || "linear",
         });
       }
       if (t.remove && t.key) {
@@ -254,25 +258,25 @@ Crafty.c(Animation, {
         this.currentAnimation.checkpoints.length > this.targetCheckpoint + 1
       ) {
         this.trigger("CheckpointReached", {
-          checkpoint: this.targetCheckpoint + 1
+          checkpoint: this.targetCheckpoint + 1,
         });
         this.setActiveCheckpoint(this.targetCheckpoint + 1);
         // Emit an event that checkpoint is updated
       } else {
         this.trigger("CheckpointReached", {
-          checkpoint: this.targetCheckpoint + 1
+          checkpoint: this.targetCheckpoint + 1,
         });
         this.trigger("AnimationEnded", { checkpoint: this.targetCheckpoint });
       }
     }
-  }
+  },
 });
 
 export default Animation;
 
 export const playAnimation = (
   animation,
-  { max = Infinity, start = 0, z = 0 } = {}
+  { max = Infinity, start = 0, z = 0 } = {},
 ) => {
   const player = Crafty.e(Animation).attr({ z });
   player.setAnimation(animation, { maxCheckpoint: max, start });
@@ -291,33 +295,34 @@ export const playAnimation = (
           return false;
         }
         return true;
-      }
+      },
     );
   });
 
   return {
-    waitTillCheckpoint: checkpoint =>
+    waitTillCheckpoint: (checkpoint) =>
       checkpoint <= checkpointReached
         ? Promise.resolve()
         : new Promise((resolver, rejecter) => {
             checkpointSubscriptions.push({ checkpoint, resolver, rejecter });
           }),
-    onCheckpointChange: callback => {
+    onCheckpointChange: (callback) => {
       checkpointSubscriptions.push({ checkpoint: null, resolver: callback });
     },
-    updateCheckpoint: start => {
+    updateCheckpoint: (start) => {
       player.setActiveCheckpoint(start);
     },
-    updateCheckpointLimit: newLimit => {
+    updateCheckpointLimit: (newLimit) => {
       player.setCheckpointLimit(newLimit);
     },
     waitTillEnd: () =>
-      new Promise(resolve => player.one("AnimationEnded", resolve)),
+      new Promise((resolve) => player.one("AnimationEnded", resolve)),
     destroy: () => {
       checkpointSubscriptions.forEach(
-        ({ rejecter }) => rejecter && rejecter(new Error("Animation destroyed"))
+        ({ rejecter }) =>
+          rejecter && rejecter(new Error("Animation destroyed")),
       );
       player.destroy();
-    }
+    },
   };
 };

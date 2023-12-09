@@ -4,7 +4,7 @@ import settings from "../settings.json";
 const credits = [
   ["Designed by", ["Matthijs Groen"]],
   ["Programming", ["Matthijs Groen"]],
-  ["Graphics", ["Matthijs Groen", "Midjourney"]],
+  ["Graphics", ["Matthijs Groen", "& Midjourney"]],
   ["Music", ["Some Midis"]],
   ["Testing", ["Matthijs Groen"]],
 ];
@@ -33,7 +33,7 @@ Crafty.defineScene(
         family: "Press Start 2P",
       });
     Crafty.e("2D, DOM, Text, CreditNames")
-      .attr({ x: 0, y: h * 0.5, w })
+      .attr({ x: 0, y: h * 0.5, w, h: 300 })
       .textColor("#FFFF00")
       .textAlign("center")
       .textFont({

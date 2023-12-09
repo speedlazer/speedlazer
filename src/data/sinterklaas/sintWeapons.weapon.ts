@@ -11,7 +11,7 @@ const weapons = {
       initialDelay: [1, 1],
       burst: [5, 5],
       shotDelay: [400, 400],
-      burstDelay: [400, 400],
+      burstDelay: [800, 400],
       shot: [{ spawn: true, duration: 50 }],
       spawns: [["bullet", { angle: 90 }]],
     },

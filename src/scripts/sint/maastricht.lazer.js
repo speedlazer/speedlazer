@@ -29,7 +29,7 @@ export const maastricht = async ({
   await loadSpriteSheets(["mega-texture"]);
   await loadAudio(["effects", "sint"]);
   audio.playAudio("sint");
-  setBackground("city.Sunset", 2, 3);
+  setBackground("city.Sunset", 1, 3);
   await setScrollingSpeed(250, 0, { instant: true });
   setAltitude(400, { instant: true });
   await setScenery("town.RoofTops");

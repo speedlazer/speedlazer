@@ -49,13 +49,13 @@ export default {
         ],
         backgroundColor: "#fcc67b",
         timeline: {
-          defaultDuration: 10_000,
+          defaultDuration: 30_000,
           transitions: [
             { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn6" },
             { key: "sky", start: 0.5, end: 1.0, targetFrame: "dawn5" },
             { start: 0.0, end: 0.5, targetBackgroundColor: "#fdab3a" },
             { start: 0.5, end: 1.0, targetBackgroundColor: "#fd7321" },
-            { start: 0.0, end: 1.0, key: "sun", targetState: "full" },
+            { start: 0.0, end: 1.0, key: "sun", targetState: "large" },
             {
               key: "moon",
               start: 0.0,
@@ -96,7 +96,7 @@ export default {
         ],
         backgroundColor: "#fd7321",
         timeline: {
-          defaultDuration: 10_000,
+          defaultDuration: 30_000,
           transitions: [
             { key: "night", start: 0.0, end: 1.0, targetFrame: "middle" },
             { key: "sky", start: 0.0, end: 0.3, targetFrame: "dawn4" },
@@ -125,6 +125,11 @@ export default {
                 end: 1.0,
               },
             },
+            {
+              key: "sun",
+              start: 1.0,
+              remove: true,
+            },
           ],
         },
       },
@@ -135,17 +140,13 @@ export default {
         ],
         entities: [
           [
-            "Sun",
-            { key: "sun", state: "large", relativeX: 0.9, relativeY: 0.7 },
-          ],
-          [
             "Moon",
-            { key: "moon", state: "default", relativeX: 0.4, relativeY: 0.1 },
+            { key: "moon", state: "default", relativeX: 0.2, relativeY: 0.4 },
           ],
         ],
         backgroundColor: "#0f1630",
         timeline: {
-          defaultDuration: 10_000,
+          defaultDuration: 30_000,
           transitions: [
             { key: "night", start: 0.0, end: 1.0, targetFrame: "default" },
             { key: "sky", start: 0.0, end: 0.5, targetFrame: "dawn" },
@@ -173,17 +174,13 @@ export default {
         ],
         entities: [
           [
-            "Sun",
-            { key: "sun", state: "large", relativeX: 0.9, relativeY: 0.7 },
-          ],
-          [
             "Moon",
-            { key: "moon", state: "large", relativeX: 0.5, relativeY: 0.1 },
+            { key: "moon", state: "large", relativeX: 0.3, relativeY: 0.2 },
           ],
         ],
         backgroundColor: "#000010",
         timeline: {
-          defaultDuration: 10_000,
+          defaultDuration: 1_000,
           transitions: [],
         },
       },

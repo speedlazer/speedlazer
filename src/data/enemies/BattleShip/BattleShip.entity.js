@@ -55,26 +55,28 @@ export default {
         },
         hatch1: {
           composition: "shipHatch",
+          frame: "open",
           attachments: {
             payload: {
-              entity: "BulletCannon",
-              state: "mirrored",
+              entity: "PresentGun",
+              // state: "mirrored",
             },
           },
         },
-        hatch2: {
-          composition: "shipHatch",
-          attachments: {
-            payload: {
-              entity: "BulletCannon",
-            },
-          },
-        },
+        // hatch2: {
+        //   composition: "shipHatch",
+        //   attachments: {
+        //     payload: {
+        //       entity: "PresentGun",
+        //     },
+        //   },
+        // },
         hatch3: {
           composition: "shipHatch",
+          frame: "open",
           attachments: {
             payload: {
-              entity: "BulletCannon",
+              entity: "PresentGun",
             },
           },
         },

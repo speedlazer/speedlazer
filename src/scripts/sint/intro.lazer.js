@@ -48,7 +48,7 @@ const intro = async ({
   text.remove();
 
   await fade.start(1000);
-  await say("Jinte", "Kijk Jonas, een lekker tas vol wortels voor je", {
+  await say("Jinte", "Kijk Jonas, een lekkere tas vol wortels voor je", {
     portrait: "portraits.jinte",
   });
   await say("Jonas", "Dank je, dat is perfecte munitie!", {

@@ -97,20 +97,9 @@ Crafty.c("SceneryBlock", {
 
   sceneryBlockMoved() {
     if (this.sceneryName === notificationName) {
-      // FIXME: This is wrong approach
-      const vDx = this.vx / Crafty.timer.FPS();
-
-      if (
-        vDx <= 0 &&
-        this.x >= -notificationBuffer &&
-        this.x < -notificationBuffer - vDx
-      ) {
+      if (this.vx <= 0 && this.x < -notificationBuffer) {
         notifyScenery();
-      } else if (
-        vDx > 0 &&
-        this.x > notificationBuffer - vDx &&
-        this.x <= notificationBuffer
-      ) {
+      } else if (this.vx > 0 && this.x > notificationBuffer) {
         notifyScenery();
       }
     }

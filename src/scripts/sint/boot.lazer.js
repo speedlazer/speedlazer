@@ -30,7 +30,7 @@ export const stoomboot = async ({
   await loadSpriteSheets(["mega-texture"]);
   await loadAudio(["effects", "boss"]);
   audio.playAudio("boss");
-  setBackground("city.Sunset", 4, 4);
+  setBackground("city.Sunset", 3, 4);
   await setScrollingSpeed(250, 0, { instant: true });
   setAltitude(0, { instant: true });
   await setScenery("city.Ocean");
