@@ -42,6 +42,7 @@ Crafty.defineScene(
     this.state = { lives: settings.lives, score: 0 };
     const runner = createScriptExecutionSpace(this.state);
     let checkpoint = null;
+
     try {
       let started = false;
       for (const item of gameStructure) {
@@ -56,7 +57,9 @@ Crafty.defineScene(
           continue;
         }
         started = true;
-        checkpoint = item.name;
+        if (this.state.gameEnded !== true) {
+          checkpoint = item.name;
+        }
         await runner(item.script);
       }
       const fade = fadeOut();
@@ -65,6 +68,7 @@ Crafty.defineScene(
       Crafty.enterScene("GameOver", {
         gameCompleted: !this.state.gameEnded,
         score: this.state.score,
+        checkpoint: this.state.gameEnded === true ? checkpoint : null,
       });
     } catch (e) {
       if (endMode !== null) return;

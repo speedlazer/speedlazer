@@ -13,7 +13,7 @@ const part = async ({
   setAltitude,
   exec,
   wait,
-  fadeIn
+  fadeIn,
 }) => {
   const fade = fadeIn();
   const text = bigText("Loading...");
@@ -27,14 +27,12 @@ const part = async ({
   await fade.start(2000);
   await wait(5e3);
   await setScrollingSpeed(500, 0);
-  console.log("Say!");
   await say(
     "General",
     "Let us escort you to the factory to install\n" +
       "the AI controlled defence systems. You are the last ship.",
-    { portrait: "portraits.general" }
+    { portrait: "portraits.general" },
   );
-  console.log("End Say!");
   addScreenTrauma(0.8);
   addScreenTrauma(0.8);
   addScreenTrauma(0.8);

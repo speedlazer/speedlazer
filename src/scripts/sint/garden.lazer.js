@@ -43,9 +43,7 @@ export const garden = async ({
       await exec(birdWave(8, "bird.pattern2"));
     },
     async () => {
-      console.log("waiting...");
       await waitTillInScreen("garden.PondStart", -625);
-      console.log("wait complete");
     },
   ]);
   await wait(3000);

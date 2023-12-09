@@ -16,10 +16,10 @@ import { maastricht } from "./sint/maastricht.lazer";
 import { stoomboot } from "./sint/boot.lazer";
 
 const gameStructure = [
-  // { name: "sint.intro", script: sint1, tags: { sint: true } },
-  // { name: "sint.garden", script: garden, tags: { sint: true } },
-  // { name: "sint.berg", script: berg, tags: { sint: true } },
-  // { name: "sint.maastricht", script: maastricht, tags: { sint: true } },
+  { name: "sint.intro", script: sint1, tags: { sint: true } },
+  { name: "sint.garden", script: garden, tags: { sint: true } },
+  { name: "sint.berg", script: berg, tags: { sint: true } },
+  { name: "sint.maastricht", script: maastricht, tags: { sint: true } },
   { name: "sint.stoomboot", script: stoomboot, tags: { sint: true } },
 
   { name: "stage1.intro", script: s1p1, tags: { campaign: true } },
